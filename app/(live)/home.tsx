@@ -228,12 +228,13 @@ export default function LiveHomeScreen() {
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Quick Actions</Text>
           <View style={styles.actionsGrid}>
-            {[
-              { id: "chat", emoji: "💬", label: "Ask TRAVI", sub: "AI assistant", route: "/(live)/chat", colors: ["#7B2FBE", "#5A1E9E"] as [string, string] },
-              { id: "plan", emoji: "📋", label: "Today's Plan", sub: "View schedule", route: "/(live)/itinerary", colors: ["#1A3A5C", "#2D1B69"] as [string, string] },
-              { id: "map", emoji: "🗺️", label: "Nearby", sub: "Explore area", route: "/(live)/map", colors: ["#1B4D1E", "#2D3A1B"] as [string, string] },
-              { id: "emergency", emoji: "🆘", label: "Emergency", sub: "Get help", route: null, colors: ["#8B1A1A", "#5C1010"] as [string, string] },
-            ].map((action) => (
+            {([
+              { id: "chat", icon: "bubble.left.fill" as const, label: "Ask TRAVI", sub: "AI assistant", route: "/(live)/chat", colors: ["#7B2FBE", "#5A1E9E"] as [string, string] },
+              { id: "plan", icon: "list.bullet.clipboard.fill" as const, label: "Today's Plan", sub: "View schedule", route: "/(live)/itinerary", colors: ["#1A3A5C", "#2D1B69"] as [string, string] },
+              { id: "map", icon: "map.fill" as const, label: "Nearby", sub: "Explore area", route: "/(live)/map", colors: ["#1B4D1E", "#2D3A1B"] as [string, string] },
+              { id: "split", icon: "person.2.fill" as const, label: "Split Bill", sub: "Shared expenses", route: "/(live)/split", colors: ["#1A3A1A", "#2D3A2D"] as [string, string] },
+              { id: "emergency", icon: "exclamationmark.triangle.fill" as const, label: "Emergency", sub: "Get help", route: null, colors: ["#8B1A1A", "#5C1010"] as [string, string] },
+            ] as const).map((action) => (
               <TouchableOpacity
                 key={action.id}
                 style={styles.actionCard}
@@ -244,7 +245,7 @@ export default function LiveHomeScreen() {
                 activeOpacity={0.85}
               >
                 <LinearGradient colors={action.colors} style={styles.actionGradient}>
-                  <Text style={styles.actionEmoji}>{action.emoji}</Text>
+                  <IconSymbol name={action.icon} size={26} color="#FFFFFF" />
                   <Text style={styles.actionLabel}>{action.label}</Text>
                   <Text style={styles.actionSub}>{action.sub}</Text>
                 </LinearGradient>

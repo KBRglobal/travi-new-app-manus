@@ -122,3 +122,12 @@
 - [x] Trip Planner: Budget slider (Backpacker → Luxury with live examples)
 - [x] Trip Planner: Swipe-style interests (10 experience photo cards)
 - [x] AI Chat: Premium rebuild with smart keyword responses and typing animation
+
+## Phase 14 — Logo, Price Alert & Split Bill
+- [ ] Replace app icon with official TRAVI logo (Group30.png)
+- [ ] Update splash screen with official TRAVI logo
+- [ ] Build Price Alert screen (destination + max price + mock alerts)
+- [ ] Add Price Alert entry point in Home screen and Explore screen
+- [ ] Build Split Bill screen inside Live Trip Mode
+- [ ] Add Split Bill tab in Live Trip navigation
+- [ ] Wire up all new screens in navigation

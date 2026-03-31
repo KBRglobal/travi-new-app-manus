@@ -101,6 +101,31 @@ export type AppState = {
   activeTrip: Trip | null;
   pointTransactions: PointTransaction[];
   notifications: AppNotification[];
+  priceAlerts: PriceAlert[];
+  splitBillExpenses: SplitBillExpense[];
+};
+
+export type PriceAlert = {
+  id: string;
+  destination: string;
+  destinationCode: string;
+  maxPrice: number;
+  currentPrice: number;
+  triggered: boolean;
+  createdAt: string;
+  alertedAt?: string;
+};
+
+export type SplitBillExpense = {
+  id: string;
+  tripId: string;
+  title: string;
+  totalAmount: number;
+  paidBy: string;
+  splitAmong: string[];
+  category: "food" | "transport" | "accommodation" | "activity" | "other";
+  date: string;
+  settled: boolean;
 };
 
 export type AppNotification = {
@@ -114,6 +139,12 @@ export type AppNotification = {
 
 type Action =
   | { type: "SET_AUTH"; payload: { isAuthenticated: boolean; isGuest: boolean } }
+  | { type: "ADD_PRICE_ALERT"; payload: PriceAlert }
+  | { type: "REMOVE_PRICE_ALERT"; payload: string }
+  | { type: "TRIGGER_PRICE_ALERT"; payload: string }
+  | { type: "ADD_EXPENSE"; payload: SplitBillExpense }
+  | { type: "SETTLE_EXPENSE"; payload: string }
+  | { type: "REMOVE_EXPENSE"; payload: string }
   | { type: "SET_PROFILE"; payload: TravelerProfile }
   | { type: "UPDATE_PROFILE"; payload: Partial<TravelerProfile> }
   | { type: "SET_ONBOARDING_COMPLETED" }
@@ -136,6 +167,8 @@ const initialState: AppState = {
   activeTrip: null,
   pointTransactions: [],
   notifications: [],
+  priceAlerts: [],
+  splitBillExpenses: [],
 };
 
 function reducer(state: AppState, action: Action): AppState {
@@ -195,6 +228,28 @@ function reducer(state: AppState, action: Action): AppState {
       };
     case "HYDRATE":
       return { ...state, ...action.payload };
+    case "ADD_PRICE_ALERT":
+      return { ...state, priceAlerts: [action.payload, ...state.priceAlerts] };
+    case "REMOVE_PRICE_ALERT":
+      return { ...state, priceAlerts: state.priceAlerts.filter((a) => a.id !== action.payload) };
+    case "TRIGGER_PRICE_ALERT":
+      return {
+        ...state,
+        priceAlerts: state.priceAlerts.map((a) =>
+          a.id === action.payload ? { ...a, triggered: true, alertedAt: new Date().toISOString() } : a
+        ),
+      };
+    case "ADD_EXPENSE":
+      return { ...state, splitBillExpenses: [action.payload, ...state.splitBillExpenses] };
+    case "SETTLE_EXPENSE":
+      return {
+        ...state,
+        splitBillExpenses: state.splitBillExpenses.map((e) =>
+          e.id === action.payload ? { ...e, settled: true } : e
+        ),
+      };
+    case "REMOVE_EXPENSE":
+      return { ...state, splitBillExpenses: state.splitBillExpenses.filter((e) => e.id !== action.payload) };
     case "LOGOUT":
       return { ...initialState };
     default:

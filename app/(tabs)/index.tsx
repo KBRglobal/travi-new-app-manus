@@ -177,7 +177,8 @@ export default function HomeScreen() {
                 style={S.quickAction}
                 onPress={() => {
                   if (Platform.OS !== "web") Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-                  if (action.id === "flights" || action.id === "hotels") router.push("/(trip)/plan" as never);
+                  if (action.id === "flights" || action.id === "hotels" || action.id === "experiences") router.push("/(trip)/plan" as never);
+                  else if (action.id === "alerts") router.push("/(tabs)/alerts" as never);
                 }}
                 activeOpacity={0.8}
               >
@@ -196,7 +197,7 @@ export default function HomeScreen() {
         <View style={S.section}>
           <View style={S.sectionHeader}>
             <Text style={S.sectionTitle}>Price Alerts</Text>
-            <TouchableOpacity activeOpacity={0.7}>
+            <TouchableOpacity activeOpacity={0.7} onPress={() => router.push("/(tabs)/alerts" as never)}>
               <Text style={S.sectionLink}>Set alert</Text>
             </TouchableOpacity>
           </View>

@@ -106,6 +106,13 @@ export default function TabLayout() {
           ),
         }}
       />
+      <Tabs.Screen
+        name="alerts"
+        options={{
+          title: "Price Alerts",
+          href: null,
+        }}
+      />
     </Tabs>
   );
 }

@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity, StyleSheet, ScrollView, Dimensions } from
 import { LinearGradient } from "expo-linear-gradient";
 import { IconSymbol } from "@/components/ui/icon-symbol";
 import { useStore } from "@/lib/store";
+import { router } from "expo-router";
 
 const { width } = Dimensions.get("window");
 
@@ -72,8 +73,18 @@ export default function WalletScreen() {
         {/* Header */}
         <View style={styles.pageHeader}>
           <Text style={styles.pageTitle}>TRAVI Wallet</Text>
-          <View style={[styles.tierPill, { borderColor: currentTier.color + "66" }]}>
-            <Text style={[styles.tierPillText, { color: currentTier.color }]}>{currentTier.icon} {currentTier.name}</Text>
+          <View style={styles.headerRight}>
+            <TouchableOpacity
+              style={styles.alertsBtn}
+              onPress={() => router.push("/(tabs)/alerts" as never)}
+              activeOpacity={0.8}
+            >
+              <IconSymbol name="bell.fill" size={16} color="#C084FC" />
+              <Text style={styles.alertsBtnText}>Alerts</Text>
+            </TouchableOpacity>
+            <View style={[styles.tierPill, { borderColor: currentTier.color + "66" }]}>
+              <Text style={[styles.tierPillText, { color: currentTier.color }]}>{currentTier.icon} {currentTier.name}</Text>
+            </View>
           </View>
         </View>
 
@@ -345,4 +356,7 @@ const styles = StyleSheet.create({
   txDesc: { color: "#FFFFFF", fontSize: 14, fontWeight: "600" },
   txDate: { color: "#5A4D72", fontSize: 12 },
   txAmount: { fontSize: 15, fontWeight: "700" },
+  headerRight: { flexDirection: "row", alignItems: "center", gap: 10 },
+  alertsBtn: { flexDirection: "row", alignItems: "center", gap: 6, borderRadius: 12, borderWidth: 1, borderColor: "rgba(192,132,252,0.4)", paddingHorizontal: 12, paddingVertical: 6, backgroundColor: "rgba(192,132,252,0.1)" },
+  alertsBtnText: { color: "#C084FC", fontSize: 13, fontWeight: "600" },
 });

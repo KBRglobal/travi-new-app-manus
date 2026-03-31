@@ -7,6 +7,7 @@ export default function LiveLayout() {
       <Stack.Screen name="chat" />
       <Stack.Screen name="itinerary" />
       <Stack.Screen name="map" />
+      <Stack.Screen name="split" options={{ animation: "slide_from_right" }} />
     </Stack>
   );
 }

@@ -138,6 +138,7 @@ const MAPPING = {
   "bookmark.fill": "bookmark",
   "bookmark": "bookmark-border",
   "list.bullet": "list",
+  "list.bullet.clipboard.fill": "assignment",
   "square.grid.2x2.fill": "grid-view",
   "slider.horizontal.3": "tune",
   "arrow.up.right.square.fill": "open-in-new",
