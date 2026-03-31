@@ -1,284 +1,322 @@
-import { useState } from "react";
-import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from "react-native";
+import { useRef, useEffect } from "react";
+import { View, Text, TouchableOpacity, StyleSheet, ScrollView, Dimensions, Animated, Platform } from "react-native";
 import { router, useLocalSearchParams } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
 import { IconSymbol } from "@/components/ui/icon-symbol";
-import { ScreenContainer } from "@/components/screen-container";
 import { useStore } from "@/lib/store";
+import * as Haptics from "expo-haptics";
+
+const { width } = Dimensions.get("window");
 
 export default function SummaryScreen() {
   const { tripId } = useLocalSearchParams<{ tripId: string }>();
   const { state, dispatch } = useStore();
+  const fadeAnim = useRef(new Animated.Value(0)).current;
+  const slideAnim = useRef(new Animated.Value(40)).current;
   const trip = state.trips.find((t) => t.id === tripId);
-  const [confirmed, setConfirmed] = useState(false);
+
+  useEffect(() => {
+    Animated.parallel([
+      Animated.timing(fadeAnim, { toValue: 1, duration: 600, useNativeDriver: true }),
+      Animated.timing(slideAnim, { toValue: 0, duration: 600, useNativeDriver: true }),
+    ]).start();
+  }, []);
+
+  const handleConfirm = () => {
+    if (!tripId) return;
+    if (Platform.OS !== "web") Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+    const pointsEarned = Math.floor((trip?.totalCost || 0) * 10);
+    dispatch({ type: "UPDATE_TRIP", payload: { id: tripId, updates: { status: "upcoming", pointsEarned } } });
+    dispatch({ type: "ADD_POINTS", payload: { amount: pointsEarned, description: "Trip booked: " + (trip?.destination || "New Trip") } });
+    router.push({ pathname: "/(trip)/completion", params: { tripId } } as never);
+  };
 
   if (!trip) {
     return (
-      <ScreenContainer containerClassName="bg-background">
-        <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-          <Text style={{ color: "#FFFFFF", fontSize: 18 }}>Trip not found</Text>
-          <TouchableOpacity onPress={() => router.replace("/(tabs)" as never)} style={{ marginTop: 16 }}>
-            <Text style={{ color: "#7B2FBE" }}>Go Home</Text>
+      <View style={styles.container}>
+        <LinearGradient colors={["#040010", "#0D0520"]} style={StyleSheet.absoluteFillObject} />
+        <View style={styles.centerWrap}>
+          <Text style={styles.errorText}>Trip not found</Text>
+          <TouchableOpacity onPress={() => router.back()} style={styles.backBtnCenter}>
+            <Text style={styles.backBtnText}>Go Back</Text>
           </TouchableOpacity>
         </View>
-      </ScreenContainer>
+      </View>
     );
   }
 
-  const totalCost = (trip.flight?.price || 0) + (trip.hotel?.totalPrice || 0) + 350;
-  const pointsToEarn = Math.floor(totalCost * 0.05 * 100);
+  const nights = trip.startDate && trip.endDate
+    ? Math.max(1, Math.ceil((new Date(trip.endDate).getTime() - new Date(trip.startDate).getTime()) / 86400000))
+    : 7;
+  const pointsToEarn = Math.floor((trip.totalCost || 0) * 10);
 
-  const handleConfirm = () => {
-    dispatch({ type: "UPDATE_TRIP", payload: { id: trip.id, updates: { status: "upcoming", totalCost, pointsEarned: pointsToEarn } } });
-    dispatch({ type: "UPDATE_PROFILE", payload: { points: (state.profile?.points || 0) + pointsToEarn } });
-    router.push({ pathname: "/(trip)/completion" as never, params: { tripId: trip.id } });
+  const formatDate = (d: string) => {
+    try { return new Date(d).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }); }
+    catch { return d; }
   };
 
   return (
-    <ScreenContainer containerClassName="bg-background">
-      <LinearGradient colors={["#2D1B69", "#1A0533"]} style={styles.header}>
-        <TouchableOpacity onPress={() => router.back()} style={styles.backBtn}>
-          <IconSymbol name="chevron.left" size={24} color="#FFFFFF" />
+    <View style={styles.container}>
+      <LinearGradient colors={["#040010", "#0D0520", "#1A0A3D"]} style={StyleSheet.absoluteFillObject} />
+      <View style={styles.orb1} />
+      <View style={styles.orb2} />
+      <View style={styles.header}>
+        <TouchableOpacity style={styles.backBtn} onPress={() => router.back()} activeOpacity={0.7}>
+          <IconSymbol name="chevron.left" size={22} color="#FFFFFF" />
         </TouchableOpacity>
-        <View style={styles.stepIndicator}>
-          <Text style={styles.stepText}>Step 6 of 6 — Review</Text>
-          <View style={styles.stepBar}>
-            {[1,2,3,4,5,6].map((s) => (
-              <View key={s} style={[styles.stepDot, styles.stepDotActive]} />
-            ))}
-          </View>
-        </View>
+        <Text style={styles.headerTitle}>Trip Summary</Text>
         <View style={{ width: 40 }} />
-      </LinearGradient>
-
-      <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
-        <Text style={styles.title}>Your Trip Summary</Text>
-        <Text style={styles.subtitle}>{trip.destination} • {trip.startDate} → {trip.endDate}</Text>
-
-        {/* Trip Overview Card */}
-        <LinearGradient colors={["#2D1B69", "#3D2580"]} style={styles.overviewCard}>
-          <View style={styles.overviewRow}>
-            <View style={styles.overviewItem}>
-              <Text style={styles.overviewIcon}>✈️</Text>
-              <Text style={styles.overviewLabel}>Destination</Text>
-              <Text style={styles.overviewValue}>{trip.destination}</Text>
+      </View>
+      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scroll}>
+        <Animated.View style={{ opacity: fadeAnim, transform: [{ translateY: slideAnim }], gap: 16 }}>
+          <View style={styles.duckRow}>
+            <View style={styles.duckAvatar}>
+              <LinearGradient colors={["#7B2FBE", "#E91E8C"]} style={styles.duckGradient}>
+                <Text style={styles.duckEmoji}>🦆</Text>
+              </LinearGradient>
             </View>
-            <View style={styles.overviewDivider} />
-            <View style={styles.overviewItem}>
-              <Text style={styles.overviewIcon}>👥</Text>
-              <Text style={styles.overviewLabel}>Travelers</Text>
-              <Text style={styles.overviewValue}>{trip.travelers}</Text>
-            </View>
-            <View style={styles.overviewDivider} />
-            <View style={styles.overviewItem}>
-              <Text style={styles.overviewIcon}>📅</Text>
-              <Text style={styles.overviewLabel}>Duration</Text>
-              <Text style={styles.overviewValue}>{trip.itinerary?.length || 3} days</Text>
+            <View style={styles.duckBubble}>
+              <LinearGradient colors={["rgba(123,47,190,0.4)", "rgba(233,30,140,0.25)"]} style={styles.duckBubbleGradient}>
+                <Text style={styles.duckMessage}>Your perfect trip is ready!</Text>
+                <Text style={styles.duckSub}>Review and confirm to lock it in</Text>
+              </LinearGradient>
             </View>
           </View>
-        </LinearGradient>
-
-        {/* Flight Summary */}
-        {trip.flight && (
-          <View style={styles.section}>
-            <Text style={styles.sectionTitle}>✈️ Flight</Text>
-            <View style={styles.summaryCard}>
-              <View style={styles.summaryRow}>
-                <Text style={styles.summaryLabel}>{trip.flight.airline}</Text>
-                <Text style={styles.summaryValue}>${trip.flight.price}</Text>
+          <View style={styles.heroCard}>
+            <LinearGradient colors={["rgba(123,47,190,0.3)", "rgba(233,30,140,0.15)"]} style={StyleSheet.absoluteFillObject} />
+            <View style={styles.heroTop}>
+              <View>
+                <Text style={styles.heroDestination}>{trip.destination}</Text>
+                <Text style={styles.heroCountry}>{trip.country}</Text>
               </View>
-              <Text style={styles.summaryDetail}>
-                {trip.flight.from} → {trip.flight.to} • {trip.flight.departure} – {trip.flight.arrival}
-              </Text>
-              <Text style={styles.summaryDetail}>{trip.flight.duration} • {trip.flight.class}</Text>
-            </View>
-          </View>
-        )}
-
-        {/* Hotel Summary */}
-        {trip.hotel && (
-          <View style={styles.section}>
-            <Text style={styles.sectionTitle}>🏨 Hotel</Text>
-            <View style={styles.summaryCard}>
-              <View style={styles.summaryRow}>
-                <Text style={styles.summaryLabel}>{trip.hotel.name}</Text>
-                <Text style={styles.summaryValue}>${trip.hotel.totalPrice}</Text>
+              <View style={styles.heroBadge}>
+                <LinearGradient colors={["#7B2FBE", "#E91E8C"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.heroBadgeGradient}>
+                  <Text style={styles.heroBadgeText}>{nights}N / {nights + 1}D</Text>
+                </LinearGradient>
               </View>
-              <Text style={styles.summaryDetail}>
-                {"⭐".repeat(trip.hotel.stars)} • {trip.hotel.location}
-              </Text>
-              <Text style={styles.summaryDetail}>Rating: {trip.hotel.rating}/10</Text>
+            </View>
+            <View style={styles.heroStats}>
+              <View style={styles.heroStat}>
+                <IconSymbol name="calendar" size={16} color="rgba(192,132,252,0.8)" />
+                <Text style={styles.heroStatLabel}>Departure</Text>
+                <Text style={styles.heroStatValue}>{formatDate(trip.startDate || "")}</Text>
+              </View>
+              <View style={styles.heroDivider} />
+              <View style={styles.heroStat}>
+                <IconSymbol name="person.2.fill" size={16} color="rgba(192,132,252,0.8)" />
+                <Text style={styles.heroStatLabel}>Travelers</Text>
+                <Text style={styles.heroStatValue}>{trip.travelers} people</Text>
+              </View>
+              <View style={styles.heroDivider} />
+              <View style={styles.heroStat}>
+                <IconSymbol name="creditcard.fill" size={16} color="rgba(192,132,252,0.8)" />
+                <Text style={styles.heroStatLabel}>Budget</Text>
+                <Text style={styles.heroStatValue}>{trip.budget}</Text>
+              </View>
             </View>
           </View>
-        )}
-
-        {/* Itinerary Preview */}
-        {trip.itinerary && trip.itinerary.length > 0 && (
-          <View style={styles.section}>
-            <Text style={styles.sectionTitle}>📋 Itinerary</Text>
-            {trip.itinerary.map((day) => (
-              <View key={day.day} style={styles.dayCard}>
-                <Text style={styles.dayTitle}>Day {day.day} — {day.date}</Text>
-                {day.activities.slice(0, 3).map((act) => (
-                  <View key={act.id} style={styles.activityRow}>
-                    <Text style={styles.activityTime}>{act.time}</Text>
-                    <Text style={styles.activityTitle}>{act.title}</Text>
-                    {act.price > 0 && <Text style={styles.activityPrice}>${act.price}</Text>}
+          {trip.flight && (
+            <View style={styles.sectionCard}>
+              <LinearGradient colors={["rgba(255,255,255,0.06)", "rgba(255,255,255,0.02)"]} style={StyleSheet.absoluteFillObject} />
+              <View style={styles.sectionHeader}>
+                <View style={styles.sectionIconWrap}>
+                  <LinearGradient colors={["#7B2FBE", "#5B21B6"]} style={styles.sectionIconGradient}>
+                    <IconSymbol name="airplane" size={18} color="#FFFFFF" />
+                  </LinearGradient>
+                </View>
+                <Text style={styles.sectionTitle}>Flight</Text>
+                <View style={styles.confirmedBadge}>
+                  <IconSymbol name="checkmark.circle.fill" size={14} color="#4CAF50" />
+                  <Text style={styles.confirmedText}>Confirmed</Text>
+                </View>
+              </View>
+              <View style={styles.flightRow}>
+                <View style={styles.flightEndpoint}>
+                  <Text style={styles.flightCode}>{trip.flight.from}</Text>
+                  <Text style={styles.flightTime}>{trip.flight.departure}</Text>
+                </View>
+                <View style={styles.flightMiddle}>
+                  <Text style={styles.flightDuration}>{trip.flight.duration}</Text>
+                  <View style={styles.flightLine}>
+                    <View style={styles.flightDot} />
+                    <View style={styles.flightLineBar} />
+                    <IconSymbol name="airplane" size={14} color="#E91E8C" />
+                    <View style={styles.flightLineBar} />
+                    <View style={styles.flightDot} />
+                  </View>
+                  <Text style={styles.flightStops}>{trip.flight.stops === 0 ? "Direct" : trip.flight.stops + " stop"}</Text>
+                </View>
+                <View style={styles.flightEndpoint}>
+                  <Text style={styles.flightCode}>{trip.flight.to}</Text>
+                  <Text style={styles.flightTime}>{trip.flight.arrival}</Text>
+                </View>
+              </View>
+              <View style={styles.cardFooter}>
+                <Text style={styles.cardAirline}>{trip.flight.airline} · {trip.flight.class}</Text>
+                <Text style={styles.cardPrice}>${trip.flight.price}</Text>
+              </View>
+            </View>
+          )}
+          {trip.hotel && (
+            <View style={styles.sectionCard}>
+              <LinearGradient colors={["rgba(255,255,255,0.06)", "rgba(255,255,255,0.02)"]} style={StyleSheet.absoluteFillObject} />
+              <View style={styles.sectionHeader}>
+                <View style={styles.sectionIconWrap}>
+                  <LinearGradient colors={["#E91E8C", "#C2185B"]} style={styles.sectionIconGradient}>
+                    <IconSymbol name="building.2.fill" size={18} color="#FFFFFF" />
+                  </LinearGradient>
+                </View>
+                <Text style={styles.sectionTitle}>Hotel</Text>
+                <View style={styles.confirmedBadge}>
+                  <IconSymbol name="checkmark.circle.fill" size={14} color="#4CAF50" />
+                  <Text style={styles.confirmedText}>Confirmed</Text>
+                </View>
+              </View>
+              <Text style={styles.hotelName}>{trip.hotel.name}</Text>
+              <View style={styles.hotelMeta}>
+                <IconSymbol name="location.fill" size={12} color="rgba(255,255,255,0.4)" />
+                <Text style={styles.hotelLocation}>{trip.hotel.location}</Text>
+                <View style={styles.starsRow}>
+                  {Array.from({ length: trip.hotel.stars }).map((_, i) => (
+                    <IconSymbol key={i} name="star.fill" size={10} color="#FFD700" />
+                  ))}
+                </View>
+              </View>
+              <View style={styles.cardFooter}>
+                <Text style={styles.cardAirline}>{nights} nights · ${trip.hotel.pricePerNight}/night</Text>
+                <Text style={styles.cardPrice}>${trip.hotel.totalPrice}</Text>
+              </View>
+            </View>
+          )}
+          {trip.interests.length > 0 && (
+            <View style={styles.sectionCard}>
+              <LinearGradient colors={["rgba(255,255,255,0.06)", "rgba(255,255,255,0.02)"]} style={StyleSheet.absoluteFillObject} />
+              <View style={styles.sectionHeader}>
+                <View style={styles.sectionIconWrap}>
+                  <LinearGradient colors={["#FF6B35", "#E91E8C"]} style={styles.sectionIconGradient}>
+                    <IconSymbol name="heart.fill" size={18} color="#FFFFFF" />
+                  </LinearGradient>
+                </View>
+                <Text style={styles.sectionTitle}>Your Interests</Text>
+              </View>
+              <View style={styles.tagsWrap}>
+                {trip.interests.map((interest) => (
+                  <View key={interest} style={styles.tag}>
+                    <Text style={styles.tagText}>{interest}</Text>
                   </View>
                 ))}
-                {day.activities.length > 3 && (
-                  <Text style={styles.moreActivities}>+{day.activities.length - 3} more activities</Text>
-                )}
               </View>
-            ))}
+            </View>
+          )}
+          <View style={styles.pointsBanner}>
+            <LinearGradient colors={["rgba(123,47,190,0.5)", "rgba(233,30,140,0.35)"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={StyleSheet.absoluteFillObject} />
+            <View style={styles.pointsLeft}>
+              <IconSymbol name="star.fill" size={24} color="#FFD700" />
+              <View>
+                <Text style={styles.pointsTitle}>You'll earn</Text>
+                <Text style={styles.pointsAmount}>{pointsToEarn.toLocaleString()} TRAVI Points</Text>
+              </View>
+            </View>
+            <Text style={styles.pointsValue}>${(pointsToEarn / 100).toFixed(0)} value</Text>
           </View>
-        )}
-
-        {/* Cost Breakdown */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>💰 Cost Breakdown</Text>
-          <View style={styles.costCard}>
-            {trip.flight && (
-              <View style={styles.costRow}>
-                <Text style={styles.costLabel}>Flights</Text>
-                <Text style={styles.costValue}>${trip.flight.price}</Text>
-              </View>
-            )}
-            {trip.hotel && (
-              <View style={styles.costRow}>
-                <Text style={styles.costLabel}>Hotel</Text>
-                <Text style={styles.costValue}>${trip.hotel.totalPrice}</Text>
-              </View>
-            )}
-            <View style={styles.costRow}>
-              <Text style={styles.costLabel}>Activities & Food (est.)</Text>
-              <Text style={styles.costValue}>$350</Text>
+          <View style={styles.totalCard}>
+            <LinearGradient colors={["rgba(123,47,190,0.2)", "rgba(233,30,140,0.1)"]} style={StyleSheet.absoluteFillObject} />
+            <View style={styles.totalRow}>
+              <Text style={styles.totalLabel}>Total Trip Cost</Text>
+              <Text style={styles.totalAmount}>${(trip.totalCost || 0).toLocaleString()}</Text>
             </View>
-            <View style={styles.costDivider} />
-            <View style={styles.costRow}>
-              <Text style={styles.costTotalLabel}>Total Estimated</Text>
-              <Text style={styles.costTotalValue}>${totalCost}</Text>
-            </View>
+            <Text style={styles.totalSub}>Includes flights, hotel, and all activities</Text>
           </View>
-        </View>
-
-        {/* Points to Earn */}
-        <View style={styles.pointsCard}>
-          <LinearGradient
-            colors={["rgba(123,47,190,0.3)", "rgba(233,30,140,0.2)"]}
-            style={styles.pointsGradient}
-          >
-            <Text style={styles.pointsEmoji}>✦</Text>
-            <View>
-              <Text style={styles.pointsTitle}>You'll earn {pointsToEarn.toLocaleString()} TRAVI Points</Text>
-              <Text style={styles.pointsSubtitle}>Worth ~${(pointsToEarn / 100).toFixed(0)} in future travel</Text>
-            </View>
-          </LinearGradient>
-        </View>
-
-        {/* Confirm Button */}
-        <TouchableOpacity style={styles.confirmBtn} onPress={handleConfirm} activeOpacity={0.85}>
-          <LinearGradient
-            colors={["#7B2FBE", "#E91E8C"]}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 0 }}
-            style={styles.confirmGradient}
-          >
-            <Text style={styles.confirmText}>Confirm & Book Trip</Text>
-            <Text style={styles.confirmSubtext}> 🔒 Secure booking</Text>
-          </LinearGradient>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.editBtn} onPress={() => router.back()} activeOpacity={0.7}>
-          <Text style={styles.editText}>Edit Trip Details</Text>
-        </TouchableOpacity>
+        </Animated.View>
       </ScrollView>
-    </ScreenContainer>
+      <View style={styles.ctaWrap}>
+        <TouchableOpacity style={styles.ctaBtn} onPress={handleConfirm} activeOpacity={0.88}>
+          <LinearGradient colors={["#7B2FBE", "#E91E8C"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.ctaGradient}>
+            <IconSymbol name="checkmark.circle.fill" size={22} color="#FFFFFF" />
+            <Text style={styles.ctaText}>Confirm Booking</Text>
+          </LinearGradient>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.editBtn} onPress={() => router.back()} activeOpacity={0.7}>
+          <Text style={styles.editBtnText}>Edit Trip</Text>
+        </TouchableOpacity>
+      </View>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  header: {
-    flexDirection: "row",
-    alignItems: "center",
-    paddingTop: 16,
-    paddingHorizontal: 20,
-    paddingBottom: 16,
-    gap: 12,
-  },
-  backBtn: { width: 40, height: 40, alignItems: "center", justifyContent: "center" },
-  stepIndicator: { flex: 1, alignItems: "center", gap: 6 },
-  stepText: { color: "#A78BCA", fontSize: 12 },
-  stepBar: { flexDirection: "row", gap: 4 },
-  stepDot: { width: 24, height: 4, borderRadius: 2, backgroundColor: "#4A3080" },
-  stepDotActive: { backgroundColor: "#E91E8C" },
-  content: { padding: 24, paddingBottom: 40 },
-  title: { color: "#FFFFFF", fontSize: 26, fontWeight: "700", marginBottom: 4 },
-  subtitle: { color: "#A78BCA", fontSize: 15, marginBottom: 20 },
-  overviewCard: {
-    borderRadius: 16,
-    padding: 16,
-    marginBottom: 20,
-    borderWidth: 1,
-    borderColor: "#4A3080",
-  },
-  overviewRow: { flexDirection: "row", alignItems: "center" },
-  overviewItem: { flex: 1, alignItems: "center", gap: 4 },
-  overviewIcon: { fontSize: 24 },
-  overviewLabel: { color: "#A78BCA", fontSize: 11 },
-  overviewValue: { color: "#FFFFFF", fontSize: 14, fontWeight: "700" },
-  overviewDivider: { width: 1, height: 50, backgroundColor: "#4A3080" },
-  section: { marginBottom: 20 },
-  sectionTitle: { color: "#FFFFFF", fontSize: 16, fontWeight: "700", marginBottom: 10 },
-  summaryCard: {
-    backgroundColor: "#2D1B69",
-    borderRadius: 14,
-    padding: 14,
-    borderWidth: 1,
-    borderColor: "#4A3080",
-    gap: 4,
-  },
-  summaryRow: { flexDirection: "row", justifyContent: "space-between", alignItems: "center" },
-  summaryLabel: { color: "#FFFFFF", fontSize: 15, fontWeight: "600" },
-  summaryValue: { color: "#FFD700", fontSize: 15, fontWeight: "700" },
-  summaryDetail: { color: "#A78BCA", fontSize: 13 },
-  dayCard: {
-    backgroundColor: "#2D1B69",
-    borderRadius: 14,
-    padding: 14,
-    borderWidth: 1,
-    borderColor: "#4A3080",
-    marginBottom: 8,
-  },
-  dayTitle: { color: "#FFFFFF", fontSize: 14, fontWeight: "700", marginBottom: 8 },
-  activityRow: { flexDirection: "row", alignItems: "center", gap: 8, marginBottom: 4 },
-  activityTime: { color: "#7B2FBE", fontSize: 12, width: 40 },
-  activityTitle: { color: "#A78BCA", fontSize: 13, flex: 1 },
-  activityPrice: { color: "#FFD700", fontSize: 12 },
-  moreActivities: { color: "#6B5A8A", fontSize: 12, marginTop: 4 },
-  costCard: {
-    backgroundColor: "#2D1B69",
-    borderRadius: 14,
-    padding: 14,
-    borderWidth: 1,
-    borderColor: "#4A3080",
-    gap: 8,
-  },
-  costRow: { flexDirection: "row", justifyContent: "space-between" },
-  costLabel: { color: "#A78BCA", fontSize: 14 },
-  costValue: { color: "#FFFFFF", fontSize: 14 },
-  costDivider: { height: 1, backgroundColor: "#4A3080" },
-  costTotalLabel: { color: "#FFFFFF", fontSize: 16, fontWeight: "700" },
-  costTotalValue: { color: "#FFD700", fontSize: 18, fontWeight: "700" },
-  pointsCard: { borderRadius: 14, overflow: "hidden", marginBottom: 20, borderWidth: 1, borderColor: "#7B2FBE" },
-  pointsGradient: { flexDirection: "row", alignItems: "center", padding: 14, gap: 12 },
-  pointsEmoji: { fontSize: 28, color: "#FFD700" },
-  pointsTitle: { color: "#FFFFFF", fontSize: 15, fontWeight: "700" },
-  pointsSubtitle: { color: "#A78BCA", fontSize: 13, marginTop: 2 },
-  confirmBtn: { borderRadius: 28, overflow: "hidden", marginBottom: 12 },
-  confirmGradient: { paddingVertical: 16, alignItems: "center" },
-  confirmText: { color: "#FFFFFF", fontSize: 17, fontWeight: "700" },
-  confirmSubtext: { color: "rgba(255,255,255,0.7)", fontSize: 12, marginTop: 2 },
+  container: { flex: 1, backgroundColor: "#040010" },
+  orb1: { position: "absolute", width: width * 1.2, height: width * 1.2, borderRadius: width * 0.6, top: -width * 0.5, left: -width * 0.3, backgroundColor: "rgba(123,47,190,0.08)" },
+  orb2: { position: "absolute", width: width, height: width, borderRadius: width / 2, bottom: 0, right: -width * 0.3, backgroundColor: "rgba(233,30,140,0.06)" },
+  header: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 20, paddingTop: 60, paddingBottom: 16 },
+  backBtn: { width: 40, height: 40, borderRadius: 14, backgroundColor: "rgba(255,255,255,0.08)", alignItems: "center", justifyContent: "center" },
+  headerTitle: { color: "#FFFFFF", fontSize: 18, fontWeight: "800" },
+  scroll: { paddingHorizontal: 20, paddingBottom: 20 },
+  centerWrap: { flex: 1, alignItems: "center", justifyContent: "center", gap: 16 },
+  errorText: { color: "rgba(255,255,255,0.6)", fontSize: 16 },
+  backBtnCenter: { paddingHorizontal: 24, paddingVertical: 12, backgroundColor: "rgba(255,255,255,0.1)", borderRadius: 14 },
+  backBtnText: { color: "#FFFFFF", fontSize: 15, fontWeight: "600" },
+  duckRow: { flexDirection: "row", alignItems: "flex-end", gap: 10 },
+  duckAvatar: { width: 44, height: 44, borderRadius: 22, overflow: "hidden" },
+  duckGradient: { flex: 1, alignItems: "center", justifyContent: "center" },
+  duckEmoji: { fontSize: 24 },
+  duckBubble: { flex: 1, borderRadius: 18, borderBottomLeftRadius: 4, overflow: "hidden" },
+  duckBubbleGradient: { paddingHorizontal: 16, paddingVertical: 12, borderRadius: 18, borderBottomLeftRadius: 4, borderWidth: 1, borderColor: "rgba(123,47,190,0.4)" },
+  duckMessage: { color: "#FFFFFF", fontSize: 15, fontWeight: "700", lineHeight: 20 },
+  duckSub: { color: "rgba(255,255,255,0.5)", fontSize: 12, marginTop: 2 },
+  heroCard: { borderRadius: 24, overflow: "hidden", padding: 20, borderWidth: 1, borderColor: "rgba(123,47,190,0.4)", gap: 16 },
+  heroTop: { flexDirection: "row", justifyContent: "space-between", alignItems: "flex-start" },
+  heroDestination: { color: "#FFFFFF", fontSize: 28, fontWeight: "900", lineHeight: 34 },
+  heroCountry: { color: "rgba(255,255,255,0.5)", fontSize: 14, marginTop: 2 },
+  heroBadge: { borderRadius: 12, overflow: "hidden" },
+  heroBadgeGradient: { paddingHorizontal: 14, paddingVertical: 8 },
+  heroBadgeText: { color: "#FFFFFF", fontSize: 13, fontWeight: "800" },
+  heroStats: { flexDirection: "row", alignItems: "center" },
+  heroStat: { flex: 1, alignItems: "center", gap: 4 },
+  heroStatLabel: { color: "rgba(255,255,255,0.4)", fontSize: 11, textAlign: "center" },
+  heroStatValue: { color: "#FFFFFF", fontSize: 13, fontWeight: "700", textAlign: "center" },
+  heroDivider: { width: 1, height: 40, backgroundColor: "rgba(255,255,255,0.1)" },
+  sectionCard: { borderRadius: 20, overflow: "hidden", padding: 16, borderWidth: 1, borderColor: "rgba(255,255,255,0.08)", gap: 12 },
+  sectionHeader: { flexDirection: "row", alignItems: "center", gap: 10 },
+  sectionIconWrap: { borderRadius: 10, overflow: "hidden" },
+  sectionIconGradient: { width: 36, height: 36, alignItems: "center", justifyContent: "center" },
+  sectionTitle: { flex: 1, color: "#FFFFFF", fontSize: 16, fontWeight: "800" },
+  confirmedBadge: { flexDirection: "row", alignItems: "center", gap: 4 },
+  confirmedText: { color: "#4CAF50", fontSize: 12, fontWeight: "600" },
+  flightRow: { flexDirection: "row", alignItems: "center" },
+  flightEndpoint: { alignItems: "center", gap: 4 },
+  flightCode: { color: "#FFFFFF", fontSize: 22, fontWeight: "900" },
+  flightTime: { color: "rgba(255,255,255,0.5)", fontSize: 12 },
+  flightMiddle: { flex: 1, alignItems: "center", gap: 4 },
+  flightDuration: { color: "rgba(255,255,255,0.6)", fontSize: 12 },
+  flightLine: { flexDirection: "row", alignItems: "center", width: "100%" },
+  flightDot: { width: 6, height: 6, borderRadius: 3, backgroundColor: "rgba(255,255,255,0.3)" },
+  flightLineBar: { flex: 1, height: 1, backgroundColor: "rgba(255,255,255,0.2)" },
+  flightStops: { color: "rgba(255,255,255,0.4)", fontSize: 11 },
+  cardFooter: { flexDirection: "row", justifyContent: "space-between", alignItems: "center", paddingTop: 8, borderTopWidth: 1, borderTopColor: "rgba(255,255,255,0.06)" },
+  cardAirline: { color: "rgba(255,255,255,0.5)", fontSize: 13 },
+  cardPrice: { color: "#E91E8C", fontSize: 20, fontWeight: "900" },
+  hotelName: { color: "#FFFFFF", fontSize: 18, fontWeight: "800" },
+  hotelMeta: { flexDirection: "row", alignItems: "center", gap: 6 },
+  hotelLocation: { color: "rgba(255,255,255,0.4)", fontSize: 12, flex: 1 },
+  starsRow: { flexDirection: "row", gap: 2 },
+  tagsWrap: { flexDirection: "row", flexWrap: "wrap", gap: 8 },
+  tag: { paddingHorizontal: 12, paddingVertical: 6, borderRadius: 20, backgroundColor: "rgba(123,47,190,0.25)", borderWidth: 1, borderColor: "rgba(123,47,190,0.4)" },
+  tagText: { color: "rgba(192,132,252,0.9)", fontSize: 13, fontWeight: "600" },
+  pointsBanner: { borderRadius: 20, overflow: "hidden", padding: 16, flexDirection: "row", alignItems: "center", justifyContent: "space-between", borderWidth: 1, borderColor: "rgba(123,47,190,0.4)" },
+  pointsLeft: { flexDirection: "row", alignItems: "center", gap: 12 },
+  pointsTitle: { color: "rgba(255,255,255,0.6)", fontSize: 12 },
+  pointsAmount: { color: "#FFFFFF", fontSize: 16, fontWeight: "800" },
+  pointsValue: { color: "#FFD700", fontSize: 14, fontWeight: "700" },
+  totalCard: { borderRadius: 20, overflow: "hidden", padding: 20, borderWidth: 1, borderColor: "rgba(123,47,190,0.3)", gap: 6 },
+  totalRow: { flexDirection: "row", justifyContent: "space-between", alignItems: "center" },
+  totalLabel: { color: "rgba(255,255,255,0.7)", fontSize: 16, fontWeight: "600" },
+  totalAmount: { color: "#FFFFFF", fontSize: 28, fontWeight: "900" },
+  totalSub: { color: "rgba(255,255,255,0.35)", fontSize: 12 },
+  ctaWrap: { paddingHorizontal: 20, paddingBottom: 40, paddingTop: 12, gap: 12 },
+  ctaBtn: { borderRadius: 20, overflow: "hidden" },
+  ctaGradient: { flexDirection: "row", alignItems: "center", justifyContent: "center", paddingVertical: 18, gap: 10, borderRadius: 20 },
+  ctaText: { color: "#FFFFFF", fontSize: 18, fontWeight: "800" },
   editBtn: { alignItems: "center", paddingVertical: 12 },
-  editText: { color: "#A78BCA", fontSize: 15 },
+  editBtnText: { color: "rgba(255,255,255,0.5)", fontSize: 15, fontWeight: "600" },
 });

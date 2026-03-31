@@ -1,383 +1,334 @@
 import { useState } from "react";
-import { View, Text, TouchableOpacity, StyleSheet, ScrollView, TextInput, Dimensions, FlatList } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet, ScrollView, Dimensions, TextInput } from "react-native";
 import { router } from "expo-router";
-import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
 import { IconSymbol } from "@/components/ui/icon-symbol";
-import { ScreenContainer } from "@/components/screen-container";
 
 const { width } = Dimensions.get("window");
 
-const DESTINATIONS = [
-  { id: "1", city: "Paris", country: "France", emoji: "🗼", temp: "18°C", rating: 4.9, price: 1200, tag: "Trending", tagColor: "#E91E8C", desc: "City of love & lights", bg: ["#2D1B69", "#4A1942"] },
-  { id: "2", city: "Tokyo", country: "Japan", emoji: "⛩️", temp: "22°C", rating: 4.8, price: 1800, tag: "Popular", tagColor: "#FF9800", desc: "Ancient meets futuristic", bg: ["#1A3A5C", "#2D1B69"] },
-  { id: "3", city: "Bali", country: "Indonesia", emoji: "🌴", temp: "30°C", rating: 4.7, price: 950, tag: "Best Value", tagColor: "#4CAF50", desc: "Paradise island vibes", bg: ["#1B4D1E", "#2D3A1B"] },
-  { id: "4", city: "New York", country: "USA", emoji: "🗽", temp: "15°C", rating: 4.6, price: 1400, tag: "City Life", tagColor: "#2196F3", desc: "The city that never sleeps", bg: ["#1A2A4A", "#2D1B69"] },
-  { id: "5", city: "Santorini", country: "Greece", emoji: "🏛️", temp: "24°C", rating: 4.9, price: 1600, tag: "Romantic", tagColor: "#E91E8C", desc: "Iconic white & blue", bg: ["#1A3A5C", "#2D1B69"] },
-  { id: "6", city: "Dubai", country: "UAE", emoji: "🌆", temp: "35°C", rating: 4.7, price: 1100, tag: "Luxury", tagColor: "#FFD700", desc: "Opulence redefined", bg: ["#3A2A1A", "#2D1B69"] },
-];
-
 const CATEGORIES = [
-  { id: "all", label: "All", icon: "🌍" },
-  { id: "beach", label: "Beach", icon: "🏖️" },
-  { id: "city", label: "City", icon: "🏙️" },
-  { id: "nature", label: "Nature", icon: "🏔️" },
-  { id: "culture", label: "Culture", icon: "🎭" },
-  { id: "food", label: "Foodie", icon: "🍜" },
-  { id: "adventure", label: "Adventure", icon: "🧗" },
+  { id: "all", label: "All", icon: "safari.fill" as const },
+  { id: "beach", label: "Beach", icon: "beach.umbrella" as const },
+  { id: "city", label: "City", icon: "building.2.fill" as const },
+  { id: "nature", label: "Nature", icon: "leaf.fill" as const },
+  { id: "culture", label: "Culture", icon: "building.columns.fill" as const },
+  { id: "adventure", label: "Adventure", icon: "figure.run" as const },
 ];
 
-const TRENDING_EXPERIENCES = [
-  { id: "e1", title: "Northern Lights Tour", location: "Iceland", price: 299, emoji: "🌌", rating: 5.0 },
-  { id: "e2", title: "Sushi Masterclass", location: "Tokyo", price: 89, emoji: "🍣", rating: 4.9 },
-  { id: "e3", title: "Eiffel Tower Dinner", location: "Paris", price: 149, emoji: "🗼", rating: 4.8 },
-  { id: "e4", title: "Sunrise Yoga Bali", location: "Bali", price: 45, emoji: "🧘", rating: 4.9 },
+const FEATURED = [
+  { id: "f1", city: "Santorini", country: "Greece", tag: "Trending", tagColor: "#E91E8C", temp: "24°C", desc: "Iconic white-washed cliffs and sapphire seas", gradient: ["#1a1a4e", "#2d1b69", "#4a1942"] as const },
+  { id: "f2", city: "Kyoto", country: "Japan", tag: "Editor's Pick", tagColor: "#FF9800", temp: "18°C", desc: "Ancient temples, cherry blossoms & zen gardens", gradient: ["#1a0533", "#3d1a3d", "#2d1b69"] as const },
+  { id: "f3", city: "Bali", country: "Indonesia", tag: "Most Booked", tagColor: "#4CAF50", temp: "29°C", desc: "Tropical paradise with rice terraces and temples", gradient: ["#0d3320", "#1a4a2e", "#0d2d1a"] as const },
 ];
 
-const TRAVEL_STORIES = [
-  { id: "s1", user: "Sarah K.", avatar: "👩", dest: "Santorini", text: "Most magical sunset of my life! TRAVI planned everything perfectly 🌅", likes: 234, time: "2h ago" },
-  { id: "s2", user: "James M.", avatar: "👨", dest: "Tokyo", text: "3 weeks in Japan and TRAVI's AI found hidden gems I'd never have discovered alone 🏯", likes: 189, time: "5h ago" },
-  { id: "s3", user: "Priya R.", avatar: "👩🏽", dest: "Bali", text: "The villa TRAVI recommended was pure paradise. Already planning my return! 🌴", likes: 312, time: "1d ago" },
+const DESTINATIONS = [
+  { id: "d1", city: "Paris", country: "France", icon: "building.columns.fill" as const, iconColor: "#7B2FBE", price: "from $899", rating: 4.9, category: "city", tag: "Hot" },
+  { id: "d2", city: "Maldives", country: "Maldives", icon: "beach.umbrella" as const, iconColor: "#0D9488", price: "from $2,199", rating: 4.9, category: "beach", tag: "Luxury" },
+  { id: "d3", city: "New York", country: "USA", icon: "building.2.fill" as const, iconColor: "#E91E8C", price: "from $699", rating: 4.7, category: "city", tag: "Popular" },
+  { id: "d4", city: "Machu Picchu", country: "Peru", icon: "mountain.2.fill" as const, iconColor: "#4CAF50", price: "from $1,299", rating: 4.8, category: "adventure", tag: "Epic" },
+  { id: "d5", city: "Amsterdam", country: "Netherlands", icon: "building.2.fill" as const, iconColor: "#FF9800", price: "from $749", rating: 4.6, category: "city", tag: "Charming" },
+  { id: "d6", city: "Phuket", country: "Thailand", icon: "beach.umbrella" as const, iconColor: "#06B6D4", price: "from $599", rating: 4.7, category: "beach", tag: "Tropical" },
+  { id: "d7", city: "Rome", country: "Italy", icon: "building.columns.fill" as const, iconColor: "#F59E0B", price: "from $849", rating: 4.8, category: "culture", tag: "Historic" },
+  { id: "d8", city: "Patagonia", country: "Argentina", icon: "mountain.2.fill" as const, iconColor: "#10B981", price: "from $1,599", rating: 4.9, category: "nature", tag: "Wild" },
+];
+
+const STORIES = [
+  { id: "s1", user: "Sofia M.", dest: "Tokyo", text: "3 weeks in Japan changed my perspective on everything. The food, the people, the culture — absolutely magical!", likes: 847, time: "2h ago", color: "#7B2FBE" },
+  { id: "s2", user: "Marco R.", dest: "Bali", text: "Sunrise at Mount Batur was worth every step of the 3am hike. TRAVI's itinerary was spot on!", likes: 1203, time: "5h ago", color: "#E91E8C" },
+  { id: "s3", user: "Aisha K.", dest: "Morocco", text: "Lost in the Marrakech medina was the best thing that happened to me. Found a hidden riad that wasn't in any guide.", likes: 562, time: "1d ago", color: "#FF9800" },
+];
+
+const EXPERIENCES = [
+  { id: "e1", title: "Northern Lights Tour", location: "Iceland", price: 299, icon: "sparkles" as const, iconColor: "#7B2FBE", rating: 5.0 },
+  { id: "e2", title: "Sushi Masterclass", location: "Tokyo", price: 89, icon: "fork.knife" as const, iconColor: "#E91E8C", rating: 4.9 },
+  { id: "e3", title: "Eiffel Tower Dinner", location: "Paris", price: 149, icon: "star.fill" as const, iconColor: "#FF9800", rating: 4.8 },
+  { id: "e4", title: "Sunrise Yoga Bali", location: "Bali", price: 45, icon: "figure.yoga" as const, iconColor: "#4CAF50", rating: 4.9 },
 ];
 
 export default function ExploreScreen() {
-  const [search, setSearch] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("all");
+  const [activeCategory, setActiveCategory] = useState("all");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [featuredIndex, setFeaturedIndex] = useState(0);
   const [savedDests, setSavedDests] = useState<string[]>([]);
 
-  const toggleSave = (id: string) => {
-    setSavedDests((prev) => prev.includes(id) ? prev.filter((d) => d !== id) : [...prev, id]);
-  };
+  const filtered = DESTINATIONS.filter((d) => {
+    const matchCat = activeCategory === "all" || d.category === activeCategory;
+    const matchSearch = !searchQuery || d.city.toLowerCase().includes(searchQuery.toLowerCase()) || d.country.toLowerCase().includes(searchQuery.toLowerCase());
+    return matchCat && matchSearch;
+  });
 
-  const filtered = DESTINATIONS.filter((d) =>
-    search === "" || d.city.toLowerCase().includes(search.toLowerCase()) || d.country.toLowerCase().includes(search.toLowerCase())
-  );
+  const featured = FEATURED[featuredIndex];
+  const toggleSave = (id: string) => setSavedDests((prev) => prev.includes(id) ? prev.filter((d) => d !== id) : [...prev, id]);
 
   return (
-    <ScreenContainer containerClassName="bg-background">
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 100 }}>
-        {/* Header */}
-        <LinearGradient colors={["#2D1B69", "#1A0533"]} style={styles.header}>
-          <View style={styles.headerTop}>
-            <View>
-              <Text style={styles.headerGreeting}>Discover</Text>
-              <Text style={styles.headerSub}>Where will you go next?</Text>
-            </View>
-            <TouchableOpacity style={styles.filterBtn}>
-              <IconSymbol name="slider.horizontal.3" size={20} color="#FFFFFF" />
-            </TouchableOpacity>
-          </View>
+    <View style={styles.container}>
+      <LinearGradient colors={["#040010", "#0D0520", "#1A0A3D"]} locations={[0, 0.4, 1]} style={StyleSheet.absoluteFillObject} />
+      <View style={styles.orb1} />
+      <View style={styles.orb2} />
 
-          {/* Search Bar */}
-          <View style={styles.searchBar}>
-            <IconSymbol name="magnifyingglass" size={18} color="#A78BCA" />
+      <ScrollView contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
+        {/* Header */}
+        <View style={styles.header}>
+          <View>
+            <Text style={styles.headerTitle}>Explore</Text>
+            <Text style={styles.headerSub}>Discover your next adventure</Text>
+          </View>
+          <TouchableOpacity style={styles.filterBtn} activeOpacity={0.7}>
+            <LinearGradient colors={["rgba(123,47,190,0.4)", "rgba(233,30,140,0.3)"]} style={styles.filterGradient}>
+              <IconSymbol name="slider.horizontal.3" size={20} color="#C4B5D9" />
+            </LinearGradient>
+          </TouchableOpacity>
+        </View>
+
+        {/* Search Bar */}
+        <View style={styles.searchWrap}>
+          <LinearGradient colors={["rgba(255,255,255,0.08)", "rgba(255,255,255,0.04)"]} style={styles.searchGradient}>
+            <IconSymbol name="magnifyingglass" size={18} color="#5A4D72" />
             <TextInput
               style={styles.searchInput}
-              placeholder="Search destinations, experiences..."
-              placeholderTextColor="#A78BCA"
-              value={search}
-              onChangeText={setSearch}
+              placeholder="Search destinations..."
+              placeholderTextColor="#5A4D72"
+              value={searchQuery}
+              onChangeText={setSearchQuery}
             />
-            {search.length > 0 && (
-              <TouchableOpacity onPress={() => setSearch("")}>
-                <IconSymbol name="xmark.circle.fill" size={18} color="#A78BCA" />
+            {searchQuery.length > 0 && (
+              <TouchableOpacity onPress={() => setSearchQuery("")} activeOpacity={0.7}>
+                <IconSymbol name="xmark.circle.fill" size={18} color="#5A4D72" />
               </TouchableOpacity>
             )}
-          </View>
-        </LinearGradient>
+          </LinearGradient>
+        </View>
 
-        {/* Category Pills */}
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={styles.categories}
-        >
+        {/* Featured Destination */}
+        <View style={styles.featuredCard}>
+          <LinearGradient colors={featured.gradient} style={styles.featuredGradient}>
+            <View style={styles.featuredCircle1} />
+            <View style={styles.featuredCircle2} />
+            <View style={[styles.featuredTag, { backgroundColor: featured.tagColor + "33", borderColor: featured.tagColor + "66" }]}>
+              <IconSymbol name="flame.fill" size={11} color={featured.tagColor} />
+              <Text style={[styles.featuredTagText, { color: featured.tagColor }]}>{featured.tag}</Text>
+            </View>
+            <View style={styles.featuredContent}>
+              <View style={styles.featuredLeft}>
+                <Text style={styles.featuredCity}>{featured.city}</Text>
+                <View style={styles.featuredMeta}>
+                  <IconSymbol name="location.fill" size={12} color="rgba(255,255,255,0.6)" />
+                  <Text style={styles.featuredCountry}>{featured.country}</Text>
+                  <View style={styles.featuredTempBadge}>
+                    <IconSymbol name="thermometer" size={11} color="rgba(255,255,255,0.7)" />
+                    <Text style={styles.featuredTemp}>{featured.temp}</Text>
+                  </View>
+                </View>
+                <Text style={styles.featuredDesc}>{featured.desc}</Text>
+              </View>
+              <TouchableOpacity style={styles.featuredBtn} onPress={() => router.push("/(trip)/plan" as never)} activeOpacity={0.85}>
+                <LinearGradient colors={["#7B2FBE", "#E91E8C"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.featuredBtnGradient}>
+                  <Text style={styles.featuredBtnText}>Plan Trip</Text>
+                  <IconSymbol name="arrow.right" size={14} color="#FFFFFF" />
+                </LinearGradient>
+              </TouchableOpacity>
+            </View>
+            <View style={styles.featuredDots}>
+              {FEATURED.map((_, i) => (
+                <TouchableOpacity key={i} onPress={() => setFeaturedIndex(i)} activeOpacity={0.7}>
+                  <View style={[styles.dot, i === featuredIndex && styles.dotActive]} />
+                </TouchableOpacity>
+              ))}
+            </View>
+          </LinearGradient>
+        </View>
+
+        {/* Categories */}
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.categoriesScroll} contentContainerStyle={styles.categoriesContent}>
           {CATEGORIES.map((cat) => (
-            <TouchableOpacity
-              key={cat.id}
-              style={[styles.categoryPill, selectedCategory === cat.id && styles.categoryPillActive]}
-              onPress={() => setSelectedCategory(cat.id)}
-              activeOpacity={0.8}
-            >
-              <Text style={styles.categoryIcon}>{cat.icon}</Text>
-              <Text style={[styles.categoryLabel, selectedCategory === cat.id && styles.categoryLabelActive]}>
-                {cat.label}
-              </Text>
+            <TouchableOpacity key={cat.id} style={[styles.categoryChip, activeCategory === cat.id && styles.categoryChipActive]} onPress={() => setActiveCategory(cat.id)} activeOpacity={0.8}>
+              {activeCategory === cat.id && (
+                <LinearGradient colors={["rgba(123,47,190,0.5)", "rgba(233,30,140,0.3)"]} style={StyleSheet.absoluteFillObject} />
+              )}
+              <IconSymbol name={cat.icon} size={15} color={activeCategory === cat.id ? "#C084FC" : "#5A4D72"} />
+              <Text style={[styles.categoryLabel, activeCategory === cat.id && styles.categoryLabelActive]}>{cat.label}</Text>
             </TouchableOpacity>
           ))}
         </ScrollView>
 
-        {/* Featured Destinations */}
-        <View style={styles.section}>
-          <View style={styles.sectionHeader}>
-            <Text style={styles.sectionTitle}>✨ Featured Destinations</Text>
-            <TouchableOpacity>
-              <Text style={styles.seeAll}>See all</Text>
-            </TouchableOpacity>
-          </View>
-
-          <FlatList
-            data={filtered}
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            keyExtractor={(item) => item.id}
-            contentContainerStyle={{ gap: 14, paddingHorizontal: 20 }}
-            renderItem={({ item }) => (
-              <TouchableOpacity
-                style={styles.destCard}
-                onPress={() => router.push({ pathname: "/(trip)/plan" as never })}
-                activeOpacity={0.9}
-              >
-                <LinearGradient colors={item.bg as [string, string]} style={styles.destCardGradient}>
-                  {/* Tag */}
-                  <View style={[styles.destTag, { backgroundColor: item.tagColor + "30", borderColor: item.tagColor }]}>
-                    <Text style={[styles.destTagText, { color: item.tagColor }]}>{item.tag}</Text>
-                  </View>
-
-                  {/* Save Button */}
-                  <TouchableOpacity
-                    style={styles.saveBtn}
-                    onPress={() => toggleSave(item.id)}
-                  >
-                    <IconSymbol
-                      name={savedDests.includes(item.id) ? "heart.fill" : "heart"}
-                      size={20}
-                      color={savedDests.includes(item.id) ? "#E91E8C" : "#FFFFFF"}
-                    />
-                  </TouchableOpacity>
-
-                  {/* Emoji */}
-                  <Text style={styles.destEmoji}>{item.emoji}</Text>
-
-                  {/* Info */}
-                  <View style={styles.destInfo}>
-                    <Text style={styles.destCity}>{item.city}</Text>
-                    <Text style={styles.destCountry}>{item.country}</Text>
-                    <Text style={styles.destDesc}>{item.desc}</Text>
-
-                    <View style={styles.destMeta}>
-                      <View style={styles.destRating}>
-                        <IconSymbol name="star.fill" size={12} color="#FFD700" />
-                        <Text style={styles.destRatingText}>{item.rating}</Text>
-                      </View>
-                      <Text style={styles.destTemp}>{item.temp}</Text>
-                      <Text style={styles.destPrice}>from ${item.price}</Text>
-                    </View>
-                  </View>
-                </LinearGradient>
-              </TouchableOpacity>
-            )}
-          />
+        {/* Destinations Grid */}
+        <View style={styles.sectionHeader}>
+          <Text style={styles.sectionTitle}>
+            {activeCategory === "all" ? "All Destinations" : CATEGORIES.find((c) => c.id === activeCategory)?.label}
+          </Text>
+          <Text style={styles.countBadge}>{filtered.length}</Text>
         </View>
-
-        {/* Trending Experiences */}
-        <View style={styles.section}>
-          <View style={styles.sectionHeader}>
-            <Text style={styles.sectionTitle}>🔥 Trending Experiences</Text>
-            <TouchableOpacity>
-              <Text style={styles.seeAll}>See all</Text>
-            </TouchableOpacity>
-          </View>
-
-          {TRENDING_EXPERIENCES.map((exp) => (
-            <TouchableOpacity key={exp.id} style={styles.expCard} activeOpacity={0.85}>
-              <LinearGradient colors={["#2D1B69", "#3D2580"]} style={styles.expCardGradient}>
-                <Text style={styles.expEmoji}>{exp.emoji}</Text>
-                <View style={styles.expInfo}>
-                  <Text style={styles.expTitle}>{exp.title}</Text>
-                  <View style={styles.expMeta}>
-                    <IconSymbol name="location.fill" size={12} color="#A78BCA" />
-                    <Text style={styles.expLocation}>{exp.location}</Text>
-                    <View style={styles.expRating}>
-                      <IconSymbol name="star.fill" size={11} color="#FFD700" />
-                      <Text style={styles.expRatingText}>{exp.rating}</Text>
-                    </View>
+        <View style={styles.destGrid}>
+          {filtered.map((dest) => (
+            <TouchableOpacity key={dest.id} style={styles.destCard} onPress={() => router.push("/(trip)/plan" as never)} activeOpacity={0.85}>
+              <LinearGradient colors={["rgba(255,255,255,0.07)", "rgba(255,255,255,0.03)"]} style={styles.destGradient}>
+                <View style={styles.destTop}>
+                  <View style={[styles.destIconWrap, { backgroundColor: dest.iconColor + "22" }]}>
+                    <IconSymbol name={dest.icon} size={24} color={dest.iconColor} />
                   </View>
+                  <TouchableOpacity onPress={() => toggleSave(dest.id)} activeOpacity={0.7}>
+                    <IconSymbol name={savedDests.includes(dest.id) ? "heart.fill" : "heart"} size={18} color={savedDests.includes(dest.id) ? "#E91E8C" : "#5A4D72"} />
+                  </TouchableOpacity>
                 </View>
-                <View style={styles.expPriceCol}>
-                  <Text style={styles.expPrice}>${exp.price}</Text>
-                  <Text style={styles.expPriceSub}>per person</Text>
+                <View style={styles.destTagWrap}>
+                  <IconSymbol name="flame.fill" size={10} color="#E91E8C" />
+                  <Text style={styles.destTagText}>{dest.tag}</Text>
+                </View>
+                <Text style={styles.destCity}>{dest.city}</Text>
+                <Text style={styles.destCountry}>{dest.country}</Text>
+                <View style={styles.destBottom}>
+                  <Text style={styles.destPrice}>{dest.price}</Text>
+                  <View style={styles.destRating}>
+                    <IconSymbol name="star.fill" size={10} color="#FFD700" />
+                    <Text style={styles.destRatingText}>{dest.rating}</Text>
+                  </View>
                 </View>
               </LinearGradient>
             </TouchableOpacity>
           ))}
         </View>
 
-        {/* Travel Stories */}
-        <View style={styles.section}>
-          <View style={styles.sectionHeader}>
-            <Text style={styles.sectionTitle}>💬 Travel Stories</Text>
-            <TouchableOpacity>
-              <Text style={styles.seeAll}>See all</Text>
-            </TouchableOpacity>
-          </View>
-
-          {TRAVEL_STORIES.map((story) => (
-            <View key={story.id} style={styles.storyCard}>
-              <View style={styles.storyHeader}>
-                <View style={styles.storyAvatar}>
-                  <Text style={styles.storyAvatarText}>{story.avatar}</Text>
-                </View>
-                <View style={styles.storyUserInfo}>
-                  <Text style={styles.storyUser}>{story.user}</Text>
-                  <View style={styles.storyMeta}>
-                    <IconSymbol name="location.fill" size={11} color="#A78BCA" />
-                    <Text style={styles.storyDest}>{story.dest}</Text>
-                    <Text style={styles.storyTime}>{story.time}</Text>
-                  </View>
-                </View>
-                <TouchableOpacity style={styles.storyFollow}>
-                  <Text style={styles.storyFollowText}>Follow</Text>
-                </TouchableOpacity>
-              </View>
-              <Text style={styles.storyText}>{story.text}</Text>
-              <View style={styles.storyActions}>
-                <TouchableOpacity style={styles.storyAction}>
-                  <IconSymbol name="heart" size={16} color="#A78BCA" />
-                  <Text style={styles.storyActionText}>{story.likes}</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.storyAction}>
-                  <IconSymbol name="bubble.left.fill" size={16} color="#A78BCA" />
-                  <Text style={styles.storyActionText}>Reply</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.storyAction}>
-                  <IconSymbol name="square.and.arrow.up" size={16} color="#A78BCA" />
-                  <Text style={styles.storyActionText}>Share</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-          ))}
-        </View>
-
-        {/* Plan CTA */}
-        <View style={styles.ctaSection}>
-          <TouchableOpacity
-            onPress={() => router.push("/(trip)/plan" as never)}
-            activeOpacity={0.9}
-          >
-            <LinearGradient
-              colors={["#7B2FBE", "#E91E8C"]}
-              start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 0 }}
-              style={styles.ctaCard}
-            >
-              <Text style={styles.ctaEmoji}>🚀</Text>
-              <View style={styles.ctaText}>
-                <Text style={styles.ctaTitle}>Ready to explore?</Text>
-                <Text style={styles.ctaSub}>Let TRAVI plan your perfect trip</Text>
-              </View>
-              <IconSymbol name="arrow.right" size={22} color="#FFFFFF" />
-            </LinearGradient>
+        {/* Trending Experiences */}
+        <View style={styles.sectionHeader}>
+          <Text style={styles.sectionTitle}>Trending Experiences</Text>
+          <TouchableOpacity activeOpacity={0.7}>
+            <Text style={styles.seeAll}>See all</Text>
           </TouchableOpacity>
         </View>
+        {EXPERIENCES.map((exp) => (
+          <TouchableOpacity key={exp.id} style={styles.expCard} onPress={() => router.push("/(trip)/plan" as never)} activeOpacity={0.85}>
+            <LinearGradient colors={["rgba(255,255,255,0.07)", "rgba(255,255,255,0.03)"]} style={StyleSheet.absoluteFillObject} />
+            <View style={[styles.expIconWrap, { backgroundColor: exp.iconColor + "22" }]}>
+              <IconSymbol name={exp.icon} size={24} color={exp.iconColor} />
+            </View>
+            <View style={styles.expInfo}>
+              <Text style={styles.expTitle}>{exp.title}</Text>
+              <View style={styles.expMeta}>
+                <IconSymbol name="location.fill" size={11} color="#5A4D72" />
+                <Text style={styles.expLocation}>{exp.location}</Text>
+                <IconSymbol name="star.fill" size={11} color="#FFD700" />
+                <Text style={styles.expRating}>{exp.rating}</Text>
+              </View>
+            </View>
+            <View style={styles.expPriceCol}>
+              <Text style={styles.expPrice}>${exp.price}</Text>
+              <Text style={styles.expPriceSub}>per person</Text>
+            </View>
+          </TouchableOpacity>
+        ))}
+
+        {/* Community Stories */}
+        <View style={styles.sectionHeader}>
+          <Text style={styles.sectionTitle}>Community Stories</Text>
+          <TouchableOpacity activeOpacity={0.7}>
+            <Text style={styles.seeAll}>See all</Text>
+          </TouchableOpacity>
+        </View>
+        {STORIES.map((story) => (
+          <View key={story.id} style={styles.storyCard}>
+            <LinearGradient colors={["rgba(255,255,255,0.06)", "rgba(255,255,255,0.03)"]} style={StyleSheet.absoluteFillObject} />
+            <View style={styles.storyHeader}>
+              <View style={[styles.storyAvatar, { backgroundColor: story.color + "22", borderColor: story.color + "66" }]}>
+                <IconSymbol name="person.fill" size={22} color={story.color} />
+              </View>
+              <View style={styles.storyUserInfo}>
+                <Text style={styles.storyName}>{story.user}</Text>
+                <View style={styles.storyDestRow}>
+                  <IconSymbol name="location.fill" size={11} color="#5A4D72" />
+                  <Text style={styles.storyDest}>{story.dest}</Text>
+                  <Text style={styles.storyTime}>{story.time}</Text>
+                </View>
+              </View>
+              <TouchableOpacity style={styles.storyLikeBtn} activeOpacity={0.7}>
+                <IconSymbol name="heart" size={18} color="#E91E8C" />
+                <Text style={styles.storyLikes}>{story.likes.toLocaleString()}</Text>
+              </TouchableOpacity>
+            </View>
+            <Text style={styles.storyText}>{story.text}</Text>
+          </View>
+        ))}
       </ScrollView>
-    </ScreenContainer>
+    </View>
   );
 }
 
+const DEST_W = (width - 44 - 12) / 2;
+
 const styles = StyleSheet.create({
-  header: { padding: 20, paddingBottom: 16, gap: 14 },
-  headerTop: { flexDirection: "row", justifyContent: "space-between", alignItems: "flex-start" },
-  headerGreeting: { color: "#FFFFFF", fontSize: 28, fontWeight: "800" },
-  headerSub: { color: "#A78BCA", fontSize: 14, marginTop: 2 },
-  filterBtn: {
-    width: 40, height: 40, borderRadius: 12,
-    backgroundColor: "rgba(255,255,255,0.1)",
-    alignItems: "center", justifyContent: "center",
-  },
-  searchBar: {
-    flexDirection: "row", alignItems: "center",
-    backgroundColor: "rgba(255,255,255,0.08)",
-    borderRadius: 14, paddingHorizontal: 14, paddingVertical: 10,
-    borderWidth: 1, borderColor: "#4A3080", gap: 10,
-  },
+  container: { flex: 1, backgroundColor: "#040010" },
+  orb1: { position: "absolute", width: width, height: width, borderRadius: width / 2, top: -width * 0.4, left: -width * 0.3, backgroundColor: "rgba(123,47,190,0.09)" },
+  orb2: { position: "absolute", width: width * 0.7, height: width * 0.7, borderRadius: width * 0.35, bottom: 0, right: -width * 0.3, backgroundColor: "rgba(233,30,140,0.06)" },
+  scroll: { paddingHorizontal: 22, paddingTop: 60, paddingBottom: 110, gap: 20 },
+  header: { flexDirection: "row", alignItems: "center", justifyContent: "space-between" },
+  headerTitle: { color: "#FFFFFF", fontSize: 28, fontWeight: "800" },
+  headerSub: { color: "#5A4D72", fontSize: 13, marginTop: 2 },
+  filterBtn: {},
+  filterGradient: { width: 44, height: 44, borderRadius: 14, alignItems: "center", justifyContent: "center", borderWidth: 1, borderColor: "rgba(255,255,255,0.1)" },
+  searchWrap: { borderRadius: 16, overflow: "hidden", borderWidth: 1, borderColor: "rgba(255,255,255,0.08)" },
+  searchGradient: { flexDirection: "row", alignItems: "center", paddingHorizontal: 16, paddingVertical: 14, gap: 10 },
   searchInput: { flex: 1, color: "#FFFFFF", fontSize: 15 },
-  categories: { gap: 8, paddingHorizontal: 20, paddingVertical: 14 },
-  categoryPill: {
-    flexDirection: "row", alignItems: "center", gap: 5,
-    backgroundColor: "#2D1B69", borderRadius: 20,
-    paddingHorizontal: 14, paddingVertical: 8,
-    borderWidth: 1, borderColor: "#4A3080",
-  },
-  categoryPillActive: { backgroundColor: "#7B2FBE", borderColor: "#7B2FBE" },
-  categoryIcon: { fontSize: 15 },
-  categoryLabel: { color: "#A78BCA", fontSize: 13, fontWeight: "600" },
-  categoryLabelActive: { color: "#FFFFFF" },
-  section: { marginBottom: 24 },
-  sectionHeader: {
-    flexDirection: "row", justifyContent: "space-between", alignItems: "center",
-    paddingHorizontal: 20, marginBottom: 14,
-  },
+  featuredCard: { borderRadius: 24, overflow: "hidden", borderWidth: 1.5, borderColor: "rgba(123,47,190,0.4)" },
+  featuredGradient: { padding: 24, minHeight: 220, justifyContent: "space-between" },
+  featuredCircle1: { position: "absolute", width: 180, height: 180, borderRadius: 90, top: -50, right: -30, backgroundColor: "rgba(255,255,255,0.05)" },
+  featuredCircle2: { position: "absolute", width: 100, height: 100, borderRadius: 50, bottom: 20, left: -20, backgroundColor: "rgba(255,255,255,0.04)" },
+  featuredTag: { flexDirection: "row", alignItems: "center", gap: 5, alignSelf: "flex-start", borderRadius: 8, borderWidth: 1, paddingHorizontal: 10, paddingVertical: 4 },
+  featuredTagText: { fontSize: 11, fontWeight: "700" },
+  featuredContent: { flexDirection: "row", justifyContent: "space-between", alignItems: "flex-end", marginTop: 8 },
+  featuredLeft: { flex: 1 },
+  featuredCity: { color: "#FFFFFF", fontSize: 28, fontWeight: "800", letterSpacing: -0.5 },
+  featuredMeta: { flexDirection: "row", alignItems: "center", gap: 6, marginTop: 4 },
+  featuredCountry: { color: "rgba(255,255,255,0.7)", fontSize: 13 },
+  featuredTempBadge: { flexDirection: "row", alignItems: "center", gap: 3, backgroundColor: "rgba(255,255,255,0.1)", borderRadius: 8, paddingHorizontal: 7, paddingVertical: 3 },
+  featuredTemp: { color: "rgba(255,255,255,0.8)", fontSize: 12, fontWeight: "600" },
+  featuredDesc: { color: "rgba(255,255,255,0.5)", fontSize: 12, marginTop: 8, maxWidth: width * 0.5, lineHeight: 18 },
+  featuredBtn: { borderRadius: 14, overflow: "hidden" },
+  featuredBtnGradient: { flexDirection: "row", alignItems: "center", gap: 6, paddingHorizontal: 16, paddingVertical: 12 },
+  featuredBtnText: { color: "#FFFFFF", fontSize: 14, fontWeight: "700" },
+  featuredDots: { flexDirection: "row", gap: 6, alignSelf: "center", marginTop: 12 },
+  dot: { width: 6, height: 6, borderRadius: 3, backgroundColor: "rgba(255,255,255,0.3)" },
+  dotActive: { width: 18, backgroundColor: "#E91E8C" },
+  categoriesScroll: { marginHorizontal: -22 },
+  categoriesContent: { paddingHorizontal: 22, gap: 10 },
+  categoryChip: { flexDirection: "row", alignItems: "center", gap: 6, borderRadius: 14, paddingHorizontal: 14, paddingVertical: 10, borderWidth: 1, borderColor: "rgba(255,255,255,0.08)", backgroundColor: "rgba(255,255,255,0.04)", overflow: "hidden" },
+  categoryChipActive: { borderColor: "rgba(192,132,252,0.5)" },
+  categoryLabel: { color: "#5A4D72", fontSize: 13, fontWeight: "600" },
+  categoryLabelActive: { color: "#C084FC" },
+  sectionHeader: { flexDirection: "row", alignItems: "center", justifyContent: "space-between" },
   sectionTitle: { color: "#FFFFFF", fontSize: 18, fontWeight: "700" },
-  seeAll: { color: "#7B2FBE", fontSize: 14, fontWeight: "600" },
-  destCard: { width: 220, borderRadius: 20, overflow: "hidden" },
-  destCardGradient: { padding: 16, height: 260, justifyContent: "space-between" },
-  destTag: {
-    alignSelf: "flex-start", borderWidth: 1, borderRadius: 8,
-    paddingHorizontal: 8, paddingVertical: 3,
-  },
-  destTagText: { fontSize: 11, fontWeight: "700" },
-  saveBtn: {
-    position: "absolute", top: 14, right: 14,
-    width: 34, height: 34, borderRadius: 17,
-    backgroundColor: "rgba(0,0,0,0.3)",
-    alignItems: "center", justifyContent: "center",
-  },
-  destEmoji: { fontSize: 52, textAlign: "center", marginTop: 8 },
-  destInfo: { gap: 4 },
-  destCity: { color: "#FFFFFF", fontSize: 22, fontWeight: "800" },
-  destCountry: { color: "#A78BCA", fontSize: 13 },
-  destDesc: { color: "#C4B5D4", fontSize: 12, marginTop: 2 },
-  destMeta: { flexDirection: "row", alignItems: "center", gap: 8, marginTop: 6 },
+  countBadge: { backgroundColor: "rgba(192,132,252,0.2)", borderRadius: 10, paddingHorizontal: 8, paddingVertical: 3, color: "#C084FC", fontSize: 12, fontWeight: "700" },
+  seeAll: { color: "#C084FC", fontSize: 13, fontWeight: "600" },
+  destGrid: { flexDirection: "row", flexWrap: "wrap", gap: 12 },
+  destCard: { width: DEST_W, borderRadius: 20, overflow: "hidden", borderWidth: 1.5, borderColor: "rgba(255,255,255,0.08)" },
+  destGradient: { padding: 16, gap: 6 },
+  destTop: { flexDirection: "row", justifyContent: "space-between", alignItems: "flex-start" },
+  destIconWrap: { width: 44, height: 44, borderRadius: 14, alignItems: "center", justifyContent: "center" },
+  destTagWrap: { flexDirection: "row", alignItems: "center", gap: 4, backgroundColor: "rgba(233,30,140,0.15)", borderRadius: 8, paddingHorizontal: 7, paddingVertical: 3, alignSelf: "flex-start" },
+  destTagText: { color: "#E91E8C", fontSize: 10, fontWeight: "700" },
+  destCity: { color: "#FFFFFF", fontSize: 16, fontWeight: "800", marginTop: 2 },
+  destCountry: { color: "#5A4D72", fontSize: 12 },
+  destBottom: { flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginTop: 6 },
+  destPrice: { color: "#E91E8C", fontSize: 12, fontWeight: "700" },
   destRating: { flexDirection: "row", alignItems: "center", gap: 3 },
-  destRatingText: { color: "#FFD700", fontSize: 12, fontWeight: "700" },
-  destTemp: { color: "#A78BCA", fontSize: 12 },
-  destPrice: { color: "#4CAF50", fontSize: 12, fontWeight: "700", marginLeft: "auto" },
-  expCard: { marginHorizontal: 20, marginBottom: 10, borderRadius: 14, overflow: "hidden", borderWidth: 1, borderColor: "#4A3080" },
-  expCardGradient: { flexDirection: "row", alignItems: "center", padding: 14, gap: 14 },
-  expEmoji: { fontSize: 32, width: 40, textAlign: "center" },
+  destRatingText: { color: "#FFD700", fontSize: 11, fontWeight: "700" },
+  expCard: { flexDirection: "row", alignItems: "center", gap: 14, borderRadius: 16, padding: 14, borderWidth: 1.5, borderColor: "rgba(255,255,255,0.08)", overflow: "hidden" },
+  expIconWrap: { width: 52, height: 52, borderRadius: 16, alignItems: "center", justifyContent: "center" },
   expInfo: { flex: 1, gap: 4 },
-  expTitle: { color: "#FFFFFF", fontSize: 15, fontWeight: "700" },
-  expMeta: { flexDirection: "row", alignItems: "center", gap: 6 },
-  expLocation: { color: "#A78BCA", fontSize: 12, flex: 1 },
-  expRating: { flexDirection: "row", alignItems: "center", gap: 3 },
-  expRatingText: { color: "#FFD700", fontSize: 11, fontWeight: "700" },
+  expTitle: { color: "#FFFFFF", fontSize: 14, fontWeight: "700" },
+  expMeta: { flexDirection: "row", alignItems: "center", gap: 4 },
+  expLocation: { color: "#5A4D72", fontSize: 12, flex: 1 },
+  expRating: { color: "#FFD700", fontSize: 11, fontWeight: "700" },
   expPriceCol: { alignItems: "flex-end" },
-  expPrice: { color: "#4CAF50", fontSize: 16, fontWeight: "800" },
-  expPriceSub: { color: "#A78BCA", fontSize: 10 },
-  storyCard: {
-    marginHorizontal: 20, marginBottom: 12,
-    backgroundColor: "#2D1B69", borderRadius: 16,
-    padding: 16, borderWidth: 1, borderColor: "#4A3080", gap: 10,
-  },
-  storyHeader: { flexDirection: "row", alignItems: "center", gap: 10 },
-  storyAvatar: {
-    width: 40, height: 40, borderRadius: 20,
-    backgroundColor: "#3D2580", alignItems: "center", justifyContent: "center",
-    borderWidth: 1.5, borderColor: "#7B2FBE",
-  },
-  storyAvatarText: { fontSize: 20 },
+  expPrice: { color: "#E91E8C", fontSize: 16, fontWeight: "800" },
+  expPriceSub: { color: "#5A4D72", fontSize: 10 },
+  storyCard: { borderRadius: 20, padding: 18, gap: 12, borderWidth: 1.5, borderColor: "rgba(255,255,255,0.08)", overflow: "hidden" },
+  storyHeader: { flexDirection: "row", alignItems: "center", gap: 12 },
+  storyAvatar: { width: 44, height: 44, borderRadius: 22, alignItems: "center", justifyContent: "center", borderWidth: 2 },
   storyUserInfo: { flex: 1 },
-  storyUser: { color: "#FFFFFF", fontSize: 14, fontWeight: "700" },
-  storyMeta: { flexDirection: "row", alignItems: "center", gap: 4, marginTop: 2 },
-  storyDest: { color: "#A78BCA", fontSize: 12 },
-  storyTime: { color: "#6B5A8A", fontSize: 11, marginLeft: 4 },
-  storyFollow: {
-    borderWidth: 1, borderColor: "#7B2FBE",
-    borderRadius: 8, paddingHorizontal: 10, paddingVertical: 4,
-  },
-  storyFollowText: { color: "#7B2FBE", fontSize: 12, fontWeight: "600" },
-  storyText: { color: "#C4B5D4", fontSize: 14, lineHeight: 20 },
-  storyActions: { flexDirection: "row", gap: 20 },
-  storyAction: { flexDirection: "row", alignItems: "center", gap: 5 },
-  storyActionText: { color: "#A78BCA", fontSize: 13 },
-  ctaSection: { paddingHorizontal: 20, marginBottom: 20 },
-  ctaCard: {
-    flexDirection: "row", alignItems: "center",
-    borderRadius: 18, padding: 18, gap: 12,
-  },
-  ctaEmoji: { fontSize: 28 },
-  ctaText: { flex: 1 },
-  ctaTitle: { color: "#FFFFFF", fontSize: 17, fontWeight: "700" },
-  ctaSub: { color: "rgba(255,255,255,0.75)", fontSize: 13, marginTop: 2 },
+  storyName: { color: "#FFFFFF", fontSize: 14, fontWeight: "700" },
+  storyDestRow: { flexDirection: "row", alignItems: "center", gap: 4, marginTop: 2 },
+  storyDest: { color: "#5A4D72", fontSize: 12 },
+  storyTime: { color: "#3A2D4E", fontSize: 11, marginLeft: 4 },
+  storyLikeBtn: { alignItems: "center", gap: 3 },
+  storyLikes: { color: "#8B7AAA", fontSize: 11 },
+  storyText: { color: "#C4B5D9", fontSize: 14, lineHeight: 22 },
 });

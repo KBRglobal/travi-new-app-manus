@@ -1,293 +1,289 @@
-import { useState } from "react";
-import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from "react-native";
+import { useState, useRef, useEffect } from "react";
+import { View, Text, TouchableOpacity, StyleSheet, FlatList, Dimensions, Animated, Platform } from "react-native";
 import { router, useLocalSearchParams } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
 import { IconSymbol } from "@/components/ui/icon-symbol";
-import { ScreenContainer } from "@/components/screen-container";
-import { useStore, FlightOption } from "@/lib/store";
+import { useStore } from "@/lib/store";
+import * as Haptics from "expo-haptics";
 
-const MOCK_FLIGHTS: FlightOption[] = [
-  {
-    id: "f1",
-    airline: "Emirates",
-    from: "DXB",
-    to: "CDG",
-    departure: "08:30",
-    arrival: "13:45",
-    duration: "7h 15m",
-    price: 620,
-    class: "Economy",
-    stops: 0,
-  },
-  {
-    id: "f2",
-    airline: "Air France",
-    from: "DXB",
-    to: "CDG",
-    departure: "14:20",
-    arrival: "19:05",
-    duration: "6h 45m",
-    price: 780,
-    class: "Economy",
-    stops: 0,
-  },
-  {
-    id: "f3",
-    airline: "Lufthansa",
-    from: "DXB",
-    to: "CDG",
-    departure: "22:10",
-    arrival: "06:30+1",
-    duration: "8h 20m",
-    price: 540,
-    class: "Economy",
-    stops: 1,
-  },
+const { width } = Dimensions.get("window");
+
+const MOCK_FLIGHTS = [
+  { id: "f1", airline: "Emirates", from: "TLV", to: "DXB", departure: "06:45", arrival: "10:20", duration: "3h 35m", stops: "Direct", price: 420, class: "Economy", color: "#E31837" },
+  { id: "f2", airline: "Air France", from: "TLV", to: "CDG", departure: "09:15", arrival: "12:40", duration: "4h 25m", stops: "Direct", price: 380, class: "Economy", color: "#002157" },
+  { id: "f3", airline: "Lufthansa", from: "TLV", to: "FRA", departure: "11:30", arrival: "14:55", duration: "4h 25m", stops: "Direct", price: 355, class: "Economy", color: "#05164D" },
+  { id: "f4", airline: "Turkish Airlines", from: "TLV", to: "IST", departure: "14:00", arrival: "16:10", duration: "2h 10m", stops: "1 Stop", price: 290, class: "Economy", color: "#E81932" },
+  { id: "f5", airline: "El Al", from: "TLV", to: "LHR", departure: "16:20", arrival: "19:45", duration: "5h 25m", stops: "Direct", price: 445, class: "Economy", color: "#003087" },
+  { id: "f6", airline: "Emirates", from: "TLV", to: "DXB", departure: "22:10", arrival: "01:55+1", duration: "3h 45m", stops: "Direct", price: 820, class: "Business", color: "#E31837" },
 ];
 
-function FlightCard({ flight, selected, onSelect }: { flight: FlightOption; selected: boolean; onSelect: () => void }) {
-  return (
-    <TouchableOpacity
-      style={[styles.flightCard, selected && styles.flightCardSelected]}
-      onPress={onSelect}
-      activeOpacity={0.85}
-    >
-      {selected && (
-        <LinearGradient
-          colors={["rgba(123,47,190,0.15)", "rgba(233,30,140,0.1)"]}
-          style={StyleSheet.absoluteFillObject}
-        />
-      )}
-      <View style={styles.flightHeader}>
-        <View style={styles.airlineBadge}>
-          <Text style={styles.airlineText}>{flight.airline[0]}</Text>
-        </View>
-        <Text style={styles.airlineName}>{flight.airline}</Text>
-        {flight.stops === 0 && (
-          <View style={styles.directBadge}>
-            <Text style={styles.directText}>Direct</Text>
-          </View>
-        )}
-        <View style={styles.priceTag}>
-          <Text style={styles.priceText}>${flight.price}</Text>
-        </View>
-      </View>
-
-      <View style={styles.flightRoute}>
-        <View style={styles.routePoint}>
-          <Text style={styles.routeCode}>{flight.from}</Text>
-          <Text style={styles.routeTime}>{flight.departure}</Text>
-        </View>
-        <View style={styles.routeLine}>
-          <View style={styles.routeLineBar} />
-          <IconSymbol name="airplane" size={16} color="#7B2FBE" />
-          <View style={styles.routeLineBar} />
-        </View>
-        <View style={styles.routePoint}>
-          <Text style={styles.routeCode}>{flight.to}</Text>
-          <Text style={styles.routeTime}>{flight.arrival}</Text>
-        </View>
-      </View>
-
-      <View style={styles.flightMeta}>
-        <View style={styles.metaItem}>
-          <IconSymbol name="clock.fill" size={13} color="#A78BCA" />
-          <Text style={styles.metaText}>{flight.duration}</Text>
-        </View>
-        <View style={styles.metaItem}>
-          <IconSymbol name="person.fill" size={13} color="#A78BCA" />
-          <Text style={styles.metaText}>{flight.class}</Text>
-        </View>
-        {flight.stops > 0 && (
-          <View style={styles.metaItem}>
-            <Text style={styles.stopsText}>{flight.stops} stop</Text>
-          </View>
-        )}
-      </View>
-
-      {selected && (
-        <View style={styles.selectedIndicator}>
-          <IconSymbol name="checkmark.circle.fill" size={18} color="#E91E8C" />
-          <Text style={styles.selectedText}>Selected</Text>
-        </View>
-      )}
-    </TouchableOpacity>
-  );
-}
+const FILTERS = ["All", "Direct", "Cheapest", "Business"];
 
 export default function FlightsScreen() {
   const { tripId } = useLocalSearchParams<{ tripId: string }>();
   const { state, dispatch } = useStore();
   const [selectedFlight, setSelectedFlight] = useState<string | null>(null);
-  const [hasOwnFlight, setHasOwnFlight] = useState(false);
+  const [activeFilter, setActiveFilter] = useState("All");
+  const [loading, setLoading] = useState(true);
+  const fadeAnim = useRef(new Animated.Value(0)).current;
+  const pulseAnim = useRef(new Animated.Value(1)).current;
 
   const trip = state.trips.find((t) => t.id === tripId);
 
-  const handleNext = () => {
-    if (!selectedFlight && !hasOwnFlight) return;
-    const flight = MOCK_FLIGHTS.find((f) => f.id === selectedFlight);
-    if (flight) {
-      dispatch({ type: "UPDATE_TRIP", payload: { id: tripId, updates: { flight } } });
-    }
-    router.push({ pathname: "/(trip)/hotels" as never, params: { tripId } });
+  useEffect(() => {
+    const pulse = Animated.loop(
+      Animated.sequence([
+        Animated.timing(pulseAnim, { toValue: 0.4, duration: 700, useNativeDriver: true }),
+        Animated.timing(pulseAnim, { toValue: 1, duration: 700, useNativeDriver: true }),
+      ])
+    );
+    pulse.start();
+    const timer = setTimeout(() => {
+      pulse.stop();
+      setLoading(false);
+      Animated.timing(fadeAnim, { toValue: 1, duration: 500, useNativeDriver: true }).start();
+    }, 2000);
+    return () => clearTimeout(timer);
+  }, []);
+
+  const filteredFlights = MOCK_FLIGHTS.filter((f) => {
+    if (activeFilter === "Direct") return f.stops === "Direct";
+    if (activeFilter === "Business") return f.class === "Business";
+    return true;
+  }).sort((a, b) => activeFilter === "Cheapest" ? a.price - b.price : 0);
+
+  const handleSelect = (id: string) => {
+    if (Platform.OS !== "web") Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+    setSelectedFlight(id);
   };
 
-  return (
-    <ScreenContainer containerClassName="bg-background">
-      <LinearGradient colors={["#2D1B69", "#1A0533"]} style={styles.header}>
-        <TouchableOpacity onPress={() => router.back()} style={styles.backBtn}>
-          <IconSymbol name="chevron.left" size={24} color="#FFFFFF" />
-        </TouchableOpacity>
-        <View style={styles.stepIndicator}>
-          <Text style={styles.stepText}>Step 4 of 6</Text>
-          <View style={styles.stepBar}>
-            {[1,2,3,4,5,6].map((s) => (
-              <View key={s} style={[styles.stepDot, s <= 4 && styles.stepDotActive]} />
+  const handleNext = () => {
+    if (!selectedFlight) return;
+    if (Platform.OS !== "web") Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+    const flight = MOCK_FLIGHTS.find((f) => f.id === selectedFlight);
+    if (tripId && flight) dispatch({ type: "UPDATE_TRIP", payload: { id: tripId, updates: { totalCost: flight.price } } });
+    router.push({ pathname: "/(trip)/hotels", params: { tripId } } as never);
+  };
+
+  if (loading) {
+    return (
+      <View style={styles.container}>
+        <LinearGradient colors={["#040010", "#0D0520", "#1A0A3D"]} style={StyleSheet.absoluteFillObject} />
+        <View style={styles.header}>
+          <TouchableOpacity style={styles.backBtn} onPress={() => router.back()} activeOpacity={0.7}>
+            <IconSymbol name="chevron.left" size={22} color="#FFFFFF" />
+          </TouchableOpacity>
+          <View style={styles.progressWrap}>
+            <View style={styles.progressTrack}><View style={[styles.progressFill, { width: "80%" }]} /></View>
+            <Text style={styles.progressLabel}>4 of 5</Text>
+          </View>
+          <View style={{ width: 40 }} />
+        </View>
+        <View style={styles.loadingWrap}>
+          <Animated.View style={[styles.duckLarge, { opacity: pulseAnim }]}>
+            <LinearGradient colors={["#7B2FBE", "#E91E8C"]} style={styles.duckLargeGradient}>
+              <Text style={{ fontSize: 48 }}>🦆</Text>
+            </LinearGradient>
+          </Animated.View>
+          <Text style={styles.loadingTitle}>Searching flights...</Text>
+          <Text style={styles.loadingSubtitle}>Finding the best deals to {trip?.destination || "your destination"}</Text>
+          <View style={styles.dotsRow}>
+            {[0, 1, 2].map((i) => (
+              <Animated.View key={i} style={[styles.dot, { opacity: pulseAnim }]} />
             ))}
           </View>
         </View>
-        <View style={{ width: 40 }} />
-      </LinearGradient>
+      </View>
+    );
+  }
 
-      <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
-        <Text style={styles.title}>Choose Your Flight</Text>
-        <Text style={styles.subtitle}>
-          TRAVI filtered the best options for {trip?.destination || "your trip"}
-        </Text>
+  return (
+    <View style={styles.container}>
+      <LinearGradient colors={["#040010", "#0D0520", "#1A0A3D"]} style={StyleSheet.absoluteFillObject} />
+      <View style={styles.orb1} />
 
-        {/* Own flight toggle */}
-        <TouchableOpacity
-          style={[styles.ownFlightToggle, hasOwnFlight && styles.ownFlightToggleActive]}
-          onPress={() => { setHasOwnFlight(!hasOwnFlight); setSelectedFlight(null); }}
-          activeOpacity={0.8}
-        >
-          <IconSymbol
-            name={hasOwnFlight ? "checkmark.circle.fill" : "airplane"}
-            size={18}
-            color={hasOwnFlight ? "#4CAF50" : "#A78BCA"}
-          />
-          <Text style={[styles.ownFlightText, hasOwnFlight && styles.ownFlightTextActive]}>
-            I already have my flight booked
-          </Text>
+      <View style={styles.header}>
+        <TouchableOpacity style={styles.backBtn} onPress={() => router.back()} activeOpacity={0.7}>
+          <IconSymbol name="chevron.left" size={22} color="#FFFFFF" />
         </TouchableOpacity>
+        <View style={styles.progressWrap}>
+          <View style={styles.progressTrack}><View style={[styles.progressFill, { width: "80%" }]} /></View>
+          <Text style={styles.progressLabel}>4 of 5</Text>
+        </View>
+        <View style={{ width: 40 }} />
+      </View>
 
-        {!hasOwnFlight && (
-          <View style={styles.flightList}>
-            {MOCK_FLIGHTS.map((flight) => (
-              <FlightCard
-                key={flight.id}
-                flight={flight}
-                selected={selectedFlight === flight.id}
-                onSelect={() => setSelectedFlight(flight.id)}
-              />
-            ))}
-          </View>
-        )}
+      <View style={styles.duckRow}>
+        <View style={styles.duckAvatar}>
+          <LinearGradient colors={["#7B2FBE", "#E91E8C"]} style={styles.duckGradient}>
+            <Text style={{ fontSize: 24 }}>🦆</Text>
+          </LinearGradient>
+        </View>
+        <Animated.View style={[styles.duckBubble, { opacity: fadeAnim }]}>
+          <LinearGradient colors={["rgba(123,47,190,0.4)", "rgba(233,30,140,0.25)"]} style={styles.duckBubbleGradient}>
+            <Text style={styles.duckMessage}>Found {filteredFlights.length} great flights!</Text>
+            <Text style={styles.duckSub}>Tap a card to select your flight</Text>
+          </LinearGradient>
+        </Animated.View>
+      </View>
 
-        <TouchableOpacity
-          style={[styles.nextBtn, (!selectedFlight && !hasOwnFlight) && styles.nextBtnDisabled]}
-          onPress={handleNext}
-          disabled={!selectedFlight && !hasOwnFlight}
-          activeOpacity={0.85}
-        >
+      <Animated.View style={{ opacity: fadeAnim }}>
+        <FlatList
+          horizontal
+          data={FILTERS}
+          keyExtractor={(item) => item}
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.filterList}
+          renderItem={({ item }) => (
+            <TouchableOpacity
+              style={[styles.filterChip, activeFilter === item && styles.filterChipActive]}
+              onPress={() => { if (Platform.OS !== "web") Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light); setActiveFilter(item); }}
+              activeOpacity={0.8}
+            >
+              {activeFilter === item && <LinearGradient colors={["rgba(123,47,190,0.5)", "rgba(233,30,140,0.3)"]} style={StyleSheet.absoluteFillObject} />}
+              <Text style={[styles.filterLabel, activeFilter === item && styles.filterLabelActive]}>{item}</Text>
+            </TouchableOpacity>
+          )}
+        />
+      </Animated.View>
+
+      <Animated.View style={[{ flex: 1 }, { opacity: fadeAnim }]}>
+        <FlatList
+          data={filteredFlights}
+          keyExtractor={(item) => item.id}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={styles.list}
+          renderItem={({ item }) => {
+            const isSelected = selectedFlight === item.id;
+            return (
+              <TouchableOpacity
+                style={[styles.flightCard, isSelected && styles.flightCardSelected]}
+                onPress={() => handleSelect(item.id)}
+                activeOpacity={0.88}
+              >
+                <LinearGradient
+                  colors={isSelected ? ["rgba(123,47,190,0.35)", "rgba(233,30,140,0.2)"] : ["rgba(255,255,255,0.06)", "rgba(255,255,255,0.03)"]}
+                  style={StyleSheet.absoluteFillObject}
+                />
+                <View style={styles.flightTop}>
+                  <View style={styles.airlineRow}>
+                    <View style={[styles.airlineDot, { backgroundColor: item.color }]} />
+                    <Text style={styles.airlineName}>{item.airline}</Text>
+                    {item.class === "Business" && (
+                      <View style={styles.bizBadge}><Text style={styles.bizText}>Business</Text></View>
+                    )}
+                  </View>
+                  <View style={{ alignItems: "flex-end" }}>
+                    <Text style={[styles.price, isSelected && { color: "#E91E8C" }]}>${item.price}</Text>
+                    <Text style={styles.perPerson}>per person</Text>
+                  </View>
+                </View>
+                <View style={styles.routeRow}>
+                  <View>
+                    <Text style={styles.routeTime}>{item.departure}</Text>
+                    <Text style={styles.routeCode}>{item.from}</Text>
+                  </View>
+                  <View style={styles.routeMiddle}>
+                    <Text style={styles.routeDuration}>{item.duration}</Text>
+                    <View style={styles.routeLine}>
+                      <View style={styles.routeDot} />
+                      <View style={styles.routeLineBar} />
+                      <IconSymbol name="airplane" size={16} color={isSelected ? "#E91E8C" : "rgba(255,255,255,0.3)"} />
+                      <View style={styles.routeLineBar} />
+                      <View style={styles.routeDot} />
+                    </View>
+                    <Text style={[styles.routeStops, item.stops === "Direct" && { color: "#4CAF50" }]}>{item.stops}</Text>
+                  </View>
+                  <View style={{ alignItems: "flex-end" }}>
+                    <Text style={styles.routeTime}>{item.arrival}</Text>
+                    <Text style={styles.routeCode}>{item.to}</Text>
+                  </View>
+                </View>
+                {isSelected && (
+                  <View style={styles.selectedBadge}>
+                    <LinearGradient colors={["#7B2FBE", "#E91E8C"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.selectedBadgeGradient}>
+                      <IconSymbol name="checkmark" size={12} color="#FFFFFF" />
+                      <Text style={styles.selectedBadgeText}>Selected</Text>
+                    </LinearGradient>
+                  </View>
+                )}
+              </TouchableOpacity>
+            );
+          }}
+        />
+      </Animated.View>
+
+      <View style={styles.ctaWrap}>
+        <TouchableOpacity style={[styles.ctaBtn, !selectedFlight && styles.ctaBtnDisabled]} onPress={handleNext} activeOpacity={0.88}>
           <LinearGradient
-            colors={(selectedFlight || hasOwnFlight) ? ["#7B2FBE", "#E91E8C"] : ["#4A3080", "#4A3080"]}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 0 }}
-            style={styles.nextGradient}
+            colors={selectedFlight ? ["#7B2FBE", "#E91E8C"] : ["rgba(255,255,255,0.08)", "rgba(255,255,255,0.05)"]}
+            start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
+            style={styles.ctaGradient}
           >
-            <Text style={styles.nextText}>Choose Hotel</Text>
-            <IconSymbol name="arrow.right" size={18} color="#FFFFFF" style={{ marginLeft: 8 }} />
+            <Text style={[styles.ctaText, !selectedFlight && styles.ctaTextDisabled]}>Choose Hotel</Text>
+            <IconSymbol name="bed.double.fill" size={20} color={selectedFlight ? "#FFFFFF" : "#3A2D4E"} />
           </LinearGradient>
         </TouchableOpacity>
-      </ScrollView>
-    </ScreenContainer>
+      </View>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  header: {
-    flexDirection: "row",
-    alignItems: "center",
-    paddingTop: 16,
-    paddingHorizontal: 20,
-    paddingBottom: 16,
-    gap: 12,
-  },
-  backBtn: { width: 40, height: 40, alignItems: "center", justifyContent: "center" },
-  stepIndicator: { flex: 1, alignItems: "center", gap: 6 },
-  stepText: { color: "#A78BCA", fontSize: 12 },
-  stepBar: { flexDirection: "row", gap: 4 },
-  stepDot: { width: 24, height: 4, borderRadius: 2, backgroundColor: "#4A3080" },
-  stepDotActive: { backgroundColor: "#E91E8C" },
-  content: { padding: 24, paddingBottom: 40 },
-  title: { color: "#FFFFFF", fontSize: 26, fontWeight: "700", marginBottom: 6 },
-  subtitle: { color: "#A78BCA", fontSize: 15, marginBottom: 20 },
-  ownFlightToggle: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "#2D1B69",
-    borderRadius: 14,
-    padding: 14,
-    borderWidth: 1,
-    borderColor: "#4A3080",
-    gap: 10,
-    marginBottom: 20,
-  },
-  ownFlightToggleActive: { borderColor: "#4CAF50", backgroundColor: "rgba(76,175,80,0.1)" },
-  ownFlightText: { color: "#A78BCA", fontSize: 15 },
-  ownFlightTextActive: { color: "#4CAF50" },
-  flightList: { gap: 14, marginBottom: 24 },
-  flightCard: {
-    backgroundColor: "#2D1B69",
-    borderRadius: 16,
-    padding: 16,
-    borderWidth: 1,
-    borderColor: "#4A3080",
-    overflow: "hidden",
-  },
-  flightCardSelected: { borderColor: "#7B2FBE" },
-  flightHeader: { flexDirection: "row", alignItems: "center", marginBottom: 14, gap: 8 },
-  airlineBadge: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
-    backgroundColor: "#7B2FBE",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  airlineText: { color: "#FFFFFF", fontSize: 14, fontWeight: "700" },
-  airlineName: { color: "#FFFFFF", fontSize: 15, fontWeight: "600", flex: 1 },
-  directBadge: {
-    backgroundColor: "rgba(76,175,80,0.2)",
-    borderRadius: 6,
-    paddingHorizontal: 7,
-    paddingVertical: 2,
-    borderWidth: 1,
-    borderColor: "#4CAF50",
-  },
-  directText: { color: "#4CAF50", fontSize: 11, fontWeight: "600" },
-  priceTag: {
-    backgroundColor: "#3D2580",
-    borderRadius: 8,
-    paddingHorizontal: 10,
-    paddingVertical: 4,
-  },
-  priceText: { color: "#FFD700", fontSize: 15, fontWeight: "700" },
-  flightRoute: { flexDirection: "row", alignItems: "center", marginBottom: 12 },
-  routePoint: { alignItems: "center", flex: 1 },
-  routeCode: { color: "#FFFFFF", fontSize: 20, fontWeight: "700" },
-  routeTime: { color: "#A78BCA", fontSize: 13, marginTop: 2 },
-  routeLine: { flex: 2, flexDirection: "row", alignItems: "center", gap: 4 },
-  routeLineBar: { flex: 1, height: 1, backgroundColor: "#4A3080" },
-  flightMeta: { flexDirection: "row", gap: 16 },
-  metaItem: { flexDirection: "row", alignItems: "center", gap: 5 },
-  metaText: { color: "#A78BCA", fontSize: 13 },
-  stopsText: { color: "#FF9800", fontSize: 13 },
-  selectedIndicator: { flexDirection: "row", alignItems: "center", gap: 6, marginTop: 10 },
-  selectedText: { color: "#E91E8C", fontSize: 13, fontWeight: "600" },
-  nextBtn: { borderRadius: 28, overflow: "hidden" },
-  nextBtnDisabled: { opacity: 0.5 },
-  nextGradient: { paddingVertical: 16, flexDirection: "row", alignItems: "center", justifyContent: "center" },
-  nextText: { color: "#FFFFFF", fontSize: 17, fontWeight: "700" },
+  container: { flex: 1, backgroundColor: "#040010" },
+  orb1: { position: "absolute", width: width, height: width, borderRadius: width / 2, top: -width * 0.4, left: -width * 0.2, backgroundColor: "rgba(123,47,190,0.09)" },
+  header: { flexDirection: "row", alignItems: "center", paddingHorizontal: 20, paddingTop: 60, paddingBottom: 16, gap: 12 },
+  backBtn: { width: 40, height: 40, borderRadius: 14, backgroundColor: "rgba(255,255,255,0.08)", alignItems: "center", justifyContent: "center" },
+  progressWrap: { flex: 1, gap: 6 },
+  progressTrack: { height: 4, backgroundColor: "rgba(255,255,255,0.1)", borderRadius: 2, overflow: "hidden" },
+  progressFill: { height: "100%", backgroundColor: "#E91E8C", borderRadius: 2 },
+  progressLabel: { color: "rgba(255,255,255,0.4)", fontSize: 12, textAlign: "right" },
+  loadingWrap: { flex: 1, alignItems: "center", justifyContent: "center", gap: 16 },
+  duckLarge: { width: 90, height: 90, borderRadius: 45, overflow: "hidden" },
+  duckLargeGradient: { flex: 1, alignItems: "center", justifyContent: "center" },
+  loadingTitle: { color: "#FFFFFF", fontSize: 24, fontWeight: "800" },
+  loadingSubtitle: { color: "rgba(255,255,255,0.5)", fontSize: 14, textAlign: "center", paddingHorizontal: 40, lineHeight: 22 },
+  dotsRow: { flexDirection: "row", gap: 8 },
+  dot: { width: 8, height: 8, borderRadius: 4, backgroundColor: "#E91E8C" },
+  duckRow: { flexDirection: "row", alignItems: "flex-end", paddingHorizontal: 20, paddingBottom: 12, gap: 10 },
+  duckAvatar: { width: 44, height: 44, borderRadius: 22, overflow: "hidden" },
+  duckGradient: { flex: 1, alignItems: "center", justifyContent: "center" },
+  duckBubble: { flex: 1, borderRadius: 18, borderBottomLeftRadius: 4, overflow: "hidden" },
+  duckBubbleGradient: { paddingHorizontal: 16, paddingVertical: 12, borderRadius: 18, borderBottomLeftRadius: 4, borderWidth: 1, borderColor: "rgba(123,47,190,0.4)" },
+  duckMessage: { color: "#FFFFFF", fontSize: 15, fontWeight: "700", lineHeight: 20 },
+  duckSub: { color: "rgba(255,255,255,0.5)", fontSize: 12, marginTop: 2 },
+  filterList: { paddingHorizontal: 20, gap: 8, paddingBottom: 12 },
+  filterChip: { borderRadius: 14, paddingHorizontal: 16, paddingVertical: 8, overflow: "hidden", borderWidth: 1.5, borderColor: "rgba(255,255,255,0.1)" },
+  filterChipActive: { borderColor: "rgba(192,132,252,0.5)" },
+  filterLabel: { color: "rgba(255,255,255,0.5)", fontSize: 13, fontWeight: "600" },
+  filterLabelActive: { color: "#C084FC" },
+  list: { paddingHorizontal: 20, gap: 12, paddingBottom: 20 },
+  flightCard: { borderRadius: 20, padding: 18, gap: 14, overflow: "hidden", borderWidth: 2, borderColor: "rgba(255,255,255,0.08)" },
+  flightCardSelected: { borderColor: "rgba(233,30,140,0.6)" },
+  flightTop: { flexDirection: "row", alignItems: "center", justifyContent: "space-between" },
+  airlineRow: { flexDirection: "row", alignItems: "center", gap: 8 },
+  airlineDot: { width: 10, height: 10, borderRadius: 5 },
+  airlineName: { color: "#FFFFFF", fontSize: 15, fontWeight: "700" },
+  bizBadge: { backgroundColor: "rgba(255,215,0,0.2)", borderRadius: 8, paddingHorizontal: 8, paddingVertical: 3, borderWidth: 1, borderColor: "rgba(255,215,0,0.4)" },
+  bizText: { color: "#FFD700", fontSize: 11, fontWeight: "700" },
+  price: { color: "#FFFFFF", fontSize: 22, fontWeight: "900" },
+  perPerson: { color: "rgba(255,255,255,0.4)", fontSize: 11 },
+  routeRow: { flexDirection: "row", alignItems: "center" },
+  routeMiddle: { flex: 1, alignItems: "center", gap: 4, paddingHorizontal: 12 },
+  routeDuration: { color: "rgba(255,255,255,0.6)", fontSize: 12 },
+  routeLine: { flexDirection: "row", alignItems: "center", width: "100%", gap: 4 },
+  routeDot: { width: 6, height: 6, borderRadius: 3, backgroundColor: "rgba(255,255,255,0.3)" },
+  routeLineBar: { flex: 1, height: 1, backgroundColor: "rgba(255,255,255,0.15)" },
+  routeStops: { color: "rgba(255,255,255,0.4)", fontSize: 11, fontWeight: "600" },
+  routeTime: { color: "#FFFFFF", fontSize: 18, fontWeight: "800" },
+  routeCode: { color: "rgba(255,255,255,0.4)", fontSize: 13, fontWeight: "600" },
+  selectedBadge: { alignSelf: "flex-start", borderRadius: 10, overflow: "hidden" },
+  selectedBadgeGradient: { flexDirection: "row", alignItems: "center", gap: 5, paddingHorizontal: 12, paddingVertical: 6 },
+  selectedBadgeText: { color: "#FFFFFF", fontSize: 12, fontWeight: "700" },
+  ctaWrap: { paddingHorizontal: 20, paddingBottom: 40, paddingTop: 12 },
+  ctaBtn: { borderRadius: 20, overflow: "hidden" },
+  ctaBtnDisabled: { opacity: 0.5 },
+  ctaGradient: { flexDirection: "row", alignItems: "center", justifyContent: "center", paddingVertical: 18, gap: 10, borderRadius: 20 },
+  ctaText: { color: "#FFFFFF", fontSize: 18, fontWeight: "800" },
+  ctaTextDisabled: { color: "#3A2D4E" },
 });

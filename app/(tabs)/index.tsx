@@ -1,463 +1,437 @@
-import { useState } from "react";
-import { ScrollView, View, Text, TouchableOpacity, StyleSheet, Dimensions, FlatList } from "react-native";
+import { useRef, useState, useCallback } from "react";
+import {
+  View, Text, TouchableOpacity, StyleSheet, Dimensions,
+  ScrollView, Animated, Platform, FlatList, StatusBar
+} from "react-native";
 import { router } from "expo-router";
-import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
-import { ScreenContainer } from "@/components/screen-container";
 import { IconSymbol } from "@/components/ui/icon-symbol";
-import { useStore, Trip } from "@/lib/store";
+import { useStore } from "@/lib/store";
+import * as Haptics from "expo-haptics";
 
-const { width } = Dimensions.get("window");
+const { width, height } = Dimensions.get("window");
 
-const MOCK_UPCOMING: Trip[] = [
-  {
-    id: "mock1",
-    destination: "Paris",
-    destinationCode: "CDG",
-    country: "France",
-    startDate: "Apr 15",
-    endDate: "Apr 22",
-    travelers: 2,
-    budget: "Luxury",
-    status: "upcoming",
-    interests: ["culture", "food"],
-    landmarks: ["Eiffel Tower"],
-    itinerary: [],
-    totalCost: 4850,
-    pointsEarned: 2425,
-  },
-];
+// ─── Mock Data ────────────────────────────────────────────────────────────────
 
-const TRENDING = [
-  { city: "Paris", country: "France", emoji: "🗼", temp: "18°C", price: 1200, rating: 4.9 },
-  { city: "Tokyo", country: "Japan", emoji: "⛩️", temp: "22°C", price: 1800, rating: 4.8 },
-  { city: "Bali", country: "Indonesia", emoji: "🌴", temp: "30°C", price: 950, rating: 4.7 },
-  { city: "Santorini", country: "Greece", emoji: "🏛️", temp: "24°C", price: 1600, rating: 4.9 },
-  { city: "Dubai", country: "UAE", emoji: "🌆", temp: "35°C", price: 1100, rating: 4.7 },
+const FEATURED_DESTINATIONS = [
+  { id: "1", city: "Kyoto", country: "Japan", tagline: "Cherry blossoms & ancient temples", gradient: ["#1a0533", "#4a1a7a", "#2d0d5c"] as [string,string,string], price: "From $1,240", badge: "DNA Match", badgeColor: "#E91E8C" },
+  { id: "2", city: "Santorini", country: "Greece", tagline: "Sunsets that stop time", gradient: ["#0d2040", "#1a3a6e", "#0a1a3d"] as [string,string,string], price: "From $980", badge: "Trending", badgeColor: "#F59E0B" },
+  { id: "3", city: "Tokyo", country: "Japan", tagline: "Where neon meets tradition", gradient: ["#1a0020", "#3d0040", "#1a0030"] as [string,string,string], price: "From $1,450", badge: "Popular", badgeColor: "#7B2FBE" },
+  { id: "4", city: "Bali", country: "Indonesia", tagline: "Find your inner peace", gradient: ["#0d2a1a", "#1a4a2e", "#0a2015"] as [string,string,string], price: "From $760", badge: "Best Value", badgeColor: "#10B981" },
 ];
 
 const QUICK_ACTIONS = [
-  { icon: "✈️", label: "Flights", route: "/(trip)/flights" },
-  { icon: "🏨", label: "Hotels", route: "/(trip)/hotels" },
-  { icon: "🎭", label: "Activities", route: "/(trip)/interests" },
-  { icon: "🗺️", label: "Explore", route: "/(tabs)/explore" },
+  { id: "flights", label: "Flights", iconName: "airplane", colors: ["#1E3A5F", "#2563EB"] as [string,string] },
+  { id: "hotels", label: "Hotels", iconName: "bed.double.fill", colors: ["#7C3AED", "#A855F7"] as [string,string] },
+  { id: "experiences", label: "Experiences", iconName: "sparkles", colors: ["#BE185D", "#EC4899"] as [string,string] },
+  { id: "alerts", label: "Price Alert", iconName: "bell.fill", colors: ["#065F46", "#10B981"] as [string,string] },
 ];
 
-const TRAVI_TIPS = [
-  { emoji: "💡", tip: "Book 6 weeks early to save up to 30% on flights", dest: "General" },
-  { emoji: "🌅", tip: "Visit the Eiffel Tower at golden hour for the best photos", dest: "Paris" },
-  { emoji: "🍜", tip: "Try ramen at Ichiran for an authentic solo dining experience", dest: "Tokyo" },
-  { emoji: "🧘", tip: "Sunrise yoga at Campuhan Ridge Walk is free and magical", dest: "Bali" },
+const TRENDING_STORIES = [
+  { id: "1", author: "Maya R.", dest: "Lisbon", text: "The most underrated city in Europe. Pastéis de nata changed my life.", avatar: "M", gradient: ["#C2410C", "#EA580C"] as [string,string] },
+  { id: "2", author: "James K.", dest: "Kyoto", text: "Woke up at 5am to see Fushimi Inari alone. Worth every second.", avatar: "J", gradient: ["#1E3A5F", "#2563EB"] as [string,string] },
+  { id: "3", author: "Sara L.", dest: "Bali", text: "Ubud rice terraces at sunrise. No words. Just go.", avatar: "S", gradient: ["#065F46", "#10B981"] as [string,string] },
+];
+
+const PRICE_ALERTS = [
+  { id: "1", dest: "Barcelona", from: "TLV", price: "$420", drop: "-23%", gradient: ["rgba(123,47,190,0.3)", "rgba(233,30,140,0.15)"] as [string,string] },
+  { id: "2", dest: "Amsterdam", from: "TLV", price: "$380", drop: "-18%", gradient: ["rgba(30,58,95,0.3)", "rgba(37,99,235,0.15)"] as [string,string] },
 ];
 
 export default function HomeScreen() {
   const { state } = useStore();
+  const scrollY = useRef(new Animated.Value(0)).current;
+  const [activeTab, setActiveTab] = useState<"discover" | "trips">("discover");
+
   const profile = state.profile;
-  const [tipIndex, setTipIndex] = useState(0);
+  const trips = state.trips;
+  const activeTrip = state.activeTrip;
+  const points = profile?.points || 0;
+  const dnaType = profile?.travelerDNA?.type || "Explorer";
+  const firstName = profile?.name?.split(" ")[0] || "Traveler";
 
-  const trips = state.trips.length > 0 ? state.trips : MOCK_UPCOMING;
+  const headerOpacity = scrollY.interpolate({ inputRange: [0, 80], outputRange: [0, 1], extrapolate: "clamp" });
+  const heroScale = scrollY.interpolate({ inputRange: [-100, 0], outputRange: [1.08, 1], extrapolate: "clamp" });
+
+  const handlePlan = useCallback(() => {
+    if (Platform.OS !== "web") Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+    router.push("/(trip)/plan" as never);
+  }, []);
+
+  const handleLiveTrip = useCallback(() => {
+    if (Platform.OS !== "web") Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+    router.push("/(live)/home" as never);
+  }, []);
+
   const upcomingTrips = trips.filter((t) => t.status === "upcoming" || t.status === "active");
-  const activeTrip = trips.find((t) => t.status === "active");
-  const points = profile?.points || 4250;
-
-  const getGreeting = () => {
-    const h = new Date().getHours();
-    if (h < 12) return "Good morning";
-    if (h < 17) return "Good afternoon";
-    return "Good evening";
-  };
 
   return (
-    <ScreenContainer containerClassName="bg-background">
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 110 }}>
+    <View style={S.container}>
+      <StatusBar barStyle="light-content" />
+      <LinearGradient colors={["#040010", "#0D0520", "#1A0A3D"]} style={StyleSheet.absoluteFillObject} />
 
-        {/* ── HERO HEADER ─────────────────────────────────────────────────── */}
-        <LinearGradient colors={["#2D1B69", "#1A0533"]} style={styles.header}>
-          {/* Top row */}
-          <View style={styles.headerTop}>
-            <View style={styles.headerLeft}>
-              <Text style={styles.greeting}>{getGreeting()},</Text>
-              <Text style={styles.userName}>{profile?.name || "Traveler"} 👋</Text>
-            </View>
-            <View style={styles.headerRight}>
-              {/* Points badge */}
-              <TouchableOpacity
-                style={styles.pointsBadge}
-                onPress={() => router.push("/(tabs)/wallet" as never)}
-                activeOpacity={0.85}
-              >
-                <Text style={styles.pointsStar}>✦</Text>
-                <Text style={styles.pointsVal}>{points.toLocaleString()}</Text>
-                <Text style={styles.pointsUnit}>pts</Text>
-              </TouchableOpacity>
-              {/* Notification bell */}
-              <TouchableOpacity style={styles.bellBtn}>
-                <IconSymbol name="bell.fill" size={22} color="#FFFFFF" />
-                <View style={styles.bellDot} />
-              </TouchableOpacity>
-            </View>
-          </View>
+      {/* Floating orbs */}
+      <View style={S.orb1} />
+      <View style={S.orb2} />
 
-          {/* Search bar */}
-          <TouchableOpacity
-            style={styles.searchBar}
-            onPress={() => router.push("/(tabs)/explore" as never)}
-            activeOpacity={0.9}
-          >
-            <IconSymbol name="magnifyingglass" size={18} color="#A78BCA" />
-            <Text style={styles.searchPlaceholder}>Where to next?</Text>
-            <View style={styles.searchFilter}>
-              <IconSymbol name="slider.horizontal.3" size={16} color="#7B2FBE" />
-            </View>
-          </TouchableOpacity>
-        </LinearGradient>
+      {/* Sticky mini-header on scroll */}
+      <Animated.View style={[S.stickyHeader, { opacity: headerOpacity }]}>
+        <LinearGradient colors={["rgba(4,0,16,0.95)", "rgba(13,5,32,0.9)"]} style={StyleSheet.absoluteFillObject} />
+        <Text style={S.stickyTitle}>TRAVI</Text>
+        <View style={S.stickyPoints}>
+          <IconSymbol name="star.fill" size={13} color="#FFD700" />
+          <Text style={S.stickyPointsText}>{points.toLocaleString()}</Text>
+        </View>
+      </Animated.View>
 
-        {/* ── ACTIVE TRIP LIVE BANNER ──────────────────────────────────────── */}
-        {activeTrip && (
-          <TouchableOpacity
-            style={styles.liveBanner}
-            onPress={() => router.push("/(live)/home" as never)}
-            activeOpacity={0.9}
-          >
-            <LinearGradient colors={["#1B4D1E", "#2D4A1E"]} style={styles.liveBannerGradient}>
-              <View style={styles.liveIndicator}>
-                <View style={styles.livePulse} />
-                <Text style={styles.liveText}>LIVE</Text>
+      <Animated.ScrollView
+        showsVerticalScrollIndicator={false}
+        onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], { useNativeDriver: false })}
+        scrollEventThrottle={16}
+        contentContainerStyle={{ paddingBottom: 100 }}
+      >
+        {/* ── Hero Section ── */}
+        <Animated.View style={[S.hero, { transform: [{ scale: heroScale }] }]}>
+          <LinearGradient colors={["#040010", "#1A0A3D", "#2D0A5C"]} style={StyleSheet.absoluteFillObject} />
+          <View style={S.heroOrb} />
+
+          <View style={S.heroContent}>
+            <View style={S.heroTop}>
+              <View>
+                <Text style={S.heroGreeting}>Good morning,</Text>
+                <Text style={S.heroName}>{firstName}</Text>
               </View>
-              <View style={styles.liveBannerInfo}>
-                <Text style={styles.liveBannerTitle}>{activeTrip.destination} Trip is Active</Text>
-                <Text style={styles.liveBannerSub}>Tap to open Live Mode</Text>
-              </View>
-              <IconSymbol name="arrow.right" size={20} color="#4CAF50" />
-            </LinearGradient>
-          </TouchableOpacity>
-        )}
+              <TouchableOpacity style={S.notifBtn} onPress={() => router.push("/(tabs)/profile" as never)} activeOpacity={0.8}>
+                <LinearGradient colors={["rgba(123,47,190,0.5)", "rgba(233,30,140,0.3)"]} style={S.notifGradient}>
+                  <IconSymbol name="bell.fill" size={18} color="#FFFFFF" />
+                </LinearGradient>
+              </TouchableOpacity>
+            </View>
 
-        {/* ── PLAN NEW TRIP CTA ─────────────────────────────────────────────── */}
-        <View style={styles.section}>
-          <TouchableOpacity
-            onPress={() => router.push("/(trip)/plan" as never)}
-            activeOpacity={0.9}
-          >
-            <LinearGradient
-              colors={["#7B2FBE", "#E91E8C"]}
-              start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
-              style={styles.planCard}
-            >
-              <View style={styles.planCardContent}>
-                <View>
-                  <Text style={styles.planCardLabel}>AI-Powered Planning</Text>
-                  <Text style={styles.planCardTitle}>Plan Your Next{"\n"}Adventure ✈️</Text>
-                  <Text style={styles.planCardSub}>Flights • Hotels • Itinerary</Text>
+            {/* DNA Badge */}
+            <View style={S.dnaBadge}>
+              <LinearGradient colors={["rgba(123,47,190,0.4)", "rgba(233,30,140,0.25)"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={StyleSheet.absoluteFillObject} />
+              <IconSymbol name="sparkles" size={14} color="#C084FC" />
+              <Text style={S.dnaText}>{dnaType}</Text>
+            </View>
+
+            {/* Points card */}
+            <View style={S.pointsCard}>
+              <LinearGradient colors={["rgba(255,215,0,0.15)", "rgba(255,149,0,0.08)", "rgba(123,47,190,0.1)"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={StyleSheet.absoluteFillObject} />
+              <View style={S.pointsLeft}>
+                <Text style={S.pointsLabel}>TRAVI POINTS</Text>
+                <Text style={S.pointsValue}>{points.toLocaleString()}</Text>
+                <Text style={S.pointsSub}>≈ ${Math.floor(points / 100)} travel credit</Text>
+              </View>
+              <View style={S.pointsRight}>
+                <View style={S.tierBadge}>
+                  <LinearGradient colors={["#7B2FBE", "#E91E8C"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={StyleSheet.absoluteFillObject} />
+                  <Text style={S.tierText}>{points < 1000 ? "Explorer" : points < 5000 ? "Adventurer" : "Elite"}</Text>
                 </View>
-                <Image
-                  source={require("@/assets/images/icon.png")}
-                  style={styles.planCardDuck}
-                  contentFit="contain"
-                />
+                <IconSymbol name="star.fill" size={36} color="rgba(255,215,0,0.3)" />
               </View>
-              <View style={styles.planCardBtn}>
-                <Text style={styles.planCardBtnText}>Start Planning →</Text>
+            </View>
+
+            {/* Active trip banner */}
+            {activeTrip && (
+              <TouchableOpacity style={S.activeTripBanner} onPress={handleLiveTrip} activeOpacity={0.88}>
+                <LinearGradient colors={["rgba(16,185,129,0.3)", "rgba(5,150,105,0.2)"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={StyleSheet.absoluteFillObject} />
+                <View style={S.activeDot} />
+                <View style={{ flex: 1 }}>
+                  <Text style={S.activeTripLabel}>LIVE TRIP</Text>
+                  <Text style={S.activeTripDest}>{activeTrip.destination}, {activeTrip.country}</Text>
+                </View>
+                <View style={S.activeTripArrow}>
+                  <IconSymbol name="chevron.right" size={16} color="#10B981" />
+                </View>
+              </TouchableOpacity>
+            )}
+          </View>
+        </Animated.View>
+
+        {/* ── Plan New Trip CTA ── */}
+        <View style={S.section}>
+          <TouchableOpacity style={S.planCta} onPress={handlePlan} activeOpacity={0.88}>
+            <LinearGradient colors={["#7B2FBE", "#C026D3", "#E91E8C"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={StyleSheet.absoluteFillObject} />
+            <View style={S.planCtaLeft}>
+              <View style={S.planCtaIcon}>
+                <IconSymbol name="airplane" size={22} color="rgba(255,255,255,0.9)" />
               </View>
-            </LinearGradient>
+              <View>
+                <Text style={S.planCtaTitle}>Plan Your Next Trip</Text>
+                <Text style={S.planCtaSub}>TRAVI builds it in 90 seconds</Text>
+              </View>
+            </View>
+            <View style={S.planCtaArrow}>
+              <IconSymbol name="arrow.right" size={18} color="#FFFFFF" />
+            </View>
           </TouchableOpacity>
         </View>
 
-        {/* ── QUICK ACTIONS ─────────────────────────────────────────────────── */}
-        <View style={styles.section}>
-          <View style={styles.quickActions}>
-            {QUICK_ACTIONS.map((a) => (
+        {/* ── Quick Actions ── */}
+        <View style={S.section}>
+          <View style={S.quickRow}>
+            {QUICK_ACTIONS.map((action) => (
               <TouchableOpacity
-                key={a.label}
-                style={styles.quickAction}
-                onPress={() => router.push(a.route as never)}
+                key={action.id}
+                style={S.quickAction}
+                onPress={() => {
+                  if (Platform.OS !== "web") Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                  if (action.id === "flights" || action.id === "hotels") router.push("/(trip)/plan" as never);
+                }}
                 activeOpacity={0.8}
               >
-                <LinearGradient colors={["#2D1B69", "#3D2580"]} style={styles.quickActionGradient}>
-                  <Text style={styles.quickActionIcon}>{a.icon}</Text>
-                  <Text style={styles.quickActionLabel}>{a.label}</Text>
-                </LinearGradient>
+                <View style={S.quickIcon}>
+                  <LinearGradient colors={action.colors} style={S.quickIconGradient}>
+                    <IconSymbol name={action.iconName as never} size={22} color="#FFFFFF" />
+                  </LinearGradient>
+                </View>
+                <Text style={S.quickLabel}>{action.label}</Text>
               </TouchableOpacity>
             ))}
           </View>
         </View>
 
-        {/* ── UPCOMING TRIPS ────────────────────────────────────────────────── */}
-        {upcomingTrips.length > 0 && (
-          <View style={styles.section}>
-            <View style={styles.sectionHeader}>
-              <Text style={styles.sectionTitle}>Upcoming Trips</Text>
-              <TouchableOpacity onPress={() => router.push("/(tabs)/trips" as never)}>
-                <Text style={styles.seeAll}>See all →</Text>
+        {/* ── Price Alerts ── */}
+        <View style={S.section}>
+          <View style={S.sectionHeader}>
+            <Text style={S.sectionTitle}>Price Alerts</Text>
+            <TouchableOpacity activeOpacity={0.7}>
+              <Text style={S.sectionLink}>Set alert</Text>
+            </TouchableOpacity>
+          </View>
+          <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: 12, paddingHorizontal: 20 }}>
+            {PRICE_ALERTS.map((alert) => (
+              <TouchableOpacity key={alert.id} style={S.alertCard} activeOpacity={0.85}>
+                <LinearGradient colors={alert.gradient} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={StyleSheet.absoluteFillObject} />
+                <View style={S.alertCardBorder} />
+                <View style={S.alertTop}>
+                  <Text style={S.alertDest}>{alert.dest}</Text>
+                  <View style={S.alertDropBadge}>
+                    <Text style={S.alertDrop}>{alert.drop}</Text>
+                  </View>
+                </View>
+                <Text style={S.alertFrom}>{alert.from} → {alert.dest}</Text>
+                <Text style={S.alertPrice}>{alert.price}</Text>
+                <View style={S.alertAction}>
+                  <IconSymbol name="airplane" size={13} color="rgba(192,132,252,0.7)" />
+                  <Text style={S.alertActionText}>Book now</Text>
+                </View>
               </TouchableOpacity>
+            ))}
+          </ScrollView>
+        </View>
+
+        {/* ── Featured Destinations ── */}
+        <View style={S.section}>
+          <View style={S.sectionHeader}>
+            <View>
+              <Text style={S.sectionTitle}>Picked for You</Text>
+              <Text style={S.sectionSub}>Based on your {dnaType} DNA</Text>
             </View>
-            {upcomingTrips.slice(0, 2).map((trip) => (
-              <TouchableOpacity
-                key={trip.id}
-                style={styles.upcomingCard}
-                onPress={() => router.push({ pathname: "/(trip)/summary" as never, params: { tripId: trip.id } })}
-                activeOpacity={0.85}
-              >
-                <LinearGradient colors={["#2D1B69", "#3D2580"]} style={styles.upcomingCardGradient}>
-                  <View style={styles.upcomingCardLeft}>
-                    <Text style={styles.upcomingEmoji}>
-                      {trip.destination === "Paris" ? "🗼" : trip.destination === "Tokyo" ? "⛩️" : "✈️"}
-                    </Text>
-                    <View>
-                      <Text style={styles.upcomingDest}>{trip.destination}, {trip.country}</Text>
-                      <Text style={styles.upcomingDates}>{trip.startDate} → {trip.endDate}</Text>
-                      <View style={styles.upcomingMeta}>
-                        <IconSymbol name="person.2.fill" size={12} color="#A78BCA" />
-                        <Text style={styles.upcomingMetaText}>{trip.travelers} travelers</Text>
-                        <Text style={styles.upcomingDot}>•</Text>
-                        <Text style={styles.upcomingCost}>${trip.totalCost.toLocaleString()}</Text>
-                      </View>
-                    </View>
-                  </View>
-                  <View style={styles.upcomingRight}>
-                    <TouchableOpacity
-                      style={styles.liveModeBtn}
-                      onPress={() => router.push({ pathname: "/(live)/home" as never, params: { tripId: trip.id } })}
-                      activeOpacity={0.85}
-                    >
-                      <LinearGradient colors={["#7B2FBE", "#E91E8C"]} style={styles.liveModeGradient}>
-                        <Text style={styles.liveModeText}>Live</Text>
-                      </LinearGradient>
-                    </TouchableOpacity>
-                    <View style={styles.pointsEarned}>
-                      <Text style={styles.pointsEarnedStar}>✦</Text>
-                      <Text style={styles.pointsEarnedVal}>{trip.pointsEarned.toLocaleString()}</Text>
-                    </View>
-                  </View>
-                </LinearGradient>
-              </TouchableOpacity>
-            ))}
-          </View>
-        )}
-
-        {/* ── TRAVI TIP ─────────────────────────────────────────────────────── */}
-        <View style={styles.section}>
-          <TouchableOpacity
-            style={styles.tipCard}
-            onPress={() => setTipIndex((i) => (i + 1) % TRAVI_TIPS.length)}
-            activeOpacity={0.85}
-          >
-            <LinearGradient colors={["rgba(123,47,190,0.25)", "rgba(233,30,140,0.15)"]} style={styles.tipGradient}>
-              <Image source={require("@/assets/images/icon.png")} style={styles.tipDuck} contentFit="contain" />
-              <View style={styles.tipContent}>
-                <Text style={styles.tipLabel}>TRAVI Tip • {TRAVI_TIPS[tipIndex].dest}</Text>
-                <Text style={styles.tipText}>{TRAVI_TIPS[tipIndex].emoji} {TRAVI_TIPS[tipIndex].tip}</Text>
-                <Text style={styles.tipHint}>Tap for next tip</Text>
-              </View>
-            </LinearGradient>
-          </TouchableOpacity>
-        </View>
-
-        {/* ── TRENDING DESTINATIONS ─────────────────────────────────────────── */}
-        <View style={styles.section}>
-          <View style={styles.sectionHeader}>
-            <Text style={styles.sectionTitle}>🔥 Trending Now</Text>
-            <TouchableOpacity onPress={() => router.push("/(tabs)/explore" as never)}>
-              <Text style={styles.seeAll}>See all →</Text>
+            <TouchableOpacity onPress={() => router.push("/(tabs)/explore" as never)} activeOpacity={0.7}>
+              <Text style={S.sectionLink}>See all</Text>
             </TouchableOpacity>
           </View>
           <FlatList
-            data={TRENDING}
+            data={FEATURED_DESTINATIONS}
+            keyExtractor={(item) => item.id}
             horizontal
             showsHorizontalScrollIndicator={false}
-            keyExtractor={(item) => item.city}
-            contentContainerStyle={{ gap: 12 }}
+            contentContainerStyle={{ gap: 14, paddingHorizontal: 20 }}
             renderItem={({ item }) => (
               <TouchableOpacity
-                style={styles.trendCard}
-                onPress={() => router.push({ pathname: "/(trip)/plan" as never, params: { destination: item.city } })}
-                activeOpacity={0.85}
+                style={S.featCard}
+                onPress={() => {
+                  if (Platform.OS !== "web") Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                  router.push("/(trip)/plan" as never);
+                }}
+                activeOpacity={0.88}
               >
-                <LinearGradient colors={["#2D1B69", "#3D2580"]} style={styles.trendCardGradient}>
-                  <Text style={styles.trendEmoji}>{item.emoji}</Text>
-                  <Text style={styles.trendCity}>{item.city}</Text>
-                  <Text style={styles.trendCountry}>{item.country}</Text>
-                  <View style={styles.trendMeta}>
-                    <Text style={styles.trendRating}>⭐ {item.rating}</Text>
-                    <Text style={styles.trendTemp}>{item.temp}</Text>
+                <LinearGradient colors={item.gradient} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={StyleSheet.absoluteFillObject} />
+                <View style={S.featOverlay} />
+                <View style={S.featBadge}>
+                  <View style={[S.featBadgeDot, { backgroundColor: item.badgeColor }]} />
+                  <Text style={S.featBadgeText}>{item.badge}</Text>
+                </View>
+                <View style={S.featBottom}>
+                  <Text style={S.featCity}>{item.city}</Text>
+                  <Text style={S.featCountry}>{item.country}</Text>
+                  <Text style={S.featTagline} numberOfLines={1}>{item.tagline}</Text>
+                  <View style={S.featPriceRow}>
+                    <Text style={S.featPrice}>{item.price}</Text>
+                    <View style={S.featPlanBtn}>
+                      <LinearGradient colors={["#7B2FBE", "#E91E8C"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={StyleSheet.absoluteFillObject} />
+                      <Text style={S.featPlanText}>Plan</Text>
+                    </View>
                   </View>
-                  <Text style={styles.trendPrice}>from ${item.price}</Text>
-                </LinearGradient>
+                </View>
               </TouchableOpacity>
             )}
           />
         </View>
 
-        {/* ── POINTS CARD ───────────────────────────────────────────────────── */}
-        <View style={styles.section}>
-          <TouchableOpacity
-            onPress={() => router.push("/(tabs)/wallet" as never)}
-            activeOpacity={0.9}
-          >
-            <LinearGradient colors={["#2D1B69", "#3D2580"]} style={styles.pointsCard}>
-              <View style={styles.pointsCardLeft}>
-                <Text style={styles.pointsCardLabel}>TRAVI Points</Text>
-                <Text style={styles.pointsCardVal}>✦ {points.toLocaleString()}</Text>
-                <Text style={styles.pointsCardSub}>≈ ${(points / 100).toFixed(0)} travel value</Text>
-              </View>
-              <View style={styles.pointsCardRight}>
-                <TouchableOpacity
-                  style={styles.redeemBtn}
-                  onPress={() => router.push("/(tabs)/wallet" as never)}
-                  activeOpacity={0.85}
-                >
-                  <LinearGradient colors={["#7B2FBE", "#E91E8C"]} style={styles.redeemGradient}>
-                    <Text style={styles.redeemText}>Redeem</Text>
-                  </LinearGradient>
-                </TouchableOpacity>
-              </View>
-            </LinearGradient>
-          </TouchableOpacity>
-        </View>
-
-        {/* ── EMPTY STATE (no trips) ────────────────────────────────────────── */}
-        {upcomingTrips.length === 0 && (
-          <View style={styles.emptyState}>
-            <Image source={require("@/assets/images/icon.png")} style={styles.emptyDuck} contentFit="contain" />
-            <Text style={styles.emptyTitle}>Ready to explore?</Text>
-            <Text style={styles.emptySubtitle}>Tap "Plan Your Next Adventure" above and let TRAVI build your perfect trip</Text>
+        {/* ── Upcoming Trips ── */}
+        {upcomingTrips.length > 0 && (
+          <View style={S.section}>
+            <View style={S.sectionHeader}>
+              <Text style={S.sectionTitle}>Your Trips</Text>
+              <TouchableOpacity onPress={() => router.push("/(tabs)/trips" as never)} activeOpacity={0.7}>
+                <Text style={S.sectionLink}>View all</Text>
+              </TouchableOpacity>
+            </View>
+            {upcomingTrips.slice(0, 2).map((trip) => (
+              <TouchableOpacity
+                key={trip.id}
+                style={S.tripCard}
+                onPress={() => router.push("/(tabs)/trips" as never)}
+                activeOpacity={0.88}
+              >
+                <LinearGradient colors={["rgba(123,47,190,0.25)", "rgba(233,30,140,0.12)"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={StyleSheet.absoluteFillObject} />
+                <View style={S.tripCardBorder} />
+                <View style={S.tripCardLeft}>
+                  <View style={S.tripIconWrap}>
+                    <LinearGradient colors={["#7B2FBE", "#E91E8C"]} style={S.tripIconGradient}>
+                      <IconSymbol name="airplane" size={18} color="#FFFFFF" />
+                    </LinearGradient>
+                  </View>
+                  <View>
+                    <Text style={S.tripDest}>{trip.destination}, {trip.country}</Text>
+                    <Text style={S.tripDates}>{trip.startDate} → {trip.endDate}</Text>
+                  </View>
+                </View>
+                <View style={[S.tripStatus, { backgroundColor: trip.status === "active" ? "rgba(16,185,129,0.2)" : "rgba(123,47,190,0.2)" }]}>
+                  <Text style={[S.tripStatusText, { color: trip.status === "active" ? "#10B981" : "#C084FC" }]}>
+                    {trip.status === "active" ? "Live" : "Upcoming"}
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            ))}
           </View>
         )}
-      </ScrollView>
-    </ScreenContainer>
+
+        {/* ── Community Stories ── */}
+        <View style={S.section}>
+          <View style={S.sectionHeader}>
+            <Text style={S.sectionTitle}>Traveler Stories</Text>
+            <TouchableOpacity onPress={() => router.push("/(tabs)/explore" as never)} activeOpacity={0.7}>
+              <Text style={S.sectionLink}>More</Text>
+            </TouchableOpacity>
+          </View>
+          {TRENDING_STORIES.map((story) => (
+            <TouchableOpacity key={story.id} style={S.storyCard} activeOpacity={0.85}>
+              <LinearGradient colors={["rgba(255,255,255,0.04)", "rgba(255,255,255,0.02)"]} style={StyleSheet.absoluteFillObject} />
+              <View style={S.storyCardBorder} />
+              <View style={S.storyAvatar}>
+                <LinearGradient colors={story.gradient} style={S.storyAvatarGradient}>
+                  <Text style={S.storyAvatarText}>{story.avatar}</Text>
+                </LinearGradient>
+              </View>
+              <View style={{ flex: 1 }}>
+                <View style={S.storyHeader}>
+                  <Text style={S.storyAuthor}>{story.author}</Text>
+                  <View style={S.storyDestPill}>
+                    <IconSymbol name="location.fill" size={10} color="#C084FC" />
+                    <Text style={S.storyDestText}>{story.dest}</Text>
+                  </View>
+                </View>
+                <Text style={S.storyText}>{story.text}</Text>
+              </View>
+            </TouchableOpacity>
+          ))}
+        </View>
+      </Animated.ScrollView>
+    </View>
   );
 }
 
-const styles = StyleSheet.create({
-  header: { paddingHorizontal: 20, paddingTop: 16, paddingBottom: 20, gap: 14 },
-  headerTop: { flexDirection: "row", justifyContent: "space-between", alignItems: "center" },
-  headerLeft: { gap: 2 },
-  greeting: { color: "#A78BCA", fontSize: 14 },
-  userName: { color: "#FFFFFF", fontSize: 22, fontWeight: "800" },
-  headerRight: { flexDirection: "row", alignItems: "center", gap: 10 },
-  pointsBadge: {
-    flexDirection: "row", alignItems: "center",
-    backgroundColor: "#3D2580", borderRadius: 20,
-    paddingHorizontal: 10, paddingVertical: 6,
-    gap: 4, borderWidth: 1, borderColor: "#7B2FBE",
-  },
-  pointsStar: { color: "#FFD700", fontSize: 12 },
-  pointsVal: { color: "#FFD700", fontSize: 13, fontWeight: "700" },
-  pointsUnit: { color: "#A78BCA", fontSize: 11 },
-  bellBtn: { position: "relative", padding: 6 },
-  bellDot: {
-    position: "absolute", top: 4, right: 4,
-    width: 8, height: 8, borderRadius: 4,
-    backgroundColor: "#E91E8C", borderWidth: 1.5, borderColor: "#1A0533",
-  },
-  searchBar: {
-    flexDirection: "row", alignItems: "center",
-    backgroundColor: "rgba(255,255,255,0.08)",
-    borderRadius: 14, paddingHorizontal: 14, paddingVertical: 12,
-    borderWidth: 1, borderColor: "#4A3080", gap: 10,
-  },
-  searchPlaceholder: { flex: 1, color: "#A78BCA", fontSize: 15 },
-  searchFilter: {
-    width: 30, height: 30, borderRadius: 8,
-    backgroundColor: "rgba(123,47,190,0.2)",
-    alignItems: "center", justifyContent: "center",
-  },
-  liveBanner: { marginHorizontal: 20, marginTop: 14, borderRadius: 14, overflow: "hidden" },
-  liveBannerGradient: {
-    flexDirection: "row", alignItems: "center",
-    padding: 14, gap: 12,
-    borderWidth: 1, borderColor: "#4CAF50",
-    borderRadius: 14,
-  },
-  liveIndicator: {
-    flexDirection: "row", alignItems: "center",
-    backgroundColor: "rgba(76,175,80,0.2)",
-    borderRadius: 10, paddingHorizontal: 8, paddingVertical: 4,
-    gap: 5, borderWidth: 1, borderColor: "#4CAF50",
-  },
-  livePulse: { width: 7, height: 7, borderRadius: 3.5, backgroundColor: "#4CAF50" },
-  liveText: { color: "#4CAF50", fontSize: 11, fontWeight: "800", letterSpacing: 1 },
-  liveBannerInfo: { flex: 1 },
-  liveBannerTitle: { color: "#FFFFFF", fontSize: 14, fontWeight: "700" },
-  liveBannerSub: { color: "#A78BCA", fontSize: 12, marginTop: 1 },
-  section: { paddingHorizontal: 20, marginTop: 20 },
-  sectionHeader: { flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: 12 },
-  sectionTitle: { color: "#FFFFFF", fontSize: 18, fontWeight: "700" },
-  seeAll: { color: "#7B2FBE", fontSize: 14, fontWeight: "600" },
-  planCard: { borderRadius: 22, overflow: "hidden" },
-  planCardContent: { flexDirection: "row", justifyContent: "space-between", alignItems: "center", padding: 20, paddingBottom: 12 },
-  planCardLabel: { color: "rgba(255,255,255,0.7)", fontSize: 12, fontWeight: "600", letterSpacing: 0.5, marginBottom: 4 },
-  planCardTitle: { color: "#FFFFFF", fontSize: 22, fontWeight: "800", lineHeight: 28, marginBottom: 6 },
-  planCardSub: { color: "rgba(255,255,255,0.7)", fontSize: 13 },
-  planCardDuck: { width: 80, height: 80 },
-  planCardBtn: {
-    marginHorizontal: 20, marginBottom: 16,
-    backgroundColor: "rgba(255,255,255,0.2)",
-    borderRadius: 12, paddingVertical: 10, alignItems: "center",
-  },
-  planCardBtnText: { color: "#FFFFFF", fontSize: 15, fontWeight: "700" },
-  quickActions: { flexDirection: "row", gap: 10 },
-  quickAction: { flex: 1, borderRadius: 14, overflow: "hidden" },
-  quickActionGradient: {
-    padding: 14, alignItems: "center", gap: 6,
-    borderWidth: 1, borderColor: "#4A3080",
-    borderRadius: 14,
-  },
-  quickActionIcon: { fontSize: 24 },
-  quickActionLabel: { color: "#FFFFFF", fontSize: 12, fontWeight: "600" },
-  upcomingCard: { borderRadius: 16, overflow: "hidden", marginBottom: 10 },
-  upcomingCardGradient: {
-    flexDirection: "row", alignItems: "center",
-    padding: 14, borderWidth: 1, borderColor: "#4A3080", borderRadius: 16,
-  },
-  upcomingCardLeft: { flex: 1, flexDirection: "row", alignItems: "center", gap: 12 },
-  upcomingEmoji: { fontSize: 36 },
-  upcomingDest: { color: "#FFFFFF", fontSize: 15, fontWeight: "700" },
-  upcomingDates: { color: "#A78BCA", fontSize: 12, marginTop: 2 },
-  upcomingMeta: { flexDirection: "row", alignItems: "center", gap: 5, marginTop: 4 },
-  upcomingMetaText: { color: "#A78BCA", fontSize: 12 },
-  upcomingDot: { color: "#4A3080", fontSize: 12 },
-  upcomingCost: { color: "#4CAF50", fontSize: 12, fontWeight: "600" },
-  upcomingRight: { alignItems: "center", gap: 8 },
-  liveModeBtn: { borderRadius: 10, overflow: "hidden" },
-  liveModeGradient: { paddingHorizontal: 12, paddingVertical: 6 },
-  liveModeText: { color: "#FFFFFF", fontSize: 12, fontWeight: "700" },
-  pointsEarned: { flexDirection: "row", alignItems: "center", gap: 3 },
-  pointsEarnedStar: { color: "#FFD700", fontSize: 11 },
-  pointsEarnedVal: { color: "#FFD700", fontSize: 12, fontWeight: "600" },
-  tipCard: { borderRadius: 16, overflow: "hidden", borderWidth: 1, borderColor: "#7B2FBE" },
-  tipGradient: { flexDirection: "row", alignItems: "center", padding: 14, gap: 12 },
-  tipDuck: { width: 52, height: 52 },
-  tipContent: { flex: 1, gap: 4 },
-  tipLabel: { color: "#7B2FBE", fontSize: 11, fontWeight: "700", letterSpacing: 0.5 },
-  tipText: { color: "#FFFFFF", fontSize: 14, lineHeight: 20 },
-  tipHint: { color: "#6B5A8A", fontSize: 11 },
-  trendCard: { width: 130, borderRadius: 16, overflow: "hidden" },
-  trendCardGradient: {
-    padding: 14, alignItems: "center", gap: 4,
-    borderWidth: 1, borderColor: "#4A3080", borderRadius: 16,
-  },
-  trendEmoji: { fontSize: 36, marginBottom: 4 },
-  trendCity: { color: "#FFFFFF", fontSize: 15, fontWeight: "700" },
-  trendCountry: { color: "#A78BCA", fontSize: 12 },
-  trendMeta: { flexDirection: "row", gap: 8, marginTop: 4 },
-  trendRating: { color: "#FFD700", fontSize: 11, fontWeight: "600" },
-  trendTemp: { color: "#A78BCA", fontSize: 11 },
-  trendPrice: { color: "#4CAF50", fontSize: 12, fontWeight: "700", marginTop: 2 },
-  pointsCard: {
-    borderRadius: 16, flexDirection: "row", alignItems: "center",
-    padding: 16, borderWidth: 1, borderColor: "#4A3080",
-  },
-  pointsCardLeft: { flex: 1, gap: 4 },
-  pointsCardLabel: { color: "#A78BCA", fontSize: 13 },
-  pointsCardVal: { color: "#FFD700", fontSize: 24, fontWeight: "800" },
-  pointsCardSub: { color: "#4CAF50", fontSize: 12 },
-  pointsCardRight: {},
-  redeemBtn: { borderRadius: 12, overflow: "hidden" },
-  redeemGradient: { paddingHorizontal: 16, paddingVertical: 10 },
-  redeemText: { color: "#FFFFFF", fontSize: 14, fontWeight: "700" },
-  emptyState: { alignItems: "center", paddingHorizontal: 40, paddingTop: 20 },
-  emptyDuck: { width: 100, height: 100, marginBottom: 12 },
-  emptyTitle: { color: "#FFFFFF", fontSize: 20, fontWeight: "700", marginBottom: 6 },
-  emptySubtitle: { color: "#A78BCA", fontSize: 14, textAlign: "center", lineHeight: 20 },
+const S = StyleSheet.create({
+  container: { flex: 1, backgroundColor: "#040010" },
+  orb1: { position: "absolute", width: width * 1.5, height: width * 1.5, borderRadius: width * 0.75, top: -width * 0.6, left: -width * 0.4, backgroundColor: "rgba(123,47,190,0.12)" },
+  orb2: { position: "absolute", width: width, height: width, borderRadius: width / 2, top: height * 0.3, right: -width * 0.4, backgroundColor: "rgba(233,30,140,0.06)" },
+  stickyHeader: { position: "absolute", top: 0, left: 0, right: 0, zIndex: 100, flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 24, paddingTop: 56, paddingBottom: 12 },
+  stickyTitle: { color: "#FFFFFF", fontSize: 18, fontWeight: "900", letterSpacing: 2 },
+  stickyPoints: { flexDirection: "row", alignItems: "center", gap: 5, backgroundColor: "rgba(255,215,0,0.15)", paddingHorizontal: 10, paddingVertical: 5, borderRadius: 12 },
+  stickyPointsText: { color: "#FFD700", fontSize: 13, fontWeight: "700" },
+  hero: { paddingTop: 60, paddingBottom: 24, overflow: "hidden" },
+  heroOrb: { position: "absolute", width: width * 1.2, height: width * 1.2, borderRadius: width * 0.6, top: -width * 0.4, right: -width * 0.3, backgroundColor: "rgba(123,47,190,0.15)" },
+  heroContent: { paddingHorizontal: 20, gap: 14 },
+  heroTop: { flexDirection: "row", alignItems: "center", justifyContent: "space-between" },
+  heroGreeting: { color: "rgba(255,255,255,0.5)", fontSize: 15, fontWeight: "500" },
+  heroName: { color: "#FFFFFF", fontSize: 28, fontWeight: "900", letterSpacing: -0.5, lineHeight: 34 },
+  notifBtn: { width: 44, height: 44, borderRadius: 22, overflow: "hidden" },
+  notifGradient: { flex: 1, alignItems: "center", justifyContent: "center", borderWidth: 1, borderColor: "rgba(255,255,255,0.15)", borderRadius: 22 },
+  dnaBadge: { flexDirection: "row", alignItems: "center", gap: 6, alignSelf: "flex-start", borderRadius: 20, overflow: "hidden", paddingHorizontal: 12, paddingVertical: 6, borderWidth: 1, borderColor: "rgba(123,47,190,0.4)" },
+  dnaText: { color: "#C084FC", fontSize: 13, fontWeight: "700" },
+  pointsCard: { borderRadius: 22, overflow: "hidden", padding: 18, flexDirection: "row", alignItems: "center", justifyContent: "space-between", borderWidth: 1, borderColor: "rgba(255,215,0,0.15)" },
+  pointsLeft: { gap: 2 },
+  pointsLabel: { color: "rgba(255,255,255,0.4)", fontSize: 11, fontWeight: "700", letterSpacing: 1.5 },
+  pointsValue: { color: "#FFD700", fontSize: 30, fontWeight: "900", letterSpacing: -1 },
+  pointsSub: { color: "rgba(255,255,255,0.4)", fontSize: 12 },
+  pointsRight: { alignItems: "center", gap: 6 },
+  tierBadge: { borderRadius: 12, overflow: "hidden", paddingHorizontal: 10, paddingVertical: 4 },
+  tierText: { color: "#FFFFFF", fontSize: 11, fontWeight: "800" },
+  activeTripBanner: { flexDirection: "row", alignItems: "center", gap: 12, borderRadius: 16, overflow: "hidden", padding: 14, borderWidth: 1, borderColor: "rgba(16,185,129,0.3)" },
+  activeDot: { width: 8, height: 8, borderRadius: 4, backgroundColor: "#10B981" },
+  activeTripLabel: { color: "#10B981", fontSize: 10, fontWeight: "800", letterSpacing: 1.5 },
+  activeTripDest: { color: "#FFFFFF", fontSize: 15, fontWeight: "700" },
+  activeTripArrow: { width: 28, height: 28, borderRadius: 14, backgroundColor: "rgba(16,185,129,0.2)", alignItems: "center", justifyContent: "center" },
+  section: { paddingTop: 24 },
+  sectionHeader: { flexDirection: "row", alignItems: "flex-end", justifyContent: "space-between", paddingHorizontal: 20, marginBottom: 14 },
+  sectionTitle: { color: "#FFFFFF", fontSize: 19, fontWeight: "900", letterSpacing: -0.3 },
+  sectionSub: { color: "rgba(255,255,255,0.35)", fontSize: 12, marginTop: 2 },
+  sectionLink: { color: "#C084FC", fontSize: 14, fontWeight: "700" },
+  planCta: { marginHorizontal: 20, borderRadius: 22, overflow: "hidden", flexDirection: "row", alignItems: "center", justifyContent: "space-between", padding: 18 },
+  planCtaLeft: { flexDirection: "row", alignItems: "center", gap: 14 },
+  planCtaIcon: { width: 46, height: 46, borderRadius: 14, backgroundColor: "rgba(255,255,255,0.15)", alignItems: "center", justifyContent: "center" },
+  planCtaTitle: { color: "#FFFFFF", fontSize: 17, fontWeight: "800" },
+  planCtaSub: { color: "rgba(255,255,255,0.6)", fontSize: 13, marginTop: 2 },
+  planCtaArrow: { width: 36, height: 36, borderRadius: 18, backgroundColor: "rgba(255,255,255,0.15)", alignItems: "center", justifyContent: "center" },
+  quickRow: { flexDirection: "row", paddingHorizontal: 20, gap: 12 },
+  quickAction: { flex: 1, alignItems: "center", gap: 8 },
+  quickIcon: { width: 54, height: 54, borderRadius: 18, overflow: "hidden" },
+  quickIconGradient: { flex: 1, alignItems: "center", justifyContent: "center" },
+  quickLabel: { color: "rgba(255,255,255,0.65)", fontSize: 12, fontWeight: "600", textAlign: "center" },
+  alertCard: { width: 160, borderRadius: 18, overflow: "hidden", padding: 14, gap: 6 },
+  alertCardBorder: { position: "absolute", top: 0, left: 0, right: 0, bottom: 0, borderRadius: 18, borderWidth: 1, borderColor: "rgba(123,47,190,0.3)" },
+  alertTop: { flexDirection: "row", alignItems: "center", justifyContent: "space-between" },
+  alertDest: { color: "#FFFFFF", fontSize: 15, fontWeight: "800" },
+  alertDropBadge: { backgroundColor: "rgba(16,185,129,0.25)", borderRadius: 8, paddingHorizontal: 7, paddingVertical: 3 },
+  alertDrop: { color: "#10B981", fontSize: 11, fontWeight: "800" },
+  alertFrom: { color: "rgba(255,255,255,0.4)", fontSize: 11 },
+  alertPrice: { color: "#FFFFFF", fontSize: 22, fontWeight: "900" },
+  alertAction: { flexDirection: "row", alignItems: "center", gap: 5 },
+  alertActionText: { color: "rgba(192,132,252,0.7)", fontSize: 12, fontWeight: "600" },
+  featCard: { width: width * 0.62, height: 220, borderRadius: 24, overflow: "hidden", justifyContent: "space-between", padding: 14 },
+  featOverlay: { position: "absolute", top: 0, left: 0, right: 0, bottom: 0, backgroundColor: "rgba(0,0,0,0.2)" },
+  featBadge: { flexDirection: "row", alignItems: "center", gap: 5, alignSelf: "flex-start", backgroundColor: "rgba(0,0,0,0.4)", borderRadius: 10, paddingHorizontal: 8, paddingVertical: 4 },
+  featBadgeDot: { width: 6, height: 6, borderRadius: 3 },
+  featBadgeText: { color: "#FFFFFF", fontSize: 11, fontWeight: "700" },
+  featBottom: { gap: 2 },
+  featCity: { color: "#FFFFFF", fontSize: 22, fontWeight: "900", letterSpacing: -0.5 },
+  featCountry: { color: "rgba(255,255,255,0.55)", fontSize: 13, fontWeight: "600" },
+  featTagline: { color: "rgba(255,255,255,0.4)", fontSize: 11, marginTop: 2 },
+  featPriceRow: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginTop: 6 },
+  featPrice: { color: "#FFFFFF", fontSize: 14, fontWeight: "700" },
+  featPlanBtn: { borderRadius: 10, overflow: "hidden", paddingHorizontal: 12, paddingVertical: 6 },
+  featPlanText: { color: "#FFFFFF", fontSize: 12, fontWeight: "800" },
+  tripCard: { marginHorizontal: 20, borderRadius: 18, overflow: "hidden", flexDirection: "row", alignItems: "center", justifyContent: "space-between", padding: 14, marginBottom: 10 },
+  tripCardBorder: { position: "absolute", top: 0, left: 0, right: 0, bottom: 0, borderRadius: 18, borderWidth: 1, borderColor: "rgba(123,47,190,0.3)" },
+  tripCardLeft: { flexDirection: "row", alignItems: "center", gap: 12 },
+  tripIconWrap: { width: 42, height: 42, borderRadius: 13, overflow: "hidden" },
+  tripIconGradient: { flex: 1, alignItems: "center", justifyContent: "center" },
+  tripDest: { color: "#FFFFFF", fontSize: 15, fontWeight: "700" },
+  tripDates: { color: "rgba(255,255,255,0.4)", fontSize: 12, marginTop: 2 },
+  tripStatus: { borderRadius: 10, paddingHorizontal: 10, paddingVertical: 5 },
+  tripStatusText: { fontSize: 12, fontWeight: "700" },
+  storyCard: { marginHorizontal: 20, borderRadius: 18, overflow: "hidden", flexDirection: "row", gap: 12, padding: 14, marginBottom: 10 },
+  storyCardBorder: { position: "absolute", top: 0, left: 0, right: 0, bottom: 0, borderRadius: 18, borderWidth: 1, borderColor: "rgba(255,255,255,0.07)" },
+  storyAvatar: { width: 40, height: 40, borderRadius: 20, overflow: "hidden" },
+  storyAvatarGradient: { flex: 1, alignItems: "center", justifyContent: "center" },
+  storyAvatarText: { color: "#FFFFFF", fontSize: 16, fontWeight: "800" },
+  storyHeader: { flexDirection: "row", alignItems: "center", gap: 8, marginBottom: 4 },
+  storyAuthor: { color: "#FFFFFF", fontSize: 14, fontWeight: "700" },
+  storyDestPill: { flexDirection: "row", alignItems: "center", gap: 3, backgroundColor: "rgba(123,47,190,0.25)", borderRadius: 8, paddingHorizontal: 7, paddingVertical: 3 },
+  storyDestText: { color: "#C084FC", fontSize: 11, fontWeight: "600" },
+  storyText: { color: "rgba(255,255,255,0.55)", fontSize: 13, lineHeight: 19 },
 });

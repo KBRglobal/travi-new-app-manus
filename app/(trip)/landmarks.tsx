@@ -1,212 +1,227 @@
-import { useState } from "react";
-import { View, Text, TouchableOpacity, StyleSheet, FlatList } from "react-native";
+import { useState, useRef, useEffect } from "react";
+import { View, Text, TouchableOpacity, StyleSheet, FlatList, Dimensions, Animated, Platform } from "react-native";
 import { router, useLocalSearchParams } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
 import { IconSymbol } from "@/components/ui/icon-symbol";
-import { ScreenContainer } from "@/components/screen-container";
 import { useStore } from "@/lib/store";
+import * as Haptics from "expo-haptics";
 
-const LANDMARKS_BY_CITY: Record<string, { id: string; name: string; emoji: string; category: string; aiPick: boolean }[]> = {
+const { width } = Dimensions.get("window");
+
+type LandmarkIcon = "building.columns.fill" | "mountain.2.fill" | "beach.umbrella" | "building.2.fill" | "paintbrush.fill" | "fork.knife" | "leaf.fill" | "globe";
+
+const LANDMARKS: Record<string, { id: string; name: string; type: string; rating: number; icon: LandmarkIcon }[]> = {
   default: [
-    { id: "l1", name: "Old Town / Historic Center", emoji: "🏛️", category: "Culture", aiPick: true },
-    { id: "l2", name: "Main Market Square", emoji: "🏪", category: "Local Life", aiPick: true },
-    { id: "l3", name: "National Museum", emoji: "🖼️", category: "Culture", aiPick: true },
-    { id: "l4", name: "Local Food Market", emoji: "🥘", category: "Food", aiPick: false },
-    { id: "l5", name: "Botanical Garden", emoji: "🌸", category: "Nature", aiPick: false },
-    { id: "l6", name: "Viewpoint / Panorama", emoji: "🌅", category: "Photography", aiPick: true },
-    { id: "l7", name: "Famous Restaurant District", emoji: "🍽️", category: "Food", aiPick: false },
-    { id: "l8", name: "Art Gallery", emoji: "🎨", category: "Culture", aiPick: false },
+    { id: "l1", name: "Old Town", type: "Historic District", rating: 4.9, icon: "building.columns.fill" },
+    { id: "l2", name: "Central Market", type: "Local Experience", rating: 4.7, icon: "fork.knife" },
+    { id: "l3", name: "City Viewpoint", type: "Scenic Spot", rating: 4.8, icon: "mountain.2.fill" },
+    { id: "l4", name: "National Museum", type: "Culture", rating: 4.6, icon: "paintbrush.fill" },
+    { id: "l5", name: "Botanical Garden", type: "Nature", rating: 4.7, icon: "leaf.fill" },
+    { id: "l6", name: "Waterfront Promenade", type: "Leisure", rating: 4.5, icon: "beach.umbrella" },
+    { id: "l7", name: "Art District", type: "Culture", rating: 4.6, icon: "paintbrush.fill" },
+    { id: "l8", name: "Night Market", type: "Food & Culture", rating: 4.8, icon: "fork.knife" },
   ],
   Paris: [
-    { id: "p1", name: "Eiffel Tower", emoji: "🗼", category: "Landmark", aiPick: true },
-    { id: "p2", name: "Louvre Museum", emoji: "🖼️", category: "Culture", aiPick: true },
-    { id: "p3", name: "Montmartre", emoji: "⛪", category: "Culture", aiPick: true },
-    { id: "p4", name: "Notre-Dame Cathedral", emoji: "🏰", category: "Culture", aiPick: false },
-    { id: "p5", name: "Champs-Élysées", emoji: "🛍️", category: "Shopping", aiPick: false },
-    { id: "p6", name: "Seine River Cruise", emoji: "🚢", category: "Experience", aiPick: true },
-    { id: "p7", name: "Versailles Palace", emoji: "👑", category: "History", aiPick: false },
-    { id: "p8", name: "Le Marais District", emoji: "🏘️", category: "Local Life", aiPick: false },
+    { id: "p1", name: "Eiffel Tower", type: "Iconic Landmark", rating: 4.9, icon: "building.2.fill" },
+    { id: "p2", name: "Louvre Museum", type: "World-Class Art", rating: 4.8, icon: "paintbrush.fill" },
+    { id: "p3", name: "Montmartre", type: "Historic District", rating: 4.7, icon: "building.columns.fill" },
+    { id: "p4", name: "Champs-Élysées", type: "Shopping & Leisure", rating: 4.6, icon: "building.2.fill" },
+    { id: "p5", name: "Notre-Dame", type: "Historic Cathedral", rating: 4.8, icon: "building.columns.fill" },
+    { id: "p6", name: "Seine River Cruise", type: "Scenic Experience", rating: 4.7, icon: "beach.umbrella" },
+    { id: "p7", name: "Versailles Palace", type: "Royal Heritage", rating: 4.9, icon: "building.columns.fill" },
+    { id: "p8", name: "Marais District", type: "Food & Culture", rating: 4.6, icon: "fork.knife" },
   ],
   Tokyo: [
-    { id: "t1", name: "Shibuya Crossing", emoji: "🚦", category: "Iconic", aiPick: true },
-    { id: "t2", name: "Senso-ji Temple", emoji: "⛩️", category: "Culture", aiPick: true },
-    { id: "t3", name: "Tsukiji Fish Market", emoji: "🐟", category: "Food", aiPick: true },
-    { id: "t4", name: "Akihabara", emoji: "🎮", category: "Entertainment", aiPick: false },
-    { id: "t5", name: "Mount Fuji Day Trip", emoji: "🗻", category: "Nature", aiPick: true },
-    { id: "t6", name: "Shinjuku Gyoen Garden", emoji: "🌸", category: "Nature", aiPick: false },
-    { id: "t7", name: "teamLab Borderless", emoji: "🌈", category: "Art", aiPick: false },
-    { id: "t8", name: "Harajuku", emoji: "🎀", category: "Culture", aiPick: false },
+    { id: "t1", name: "Senso-ji Temple", type: "Sacred Site", rating: 4.9, icon: "building.columns.fill" },
+    { id: "t2", name: "Shibuya Crossing", type: "Iconic Spot", rating: 4.8, icon: "building.2.fill" },
+    { id: "t3", name: "Tsukiji Market", type: "Food Experience", rating: 4.7, icon: "fork.knife" },
+    { id: "t4", name: "Shinjuku Garden", type: "Nature & Peace", rating: 4.6, icon: "leaf.fill" },
+    { id: "t5", name: "Akihabara", type: "Tech & Pop Culture", rating: 4.5, icon: "building.2.fill" },
+    { id: "t6", name: "Mt. Fuji View", type: "Scenic Wonder", rating: 5.0, icon: "mountain.2.fill" },
+    { id: "t7", name: "Harajuku", type: "Fashion & Culture", rating: 4.6, icon: "paintbrush.fill" },
+    { id: "t8", name: "Odaiba Island", type: "Modern Marvel", rating: 4.5, icon: "globe" },
   ],
+  Bali: [
+    { id: "b1", name: "Tanah Lot Temple", type: "Sacred Site", rating: 4.9, icon: "building.columns.fill" },
+    { id: "b2", name: "Ubud Rice Terraces", type: "Natural Wonder", rating: 4.8, icon: "mountain.2.fill" },
+    { id: "b3", name: "Seminyak Beach", type: "Beach", rating: 4.7, icon: "beach.umbrella" },
+    { id: "b4", name: "Sacred Monkey Forest", type: "Nature", rating: 4.6, icon: "leaf.fill" },
+    { id: "b5", name: "Tegallalang", type: "Scenic Terraces", rating: 4.8, icon: "mountain.2.fill" },
+    { id: "b6", name: "Uluwatu Temple", type: "Cliff Temple", rating: 4.9, icon: "building.columns.fill" },
+    { id: "b7", name: "Kuta Night Market", type: "Food & Culture", rating: 4.5, icon: "fork.knife" },
+    { id: "b8", name: "Nusa Penida", type: "Island Escape", rating: 4.9, icon: "beach.umbrella" },
+  ],
+};
+
+const ICON_COLORS: Record<LandmarkIcon, string> = {
+  "building.columns.fill": "#7B2FBE",
+  "mountain.2.fill": "#4CAF50",
+  "beach.umbrella": "#2196F3",
+  "building.2.fill": "#FF9800",
+  "paintbrush.fill": "#E91E8C",
+  "fork.knife": "#FF6B35",
+  "leaf.fill": "#8BC34A",
+  "globe": "#00BCD4",
 };
 
 export default function LandmarksScreen() {
   const { tripId } = useLocalSearchParams<{ tripId: string }>();
   const { state, dispatch } = useStore();
+  const [selected, setSelected] = useState<string[]>([]);
+  const fadeAnim = useRef(new Animated.Value(0)).current;
+
   const trip = state.trips.find((t) => t.id === tripId);
+  const dest = trip?.destination || "default";
+  const landmarks = LANDMARKS[dest] || LANDMARKS.default;
 
-  const cityKey = trip?.destination || "default";
-  const landmarks = LANDMARKS_BY_CITY[cityKey] || LANDMARKS_BY_CITY.default;
-
-  const [selected, setSelected] = useState<string[]>(
-    landmarks.filter((l) => l.aiPick).map((l) => l.id)
-  );
+  useEffect(() => {
+    Animated.timing(fadeAnim, { toValue: 1, duration: 400, useNativeDriver: true }).start();
+  }, []);
 
   const toggle = (id: string) => {
-    setSelected((prev) => prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]);
+    if (Platform.OS !== "web") Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    setSelected((prev) => prev.includes(id) ? prev.filter((i) => i !== id) : [...prev, id]);
   };
 
   const handleNext = () => {
-    dispatch({ type: "UPDATE_TRIP", payload: { id: tripId, updates: { landmarks: selected } } });
-    router.push({ pathname: "/(trip)/flights" as never, params: { tripId } });
+    if (selected.length === 0) return;
+    if (Platform.OS !== "web") Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+    if (tripId) dispatch({ type: "UPDATE_TRIP", payload: { id: tripId, updates: { landmarks: selected } } });
+    router.push({ pathname: "/(trip)/flights", params: { tripId } } as never);
   };
 
   return (
-    <ScreenContainer containerClassName="bg-background">
-      <LinearGradient colors={["#2D1B69", "#1A0533"]} style={styles.header}>
-        <TouchableOpacity onPress={() => router.back()} style={styles.backBtn}>
-          <IconSymbol name="chevron.left" size={24} color="#FFFFFF" />
+    <View style={styles.container}>
+      <LinearGradient colors={["#040010", "#0D0520", "#1A0A3D"]} style={StyleSheet.absoluteFillObject} />
+      <View style={styles.orb1} />
+
+      <View style={styles.header}>
+        <TouchableOpacity style={styles.backBtn} onPress={() => router.back()} activeOpacity={0.7}>
+          <IconSymbol name="chevron.left" size={22} color="#FFFFFF" />
         </TouchableOpacity>
-        <View style={styles.stepIndicator}>
-          <Text style={styles.stepText}>Step 3 of 6</Text>
-          <View style={styles.stepBar}>
-            {[1,2,3,4,5,6].map((s) => (
-              <View key={s} style={[styles.stepDot, s <= 3 && styles.stepDotActive]} />
-            ))}
+        <View style={styles.progressWrap}>
+          <View style={styles.progressTrack}>
+            <View style={[styles.progressFill, { width: "60%" }]} />
           </View>
+          <Text style={styles.progressLabel}>3 of 5</Text>
         </View>
         <View style={{ width: 40 }} />
-      </LinearGradient>
-
-      <View style={styles.titleSection}>
-        <Text style={styles.title}>Top Landmarks</Text>
-        <Text style={styles.subtitle}>
-          TRAVI pre-selected the best spots for {trip?.destination || "your trip"}
-        </Text>
-        <View style={styles.aiChip}>
-          <Text style={styles.aiChipText}>🧠 AI Picks highlighted</Text>
-        </View>
       </View>
 
-      <FlatList
-        data={landmarks}
-        keyExtractor={(item) => item.id}
-        contentContainerStyle={styles.list}
-        renderItem={({ item }) => {
-          const isSelected = selected.includes(item.id);
-          return (
-            <TouchableOpacity
-              style={[styles.landmarkCard, isSelected && styles.landmarkCardActive]}
-              onPress={() => toggle(item.id)}
-              activeOpacity={0.8}
-            >
-              <Text style={styles.landmarkEmoji}>{item.emoji}</Text>
-              <View style={styles.landmarkInfo}>
-                <Text style={[styles.landmarkName, isSelected && styles.landmarkNameActive]}>
-                  {item.name}
-                </Text>
-                <View style={styles.landmarkMeta}>
-                  <Text style={styles.landmarkCategory}>{item.category}</Text>
-                  {item.aiPick && (
-                    <View style={styles.aiPickBadge}>
-                      <Text style={styles.aiPickText}>🧠 AI Pick</Text>
-                    </View>
-                  )}
+      <View style={styles.duckRow}>
+        <View style={styles.duckAvatar}>
+          <LinearGradient colors={["#7B2FBE", "#E91E8C"]} style={styles.duckGradient}>
+            <Text style={styles.duckEmoji}>🦆</Text>
+          </LinearGradient>
+        </View>
+        <Animated.View style={[styles.duckBubble, { opacity: fadeAnim }]}>
+          <LinearGradient colors={["rgba(123,47,190,0.4)", "rgba(233,30,140,0.25)"]} style={styles.duckBubbleGradient}>
+            <Text style={styles.duckMessage}>Which places must you visit?</Text>
+            <Text style={styles.duckSub}>{dest !== "default" ? `Top spots in ${dest}` : "Curated for you"}</Text>
+          </LinearGradient>
+        </Animated.View>
+      </View>
+
+      <Animated.View style={[{ flex: 1 }, { opacity: fadeAnim }]}>
+        <FlatList
+          data={landmarks}
+          keyExtractor={(item) => item.id}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={styles.list}
+          renderItem={({ item }) => {
+            const isSelected = selected.includes(item.id);
+            const color = ICON_COLORS[item.icon] || "#7B2FBE";
+            return (
+              <TouchableOpacity
+                style={[styles.card, isSelected && { borderColor: color + "AA" }]}
+                onPress={() => toggle(item.id)}
+                activeOpacity={0.88}
+              >
+                <LinearGradient
+                  colors={isSelected ? [color + "22", color + "11"] : ["rgba(255,255,255,0.06)", "rgba(255,255,255,0.03)"]}
+                  style={StyleSheet.absoluteFillObject}
+                />
+                <View style={[styles.iconWrap, { backgroundColor: color + "22" }]}>
+                  <IconSymbol name={item.icon} size={26} color={color} />
                 </View>
-              </View>
-              <View style={[styles.checkbox, isSelected && styles.checkboxActive]}>
-                {isSelected && <IconSymbol name="checkmark" size={14} color="#FFFFFF" />}
-              </View>
-            </TouchableOpacity>
-          );
-        }}
-        ListFooterComponent={
-          <TouchableOpacity
-            style={styles.nextBtn}
-            onPress={handleNext}
-            activeOpacity={0.85}
+                <View style={styles.cardInfo}>
+                  <Text style={[styles.cardName, isSelected && { color: "#FFFFFF" }]}>{item.name}</Text>
+                  <Text style={styles.cardType}>{item.type}</Text>
+                  <View style={styles.ratingRow}>
+                    <IconSymbol name="star.fill" size={12} color="#FFD700" />
+                    <Text style={styles.ratingText}>{item.rating.toFixed(1)}</Text>
+                  </View>
+                </View>
+                {isSelected ? (
+                  <View style={[styles.checkCircle, { backgroundColor: color }]}>
+                    <IconSymbol name="checkmark" size={16} color="#FFFFFF" />
+                  </View>
+                ) : (
+                  <View style={styles.addCircle}>
+                    <IconSymbol name="plus" size={16} color="rgba(255,255,255,0.3)" />
+                  </View>
+                )}
+              </TouchableOpacity>
+            );
+          }}
+        />
+      </Animated.View>
+
+      <View style={styles.ctaWrap}>
+        {selected.length > 0 && (
+          <Text style={styles.selectedCount}>{selected.length} landmarks selected</Text>
+        )}
+        <TouchableOpacity
+          style={[styles.ctaBtn, selected.length === 0 && styles.ctaBtnDisabled]}
+          onPress={handleNext}
+          activeOpacity={0.88}
+        >
+          <LinearGradient
+            colors={selected.length > 0 ? ["#7B2FBE", "#E91E8C"] : ["rgba(255,255,255,0.08)", "rgba(255,255,255,0.05)"]}
+            start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
+            style={styles.ctaGradient}
           >
-            <LinearGradient
-              colors={["#7B2FBE", "#E91E8C"]}
-              start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 0 }}
-              style={styles.nextGradient}
-            >
-              <Text style={styles.nextText}>Choose Flight</Text>
-              <IconSymbol name="arrow.right" size={18} color="#FFFFFF" style={{ marginLeft: 8 }} />
-            </LinearGradient>
-          </TouchableOpacity>
-        }
-      />
-    </ScreenContainer>
+            <Text style={[styles.ctaText, selected.length === 0 && styles.ctaTextDisabled]}>Find Flights</Text>
+            <IconSymbol name="airplane" size={20} color={selected.length > 0 ? "#FFFFFF" : "#3A2D4E"} />
+          </LinearGradient>
+        </TouchableOpacity>
+      </View>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  header: {
-    flexDirection: "row",
-    alignItems: "center",
-    paddingTop: 16,
-    paddingHorizontal: 20,
-    paddingBottom: 16,
-    gap: 12,
-  },
-  backBtn: { width: 40, height: 40, alignItems: "center", justifyContent: "center" },
-  stepIndicator: { flex: 1, alignItems: "center", gap: 6 },
-  stepText: { color: "#A78BCA", fontSize: 12 },
-  stepBar: { flexDirection: "row", gap: 4 },
-  stepDot: { width: 24, height: 4, borderRadius: 2, backgroundColor: "#4A3080" },
-  stepDotActive: { backgroundColor: "#E91E8C" },
-  titleSection: { paddingHorizontal: 24, paddingTop: 20, paddingBottom: 12 },
-  title: { color: "#FFFFFF", fontSize: 26, fontWeight: "700", marginBottom: 6 },
-  subtitle: { color: "#A78BCA", fontSize: 15, marginBottom: 10 },
-  aiChip: {
-    backgroundColor: "#2D1B69",
-    borderRadius: 8,
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-    alignSelf: "flex-start",
-    borderWidth: 1,
-    borderColor: "#4A3080",
-  },
-  aiChipText: { color: "#A78BCA", fontSize: 12 },
-  list: { paddingHorizontal: 24, paddingBottom: 40, gap: 10 },
-  landmarkCard: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "#2D1B69",
-    borderRadius: 14,
-    padding: 14,
-    borderWidth: 1,
-    borderColor: "#4A3080",
-    gap: 12,
-  },
-  landmarkCardActive: { backgroundColor: "#3D2580", borderColor: "#7B2FBE" },
-  landmarkEmoji: { fontSize: 28, width: 36, textAlign: "center" },
-  landmarkInfo: { flex: 1 },
-  landmarkName: { color: "#A78BCA", fontSize: 15, fontWeight: "600", marginBottom: 4 },
-  landmarkNameActive: { color: "#FFFFFF" },
-  landmarkMeta: { flexDirection: "row", alignItems: "center", gap: 8 },
-  landmarkCategory: { color: "#6B5A8A", fontSize: 12 },
-  aiPickBadge: {
-    backgroundColor: "rgba(123, 47, 190, 0.2)",
-    borderRadius: 6,
-    paddingHorizontal: 6,
-    paddingVertical: 2,
-    borderWidth: 1,
-    borderColor: "#7B2FBE",
-  },
-  aiPickText: { color: "#7B2FBE", fontSize: 10, fontWeight: "600" },
-  checkbox: {
-    width: 24,
-    height: 24,
-    borderRadius: 12,
-    borderWidth: 1.5,
-    borderColor: "#4A3080",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  checkboxActive: { backgroundColor: "#E91E8C", borderColor: "#E91E8C" },
-  nextBtn: { borderRadius: 28, overflow: "hidden", marginTop: 16 },
-  nextGradient: { paddingVertical: 16, flexDirection: "row", alignItems: "center", justifyContent: "center" },
-  nextText: { color: "#FFFFFF", fontSize: 17, fontWeight: "700" },
+  container: { flex: 1, backgroundColor: "#040010" },
+  orb1: { position: "absolute", width: width, height: width, borderRadius: width / 2, top: -width * 0.4, right: -width * 0.3, backgroundColor: "rgba(233,30,140,0.07)" },
+  header: { flexDirection: "row", alignItems: "center", paddingHorizontal: 20, paddingTop: 60, paddingBottom: 16, gap: 12 },
+  backBtn: { width: 40, height: 40, borderRadius: 14, backgroundColor: "rgba(255,255,255,0.08)", alignItems: "center", justifyContent: "center" },
+  progressWrap: { flex: 1, gap: 6 },
+  progressTrack: { height: 4, backgroundColor: "rgba(255,255,255,0.1)", borderRadius: 2, overflow: "hidden" },
+  progressFill: { height: "100%", backgroundColor: "#E91E8C", borderRadius: 2 },
+  progressLabel: { color: "rgba(255,255,255,0.4)", fontSize: 12, textAlign: "right" },
+  duckRow: { flexDirection: "row", alignItems: "flex-end", paddingHorizontal: 20, paddingBottom: 16, gap: 10 },
+  duckAvatar: { width: 44, height: 44, borderRadius: 22, overflow: "hidden" },
+  duckGradient: { flex: 1, alignItems: "center", justifyContent: "center" },
+  duckEmoji: { fontSize: 24 },
+  duckBubble: { flex: 1, borderRadius: 18, borderBottomLeftRadius: 4, overflow: "hidden" },
+  duckBubbleGradient: { paddingHorizontal: 16, paddingVertical: 12, borderRadius: 18, borderBottomLeftRadius: 4, borderWidth: 1, borderColor: "rgba(123,47,190,0.4)" },
+  duckMessage: { color: "#FFFFFF", fontSize: 15, fontWeight: "700", lineHeight: 20 },
+  duckSub: { color: "rgba(255,255,255,0.5)", fontSize: 12, marginTop: 2 },
+  list: { paddingHorizontal: 20, gap: 12, paddingBottom: 20 },
+  card: { flexDirection: "row", alignItems: "center", borderRadius: 20, padding: 16, gap: 14, overflow: "hidden", borderWidth: 2, borderColor: "rgba(255,255,255,0.08)" },
+  iconWrap: { width: 52, height: 52, borderRadius: 16, alignItems: "center", justifyContent: "center" },
+  cardInfo: { flex: 1, gap: 3 },
+  cardName: { color: "rgba(255,255,255,0.8)", fontSize: 16, fontWeight: "700" },
+  cardType: { color: "rgba(255,255,255,0.4)", fontSize: 12 },
+  ratingRow: { flexDirection: "row", alignItems: "center", gap: 4, marginTop: 2 },
+  ratingText: { color: "#FFD700", fontSize: 12, fontWeight: "600" },
+  checkCircle: { width: 36, height: 36, borderRadius: 18, alignItems: "center", justifyContent: "center" },
+  addCircle: { width: 36, height: 36, borderRadius: 18, borderWidth: 1.5, borderColor: "rgba(255,255,255,0.15)", alignItems: "center", justifyContent: "center" },
+  ctaWrap: { paddingHorizontal: 20, paddingBottom: 40, paddingTop: 12, gap: 8 },
+  selectedCount: { color: "rgba(192,132,252,0.8)", fontSize: 13, fontWeight: "600", textAlign: "center" },
+  ctaBtn: { borderRadius: 20, overflow: "hidden" },
+  ctaBtnDisabled: { opacity: 0.5 },
+  ctaGradient: { flexDirection: "row", alignItems: "center", justifyContent: "center", paddingVertical: 18, gap: 10, borderRadius: 20 },
+  ctaText: { color: "#FFFFFF", fontSize: 18, fontWeight: "800" },
+  ctaTextDisabled: { color: "#3A2D4E" },
 });

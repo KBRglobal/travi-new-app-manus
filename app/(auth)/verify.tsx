@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import {
-  View, Text, TextInput, TouchableOpacity, StyleSheet, Dimensions
+  View, Text, TextInput, TouchableOpacity, StyleSheet,
+  Dimensions, Animated, KeyboardAvoidingView, Platform
 } from "react-native";
 import { router, useLocalSearchParams } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
@@ -16,8 +17,12 @@ export default function VerifyScreen() {
   const [code, setCode] = useState<string[]>(Array(CODE_LENGTH).fill(""));
   const [timer, setTimer] = useState(30);
   const [canResend, setCanResend] = useState(false);
-  const [error, setError] = useState("");
+  const [verified, setVerified] = useState(false);
+  const [error, setError] = useState(false);
   const inputs = useRef<(TextInput | null)[]>([]);
+  const shakeAnim = useRef(new Animated.Value(0)).current;
+  const successScale = useRef(new Animated.Value(0)).current;
+  const successOpacity = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
     if (timer > 0) {
@@ -32,10 +37,8 @@ export default function VerifyScreen() {
     const newCode = [...code];
     newCode[idx] = val.replace(/[^0-9]/g, "").slice(-1);
     setCode(newCode);
-    setError("");
-    if (val && idx < CODE_LENGTH - 1) {
-      inputs.current[idx + 1]?.focus();
-    }
+    setError(false);
+    if (val && idx < CODE_LENGTH - 1) inputs.current[idx + 1]?.focus();
     if (newCode.every((c) => c !== "") && newCode.join("").length === CODE_LENGTH) {
       handleVerify(newCode.join(""));
     }
@@ -49,26 +52,34 @@ export default function VerifyScreen() {
 
   const handleVerify = (fullCode?: string) => {
     const entered = fullCode || code.join("");
-    // For demo: any 6-digit code works
     if (entered.length === 6) {
-      dispatch({ type: "SET_AUTH", payload: { isAuthenticated: true, isGuest: false } });
-      dispatch({
-        type: "SET_PROFILE",
-        payload: {
-          id: Date.now().toString(),
-          name: "",
-          email: email || "",
-          quizCompleted: false,
-          travelerDNA: {},
-          foodPreferences: { cuisines: [], avoid: [], allergies: [], dietary: [] },
-          points: 0,
-          lifetimeSavings: 0,
-          subscriptionActive: false,
-        },
-      });
-      router.push("/(auth)/profile-setup" as never);
+      setVerified(true);
+      Animated.parallel([
+        Animated.spring(successScale, { toValue: 1, friction: 5, tension: 60, useNativeDriver: true }),
+        Animated.timing(successOpacity, { toValue: 1, duration: 300, useNativeDriver: true }),
+      ]).start();
+      setTimeout(() => {
+        dispatch({ type: "SET_AUTH", payload: { isAuthenticated: true, isGuest: false } });
+        dispatch({
+          type: "SET_PROFILE",
+          payload: {
+            id: Date.now().toString(), name: "", email: email || "",
+            quizCompleted: false, travelerDNA: {},
+            foodPreferences: { cuisines: [], avoid: [], allergies: [], dietary: [] },
+            points: 0, lifetimeSavings: 0, subscriptionActive: false,
+          },
+        });
+        router.push("/(auth)/profile-setup" as never);
+      }, 1200);
     } else {
-      setError("Please enter the 6-digit code");
+      setError(true);
+      Animated.sequence([
+        Animated.timing(shakeAnim, { toValue: 12, duration: 60, useNativeDriver: true }),
+        Animated.timing(shakeAnim, { toValue: -12, duration: 60, useNativeDriver: true }),
+        Animated.timing(shakeAnim, { toValue: 8, duration: 60, useNativeDriver: true }),
+        Animated.timing(shakeAnim, { toValue: -8, duration: 60, useNativeDriver: true }),
+        Animated.timing(shakeAnim, { toValue: 0, duration: 60, useNativeDriver: true }),
+      ]).start();
     }
   };
 
@@ -76,130 +87,165 @@ export default function VerifyScreen() {
     setTimer(30);
     setCanResend(false);
     setCode(Array(CODE_LENGTH).fill(""));
+    setError(false);
     inputs.current[0]?.focus();
   };
 
   return (
     <View style={styles.container}>
       <LinearGradient
-        colors={["#1A0533", "#2D1B69", "#1A0533"]}
+        colors={["#040010", "#0D0520", "#1A0A3D", "#0D0520"]}
+        locations={[0, 0.3, 0.6, 1]}
         style={StyleSheet.absoluteFillObject}
-        start={{ x: 0.5, y: 0 }}
-        end={{ x: 0.5, y: 1 }}
       />
+      <View style={styles.orb1} />
+      <View style={styles.orb2} />
 
-      <TouchableOpacity style={styles.backBtn} onPress={() => router.back()}>
-        <IconSymbol name="chevron.left" size={24} color="#FFFFFF" />
-      </TouchableOpacity>
+      <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={{ flex: 1 }}>
+        <View style={styles.inner}>
+          {/* Back */}
+          <TouchableOpacity style={styles.backBtn} onPress={() => router.back()} activeOpacity={0.7}>
+            <LinearGradient colors={["rgba(255,255,255,0.08)", "rgba(255,255,255,0.04)"]} style={styles.backGradient}>
+              <IconSymbol name="chevron.left" size={20} color="#C4B5D9" />
+            </LinearGradient>
+          </TouchableOpacity>
 
-      <View style={styles.content}>
-        <View style={styles.iconCircle}>
-          <Text style={styles.emailEmoji}>✉️</Text>
-        </View>
+          {/* Icon */}
+          <View style={styles.iconWrap}>
+            <LinearGradient colors={["rgba(123,47,190,0.45)", "rgba(233,30,140,0.25)"]} style={styles.iconGradient}>
+              <Text style={styles.iconEmoji}>✉️</Text>
+            </LinearGradient>
+            <View style={styles.iconGlow} />
+          </View>
 
-        <Text style={styles.title}>Check your email</Text>
-        <Text style={styles.subtitle}>
-          We sent a 6-digit code to{"\n"}
-          <Text style={styles.emailText}>{email || "your email"}</Text>
-        </Text>
+          <Text style={styles.title}>Check your email</Text>
+          <Text style={styles.subtitle}>
+            We sent a 6-digit code to{"\n"}
+            <Text style={styles.emailHighlight}>{email || "your email"}</Text>
+          </Text>
 
-        {/* OTP Inputs */}
-        <View style={styles.codeRow}>
-          {code.map((digit, idx) => (
-            <TextInput
-              key={idx}
-              ref={(r) => { inputs.current[idx] = r; }}
-              style={[styles.codeInput, digit ? styles.codeInputFilled : null]}
-              value={digit}
-              onChangeText={(v) => handleChange(v, idx)}
-              onKeyPress={(e) => handleKeyPress(e, idx)}
-              keyboardType="number-pad"
-              maxLength={1}
-              selectTextOnFocus
-              caretHidden
-            />
-          ))}
-        </View>
+          {/* Code inputs */}
+          <Animated.View style={[styles.codeRow, { transform: [{ translateX: shakeAnim }] }]}>
+            {code.map((digit, idx) => (
+              <View key={idx} style={[
+                styles.codeBox,
+                digit ? styles.codeBoxFilled : null,
+                error ? styles.codeBoxError : null,
+                verified ? styles.codeBoxSuccess : null,
+              ]}>
+                {digit ? (
+                  <LinearGradient
+                    colors={verified
+                      ? ["rgba(0,230,118,0.25)", "rgba(0,188,212,0.12)"]
+                      : ["rgba(123,47,190,0.35)", "rgba(233,30,140,0.18)"]}
+                    style={StyleSheet.absoluteFillObject}
+                  />
+                ) : null}
+                <TextInput
+                  ref={(r) => { inputs.current[idx] = r; }}
+                  style={[styles.codeInput, digit ? styles.codeInputFilled : null]}
+                  value={digit}
+                  onChangeText={(v) => handleChange(v, idx)}
+                  onKeyPress={(e) => handleKeyPress(e, idx)}
+                  keyboardType="number-pad"
+                  maxLength={1}
+                  selectTextOnFocus
+                  caretHidden
+                />
+              </View>
+            ))}
+          </Animated.View>
 
-        {error ? <Text style={styles.error}>{error}</Text> : null}
+          {error && <Text style={styles.errorText}>Incorrect code — any 6 digits work in demo</Text>}
 
-        {/* Verify Button */}
-        <TouchableOpacity
-          style={styles.ctaWrapper}
-          onPress={() => handleVerify()}
-          activeOpacity={0.85}
-        >
-          <LinearGradient
-            colors={["#7B2FBE", "#E91E8C"]}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 0 }}
-            style={styles.ctaGradient}
-          >
-            <Text style={styles.ctaText}>Verify Email</Text>
-          </LinearGradient>
-        </TouchableOpacity>
-
-        {/* Resend */}
-        <View style={styles.resendRow}>
-          <Text style={styles.resendLabel}>Didn't receive the code? </Text>
-          {canResend ? (
-            <TouchableOpacity onPress={handleResend}>
-              <Text style={styles.resendLink}>Resend</Text>
-            </TouchableOpacity>
-          ) : (
-            <Text style={styles.resendTimer}>Resend in {timer}s</Text>
+          {/* Success */}
+          {verified && (
+            <Animated.View style={[styles.successBadge, { opacity: successOpacity, transform: [{ scale: successScale }] }]}>
+              <LinearGradient colors={["rgba(0,230,118,0.25)", "rgba(0,188,212,0.15)"]} style={styles.successGradient}>
+                <Text style={styles.successIcon}>✓</Text>
+                <Text style={styles.successText}>Verified! Redirecting...</Text>
+              </LinearGradient>
+            </Animated.View>
           )}
+
+          {/* Verify button */}
+          {!verified && (
+            <TouchableOpacity
+              style={styles.verifyBtn}
+              onPress={() => handleVerify()}
+              activeOpacity={0.85}
+            >
+              <LinearGradient
+                colors={code.every(Boolean) ? ["#7B2FBE", "#E91E8C"] : ["rgba(255,255,255,0.06)", "rgba(255,255,255,0.03)"]}
+                start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
+                style={styles.verifyGradient}
+              >
+                <Text style={[styles.verifyText, !code.every(Boolean) && styles.verifyTextDim]}>
+                  Verify Email
+                </Text>
+              </LinearGradient>
+            </TouchableOpacity>
+          )}
+
+          {/* Resend */}
+          <View style={styles.resendRow}>
+            <Text style={styles.resendLabel}>Didn't receive it? </Text>
+            {canResend ? (
+              <TouchableOpacity onPress={handleResend} activeOpacity={0.7}>
+                <Text style={styles.resendLink}>Resend code</Text>
+              </TouchableOpacity>
+            ) : (
+              <Text style={styles.resendTimer}>Resend in {timer}s</Text>
+            )}
+          </View>
         </View>
-      </View>
+      </KeyboardAvoidingView>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#1A0533" },
-  backBtn: { position: "absolute", top: 56, left: 20, zIndex: 10, padding: 8 },
-  content: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    paddingHorizontal: 24,
-    paddingBottom: 40,
+  container: { flex: 1, backgroundColor: "#040010" },
+  orb1: {
+    position: "absolute", width: width, height: width, borderRadius: width / 2,
+    top: -width * 0.4, left: -width * 0.2, backgroundColor: "rgba(123,47,190,0.10)",
   },
-  iconCircle: {
-    width: 80,
-    height: 80,
-    borderRadius: 40,
-    backgroundColor: "#2D1B69",
-    alignItems: "center",
-    justifyContent: "center",
-    marginBottom: 24,
-    borderWidth: 1,
-    borderColor: "#4A3080",
+  orb2: {
+    position: "absolute", width: width * 0.8, height: width * 0.8, borderRadius: width * 0.4,
+    bottom: 0, right: -width * 0.3, backgroundColor: "rgba(233,30,140,0.07)",
   },
-  emailEmoji: { fontSize: 36 },
-  title: { color: "#FFFFFF", fontSize: 26, fontWeight: "700", marginBottom: 12, textAlign: "center" },
-  subtitle: { color: "#A78BCA", fontSize: 15, textAlign: "center", lineHeight: 22, marginBottom: 36 },
-  emailText: { color: "#E91E8C", fontWeight: "600" },
-  codeRow: { flexDirection: "row", gap: 10, marginBottom: 24 },
-  codeInput: {
-    width: 46,
-    height: 56,
-    borderRadius: 12,
-    borderWidth: 1.5,
-    borderColor: "#4A3080",
-    backgroundColor: "#2D1B69",
-    color: "#FFFFFF",
-    fontSize: 22,
-    fontWeight: "700",
-    textAlign: "center",
+  inner: { flex: 1, paddingHorizontal: 28, paddingTop: 60, alignItems: "center" },
+  backBtn: { alignSelf: "flex-start", marginBottom: 40 },
+  backGradient: { width: 44, height: 44, borderRadius: 14, alignItems: "center", justifyContent: "center", borderWidth: 1, borderColor: "rgba(255,255,255,0.08)" },
+  iconWrap: { width: 90, height: 90, alignItems: "center", justifyContent: "center", marginBottom: 28 },
+  iconGradient: { width: 90, height: 90, borderRadius: 28, alignItems: "center", justifyContent: "center", borderWidth: 1, borderColor: "rgba(123,47,190,0.5)" },
+  iconGlow: { position: "absolute", width: 90, height: 90, borderRadius: 45, backgroundColor: "rgba(123,47,190,0.15)", shadowColor: "#7B2FBE", shadowOffset: { width: 0, height: 0 }, shadowOpacity: 0.9, shadowRadius: 30 },
+  iconEmoji: { fontSize: 38 },
+  title: { fontSize: 28, fontWeight: "800", color: "#FFFFFF", letterSpacing: -0.5, marginBottom: 10, textAlign: "center" },
+  subtitle: { fontSize: 15, color: "#8B7AAA", textAlign: "center", lineHeight: 22, marginBottom: 36 },
+  emailHighlight: { color: "#E91E8C", fontWeight: "700" },
+  codeRow: { flexDirection: "row", gap: 10, marginBottom: 20 },
+  codeBox: {
+    width: 46, height: 60, borderRadius: 14, overflow: "hidden",
+    borderWidth: 1.5, borderColor: "rgba(255,255,255,0.10)",
+    backgroundColor: "rgba(255,255,255,0.04)", alignItems: "center", justifyContent: "center",
   },
-  codeInputFilled: { borderColor: "#7B2FBE", backgroundColor: "#3D2580" },
-  error: { color: "#F44336", fontSize: 13, marginBottom: 12 },
-  ctaWrapper: { borderRadius: 28, overflow: "hidden", width: "100%", marginBottom: 20 },
-  ctaGradient: { paddingVertical: 16, alignItems: "center" },
-  ctaText: { color: "#FFFFFF", fontSize: 17, fontWeight: "700" },
+  codeBoxFilled: { borderColor: "rgba(123,47,190,0.8)" },
+  codeBoxError: { borderColor: "rgba(239,68,68,0.8)" },
+  codeBoxSuccess: { borderColor: "rgba(0,230,118,0.8)" },
+  codeInput: { width: 46, height: 60, textAlign: "center", fontSize: 24, fontWeight: "700", color: "transparent" },
+  codeInputFilled: { color: "#FFFFFF" },
+  errorText: { color: "#EF4444", fontSize: 13, fontWeight: "500", marginBottom: 12, textAlign: "center" },
+  successBadge: { marginBottom: 16 },
+  successGradient: { flexDirection: "row", alignItems: "center", gap: 8, paddingHorizontal: 20, paddingVertical: 12, borderRadius: 14, borderWidth: 1, borderColor: "rgba(0,230,118,0.4)" },
+  successIcon: { fontSize: 18, color: "#00E676" },
+  successText: { color: "#00E676", fontSize: 15, fontWeight: "700" },
+  verifyBtn: { width: "100%", borderRadius: 16, overflow: "hidden", marginBottom: 20 },
+  verifyGradient: { paddingVertical: 17, alignItems: "center" },
+  verifyText: { color: "#FFFFFF", fontSize: 16, fontWeight: "700" },
+  verifyTextDim: { color: "#3D3050" },
   resendRow: { flexDirection: "row", alignItems: "center" },
-  resendLabel: { color: "#A78BCA", fontSize: 14 },
-  resendLink: { color: "#E91E8C", fontSize: 14, fontWeight: "600" },
-  resendTimer: { color: "#7B2FBE", fontSize: 14 },
+  resendLabel: { color: "#5A4D72", fontSize: 14 },
+  resendLink: { color: "#7B2FBE", fontSize: 14, fontWeight: "600" },
+  resendTimer: { color: "#5A4D72", fontSize: 14 },
 });

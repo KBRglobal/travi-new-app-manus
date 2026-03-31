@@ -1,22 +1,21 @@
 import { Tabs } from "expo-router";
+import { Platform, View, StyleSheet } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { Platform, View, Text, StyleSheet } from "react-native";
 import { HapticTab } from "@/components/haptic-tab";
 import { IconSymbol } from "@/components/ui/icon-symbol";
+import { LinearGradient } from "expo-linear-gradient";
 
-function TabIcon({ name, color, label, focused }: { name: any; color: string; label: string; focused: boolean }) {
+function TabBarBackground() {
   return (
-    <View style={tabStyles.iconContainer}>
-      <IconSymbol size={24} name={name} color={color} />
-      {focused && <View style={tabStyles.dot} />}
+    <View style={StyleSheet.absoluteFillObject}>
+      <LinearGradient
+        colors={["rgba(4,0,16,0.95)", "rgba(10,5,32,0.98)"]}
+        style={StyleSheet.absoluteFillObject}
+      />
+      <View style={styles.tabBorder} />
     </View>
   );
 }
-
-const tabStyles = StyleSheet.create({
-  iconContainer: { alignItems: "center", justifyContent: "center", gap: 3 },
-  dot: { width: 4, height: 4, borderRadius: 2, backgroundColor: "#E91E8C" },
-});
 
 export default function TabLayout() {
   const insets = useSafeAreaInsets();
@@ -26,20 +25,22 @@ export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: "#E91E8C",
-        tabBarInactiveTintColor: "#A78BCA",
+        tabBarActiveTintColor: "#C084FC",
+        tabBarInactiveTintColor: "rgba(255,255,255,0.3)",
         headerShown: false,
         tabBarButton: HapticTab,
+        tabBarBackground: () => <TabBarBackground />,
         tabBarStyle: {
-          paddingTop: 8,
+          position: "absolute",
+          paddingTop: 10,
           paddingBottom: bottomPadding,
           height: tabBarHeight,
-          backgroundColor: "#2D1B69",
-          borderTopColor: "#4A3080",
-          borderTopWidth: 0.5,
+          backgroundColor: "transparent",
+          borderTopWidth: 0,
+          elevation: 0,
         },
         tabBarLabelStyle: {
-          fontSize: 11,
+          fontSize: 10,
           fontWeight: "600",
           marginTop: 2,
         },
@@ -50,25 +51,10 @@ export default function TabLayout() {
         options={{
           title: "Home",
           tabBarIcon: ({ color, focused }) => (
-            <TabIcon name="house.fill" color={color} label="Home" focused={focused} />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="trips"
-        options={{
-          title: "Trips",
-          tabBarIcon: ({ color, focused }) => (
-            <TabIcon name="airplane" color={color} label="Trips" focused={focused} />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="wallet"
-        options={{
-          title: "Wallet",
-          tabBarIcon: ({ color, focused }) => (
-            <TabIcon name="wallet.pass.fill" color={color} label="Wallet" focused={focused} />
+            <View style={[styles.iconWrap, focused && styles.iconWrapActive]}>
+              {focused && <View style={styles.iconGlow} />}
+              <IconSymbol size={22} name="house.fill" color={color} />
+            </View>
           ),
         }}
       />
@@ -77,7 +63,34 @@ export default function TabLayout() {
         options={{
           title: "Explore",
           tabBarIcon: ({ color, focused }) => (
-            <TabIcon name="globe" color={color} label="Explore" focused={focused} />
+            <View style={[styles.iconWrap, focused && styles.iconWrapActive]}>
+              {focused && <View style={styles.iconGlow} />}
+              <IconSymbol size={22} name="safari.fill" color={color} />
+            </View>
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="trips"
+        options={{
+          title: "Trips",
+          tabBarIcon: ({ color, focused }) => (
+            <View style={[styles.iconWrap, focused && styles.iconWrapActive]}>
+              {focused && <View style={styles.iconGlow} />}
+              <IconSymbol size={22} name="airplane" color={color} />
+            </View>
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="wallet"
+        options={{
+          title: "Wallet",
+          tabBarIcon: ({ color, focused }) => (
+            <View style={[styles.iconWrap, focused && styles.iconWrapActive]}>
+              {focused && <View style={styles.iconGlow} />}
+              <IconSymbol size={22} name="wallet.pass.fill" color={color} />
+            </View>
           ),
         }}
       />
@@ -86,10 +99,45 @@ export default function TabLayout() {
         options={{
           title: "Profile",
           tabBarIcon: ({ color, focused }) => (
-            <TabIcon name="person.crop.circle.fill" color={color} label="Profile" focused={focused} />
+            <View style={[styles.iconWrap, focused && styles.iconWrapActive]}>
+              {focused && <View style={styles.iconGlow} />}
+              <IconSymbol size={22} name="person.fill" color={color} />
+            </View>
           ),
         }}
       />
     </Tabs>
   );
 }
+
+const styles = StyleSheet.create({
+  tabBorder: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    height: 1,
+    backgroundColor: "rgba(192,132,252,0.15)",
+  },
+  iconWrap: {
+    width: 40,
+    height: 36,
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 12,
+  },
+  iconWrapActive: {
+    backgroundColor: "rgba(192,132,252,0.12)",
+  },
+  iconGlow: {
+    position: "absolute",
+    width: 40,
+    height: 36,
+    borderRadius: 12,
+    backgroundColor: "rgba(192,132,252,0.08)",
+    shadowColor: "#C084FC",
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.6,
+    shadowRadius: 8,
+  },
+});

@@ -1,69 +1,68 @@
 import { useState } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, ScrollView, Switch, Dimensions } from "react-native";
 import { router } from "expo-router";
-import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
 import { IconSymbol } from "@/components/ui/icon-symbol";
-import { ScreenContainer } from "@/components/screen-container";
 import { useStore } from "@/lib/store";
 
 const { width } = Dimensions.get("window");
 
-const DNA_LABELS: Record<string, string> = {
-  adventure: "🧗 Adventurer",
-  culture: "🎭 Culture Lover",
-  food: "🍜 Foodie",
-  relaxation: "🧘 Relaxer",
-  nightlife: "🌙 Night Owl",
-  nature: "🌿 Nature Seeker",
-  luxury: "👑 Luxury Traveler",
-  budget: "💰 Budget Savvy",
+type IconName = "figure.run" | "building.columns.fill" | "fork.knife" | "figure.yoga" | "moon.fill" | "leaf.fill" | "crown.fill" | "dollarsign.circle.fill";
+
+const DNA_CONFIG: Record<string, { label: string; icon: IconName; color: string }> = {
+  adventure: { label: "Adventurer", icon: "figure.run", color: "#E91E8C" },
+  culture: { label: "Culture Lover", icon: "building.columns.fill", color: "#7B2FBE" },
+  food: { label: "Foodie", icon: "fork.knife", color: "#FF9800" },
+  relaxation: { label: "Relaxer", icon: "figure.yoga", color: "#4CAF50" },
+  nightlife: { label: "Night Owl", icon: "moon.fill", color: "#2196F3" },
+  nature: { label: "Nature Seeker", icon: "leaf.fill", color: "#10B981" },
+  luxury: { label: "Luxury Traveler", icon: "crown.fill", color: "#FFD700" },
+  budget: { label: "Budget Savvy", icon: "dollarsign.circle.fill", color: "#06B6D4" },
 };
 
-const ACHIEVEMENTS = [
-  { id: "a1", icon: "✈️", title: "First Flight", desc: "Booked your first trip", earned: true },
-  { id: "a2", icon: "🌍", title: "Globe Trotter", desc: "Visited 3+ countries", earned: true },
-  { id: "a3", icon: "⭐", title: "5-Star Traveler", desc: "Stayed in a 5-star hotel", earned: true },
-  { id: "a4", icon: "🤝", title: "Social Butterfly", desc: "Referred 3 friends", earned: false },
-  { id: "a5", icon: "🏆", title: "Elite Nomad", desc: "Reach Elite Nomad tier", earned: false },
-  { id: "a6", icon: "📸", title: "Storyteller", desc: "Share 10 travel stories", earned: false },
+type AchIcon = "airplane" | "safari.fill" | "star.fill" | "person.2.fill" | "crown.fill" | "camera.fill";
+const ACHIEVEMENTS: { id: string; icon: AchIcon; iconColor: string; title: string; desc: string; earned: boolean }[] = [
+  { id: "a1", icon: "airplane", iconColor: "#7B2FBE", title: "First Flight", desc: "Booked first trip", earned: true },
+  { id: "a2", icon: "safari.fill", iconColor: "#E91E8C", title: "Globe Trotter", desc: "3+ countries", earned: true },
+  { id: "a3", icon: "star.fill", iconColor: "#FFD700", title: "5-Star Traveler", desc: "Stayed in 5-star hotel", earned: true },
+  { id: "a4", icon: "person.2.fill", iconColor: "#2196F3", title: "Social Butterfly", desc: "Refer 3 friends", earned: false },
+  { id: "a5", icon: "crown.fill", iconColor: "#FF9800", title: "Elite Nomad", desc: "Reach Elite tier", earned: false },
+  { id: "a6", icon: "camera.fill", iconColor: "#4CAF50", title: "Storyteller", desc: "Share 10 stories", earned: false },
 ];
 
 const SETTINGS_SECTIONS = [
   {
     title: "Account",
     items: [
-      { icon: "person.fill", label: "Edit Profile", action: "navigate", value: "", toggleKey: "" },
-      { icon: "bell.fill", label: "Notifications", action: "navigate", value: "", toggleKey: "" },
-      { icon: "shield.fill", label: "Privacy & Security", action: "navigate", value: "", toggleKey: "" },
-      { icon: "lock.fill", label: "Change Password", action: "navigate", value: "", toggleKey: "" },
+      { icon: "person.fill" as const, label: "Edit Profile", value: "", toggleKey: "", isToggle: false },
+      { icon: "bell.fill" as const, label: "Notifications", value: "", toggleKey: "notifications", isToggle: true },
+      { icon: "shield.fill" as const, label: "Privacy & Security", value: "", toggleKey: "", isToggle: false },
+      { icon: "lock.fill" as const, label: "Change Password", value: "", toggleKey: "", isToggle: false },
     ],
   },
   {
     title: "Preferences",
     items: [
-      { icon: "globe", label: "Language", value: "English", action: "navigate", toggleKey: "" },
-      { icon: "dollarsign.circle.fill", label: "Currency", value: "USD", action: "navigate", toggleKey: "" },
-      { icon: "moon.fill", label: "Dark Mode", action: "toggle", toggleKey: "darkMode", value: "" },
-      { icon: "bell.fill", label: "Push Notifications", action: "toggle", toggleKey: "notifications", value: "" },
+      { icon: "globe" as const, label: "Language", value: "English", toggleKey: "", isToggle: false },
+      { icon: "dollarsign.circle.fill" as const, label: "Currency", value: "USD", toggleKey: "", isToggle: false },
+      { icon: "moon.fill" as const, label: "Dark Mode", value: "", toggleKey: "darkMode", isToggle: true },
     ],
   },
   {
     title: "Travel",
     items: [
-      { icon: "heart.fill", label: "Saved Destinations", action: "navigate", value: "", toggleKey: "" },
-      { icon: "doc.fill", label: "Travel Documents", action: "navigate", value: "", toggleKey: "" },
-      { icon: "creditcard.fill", label: "Payment Methods", action: "navigate", value: "", toggleKey: "" },
-      { icon: "tag.fill", label: "Promo Codes", action: "navigate", value: "", toggleKey: "" },
+      { icon: "heart.fill" as const, label: "Saved Destinations", value: "", toggleKey: "", isToggle: false },
+      { icon: "doc.fill" as const, label: "Travel Documents", value: "", toggleKey: "", isToggle: false },
+      { icon: "creditcard.fill" as const, label: "Payment Methods", value: "", toggleKey: "", isToggle: false },
+      { icon: "tag.fill" as const, label: "Promo Codes", value: "", toggleKey: "", isToggle: false },
     ],
   },
   {
     title: "Support",
     items: [
-      { icon: "bubble.left.fill", label: "Help & FAQ", action: "navigate", value: "", toggleKey: "" },
-      { icon: "envelope.fill", label: "Contact Support", action: "navigate", value: "", toggleKey: "" },
-      { icon: "star.fill", label: "Rate TRAVI", action: "navigate", value: "", toggleKey: "" },
-      { icon: "square.and.arrow.up", label: "Share App", action: "navigate", value: "", toggleKey: "" },
+      { icon: "bubble.left.fill" as const, label: "Help & FAQ", value: "", toggleKey: "", isToggle: false },
+      { icon: "envelope.fill" as const, label: "Contact Support", value: "", toggleKey: "", isToggle: false },
+      { icon: "star.fill" as const, label: "Rate TRAVI", value: "", toggleKey: "", isToggle: false },
     ],
   },
 ];
@@ -77,10 +76,11 @@ export default function ProfileScreen() {
   const displayEmail = profile?.email || "alex@example.com";
   const points = profile?.points || 4250;
   const trips = state.trips.length || 3;
+  const initials = displayName.split(" ").map((n: string) => n[0]).join("").toUpperCase();
 
   const dnaEntries = profile?.travelerDNA
-    ? Object.entries(profile.travelerDNA).slice(0, 3)
-    : [["culture", "high"], ["food", "high"], ["adventure", "medium"]];
+    ? Object.entries(profile.travelerDNA).slice(0, 4)
+    : [["culture", "high"], ["food", "high"], ["adventure", "medium"], ["luxury", "low"]];
 
   const handleLogout = () => {
     dispatch({ type: "LOGOUT" });
@@ -88,26 +88,24 @@ export default function ProfileScreen() {
   };
 
   return (
-    <ScreenContainer containerClassName="bg-background">
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 100 }}>
-        {/* Hero Header */}
-        <LinearGradient colors={["#2D1B69", "#1A0533"]} style={styles.hero}>
-          {/* Settings button */}
-          <TouchableOpacity style={styles.settingsIconBtn}>
-            <IconSymbol name="gearshape.fill" size={22} color="#A78BCA" />
-          </TouchableOpacity>
+    <View style={styles.container}>
+      <LinearGradient colors={["#040010", "#0D0520", "#1A0A3D"]} locations={[0, 0.4, 1]} style={StyleSheet.absoluteFillObject} />
+      <View style={styles.orb1} />
+      <View style={styles.orb2} />
 
-          {/* Avatar */}
-          <View style={styles.avatarContainer}>
+      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scroll}>
+        {/* Hero */}
+        <View style={styles.hero}>
+          <View style={styles.avatarWrap}>
             <LinearGradient colors={["#7B2FBE", "#E91E8C"]} style={styles.avatarRing}>
               <View style={styles.avatarInner}>
-                <Text style={styles.avatarText}>
-                  {displayName.split(" ").map((n) => n[0]).join("").toUpperCase()}
-                </Text>
+                <Text style={styles.avatarText}>{initials}</Text>
               </View>
             </LinearGradient>
-            <TouchableOpacity style={styles.editAvatarBtn}>
-              <IconSymbol name="camera.fill" size={14} color="#FFFFFF" />
+            <TouchableOpacity style={styles.editAvatarBtn} activeOpacity={0.8}>
+              <LinearGradient colors={["#7B2FBE", "#E91E8C"]} style={styles.editAvatarGradient}>
+                <IconSymbol name="camera.fill" size={12} color="#FFFFFF" />
+              </LinearGradient>
             </TouchableOpacity>
           </View>
 
@@ -115,80 +113,112 @@ export default function ProfileScreen() {
           <Text style={styles.userEmail}>{displayEmail}</Text>
 
           {/* Tier Badge */}
-          <LinearGradient
-            colors={["rgba(123,47,190,0.4)", "rgba(233,30,140,0.3)"]}
-            style={styles.tierBadge}
-          >
-            <Text style={styles.tierIcon}>🌱</Text>
-            <Text style={styles.tierName}>Explorer Tier</Text>
-            <View style={styles.tierSeparator} />
-            <Text style={styles.tierPoints}>✦ {points.toLocaleString()} pts</Text>
-          </LinearGradient>
+          <TouchableOpacity style={styles.tierBadge} activeOpacity={0.85}>
+            <LinearGradient colors={["rgba(123,47,190,0.5)", "rgba(233,30,140,0.3)"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.tierGradient}>
+              <IconSymbol name="leaf.fill" size={14} color="#4CAF50" />
+              <Text style={styles.tierName}>Explorer Tier</Text>
+              <View style={styles.tierSep} />
+              <IconSymbol name="sparkles" size={12} color="#FFD700" />
+              <Text style={styles.tierPoints}>{points.toLocaleString()} pts</Text>
+              <IconSymbol name="chevron.right" size={14} color="rgba(255,255,255,0.5)" />
+            </LinearGradient>
+          </TouchableOpacity>
 
           {/* Stats */}
           <View style={styles.statsRow}>
-            <View style={styles.statItem}>
-              <Text style={styles.statValue}>{trips}</Text>
-              <Text style={styles.statLabel}>Trips</Text>
-            </View>
-            <View style={styles.statDivider} />
-            <View style={styles.statItem}>
-              <Text style={styles.statValue}>{trips + 2}</Text>
-              <Text style={styles.statLabel}>Countries</Text>
-            </View>
-            <View style={styles.statDivider} />
-            <View style={styles.statItem}>
-              <Text style={styles.statValue}>${(profile?.lifetimeSavings || 127)}</Text>
-              <Text style={styles.statLabel}>Saved</Text>
-            </View>
-            <View style={styles.statDivider} />
-            <View style={styles.statItem}>
-              <Text style={styles.statValue}>{ACHIEVEMENTS.filter((a) => a.earned).length}</Text>
-              <Text style={styles.statLabel}>Badges</Text>
-            </View>
+            {[
+              { value: String(trips), label: "Trips" },
+              { value: String(trips + 2), label: "Countries" },
+              { value: `$${profile?.lifetimeSavings || 127}`, label: "Saved" },
+              { value: String(ACHIEVEMENTS.filter((a) => a.earned).length), label: "Badges" },
+            ].map((stat, i) => (
+              <View key={i} style={styles.statItem}>
+                {i > 0 && <View style={styles.statDivider} />}
+                <Text style={styles.statValue}>{stat.value}</Text>
+                <Text style={styles.statLabel}>{stat.label}</Text>
+              </View>
+            ))}
           </View>
-        </LinearGradient>
+        </View>
 
         {/* Traveler DNA */}
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
-            <Text style={styles.sectionTitle}>🧬 Traveler DNA</Text>
-            <TouchableOpacity onPress={() => router.push("/(auth)/quiz" as never)}>
+            <View style={styles.sectionTitleRow}>
+              <IconSymbol name="sparkles" size={16} color="#C084FC" />
+              <Text style={styles.sectionTitle}>Traveler DNA</Text>
+            </View>
+            <TouchableOpacity onPress={() => router.push("/(auth)/quiz" as never)} activeOpacity={0.7}>
               <Text style={styles.seeAll}>Retake quiz</Text>
             </TouchableOpacity>
           </View>
           <View style={styles.dnaRow}>
-            {dnaEntries.map(([key]) => (
-              <View key={key} style={styles.dnaBadge}>
-                <Text style={styles.dnaBadgeText}>{DNA_LABELS[key] || key}</Text>
-              </View>
-            ))}
+            {dnaEntries.map(([key]) => {
+              const cfg = DNA_CONFIG[key] || { label: key, icon: "safari.fill" as const, color: "#7B2FBE" };
+              return (
+                <View key={key} style={styles.dnaBadge}>
+                  <LinearGradient colors={[cfg.color + "33", cfg.color + "18"]} style={styles.dnaBadgeGradient}>
+                    <IconSymbol name={cfg.icon as never} size={14} color={cfg.color} />
+                    <Text style={[styles.dnaBadgeText, { color: cfg.color }]}>{cfg.label}</Text>
+                  </LinearGradient>
+                </View>
+              );
+            })}
           </View>
         </View>
 
         {/* Achievements */}
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
-            <Text style={styles.sectionTitle}>🏆 Achievements</Text>
-            <TouchableOpacity>
+            <View style={styles.sectionTitleRow}>
+              <IconSymbol name="trophy.fill" size={16} color="#FFD700" />
+              <Text style={styles.sectionTitle}>Achievements</Text>
+            </View>
+            <TouchableOpacity activeOpacity={0.7}>
               <Text style={styles.seeAll}>See all</Text>
             </TouchableOpacity>
           </View>
-          <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: 10, paddingHorizontal: 20 }}>
+          <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: 10 }}>
             {ACHIEVEMENTS.map((ach) => (
               <View key={ach.id} style={[styles.achCard, !ach.earned && styles.achCardLocked]}>
-                <Text style={[styles.achIcon, !ach.earned && styles.achIconLocked]}>{ach.icon}</Text>
+                <LinearGradient
+                  colors={ach.earned ? [ach.iconColor + "33", ach.iconColor + "18"] : ["rgba(255,255,255,0.04)", "rgba(255,255,255,0.02)"]}
+                  style={StyleSheet.absoluteFillObject}
+                />
+                <View style={[styles.achIconWrap, { backgroundColor: ach.iconColor + "22", opacity: ach.earned ? 1 : 0.3 }]}>
+                  <IconSymbol name={ach.icon} size={22} color={ach.iconColor} />
+                </View>
                 <Text style={[styles.achTitle, !ach.earned && styles.achTitleLocked]}>{ach.title}</Text>
                 <Text style={styles.achDesc}>{ach.desc}</Text>
                 {ach.earned && (
-                  <View style={styles.achEarnedBadge}>
-                    <Text style={styles.achEarnedText}>✓ Earned</Text>
+                  <View style={styles.achEarned}>
+                    <IconSymbol name="checkmark.circle.fill" size={12} color="#4CAF50" />
+                    <Text style={styles.achEarnedText}>Earned</Text>
                   </View>
                 )}
               </View>
             ))}
           </ScrollView>
         </View>
+
+        {/* TRAVI Pro Card */}
+        <TouchableOpacity style={styles.proCard} activeOpacity={0.88}>
+          <LinearGradient colors={["#7B2FBE", "#E91E8C"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.proGradient}>
+            <View style={styles.proCircle1} />
+            <View style={styles.proCircle2} />
+            <View style={styles.proContent}>
+              <View style={styles.proTitleRow}>
+                <IconSymbol name="sparkles" size={16} color="#FFFFFF" />
+                <Text style={styles.proTitle}>TRAVI Pro</Text>
+              </View>
+              <Text style={styles.proDesc}>Unlimited AI planning • 2x points • Priority support</Text>
+            </View>
+            <View style={styles.proPrice}>
+              <Text style={styles.proPriceValue}>$9.99</Text>
+              <Text style={styles.proPricePeriod}>/mo</Text>
+            </View>
+          </LinearGradient>
+        </TouchableOpacity>
 
         {/* Settings Sections */}
         {SETTINGS_SECTIONS.map((section) => (
@@ -198,27 +228,24 @@ export default function ProfileScreen() {
               {section.items.map((item, idx) => (
                 <TouchableOpacity
                   key={item.label}
-                  style={[
-                    styles.settingsRow,
-                    idx < section.items.length - 1 && styles.settingsRowBorder,
-                  ]}
-                  activeOpacity={item.action === "toggle" ? 1 : 0.7}
+                  style={[styles.settingsRow, idx < section.items.length - 1 && styles.settingsRowBorder]}
+                  activeOpacity={item.isToggle ? 1 : 0.7}
                 >
-                  <View style={styles.settingsIconContainer}>
-                    <IconSymbol name={item.icon as any} size={18} color="#7B2FBE" />
+                  <View style={styles.settingsIconWrap}>
+                    <IconSymbol name={item.icon} size={16} color="#7B2FBE" />
                   </View>
                   <Text style={styles.settingsLabel}>{item.label}</Text>
-                  {item.action === "toggle" ? (
+                  {item.isToggle ? (
                     <Switch
                       value={toggles[item.toggleKey as keyof typeof toggles]}
-                      onValueChange={(v) => setToggles((t) => ({ ...t, [item.toggleKey!]: v }))}
-                      trackColor={{ false: "#4A3080", true: "#7B2FBE" }}
+                      onValueChange={(v) => setToggles((t) => ({ ...t, [item.toggleKey]: v }))}
+                      trackColor={{ false: "rgba(255,255,255,0.1)", true: "#7B2FBE" }}
                       thumbColor="#FFFFFF"
                     />
                   ) : (
                     <View style={styles.settingsRight}>
-                      {item.value && <Text style={styles.settingsValue}>{item.value}</Text>}
-                      <IconSymbol name="chevron.right" size={16} color="#6B5A8A" />
+                      {item.value ? <Text style={styles.settingsValue}>{item.value}</Text> : null}
+                      <IconSymbol name="chevron.right" size={14} color="#5A4D72" />
                     </View>
                   )}
                 </TouchableOpacity>
@@ -227,136 +254,81 @@ export default function ProfileScreen() {
           </View>
         ))}
 
-        {/* Subscription Card */}
-        <View style={styles.section}>
-          <TouchableOpacity activeOpacity={0.9}>
-            <LinearGradient
-              colors={["#7B2FBE", "#E91E8C"]}
-              start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
-              style={styles.subscriptionCard}
-            >
-              <View>
-                <Text style={styles.subTitle}>TRAVI Pro ✨</Text>
-                <Text style={styles.subDesc}>Unlimited AI planning • Priority support • 2x points</Text>
-              </View>
-              <View style={styles.subPriceContainer}>
-                <Text style={styles.subPrice}>$9.99</Text>
-                <Text style={styles.subPeriod}>/mo</Text>
-              </View>
-            </LinearGradient>
-          </TouchableOpacity>
-        </View>
-
         {/* Logout */}
-        <View style={[styles.section, { marginBottom: 0 }]}>
-          <TouchableOpacity style={styles.logoutBtn} onPress={handleLogout} activeOpacity={0.8}>
+        <TouchableOpacity style={styles.logoutBtn} onPress={handleLogout} activeOpacity={0.8}>
+          <LinearGradient colors={["rgba(244,67,54,0.15)", "rgba(244,67,54,0.08)"]} style={styles.logoutGradient}>
             <IconSymbol name="arrow.left" size={18} color="#F44336" />
             <Text style={styles.logoutText}>Sign Out</Text>
-          </TouchableOpacity>
-        </View>
+          </LinearGradient>
+        </TouchableOpacity>
 
-        <Text style={styles.version}>TRAVI v1.0.0 • Made with ❤️ for travelers</Text>
+        <Text style={styles.version}>TRAVI v1.0.0 • Made with care for travelers</Text>
       </ScrollView>
-    </ScreenContainer>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  hero: { padding: 24, paddingTop: 16, alignItems: "center", gap: 12 },
-  settingsIconBtn: { alignSelf: "flex-end", padding: 4 },
-  avatarContainer: { position: "relative", marginTop: 4 },
+  container: { flex: 1, backgroundColor: "#040010" },
+  orb1: { position: "absolute", width: width, height: width, borderRadius: width / 2, top: -width * 0.4, left: -width * 0.3, backgroundColor: "rgba(123,47,190,0.09)" },
+  orb2: { position: "absolute", width: width * 0.7, height: width * 0.7, borderRadius: width * 0.35, bottom: 0, right: -width * 0.3, backgroundColor: "rgba(233,30,140,0.06)" },
+  scroll: { paddingHorizontal: 22, paddingTop: 60, paddingBottom: 110, gap: 24 },
+  hero: { alignItems: "center", gap: 10 },
+  avatarWrap: { position: "relative", marginBottom: 4 },
   avatarRing: { width: 90, height: 90, borderRadius: 45, padding: 3 },
-  avatarInner: {
-    flex: 1, borderRadius: 42,
-    backgroundColor: "#2D1B69",
-    alignItems: "center", justifyContent: "center",
-  },
+  avatarInner: { flex: 1, borderRadius: 42, backgroundColor: "#1A0A3D", alignItems: "center", justifyContent: "center" },
   avatarText: { color: "#FFFFFF", fontSize: 28, fontWeight: "800" },
-  editAvatarBtn: {
-    position: "absolute", bottom: 2, right: 2,
-    width: 26, height: 26, borderRadius: 13,
-    backgroundColor: "#7B2FBE",
-    alignItems: "center", justifyContent: "center",
-    borderWidth: 2, borderColor: "#1A0533",
-  },
+  editAvatarBtn: { position: "absolute", bottom: 0, right: 0, borderRadius: 12, overflow: "hidden" },
+  editAvatarGradient: { width: 28, height: 28, alignItems: "center", justifyContent: "center" },
   userName: { color: "#FFFFFF", fontSize: 22, fontWeight: "800" },
-  userEmail: { color: "#A78BCA", fontSize: 14 },
-  tierBadge: {
-    flexDirection: "row", alignItems: "center",
-    borderRadius: 20, paddingHorizontal: 16, paddingVertical: 8,
-    gap: 8, borderWidth: 1, borderColor: "#7B2FBE",
-  },
-  tierIcon: { fontSize: 16 },
-  tierName: { color: "#A78BCA", fontSize: 13, fontWeight: "600" },
-  tierSeparator: { width: 1, height: 14, backgroundColor: "#4A3080" },
+  userEmail: { color: "#5A4D72", fontSize: 14 },
+  tierBadge: { borderRadius: 14, overflow: "hidden" },
+  tierGradient: { flexDirection: "row", alignItems: "center", gap: 8, paddingHorizontal: 16, paddingVertical: 10, borderRadius: 14, borderWidth: 1, borderColor: "rgba(123,47,190,0.4)" },
+  tierName: { color: "#FFFFFF", fontSize: 14, fontWeight: "700" },
+  tierSep: { width: 1, height: 14, backgroundColor: "rgba(255,255,255,0.2)" },
   tierPoints: { color: "#FFD700", fontSize: 13, fontWeight: "700" },
-  statsRow: {
-    flexDirection: "row",
-    backgroundColor: "rgba(255,255,255,0.06)",
-    borderRadius: 14, padding: 14, width: "100%",
-  },
-  statItem: { flex: 1, alignItems: "center", gap: 4 },
+  statsRow: { flexDirection: "row", width: "100%", borderRadius: 20, overflow: "hidden", borderWidth: 1.5, borderColor: "rgba(255,255,255,0.08)", backgroundColor: "rgba(255,255,255,0.04)" },
+  statItem: { flex: 1, alignItems: "center", paddingVertical: 16, gap: 4 },
+  statDivider: { position: "absolute", left: 0, top: 12, bottom: 12, width: 1, backgroundColor: "rgba(255,255,255,0.08)" },
   statValue: { color: "#FFFFFF", fontSize: 18, fontWeight: "800" },
-  statLabel: { color: "#A78BCA", fontSize: 11 },
-  statDivider: { width: 1, backgroundColor: "#4A3080" },
-  section: { paddingHorizontal: 20, paddingTop: 20 },
-  sectionHeader: { flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: 12 },
-  sectionTitle: { color: "#FFFFFF", fontSize: 18, fontWeight: "700", marginBottom: 12 },
-  seeAll: { color: "#7B2FBE", fontSize: 14, fontWeight: "600" },
-  dnaRow: { flexDirection: "row", flexWrap: "wrap", gap: 8 },
-  dnaBadge: {
-    backgroundColor: "rgba(123,47,190,0.2)",
-    borderRadius: 20, paddingHorizontal: 14, paddingVertical: 7,
-    borderWidth: 1, borderColor: "#7B2FBE",
-  },
-  dnaBadgeText: { color: "#A78BCA", fontSize: 13, fontWeight: "600" },
-  achCard: {
-    width: 120, backgroundColor: "#2D1B69",
-    borderRadius: 16, padding: 14, gap: 6,
-    borderWidth: 1, borderColor: "#4A3080",
-    alignItems: "center",
-  },
-  achCardLocked: { opacity: 0.5 },
-  achIcon: { fontSize: 30 },
-  achIconLocked: { opacity: 0.4 },
-  achTitle: { color: "#FFFFFF", fontSize: 13, fontWeight: "700", textAlign: "center" },
-  achTitleLocked: { color: "#A78BCA" },
-  achDesc: { color: "#6B5A8A", fontSize: 10, textAlign: "center", lineHeight: 14 },
-  achEarnedBadge: {
-    backgroundColor: "rgba(76,175,80,0.2)",
-    borderRadius: 6, paddingHorizontal: 6, paddingVertical: 2,
-    borderWidth: 1, borderColor: "#4CAF50",
-  },
+  statLabel: { color: "#5A4D72", fontSize: 11 },
+  section: { gap: 14 },
+  sectionHeader: { flexDirection: "row", alignItems: "center", justifyContent: "space-between" },
+  sectionTitleRow: { flexDirection: "row", alignItems: "center", gap: 8 },
+  sectionTitle: { color: "#FFFFFF", fontSize: 17, fontWeight: "700" },
+  seeAll: { color: "#C084FC", fontSize: 13, fontWeight: "600" },
+  dnaRow: { flexDirection: "row", flexWrap: "wrap", gap: 10 },
+  dnaBadge: { borderRadius: 12, overflow: "hidden" },
+  dnaBadgeGradient: { flexDirection: "row", alignItems: "center", gap: 6, paddingHorizontal: 12, paddingVertical: 8, borderRadius: 12, borderWidth: 1, borderColor: "rgba(255,255,255,0.1)" },
+  dnaBadgeText: { fontSize: 13, fontWeight: "600" },
+  achCard: { width: 120, borderRadius: 18, padding: 14, gap: 6, alignItems: "center", overflow: "hidden", borderWidth: 1.5, borderColor: "rgba(255,255,255,0.1)" },
+  achCardLocked: { borderColor: "rgba(255,255,255,0.05)" },
+  achIconWrap: { width: 48, height: 48, borderRadius: 14, alignItems: "center", justifyContent: "center" },
+  achTitle: { color: "#FFFFFF", fontSize: 12, fontWeight: "700", textAlign: "center" },
+  achTitleLocked: { color: "#3A2D4E" },
+  achDesc: { color: "#5A4D72", fontSize: 10, textAlign: "center", lineHeight: 14 },
+  achEarned: { flexDirection: "row", alignItems: "center", gap: 4, marginTop: 2 },
   achEarnedText: { color: "#4CAF50", fontSize: 10, fontWeight: "700" },
-  settingsGroup: {
-    backgroundColor: "#2D1B69", borderRadius: 16,
-    borderWidth: 1, borderColor: "#4A3080", overflow: "hidden",
-  },
-  settingsRow: {
-    flexDirection: "row", alignItems: "center",
-    paddingHorizontal: 16, paddingVertical: 14, gap: 12,
-  },
-  settingsRowBorder: { borderBottomWidth: 1, borderBottomColor: "#4A3080" },
-  settingsIconContainer: {
-    width: 34, height: 34, borderRadius: 10,
-    backgroundColor: "rgba(123,47,190,0.15)",
-    alignItems: "center", justifyContent: "center",
-  },
-  settingsLabel: { color: "#FFFFFF", fontSize: 15, flex: 1 },
-  settingsRight: { flexDirection: "row", alignItems: "center", gap: 6 },
-  settingsValue: { color: "#A78BCA", fontSize: 14 },
-  subscriptionCard: { borderRadius: 18, padding: 18, flexDirection: "row", alignItems: "center", justifyContent: "space-between" },
-  subTitle: { color: "#FFFFFF", fontSize: 17, fontWeight: "800", marginBottom: 4 },
-  subDesc: { color: "rgba(255,255,255,0.75)", fontSize: 12, lineHeight: 18 },
-  subPriceContainer: { flexDirection: "row", alignItems: "flex-end" },
-  subPrice: { color: "#FFFFFF", fontSize: 24, fontWeight: "800" },
-  subPeriod: { color: "rgba(255,255,255,0.7)", fontSize: 14, marginBottom: 3 },
-  logoutBtn: {
-    flexDirection: "row", alignItems: "center", justifyContent: "center",
-    gap: 8, backgroundColor: "rgba(244,67,54,0.1)",
-    borderRadius: 14, padding: 14,
-    borderWidth: 1, borderColor: "rgba(244,67,54,0.3)",
-  },
-  logoutText: { color: "#F44336", fontSize: 15, fontWeight: "700" },
-  version: { color: "#4A3080", fontSize: 12, textAlign: "center", padding: 20, paddingTop: 16 },
+  proCard: { borderRadius: 20, overflow: "hidden" },
+  proGradient: { flexDirection: "row", alignItems: "center", padding: 20, gap: 14 },
+  proCircle1: { position: "absolute", width: 120, height: 120, borderRadius: 60, top: -30, right: -20, backgroundColor: "rgba(255,255,255,0.08)" },
+  proCircle2: { position: "absolute", width: 80, height: 80, borderRadius: 40, bottom: -20, left: 20, backgroundColor: "rgba(255,255,255,0.06)" },
+  proContent: { flex: 1, gap: 4 },
+  proTitleRow: { flexDirection: "row", alignItems: "center", gap: 6 },
+  proTitle: { color: "#FFFFFF", fontSize: 18, fontWeight: "800" },
+  proDesc: { color: "rgba(255,255,255,0.7)", fontSize: 12, lineHeight: 18 },
+  proPrice: { alignItems: "flex-end" },
+  proPriceValue: { color: "#FFFFFF", fontSize: 22, fontWeight: "800" },
+  proPricePeriod: { color: "rgba(255,255,255,0.6)", fontSize: 12 },
+  settingsGroup: { borderRadius: 20, overflow: "hidden", borderWidth: 1.5, borderColor: "rgba(255,255,255,0.08)", backgroundColor: "rgba(255,255,255,0.04)" },
+  settingsRow: { flexDirection: "row", alignItems: "center", paddingHorizontal: 16, paddingVertical: 14, gap: 14 },
+  settingsRowBorder: { borderBottomWidth: 1, borderBottomColor: "rgba(255,255,255,0.06)" },
+  settingsIconWrap: { width: 36, height: 36, borderRadius: 10, backgroundColor: "rgba(123,47,190,0.2)", alignItems: "center", justifyContent: "center" },
+  settingsLabel: { flex: 1, color: "#FFFFFF", fontSize: 15 },
+  settingsRight: { flexDirection: "row", alignItems: "center", gap: 8 },
+  settingsValue: { color: "#5A4D72", fontSize: 14 },
+  logoutBtn: { borderRadius: 16, overflow: "hidden" },
+  logoutGradient: { flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 10, paddingVertical: 16, borderRadius: 16, borderWidth: 1, borderColor: "rgba(244,67,54,0.3)" },
+  logoutText: { color: "#F44336", fontSize: 16, fontWeight: "700" },
+  version: { color: "#3A2D4E", fontSize: 12, textAlign: "center" },
 });

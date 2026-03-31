@@ -1,34 +1,48 @@
 import { useRef, useEffect } from "react";
-import { View, Text, StyleSheet, Animated, Dimensions } from "react-native";
+import { View, Text, StyleSheet, Animated, Dimensions, TouchableOpacity, ScrollView } from "react-native";
 import { router } from "expo-router";
 import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
-import { GradientButton } from "@/components/ui/gradient-button";
 import { useStore } from "@/lib/store";
 
 const { width, height } = Dimensions.get("window");
 
 const FEATURES = [
-  { icon: "🧠", title: "AI That Knows You", desc: "Learns your travel personality through fun scenarios" },
-  { icon: "💸", title: "Zero Hidden Fees", desc: "All commissions returned as TRAVI Points" },
-  { icon: "📍", title: "Real-Time Agent", desc: "Your AI guide knows exactly where you are" },
+  { icon: "🧠", title: "AI That Knows You", desc: "Learns your travel personality through fun scenarios", color: "#7B2FBE" },
+  { icon: "💸", title: "Zero Hidden Fees", desc: "All commissions returned as TRAVI Points", color: "#E91E8C" },
+  { icon: "📍", title: "Real-Time Agent", desc: "Your AI guide knows exactly where you are", color: "#00BCD4" },
+  { icon: "🎮", title: "Travel Gamified", desc: "Earn badges, climb tiers, unlock rewards", color: "#FFD700" },
 ];
 
 export default function WelcomeScreen() {
   const { state, dispatch } = useStore();
+
   const fadeAnim = useRef(new Animated.Value(0)).current;
-  const slideAnim = useRef(new Animated.Value(40)).current;
+  const mascotY = useRef(new Animated.Value(30)).current;
+  const card1Y = useRef(new Animated.Value(50)).current;
+  const card2Y = useRef(new Animated.Value(70)).current;
+  const card3Y = useRef(new Animated.Value(90)).current;
+  const card4Y = useRef(new Animated.Value(110)).current;
+  const ctaY = useRef(new Animated.Value(40)).current;
 
   useEffect(() => {
     Animated.parallel([
-      Animated.timing(fadeAnim, { toValue: 1, duration: 500, useNativeDriver: true }),
-      Animated.timing(slideAnim, { toValue: 0, duration: 500, useNativeDriver: true }),
+      Animated.timing(fadeAnim, { toValue: 1, duration: 600, useNativeDriver: true }),
+      Animated.spring(mascotY, { toValue: 0, friction: 8, tension: 50, useNativeDriver: true }),
+    ]).start();
+
+    const delays = [card1Y, card2Y, card3Y, card4Y].map((anim, i) =>
+      Animated.timing(anim, { toValue: 0, duration: 400, delay: 200 + i * 80, useNativeDriver: true })
+    );
+    Animated.parallel([
+      ...delays,
+      Animated.timing(ctaY, { toValue: 0, duration: 400, delay: 600, useNativeDriver: true }),
     ]).start();
   }, []);
 
-  const handleGetStarted = () => {
-    router.push("/(auth)/quiz" as never);
-  };
+  const cardAnims = [card1Y, card2Y, card3Y, card4Y];
+
+  const handleGetStarted = () => router.push("/(auth)/quiz" as never);
 
   const handleSkip = () => {
     dispatch({ type: "SET_ONBOARDING_COMPLETED" });
@@ -38,107 +52,105 @@ export default function WelcomeScreen() {
   return (
     <View style={styles.container}>
       <LinearGradient
-        colors={["#1A0533", "#2D1B69", "#1A0533"]}
+        colors={["#040010", "#0D0520", "#1A0A3D", "#0D0520"]}
+        locations={[0, 0.3, 0.6, 1]}
         style={StyleSheet.absoluteFillObject}
-        start={{ x: 0.5, y: 0 }}
-        end={{ x: 0.5, y: 1 }}
       />
+      <View style={styles.orb1} />
+      <View style={styles.orb2} />
 
-      <Animated.View style={[styles.content, { opacity: fadeAnim, transform: [{ translateY: slideAnim }] }]}>
-        {/* Duck Mascot */}
-        <View style={styles.mascotContainer}>
-          <Image
-            source={require("@/assets/images/icon.png")}
-            style={styles.mascot}
-            contentFit="contain"
-          />
-        </View>
+      <ScrollView contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
+        <Animated.View style={[styles.heroSection, { opacity: fadeAnim, transform: [{ translateY: mascotY }] }]}>
+          {/* Mascot */}
+          <View style={styles.mascotWrap}>
+            <LinearGradient colors={["#7B2FBE", "#E91E8C"]} style={styles.mascotRing}>
+              <View style={styles.mascotInner}>
+                <Image source={require("@/assets/images/icon.png")} style={styles.mascot} contentFit="contain" />
+              </View>
+            </LinearGradient>
+            <View style={styles.mascotGlow} />
+          </View>
 
-        <Text style={styles.greeting}>
-          Welcome{state.profile?.name ? `, ${state.profile.name}` : ""}! 👋
-        </Text>
-        <Text style={styles.title}>Meet TRAVI</Text>
-        <Text style={styles.subtitle}>
-          Your personal AI travel agent that plans, books, and guides your perfect trips
-        </Text>
+          <Text style={styles.greeting}>
+            {state.profile?.name ? `Hey ${state.profile.name}! 👋` : "Welcome aboard! 👋"}
+          </Text>
+          <Text style={styles.title}>Meet TRAVI</Text>
+          <Text style={styles.subtitle}>
+            Your personal AI travel agent that plans, books, and guides your perfect trips
+          </Text>
+        </Animated.View>
 
-        {/* Feature Cards */}
-        <View style={styles.featuresContainer}>
+        {/* Feature cards */}
+        <View style={styles.featuresGrid}>
           {FEATURES.map((f, i) => (
-            <View key={i} style={styles.featureCard}>
-              <Text style={styles.featureIcon}>{f.icon}</Text>
-              <View style={styles.featureText}>
+            <Animated.View key={i} style={[styles.featureCard, { opacity: fadeAnim, transform: [{ translateY: cardAnims[i] }] }]}>
+              <LinearGradient
+                colors={[`${f.color}22`, `${f.color}11`]}
+                style={styles.featureGradient}
+              >
+                <View style={[styles.featureIconWrap, { borderColor: `${f.color}44` }]}>
+                  <Text style={styles.featureIcon}>{f.icon}</Text>
+                </View>
                 <Text style={styles.featureTitle}>{f.title}</Text>
                 <Text style={styles.featureDesc}>{f.desc}</Text>
-              </View>
-            </View>
+              </LinearGradient>
+            </Animated.View>
           ))}
         </View>
 
-        {/* CTA */}
-        <GradientButton
-          title="Build My Traveler Profile"
-          onPress={handleGetStarted}
-          style={{ width: "100%", marginBottom: 14 }}
-          size="lg"
-        />
+        {/* CTA section */}
+        <Animated.View style={[styles.ctaSection, { opacity: fadeAnim, transform: [{ translateY: ctaY }] }]}>
+          <View style={styles.quizBadge}>
+            <LinearGradient colors={["rgba(123,47,190,0.3)", "rgba(233,30,140,0.2)"]} style={styles.quizBadgeGradient}>
+              <Text style={styles.quizBadgeText}>✨ 10 quick scenarios • 2 minutes</Text>
+            </LinearGradient>
+          </View>
 
-        <Text style={styles.quizNote}>
-          10 quick scenarios • Takes 2 minutes
-        </Text>
+          <TouchableOpacity style={styles.ctaBtn} onPress={handleGetStarted} activeOpacity={0.85}>
+            <LinearGradient colors={["#7B2FBE", "#C2185B", "#E91E8C"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.ctaGradient}>
+              <Text style={styles.ctaText}>Build My Traveler Profile</Text>
+              <Text style={styles.ctaArrow}>→</Text>
+            </LinearGradient>
+          </TouchableOpacity>
 
-        <GradientButton
-          title="Skip for now"
-          onPress={handleSkip}
-          variant="ghost"
-          size="sm"
-          style={{ marginTop: 4 }}
-        />
-      </Animated.View>
+          <TouchableOpacity style={styles.skipBtn} onPress={handleSkip} activeOpacity={0.7}>
+            <Text style={styles.skipText}>Skip for now</Text>
+          </TouchableOpacity>
+        </Animated.View>
+      </ScrollView>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#1A0533" },
-  content: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    paddingHorizontal: 24,
-    paddingTop: 40,
-    paddingBottom: 40,
-  },
-  mascotContainer: {
-    width: 140,
-    height: 140,
-    borderRadius: 70,
-    backgroundColor: "#2D1B69",
-    alignItems: "center",
-    justifyContent: "center",
-    marginBottom: 24,
-    borderWidth: 2,
-    borderColor: "#7B2FBE",
-    overflow: "hidden",
-  },
-  mascot: { width: 130, height: 130 },
-  greeting: { color: "#A78BCA", fontSize: 16, marginBottom: 4 },
-  title: { color: "#FFFFFF", fontSize: 32, fontWeight: "800", marginBottom: 10, textAlign: "center" },
-  subtitle: { color: "#A78BCA", fontSize: 15, textAlign: "center", lineHeight: 22, marginBottom: 28 },
-  featuresContainer: { width: "100%", gap: 10, marginBottom: 28 },
-  featureCard: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "#2D1B69",
-    borderRadius: 14,
-    padding: 14,
-    borderWidth: 1,
-    borderColor: "#4A3080",
-    gap: 14,
-  },
-  featureIcon: { fontSize: 28 },
-  featureText: { flex: 1 },
-  featureTitle: { color: "#FFFFFF", fontSize: 15, fontWeight: "600", marginBottom: 2 },
-  featureDesc: { color: "#A78BCA", fontSize: 13, lineHeight: 18 },
-  quizNote: { color: "#7B2FBE", fontSize: 13, marginBottom: 4 },
+  container: { flex: 1, backgroundColor: "#040010" },
+  orb1: { position: "absolute", width: width * 0.9, height: width * 0.9, borderRadius: width * 0.45, top: -width * 0.3, left: -width * 0.2, backgroundColor: "rgba(123,47,190,0.12)" },
+  orb2: { position: "absolute", width: width * 0.7, height: width * 0.7, borderRadius: width * 0.35, bottom: height * 0.1, right: -width * 0.25, backgroundColor: "rgba(233,30,140,0.08)" },
+  scroll: { flexGrow: 1, paddingHorizontal: 22, paddingTop: 64, paddingBottom: 40, gap: 28 },
+  heroSection: { alignItems: "center", gap: 12 },
+  mascotWrap: { width: 120, height: 120, alignItems: "center", justifyContent: "center", marginBottom: 8 },
+  mascotRing: { width: 120, height: 120, borderRadius: 36, padding: 3 },
+  mascotInner: { flex: 1, borderRadius: 33, backgroundColor: "#0D0520", alignItems: "center", justifyContent: "center", overflow: "hidden" },
+  mascot: { width: 100, height: 100 },
+  mascotGlow: { position: "absolute", width: 120, height: 120, borderRadius: 60, backgroundColor: "rgba(123,47,190,0.2)", shadowColor: "#7B2FBE", shadowOffset: { width: 0, height: 0 }, shadowOpacity: 0.8, shadowRadius: 30 },
+  greeting: { color: "#8B7AAA", fontSize: 15, fontWeight: "500" },
+  title: { fontSize: 36, fontWeight: "900", color: "#FFFFFF", letterSpacing: -1, textAlign: "center" },
+  subtitle: { fontSize: 15, color: "#8B7AAA", textAlign: "center", lineHeight: 22, maxWidth: 300 },
+  featuresGrid: { flexDirection: "row", flexWrap: "wrap", gap: 12 },
+  featureCard: { width: (width - 56) / 2, borderRadius: 20, overflow: "hidden", borderWidth: 1, borderColor: "rgba(255,255,255,0.08)" },
+  featureGradient: { padding: 18, gap: 10 },
+  featureIconWrap: { width: 44, height: 44, borderRadius: 14, backgroundColor: "rgba(0,0,0,0.3)", alignItems: "center", justifyContent: "center", borderWidth: 1 },
+  featureIcon: { fontSize: 22 },
+  featureTitle: { fontSize: 14, fontWeight: "700", color: "#FFFFFF" },
+  featureDesc: { fontSize: 12, color: "#8B7AAA", lineHeight: 17 },
+  ctaSection: { gap: 14, alignItems: "center" },
+  quizBadge: { alignSelf: "center" },
+  quizBadgeGradient: { paddingHorizontal: 16, paddingVertical: 8, borderRadius: 20, borderWidth: 1, borderColor: "rgba(123,47,190,0.4)" },
+  quizBadgeText: { color: "#C4B5D9", fontSize: 13, fontWeight: "500" },
+  ctaBtn: { width: "100%", borderRadius: 18, overflow: "hidden" },
+  ctaGradient: { flexDirection: "row", alignItems: "center", justifyContent: "center", paddingVertical: 18, gap: 10 },
+  ctaText: { color: "#FFFFFF", fontSize: 17, fontWeight: "700" },
+  ctaArrow: { color: "#FFFFFF", fontSize: 20, fontWeight: "700" },
+  skipBtn: { paddingVertical: 10 },
+  skipText: { color: "#5A4D72", fontSize: 14, fontWeight: "500" },
 });

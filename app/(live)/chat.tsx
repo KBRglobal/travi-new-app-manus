@@ -1,364 +1,380 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useCallback, useEffect } from "react";
 import {
-  View, Text, TextInput, TouchableOpacity, StyleSheet,
-  FlatList, KeyboardAvoidingView, Platform, Dimensions
+  View, Text, TouchableOpacity, StyleSheet, Dimensions,
+  FlatList, TextInput, Animated, Platform, KeyboardAvoidingView, Keyboard
 } from "react-native";
 import { router } from "expo-router";
-import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
 import { IconSymbol } from "@/components/ui/icon-symbol";
-import { ScreenContainer } from "@/components/screen-container";
 import { useStore } from "@/lib/store";
+import * as Haptics from "expo-haptics";
 
 const { width } = Dimensions.get("window");
 
-interface Message {
+interface ChatMessage {
   id: string;
-  role: "user" | "assistant";
+  role: "user" | "travi";
   text: string;
-  timestamp: Date;
-  suggestions?: string[];
+  time: string;
+  cards?: SuggestionCard[];
 }
 
-const QUICK_PROMPTS = [
-  "Best restaurant nearby?",
-  "What's the weather today?",
-  "Translate 'thank you'",
-  "Change tomorrow's plan",
-  "Book a taxi",
-  "Emergency contacts",
+interface SuggestionCard {
+  id: string;
+  title: string;
+  subtitle: string;
+  iconName: string;
+  gradient: [string, string];
+}
+
+const SMART_RESPONSES: { keywords: string[]; response: string; cards?: SuggestionCard[] }[] = [
+  {
+    keywords: ["restaurant", "eat", "food", "hungry", "dinner", "lunch", "breakfast"],
+    response: "Based on your Culinary Nomad DNA, here are 3 spots I'd personally pick for you right now:",
+    cards: [
+      { id: "r1", title: "Narisawa", subtitle: "Innovative Japanese · ★ 4.9 · 8 min walk", iconName: "fork.knife", gradient: ["#7C2D12", "#DC2626"] },
+      { id: "r2", title: "Sushi Saito", subtitle: "Omakase · ★ 4.8 · Book ahead", iconName: "star.fill", gradient: ["#1E3A5F", "#2563EB"] },
+      { id: "r3", title: "Ichiran Ramen", subtitle: "Solo booth ramen · ★ 4.7 · Open now", iconName: "flame.fill", gradient: ["#7C3AED", "#A855F7"] },
+    ],
+  },
+  {
+    keywords: ["weather", "rain", "sunny", "temperature", "forecast"],
+    response: "Current conditions in your destination: 22°C, partly cloudy. Perfect for exploring! Tomorrow brings light rain in the afternoon — I'd suggest moving your outdoor activities to the morning.",
+  },
+  {
+    keywords: ["hotel", "room", "check in", "checkout", "accommodation"],
+    response: "Your hotel is The Peninsula Tokyo, Marunouchi. Check-in was yesterday at 3pm. You're in room 1204 — a Deluxe Room with city views. Checkout is in 4 days at 12pm. Need anything from the concierge?",
+    cards: [
+      { id: "h1", title: "Room Service", subtitle: "Available 24/7", iconName: "bell.fill", gradient: ["#292524", "#57534E"] },
+      { id: "h2", title: "Spa Booking", subtitle: "Slots available today", iconName: "sparkles", gradient: ["#0E7490", "#06B6D4"] },
+    ],
+  },
+  {
+    keywords: ["transport", "taxi", "uber", "train", "metro", "bus", "get to", "how to get"],
+    response: "Best options from your current location:\n\nMetro — 12 min, very affordable\nTaxi — 18 min, ~$12\nWalk — 45 min (great route through the old quarter)\n\nI'd take the metro — it's an experience in itself.",
+  },
+  {
+    keywords: ["itinerary", "today", "plan", "schedule", "what should"],
+    response: "Here's your day at a glance:",
+    cards: [
+      { id: "i1", title: "Morning Market", subtitle: "9:00 AM · Fresh local breakfast", iconName: "cart.fill", gradient: ["#B45309", "#F59E0B"] },
+      { id: "i2", title: "Digital Art Museum", subtitle: "2:00 PM · Immersive experience", iconName: "sparkles", gradient: ["#6B21A8", "#EC4899"] },
+      { id: "i3", title: "Sunset Viewpoint", subtitle: "6:00 PM · Golden hour magic", iconName: "sun.max.fill", gradient: ["#1E3A5F", "#2563EB"] },
+    ],
+  },
+  {
+    keywords: ["money", "currency", "exchange", "atm", "cash"],
+    response: "You've spent approximately $340 so far on this trip. Best ATMs: 7-Eleven and local bank branches — no foreign fees. Avoid airport exchange booths, rates are 15% worse.",
+  },
+  {
+    keywords: ["emergency", "hospital", "doctor", "sick", "help", "police"],
+    response: "Emergency contacts:\n\nPolice: 110\nAmbulance: 119\nNearest hospital: 12 min away\nYour country's embassy: saved in your profile\n\nStay safe — I'm here if you need anything.",
+  },
+  {
+    keywords: ["points", "travi", "reward", "earn"],
+    response: "You've earned 340 TRAVI Points on this trip so far!\n\n200 pts for booking through TRAVI\n100 pts for completing Day 1 activities\n40 pts for leaving a review\n\nYou're 160 pts away from unlocking Adventurer tier.",
+  },
+  {
+    keywords: ["souvenir", "shop", "buy", "gift", "shopping"],
+    response: "Best shopping based on your Cultural Explorer DNA:",
+    cards: [
+      { id: "s1", title: "Traditional Crafts Market", subtitle: "Authentic local souvenirs", iconName: "bag.fill", gradient: ["#C2410C", "#EA580C"] },
+      { id: "s2", title: "Design District", subtitle: "Unique modern goods", iconName: "sparkles", gradient: ["#1E3A5F", "#2563EB"] },
+      { id: "s3", title: "Food Market", subtitle: "Edible gifts & local products", iconName: "cart.fill", gradient: ["#065F46", "#10B981"] },
+    ],
+  },
 ];
 
-const TRAVI_RESPONSES: Record<string, { text: string; suggestions?: string[] }> = {
-  default: {
-    text: "I'm TRAVI, your AI travel agent! I can help you find restaurants, translate phrases, change your itinerary, book transportation, and much more. What do you need?",
-    suggestions: ["Find food nearby", "Change my plan", "Translate something"],
-  },
-  restaurant: {
-    text: "🍽️ Based on your location and taste profile, I recommend:\n\n1. **Le Comptoir du Relais** — Classic French bistro, 5 min walk. ~$45/person\n2. **Breizh Café** — Best crêpes in Paris, 8 min walk. ~$25/person\n3. **Septime** — Modern French, Michelin-starred. ~$120/person\n\nShall I book a table?",
-    suggestions: ["Book Le Comptoir", "Book Septime", "Show more options"],
-  },
-  weather: {
-    text: "⛅ Today in Paris: 22°C, partly cloudy. Perfect for outdoor sightseeing!\n\nTomorrow: 18°C with light rain in the afternoon. I'd suggest moving your outdoor activities to the morning.",
-    suggestions: ["Update my itinerary", "What to pack?"],
-  },
-  translate: {
-    text: "🌍 Common French phrases:\n\n• **Thank you** → Merci (mehr-see)\n• **Please** → S'il vous plaît (seel voo play)\n• **Excuse me** → Excusez-moi (ex-kyoo-zay mwa)\n• **Where is...?** → Où est...? (oo ay)\n• **How much?** → Combien? (com-bee-en)\n\nNeed more translations?",
-    suggestions: ["More phrases", "Restaurant French", "Emergency phrases"],
-  },
-  taxi: {
-    text: "🚕 I can help you get a taxi! Options:\n\n• **Uber** — 3 min away, ~€12\n• **G7 Taxi** — Local taxi, ~€15\n• **Bolt** — 5 min away, ~€10\n\nShall I open the Uber app for you?",
-    suggestions: ["Open Uber", "Call G7 Taxi", "Walk directions instead"],
-  },
-};
+const DEFAULT_RESPONSES = [
+  "Great question! As a Cultural Explorer, you'll love this: the best hidden gem near you right now is the old quarter — walk 2-3 streets away from the main tourist area and you'll find authentic local life.",
+  "Absolutely! Given your DNA profile, I'd prioritize experiences over sightseeing. The local immersive art experiences are unmissable — book tickets now, they sell out fast.",
+  "Perfect timing to ask! The local tip I always give: avoid tourist restaurants near major landmarks. Walk 2-3 streets away and prices drop 40% while quality goes up.",
+  "I love that you're asking! Tokyo has so much to offer. Based on what I know about your travel style, I'd suggest exploring the less-touristy neighborhoods first thing in the morning.",
+];
 
-function getTraviResponse(message: string): { text: string; suggestions?: string[] } {
-  const lower = message.toLowerCase();
-  if (lower.includes("restaurant") || lower.includes("food") || lower.includes("eat")) return TRAVI_RESPONSES.restaurant;
-  if (lower.includes("weather") || lower.includes("rain") || lower.includes("temperature")) return TRAVI_RESPONSES.weather;
-  if (lower.includes("translate") || lower.includes("french") || lower.includes("language")) return TRAVI_RESPONSES.translate;
-  if (lower.includes("taxi") || lower.includes("uber") || lower.includes("transport")) return TRAVI_RESPONSES.taxi;
-  return TRAVI_RESPONSES.default;
+const SUGGESTION_CHIPS = [
+  { id: "c1", text: "Best food nearby", iconName: "fork.knife" },
+  { id: "c2", text: "Today's plan", iconName: "calendar" },
+  { id: "c3", text: "Weather today", iconName: "sun.max.fill" },
+  { id: "c4", text: "How to get around", iconName: "tram.fill" },
+  { id: "c5", text: "My points", iconName: "star.fill" },
+  { id: "c6", text: "Emergency info", iconName: "cross.fill" },
+];
+
+function getSmartResponse(input: string): { text: string; cards?: SuggestionCard[] } {
+  const lower = input.toLowerCase();
+  for (const item of SMART_RESPONSES) {
+    if (item.keywords.some((k) => lower.includes(k))) {
+      return { text: item.response, cards: item.cards };
+    }
+  }
+  return { text: DEFAULT_RESPONSES[Math.floor(Math.random() * DEFAULT_RESPONSES.length)] };
 }
 
-function MessageBubble({ message }: { message: Message }) {
-  const isUser = message.role === "user";
-  return (
-    <View style={[styles.messageRow, isUser && styles.messageRowUser]}>
-      {!isUser && (
-        <View style={styles.avatarContainer}>
-          <Image source={require("@/assets/images/icon.png")} style={styles.avatar} contentFit="contain" />
-        </View>
-      )}
-      <View style={[styles.bubble, isUser ? styles.bubbleUser : styles.bubbleAssistant]}>
-        <Text style={[styles.bubbleText, isUser && styles.bubbleTextUser]}>{message.text}</Text>
-        <Text style={styles.timestamp}>
-          {message.timestamp.getHours().toString().padStart(2, "0")}:{message.timestamp.getMinutes().toString().padStart(2, "0")}
-        </Text>
-        {message.suggestions && (
-          <View style={styles.suggestions}>
-            {message.suggestions.map((s, i) => (
-              <TouchableOpacity key={i} style={styles.suggestionChip}>
-                <Text style={styles.suggestionText}>{s}</Text>
-              </TouchableOpacity>
-            ))}
-          </View>
-        )}
-      </View>
-    </View>
-  );
+function nowTime() {
+  return new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
 }
 
 export default function ChatScreen() {
   const { state } = useStore();
-  const activeTrip = state.trips.find((t) => t.status === "active") || state.trips[0];
-  const [messages, setMessages] = useState<Message[]>([
+  const activeTrip = state.activeTrip || state.trips[0];
+  const profile = state.profile;
+  const firstName = profile?.name?.split(" ")[0] || "Traveler";
+
+  const [messages, setMessages] = useState<ChatMessage[]>([
     {
-      id: "1",
-      role: "assistant",
-      text: `Hey ${state.profile?.name || "traveler"}! 👋 I'm TRAVI, your personal AI travel agent. You're in ${activeTrip?.destination || "your destination"} — how can I help you today?`,
-      timestamp: new Date(),
-      suggestions: ["Best restaurant nearby?", "What's the weather?", "Translate something"],
+      id: "0",
+      role: "travi",
+      time: nowTime(),
+      text: `Hey ${firstName}! I'm TRAVI, your personal travel companion. I know your itinerary, your location, and your travel style. Ask me anything — restaurants, transport, weather, or just what to do next. I'm here 24/7.`,
     },
   ]);
   const [input, setInput] = useState("");
   const [isTyping, setIsTyping] = useState(false);
   const flatListRef = useRef<FlatList>(null);
-
-  const sendMessage = (text?: string) => {
-    const messageText = text || input.trim();
-    if (!messageText) return;
-
-    const userMessage: Message = {
-      id: Date.now().toString(),
-      role: "user",
-      text: messageText,
-      timestamp: new Date(),
-    };
-
-    setMessages((prev) => [...prev, userMessage]);
-    setInput("");
-    setIsTyping(true);
-
-    setTimeout(() => {
-      const response = getTraviResponse(messageText);
-      const assistantMessage: Message = {
-        id: (Date.now() + 1).toString(),
-        role: "assistant",
-        text: response.text,
-        timestamp: new Date(),
-        suggestions: response.suggestions,
-      };
-      setMessages((prev) => [...prev, assistantMessage]);
-      setIsTyping(false);
-    }, 1200);
-  };
+  const dot1 = useRef(new Animated.Value(0)).current;
+  const dot2 = useRef(new Animated.Value(0)).current;
+  const dot3 = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
+    if (!isTyping) return;
+    const anim = Animated.loop(
+      Animated.stagger(160, [
+        Animated.sequence([Animated.timing(dot1, { toValue: -5, duration: 300, useNativeDriver: true }), Animated.timing(dot1, { toValue: 0, duration: 300, useNativeDriver: true })]),
+        Animated.sequence([Animated.timing(dot2, { toValue: -5, duration: 300, useNativeDriver: true }), Animated.timing(dot2, { toValue: 0, duration: 300, useNativeDriver: true })]),
+        Animated.sequence([Animated.timing(dot3, { toValue: -5, duration: 300, useNativeDriver: true }), Animated.timing(dot3, { toValue: 0, duration: 300, useNativeDriver: true })]),
+      ])
+    );
+    anim.start();
+    return () => anim.stop();
+  }, [isTyping]);
+
+  const sendMessage = useCallback((text: string) => {
+    if (!text.trim()) return;
+    if (Platform.OS !== "web") Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    const userMsg: ChatMessage = { id: Date.now().toString(), role: "user", text: text.trim(), time: nowTime() };
+    setMessages((prev) => [...prev, userMsg]);
+    setInput("");
+    setIsTyping(true);
+    Keyboard.dismiss();
+    setTimeout(() => {
+      const { text: responseText, cards } = getSmartResponse(text);
+      const traviMsg: ChatMessage = { id: (Date.now() + 1).toString(), role: "travi", text: responseText, time: nowTime(), cards };
+      setIsTyping(false);
+      setMessages((prev) => [...prev, traviMsg]);
+      if (Platform.OS !== "web") Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+      setTimeout(() => flatListRef.current?.scrollToEnd({ animated: true }), 100);
+    }, 1200 + Math.random() * 600);
     setTimeout(() => flatListRef.current?.scrollToEnd({ animated: true }), 100);
-  }, [messages]);
+  }, []);
+
+  const renderMessage = useCallback(({ item }: { item: ChatMessage }) => {
+    const isTravi = item.role === "travi";
+    return (
+      <View style={[S.msgRow, isTravi ? S.msgRowTravi : S.msgRowUser]}>
+        {isTravi && (
+          <View style={S.traviAvatar}>
+            <LinearGradient colors={["#7B2FBE", "#E91E8C"]} style={S.traviAvatarGrad}>
+              <Text style={S.traviAvatarEmoji}>🦆</Text>
+            </LinearGradient>
+          </View>
+        )}
+        <View style={[S.bubble, isTravi ? S.bubbleTravi : S.bubbleUser]}>
+          {isTravi
+            ? <LinearGradient colors={["rgba(123,47,190,0.3)", "rgba(233,30,140,0.15)"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={StyleSheet.absoluteFillObject} />
+            : <LinearGradient colors={["#7B2FBE", "#E91E8C"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={StyleSheet.absoluteFillObject} />
+          }
+          <Text style={[S.bubbleText, isTravi ? S.bubbleTextTravi : S.bubbleTextUser]}>{item.text}</Text>
+          {item.cards && item.cards.length > 0 && (
+            <View style={S.cardsWrap}>
+              {item.cards.map((card) => (
+                <TouchableOpacity key={card.id} style={S.suggCard} activeOpacity={0.85}>
+                  <LinearGradient colors={card.gradient} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={StyleSheet.absoluteFillObject} />
+                  <View style={S.suggCardIcon}>
+                    <IconSymbol name={card.iconName as never} size={16} color="rgba(255,255,255,0.9)" />
+                  </View>
+                  <View style={{ flex: 1 }}>
+                    <Text style={S.suggCardTitle}>{card.title}</Text>
+                    <Text style={S.suggCardSub}>{card.subtitle}</Text>
+                  </View>
+                  <IconSymbol name="chevron.right" size={14} color="rgba(255,255,255,0.4)" />
+                </TouchableOpacity>
+              ))}
+            </View>
+          )}
+          <Text style={S.msgTime}>{item.time}</Text>
+        </View>
+      </View>
+    );
+  }, []);
 
   return (
-    <ScreenContainer containerClassName="bg-background" edges={["top", "left", "right"]}>
+    <View style={S.container}>
+      <LinearGradient colors={["#040010", "#0D0520", "#1A0A3D"]} style={StyleSheet.absoluteFillObject} />
+
       {/* Header */}
-      <LinearGradient colors={["#2D1B69", "#1A0533"]} style={styles.header}>
-        <TouchableOpacity onPress={() => router.back()} style={styles.backBtn}>
-          <IconSymbol name="chevron.left" size={24} color="#FFFFFF" />
+      <View style={S.header}>
+        <TouchableOpacity style={S.backBtn} onPress={() => router.back()} activeOpacity={0.7}>
+          <IconSymbol name="chevron.left" size={20} color="rgba(255,255,255,0.8)" />
         </TouchableOpacity>
-        <View style={styles.headerInfo}>
-          <View style={styles.traviAvatar}>
-            <Image source={require("@/assets/images/icon.png")} style={styles.traviAvatarImg} contentFit="contain" />
+        <View style={S.headerCenter}>
+          <View style={S.headerAvatar}>
+            <LinearGradient colors={["#7B2FBE", "#E91E8C"]} style={S.headerAvatarGrad}>
+              <Text style={S.headerAvatarEmoji}>🦆</Text>
+            </LinearGradient>
           </View>
           <View>
-            <Text style={styles.headerTitle}>TRAVI Assistant</Text>
-            <View style={styles.onlineRow}>
-              <View style={styles.onlineDot} />
-              <Text style={styles.onlineText}>Online • AI-powered</Text>
+            <Text style={S.headerName}>TRAVI</Text>
+            <View style={S.headerStatus}>
+              <View style={S.onlineDot} />
+              <Text style={S.headerStatusText}>{activeTrip ? `In ${activeTrip.destination}` : "Always online"}</Text>
             </View>
           </View>
         </View>
-        <TouchableOpacity style={styles.clearBtn}>
-          <IconSymbol name="trash" size={18} color="#A78BCA" />
-        </TouchableOpacity>
-      </LinearGradient>
-
-      {/* Quick Prompts */}
-      <View style={styles.quickPromptsContainer}>
-        <FlatList
-          data={QUICK_PROMPTS}
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          keyExtractor={(item) => item}
-          contentContainerStyle={{ gap: 8, paddingHorizontal: 16, paddingVertical: 10 }}
-          renderItem={({ item }) => (
-            <TouchableOpacity
-              style={styles.quickPromptChip}
-              onPress={() => sendMessage(item)}
-              activeOpacity={0.8}
-            >
-              <Text style={styles.quickPromptText}>{item}</Text>
-            </TouchableOpacity>
-          )}
-        />
+        <View style={{ width: 36 }} />
       </View>
 
-      {/* Messages */}
-      <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-        style={{ flex: 1 }}
-        keyboardVerticalOffset={0}
-      >
+      {/* Trip context banner */}
+      {activeTrip && (
+        <View style={S.contextBanner}>
+          <LinearGradient colors={["rgba(123,47,190,0.25)", "rgba(233,30,140,0.12)"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={StyleSheet.absoluteFillObject} />
+          <IconSymbol name="location.fill" size={13} color="#C084FC" />
+          <Text style={S.contextText}>{activeTrip.destination}, {activeTrip.country}</Text>
+          <View style={S.contextDot} />
+          <Text style={S.contextPoints}>{profile?.points || 0} pts</Text>
+        </View>
+      )}
+
+      <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === "ios" ? "padding" : undefined} keyboardVerticalOffset={0}>
         <FlatList
           ref={flatListRef}
           data={messages}
           keyExtractor={(item) => item.id}
-          contentContainerStyle={styles.messagesList}
-          renderItem={({ item }) => <MessageBubble message={item} />}
+          renderItem={renderMessage}
+          contentContainerStyle={S.messagesList}
+          showsVerticalScrollIndicator={false}
+          onContentSizeChange={() => flatListRef.current?.scrollToEnd({ animated: true })}
           ListFooterComponent={
             isTyping ? (
-              <View style={styles.typingIndicator}>
-                <View style={styles.avatarContainer}>
-                  <Image source={require("@/assets/images/icon.png")} style={styles.avatar} contentFit="contain" />
+              <View style={[S.msgRow, S.msgRowTravi]}>
+                <View style={S.traviAvatar}>
+                  <LinearGradient colors={["#7B2FBE", "#E91E8C"]} style={S.traviAvatarGrad}>
+                    <Text style={S.traviAvatarEmoji}>🦆</Text>
+                  </LinearGradient>
                 </View>
-                <View style={styles.typingBubble}>
-                  <Text style={styles.typingDots}>● ● ●</Text>
+                <View style={[S.bubble, S.bubbleTravi, { paddingVertical: 16 }]}>
+                  <LinearGradient colors={["rgba(123,47,190,0.3)", "rgba(233,30,140,0.15)"]} style={StyleSheet.absoluteFillObject} />
+                  <View style={S.typingDots}>
+                    {[dot1, dot2, dot3].map((d, i) => (
+                      <Animated.View key={i} style={[S.typingDot, { transform: [{ translateY: d }] }]} />
+                    ))}
+                  </View>
                 </View>
               </View>
             ) : null
           }
         />
 
-        {/* Input */}
-        <View style={styles.inputContainer}>
-          <View style={styles.inputRow}>
-            <TouchableOpacity style={styles.attachBtn}>
-              <IconSymbol name="camera.fill" size={20} color="#A78BCA" />
+        {/* Suggestion chips */}
+        <FlatList
+          data={SUGGESTION_CHIPS}
+          keyExtractor={(item) => item.id}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={S.chipsList}
+          style={S.chipsWrap}
+          renderItem={({ item }) => (
+            <TouchableOpacity style={S.chip} onPress={() => sendMessage(item.text)} activeOpacity={0.8}>
+              <LinearGradient colors={["rgba(123,47,190,0.3)", "rgba(233,30,140,0.15)"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={StyleSheet.absoluteFillObject} />
+              <IconSymbol name={item.iconName as never} size={13} color="#C084FC" />
+              <Text style={S.chipText}>{item.text}</Text>
             </TouchableOpacity>
+          )}
+        />
+
+        {/* Input bar */}
+        <View style={S.inputBar}>
+          <LinearGradient colors={["rgba(4,0,16,0.98)", "rgba(13,5,32,0.99)"]} style={StyleSheet.absoluteFillObject} />
+          <View style={S.inputWrap}>
+            <LinearGradient colors={["rgba(123,47,190,0.2)", "rgba(233,30,140,0.1)"]} style={StyleSheet.absoluteFillObject} />
             <TextInput
-              style={styles.textInput}
+              style={S.input}
               placeholder="Ask TRAVI anything..."
-              placeholderTextColor="#A78BCA"
+              placeholderTextColor="rgba(255,255,255,0.25)"
               value={input}
               onChangeText={setInput}
               multiline
               maxLength={500}
               returnKeyType="send"
-              onSubmitEditing={() => sendMessage()}
+              onSubmitEditing={() => sendMessage(input)}
             />
             <TouchableOpacity
-              style={[styles.sendBtn, !input.trim() && styles.sendBtnDisabled]}
-              onPress={() => sendMessage()}
-              disabled={!input.trim()}
+              style={S.sendBtn}
+              onPress={() => sendMessage(input)}
               activeOpacity={0.8}
+              disabled={!input.trim() || isTyping}
             >
-              <LinearGradient
-                colors={input.trim() ? ["#7B2FBE", "#E91E8C"] : ["#4A3080", "#4A3080"]}
-                style={styles.sendGradient}
-              >
-                <IconSymbol name="paperplane.fill" size={18} color="#FFFFFF" />
-              </LinearGradient>
+              {input.trim() ? (
+                <LinearGradient colors={["#7B2FBE", "#E91E8C"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={S.sendBtnGrad}>
+                  <IconSymbol name="arrow.up" size={18} color="#FFFFFF" />
+                </LinearGradient>
+              ) : (
+                <View style={[S.sendBtnGrad, { backgroundColor: "rgba(255,255,255,0.05)" }]}>
+                  <IconSymbol name="arrow.up" size={18} color="rgba(255,255,255,0.2)" />
+                </View>
+              )}
             </TouchableOpacity>
           </View>
         </View>
       </KeyboardAvoidingView>
-    </ScreenContainer>
+    </View>
   );
 }
 
-const styles = StyleSheet.create({
-  header: {
-    flexDirection: "row",
-    alignItems: "center",
-    paddingHorizontal: 16,
-    paddingTop: 12,
-    paddingBottom: 14,
-    gap: 12,
-  },
-  backBtn: { width: 36, height: 36, alignItems: "center", justifyContent: "center" },
-  headerInfo: { flex: 1, flexDirection: "row", alignItems: "center", gap: 10 },
-  traviAvatar: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: "#3D2580",
-    overflow: "hidden",
-    borderWidth: 1.5,
-    borderColor: "#7B2FBE",
-  },
-  traviAvatarImg: { width: 40, height: 40 },
-  headerTitle: { color: "#FFFFFF", fontSize: 16, fontWeight: "700" },
-  onlineRow: { flexDirection: "row", alignItems: "center", gap: 5, marginTop: 2 },
-  onlineDot: { width: 6, height: 6, borderRadius: 3, backgroundColor: "#4CAF50" },
-  onlineText: { color: "#A78BCA", fontSize: 12 },
-  clearBtn: { padding: 8 },
-  quickPromptsContainer: { borderBottomWidth: 1, borderBottomColor: "#2D1B69" },
-  quickPromptChip: {
-    backgroundColor: "#2D1B69",
-    borderRadius: 16,
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderWidth: 1,
-    borderColor: "#4A3080",
-  },
-  quickPromptText: { color: "#A78BCA", fontSize: 13 },
-  messagesList: { padding: 16, gap: 12, paddingBottom: 20 },
-  messageRow: { flexDirection: "row", alignItems: "flex-end", gap: 8 },
-  messageRowUser: { flexDirection: "row-reverse" },
-  avatarContainer: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
-    backgroundColor: "#3D2580",
-    overflow: "hidden",
-    borderWidth: 1,
-    borderColor: "#7B2FBE",
-  },
-  avatar: { width: 32, height: 32 },
-  bubble: {
-    maxWidth: width * 0.72,
-    borderRadius: 18,
-    padding: 12,
-    gap: 4,
-  },
-  bubbleAssistant: {
-    backgroundColor: "#2D1B69",
-    borderWidth: 1,
-    borderColor: "#4A3080",
-    borderBottomLeftRadius: 4,
-  },
-  bubbleUser: {
-    backgroundColor: "#7B2FBE",
-    borderBottomRightRadius: 4,
-  },
-  bubbleText: { color: "#FFFFFF", fontSize: 15, lineHeight: 22 },
+const S = StyleSheet.create({
+  container: { flex: 1, backgroundColor: "#040010" },
+  header: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 16, paddingTop: 56, paddingBottom: 12 },
+  backBtn: { width: 36, height: 36, borderRadius: 18, backgroundColor: "rgba(255,255,255,0.08)", alignItems: "center", justifyContent: "center" },
+  headerCenter: { flexDirection: "row", alignItems: "center", gap: 10 },
+  headerAvatar: { width: 40, height: 40, borderRadius: 20, overflow: "hidden" },
+  headerAvatarGrad: { flex: 1, alignItems: "center", justifyContent: "center" },
+  headerAvatarEmoji: { fontSize: 22 },
+  headerName: { color: "#FFFFFF", fontSize: 16, fontWeight: "800" },
+  headerStatus: { flexDirection: "row", alignItems: "center", gap: 5 },
+  onlineDot: { width: 7, height: 7, borderRadius: 3.5, backgroundColor: "#10B981" },
+  headerStatusText: { color: "rgba(255,255,255,0.45)", fontSize: 12 },
+  contextBanner: { flexDirection: "row", alignItems: "center", gap: 6, marginHorizontal: 16, borderRadius: 12, overflow: "hidden", paddingHorizontal: 12, paddingVertical: 8, marginBottom: 8, borderWidth: 1, borderColor: "rgba(123,47,190,0.3)" },
+  contextText: { flex: 1, color: "rgba(255,255,255,0.55)", fontSize: 12, fontWeight: "600" },
+  contextDot: { width: 4, height: 4, borderRadius: 2, backgroundColor: "rgba(255,255,255,0.2)" },
+  contextPoints: { color: "#FFD700", fontSize: 12, fontWeight: "700" },
+  messagesList: { paddingHorizontal: 16, paddingTop: 8, paddingBottom: 16, gap: 16 },
+  msgRow: { flexDirection: "row", gap: 10 },
+  msgRowTravi: { alignSelf: "flex-start", maxWidth: width * 0.85 },
+  msgRowUser: { alignSelf: "flex-end", flexDirection: "row-reverse", maxWidth: width * 0.75 },
+  traviAvatar: { width: 32, height: 32, borderRadius: 16, overflow: "hidden", flexShrink: 0, marginTop: 4 },
+  traviAvatarGrad: { flex: 1, alignItems: "center", justifyContent: "center" },
+  traviAvatarEmoji: { fontSize: 18 },
+  bubble: { borderRadius: 20, overflow: "hidden", padding: 14, gap: 10 },
+  bubbleTravi: { borderBottomLeftRadius: 4, borderWidth: 1, borderColor: "rgba(123,47,190,0.35)" },
+  bubbleUser: { borderBottomRightRadius: 4 },
+  bubbleText: { fontSize: 15, lineHeight: 22 },
+  bubbleTextTravi: { color: "rgba(255,255,255,0.88)" },
   bubbleTextUser: { color: "#FFFFFF" },
-  timestamp: { color: "#6B5A8A", fontSize: 10, alignSelf: "flex-end" },
-  suggestions: { flexDirection: "row", flexWrap: "wrap", gap: 6, marginTop: 6 },
-  suggestionChip: {
-    backgroundColor: "rgba(123,47,190,0.3)",
-    borderRadius: 12,
-    paddingHorizontal: 10,
-    paddingVertical: 4,
-    borderWidth: 1,
-    borderColor: "#7B2FBE",
-  },
-  suggestionText: { color: "#A78BCA", fontSize: 12 },
-  typingIndicator: { flexDirection: "row", alignItems: "flex-end", gap: 8, marginTop: 8 },
-  typingBubble: {
-    backgroundColor: "#2D1B69",
-    borderRadius: 18,
-    padding: 12,
-    borderWidth: 1,
-    borderColor: "#4A3080",
-  },
-  typingDots: { color: "#A78BCA", fontSize: 14, letterSpacing: 4 },
-  inputContainer: {
-    borderTopWidth: 1,
-    borderTopColor: "#2D1B69",
-    padding: 12,
-    paddingBottom: Platform.OS === "ios" ? 28 : 12,
-    backgroundColor: "#1A0533",
-  },
-  inputRow: {
-    flexDirection: "row",
-    alignItems: "flex-end",
-    backgroundColor: "#2D1B69",
-    borderRadius: 24,
-    borderWidth: 1,
-    borderColor: "#4A3080",
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    gap: 8,
-  },
-  attachBtn: { padding: 4, paddingBottom: 6 },
-  textInput: {
-    flex: 1,
-    color: "#FFFFFF",
-    fontSize: 15,
-    maxHeight: 100,
-    paddingVertical: 6,
-  },
-  sendBtn: { borderRadius: 20, overflow: "hidden" },
-  sendBtnDisabled: { opacity: 0.5 },
-  sendGradient: { width: 36, height: 36, alignItems: "center", justifyContent: "center" },
+  msgTime: { color: "rgba(255,255,255,0.25)", fontSize: 11, alignSelf: "flex-end" },
+  cardsWrap: { gap: 8, marginTop: 4 },
+  suggCard: { flexDirection: "row", alignItems: "center", gap: 10, borderRadius: 14, overflow: "hidden", padding: 10 },
+  suggCardIcon: { width: 32, height: 32, borderRadius: 10, backgroundColor: "rgba(0,0,0,0.25)", alignItems: "center", justifyContent: "center" },
+  suggCardTitle: { color: "#FFFFFF", fontSize: 13, fontWeight: "700" },
+  suggCardSub: { color: "rgba(255,255,255,0.5)", fontSize: 11, marginTop: 1 },
+  typingDots: { flexDirection: "row", gap: 5, alignItems: "center" },
+  typingDot: { width: 8, height: 8, borderRadius: 4, backgroundColor: "#C084FC" },
+  chipsWrap: { maxHeight: 46 },
+  chipsList: { paddingHorizontal: 16, gap: 8, paddingVertical: 6 },
+  chip: { flexDirection: "row", alignItems: "center", gap: 6, borderRadius: 20, overflow: "hidden", paddingHorizontal: 12, paddingVertical: 8, borderWidth: 1, borderColor: "rgba(123,47,190,0.35)" },
+  chipText: { color: "rgba(255,255,255,0.65)", fontSize: 13, fontWeight: "600" },
+  inputBar: { paddingHorizontal: 12, paddingVertical: 10, paddingBottom: Platform.OS === "ios" ? 28 : 12 },
+  inputWrap: { flexDirection: "row", alignItems: "flex-end", gap: 10, borderRadius: 24, overflow: "hidden", paddingHorizontal: 14, paddingVertical: 10, borderWidth: 1, borderColor: "rgba(123,47,190,0.35)" },
+  input: { flex: 1, color: "#FFFFFF", fontSize: 15, maxHeight: 100, lineHeight: 22 },
+  sendBtn: { width: 36, height: 36, borderRadius: 18, overflow: "hidden", flexShrink: 0 },
+  sendBtnGrad: { flex: 1, alignItems: "center", justifyContent: "center" },
 });
