@@ -8,29 +8,38 @@ import { router } from "expo-router";
 const { width } = Dimensions.get("window");
 
 const MOCK_TRANSACTIONS = [
-  { id: "t1", date: "Mar 28, 2026", description: "Paris Trip Booking", amount: 2340, type: "earned", icon: "✈️" },
-  { id: "t2", date: "Mar 20, 2026", description: "Hotel Le Bristol", amount: 975, type: "earned", icon: "🏨" },
-  { id: "t3", date: "Mar 15, 2026", description: "Redeemed for Upgrade", amount: -1500, type: "spent", icon: "🎁" },
-  { id: "t4", date: "Mar 10, 2026", description: "Tokyo Trip Booking", amount: 1820, type: "earned", icon: "⛩️" },
-  { id: "t5", date: "Feb 28, 2026", description: "Referral Bonus", amount: 500, type: "earned", icon: "👥" },
-  { id: "t6", date: "Feb 14, 2026", description: "Valentine's Package", amount: 650, type: "earned", icon: "💑" },
-  { id: "t7", date: "Jan 31, 2026", description: "Points Expired", amount: -200, type: "expired", icon: "⏰" },
+  { id: "t1", date: "Mar 28, 2026", description: "Paris Trip Booking", amount: 2340, type: "earned", iconName: "airplane" as const },
+  { id: "t2", date: "Mar 20, 2026", description: "Hotel Le Bristol", amount: 975, type: "earned", iconName: "bed.double.fill" as const },
+  { id: "t3", date: "Mar 15, 2026", description: "Redeemed for Upgrade", amount: -1500, type: "spent", iconName: "gift.fill" as const },
+  { id: "t4", date: "Mar 10, 2026", description: "Tokyo Trip Booking", amount: 1820, type: "earned", iconName: "airplane" as const },
+  { id: "t5", date: "Feb 28, 2026", description: "Referral Bonus", amount: 500, type: "earned", iconName: "person.badge.plus" as const },
+  { id: "t6", date: "Feb 14, 2026", description: "Valentine's Package", amount: 650, type: "earned", iconName: "heart.fill" as const },
+  { id: "t7", date: "Jan 31, 2026", description: "Points Expired", amount: -200, type: "expired", iconName: "clock.fill" as const },
 ];
 
 const REDEEM_OPTIONS = [
-  { id: "r1", title: "Flight Discount", desc: "10% off next flight", cost: 1000, icon: "✈️", color: "#7B2FBE" },
-  { id: "r2", title: "Hotel Upgrade", desc: "Free room upgrade", cost: 1500, icon: "🏨", color: "#E91E8C" },
-  { id: "r3", title: "Airport Transfer", desc: "Free taxi to airport", cost: 800, icon: "🚗", color: "#FF9800" },
-  { id: "r4", title: "Travel Insurance", desc: "7-day coverage", cost: 2000, icon: "🛡️", color: "#4CAF50" },
-  { id: "r5", title: "Lounge Access", desc: "Airport VIP lounge", cost: 1200, icon: "🥂", color: "#2196F3" },
-  { id: "r6", title: "City Tour", desc: "Half-day guided tour", cost: 900, icon: "🗺️", color: "#9C27B0" },
+  { id: "r1", title: "Flight Discount", desc: "10% off next flight", cost: 1000, iconName: "airplane" as const, color: "#7B2FBE" },
+  { id: "r2", title: "Hotel Upgrade", desc: "Free room upgrade", cost: 1500, iconName: "bed.double.fill" as const, color: "#E91E8C" },
+  { id: "r3", title: "Airport Transfer", desc: "Free taxi to airport", cost: 800, iconName: "car.fill" as const, color: "#FF9800" },
+  { id: "r4", title: "Travel Insurance", desc: "7-day coverage", cost: 2000, iconName: "shield.fill" as const, color: "#4CAF50" },
+  { id: "r5", title: "Lounge Access", desc: "Airport VIP lounge", cost: 1200, iconName: "star.fill" as const, color: "#2196F3" },
+  { id: "r6", title: "City Tour", desc: "Half-day guided tour", cost: 900, iconName: "map.fill" as const, color: "#9C27B0" },
 ];
 
 const TIERS = [
-  { name: "Explorer", min: 0, max: 5000, color: "#A78BCA", icon: "🌱" },
-  { name: "Adventurer", min: 5000, max: 15000, color: "#4CAF50", icon: "🌿" },
-  { name: "Globetrotter", min: 15000, max: 30000, color: "#2196F3", icon: "🌍" },
-  { name: "Elite Nomad", min: 30000, max: Infinity, color: "#FFD700", icon: "👑" },
+  { name: "Explorer", min: 0, max: 5000, color: "#A78BCA", iconName: "leaf.fill" as const },
+  { name: "Adventurer", min: 5000, max: 15000, color: "#4CAF50", iconName: "figure.run" as const },
+  { name: "Globetrotter", min: 15000, max: 30000, color: "#2196F3", iconName: "globe" as const },
+  { name: "Elite Nomad", min: 30000, max: Infinity, color: "#FFD700", iconName: "crown.fill" as const },
+];
+
+const EARN_ROWS = [
+  { iconName: "airplane" as const, action: "Book a flight", pts: "5% of value", color: "#7B2FBE" },
+  { iconName: "bed.double.fill" as const, action: "Book a hotel", pts: "5% of value", color: "#E91E8C" },
+  { iconName: "theatermasks.fill" as const, action: "Book activities", pts: "3% of value", color: "#FF9800" },
+  { iconName: "person.badge.plus" as const, action: "Refer a friend", pts: "500 pts", color: "#4CAF50" },
+  { iconName: "star.fill" as const, action: "Leave a review", pts: "50 pts", color: "#FFD700" },
+  { iconName: "calendar" as const, action: "Birthday bonus", pts: "200 pts", color: "#2196F3" },
 ];
 
 export default function WalletScreen() {
@@ -59,7 +68,7 @@ export default function WalletScreen() {
         description: tx.description,
         amount: tx.amount,
         type: tx.type,
-        icon: tx.amount > 0 ? "✦" : "🎁",
+        iconName: (tx.amount > 0 ? "dollarsign.circle.fill" : "gift.fill") as "dollarsign.circle.fill" | "gift.fill",
       }))
     : MOCK_TRANSACTIONS;
 
@@ -83,7 +92,8 @@ export default function WalletScreen() {
               <Text style={styles.alertsBtnText}>Alerts</Text>
             </TouchableOpacity>
             <View style={[styles.tierPill, { borderColor: currentTier.color + "66" }]}>
-              <Text style={[styles.tierPillText, { color: currentTier.color }]}>{currentTier.icon} {currentTier.name}</Text>
+              <IconSymbol name={currentTier.iconName} size={12} color={currentTier.color} />
+              <Text style={[styles.tierPillText, { color: currentTier.color }]}> {currentTier.name}</Text>
             </View>
           </View>
         </View>
@@ -102,13 +112,13 @@ export default function WalletScreen() {
               <View>
                 <Text style={styles.heroLabel}>TRAVI Points Balance</Text>
                 <View style={styles.heroPointsRow}>
-                  <Text style={styles.heroStar}>✦</Text>
+                  <IconSymbol name="sparkles" size={22} color="#FFD700" style={{ marginBottom: 6 }} />
                   <Text style={styles.heroPoints}>{points.toLocaleString()}</Text>
                 </View>
                 <Text style={styles.heroWorth}>≈ ${(points / 100).toFixed(0)} travel value</Text>
               </View>
               <View style={styles.heroTierBadge}>
-                <Text style={styles.heroTierIcon}>{currentTier.icon}</Text>
+                <IconSymbol name={currentTier.iconName} size={24} color={currentTier.color} />
                 <Text style={[styles.heroTierName, { color: currentTier.color }]}>{currentTier.name}</Text>
               </View>
             </View>
@@ -170,7 +180,8 @@ export default function WalletScreen() {
         {redeemSuccess && (
           <View style={styles.successToast}>
             <LinearGradient colors={["rgba(76,175,80,0.3)", "rgba(76,175,80,0.15)"]} style={styles.successGradient}>
-              <Text style={styles.successText}>✓ {redeemSuccess} redeemed!</Text>
+              <IconSymbol name="checkmark.circle.fill" size={16} color="#4CAF50" />
+              <Text style={styles.successText}> {redeemSuccess} redeemed!</Text>
             </LinearGradient>
           </View>
         )}
@@ -179,17 +190,10 @@ export default function WalletScreen() {
         {activeTab === "overview" && (
           <View style={styles.tabContent}>
             <Text style={styles.sectionTitle}>How to Earn Points</Text>
-            {[
-              { icon: "✈️", action: "Book a flight", pts: "5% of value" },
-              { icon: "🏨", action: "Book a hotel", pts: "5% of value" },
-              { icon: "🎭", action: "Book activities", pts: "3% of value" },
-              { icon: "👥", action: "Refer a friend", pts: "500 pts" },
-              { icon: "⭐", action: "Leave a review", pts: "50 pts" },
-              { icon: "🎂", action: "Birthday bonus", pts: "200 pts" },
-            ].map((item, i) => (
+            {EARN_ROWS.map((item, i) => (
               <View key={i} style={styles.earnRow}>
-                <View style={styles.earnIconWrap}>
-                  <Text style={styles.earnIcon}>{item.icon}</Text>
+                <View style={[styles.earnIconWrap, { backgroundColor: item.color + "22" }]}>
+                  <IconSymbol name={item.iconName} size={20} color={item.color} />
                 </View>
                 <Text style={styles.earnAction}>{item.action}</Text>
                 <View style={styles.earnBadge}>
@@ -205,7 +209,9 @@ export default function WalletScreen() {
                   <LinearGradient colors={[tier.color + "22", tier.color + "10"]} style={StyleSheet.absoluteFillObject} />
                 )}
                 <View style={styles.tierCardLeft}>
-                  <Text style={styles.tierCardIcon}>{tier.icon}</Text>
+                  <View style={[styles.tierCardIconWrap, { backgroundColor: tier.color + "22" }]}>
+                    <IconSymbol name={tier.iconName} size={20} color={tier.color} />
+                  </View>
                   <View>
                     <Text style={[styles.tierCardName, { color: tier.color }]}>{tier.name}</Text>
                     <Text style={styles.tierCardRange}>
@@ -237,13 +243,14 @@ export default function WalletScreen() {
                     onPress={() => handleRedeem(option)}
                     activeOpacity={0.85}
                   >
-                    <LinearGradient colors={[option.color + "33", option.color + "15"]} style={StyleSheet.absoluteFillObject} />
-                    <Text style={styles.redeemIcon}>{option.icon}</Text>
+                    <View style={[styles.redeemIconWrap, { backgroundColor: canAfford ? option.color + "22" : "rgba(255,255,255,0.05)" }]}>
+                      <IconSymbol name={option.iconName} size={26} color={canAfford ? option.color : "#5A4D72"} />
+                    </View>
                     <Text style={styles.redeemTitle}>{option.title}</Text>
                     <Text style={styles.redeemDesc}>{option.desc}</Text>
                     <View style={[styles.redeemCostBadge, { borderColor: canAfford ? option.color + "88" : "rgba(255,255,255,0.1)" }]}>
                       <Text style={[styles.redeemCostText, { color: canAfford ? option.color : "#5A4D72" }]}>
-                        ✦ {option.cost.toLocaleString()} pts
+                        {option.cost.toLocaleString()} pts
                       </Text>
                     </View>
                     {!canAfford && (
@@ -263,7 +270,7 @@ export default function WalletScreen() {
             {transactions.map((tx) => (
               <View key={tx.id} style={styles.txRow}>
                 <View style={[styles.txIconWrap, { backgroundColor: tx.amount > 0 ? "rgba(76,175,80,0.2)" : "rgba(233,30,140,0.2)" }]}>
-                  <Text style={styles.txIconText}>{tx.icon}</Text>
+                  <IconSymbol name={tx.iconName} size={20} color={tx.amount > 0 ? "#4CAF50" : "#E91E8C"} />
                 </View>
                 <View style={styles.txInfo}>
                   <Text style={styles.txDesc}>{tx.description}</Text>
@@ -290,7 +297,7 @@ const styles = StyleSheet.create({
   scroll: { paddingHorizontal: 22, paddingTop: 60, paddingBottom: 100, gap: 20 },
   pageHeader: { flexDirection: "row", alignItems: "center", justifyContent: "space-between" },
   pageTitle: { color: "#FFFFFF", fontSize: 26, fontWeight: "800" },
-  tierPill: { borderRadius: 12, borderWidth: 1, paddingHorizontal: 12, paddingVertical: 6, backgroundColor: "rgba(255,255,255,0.05)" },
+  tierPill: { flexDirection: "row", alignItems: "center", borderRadius: 12, borderWidth: 1, paddingHorizontal: 12, paddingVertical: 6, backgroundColor: "rgba(255,255,255,0.05)" },
   tierPillText: { fontSize: 13, fontWeight: "700" },
   heroCard: { borderRadius: 24, overflow: "hidden", borderWidth: 1.5, borderColor: "rgba(123,47,190,0.5)" },
   heroGradient: { padding: 24, gap: 20 },
@@ -299,11 +306,9 @@ const styles = StyleSheet.create({
   heroTop: { flexDirection: "row", justifyContent: "space-between", alignItems: "flex-start" },
   heroLabel: { color: "rgba(255,255,255,0.7)", fontSize: 13 },
   heroPointsRow: { flexDirection: "row", alignItems: "flex-end", gap: 6 },
-  heroStar: { color: "#FFD700", fontSize: 26, marginBottom: 6 },
   heroPoints: { color: "#FFFFFF", fontSize: 48, fontWeight: "900", letterSpacing: -1 },
   heroWorth: { color: "rgba(255,255,255,0.6)", fontSize: 13, marginTop: 2 },
   heroTierBadge: { alignItems: "center", gap: 4, backgroundColor: "rgba(0,0,0,0.3)", borderRadius: 16, padding: 12 },
-  heroTierIcon: { fontSize: 24 },
   heroTierName: { fontSize: 12, fontWeight: "700" },
   heroProgress: { gap: 8 },
   progressLabels: { flexDirection: "row", justifyContent: "space-between" },
@@ -323,27 +328,26 @@ const styles = StyleSheet.create({
   tabText: { color: "#5A4D72", fontSize: 14, fontWeight: "600" },
   tabTextActive: { color: "#FFFFFF" },
   successToast: { borderRadius: 14, overflow: "hidden", borderWidth: 1, borderColor: "rgba(76,175,80,0.4)" },
-  successGradient: { paddingVertical: 12, alignItems: "center" },
+  successGradient: { paddingVertical: 12, alignItems: "center", flexDirection: "row", justifyContent: "center", gap: 6 },
   successText: { color: "#4CAF50", fontSize: 14, fontWeight: "600" },
   tabContent: { gap: 10 },
   sectionTitle: { color: "#FFFFFF", fontSize: 18, fontWeight: "700", marginBottom: 4 },
   earnRow: { flexDirection: "row", alignItems: "center", gap: 12, borderRadius: 14, padding: 14, borderWidth: 1, borderColor: "rgba(255,255,255,0.08)", backgroundColor: "rgba(255,255,255,0.04)" },
-  earnIconWrap: { width: 38, height: 38, borderRadius: 12, backgroundColor: "rgba(123,47,190,0.2)", alignItems: "center", justifyContent: "center" },
-  earnIcon: { fontSize: 20 },
+  earnIconWrap: { width: 38, height: 38, borderRadius: 12, alignItems: "center", justifyContent: "center" },
   earnAction: { color: "#C4B5D9", fontSize: 14, flex: 1 },
   earnBadge: { backgroundColor: "rgba(255,215,0,0.15)", borderRadius: 8, paddingHorizontal: 10, paddingVertical: 4, borderWidth: 1, borderColor: "rgba(255,215,0,0.3)" },
   earnPts: { color: "#FFD700", fontSize: 12, fontWeight: "700" },
   tierCard: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", borderRadius: 14, padding: 14, borderWidth: 1.5, borderColor: "rgba(255,255,255,0.08)", backgroundColor: "rgba(255,255,255,0.04)", overflow: "hidden" },
   tierCardLeft: { flexDirection: "row", alignItems: "center", gap: 12 },
-  tierCardIcon: { fontSize: 24 },
+  tierCardIconWrap: { width: 40, height: 40, borderRadius: 12, alignItems: "center", justifyContent: "center" },
   tierCardName: { fontSize: 15, fontWeight: "700" },
   tierCardRange: { color: "#5A4D72", fontSize: 12, marginTop: 2 },
   currentBadge: { borderWidth: 1, borderRadius: 8, paddingHorizontal: 8, paddingVertical: 3 },
   currentBadgeText: { fontSize: 11, fontWeight: "700" },
   redeemGrid: { flexDirection: "row", flexWrap: "wrap", gap: 12 },
-  redeemCard: { width: CARD_W, borderRadius: 20, padding: 16, gap: 6, borderWidth: 1.5, borderColor: "rgba(255,255,255,0.08)", backgroundColor: "rgba(255,255,255,0.04)", overflow: "hidden" },
+  redeemCard: { width: CARD_W, borderRadius: 20, padding: 16, gap: 8, borderWidth: 1.5, borderColor: "rgba(255,255,255,0.08)", backgroundColor: "rgba(255,255,255,0.04)", overflow: "hidden" },
   redeemCardDim: { opacity: 0.5 },
-  redeemIcon: { fontSize: 30 },
+  redeemIconWrap: { width: 48, height: 48, borderRadius: 14, alignItems: "center", justifyContent: "center" },
   redeemTitle: { color: "#FFFFFF", fontSize: 13, fontWeight: "700" },
   redeemDesc: { color: "#8B7AAA", fontSize: 11, lineHeight: 16 },
   redeemCostBadge: { alignSelf: "flex-start", borderRadius: 8, borderWidth: 1, paddingHorizontal: 8, paddingVertical: 3 },
@@ -351,7 +355,6 @@ const styles = StyleSheet.create({
   redeemNeedMore: { color: "#E91E8C", fontSize: 10 },
   txRow: { flexDirection: "row", alignItems: "center", gap: 14, borderRadius: 14, padding: 14, borderWidth: 1, borderColor: "rgba(255,255,255,0.08)", backgroundColor: "rgba(255,255,255,0.04)" },
   txIconWrap: { width: 44, height: 44, borderRadius: 14, alignItems: "center", justifyContent: "center" },
-  txIconText: { fontSize: 20 },
   txInfo: { flex: 1, gap: 3 },
   txDesc: { color: "#FFFFFF", fontSize: 14, fontWeight: "600" },
   txDate: { color: "#5A4D72", fontSize: 12 },

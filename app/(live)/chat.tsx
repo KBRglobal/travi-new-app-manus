@@ -5,6 +5,7 @@ import {
 } from "react-native";
 import { router } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
+import { Image } from "expo-image";
 import { IconSymbol } from "@/components/ui/icon-symbol";
 import { useStore } from "@/lib/store";
 import * as Haptics from "expo-haptics";
@@ -32,9 +33,9 @@ const SMART_RESPONSES: { keywords: string[]; response: string; cards?: Suggestio
     keywords: ["restaurant", "eat", "food", "hungry", "dinner", "lunch", "breakfast"],
     response: "Based on your Culinary Nomad DNA, here are 3 spots I'd personally pick for you right now:",
     cards: [
-      { id: "r1", title: "Narisawa", subtitle: "Innovative Japanese · ★ 4.9 · 8 min walk", iconName: "fork.knife", gradient: ["#7C2D12", "#DC2626"] },
-      { id: "r2", title: "Sushi Saito", subtitle: "Omakase · ★ 4.8 · Book ahead", iconName: "star.fill", gradient: ["#1E3A5F", "#2563EB"] },
-      { id: "r3", title: "Ichiran Ramen", subtitle: "Solo booth ramen · ★ 4.7 · Open now", iconName: "flame.fill", gradient: ["#7C3AED", "#A855F7"] },
+      { id: "r1", title: "Narisawa", subtitle: "Innovative Japanese · * 4.9 · 8 min walk", iconName: "fork.knife", gradient: ["#7C2D12", "#DC2626"] },
+      { id: "r2", title: "Sushi Saito", subtitle: "Omakase · * 4.8 · Book ahead", iconName: "star.fill", gradient: ["#1E3A5F", "#2563EB"] },
+      { id: "r3", title: "Ichiran Ramen", subtitle: "Solo booth ramen · * 4.7 · Open now", iconName: "flame.fill", gradient: ["#7C3AED", "#A855F7"] },
     ],
   },
   {
@@ -175,7 +176,7 @@ export default function ChatScreen() {
         {isTravi && (
           <View style={S.traviAvatar}>
             <LinearGradient colors={["#7B2FBE", "#E91E8C"]} style={S.traviAvatarGrad}>
-              <Text style={S.traviAvatarEmoji}>🦆</Text>
+              <Image source={require("@/assets/images/icon.png")} style={S.traviAvatarImg} contentFit="contain" />
             </LinearGradient>
           </View>
         )}
@@ -220,7 +221,7 @@ export default function ChatScreen() {
         <View style={S.headerCenter}>
           <View style={S.headerAvatar}>
             <LinearGradient colors={["#7B2FBE", "#E91E8C"]} style={S.headerAvatarGrad}>
-              <Text style={S.headerAvatarEmoji}>🦆</Text>
+              <Image source={require("@/assets/images/icon.png")} style={S.headerAvatarImg} contentFit="contain" />
             </LinearGradient>
           </View>
           <View>
@@ -259,7 +260,7 @@ export default function ChatScreen() {
               <View style={[S.msgRow, S.msgRowTravi]}>
                 <View style={S.traviAvatar}>
                   <LinearGradient colors={["#7B2FBE", "#E91E8C"]} style={S.traviAvatarGrad}>
-                    <Text style={S.traviAvatarEmoji}>🦆</Text>
+                    <Image source={require("@/assets/images/icon.png")} style={S.traviAvatarImg} contentFit="contain" />
                   </LinearGradient>
                 </View>
                 <View style={[S.bubble, S.bubbleTravi, { paddingVertical: 16 }]}>
@@ -339,6 +340,7 @@ const S = StyleSheet.create({
   headerAvatar: { width: 40, height: 40, borderRadius: 20, overflow: "hidden" },
   headerAvatarGrad: { flex: 1, alignItems: "center", justifyContent: "center" },
   headerAvatarEmoji: { fontSize: 22 },
+  headerAvatarImg: { width: 30, height: 30 },
   headerName: { color: "#FFFFFF", fontSize: 16, fontWeight: "800" },
   headerStatus: { flexDirection: "row", alignItems: "center", gap: 5 },
   onlineDot: { width: 7, height: 7, borderRadius: 3.5, backgroundColor: "#10B981" },
@@ -354,6 +356,7 @@ const S = StyleSheet.create({
   traviAvatar: { width: 32, height: 32, borderRadius: 16, overflow: "hidden", flexShrink: 0, marginTop: 4 },
   traviAvatarGrad: { flex: 1, alignItems: "center", justifyContent: "center" },
   traviAvatarEmoji: { fontSize: 18 },
+  traviAvatarImg: { width: 24, height: 24 },
   bubble: { borderRadius: 20, overflow: "hidden", padding: 14, gap: 10 },
   bubbleTravi: { borderBottomLeftRadius: 4, borderWidth: 1, borderColor: "rgba(123,47,190,0.35)" },
   bubbleUser: { borderBottomRightRadius: 4 },

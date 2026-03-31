@@ -21,10 +21,10 @@ import * as Haptics from "expo-haptics";
 import { router } from "expo-router";
 
 const TRIP_MEMBERS = [
-  { id: "me", name: "You", avatar: "😎", color: "#7C3AED" },
-  { id: "sarah", name: "Sarah", avatar: "👩", color: "#EC4899" },
-  { id: "mike", name: "Mike", avatar: "🧔", color: "#3B82F6" },
-  { id: "anna", name: "Anna", avatar: "👱‍♀️", color: "#10B981" },
+  { id: "me", name: "You", avatar: "Y", color: "#7C3AED" },
+  { id: "sarah", name: "Sarah", avatar: "S", color: "#EC4899" },
+  { id: "mike", name: "Mike", avatar: "M", color: "#3B82F6" },
+  { id: "anna", name: "Anna", avatar: "A", color: "#10B981" },
 ];
 
 const CATEGORIES = [

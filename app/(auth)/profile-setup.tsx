@@ -10,13 +10,35 @@ import { useStore } from "@/lib/store";
 
 const { width } = Dimensions.get("window");
 
-const AVATARS = ["🦁", "🐯", "🦊", "🐺", "🦅", "🐬", "🦋", "🌊", "🔥", "⚡", "🌙", "🎯"];
+type AvatarOption = {
+  id: string;
+  iconName: "flame.fill" | "bolt.fill" | "leaf.fill" | "mountain.2.fill" | "globe" | "star.fill" | "heart.fill" | "moon.fill" | "sun.max.fill" | "sparkles" | "crown.fill" | "trophy.fill";
+  color: string;
+  label: string;
+};
+
+const AVATARS: AvatarOption[] = [
+  { id: "fire", iconName: "flame.fill", color: "#FF5722", label: "Fire" },
+  { id: "bolt", iconName: "bolt.fill", color: "#FFD700", label: "Bolt" },
+  { id: "leaf", iconName: "leaf.fill", color: "#4CAF50", label: "Nature" },
+  { id: "mountain", iconName: "mountain.2.fill", color: "#78909C", label: "Explorer" },
+  { id: "globe", iconName: "globe", color: "#2196F3", label: "Globetrotter" },
+  { id: "star", iconName: "star.fill", color: "#FFC107", label: "Star" },
+  { id: "heart", iconName: "heart.fill", color: "#E91E8C", label: "Romantic" },
+  { id: "moon", iconName: "moon.fill", color: "#9C27B0", label: "Night Owl" },
+  { id: "sun", iconName: "sun.max.fill", color: "#FF9800", label: "Sunny" },
+  { id: "sparkles", iconName: "sparkles", color: "#00BCD4", label: "Dreamer" },
+  { id: "crown", iconName: "crown.fill", color: "#FFD700", label: "Elite" },
+  { id: "trophy", iconName: "trophy.fill", color: "#FF9800", label: "Champion" },
+];
 
 export default function ProfileSetupScreen() {
   const { state, dispatch } = useStore();
   const [name, setName] = useState(state.profile?.name || "");
-  const [selectedAvatar, setSelectedAvatar] = useState(AVATARS[0]);
+  const [selectedAvatarId, setSelectedAvatarId] = useState(AVATARS[0].id);
   const [nameFocused, setNameFocused] = useState(false);
+
+  const selectedAvatar = AVATARS.find((a) => a.id === selectedAvatarId) || AVATARS[0];
 
   const handleContinue = () => {
     if (!name.trim()) return;
@@ -30,7 +52,7 @@ export default function ProfileSetupScreen() {
           points: 0, lifetimeSavings: 0, subscriptionActive: false,
         }),
         name: name.trim(),
-        photo: selectedAvatar,
+        photo: selectedAvatarId,
       },
     });
     router.replace("/(auth)/welcome" as never);
@@ -65,8 +87,8 @@ export default function ProfileSetupScreen() {
             <Text style={styles.sectionLabel}>CHOOSE YOUR AVATAR</Text>
             <View style={styles.selectedAvatarWrap}>
               <LinearGradient colors={["#7B2FBE", "#E91E8C"]} style={styles.selectedAvatarRing}>
-                <View style={styles.selectedAvatarInner}>
-                  <Text style={styles.selectedAvatarEmoji}>{selectedAvatar}</Text>
+                <View style={[styles.selectedAvatarInner, { backgroundColor: selectedAvatar.color + "22" }]}>
+                  <IconSymbol name={selectedAvatar.iconName} size={42} color={selectedAvatar.color} />
                 </View>
               </LinearGradient>
               <View style={styles.selectedAvatarGlow} />
@@ -74,15 +96,17 @@ export default function ProfileSetupScreen() {
             <View style={styles.avatarGrid}>
               {AVATARS.map((av) => (
                 <TouchableOpacity
-                  key={av}
-                  style={[styles.avatarItem, selectedAvatar === av && styles.avatarItemSelected]}
-                  onPress={() => setSelectedAvatar(av)}
+                  key={av.id}
+                  style={[styles.avatarItem, selectedAvatarId === av.id && styles.avatarItemSelected]}
+                  onPress={() => setSelectedAvatarId(av.id)}
                   activeOpacity={0.75}
                 >
-                  {selectedAvatar === av && (
+                  {selectedAvatarId === av.id && (
                     <LinearGradient colors={["rgba(123,47,190,0.5)", "rgba(233,30,140,0.3)"]} style={StyleSheet.absoluteFillObject} />
                   )}
-                  <Text style={styles.avatarEmoji}>{av}</Text>
+                  <View style={[styles.avatarIconWrap, { backgroundColor: av.color + "22" }]}>
+                    <IconSymbol name={av.iconName} size={22} color={av.color} />
+                  </View>
                 </TouchableOpacity>
               ))}
             </View>
@@ -117,7 +141,9 @@ export default function ProfileSetupScreen() {
           {name.trim() ? (
             <View style={styles.previewCard}>
               <LinearGradient colors={["rgba(123,47,190,0.2)", "rgba(233,30,140,0.12)"]} style={styles.previewGradient}>
-                <Text style={styles.previewAvatar}>{selectedAvatar}</Text>
+                <View style={[styles.previewAvatarWrap, { backgroundColor: selectedAvatar.color + "22" }]}>
+                  <IconSymbol name={selectedAvatar.iconName} size={28} color={selectedAvatar.color} />
+                </View>
                 <View style={{ flex: 1 }}>
                   <Text style={styles.previewName}>{name.trim()}</Text>
                   <Text style={styles.previewSub}>TRAVI Traveler</Text>
@@ -168,13 +194,12 @@ const styles = StyleSheet.create({
   sectionLabel: { fontSize: 11, fontWeight: "700", color: "#5A4D72", letterSpacing: 1.5 },
   selectedAvatarWrap: { alignSelf: "center", width: 90, height: 90, alignItems: "center", justifyContent: "center" },
   selectedAvatarRing: { width: 90, height: 90, borderRadius: 28, padding: 3 },
-  selectedAvatarInner: { flex: 1, borderRadius: 25, backgroundColor: "#0D0520", alignItems: "center", justifyContent: "center" },
-  selectedAvatarEmoji: { fontSize: 42 },
+  selectedAvatarInner: { flex: 1, borderRadius: 25, alignItems: "center", justifyContent: "center" },
   selectedAvatarGlow: { position: "absolute", width: 90, height: 90, borderRadius: 45, backgroundColor: "rgba(123,47,190,0.2)", shadowColor: "#7B2FBE", shadowOffset: { width: 0, height: 0 }, shadowOpacity: 0.8, shadowRadius: 25 },
   avatarGrid: { flexDirection: "row", flexWrap: "wrap", gap: 10, justifyContent: "center" },
   avatarItem: { width: 52, height: 52, borderRadius: 16, alignItems: "center", justifyContent: "center", borderWidth: 1.5, borderColor: "rgba(255,255,255,0.08)", backgroundColor: "rgba(255,255,255,0.04)", overflow: "hidden" },
   avatarItemSelected: { borderColor: "rgba(233,30,140,0.8)" },
-  avatarEmoji: { fontSize: 26 },
+  avatarIconWrap: { width: 36, height: 36, borderRadius: 10, alignItems: "center", justifyContent: "center" },
   nameSection: { gap: 12 },
   inputWrap: { borderRadius: 16, overflow: "hidden", borderWidth: 1.5, borderColor: "rgba(255,255,255,0.08)" },
   inputWrapFocused: { borderColor: "rgba(233,30,140,0.6)" },
@@ -182,7 +207,7 @@ const styles = StyleSheet.create({
   input: { flex: 1, color: "#FFFFFF", fontSize: 16, fontWeight: "500" },
   previewCard: { borderRadius: 20, overflow: "hidden", borderWidth: 1, borderColor: "rgba(123,47,190,0.3)" },
   previewGradient: { flexDirection: "row", alignItems: "center", gap: 14, padding: 18 },
-  previewAvatar: { fontSize: 36 },
+  previewAvatarWrap: { width: 48, height: 48, borderRadius: 14, alignItems: "center", justifyContent: "center" },
   previewName: { fontSize: 18, fontWeight: "700", color: "#FFFFFF" },
   previewSub: { fontSize: 12, color: "#8B7AAA", marginTop: 2 },
   previewBadge: {},

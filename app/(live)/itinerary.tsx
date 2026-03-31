@@ -8,12 +8,12 @@ import { useStore } from "@/lib/store";
 
 const { width } = Dimensions.get("window");
 
-const CATEGORY_ICONS: Record<string, string> = {
-  food: "🍽️",
-  activity: "🎭",
-  hotel: "🏨",
-  transport: "🚗",
-  flight: "✈️",
+const CATEGORY_ICON_NAMES: Record<string, "fork.knife" | "theatermasks.fill" | "bed.double.fill" | "car.fill" | "airplane"> = {
+  food: "fork.knife",
+  activity: "theatermasks.fill",
+  hotel: "bed.double.fill",
+  transport: "car.fill",
+  flight: "airplane",
 };
 
 const CATEGORY_COLORS: Record<string, string> = {
@@ -69,7 +69,10 @@ export default function ItineraryScreen() {
           contentContainerStyle={styles.list}
           renderSectionHeader={({ section }) => (
             <View style={styles.dayHeader}>
-              <Text style={styles.dayHeaderText}>📅 {section.title}</Text>
+              <View style={styles.dayHeaderLeft}>
+                <IconSymbol name="calendar" size={15} color="#A78BCA" />
+                <Text style={styles.dayHeaderText}> {section.title}</Text>
+              </View>
               <Text style={styles.dayBudget}>
                 Est. ${currentDay.activities.reduce((sum, a) => sum + a.price, 0)}
               </Text>
@@ -77,7 +80,7 @@ export default function ItineraryScreen() {
           )}
           renderItem={({ item, index }) => {
             const color = CATEGORY_COLORS[item.category] || "#7B2FBE";
-            const icon = CATEGORY_ICONS[item.category] || "📍";
+            const iconName = CATEGORY_ICON_NAMES[item.category] || "location.fill";
             const isLast = index === currentDay.activities.length - 1;
             return (
               <View style={styles.activityItem}>
@@ -94,7 +97,7 @@ export default function ItineraryScreen() {
                       <Text style={styles.activityTimeText}>{item.time}</Text>
                     </View>
                     <View style={[styles.categoryBadge, { backgroundColor: color + "20", borderColor: color }]}>
-                      <Text style={styles.categoryIcon}>{icon}</Text>
+                      <IconSymbol name={iconName} size={11} color={color} />
                       <Text style={[styles.categoryText, { color }]}>{item.category}</Text>
                     </View>
                     <View style={[styles.statusDot, item.status === "confirmed" ? styles.statusConfirmed : styles.statusPending]} />
@@ -187,6 +190,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginBottom: 16,
   },
+  dayHeaderLeft: { flexDirection: "row", alignItems: "center" },
   dayHeaderText: { color: "#FFFFFF", fontSize: 16, fontWeight: "700" },
   dayBudget: { color: "#FFD700", fontSize: 14, fontWeight: "600" },
   activityItem: { flexDirection: "row", gap: 12, marginBottom: 4 },

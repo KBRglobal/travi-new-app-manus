@@ -170,7 +170,7 @@ export default function SignUpScreen() {
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.socialBtn} onPress={() => handleSocial("Apple")} activeOpacity={0.8}>
                   <LinearGradient colors={["rgba(255,255,255,0.09)", "rgba(255,255,255,0.04)"]} style={[styles.socialGradient, { borderColor: "rgba(255,255,255,0.18)" }]}>
-                    <Text style={styles.socialIcon}>🍎</Text>
+                    <IconSymbol name="apple.logo" size={20} color="#FFFFFF" />
                     <Text style={styles.socialLabel}>Apple</Text>
                   </LinearGradient>
                 </TouchableOpacity>

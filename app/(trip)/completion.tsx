@@ -2,6 +2,7 @@ import { useRef, useEffect, useState } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, Dimensions, Animated, Platform } from "react-native";
 import { router, useLocalSearchParams } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
+import { Image } from "expo-image";
 import { IconSymbol } from "@/components/ui/icon-symbol";
 import { useStore } from "@/lib/store";
 import * as Haptics from "expo-haptics";
@@ -127,7 +128,7 @@ export default function CompletionScreen() {
         <Animated.View style={[styles.duckRow, { opacity: fadeAnim }]}>
           <View style={styles.duckAvatar}>
             <LinearGradient colors={["#7B2FBE", "#E91E8C"]} style={styles.duckGradient}>
-              <Text style={styles.duckEmoji}>🦆</Text>
+              <Image source={require("@/assets/images/icon.png")} style={styles.duckImg} contentFit="contain" />
             </LinearGradient>
           </View>
           <View style={styles.duckBubble}>
@@ -199,7 +200,7 @@ const styles = StyleSheet.create({
   duckRow: { flexDirection: "row", alignItems: "flex-end", gap: 10, width: "100%" },
   duckAvatar: { width: 40, height: 40, borderRadius: 20, overflow: "hidden" },
   duckGradient: { flex: 1, alignItems: "center", justifyContent: "center" },
-  duckEmoji: { fontSize: 22 },
+  duckImg: { width: 28, height: 28 },
   duckBubble: { flex: 1, borderRadius: 16, borderBottomLeftRadius: 4, overflow: "hidden" },
   duckBubbleGradient: { paddingHorizontal: 14, paddingVertical: 10, borderRadius: 16, borderBottomLeftRadius: 4, borderWidth: 1, borderColor: "rgba(123,47,190,0.4)" },
   duckMessage: { color: "#FFFFFF", fontSize: 14, fontWeight: "600", lineHeight: 20 },

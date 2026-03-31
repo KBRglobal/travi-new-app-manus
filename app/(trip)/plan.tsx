@@ -5,6 +5,7 @@ import {
 } from "react-native";
 import { router } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
+import { Image } from "expo-image";
 import { IconSymbol } from "@/components/ui/icon-symbol";
 import { useStore } from "@/lib/store";
 import * as Haptics from "expo-haptics";
@@ -150,7 +151,7 @@ export default function PlanScreen() {
       <View style={styles.duckRow}>
         <Animated.View style={[styles.duckAvatar, { transform: [{ translateY: duckBounce }] }]}>
           <LinearGradient colors={["#7B2FBE", "#E91E8C"]} style={styles.duckGradient}>
-            <Text style={styles.duckEmoji}>🦆</Text>
+            <Image source={require("@/assets/images/icon.png")} style={styles.duckImg} contentFit="contain" />
           </LinearGradient>
         </Animated.View>
         <Animated.View style={[styles.duckBubble, { opacity: fadeAnim }]}>
@@ -497,7 +498,7 @@ const styles = StyleSheet.create({
   duckRow: { flexDirection: "row", alignItems: "flex-end", paddingHorizontal: 20, paddingBottom: 16, gap: 10 },
   duckAvatar: { width: 44, height: 44, borderRadius: 22, overflow: "hidden" },
   duckGradient: { flex: 1, alignItems: "center", justifyContent: "center" },
-  duckEmoji: { fontSize: 24 },
+  duckImg: { width: 30, height: 30 },
   duckBubble: { flex: 1, borderRadius: 18, borderBottomLeftRadius: 4, overflow: "hidden" },
   duckBubbleGradient: { paddingHorizontal: 16, paddingVertical: 12, borderRadius: 18, borderBottomLeftRadius: 4, borderWidth: 1, borderColor: "rgba(123,47,190,0.4)" },
   duckMessage: { color: "#FFFFFF", fontSize: 16, fontWeight: "700", lineHeight: 22 },

@@ -3,15 +3,16 @@ import { View, Text, StyleSheet, Animated, Dimensions, TouchableOpacity, ScrollV
 import { router } from "expo-router";
 import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
+import { IconSymbol } from "@/components/ui/icon-symbol";
 import { useStore } from "@/lib/store";
 
 const { width, height } = Dimensions.get("window");
 
 const FEATURES = [
-  { icon: "🧠", title: "AI That Knows You", desc: "Learns your travel personality through fun scenarios", color: "#7B2FBE" },
-  { icon: "💸", title: "Zero Hidden Fees", desc: "All commissions returned as TRAVI Points", color: "#E91E8C" },
-  { icon: "📍", title: "Real-Time Agent", desc: "Your AI guide knows exactly where you are", color: "#00BCD4" },
-  { icon: "🎮", title: "Travel Gamified", desc: "Earn badges, climb tiers, unlock rewards", color: "#FFD700" },
+  { iconName: "sparkles" as const, title: "AI That Knows You", desc: "Learns your travel personality through fun scenarios", color: "#7B2FBE" },
+  { iconName: "dollarsign.circle.fill" as const, title: "Zero Hidden Fees", desc: "All commissions returned as TRAVI Points", color: "#E91E8C" },
+  { iconName: "location.fill" as const, title: "Real-Time Agent", desc: "Your AI guide knows exactly where you are", color: "#00BCD4" },
+  { iconName: "trophy.fill" as const, title: "Travel Gamified", desc: "Earn badges, climb tiers, unlock rewards", color: "#FFD700" },
 ];
 
 export default function WelcomeScreen() {
@@ -72,7 +73,7 @@ export default function WelcomeScreen() {
           </View>
 
           <Text style={styles.greeting}>
-            {state.profile?.name ? `Hey ${state.profile.name}! 👋` : "Welcome aboard! 👋"}
+            {state.profile?.name ? `Hey ${state.profile.name}!` : "Welcome aboard!"}
           </Text>
           <Text style={styles.title}>Meet TRAVI</Text>
           <Text style={styles.subtitle}>
@@ -89,7 +90,7 @@ export default function WelcomeScreen() {
                 style={styles.featureGradient}
               >
                 <View style={[styles.featureIconWrap, { borderColor: `${f.color}44` }]}>
-                  <Text style={styles.featureIcon}>{f.icon}</Text>
+                  <IconSymbol name={f.iconName} size={22} color={f.color} />
                 </View>
                 <Text style={styles.featureTitle}>{f.title}</Text>
                 <Text style={styles.featureDesc}>{f.desc}</Text>
@@ -102,14 +103,15 @@ export default function WelcomeScreen() {
         <Animated.View style={[styles.ctaSection, { opacity: fadeAnim, transform: [{ translateY: ctaY }] }]}>
           <View style={styles.quizBadge}>
             <LinearGradient colors={["rgba(123,47,190,0.3)", "rgba(233,30,140,0.2)"]} style={styles.quizBadgeGradient}>
-              <Text style={styles.quizBadgeText}>✨ 10 quick scenarios • 2 minutes</Text>
+              <IconSymbol name="star.fill" size={13} color="#C4B5D9" />
+              <Text style={styles.quizBadgeText}> 10 quick scenarios • 2 minutes</Text>
             </LinearGradient>
           </View>
 
           <TouchableOpacity style={styles.ctaBtn} onPress={handleGetStarted} activeOpacity={0.85}>
             <LinearGradient colors={["#7B2FBE", "#C2185B", "#E91E8C"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.ctaGradient}>
               <Text style={styles.ctaText}>Build My Traveler Profile</Text>
-              <Text style={styles.ctaArrow}>→</Text>
+              <IconSymbol name="arrow.right" size={18} color="#FFFFFF" />
             </LinearGradient>
           </TouchableOpacity>
 
@@ -145,7 +147,7 @@ const styles = StyleSheet.create({
   featureDesc: { fontSize: 12, color: "#8B7AAA", lineHeight: 17 },
   ctaSection: { gap: 14, alignItems: "center" },
   quizBadge: { alignSelf: "center" },
-  quizBadgeGradient: { paddingHorizontal: 16, paddingVertical: 8, borderRadius: 20, borderWidth: 1, borderColor: "rgba(123,47,190,0.4)" },
+  quizBadgeGradient: { flexDirection: "row", alignItems: "center", paddingHorizontal: 16, paddingVertical: 8, borderRadius: 20, borderWidth: 1, borderColor: "rgba(123,47,190,0.4)", gap: 4 },
   quizBadgeText: { color: "#C4B5D9", fontSize: 13, fontWeight: "500" },
   ctaBtn: { width: "100%", borderRadius: 18, overflow: "hidden" },
   ctaGradient: { flexDirection: "row", alignItems: "center", justifyContent: "center", paddingVertical: 18, gap: 10 },

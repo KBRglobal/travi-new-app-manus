@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, FlatList, Dimensions, Animated, Platform } from "react-native";
 import { router, useLocalSearchParams } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
+import { Image } from "expo-image";
 import { IconSymbol } from "@/components/ui/icon-symbol";
 import { useStore } from "@/lib/store";
 import * as Haptics from "expo-haptics";
@@ -96,7 +97,7 @@ export default function HotelsScreen() {
         <View style={styles.loadingWrap}>
           <Animated.View style={[styles.duckLarge, { opacity: pulseAnim }]}>
             <LinearGradient colors={["#7B2FBE", "#E91E8C"]} style={styles.duckLargeGradient}>
-              <Text style={styles.duckEmoji}>🦆</Text>
+              <Image source={require("@/assets/images/icon.png")} style={styles.duckImg} contentFit="contain" />
             </LinearGradient>
           </Animated.View>
           <Text style={styles.loadingTitle}>Finding hotels...</Text>
@@ -126,7 +127,7 @@ export default function HotelsScreen() {
       <View style={styles.duckRow}>
         <View style={styles.duckAvatar}>
           <LinearGradient colors={["#7B2FBE", "#E91E8C"]} style={styles.duckGradient}>
-            <Text style={styles.duckEmojiSm}>🦆</Text>
+            <Image source={require("@/assets/images/icon.png")} style={styles.duckImgSm} contentFit="contain" />
           </LinearGradient>
         </View>
         <Animated.View style={[styles.duckBubble, { opacity: fadeAnim }]}>
@@ -229,8 +230,8 @@ const styles = StyleSheet.create({
   loadingWrap: { flex: 1, alignItems: "center", justifyContent: "center", gap: 16 },
   duckLarge: { width: 90, height: 90, borderRadius: 45, overflow: "hidden" },
   duckLargeGradient: { flex: 1, alignItems: "center", justifyContent: "center" },
-  duckEmoji: { fontSize: 48 },
-  duckEmojiSm: { fontSize: 24 },
+  duckImg: { width: 60, height: 60 },
+  duckImgSm: { width: 30, height: 30 },
   loadingTitle: { color: "#FFFFFF", fontSize: 24, fontWeight: "800" },
   loadingSubtitle: { color: "rgba(255,255,255,0.5)", fontSize: 14, textAlign: "center", paddingHorizontal: 40, lineHeight: 22 },
   dotsRow: { flexDirection: "row", gap: 8 },

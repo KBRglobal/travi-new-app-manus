@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, Dimensions, Animated, Platform, ScrollView } from "react-native";
 import { router } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
+import { Image } from "expo-image";
 import { IconSymbol } from "@/components/ui/icon-symbol";
 import { useStore } from "@/lib/store";
 import * as Haptics from "expo-haptics";
@@ -75,19 +76,21 @@ const QUESTIONS: QuizQuestion[] = [
   ]},
 ];
 
-const DNA_PROFILES: Record<string, { title: string; emoji: string; description: string; destinations: string[]; colors: [string, string] }> = {
-  culture: { title: "Cultural Explorer", emoji: "🏛️", description: "You travel to understand the world. Museums, history, and authentic local experiences fuel your soul.", destinations: ["Kyoto, Japan", "Florence, Italy", "Marrakech, Morocco"], colors: ["#1E3A5F", "#2563EB"] },
-  food: { title: "Culinary Nomad", emoji: "🍜", description: "Your itinerary is built around meals. You know the best street food spots before you land.", destinations: ["Tokyo, Japan", "Naples, Italy", "Bangkok, Thailand"], colors: ["#7C2D12", "#DC2626"] },
-  adventure: { title: "Adrenaline Seeker", emoji: "🏔️", description: "You need the rush. Hikes, dives, and off-the-beaten-path discoveries define your trips.", destinations: ["Queenstown, NZ", "Patagonia, Chile", "Nepal"], colors: ["#065F46", "#10B981"] },
-  luxury: { title: "Luxury Connoisseur", emoji: "✨", description: "You believe travel should be an experience of the finest things. Quality over quantity, always.", destinations: ["Maldives", "Amalfi Coast, Italy", "Dubai, UAE"], colors: ["#292524", "#78716C"] },
-  social: { title: "Social Butterfly", emoji: "🦋", description: "You travel for the people — locals, fellow travelers, and the connections that last a lifetime.", destinations: ["Barcelona, Spain", "Bali, Indonesia", "Rio de Janeiro, Brazil"], colors: ["#6B21A8", "#EC4899"] },
-  nature: { title: "Nature Wanderer", emoji: "🌿", description: "The best views have no WiFi. You seek wild places that remind you how small we are.", destinations: ["Iceland", "Costa Rica", "Norwegian Fjords"], colors: ["#14532D", "#22C55E"] },
-  relax: { title: "Mindful Traveler", emoji: "🧘", description: "You travel to restore. Slow mornings, beautiful surroundings, and zero rush define your perfect trip.", destinations: ["Santorini, Greece", "Ubud, Bali", "Tuscany, Italy"], colors: ["#0E7490", "#06B6D4"] },
-  urban: { title: "City Connoisseur", emoji: "🌆", description: "Skylines, rooftops, and the electric energy of great cities are your natural habitat.", destinations: ["New York, USA", "Tokyo, Japan", "London, UK"], colors: ["#0F172A", "#334155"] },
-  spontaneous: { title: "Free Spirit", emoji: "🌈", description: "Rules are for other travelers. You live for the unplanned moments that become the best stories.", destinations: ["Lisbon, Portugal", "Chiang Mai, Thailand", "Cape Town, South Africa"], colors: ["#B45309", "#F59E0B"] },
-  planned: { title: "Master Planner", emoji: "📋", description: "You know the best table at the best restaurant 3 months before you land. Precision is your superpower.", destinations: ["Switzerland", "Singapore", "Vienna, Austria"], colors: ["#1E40AF", "#3B82F6"] },
-  solo: { title: "Solo Adventurer", emoji: "🧳", description: "You travel on your own terms. Every decision is yours, every discovery is personal.", destinations: ["Japan", "Iceland", "New Zealand"], colors: ["#7C3AED", "#A855F7"] },
-  default: { title: "Free Spirit Traveler", emoji: "🌍", description: "You defy categories. Every trip is different, every destination a new chapter.", destinations: ["Lisbon, Portugal", "Chiang Mai, Thailand", "Cape Town, South Africa"], colors: ["#7B2FBE", "#E91E8C"] },
+type DNAIconName = "building.columns.fill" | "fork.knife" | "mountain.2.fill" | "crown.fill" | "person.2.fill" | "leaf.fill" | "moon.fill" | "building.fill" | "bolt.fill" | "list.bullet.clipboard.fill" | "figure.walk" | "globe";
+
+const DNA_PROFILES: Record<string, { title: string; iconName: DNAIconName; description: string; destinations: string[]; colors: [string, string] }> = {
+  culture: { title: "Cultural Explorer", iconName: "building.columns.fill", description: "You travel to understand the world. Museums, history, and authentic local experiences fuel your soul.", destinations: ["Kyoto, Japan", "Florence, Italy", "Marrakech, Morocco"], colors: ["#1E3A5F", "#2563EB"] },
+  food: { title: "Culinary Nomad", iconName: "fork.knife", description: "Your itinerary is built around meals. You know the best street food spots before you land.", destinations: ["Tokyo, Japan", "Naples, Italy", "Bangkok, Thailand"], colors: ["#7C2D12", "#DC2626"] },
+  adventure: { title: "Adrenaline Seeker", iconName: "mountain.2.fill", description: "You need the rush. Hikes, dives, and off-the-beaten-path discoveries define your trips.", destinations: ["Queenstown, NZ", "Patagonia, Chile", "Nepal"], colors: ["#065F46", "#10B981"] },
+  luxury: { title: "Luxury Connoisseur", iconName: "crown.fill", description: "You believe travel should be an experience of the finest things. Quality over quantity, always.", destinations: ["Maldives", "Amalfi Coast, Italy", "Dubai, UAE"], colors: ["#292524", "#78716C"] },
+  social: { title: "Social Butterfly", iconName: "person.2.fill", description: "You travel for the people — locals, fellow travelers, and the connections that last a lifetime.", destinations: ["Barcelona, Spain", "Bali, Indonesia", "Rio de Janeiro, Brazil"], colors: ["#6B21A8", "#EC4899"] },
+  nature: { title: "Nature Wanderer", iconName: "leaf.fill", description: "The best views have no WiFi. You seek wild places that remind you how small we are.", destinations: ["Iceland", "Costa Rica", "Norwegian Fjords"], colors: ["#14532D", "#22C55E"] },
+  relax: { title: "Mindful Traveler", iconName: "moon.fill", description: "You travel to restore. Slow mornings, beautiful surroundings, and zero rush define your perfect trip.", destinations: ["Santorini, Greece", "Ubud, Bali", "Tuscany, Italy"], colors: ["#0E7490", "#06B6D4"] },
+  urban: { title: "City Connoisseur", iconName: "building.fill", description: "Skylines, rooftops, and the electric energy of great cities are your natural habitat.", destinations: ["New York, USA", "Tokyo, Japan", "London, UK"], colors: ["#0F172A", "#334155"] },
+  spontaneous: { title: "Free Spirit", iconName: "bolt.fill", description: "Rules are for other travelers. You live for the unplanned moments that become the best stories.", destinations: ["Lisbon, Portugal", "Chiang Mai, Thailand", "Cape Town, South Africa"], colors: ["#B45309", "#F59E0B"] },
+  planned: { title: "Master Planner", iconName: "list.bullet.clipboard.fill", description: "You know the best table at the best restaurant 3 months before you land. Precision is your superpower.", destinations: ["Switzerland", "Singapore", "Vienna, Austria"], colors: ["#1E40AF", "#3B82F6"] },
+  solo: { title: "Solo Adventurer", iconName: "figure.walk", description: "You travel on your own terms. Every decision is yours, every discovery is personal.", destinations: ["Japan", "Iceland", "New Zealand"], colors: ["#7C3AED", "#A855F7"] },
+  default: { title: "Free Spirit Traveler", iconName: "globe", description: "You defy categories. Every trip is different, every destination a new chapter.", destinations: ["Lisbon, Portugal", "Chiang Mai, Thailand", "Cape Town, South Africa"], colors: ["#7B2FBE", "#E91E8C"] },
 };
 
 function getDNAProfile(tagCounts: Record<string, number>) {
@@ -165,7 +168,7 @@ export default function QuizScreen() {
         >
           <View style={S.resultBadgeWrap}>
             <LinearGradient colors={dnaProfile.colors} style={S.resultBadge}>
-              <Text style={S.resultEmoji}>{dnaProfile.emoji}</Text>
+              <IconSymbol name={dnaProfile.iconName} size={48} color="rgba(255,255,255,0.95)" />
             </LinearGradient>
             <View style={[S.resultRing, { borderColor: dnaProfile.colors[1] + "55" }]} />
             <View style={[S.resultRing2, { borderColor: dnaProfile.colors[1] + "22" }]} />
@@ -194,7 +197,9 @@ export default function QuizScreen() {
           </View>
           <View style={S.pointsCard}>
             <LinearGradient colors={["rgba(255,215,0,0.2)", "rgba(255,149,0,0.1)"]} style={StyleSheet.absoluteFillObject} />
-            <Text style={S.pointsIcon}>🎉</Text>
+            <View style={S.pointsIconWrap}>
+              <IconSymbol name="star.fill" size={24} color="#FFD700" />
+            </View>
             <View>
               <Text style={S.pointsTitle}>+250 TRAVI Points earned!</Text>
               <Text style={S.pointsSub}>For completing your Traveler DNA quiz</Text>
@@ -231,7 +236,7 @@ export default function QuizScreen() {
         <View style={S.duckRow}>
           <View style={S.duckAvatar}>
             <LinearGradient colors={["#7B2FBE", "#E91E8C"]} style={S.duckGradient}>
-              <Text style={S.duckEmoji}>🦆</Text>
+              <Image source={require("@/assets/images/icon.png")} style={S.duckImg} contentFit="contain" />
             </LinearGradient>
           </View>
           <View style={S.duckBubble}>
@@ -288,7 +293,7 @@ const S = StyleSheet.create({
   duckRow: { flexDirection: "row", alignItems: "center", gap: 10, marginBottom: 10 },
   duckAvatar: { width: 36, height: 36, borderRadius: 18, overflow: "hidden" },
   duckGradient: { flex: 1, alignItems: "center", justifyContent: "center" },
-  duckEmoji: { fontSize: 20 },
+  duckImg: { width: 26, height: 26 },
   duckBubble: { borderRadius: 14, borderBottomLeftRadius: 4, overflow: "hidden" },
   duckBubbleGradient: { paddingHorizontal: 12, paddingVertical: 6, borderRadius: 14, borderBottomLeftRadius: 4, borderWidth: 1, borderColor: "rgba(123,47,190,0.4)" },
   duckBubbleText: { color: "rgba(192,132,252,0.9)", fontSize: 12, fontWeight: "700" },
@@ -305,7 +310,7 @@ const S = StyleSheet.create({
   resultScroll: { alignItems: "center", paddingTop: 80, paddingHorizontal: 24, paddingBottom: 60, gap: 20 },
   resultBadgeWrap: { position: "relative", alignItems: "center", justifyContent: "center", marginBottom: 8 },
   resultBadge: { width: 100, height: 100, borderRadius: 50, alignItems: "center", justifyContent: "center" },
-  resultEmoji: { fontSize: 48 },
+  resultIconWrap: { alignItems: "center", justifyContent: "center" },
   resultRing: { position: "absolute", width: 124, height: 124, borderRadius: 62, borderWidth: 2 },
   resultRing2: { position: "absolute", width: 148, height: 148, borderRadius: 74, borderWidth: 1.5 },
   resultLabel: { color: "rgba(255,255,255,0.4)", fontSize: 12, fontWeight: "700", letterSpacing: 2.5, textTransform: "uppercase" },
@@ -321,7 +326,7 @@ const S = StyleSheet.create({
   tagChip: { borderRadius: 20, overflow: "hidden", paddingHorizontal: 14, paddingVertical: 7, borderWidth: 1, borderColor: "rgba(123,47,190,0.4)" },
   tagText: { color: "rgba(192,132,252,0.9)", fontSize: 13, fontWeight: "600" },
   pointsCard: { width: "100%", flexDirection: "row", alignItems: "center", gap: 14, borderRadius: 18, overflow: "hidden", padding: 16, borderWidth: 1, borderColor: "rgba(255,215,0,0.2)" },
-  pointsIcon: { fontSize: 28 },
+  pointsIconWrap: { width: 44, height: 44, borderRadius: 12, backgroundColor: "rgba(255,215,0,0.15)", alignItems: "center", justifyContent: "center" },
   pointsTitle: { color: "#FFD700", fontSize: 15, fontWeight: "800" },
   pointsSub: { color: "rgba(255,255,255,0.5)", fontSize: 12, marginTop: 2 },
   ctaBtn: { width: "100%", borderRadius: 20, overflow: "hidden" },

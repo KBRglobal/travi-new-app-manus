@@ -8,73 +8,90 @@ import { useStore } from "@/lib/store";
 
 const { width } = Dimensions.get("window");
 
-const CATEGORIES = [
-  { id: "all", label: "All", icon: "🌍" },
-  { id: "food", label: "Food", icon: "🍽️" },
-  { id: "attraction", label: "Sights", icon: "🏛️" },
-  { id: "hotel", label: "Hotels", icon: "🏨" },
-  { id: "transport", label: "Transit", icon: "🚇" },
-  { id: "pharmacy", label: "Health", icon: "💊" },
+type IconName = "globe" | "fork.knife" | "building.columns.fill" | "bed.double.fill" | "tram.fill" | "cross.circle.fill" | "location.fill";
+
+const CATEGORIES: { id: string; label: string; iconName: IconName }[] = [
+  { id: "all", label: "All", iconName: "globe" },
+  { id: "food", label: "Food", iconName: "fork.knife" },
+  { id: "attraction", label: "Sights", iconName: "building.columns.fill" },
+  { id: "hotel", label: "Hotels", iconName: "bed.double.fill" },
+  { id: "transport", label: "Transit", iconName: "tram.fill" },
+  { id: "pharmacy", label: "Health", iconName: "cross.circle.fill" },
 ];
 
-const NEARBY_PLACES = [
+type PlaceIconName = "fork.knife" | "paintbrush.fill" | "cup.and.saucer.fill" | "theatermasks.fill" | "tram.fill" | "cross.circle.fill" | "bed.double.fill" | "fork.knife.circle.fill";
+
+const NEARBY_PLACES: {
+  id: string; name: string; category: string; type: string;
+  distance: string; rating: number; price: string; open: boolean; iconName: PlaceIconName;
+  address: string; hours: string; tags: string[];
+}[] = [
   {
     id: "p1", name: "Le Comptoir du Relais", category: "food", type: "French Bistro",
-    distance: "180m", rating: 4.7, price: "$$", open: true, emoji: "🍽️",
+    distance: "180m", rating: 4.7, price: "$$", open: true, iconName: "fork.knife",
     address: "9 Carrefour de l'Odéon, Paris",
     hours: "12:00 – 23:00",
     tags: ["Outdoor seating", "Reservations"],
   },
   {
     id: "p2", name: "Musée d'Orsay", category: "attraction", type: "Art Museum",
-    distance: "320m", rating: 4.8, price: "€16", open: true, emoji: "🎨",
+    distance: "320m", rating: 4.8, price: "€16", open: true, iconName: "paintbrush.fill",
     address: "1 Rue de la Légion d'Honneur, Paris",
     hours: "09:30 – 18:00",
     tags: ["World-class art", "Skip the line"],
   },
   {
     id: "p3", name: "Café de Flore", category: "food", type: "Historic Café",
-    distance: "250m", rating: 4.5, price: "$$$", open: true, emoji: "☕",
+    distance: "250m", rating: 4.5, price: "$$$", open: true, iconName: "cup.and.saucer.fill",
     address: "172 Bd Saint-Germain, Paris",
     hours: "07:30 – 01:30",
     tags: ["Iconic", "People watching"],
   },
   {
     id: "p4", name: "Odéon – Théâtre de l'Europe", category: "attraction", type: "Theatre",
-    distance: "150m", rating: 4.6, price: "€25", open: false, emoji: "🎭",
+    distance: "150m", rating: 4.6, price: "€25", open: false, iconName: "theatermasks.fill",
     address: "Place de l'Odéon, Paris",
     hours: "Opens 14:00",
     tags: ["Cultural", "Historic"],
   },
   {
     id: "p5", name: "Métro Saint-Michel", category: "transport", type: "Metro Station",
-    distance: "400m", rating: 4.2, price: "€1.90", open: true, emoji: "🚇",
+    distance: "400m", rating: 4.2, price: "€1.90", open: true, iconName: "tram.fill",
     address: "Place Saint-Michel, Paris",
     hours: "05:30 – 01:15",
     tags: ["Line 4", "RER B/C"],
   },
   {
     id: "p6", name: "Pharmacie de l'Odéon", category: "pharmacy", type: "Pharmacy",
-    distance: "200m", rating: 4.3, price: "Free", open: true, emoji: "💊",
+    distance: "200m", rating: 4.3, price: "Free", open: true, iconName: "cross.circle.fill",
     address: "8 Carrefour de l'Odéon, Paris",
     hours: "08:30 – 20:00",
     tags: ["English spoken", "24h nearby"],
   },
   {
     id: "p7", name: "Hôtel Récamier", category: "hotel", type: "Boutique Hotel",
-    distance: "300m", rating: 4.8, price: "$$$", open: true, emoji: "🏨",
+    distance: "300m", rating: 4.8, price: "$$$", open: true, iconName: "bed.double.fill",
     address: "3 Pl. Saint-Sulpice, Paris",
     hours: "24/7",
     tags: ["5-star", "Spa"],
   },
   {
     id: "p8", name: "Breizh Café", category: "food", type: "Crêperie",
-    distance: "450m", rating: 4.9, price: "$$", open: true, emoji: "🥞",
+    distance: "450m", rating: 4.9, price: "$$", open: true, iconName: "fork.knife.circle.fill",
     address: "109 Rue Vieille du Temple, Paris",
     hours: "11:30 – 22:30",
     tags: ["Best crêpes", "Organic"],
   },
 ];
+
+const CATEGORY_COLORS: Record<string, string> = {
+  food: "#FF9800",
+  attraction: "#9C27B0",
+  hotel: "#2196F3",
+  transport: "#4CAF50",
+  pharmacy: "#F44336",
+  all: "#7B2FBE",
+};
 
 // Fake map grid with colored cells to simulate a map
 function MockMap({ destination }: { destination: string }) {
@@ -101,30 +118,33 @@ function MockMap({ destination }: { destination: string }) {
         {/* "Water" */}
         <View style={styles.waterArea} />
 
-        {/* Place markers */}
+        {/* Place markers using icons */}
         <View style={[styles.marker, { top: "30%", left: "38%" }]}>
-          <Text style={styles.markerEmoji}>📍</Text>
+          <View style={styles.markerYou}>
+            <IconSymbol name="location.fill" size={14} color="#FFFFFF" />
+          </View>
           <View style={styles.markerLabel}><Text style={styles.markerLabelText}>You</Text></View>
         </View>
-        <View style={[styles.marker, { top: "20%", left: "55%" }]}>
-          <Text style={styles.markerEmoji}>🍽️</Text>
+        <View style={[styles.markerIcon, { top: "20%", left: "55%" }]}>
+          <IconSymbol name="fork.knife" size={12} color="#FF9800" />
         </View>
-        <View style={[styles.marker, { top: "45%", left: "25%" }]}>
-          <Text style={styles.markerEmoji}>🎨</Text>
+        <View style={[styles.markerIcon, { top: "45%", left: "25%" }]}>
+          <IconSymbol name="paintbrush.fill" size={12} color="#9C27B0" />
         </View>
-        <View style={[styles.marker, { top: "55%", left: "60%" }]}>
-          <Text style={styles.markerEmoji}>☕</Text>
+        <View style={[styles.markerIcon, { top: "55%", left: "60%" }]}>
+          <IconSymbol name="cup.and.saucer.fill" size={12} color="#FF9800" />
         </View>
-        <View style={[styles.marker, { top: "15%", left: "70%" }]}>
-          <Text style={styles.markerEmoji}>🏨</Text>
+        <View style={[styles.markerIcon, { top: "15%", left: "70%" }]}>
+          <IconSymbol name="bed.double.fill" size={12} color="#2196F3" />
         </View>
-        <View style={[styles.marker, { top: "65%", left: "45%" }]}>
-          <Text style={styles.markerEmoji}>🚇</Text>
+        <View style={[styles.markerIcon, { top: "65%", left: "45%" }]}>
+          <IconSymbol name="tram.fill" size={12} color="#4CAF50" />
         </View>
 
         {/* Destination label */}
         <View style={styles.mapLabel}>
-          <Text style={styles.mapLabelText}>📍 {destination}</Text>
+          <IconSymbol name="location.fill" size={12} color="#7B2FBE" />
+          <Text style={styles.mapLabelText}> {destination}</Text>
         </View>
 
         {/* Map controls */}
@@ -163,7 +183,10 @@ export default function MapScreen() {
         </TouchableOpacity>
         <View style={styles.headerInfo}>
           <Text style={styles.headerTitle}>Nearby</Text>
-          <Text style={styles.headerSub}>📍 {activeTrip?.destination || "Your Location"}</Text>
+          <View style={styles.headerSubRow}>
+            <IconSymbol name="location.fill" size={12} color="#A78BCA" />
+            <Text style={styles.headerSub}> {activeTrip?.destination || "Your Location"}</Text>
+          </View>
         </View>
         <TouchableOpacity style={styles.searchBtn}>
           <IconSymbol name="magnifyingglass" size={20} color="#FFFFFF" />
@@ -180,19 +203,23 @@ export default function MapScreen() {
         style={styles.categoryScroll}
         contentContainerStyle={{ paddingHorizontal: 16, paddingVertical: 10, gap: 8 }}
       >
-        {CATEGORIES.map((cat) => (
-          <TouchableOpacity
-            key={cat.id}
-            style={[styles.categoryPill, selectedCategory === cat.id && styles.categoryPillActive]}
-            onPress={() => setSelectedCategory(cat.id)}
-            activeOpacity={0.8}
-          >
-            <Text style={styles.categoryIcon}>{cat.icon}</Text>
-            <Text style={[styles.categoryLabel, selectedCategory === cat.id && styles.categoryLabelActive]}>
-              {cat.label}
-            </Text>
-          </TouchableOpacity>
-        ))}
+        {CATEGORIES.map((cat) => {
+          const isActive = selectedCategory === cat.id;
+          const color = CATEGORY_COLORS[cat.id] || "#7B2FBE";
+          return (
+            <TouchableOpacity
+              key={cat.id}
+              style={[styles.categoryPill, isActive && { backgroundColor: color + "33", borderColor: color }]}
+              onPress={() => setSelectedCategory(cat.id)}
+              activeOpacity={0.8}
+            >
+              <IconSymbol name={cat.iconName} size={14} color={isActive ? color : "#A78BCA"} />
+              <Text style={[styles.categoryLabel, isActive && { color: "#FFFFFF" }]}>
+                {cat.label}
+              </Text>
+            </TouchableOpacity>
+          );
+        })}
       </ScrollView>
 
       {/* Places List */}
@@ -201,74 +228,83 @@ export default function MapScreen() {
         keyExtractor={(item) => item.id}
         contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 100, gap: 10 }}
         showsVerticalScrollIndicator={false}
-        renderItem={({ item }) => (
-          <TouchableOpacity
-            style={styles.placeCard}
-            onPress={() => setSelectedPlace(selectedPlace?.id === item.id ? null : item)}
-            activeOpacity={0.85}
-          >
-            <LinearGradient colors={["#2D1B69", "#3D2580"]} style={styles.placeCardGradient}>
-              <View style={styles.placeCardTop}>
-                <View style={styles.placeEmoji}>
-                  <Text style={styles.placeEmojiText}>{item.emoji}</Text>
-                </View>
-                <View style={styles.placeInfo}>
-                  <View style={styles.placeNameRow}>
-                    <Text style={styles.placeName}>{item.name}</Text>
-                    {item.open ? (
-                      <View style={styles.openBadge}><Text style={styles.openText}>Open</Text></View>
-                    ) : (
-                      <View style={styles.closedBadge}><Text style={styles.closedText}>Closed</Text></View>
-                    )}
+        renderItem={({ item }) => {
+          const iconColor = CATEGORY_COLORS[item.category] || "#7B2FBE";
+          return (
+            <TouchableOpacity
+              style={styles.placeCard}
+              onPress={() => setSelectedPlace(selectedPlace?.id === item.id ? null : item)}
+              activeOpacity={0.85}
+            >
+              <LinearGradient colors={["#2D1B69", "#3D2580"]} style={styles.placeCardGradient}>
+                <View style={styles.placeCardTop}>
+                  <View style={[styles.placeIconWrap, { backgroundColor: iconColor + "22" }]}>
+                    <IconSymbol name={item.iconName} size={22} color={iconColor} />
                   </View>
-                  <Text style={styles.placeType}>{item.type}</Text>
-                  <View style={styles.placeMeta}>
-                    <Text style={styles.placeDistance}>📍 {item.distance}</Text>
-                    <Text style={styles.placeRating}>⭐ {item.rating}</Text>
-                    <Text style={styles.placePrice}>{item.price}</Text>
-                  </View>
-                </View>
-              </View>
-
-              {/* Expanded details */}
-              {selectedPlace?.id === item.id && (
-                <View style={styles.placeDetails}>
-                  <View style={styles.placeDetailRow}>
-                    <IconSymbol name="location.fill" size={14} color="#A78BCA" />
-                    <Text style={styles.placeDetailText}>{item.address}</Text>
-                  </View>
-                  <View style={styles.placeDetailRow}>
-                    <IconSymbol name="clock.fill" size={14} color="#A78BCA" />
-                    <Text style={styles.placeDetailText}>{item.hours}</Text>
-                  </View>
-                  <View style={styles.placeTagsRow}>
-                    {item.tags.map((tag) => (
-                      <View key={tag} style={styles.placeTag}>
-                        <Text style={styles.placeTagText}>{tag}</Text>
+                  <View style={styles.placeInfo}>
+                    <View style={styles.placeNameRow}>
+                      <Text style={styles.placeName}>{item.name}</Text>
+                      {item.open ? (
+                        <View style={styles.openBadge}><Text style={styles.openText}>Open</Text></View>
+                      ) : (
+                        <View style={styles.closedBadge}><Text style={styles.closedText}>Closed</Text></View>
+                      )}
+                    </View>
+                    <Text style={styles.placeType}>{item.type}</Text>
+                    <View style={styles.placeMeta}>
+                      <View style={styles.placeMetaItem}>
+                        <IconSymbol name="location.fill" size={11} color="#A78BCA" />
+                        <Text style={styles.placeDistance}> {item.distance}</Text>
                       </View>
-                    ))}
-                  </View>
-                  <View style={styles.placeActions}>
-                    <TouchableOpacity style={styles.placeActionBtn}>
-                      <LinearGradient colors={["#7B2FBE", "#E91E8C"]} style={styles.placeActionGradient}>
-                        <IconSymbol name="location.north.fill" size={14} color="#FFFFFF" />
-                        <Text style={styles.placeActionText}>Directions</Text>
-                      </LinearGradient>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.placeActionBtnOutline}>
-                      <IconSymbol name="bookmark.fill" size={14} color="#7B2FBE" />
-                      <Text style={styles.placeActionTextOutline}>Save</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.placeActionBtnOutline}>
-                      <IconSymbol name="bubble.left.fill" size={14} color="#7B2FBE" />
-                      <Text style={styles.placeActionTextOutline}>Ask TRAVI</Text>
-                    </TouchableOpacity>
+                      <View style={styles.placeMetaItem}>
+                        <IconSymbol name="star.fill" size={11} color="#FFD700" />
+                        <Text style={styles.placeRating}> {item.rating}</Text>
+                      </View>
+                      <Text style={styles.placePrice}>{item.price}</Text>
+                    </View>
                   </View>
                 </View>
-              )}
-            </LinearGradient>
-          </TouchableOpacity>
-        )}
+
+                {/* Expanded details */}
+                {selectedPlace?.id === item.id && (
+                  <View style={styles.placeDetails}>
+                    <View style={styles.placeDetailRow}>
+                      <IconSymbol name="location.fill" size={14} color="#A78BCA" />
+                      <Text style={styles.placeDetailText}>{item.address}</Text>
+                    </View>
+                    <View style={styles.placeDetailRow}>
+                      <IconSymbol name="clock.fill" size={14} color="#A78BCA" />
+                      <Text style={styles.placeDetailText}>{item.hours}</Text>
+                    </View>
+                    <View style={styles.placeTagsRow}>
+                      {item.tags.map((tag) => (
+                        <View key={tag} style={styles.placeTag}>
+                          <Text style={styles.placeTagText}>{tag}</Text>
+                        </View>
+                      ))}
+                    </View>
+                    <View style={styles.placeActions}>
+                      <TouchableOpacity style={styles.placeActionBtn}>
+                        <LinearGradient colors={["#7B2FBE", "#E91E8C"]} style={styles.placeActionGradient}>
+                          <IconSymbol name="location.north.fill" size={14} color="#FFFFFF" />
+                          <Text style={styles.placeActionText}>Directions</Text>
+                        </LinearGradient>
+                      </TouchableOpacity>
+                      <TouchableOpacity style={styles.placeActionBtnOutline}>
+                        <IconSymbol name="bookmark.fill" size={14} color="#7B2FBE" />
+                        <Text style={styles.placeActionTextOutline}>Save</Text>
+                      </TouchableOpacity>
+                      <TouchableOpacity style={styles.placeActionBtnOutline}>
+                        <IconSymbol name="bubble.left.fill" size={14} color="#7B2FBE" />
+                        <Text style={styles.placeActionTextOutline}>Ask TRAVI</Text>
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+                )}
+              </LinearGradient>
+            </TouchableOpacity>
+          );
+        }}
       />
     </ScreenContainer>
   );
@@ -282,7 +318,8 @@ const styles = StyleSheet.create({
   backBtn: { width: 36, height: 36, alignItems: "center", justifyContent: "center" },
   headerInfo: { flex: 1 },
   headerTitle: { color: "#FFFFFF", fontSize: 18, fontWeight: "700" },
-  headerSub: { color: "#A78BCA", fontSize: 13, marginTop: 1 },
+  headerSubRow: { flexDirection: "row", alignItems: "center", marginTop: 1 },
+  headerSub: { color: "#A78BCA", fontSize: 13 },
   searchBtn: { padding: 8 },
   mapContainer: { height: 200, overflow: "hidden" },
   mapBg: { flex: 1, position: "relative" },
@@ -299,7 +336,18 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(33,150,243,0.15)", borderRadius: 8,
   },
   marker: { position: "absolute", alignItems: "center" },
-  markerEmoji: { fontSize: 20 },
+  markerYou: {
+    width: 28, height: 28, borderRadius: 14,
+    backgroundColor: "#7B2FBE", alignItems: "center", justifyContent: "center",
+    borderWidth: 2, borderColor: "#FFFFFF",
+  },
+  markerIcon: {
+    position: "absolute",
+    width: 26, height: 26, borderRadius: 8,
+    backgroundColor: "rgba(45,27,105,0.9)",
+    alignItems: "center", justifyContent: "center",
+    borderWidth: 1, borderColor: "rgba(255,255,255,0.2)",
+  },
   markerLabel: {
     backgroundColor: "#7B2FBE", borderRadius: 6,
     paddingHorizontal: 6, paddingVertical: 2, marginTop: 2,
@@ -307,6 +355,7 @@ const styles = StyleSheet.create({
   markerLabelText: { color: "#FFFFFF", fontSize: 10, fontWeight: "700" },
   mapLabel: {
     position: "absolute", bottom: 8, left: 12,
+    flexDirection: "row", alignItems: "center",
     backgroundColor: "rgba(0,0,0,0.5)", borderRadius: 8,
     paddingHorizontal: 10, paddingVertical: 4,
   },
@@ -328,19 +377,14 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12, paddingVertical: 6,
     gap: 5, borderWidth: 1, borderColor: "#4A3080",
   },
-  categoryPillActive: { backgroundColor: "#7B2FBE", borderColor: "#7B2FBE" },
-  categoryIcon: { fontSize: 14 },
   categoryLabel: { color: "#A78BCA", fontSize: 13, fontWeight: "600" },
-  categoryLabelActive: { color: "#FFFFFF" },
   placeCard: { borderRadius: 14, overflow: "hidden" },
   placeCardGradient: { padding: 14, borderWidth: 1, borderColor: "#4A3080", borderRadius: 14 },
   placeCardTop: { flexDirection: "row", gap: 12 },
-  placeEmoji: {
+  placeIconWrap: {
     width: 48, height: 48, borderRadius: 12,
-    backgroundColor: "rgba(123,47,190,0.2)",
     alignItems: "center", justifyContent: "center",
   },
-  placeEmojiText: { fontSize: 24 },
   placeInfo: { flex: 1 },
   placeNameRow: { flexDirection: "row", alignItems: "center", gap: 8, marginBottom: 2 },
   placeName: { color: "#FFFFFF", fontSize: 15, fontWeight: "700", flex: 1 },
@@ -355,7 +399,8 @@ const styles = StyleSheet.create({
   },
   closedText: { color: "#F44336", fontSize: 10, fontWeight: "700" },
   placeType: { color: "#A78BCA", fontSize: 12, marginBottom: 6 },
-  placeMeta: { flexDirection: "row", gap: 10 },
+  placeMeta: { flexDirection: "row", gap: 10, alignItems: "center" },
+  placeMetaItem: { flexDirection: "row", alignItems: "center" },
   placeDistance: { color: "#A78BCA", fontSize: 12 },
   placeRating: { color: "#FFD700", fontSize: 12 },
   placePrice: { color: "#4CAF50", fontSize: 12, fontWeight: "600" },

@@ -113,7 +113,7 @@ export default function VerifyScreen() {
           {/* Icon */}
           <View style={styles.iconWrap}>
             <LinearGradient colors={["rgba(123,47,190,0.45)", "rgba(233,30,140,0.25)"]} style={styles.iconGradient}>
-              <Text style={styles.iconEmoji}>✉️</Text>
+              <IconSymbol name="envelope.fill" size={48} color="#7B2FBE" />
             </LinearGradient>
             <View style={styles.iconGlow} />
           </View>
@@ -162,7 +162,7 @@ export default function VerifyScreen() {
           {verified && (
             <Animated.View style={[styles.successBadge, { opacity: successOpacity, transform: [{ scale: successScale }] }]}>
               <LinearGradient colors={["rgba(0,230,118,0.25)", "rgba(0,188,212,0.15)"]} style={styles.successGradient}>
-                <Text style={styles.successIcon}>✓</Text>
+                <IconSymbol name="checkmark" size={28} color="#10B981" />
                 <Text style={styles.successText}>Verified! Redirecting...</Text>
               </LinearGradient>
             </Animated.View>

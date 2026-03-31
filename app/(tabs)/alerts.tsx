@@ -20,16 +20,16 @@ import type { PriceAlert } from "@/lib/store";
 import * as Haptics from "expo-haptics";
 
 const DESTINATIONS = [
-  { code: "TLV", city: "Tel Aviv", country: "Israel", emoji: "🇮🇱", gradient: ["#1a0a2e", "#6B21A8"] as const },
-  { code: "CDG", city: "Paris", country: "France", emoji: "🇫🇷", gradient: ["#1a0a2e", "#7C3AED"] as const },
-  { code: "JFK", city: "New York", country: "USA", emoji: "🇺🇸", gradient: ["#1a0a2e", "#2563EB"] as const },
-  { code: "NRT", city: "Tokyo", country: "Japan", emoji: "🇯🇵", gradient: ["#1a0a2e", "#DB2777"] as const },
-  { code: "DXB", city: "Dubai", country: "UAE", emoji: "🇦🇪", gradient: ["#1a0a2e", "#D97706"] as const },
-  { code: "BCN", city: "Barcelona", country: "Spain", emoji: "🇪🇸", gradient: ["#1a0a2e", "#DC2626"] as const },
-  { code: "BKK", city: "Bangkok", country: "Thailand", emoji: "🇹🇭", gradient: ["#1a0a2e", "#059669"] as const },
-  { code: "LHR", city: "London", country: "UK", emoji: "🇬🇧", gradient: ["#1a0a2e", "#4B5563"] as const },
-  { code: "FCO", city: "Rome", country: "Italy", emoji: "🇮🇹", gradient: ["#1a0a2e", "#16A34A"] as const },
-  { code: "SYD", city: "Sydney", country: "Australia", emoji: "🇦🇺", gradient: ["#1a0a2e", "#0891B2"] as const },
+  { code: "TLV", city: "Tel Aviv", country: "Israel", emoji: "IL", gradient: ["#1a0a2e", "#6B21A8"] as const },
+  { code: "CDG", city: "Paris", country: "France", emoji: "FR", gradient: ["#1a0a2e", "#7C3AED"] as const },
+  { code: "JFK", city: "New York", country: "USA", emoji: "US", gradient: ["#1a0a2e", "#2563EB"] as const },
+  { code: "NRT", city: "Tokyo", country: "Japan", emoji: "JP", gradient: ["#1a0a2e", "#DB2777"] as const },
+  { code: "DXB", city: "Dubai", country: "UAE", emoji: "AE", gradient: ["#1a0a2e", "#D97706"] as const },
+  { code: "BCN", city: "Barcelona", country: "Spain", emoji: "ES", gradient: ["#1a0a2e", "#DC2626"] as const },
+  { code: "BKK", city: "Bangkok", country: "Thailand", emoji: "TH", gradient: ["#1a0a2e", "#059669"] as const },
+  { code: "LHR", city: "London", country: "UK", emoji: "UK", gradient: ["#1a0a2e", "#4B5563"] as const },
+  { code: "FCO", city: "Rome", country: "Italy", emoji: "IT", gradient: ["#1a0a2e", "#16A34A"] as const },
+  { code: "SYD", city: "Sydney", country: "Australia", emoji: "AU", gradient: ["#1a0a2e", "#0891B2"] as const },
 ];
 
 const MOCK_PRICES: Record<string, number> = {
@@ -122,7 +122,7 @@ export default function AlertsScreen() {
         )}
         <View style={styles.alertHeader}>
           <View style={styles.alertLeft}>
-            <Text style={styles.alertEmoji}>{dest?.emoji ?? "✈️"}</Text>
+            <Text style={styles.alertEmoji}>{dest?.emoji ?? "?"}</Text>
             <View>
               <Text style={styles.alertCity}>{item.destination}</Text>
               <Text style={styles.alertCode}>{item.destinationCode} · Round trip</Text>
