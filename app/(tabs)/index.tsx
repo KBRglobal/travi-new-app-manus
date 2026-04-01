@@ -339,6 +339,39 @@ export default function HomeScreen() {
           </View>
         )}
 
+        {/* ── Explore More ── */}
+        <View style={S.section}>
+          <View style={S.sectionHeader}>
+            <Text style={S.sectionTitle}>Explore More</Text>
+          </View>
+          <View style={S.exploreGrid}>
+            {[
+              { label: "Destination Guide", icon: "🗺️", desc: "Detailed city guides", route: "/(tabs)/destination-guide", color: "#6443F4" },
+              { label: "Events", icon: "🎭", desc: "Worldwide experiences", route: "/(tabs)/events", color: "#F94498" },
+              { label: "Real Estate", icon: "🏙️", desc: "UAE investment", route: "/(tabs)/real-estate", color: "#22C55E" },
+              { label: "Enterprise", icon: "📊", desc: "Business dashboard", route: "/(tabs)/enterprise", color: "#FFD700" },
+              { label: "Help Center", icon: "💬", desc: "Support & FAQ", route: "/(tabs)/support", color: "#06B6D4" },
+            ].map((item) => (
+              <TouchableOpacity
+                key={item.label}
+                style={S.exploreCard}
+                onPress={() => {
+                  if (Platform.OS !== "web") Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                  router.push(item.route as never);
+                }}
+                activeOpacity={0.85}
+              >
+                <LinearGradient colors={[item.color + "22", item.color + "11"]} style={StyleSheet.absoluteFillObject} />
+                <View style={[S.exploreIconWrap, { backgroundColor: item.color + "22" }]}>
+                  <Text style={{ fontSize: 22 }}>{item.icon}</Text>
+                </View>
+                <Text style={S.exploreLabel}>{item.label}</Text>
+                <Text style={S.exploreDesc}>{item.desc}</Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+        </View>
+
         {/* ── Community Stories ── */}
         <View style={S.section}>
           <View style={S.sectionHeader}>
@@ -463,4 +496,9 @@ const S = StyleSheet.create({
   storyDestPill: { flexDirection: "row", alignItems: "center", gap: 3, backgroundColor: "rgba(123,47,190,0.25)", borderRadius: 8, paddingHorizontal: 7, paddingVertical: 3 },
   storyDestText: { color: "#C084FC", fontSize: 11, fontWeight: "600" },
   storyText: { color: "rgba(255,255,255,0.6)", fontSize: 13, lineHeight: 19 },
+  exploreGrid: { flexDirection: "row", flexWrap: "wrap", gap: 10, paddingHorizontal: 20 },
+  exploreCard: { width: (width - 50) / 2, borderRadius: 16, overflow: "hidden", padding: 14, gap: 6, borderWidth: 1, borderColor: "rgba(255,255,255,0.07)" },
+  exploreIconWrap: { width: 44, height: 44, borderRadius: 13, alignItems: "center", justifyContent: "center" },
+  exploreLabel: { color: "#FFFFFF", fontSize: 14, fontWeight: "800" },
+  exploreDesc: { color: "rgba(255,255,255,0.4)", fontSize: 11 },
 });

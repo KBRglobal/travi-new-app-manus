@@ -205,3 +205,15 @@
 - [x] Replace all icon.png with official mascot-dark.png logos
 - [x] Update all screens to use correct TRAVI logos (dark/light backgrounds)
 - [ ] Build Restaurant/Hotel/Flight Details screens
+
+## Phase 20 — Gap Analysis: New Screens & Enhancements
+- [x] DNA Result Enhanced — DNA Circle, 6 traits with progress bars, fun facts, share, retake, 5 destinations
+- [x] Destination Guide screen — hero, quick stats, tabs (Overview/Culture/Food/Budget/Tips), Israeli tips
+- [x] Support / Help Center — 3 tabs (FAQ accordion, Contact form, Tickets list)
+- [x] Real Estate Hub — Dubai/Abu Dhabi toggle, market insights, property cards, filters
+- [x] Events / Experiences Hub — hero carousel, filters, event cards, budget guide, cultural context
+- [x] Enterprise Dashboard — 4 tabs (Overview KPIs, Revenue breakdown, Competitors, Regulations)
+- [x] Wire all new screens to Home "Explore More" section
+- [ ] Property Detail screen (gallery, specs, ROI calculator, map)
+- [ ] Mexico Destination Guide (Urban vs Coastal comparison)
+- [ ] Dubai Cultural Screen (Islamic etiquette, prayer times, halal/kosher)

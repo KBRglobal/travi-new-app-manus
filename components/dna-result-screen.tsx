@@ -14,6 +14,7 @@ import {
 import { LinearGradient } from "expo-linear-gradient";
 import { IconSymbol } from "@/components/ui/icon-symbol";
 import * as Haptics from "expo-haptics";
+import Svg, { Circle, Path, G, Text as SvgText } from "react-native-svg";
 
 const { width } = Dimensions.get("window");
 
@@ -44,6 +45,7 @@ interface Props {
   tagCounts: Record<string, number>;
   resultAnim: Animated.Value;
   onFinish: () => void;
+  onRetake?: () => void;
 }
 
 // Confetti particle
@@ -58,7 +60,7 @@ interface Particle {
 
 const CONFETTI_COLORS = ["#6443F4", "#F94498", "#FFD700", "#00D4FF", "#FF6B6B", "#4ADE80", "#FB923C"];
 
-function useConfetti(count = 30) {
+function useConfetti(count = 35) {
   const particles = useRef<Particle[]>(
     Array.from({ length: count }, () => ({
       x: new Animated.Value(Math.random() * width),
@@ -72,29 +74,29 @@ function useConfetti(count = 30) {
 
   const launch = () => {
     particles.forEach((p) => {
-      p.x.setValue(Math.random() * width);
-      p.y.setValue(-20);
+      p.x.setValue(width * 0.2 + Math.random() * width * 0.6);
+      p.y.setValue(100);
       p.opacity.setValue(1);
       p.rotate.setValue(0);
       Animated.parallel([
         Animated.timing(p.y, {
-          toValue: 700 + Math.random() * 200,
-          duration: 1800 + Math.random() * 1200,
+          toValue: 800 + Math.random() * 200,
+          duration: 2000 + Math.random() * 1200,
           useNativeDriver: true,
         }),
         Animated.timing(p.x, {
-          toValue: (Math.random() - 0.5) * 200 + parseFloat(JSON.stringify(p.x)),
-          duration: 1800 + Math.random() * 1200,
+          toValue: (Math.random() - 0.5) * 300 + width / 2,
+          duration: 2000 + Math.random() * 1200,
           useNativeDriver: true,
         }),
         Animated.timing(p.rotate, {
-          toValue: (Math.random() - 0.5) * 720,
-          duration: 1800 + Math.random() * 1200,
+          toValue: (Math.random() - 0.5) * 1080,
+          duration: 2000 + Math.random() * 1200,
           useNativeDriver: true,
         }),
         Animated.sequence([
-          Animated.delay(800 + Math.random() * 600),
-          Animated.timing(p.opacity, { toValue: 0, duration: 600, useNativeDriver: true }),
+          Animated.delay(1000 + Math.random() * 600),
+          Animated.timing(p.opacity, { toValue: 0, duration: 700, useNativeDriver: true }),
         ]),
       ]).start();
     });
@@ -103,8 +105,148 @@ function useConfetti(count = 30) {
   return { particles, launch };
 }
 
-export function DNAResultScreen({ dnaProfile, tagCounts, resultAnim, onFinish }: Props) {
-  const { particles, launch } = useConfetti(28);
+// DNA Circle SVG visualization
+function DNACircle({ tagCounts, colors }: { tagCounts: Record<string, number>; colors: [string, string] }) {
+  const SIZE = 180;
+  const cx = SIZE / 2;
+  const cy = SIZE / 2;
+  const R = 72;
+  const strokeW = 14;
+
+  const TRAITS = [
+    { key: "culture", label: "Culture", color: "#6443F4" },
+    { key: "adventure", label: "Adventure", color: "#22C55E" },
+    { key: "food", label: "Food", color: "#EA580C" },
+    { key: "luxury", label: "Luxury", color: "#FFD700" },
+    { key: "social", label: "Social", color: "#F94498" },
+    { key: "relax", label: "Relax", color: "#06B6D4" },
+  ];
+
+  const total = TRAITS.reduce((sum, t) => sum + (tagCounts[t.key] || 0), 0) || 1;
+  const circumference = 2 * Math.PI * R;
+  let offset = 0;
+
+  const segments = TRAITS.map((t) => {
+    const val = (tagCounts[t.key] || 0) / total;
+    const dash = val * circumference;
+    const gap = circumference - dash;
+    const seg = { ...t, dash, gap, offset };
+    offset += dash;
+    return seg;
+  });
+
+  return (
+    <View style={{ width: SIZE, height: SIZE, alignItems: "center", justifyContent: "center" }}>
+      <Svg width={SIZE} height={SIZE}>
+        {/* Background circle */}
+        <Circle cx={cx} cy={cy} r={R} fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth={strokeW} />
+        {/* Colored segments */}
+        {segments.map((seg, i) => (
+          <Circle
+            key={i}
+            cx={cx}
+            cy={cy}
+            r={R}
+            fill="none"
+            stroke={seg.color}
+            strokeWidth={strokeW}
+            strokeDasharray={`${seg.dash} ${seg.gap}`}
+            strokeDashoffset={-seg.offset + circumference * 0.25}
+            strokeLinecap="butt"
+            rotation={-90}
+            origin={`${cx},${cy}`}
+          />
+        ))}
+        {/* Inner circle */}
+        <Circle cx={cx} cy={cy} r={R - strokeW / 2 - 8} fill="rgba(100,67,244,0.12)" />
+      </Svg>
+      {/* Center icon */}
+      <View style={StyleSheet.absoluteFillObject} pointerEvents="none">
+        <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+          <Text style={{ fontSize: 28 }}>🧬</Text>
+        </View>
+      </View>
+    </View>
+  );
+}
+
+// Trait bar component
+function TraitBar({ label, value, max, color }: { label: string; value: number; max: number; color: string }) {
+  const barAnim = useRef(new Animated.Value(0)).current;
+  const pct = max > 0 ? value / max : 0;
+
+  useEffect(() => {
+    Animated.timing(barAnim, { toValue: pct, duration: 900, delay: 300, useNativeDriver: false }).start();
+  }, []);
+
+  return (
+    <View style={TB.row}>
+      <Text style={TB.label}>{label}</Text>
+      <View style={TB.track}>
+        <Animated.View
+          style={[
+            TB.fill,
+            {
+              width: barAnim.interpolate({ inputRange: [0, 1], outputRange: ["0%", "100%"] }),
+              backgroundColor: color,
+            },
+          ]}
+        />
+      </View>
+      <Text style={[TB.pct, { color }]}>{Math.round(pct * 100)}%</Text>
+    </View>
+  );
+}
+
+const TB = StyleSheet.create({
+  row: { flexDirection: "row", alignItems: "center", gap: 10, marginBottom: 8 },
+  label: { color: "rgba(255,255,255,0.6)", fontSize: 12, fontWeight: "600", width: 72 },
+  track: { flex: 1, height: 6, borderRadius: 3, backgroundColor: "rgba(255,255,255,0.08)", overflow: "hidden" },
+  fill: { height: "100%", borderRadius: 3 },
+  pct: { fontSize: 11, fontWeight: "700", width: 34, textAlign: "right" },
+});
+
+const TRAIT_CONFIG = [
+  { key: "culture", label: "Culture", color: "#6443F4" },
+  { key: "adventure", label: "Adventure", color: "#22C55E" },
+  { key: "food", label: "Food", color: "#EA580C" },
+  { key: "luxury", label: "Luxury", color: "#FFD700" },
+  { key: "social", label: "Social", color: "#F94498" },
+  { key: "relax", label: "Relax", color: "#06B6D4" },
+];
+
+const FUN_FACTS: Record<string, string[]> = {
+  culture: ["You'd spend 3 hours in a single museum room", "You Google history before every trip", "Your camera roll is 80% architecture"],
+  adventure: ["You've googled 'most dangerous hikes' for fun", "Jet lag is just a warm-up for you", "Your packing list includes a first aid kit"],
+  food: ["You research restaurants before hotels", "You've taken a cooking class in 3 countries", "Street food > Michelin stars, always"],
+  luxury: ["You know the difference between 5-star and 6-star", "You've upgraded to business class at least once", "Spa days are non-negotiable"],
+  social: ["You've made lifelong friends on a 6-hour flight", "Your travel group chat has 47 people", "You know the best local bars before landing"],
+  nature: ["You wake up at 5am for sunrises, no alarm needed", "You've camped under the stars on 3 continents", "Wildlife spotting is your cardio"],
+  relax: ["You've read an entire book on a beach in one day", "You choose hotels by pool quality", "Naps are a travel activity"],
+  urban: ["You know every city's best rooftop bar", "You've ridden every major metro system", "Skylines give you chills"],
+  spontaneous: ["You've bought a flight 24 hours before departure", "Your best stories start with 'we had no plan'", "You thrive on last-minute deals"],
+  planned: ["Your itinerary has color-coded time blocks", "You've booked restaurants 3 months in advance", "Backup plans have backup plans"],
+  solo: ["You've eaten alone at a fancy restaurant and loved it", "You know exactly how to make friends at hostels", "Solo travel made you fearless"],
+  default: ["You break every traveler stereotype", "Your trips are impossible to categorize", "Every destination surprises you"],
+};
+
+const EXTRA_DESTINATIONS: Record<string, string[]> = {
+  culture: ["Istanbul, Turkey", "Athens, Greece"],
+  food: ["Naples, Italy", "Ho Chi Minh City"],
+  adventure: ["New Zealand", "Nepal"],
+  luxury: ["Monaco", "Bora Bora"],
+  social: ["Ibiza, Spain", "Rio de Janeiro"],
+  nature: ["Costa Rica", "Norwegian Fjords"],
+  relax: ["Seychelles", "Amalfi Coast"],
+  urban: ["Singapore", "Dubai, UAE"],
+  spontaneous: ["Lisbon, Portugal", "Tbilisi, Georgia"],
+  planned: ["Vienna, Austria", "Singapore"],
+  solo: ["Vietnam", "Morocco"],
+  default: ["Lisbon, Portugal", "Colombia"],
+};
+
+export function DNAResultScreen({ dnaProfile, tagCounts, resultAnim, onFinish, onRetake }: Props) {
+  const { particles, launch } = useConfetti(35);
   const badgeScale = useRef(new Animated.Value(0)).current;
   const badgeRotate = useRef(new Animated.Value(-15)).current;
   const titleAnim = useRef(new Animated.Value(0)).current;
@@ -112,33 +254,46 @@ export function DNAResultScreen({ dnaProfile, tagCounts, resultAnim, onFinish }:
   const destAnim = useRef(new Animated.Value(0)).current;
   const pointsAnim = useRef(new Animated.Value(0)).current;
   const ctaAnim = useRef(new Animated.Value(0)).current;
+  const traitsAnim = useRef(new Animated.Value(0)).current;
+  const factsAnim = useRef(new Animated.Value(0)).current;
   const [pointsDisplay, setPointsDisplay] = useState(0);
   const ringPulse = useRef(new Animated.Value(1)).current;
 
+  const topTag = Object.entries(tagCounts).sort((a, b) => b[1] - a[1])[0]?.[0] || "default";
+  const funFacts = FUN_FACTS[topTag] || FUN_FACTS.default;
+  const extraDests = EXTRA_DESTINATIONS[topTag] || EXTRA_DESTINATIONS.default;
+
+  // Build 5 destinations: 3 from profile + 2 extra
+  const allDestinations = [
+    ...dnaProfile.destinations,
+    ...extraDests.map((name) => ({ name, image: dnaProfile.destinations[0]?.image })),
+  ].slice(0, 5);
+
+  const maxTagCount = Math.max(...Object.values(tagCounts), 1);
+
   useEffect(() => {
-    // Staggered entrance
     Animated.sequence([
-      Animated.delay(100),
+      Animated.delay(200),
       Animated.parallel([
-        Animated.spring(badgeScale, { toValue: 1, tension: 70, friction: 7, useNativeDriver: true }),
-        Animated.timing(badgeRotate, { toValue: 0, duration: 500, useNativeDriver: true }),
+        Animated.spring(badgeScale, { toValue: 1, tension: 120, friction: 5, useNativeDriver: true }),
+        Animated.timing(badgeRotate, { toValue: 0, duration: 400, useNativeDriver: true }),
       ]),
     ]).start(() => {
       launch();
       if (Platform.OS !== "web") Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+      Animated.stagger(120, [
+        Animated.spring(titleAnim, { toValue: 1, tension: 80, friction: 8, useNativeDriver: true }),
+        Animated.spring(descAnim, { toValue: 1, tension: 80, friction: 8, useNativeDriver: true }),
+        Animated.spring(traitsAnim, { toValue: 1, tension: 80, friction: 8, useNativeDriver: true }),
+        Animated.spring(factsAnim, { toValue: 1, tension: 80, friction: 8, useNativeDriver: true }),
+        Animated.spring(destAnim, { toValue: 1, tension: 80, friction: 8, useNativeDriver: true }),
+        Animated.spring(ctaAnim, { toValue: 1, tension: 80, friction: 8, useNativeDriver: true }),
+      ]).start();
     });
-
-    Animated.stagger(120, [
-      Animated.timing(titleAnim, { toValue: 1, duration: 400, useNativeDriver: true }),
-      Animated.timing(descAnim, { toValue: 1, duration: 400, useNativeDriver: true }),
-      Animated.timing(destAnim, { toValue: 1, duration: 400, useNativeDriver: true }),
-      Animated.timing(pointsAnim, { toValue: 1, duration: 400, useNativeDriver: true }),
-      Animated.timing(ctaAnim, { toValue: 1, duration: 400, useNativeDriver: true }),
-    ]).start();
 
     // Animate points counter
     const start = Date.now();
-    const duration = 1200;
+    const duration = 1400;
     const target = 250;
     const interval = setInterval(() => {
       const elapsed = Date.now() - start;
@@ -151,8 +306,8 @@ export function DNAResultScreen({ dnaProfile, tagCounts, resultAnim, onFinish }:
     // Ring pulse loop
     Animated.loop(
       Animated.sequence([
-        Animated.timing(ringPulse, { toValue: 1.08, duration: 1200, useNativeDriver: true }),
-        Animated.timing(ringPulse, { toValue: 1, duration: 1200, useNativeDriver: true }),
+        Animated.timing(ringPulse, { toValue: 1.06, duration: 1400, useNativeDriver: true }),
+        Animated.timing(ringPulse, { toValue: 1, duration: 1400, useNativeDriver: true }),
       ])
     ).start();
 
@@ -168,7 +323,7 @@ export function DNAResultScreen({ dnaProfile, tagCounts, resultAnim, onFinish }:
     culture: ["#6443F4", "#9077EF"],
     adventure: ["#02A65C", "#22C55E"],
     food: ["#C2410C", "#EA580C"],
-    luxury: ["#292524", "#78716C"],
+    luxury: ["#B8860B", "#FFD700"],
     social: ["#6B21A8", "#F94498"],
     nature: ["#14532D", "#22C55E"],
     relax: ["#0E7490", "#06B6D4"],
@@ -197,7 +352,7 @@ export function DNAResultScreen({ dnaProfile, tagCounts, resultAnim, onFinish }:
               transform: [
                 { translateX: p.x },
                 { translateY: p.y },
-                { rotate: p.rotate.interpolate({ inputRange: [-720, 720], outputRange: ["-720deg", "720deg"] }) },
+                { rotate: p.rotate.interpolate({ inputRange: [-1080, 1080], outputRange: ["-1080deg", "1080deg"] }) },
               ],
               opacity: p.opacity,
             },
@@ -209,10 +364,13 @@ export function DNAResultScreen({ dnaProfile, tagCounts, resultAnim, onFinish }:
         contentContainerStyle={RS.scroll}
         showsVerticalScrollIndicator={false}
       >
-        {/* Badge */}
+        {/* ── Header label ── */}
+        <Text style={RS.headerLabel}>✦ YOUR TRAVELER DNA ✦</Text>
+
+        {/* ── DNA Circle + Badge side by side ── */}
         <Animated.View
           style={[
-            RS.badgeWrap,
+            RS.dnaRow,
             {
               transform: [
                 { scale: badgeScale },
@@ -221,62 +379,44 @@ export function DNAResultScreen({ dnaProfile, tagCounts, resultAnim, onFinish }:
             },
           ]}
         >
-          {/* Outer pulsing ring */}
-          <Animated.View
-            style={[
-              RS.ringOuter,
-              {
-                borderColor: dnaProfile.colors[1] + "30",
-                transform: [{ scale: ringPulse }],
-              },
-            ]}
-          />
-          {/* Inner ring */}
-          <View style={[RS.ringInner, { borderColor: dnaProfile.colors[1] + "60" }]} />
+          {/* DNA Circle visualization */}
+          <DNACircle tagCounts={tagCounts} colors={dnaProfile.colors} />
+
           {/* Badge */}
-          <LinearGradient
-            colors={dnaProfile.colors}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 1 }}
-            style={RS.badge}
-          >
-            <IconSymbol name={dnaProfile.iconName} size={52} color="rgba(255,255,255,0.95)" />
-          </LinearGradient>
-          {/* Sparkle dots */}
-          {[0, 60, 120, 180, 240, 300].map((deg, i) => (
-            <View
-              key={i}
-              style={[
-                RS.sparkleDot,
-                {
-                  backgroundColor: i % 2 === 0 ? dnaProfile.colors[0] : dnaProfile.colors[1],
-                  transform: [
-                    { rotate: `${deg}deg` },
-                    { translateY: -88 },
-                  ],
-                },
-              ]}
-            />
-          ))}
+          <View style={RS.badgeWrap}>
+            <Animated.View style={[RS.ringOuter, { borderColor: dnaProfile.colors[1] + "30", transform: [{ scale: ringPulse }] }]} />
+            <View style={[RS.ringInner, { borderColor: dnaProfile.colors[1] + "55" }]} />
+            <LinearGradient
+              colors={dnaProfile.colors}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              style={RS.badge}
+            >
+              <IconSymbol name={dnaProfile.iconName} size={44} color="rgba(255,255,255,0.95)" />
+            </LinearGradient>
+            {[0, 60, 120, 180, 240, 300].map((deg, i) => (
+              <View
+                key={i}
+                style={[
+                  RS.sparkleDot,
+                  {
+                    backgroundColor: i % 2 === 0 ? dnaProfile.colors[0] : dnaProfile.colors[1],
+                    transform: [{ rotate: `${deg}deg` }, { translateY: -72 }],
+                  },
+                ]}
+              />
+            ))}
+          </View>
         </Animated.View>
 
-        {/* Label */}
-        <Animated.View style={{ opacity: titleAnim, transform: [{ translateY: titleAnim.interpolate({ inputRange: [0, 1], outputRange: [20, 0] }) }] }}>
-          <Text style={RS.label}>✦ YOUR TRAVELER DNA ✦</Text>
+        {/* ── Title ── */}
+        <Animated.View style={{ opacity: titleAnim, transform: [{ translateY: titleAnim.interpolate({ inputRange: [0, 1], outputRange: [20, 0] }) }], alignItems: "center" }}>
           <Text style={RS.title}>{dnaProfile.title}</Text>
+          <Text style={RS.desc}>{dnaProfile.description}</Text>
         </Animated.View>
 
-        {/* Description */}
-        <Animated.Text
-          style={[RS.desc, { opacity: descAnim, transform: [{ translateY: descAnim.interpolate({ inputRange: [0, 1], outputRange: [16, 0] }) }] }]}
-        >
-          {dnaProfile.description}
-        </Animated.Text>
-
-        {/* Trait chips */}
-        <Animated.View
-          style={[RS.tagsRow, { opacity: descAnim }]}
-        >
+        {/* ── Trait chips ── */}
+        <Animated.View style={[RS.tagsRow, { opacity: descAnim }]}>
           {topTags.map((tag) => {
             const colors = TAG_COLORS[tag] || ["#6443F4", "#9077EF"];
             return (
@@ -288,15 +428,62 @@ export function DNAResultScreen({ dnaProfile, tagCounts, resultAnim, onFinish }:
           })}
         </Animated.View>
 
-        {/* Destinations */}
-        <Animated.View style={{ opacity: destAnim, transform: [{ translateY: destAnim.interpolate({ inputRange: [0, 1], outputRange: [16, 0] }) }] }}>
+        {/* ── Personality Breakdown ── */}
+        <Animated.View
+          style={[
+            RS.card,
+            {
+              opacity: traitsAnim,
+              transform: [{ translateY: traitsAnim.interpolate({ inputRange: [0, 1], outputRange: [20, 0] }) }],
+            },
+          ]}
+        >
+          <View style={RS.cardHeader}>
+            <Text style={RS.cardTitle}>Personality Breakdown</Text>
+            <Text style={RS.cardSubtitle}>Your travel DNA traits</Text>
+          </View>
+          {TRAIT_CONFIG.map((t) => (
+            <TraitBar
+              key={t.key}
+              label={t.label}
+              value={tagCounts[t.key] || 0}
+              max={maxTagCount}
+              color={t.color}
+            />
+          ))}
+        </Animated.View>
+
+        {/* ── Fun Facts ── */}
+        <Animated.View
+          style={[
+            RS.card,
+            {
+              opacity: factsAnim,
+              transform: [{ translateY: factsAnim.interpolate({ inputRange: [0, 1], outputRange: [20, 0] }) }],
+            },
+          ]}
+        >
+          <View style={RS.cardHeader}>
+            <Text style={RS.cardTitle}>Fun Facts About You</Text>
+            <Text style={RS.cardSubtitle}>Travelers like you...</Text>
+          </View>
+          {funFacts.map((fact, i) => (
+            <View key={i} style={RS.factRow}>
+              <View style={[RS.factDot, { backgroundColor: dnaProfile.colors[1] }]} />
+              <Text style={RS.factText}>{fact}</Text>
+            </View>
+          ))}
+        </Animated.View>
+
+        {/* ── Destinations (5) ── */}
+        <Animated.View style={{ opacity: destAnim, transform: [{ translateY: destAnim.interpolate({ inputRange: [0, 1], outputRange: [16, 0] }) }], width: "100%" }}>
           <Text style={RS.sectionLabel}>Perfect destinations for you</Text>
           <ScrollView
             horizontal
             showsHorizontalScrollIndicator={false}
             contentContainerStyle={RS.destRow}
           >
-            {dnaProfile.destinations.map((dest, i) => (
+            {allDestinations.map((dest, i) => (
               <TouchableOpacity
                 key={i}
                 style={RS.destCard}
@@ -305,7 +492,7 @@ export function DNAResultScreen({ dnaProfile, tagCounts, resultAnim, onFinish }:
               >
                 <Image source={dest.image} style={RS.destImg} resizeMode="cover" />
                 <LinearGradient
-                  colors={["transparent", "rgba(0,0,0,0.75)"]}
+                  colors={["transparent", "rgba(0,0,0,0.8)"]}
                   style={StyleSheet.absoluteFillObject}
                 />
                 <View style={RS.destNumBadge}>
@@ -317,30 +504,42 @@ export function DNAResultScreen({ dnaProfile, tagCounts, resultAnim, onFinish }:
           </ScrollView>
         </Animated.View>
 
-        {/* Points celebration */}
+        {/* ── Points + CTA ── */}
         <Animated.View
-          style={[RS.pointsCard, { opacity: pointsAnim, transform: [{ scale: pointsAnim.interpolate({ inputRange: [0, 1], outputRange: [0.9, 1] }) }] }]}
+          style={[
+            RS.bottomBlock,
+            {
+              opacity: ctaAnim,
+              transform: [{ translateY: ctaAnim.interpolate({ inputRange: [0, 1], outputRange: [24, 0] }) }],
+            },
+          ]}
         >
-          <LinearGradient
-            colors={["rgba(255,215,0,0.18)", "rgba(255,149,0,0.08)"]}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 0 }}
-            style={StyleSheet.absoluteFillObject}
-          />
-          <View style={RS.pointsLeft}>
-            <Text style={RS.pointsEmoji}>⭐</Text>
+          {/* Points card */}
+          <View style={RS.pointsCard}>
+            <LinearGradient
+              colors={["rgba(255,215,0,0.18)", "rgba(255,149,0,0.08)"]}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              style={StyleSheet.absoluteFillObject}
+            />
+            <View style={RS.pointsLeft}>
+              <View style={RS.pointsIconBox}>
+                <Text style={{ fontSize: 22 }}>⭐</Text>
+              </View>
+              <View>
+                <Text style={RS.pointsValue}>+{pointsDisplay}</Text>
+                <Text style={RS.pointsPillLabel}>TRAVI Points earned</Text>
+              </View>
+            </View>
+            <View style={RS.pointsRight}>
+              <Text style={RS.pointsRightLabel}>Quiz{"\n"}Complete</Text>
+              <View style={[RS.completeBadge, { backgroundColor: dnaProfile.colors[0] + "33", borderColor: dnaProfile.colors[0] + "66" }]}>
+                <Text style={{ fontSize: 16 }}>✓</Text>
+              </View>
+            </View>
           </View>
-          <View style={RS.pointsRight}>
-            <Text style={RS.pointsValue}>+{pointsDisplay}</Text>
-            <Text style={RS.pointsLabel}>TRAVI Points earned!</Text>
-            <Text style={RS.pointsSub}>For completing your Traveler DNA quiz</Text>
-          </View>
-        </Animated.View>
 
-        {/* CTA */}
-        <Animated.View
-          style={[RS.ctaWrap, { opacity: ctaAnim, transform: [{ translateY: ctaAnim.interpolate({ inputRange: [0, 1], outputRange: [20, 0] }) }] }]}
-        >
+          {/* CTA */}
           <TouchableOpacity style={RS.ctaBtn} onPress={onFinish} activeOpacity={0.88}>
             <LinearGradient
               colors={["#6443F4", "#F94498"]}
@@ -348,10 +547,34 @@ export function DNAResultScreen({ dnaProfile, tagCounts, resultAnim, onFinish }:
               end={{ x: 1, y: 0 }}
               style={RS.ctaGradient}
             >
-              <Text style={RS.ctaText}>Start Exploring</Text>
-              <IconSymbol name="arrow.right" size={20} color="#FFFFFF" />
+              <Text style={RS.ctaText}>Start Exploring  →</Text>
             </LinearGradient>
           </TouchableOpacity>
+
+          {/* Retake + Share row */}
+          <View style={RS.secondaryRow}>
+            {onRetake && (
+              <TouchableOpacity
+                style={RS.secondaryBtn}
+                onPress={() => {
+                  if (Platform.OS !== "web") Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                  onRetake();
+                }}
+                activeOpacity={0.75}
+              >
+                <IconSymbol name="arrow.clockwise" size={14} color="rgba(255,255,255,0.5)" />
+                <Text style={RS.secondaryBtnText}>Retake Quiz</Text>
+              </TouchableOpacity>
+            )}
+            <TouchableOpacity
+              style={RS.secondaryBtn}
+              onPress={() => { if (Platform.OS !== "web") Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light); }}
+              activeOpacity={0.75}
+            >
+              <IconSymbol name="square.and.arrow.up" size={14} color="rgba(255,255,255,0.5)" />
+              <Text style={RS.secondaryBtnText}>Share Result</Text>
+            </TouchableOpacity>
+          </View>
         </Animated.View>
       </ScrollView>
     </View>
@@ -361,46 +584,87 @@ export function DNAResultScreen({ dnaProfile, tagCounts, resultAnim, onFinish }:
 const RS = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#0D0628" },
   particle: { position: "absolute", top: 0, left: 0 },
-  scroll: { paddingTop: 60, paddingBottom: 48, alignItems: "center", gap: 20 },
+  scroll: { paddingTop: 52, paddingBottom: 48, alignItems: "center", gap: 20 },
+
+  headerLabel: { color: "rgba(255,255,255,0.35)", fontSize: 11, fontWeight: "700", letterSpacing: 2.5, textAlign: "center" },
+
+  // DNA Row
+  dnaRow: { flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 16, paddingHorizontal: 16 },
 
   // Badge
-  badgeWrap: { width: 200, height: 200, alignItems: "center", justifyContent: "center", marginBottom: 8 },
-  ringOuter: { position: "absolute", width: 190, height: 190, borderRadius: 95, borderWidth: 1.5 },
-  ringInner: { position: "absolute", width: 156, height: 156, borderRadius: 78, borderWidth: 1.5 },
-  badge: { width: 120, height: 120, borderRadius: 36, alignItems: "center", justifyContent: "center" },
-  sparkleDot: { position: "absolute", width: 7, height: 7, borderRadius: 3.5 },
+  badgeWrap: { width: 160, height: 160, alignItems: "center", justifyContent: "center" },
+  ringOuter: { position: "absolute", width: 152, height: 152, borderRadius: 76, borderWidth: 1.5 },
+  ringInner: { position: "absolute", width: 120, height: 120, borderRadius: 60, borderWidth: 1.5 },
+  badge: { width: 96, height: 96, borderRadius: 28, alignItems: "center", justifyContent: "center" },
+  sparkleDot: { position: "absolute", width: 6, height: 6, borderRadius: 3 },
 
   // Text
-  label: { color: "rgba(255,255,255,0.45)", fontSize: 11, fontWeight: "700", letterSpacing: 2, textAlign: "center", marginBottom: 6 },
-  title: { color: "#FFFFFF", fontSize: 32, fontWeight: "900", textAlign: "center", letterSpacing: -0.5, lineHeight: 38 },
-  desc: { color: "rgba(255,255,255,0.6)", fontSize: 15, lineHeight: 22, textAlign: "center", paddingHorizontal: 32 },
+  title: { color: "#FFFFFF", fontSize: 30, fontWeight: "900", textAlign: "center", letterSpacing: -0.5, lineHeight: 36 },
+  desc: { color: "rgba(255,255,255,0.55)", fontSize: 14, lineHeight: 21, textAlign: "center", paddingHorizontal: 28, marginTop: 8 },
 
   // Tags
   tagsRow: { flexDirection: "row", flexWrap: "wrap", justifyContent: "center", gap: 8, paddingHorizontal: 24 },
   tagChip: { borderRadius: 20, overflow: "hidden", paddingHorizontal: 14, paddingVertical: 7 },
   tagText: { color: "#FFFFFF", fontSize: 12, fontWeight: "700" },
 
-  // Destinations
-  sectionLabel: { color: "rgba(255,255,255,0.4)", fontSize: 11, fontWeight: "700", letterSpacing: 1.5, textTransform: "uppercase", marginBottom: 12, paddingHorizontal: 24 },
-  destRow: { paddingHorizontal: 20, gap: 12 },
-  destCard: { width: 160, height: 110, borderRadius: 18, overflow: "hidden", justifyContent: "flex-end", padding: 12 },
-  destImg: { ...StyleSheet.absoluteFillObject as object, width: undefined, height: undefined },
-  destNumBadge: { position: "absolute", top: 10, left: 10, width: 24, height: 24, borderRadius: 12, backgroundColor: "rgba(100,67,244,0.85)", alignItems: "center", justifyContent: "center" },
-  destNumText: { color: "#FFFFFF", fontSize: 11, fontWeight: "800" },
-  destName: { color: "#FFFFFF", fontSize: 13, fontWeight: "700" },
+  // Card
+  card: {
+    width: width - 32,
+    backgroundColor: "rgba(255,255,255,0.05)",
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: "rgba(255,255,255,0.08)",
+    padding: 18,
+    gap: 4,
+  },
+  cardHeader: { marginBottom: 12 },
+  cardTitle: { color: "#FFFFFF", fontSize: 16, fontWeight: "800" },
+  cardSubtitle: { color: "rgba(255,255,255,0.35)", fontSize: 12, marginTop: 2 },
 
-  // Points
-  pointsCard: { width: width - 48, borderRadius: 20, overflow: "hidden", flexDirection: "row", alignItems: "center", padding: 18, gap: 14, borderWidth: 1, borderColor: "rgba(255,215,0,0.2)" },
-  pointsLeft: { width: 52, height: 52, borderRadius: 16, backgroundColor: "rgba(255,215,0,0.15)", alignItems: "center", justifyContent: "center" },
-  pointsEmoji: { fontSize: 26 },
-  pointsRight: { flex: 1 },
-  pointsValue: { color: "#FFD700", fontSize: 28, fontWeight: "900", lineHeight: 32 },
-  pointsLabel: { color: "#FFD700", fontSize: 13, fontWeight: "700" },
-  pointsSub: { color: "rgba(255,255,255,0.45)", fontSize: 12, marginTop: 2 },
+  // Fun facts
+  factRow: { flexDirection: "row", alignItems: "flex-start", gap: 10, marginBottom: 8 },
+  factDot: { width: 6, height: 6, borderRadius: 3, marginTop: 5, flexShrink: 0 },
+  factText: { color: "rgba(255,255,255,0.65)", fontSize: 13, lineHeight: 19, flex: 1 },
+
+  // Destinations
+  sectionLabel: { color: "rgba(255,255,255,0.35)", fontSize: 11, fontWeight: "700", letterSpacing: 1.5, textTransform: "uppercase", marginBottom: 12, paddingHorizontal: 16, alignSelf: "flex-start" },
+  destRow: { paddingHorizontal: 16, gap: 10 },
+  destCard: { width: 160, height: 120, borderRadius: 16, overflow: "hidden", justifyContent: "flex-end", padding: 10 },
+  destImg: { position: "absolute", top: 0, left: 0, right: 0, bottom: 0, width: "100%", height: "100%" },
+  destNumBadge: { position: "absolute", top: 8, left: 8, width: 22, height: 22, borderRadius: 11, backgroundColor: "rgba(100,67,244,0.9)", alignItems: "center", justifyContent: "center" },
+  destNumText: { color: "#FFFFFF", fontSize: 11, fontWeight: "800" },
+  destName: { color: "#FFFFFF", fontSize: 12, fontWeight: "800", textShadowColor: "rgba(0,0,0,0.6)", textShadowOffset: { width: 0, height: 1 }, textShadowRadius: 4 },
+
+  // Bottom block
+  bottomBlock: { width: width - 32, alignItems: "center", gap: 14 },
+
+  // Points card
+  pointsCard: {
+    width: "100%",
+    borderRadius: 18,
+    overflow: "hidden",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    padding: 16,
+    borderWidth: 1,
+    borderColor: "rgba(255,215,0,0.2)",
+  },
+  pointsLeft: { flexDirection: "row", alignItems: "center", gap: 12 },
+  pointsIconBox: { width: 44, height: 44, borderRadius: 14, backgroundColor: "rgba(255,215,0,0.15)", alignItems: "center", justifyContent: "center" },
+  pointsValue: { color: "#FFD700", fontSize: 32, fontWeight: "900", lineHeight: 36 },
+  pointsPillLabel: { color: "rgba(255,215,0,0.6)", fontSize: 11, fontWeight: "600", marginTop: 1 },
+  pointsRight: { alignItems: "center", gap: 6 },
+  pointsRightLabel: { color: "rgba(255,255,255,0.35)", fontSize: 10, fontWeight: "600", textAlign: "center" },
+  completeBadge: { width: 32, height: 32, borderRadius: 10, borderWidth: 1, alignItems: "center", justifyContent: "center" },
 
   // CTA
-  ctaWrap: { width: width - 48 },
-  ctaBtn: { borderRadius: 20, overflow: "hidden" },
-  ctaGradient: { flexDirection: "row", alignItems: "center", justifyContent: "center", paddingVertical: 18, gap: 10 },
-  ctaText: { color: "#FFFFFF", fontSize: 18, fontWeight: "800" },
+  ctaBtn: { width: "100%", borderRadius: 18, overflow: "hidden" },
+  ctaGradient: { alignItems: "center", justifyContent: "center", paddingVertical: 17 },
+  ctaText: { color: "#FFFFFF", fontSize: 17, fontWeight: "800", letterSpacing: 0.3 },
+
+  // Secondary row
+  secondaryRow: { flexDirection: "row", gap: 20, justifyContent: "center" },
+  secondaryBtn: { flexDirection: "row", alignItems: "center", gap: 6, paddingVertical: 8, paddingHorizontal: 12 },
+  secondaryBtnText: { color: "rgba(255,255,255,0.4)", fontSize: 12, fontWeight: "600" },
 });
