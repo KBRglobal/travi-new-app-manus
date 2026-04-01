@@ -5,6 +5,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { Image } from "react-native";
 import { IconSymbol } from "@/components/ui/icon-symbol";
 import { useStore } from "@/lib/store";
+import { DNAResultScreen } from "@/components/dna-result-screen";
 import * as Haptics from "expo-haptics";
 
 const { width } = Dimensions.get("window");
@@ -178,6 +179,18 @@ export default function QuizScreen() {
   if (!question) return null;
 
   if (showResult) {
+    return (
+      <DNAResultScreen
+        dnaProfile={dnaProfile}
+        tagCounts={tagCounts}
+        resultAnim={resultAnim}
+        onFinish={handleFinish}
+      />
+    );
+  }
+
+  // placeholder to keep linter happy — never reached
+  if (false) {
     return (
       <View style={S.container}>
         <LinearGradient colors={["#0D0628", "#1A0A3D", "#1A0A3D"]} style={StyleSheet.absoluteFillObject} />
