@@ -196,6 +196,16 @@ const MAPPING = {
   "clock": "access-time",
   "timer": "timer",
   "hourglass": "hourglass-empty",
+  // Missing icons used in quiz
+  "figure.hiking": "hiking",
+  "sofa.fill": "weekend",
+  "building.fill": "apartment",
+  "figure.surfing": "surfing",
+  "headphones": "headphones",
+  "moon.stars.fill": "nights-stay",
+  "music.note.list": "queue-music",
+  "car.side.fill": "directions-car",
+  "drop.fill": "water-drop",
 } as unknown as IconMapping;
 
 /**
