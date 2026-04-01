@@ -1,9 +1,11 @@
 import { useState } from "react";
-import { View, Text, TouchableOpacity, StyleSheet, FlatList, Dimensions } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet, FlatList, Dimensions, Platform } from "react-native";
 import { router } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
+import { Image } from "expo-image";
 import { IconSymbol } from "@/components/ui/icon-symbol";
 import { useStore, Trip } from "@/lib/store";
+import * as Haptics from "expo-haptics";
 
 const { width } = Dimensions.get("window");
 
@@ -30,22 +32,17 @@ const MOCK_TRIPS: Trip[] = [
   },
 ];
 
-const DEST_ICONS: Record<string, { icon: "building.columns.fill" | "building.2.fill" | "beach.umbrella" | "mountain.2.fill" | "airplane"; color: string }> = {
-  Paris: { icon: "building.columns.fill", color: "#7B2FBE" },
-  Tokyo: { icon: "building.2.fill", color: "#E91E8C" },
-  Bali: { icon: "beach.umbrella", color: "#4CAF50" },
-  "New York": { icon: "building.2.fill", color: "#2196F3" },
-  Santorini: { icon: "mountain.2.fill", color: "#FF9800" },
-  Dubai: { icon: "building.2.fill", color: "#FFD700" },
-};
-
-const DEST_GRADIENTS: Record<string, [string, string]> = {
-  Paris: ["rgba(123,47,190,0.5)", "rgba(74,25,66,0.4)"],
-  Tokyo: ["rgba(26,58,92,0.5)", "rgba(45,27,105,0.4)"],
-  Bali: ["rgba(27,77,30,0.5)", "rgba(45,58,27,0.4)"],
-  "New York": ["rgba(26,42,74,0.5)", "rgba(45,27,105,0.4)"],
-  Santorini: ["rgba(26,58,92,0.5)", "rgba(45,27,105,0.4)"],
-  Dubai: ["rgba(58,42,26,0.5)", "rgba(45,27,105,0.4)"],
+const DEST_PHOTOS: Record<string, string> = {
+  Paris: "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=600&q=80",
+  Tokyo: "https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=600&q=80",
+  Bali: "https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=600&q=80",
+  "New York": "https://images.unsplash.com/photo-1485871981521-5b1fd3805eee?w=600&q=80",
+  Santorini: "https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?w=600&q=80",
+  Dubai: "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=600&q=80",
+  Kyoto: "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=600&q=80",
+  Barcelona: "https://images.unsplash.com/photo-1583422409516-2895a77efded?w=600&q=80",
+  Maldives: "https://images.unsplash.com/photo-1514282401047-d79a71a590e8?w=600&q=80",
+  Iceland: "https://images.unsplash.com/photo-1476610182048-b716b8518aae?w=600&q=80",
 };
 
 const STATUS_CONFIG = {
@@ -56,22 +53,16 @@ const STATUS_CONFIG = {
 };
 
 function TripCard({ trip, onPress }: { trip: Trip; onPress: () => void }) {
-  const destIcon = DEST_ICONS[trip.destination] || { icon: "airplane" as const, color: "#7B2FBE" };
-  const gradColors = DEST_GRADIENTS[trip.destination] || (["rgba(123,47,190,0.3)", "rgba(45,27,105,0.2)"] as [string, string]);
+  const photoUrl = DEST_PHOTOS[trip.destination] || "https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=600&q=80";
   const status = STATUS_CONFIG[trip.status];
 
   return (
-    <TouchableOpacity style={styles.tripCard} onPress={onPress} activeOpacity={0.88}>
+    <TouchableOpacity style={styles.tripCard} onPress={() => { if (Platform.OS !== "web") Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light); onPress(); }} activeOpacity={0.88}>
       <View style={styles.tripCardInner}>
-        <LinearGradient colors={gradColors} style={StyleSheet.absoluteFillObject} />
-
-        {/* Left accent bar */}
-        <LinearGradient colors={["#7B2FBE", "#E91E8C"]} style={styles.accentBar} />
-
-        {/* Destination Icon */}
-        <View style={[styles.tripEmojiWrap, { backgroundColor: destIcon.color + "22" }]}>
-          <IconSymbol name={destIcon.icon} size={28} color={destIcon.color} />
-        </View>
+        {/* Full photo background */}
+        <Image source={{ uri: photoUrl }} style={StyleSheet.absoluteFillObject} contentFit="cover" />
+        {/* Dark gradient overlay */}
+        <LinearGradient colors={["rgba(0,0,0,0.15)", "rgba(0,0,0,0.65)"]} style={StyleSheet.absoluteFillObject} />
 
         {/* Main info */}
         <View style={styles.tripInfo}>
@@ -251,24 +242,24 @@ const styles = StyleSheet.create({
   filterTabActive: {},
   filterTabText: { color: "#5A4D72", fontSize: 14, fontWeight: "600" },
   filterTabTextActive: { color: "#FFFFFF" },
-  tripCard: { borderRadius: 20, overflow: "hidden", borderWidth: 1.5, borderColor: "rgba(255,255,255,0.08)" },
-  tripCardInner: { flexDirection: "row", alignItems: "center", padding: 16, gap: 14, overflow: "hidden" },
+  tripCard: { borderRadius: 20, overflow: "hidden", borderWidth: 1, borderColor: "rgba(255,255,255,0.12)" },
+  tripCardInner: { flexDirection: "row", alignItems: "center", padding: 16, gap: 14, overflow: "hidden", minHeight: 100 },
   accentBar: { position: "absolute", left: 0, top: 0, bottom: 0, width: 3, borderRadius: 2 },
   tripEmojiWrap: { width: 52, height: 52, borderRadius: 16, backgroundColor: "rgba(255,255,255,0.08)", alignItems: "center", justifyContent: "center" },
   tripEmoji: { fontSize: 28 },
   tripInfo: { flex: 1, gap: 6 },
   tripTopRow: { flexDirection: "row", justifyContent: "space-between", alignItems: "flex-start" },
-  tripDest: { color: "#FFFFFF", fontSize: 17, fontWeight: "800" },
-  tripCountry: { color: "#5A4D72", fontSize: 12, marginTop: 1 },
-  statusBadge: { flexDirection: "row", alignItems: "center", gap: 5, borderRadius: 8, borderWidth: 1, paddingHorizontal: 8, paddingVertical: 3 },
+  tripDest: { color: "#FFFFFF", fontSize: 17, fontWeight: "800", textShadowColor: "rgba(0,0,0,0.5)", textShadowOffset: { width: 0, height: 1 }, textShadowRadius: 4 },
+  tripCountry: { color: "rgba(255,255,255,0.65)", fontSize: 12, marginTop: 1 },
+  statusBadge: { flexDirection: "row", alignItems: "center", gap: 5, borderRadius: 8, borderWidth: 1, paddingHorizontal: 8, paddingVertical: 3, backgroundColor: "rgba(0,0,0,0.4)" },
   statusDot: { width: 6, height: 6, borderRadius: 3 },
   statusText: { fontSize: 11, fontWeight: "700" },
   tripMetaRow: { flexDirection: "row", alignItems: "center", gap: 6 },
   tripMetaItem: { flexDirection: "row", alignItems: "center", gap: 4 },
-  tripMetaText: { color: "#5A4D72", fontSize: 12 },
-  tripMetaDot: { color: "#5A4D72", fontSize: 12 },
+  tripMetaText: { color: "rgba(255,255,255,0.6)", fontSize: 12 },
+  tripMetaDot: { color: "rgba(255,255,255,0.4)", fontSize: 12 },
   tripFooter: { flexDirection: "row", alignItems: "center", justifyContent: "space-between" },
-  tripCost: { color: "#FFFFFF", fontSize: 15, fontWeight: "700" },
+  tripCost: { color: "#FFFFFF", fontSize: 15, fontWeight: "700", textShadowColor: "rgba(0,0,0,0.5)", textShadowOffset: { width: 0, height: 1 }, textShadowRadius: 4 },
   tripPointsBadge: { flexDirection: "row", alignItems: "center", gap: 4, backgroundColor: "rgba(255,215,0,0.15)", borderRadius: 8, paddingHorizontal: 8, paddingVertical: 3 },
   tripPointsStar: { color: "#FFD700", fontSize: 10 },
   tripPointsText: { color: "#FFD700", fontSize: 11, fontWeight: "700" },

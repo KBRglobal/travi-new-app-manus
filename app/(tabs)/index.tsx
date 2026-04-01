@@ -5,43 +5,111 @@ import {
 } from "react-native";
 import { router } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
+import { Image } from "expo-image";
 import { IconSymbol } from "@/components/ui/icon-symbol";
 import { useStore } from "@/lib/store";
 import * as Haptics from "expo-haptics";
 
 const { width, height } = Dimensions.get("window");
 
-// ─── Mock Data ────────────────────────────────────────────────────────────────
+// ─── Real destination photos from Unsplash ────────────────────────────────────
 
 const FEATURED_DESTINATIONS = [
-  { id: "1", city: "Kyoto", country: "Japan", tagline: "Cherry blossoms & ancient temples", gradient: ["#1a0533", "#4a1a7a", "#2d0d5c"] as [string,string,string], price: "From $1,240", badge: "DNA Match", badgeColor: "#E91E8C" },
-  { id: "2", city: "Santorini", country: "Greece", tagline: "Sunsets that stop time", gradient: ["#0d2040", "#1a3a6e", "#0a1a3d"] as [string,string,string], price: "From $980", badge: "Trending", badgeColor: "#F59E0B" },
-  { id: "3", city: "Tokyo", country: "Japan", tagline: "Where neon meets tradition", gradient: ["#1a0020", "#3d0040", "#1a0030"] as [string,string,string], price: "From $1,450", badge: "Popular", badgeColor: "#7B2FBE" },
-  { id: "4", city: "Bali", country: "Indonesia", tagline: "Find your inner peace", gradient: ["#0d2a1a", "#1a4a2e", "#0a2015"] as [string,string,string], price: "From $760", badge: "Best Value", badgeColor: "#10B981" },
+  {
+    id: "1",
+    city: "Kyoto",
+    country: "Japan",
+    tagline: "Cherry blossoms & ancient temples",
+    image: "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=600&q=80",
+    price: "From $1,240",
+    badge: "DNA Match",
+    badgeColor: "#E91E8C",
+  },
+  {
+    id: "2",
+    city: "Santorini",
+    country: "Greece",
+    tagline: "Sunsets that stop time",
+    image: "https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?w=600&q=80",
+    price: "From $980",
+    badge: "Trending",
+    badgeColor: "#F59E0B",
+  },
+  {
+    id: "3",
+    city: "Tokyo",
+    country: "Japan",
+    tagline: "Where neon meets tradition",
+    image: "https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=600&q=80",
+    price: "From $1,450",
+    badge: "Popular",
+    badgeColor: "#7B2FBE",
+  },
+  {
+    id: "4",
+    city: "Bali",
+    country: "Indonesia",
+    tagline: "Find your inner peace",
+    image: "https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=600&q=80",
+    price: "From $760",
+    badge: "Best Value",
+    badgeColor: "#10B981",
+  },
+  {
+    id: "5",
+    city: "Barcelona",
+    country: "Spain",
+    tagline: "Art, food and endless sun",
+    image: "https://images.unsplash.com/photo-1583422409516-2895a77efded?w=600&q=80",
+    price: "From $620",
+    badge: "Hot Deal",
+    badgeColor: "#EF4444",
+  },
 ];
 
 const QUICK_ACTIONS = [
-  { id: "flights", label: "Flights", iconName: "airplane", colors: ["#1E3A5F", "#2563EB"] as [string,string] },
-  { id: "hotels", label: "Hotels", iconName: "bed.double.fill", colors: ["#7C3AED", "#A855F7"] as [string,string] },
-  { id: "experiences", label: "Experiences", iconName: "sparkles", colors: ["#BE185D", "#EC4899"] as [string,string] },
-  { id: "alerts", label: "Price Alert", iconName: "bell.fill", colors: ["#065F46", "#10B981"] as [string,string] },
-];
-
-const TRENDING_STORIES = [
-  { id: "1", author: "Maya R.", dest: "Lisbon", text: "The most underrated city in Europe. Pastéis de nata changed my life.", avatar: "M", gradient: ["#C2410C", "#EA580C"] as [string,string] },
-  { id: "2", author: "James K.", dest: "Kyoto", text: "Woke up at 5am to see Fushimi Inari alone. Worth every second.", avatar: "J", gradient: ["#1E3A5F", "#2563EB"] as [string,string] },
-  { id: "3", author: "Sara L.", dest: "Bali", text: "Ubud rice terraces at sunrise. No words. Just go.", avatar: "S", gradient: ["#065F46", "#10B981"] as [string,string] },
+  { id: "flights", label: "Flights", iconName: "airplane", colors: ["#1E3A5F", "#2563EB"] as [string, string] },
+  { id: "hotels", label: "Hotels", iconName: "bed.double.fill", colors: ["#7C3AED", "#A855F7"] as [string, string] },
+  { id: "experiences", label: "Experiences", iconName: "sparkles", colors: ["#BE185D", "#EC4899"] as [string, string] },
+  { id: "alerts", label: "Price Alert", iconName: "bell.fill", colors: ["#065F46", "#10B981"] as [string, string] },
 ];
 
 const PRICE_ALERTS = [
-  { id: "1", dest: "Barcelona", from: "TLV", price: "$420", drop: "-23%", gradient: ["rgba(123,47,190,0.3)", "rgba(233,30,140,0.15)"] as [string,string] },
-  { id: "2", dest: "Amsterdam", from: "TLV", price: "$380", drop: "-18%", gradient: ["rgba(30,58,95,0.3)", "rgba(37,99,235,0.15)"] as [string,string] },
+  {
+    id: "1",
+    dest: "Barcelona",
+    from: "TLV",
+    price: "$420",
+    drop: "-23%",
+    image: "https://images.unsplash.com/photo-1583422409516-2895a77efded?w=400&q=80",
+  },
+  {
+    id: "2",
+    dest: "Amsterdam",
+    from: "TLV",
+    price: "$380",
+    drop: "-18%",
+    image: "https://images.unsplash.com/photo-1534351590666-13e3e96b5017?w=400&q=80",
+  },
+  {
+    id: "3",
+    dest: "Paris",
+    from: "TLV",
+    price: "$510",
+    drop: "-12%",
+    image: "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=400&q=80",
+  },
+];
+
+const TRENDING_STORIES = [
+  { id: "1", author: "Maya R.", dest: "Lisbon", text: "The most underrated city in Europe. Pastéis de nata changed my life.", avatar: "M", gradient: ["#C2410C", "#EA580C"] as [string, string] },
+  { id: "2", author: "James K.", dest: "Kyoto", text: "Woke up at 5am to see Fushimi Inari alone. Worth every second.", avatar: "J", gradient: ["#1E3A5F", "#2563EB"] as [string, string] },
+  { id: "3", author: "Sara L.", dest: "Bali", text: "Ubud rice terraces at sunrise. No words. Just go.", avatar: "S", gradient: ["#065F46", "#10B981"] as [string, string] },
 ];
 
 export default function HomeScreen() {
   const { state } = useStore();
   const scrollY = useRef(new Animated.Value(0)).current;
-  const [activeTab, setActiveTab] = useState<"discover" | "trips">("discover");
 
   const profile = state.profile;
   const trips = state.trips;
@@ -51,7 +119,6 @@ export default function HomeScreen() {
   const firstName = profile?.name?.split(" ")[0] || "Traveler";
 
   const headerOpacity = scrollY.interpolate({ inputRange: [0, 80], outputRange: [0, 1], extrapolate: "clamp" });
-  const heroScale = scrollY.interpolate({ inputRange: [-100, 0], outputRange: [1.08, 1], extrapolate: "clamp" });
 
   const handlePlan = useCallback(() => {
     if (Platform.OS !== "web") Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
@@ -69,14 +136,12 @@ export default function HomeScreen() {
     <View style={S.container}>
       <StatusBar barStyle="light-content" />
       <LinearGradient colors={["#040010", "#0D0520", "#1A0A3D"]} style={StyleSheet.absoluteFillObject} />
-
-      {/* Floating orbs */}
       <View style={S.orb1} />
       <View style={S.orb2} />
 
-      {/* Sticky mini-header on scroll */}
+      {/* Sticky mini-header */}
       <Animated.View style={[S.stickyHeader, { opacity: headerOpacity }]}>
-        <LinearGradient colors={["rgba(4,0,16,0.95)", "rgba(13,5,32,0.9)"]} style={StyleSheet.absoluteFillObject} />
+        <LinearGradient colors={["rgba(4,0,16,0.97)", "rgba(13,5,32,0.95)"]} style={StyleSheet.absoluteFillObject} />
         <Text style={S.stickyTitle}>TRAVI</Text>
         <View style={S.stickyPoints}>
           <IconSymbol name="star.fill" size={13} color="#FFD700" />
@@ -88,13 +153,12 @@ export default function HomeScreen() {
         showsVerticalScrollIndicator={false}
         onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], { useNativeDriver: false })}
         scrollEventThrottle={16}
-        contentContainerStyle={{ paddingBottom: 100 }}
+        contentContainerStyle={{ paddingBottom: 110 }}
       >
-        {/* ── Hero Section ── */}
-        <Animated.View style={[S.hero, { transform: [{ scale: heroScale }] }]}>
+        {/* ── Hero Header ── */}
+        <View style={S.hero}>
           <LinearGradient colors={["#040010", "#1A0A3D", "#2D0A5C"]} style={StyleSheet.absoluteFillObject} />
           <View style={S.heroOrb} />
-
           <View style={S.heroContent}>
             <View style={S.heroTop}>
               <View>
@@ -147,7 +211,7 @@ export default function HomeScreen() {
               </TouchableOpacity>
             )}
           </View>
-        </Animated.View>
+        </View>
 
         {/* ── Plan New Trip CTA ── */}
         <View style={S.section}>
@@ -177,8 +241,8 @@ export default function HomeScreen() {
                 style={S.quickAction}
                 onPress={() => {
                   if (Platform.OS !== "web") Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-                  if (action.id === "flights" || action.id === "hotels" || action.id === "experiences") router.push("/(trip)/plan" as never);
-                  else if (action.id === "alerts") router.push("/(tabs)/alerts" as never);
+                  if (action.id === "alerts") router.push("/(tabs)/alerts" as never);
+                  else router.push("/(trip)/plan" as never);
                 }}
                 activeOpacity={0.8}
               >
@@ -193,7 +257,7 @@ export default function HomeScreen() {
           </View>
         </View>
 
-        {/* ── Price Alerts ── */}
+        {/* ── Price Alerts with Photos ── */}
         <View style={S.section}>
           <View style={S.sectionHeader}>
             <Text style={S.sectionTitle}>Price Alerts</Text>
@@ -203,19 +267,23 @@ export default function HomeScreen() {
           </View>
           <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: 12, paddingHorizontal: 20 }}>
             {PRICE_ALERTS.map((alert) => (
-              <TouchableOpacity key={alert.id} style={S.alertCard} activeOpacity={0.85}>
-                <LinearGradient colors={alert.gradient} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={StyleSheet.absoluteFillObject} />
-                <View style={S.alertCardBorder} />
+              <TouchableOpacity key={alert.id} style={S.alertCard} activeOpacity={0.88}
+                onPress={() => { if (Platform.OS !== "web") Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light); }}>
+                {/* Background photo */}
+                <Image source={{ uri: alert.image }} style={StyleSheet.absoluteFillObject} contentFit="cover" />
+                {/* Dark overlay gradient */}
+                <LinearGradient colors={["rgba(0,0,0,0.15)", "rgba(0,0,0,0.75)"]} style={StyleSheet.absoluteFillObject} />
                 <View style={S.alertTop}>
                   <Text style={S.alertDest}>{alert.dest}</Text>
                   <View style={S.alertDropBadge}>
                     <Text style={S.alertDrop}>{alert.drop}</Text>
                   </View>
                 </View>
+                <View style={{ flex: 1 }} />
                 <Text style={S.alertFrom}>{alert.from} → {alert.dest}</Text>
                 <Text style={S.alertPrice}>{alert.price}</Text>
                 <View style={S.alertAction}>
-                  <IconSymbol name="airplane" size={13} color="rgba(192,132,252,0.7)" />
+                  <IconSymbol name="airplane" size={13} color="rgba(255,255,255,0.8)" />
                   <Text style={S.alertActionText}>Book now</Text>
                 </View>
               </TouchableOpacity>
@@ -223,7 +291,7 @@ export default function HomeScreen() {
           </ScrollView>
         </View>
 
-        {/* ── Featured Destinations ── */}
+        {/* ── Picked for You — Full Photo Cards ── */}
         <View style={S.section}>
           <View style={S.sectionHeader}>
             <View>
@@ -247,14 +315,22 @@ export default function HomeScreen() {
                   if (Platform.OS !== "web") Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
                   router.push("/(trip)/plan" as never);
                 }}
-                activeOpacity={0.88}
+                activeOpacity={0.9}
               >
-                <LinearGradient colors={item.gradient} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={StyleSheet.absoluteFillObject} />
-                <View style={S.featOverlay} />
+                {/* Full-bleed destination photo */}
+                <Image source={{ uri: item.image }} style={StyleSheet.absoluteFillObject} contentFit="cover" />
+                {/* Cinematic gradient overlay — bottom heavy */}
+                <LinearGradient
+                  colors={["transparent", "rgba(0,0,0,0.25)", "rgba(0,0,0,0.85)"]}
+                  locations={[0, 0.4, 1]}
+                  style={StyleSheet.absoluteFillObject}
+                />
+                {/* Badge top-left */}
                 <View style={S.featBadge}>
                   <View style={[S.featBadgeDot, { backgroundColor: item.badgeColor }]} />
                   <Text style={S.featBadgeText}>{item.badge}</Text>
                 </View>
+                {/* Content bottom */}
                 <View style={S.featBottom}>
                   <Text style={S.featCity}>{item.city}</Text>
                   <Text style={S.featCountry}>{item.country}</Text>
@@ -390,31 +466,31 @@ const S = StyleSheet.create({
   planCtaArrow: { width: 36, height: 36, borderRadius: 18, backgroundColor: "rgba(255,255,255,0.15)", alignItems: "center", justifyContent: "center" },
   quickRow: { flexDirection: "row", paddingHorizontal: 20, gap: 12 },
   quickAction: { flex: 1, alignItems: "center", gap: 8 },
-  quickIcon: { width: 54, height: 54, borderRadius: 18, overflow: "hidden" },
+  quickIcon: { width: 58, height: 58, borderRadius: 20, overflow: "hidden" },
   quickIconGradient: { flex: 1, alignItems: "center", justifyContent: "center" },
-  quickLabel: { color: "rgba(255,255,255,0.65)", fontSize: 12, fontWeight: "600", textAlign: "center" },
-  alertCard: { width: 160, borderRadius: 18, overflow: "hidden", padding: 14, gap: 6 },
-  alertCardBorder: { position: "absolute", top: 0, left: 0, right: 0, bottom: 0, borderRadius: 18, borderWidth: 1, borderColor: "rgba(123,47,190,0.3)" },
-  alertTop: { flexDirection: "row", alignItems: "center", justifyContent: "space-between" },
-  alertDest: { color: "#FFFFFF", fontSize: 15, fontWeight: "800" },
-  alertDropBadge: { backgroundColor: "rgba(16,185,129,0.25)", borderRadius: 8, paddingHorizontal: 7, paddingVertical: 3 },
-  alertDrop: { color: "#10B981", fontSize: 11, fontWeight: "800" },
-  alertFrom: { color: "rgba(255,255,255,0.4)", fontSize: 11 },
-  alertPrice: { color: "#FFFFFF", fontSize: 22, fontWeight: "900" },
-  alertAction: { flexDirection: "row", alignItems: "center", gap: 5 },
-  alertActionText: { color: "rgba(192,132,252,0.7)", fontSize: 12, fontWeight: "600" },
-  featCard: { width: width * 0.62, height: 220, borderRadius: 24, overflow: "hidden", justifyContent: "space-between", padding: 14 },
-  featOverlay: { position: "absolute", top: 0, left: 0, right: 0, bottom: 0, backgroundColor: "rgba(0,0,0,0.2)" },
-  featBadge: { flexDirection: "row", alignItems: "center", gap: 5, alignSelf: "flex-start", backgroundColor: "rgba(0,0,0,0.4)", borderRadius: 10, paddingHorizontal: 8, paddingVertical: 4 },
+  quickLabel: { color: "rgba(255,255,255,0.7)", fontSize: 12, fontWeight: "600", textAlign: "center" },
+  // Alert cards — now with photos
+  alertCard: { width: 170, height: 200, borderRadius: 20, overflow: "hidden", padding: 14, justifyContent: "flex-end" },
+  alertTop: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", position: "absolute", top: 12, left: 12, right: 12 },
+  alertDest: { color: "#FFFFFF", fontSize: 16, fontWeight: "900", textShadowColor: "rgba(0,0,0,0.5)", textShadowOffset: { width: 0, height: 1 }, textShadowRadius: 4 },
+  alertDropBadge: { backgroundColor: "rgba(16,185,129,0.9)", borderRadius: 8, paddingHorizontal: 8, paddingVertical: 4 },
+  alertDrop: { color: "#FFFFFF", fontSize: 12, fontWeight: "800" },
+  alertFrom: { color: "rgba(255,255,255,0.7)", fontSize: 11, marginBottom: 2 },
+  alertPrice: { color: "#FFFFFF", fontSize: 24, fontWeight: "900", letterSpacing: -0.5 },
+  alertAction: { flexDirection: "row", alignItems: "center", gap: 5, marginTop: 6 },
+  alertActionText: { color: "rgba(255,255,255,0.85)", fontSize: 13, fontWeight: "700" },
+  // Featured destination cards — full photo
+  featCard: { width: width * 0.65, height: 240, borderRadius: 24, overflow: "hidden", justifyContent: "space-between", padding: 14 },
+  featBadge: { flexDirection: "row", alignItems: "center", gap: 5, alignSelf: "flex-start", backgroundColor: "rgba(0,0,0,0.5)", borderRadius: 10, paddingHorizontal: 8, paddingVertical: 4 },
   featBadgeDot: { width: 6, height: 6, borderRadius: 3 },
   featBadgeText: { color: "#FFFFFF", fontSize: 11, fontWeight: "700" },
   featBottom: { gap: 2 },
-  featCity: { color: "#FFFFFF", fontSize: 22, fontWeight: "900", letterSpacing: -0.5 },
-  featCountry: { color: "rgba(255,255,255,0.55)", fontSize: 13, fontWeight: "600" },
-  featTagline: { color: "rgba(255,255,255,0.4)", fontSize: 11, marginTop: 2 },
-  featPriceRow: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginTop: 6 },
+  featCity: { color: "#FFFFFF", fontSize: 24, fontWeight: "900", letterSpacing: -0.5, textShadowColor: "rgba(0,0,0,0.4)", textShadowOffset: { width: 0, height: 1 }, textShadowRadius: 4 },
+  featCountry: { color: "rgba(255,255,255,0.7)", fontSize: 13, fontWeight: "600" },
+  featTagline: { color: "rgba(255,255,255,0.5)", fontSize: 11, marginTop: 2 },
+  featPriceRow: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginTop: 8 },
   featPrice: { color: "#FFFFFF", fontSize: 14, fontWeight: "700" },
-  featPlanBtn: { borderRadius: 10, overflow: "hidden", paddingHorizontal: 12, paddingVertical: 6 },
+  featPlanBtn: { borderRadius: 10, overflow: "hidden", paddingHorizontal: 14, paddingVertical: 7 },
   featPlanText: { color: "#FFFFFF", fontSize: 12, fontWeight: "800" },
   tripCard: { marginHorizontal: 20, borderRadius: 18, overflow: "hidden", flexDirection: "row", alignItems: "center", justifyContent: "space-between", padding: 14, marginBottom: 10 },
   tripCardBorder: { position: "absolute", top: 0, left: 0, right: 0, bottom: 0, borderRadius: 18, borderWidth: 1, borderColor: "rgba(123,47,190,0.3)" },
@@ -427,12 +503,12 @@ const S = StyleSheet.create({
   tripStatusText: { fontSize: 12, fontWeight: "700" },
   storyCard: { marginHorizontal: 20, borderRadius: 18, overflow: "hidden", flexDirection: "row", gap: 12, padding: 14, marginBottom: 10 },
   storyCardBorder: { position: "absolute", top: 0, left: 0, right: 0, bottom: 0, borderRadius: 18, borderWidth: 1, borderColor: "rgba(255,255,255,0.07)" },
-  storyAvatar: { width: 40, height: 40, borderRadius: 20, overflow: "hidden" },
+  storyAvatar: { width: 44, height: 44, borderRadius: 22, overflow: "hidden" },
   storyAvatarGradient: { flex: 1, alignItems: "center", justifyContent: "center" },
-  storyAvatarText: { color: "#FFFFFF", fontSize: 16, fontWeight: "800" },
+  storyAvatarText: { color: "#FFFFFF", fontSize: 17, fontWeight: "800" },
   storyHeader: { flexDirection: "row", alignItems: "center", gap: 8, marginBottom: 4 },
   storyAuthor: { color: "#FFFFFF", fontSize: 14, fontWeight: "700" },
   storyDestPill: { flexDirection: "row", alignItems: "center", gap: 3, backgroundColor: "rgba(123,47,190,0.25)", borderRadius: 8, paddingHorizontal: 7, paddingVertical: 3 },
   storyDestText: { color: "#C084FC", fontSize: 11, fontWeight: "600" },
-  storyText: { color: "rgba(255,255,255,0.55)", fontSize: 13, lineHeight: 19 },
+  storyText: { color: "rgba(255,255,255,0.6)", fontSize: 13, lineHeight: 19 },
 });

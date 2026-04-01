@@ -153,3 +153,13 @@
 - [x] Replace Apple logo emoji in sign-up.tsx with vector icon
 - [x] Replace envelope emoji in verify.tsx with vector icon
 - [x] Zero TypeScript errors after all emoji replacements
+
+## Phase 16 — Visual Richness & Intuitive UX
+
+- [x] Add real destination photo URLs to Home screen "Picked for You" cards
+- [x] Add destination photos to Price Alert cards on Home screen
+- [x] Redesign Home screen hero section with full-width destination photo
+- [x] Add destination photos to DNA quiz result destination cards
+- [x] Redesign Explore screen with full-bleed photo grid
+- [x] Improve Trips screen with trip cover photos
+- [ ] Add visual richness to Wallet screen
