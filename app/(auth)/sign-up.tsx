@@ -157,8 +157,8 @@ export default function SignUpScreen() {
               {/* Social */}
               <View style={styles.socialRow}>
                 <TouchableOpacity style={styles.socialBtn} onPress={() => handleSocial("Google")} activeOpacity={0.8}>
-                  <LinearGradient colors={["rgba(66,133,244,0.18)", "rgba(66,133,244,0.08)"]} style={[styles.socialGradient, { borderColor: "rgba(66,133,244,0.45)" }]}>
-                    <Text style={styles.socialIcon}>G</Text>
+                  <LinearGradient colors={["rgba(255,255,255,0.09)", "rgba(255,255,255,0.04)"]} style={[styles.socialGradient, { borderColor: "rgba(255,255,255,0.18)" }]}>
+                    <Text style={[styles.socialIcon, { color: "#FFFFFF", fontWeight: "700" }]}>G</Text>
                     <Text style={styles.socialLabel}>Google</Text>
                   </LinearGradient>
                 </TouchableOpacity>
@@ -203,7 +203,7 @@ const styles = StyleSheet.create({
   logoArea: { alignItems: "center", gap: 10, marginBottom: 28 },
   logo: { width: 110, height: 110 },
   appLogotype: { width: 140, height: 46 },
-  appTagline: { fontSize: 12, color: "rgba(196,181,217,0.55)", letterSpacing: 1.8, textTransform: "uppercase" },
+  appTagline: { fontSize: 12, color: "rgba(196,181,217,0.80)", letterSpacing: 1.8, textTransform: "uppercase" },
   card: { width: "100%", borderRadius: 28, overflow: "hidden", borderWidth: 1, borderColor: "rgba(255,255,255,0.09)" },
   cardBg: { padding: 22, gap: 18 },
   tabRow: {
@@ -211,11 +211,11 @@ const styles = StyleSheet.create({
     borderRadius: 14, padding: 4, overflow: "hidden",
   },
   tab: { flex: 1, paddingVertical: 11, borderRadius: 11, alignItems: "center", overflow: "hidden" },
-  tabText: { fontSize: 14, fontWeight: "600", color: "#3D3050" },
+  tabText: { fontSize: 14, fontWeight: "600", color: "#8B7AAA" },
   tabTextActive: { color: "#FFFFFF" },
   cardHeader: { gap: 4 },
   cardTitle: { fontSize: 24, fontWeight: "800", color: "#FFFFFF", letterSpacing: -0.5 },
-  cardSub: { fontSize: 14, color: "#5A4D72" },
+  cardSub: { fontSize: 14, color: "#9B8EC4" },
   inputWrap: { borderRadius: 16, overflow: "hidden" },
   inputGradient: {
     flexDirection: "row", alignItems: "center", gap: 12,
@@ -231,7 +231,7 @@ const styles = StyleSheet.create({
   ctaText: { color: "#FFFFFF", fontSize: 16, fontWeight: "700" },
   divider: { flexDirection: "row", alignItems: "center", gap: 12 },
   dividerLine: { flex: 1, height: 1, backgroundColor: "rgba(255,255,255,0.07)" },
-  dividerText: { color: "#3D3050", fontSize: 12, fontWeight: "500" },
+  dividerText: { color: "#8B7AAA", fontSize: 12, fontWeight: "500" },
   socialRow: { flexDirection: "row", gap: 12 },
   socialBtn: { flex: 1, borderRadius: 14, overflow: "hidden" },
   socialGradient: {
@@ -239,15 +239,15 @@ const styles = StyleSheet.create({
     paddingVertical: 14, gap: 8, borderRadius: 14, borderWidth: 1,
   },
   socialIcon: { fontSize: 17 },
-  socialLabel: { color: "#C4B5D9", fontSize: 14, fontWeight: "600" },
+  socialLabel: { color: "#E0D8F0", fontSize: 14, fontWeight: "600" },
   guestBtn: {
     marginTop: 20, alignItems: "center", gap: 3,
     paddingVertical: 16, paddingHorizontal: 32,
     borderRadius: 16, borderWidth: 1, borderColor: "rgba(255,255,255,0.07)",
     backgroundColor: "rgba(255,255,255,0.025)", width: "100%",
   },
-  guestText: { color: "#C4B5D9", fontSize: 15, fontWeight: "600" },
-  guestSub: { color: "#3D3050", fontSize: 12 },
-  terms: { marginTop: 18, fontSize: 12, color: "#3D3050", textAlign: "center", lineHeight: 18 },
+  guestText: { color: "#E0D8F0", fontSize: 15, fontWeight: "600" },
+  guestSub: { color: "#9B8EC4", fontSize: 12 },
+  terms: { marginTop: 18, fontSize: 12, color: "#9B8EC4", textAlign: "center", lineHeight: 18 },
   termsLink: { color: "#6443F4", fontWeight: "600" },
 });
