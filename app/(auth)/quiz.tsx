@@ -302,10 +302,12 @@ export default function QuizScreen() {
               </View>
               {isSelected && <View style={S.selectedOverlay} />}
               <View style={S.optionIconWrap}>
-                <IconSymbol name={option.iconName as never} size={26} color="rgba(255,255,255,0.9)" />
+                <IconSymbol name={option.iconName as never} size={28} color="rgba(255,255,255,0.9)" />
               </View>
-              <Text style={S.optionLabel}>{option.label}</Text>
-              <Text style={S.optionSublabel} numberOfLines={2}>{option.sublabel}</Text>
+              <View style={S.optionTextBlock}>
+                <Text style={S.optionLabel}>{option.label}</Text>
+                <Text style={S.optionSublabel} numberOfLines={2}>{option.sublabel}</Text>
+              </View>
               {isSelected && (
                 <View style={S.checkBadge}>
                   <IconSymbol name="checkmark" size={10} color="#FFFFFF" />
@@ -353,13 +355,14 @@ const S = StyleSheet.create({
   duckBubbleText: { color: "rgba(192,132,252,0.9)", fontSize: 12, fontWeight: "700" },
   questionText: { color: "#FFFFFF", fontSize: 24, fontWeight: "900", lineHeight: 30, letterSpacing: -0.5 },
   questionSubtitle: { color: "rgba(255,255,255,0.45)", fontSize: 14, lineHeight: 20 },
-  optionsGrid: { flex: 1, flexDirection: "row", flexWrap: "wrap", paddingHorizontal: 16, gap: 12, paddingBottom: 8 },
-  optionCard: { width: CARD_W, flexGrow: 1, minHeight: CARD_W * 0.85, borderRadius: 22, overflow: "hidden", padding: 14, gap: 4, borderWidth: 2, borderColor: "transparent", justifyContent: "flex-end" },
-  ghostIconWrap: { position: "absolute", bottom: -10, right: -10, opacity: 1 },
+  optionsGrid: { flex: 1, flexDirection: "column", paddingHorizontal: 16, gap: 10, paddingBottom: 8 },
+  optionCard: { flex: 1, width: "100%", borderRadius: 22, overflow: "hidden", padding: 18, gap: 4, borderWidth: 2, borderColor: "transparent", justifyContent: "flex-end", flexDirection: "row", alignItems: "center" },
+  ghostIconWrap: { position: "absolute", right: 16, top: "50%", opacity: 1, transform: [{ translateY: -45 }] },
   optionCardSelected: { borderColor: "rgba(255,255,255,0.7)" },
   selectedOverlay: { position: "absolute", top: 0, left: 0, right: 0, bottom: 0, backgroundColor: "rgba(255,255,255,0.18)" },
-  optionIconWrap: { width: 46, height: 46, borderRadius: 14, backgroundColor: "rgba(0,0,0,0.25)", alignItems: "center", justifyContent: "center", marginBottom: 6 },
-  optionLabel: { color: "#FFFFFF", fontSize: 14, fontWeight: "800", lineHeight: 18 },
+  optionIconWrap: { width: 50, height: 50, borderRadius: 16, backgroundColor: "rgba(0,0,0,0.25)", alignItems: "center", justifyContent: "center", marginRight: 14, flexShrink: 0 },
+  optionTextBlock: { flex: 1 },
+  optionLabel: { color: "#FFFFFF", fontSize: 16, fontWeight: "800", lineHeight: 20 },
   optionSublabel: { color: "rgba(255,255,255,0.6)", fontSize: 11, lineHeight: 15 },
   checkBadge: { position: "absolute", top: 10, right: 10, width: 22, height: 22, borderRadius: 11, backgroundColor: "rgba(255,255,255,0.3)", alignItems: "center", justifyContent: "center", borderWidth: 1.5, borderColor: "rgba(255,255,255,0.9)" },
   resultScroll: { alignItems: "center", paddingTop: 80, paddingHorizontal: 24, paddingBottom: 60, gap: 20 },
