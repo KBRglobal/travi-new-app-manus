@@ -122,11 +122,11 @@ export default function SignUpScreen() {
                   colors={emailFocused ? ["rgba(123,47,190,0.35)", "rgba(233,30,140,0.18)"] : ["rgba(255,255,255,0.07)", "rgba(255,255,255,0.03)"]}
                   style={[styles.inputGradient, { borderColor: emailFocused ? "rgba(233,30,140,0.6)" : "rgba(255,255,255,0.10)" }]}
                 >
-                  <IconSymbol name="envelope.fill" size={18} color={emailFocused ? "#F94498" : "#5A4D72"} />
+                  <IconSymbol name="envelope.fill" size={18} color={emailFocused ? "#F94498" : "#9B8EC4"} />
                   <TextInput
                     style={styles.input}
                     placeholder="Email address"
-                    placeholderTextColor="#3D3050"
+                    placeholderTextColor="#7B6FA0"
                     value={email}
                     onChangeText={setEmail}
                     keyboardType="email-address"
@@ -221,6 +221,7 @@ const styles = StyleSheet.create({
     flexDirection: "row", alignItems: "center", gap: 12,
     paddingHorizontal: 16, paddingVertical: 16,
     borderWidth: 1, borderRadius: 16,
+    backgroundColor: "rgba(255,255,255,0.06)",
   },
   input: { flex: 1, color: "#FFFFFF", fontSize: 16, fontWeight: "500" },
   cta: { borderRadius: 16, overflow: "hidden" },
