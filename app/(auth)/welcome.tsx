@@ -1,173 +1,216 @@
 import { useRef, useEffect } from "react";
 import {
-  View, Text, StyleSheet, Animated, Dimensions,
-  TouchableOpacity, Image, ScrollView,
+  View, Text, StyleSheet, Animated,
+  TouchableOpacity, Image, Dimensions,
 } from "react-native";
 import { router } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
 import { IconSymbol } from "@/components/ui/icon-symbol";
 import { useStore } from "@/lib/store";
 
-const { width } = Dimensions.get("window");
-const CARD = (width - 48 - 12) / 2; // 2 columns, 24px side padding each, 12px gap
+const { width, height } = Dimensions.get("window");
 
 const FEATURES = [
-  { icon: "sparkles"               as const, label: "AI That Knows You",  sub: "Learns your travel DNA",          color: "#7C5CFC" },
-  { icon: "dollarsign.circle.fill" as const, label: "Zero Hidden Fees",   sub: "Commissions → TRAVI Points",      color: "#F94498" },
-  { icon: "location.fill"          as const, label: "Real-Time Agent",    sub: "Knows exactly where you are",     color: "#06C2B0" },
-  { icon: "trophy.fill"            as const, label: "Travel Gamified",    sub: "Badges, tiers & rewards",         color: "#FFB800" },
+  {
+    icon: "sparkles"               as const,
+    color: "#A78BFA",
+    title: "AI That Knows You",
+    desc:  "Learns your travel DNA through fun scenarios",
+  },
+  {
+    icon: "dollarsign.circle.fill" as const,
+    color: "#F472B6",
+    title: "Zero Hidden Fees",
+    desc:  "All commissions returned as TRAVI Points",
+  },
+  {
+    icon: "location.fill"          as const,
+    color: "#34D399",
+    title: "Real-Time Agent",
+    desc:  "Your AI guide knows exactly where you are",
+  },
+  {
+    icon: "trophy.fill"            as const,
+    color: "#FBBF24",
+    title: "Travel Gamified",
+    desc:  "Earn badges, climb tiers, unlock rewards",
+  },
 ];
 
 export default function WelcomeScreen() {
   const { state, dispatch } = useStore();
 
-  const fade  = useRef(new Animated.Value(0)).current;
-  const slideY = useRef(new Animated.Value(28)).current;
+  const fade   = useRef(new Animated.Value(0)).current;
+  const duckY  = useRef(new Animated.Value(-20)).current;
+  const textY  = useRef(new Animated.Value(20)).current;
+  const listY  = useRef(new Animated.Value(30)).current;
+  const ctaY   = useRef(new Animated.Value(20)).current;
 
   useEffect(() => {
-    Animated.parallel([
-      Animated.timing(fade,   { toValue: 1, duration: 520, useNativeDriver: true }),
-      Animated.spring(slideY, { toValue: 0, friction: 8, tension: 55, useNativeDriver: true }),
+    Animated.sequence([
+      Animated.parallel([
+        Animated.timing(fade,  { toValue: 1, duration: 400, useNativeDriver: true }),
+        Animated.spring(duckY, { toValue: 0, friction: 7, tension: 60, useNativeDriver: true }),
+        Animated.timing(textY, { toValue: 0, duration: 400, useNativeDriver: true }),
+      ]),
+      Animated.parallel([
+        Animated.timing(listY, { toValue: 0, duration: 350, useNativeDriver: true }),
+        Animated.timing(ctaY,  { toValue: 0, duration: 350, delay: 60, useNativeDriver: true }),
+      ]),
     ]).start();
   }, []);
 
   const firstName = state.profile?.name?.split(" ")[0];
 
-  const handleStart = () => router.push("/(auth)/quiz" as never);
-  const handleSkip  = () => {
-    dispatch({ type: "SET_ONBOARDING_COMPLETED" });
-    router.replace("/(tabs)" as never);
-  };
-
   return (
     <View style={s.root}>
-      <LinearGradient colors={["#100825", "#1B0D3A", "#1B0D3A"]} locations={[0, 0.4, 1]} style={StyleSheet.absoluteFillObject} />
-
-      {/* Subtle ambient glow — corners only */}
+      {/* Background */}
+      <LinearGradient
+        colors={["#0C0720", "#160B35", "#1A0D3A"]}
+        locations={[0, 0.5, 1]}
+        style={StyleSheet.absoluteFillObject}
+      />
+      {/* Glow top-right */}
       <View style={s.glowTR} />
+      {/* Glow bottom-left */}
       <View style={s.glowBL} />
 
-      <ScrollView contentContainerStyle={s.scroll} showsVerticalScrollIndicator={false}>
-        <Animated.View style={{ opacity: fade, transform: [{ translateY: slideY }] }}>
+      {/* ─── Duck hero ─── */}
+      <Animated.View style={[s.duckWrap, { opacity: fade, transform: [{ translateY: duckY }] }]}>
+        <Image
+          source={require("@/assets/logos/mascot-centered.png")}
+          style={s.duck}
+          resizeMode="contain"
+        />
+      </Animated.View>
 
-          {/* ── Hero ── */}
-          <View style={s.hero}>
-            <Image
-              source={require("@/assets/logos/mascot-centered.png")}
-              style={s.mascot}
-              resizeMode="contain"
-            />
-            <Text style={s.greeting}>{firstName ? `Hey ${firstName}! 👋` : "Welcome aboard! 👋"}</Text>
-            <Text style={s.headline}>Your AI Travel{"\n"}Companion</Text>
-            <Text style={s.tagline}>Plan, book, and explore — all in one place</Text>
-          </View>
+      {/* ─── Headline ─── */}
+      <Animated.View style={[s.headlineWrap, { opacity: fade, transform: [{ translateY: textY }] }]}>
+        <Text style={s.greeting}>
+          {firstName ? `Hey ${firstName}! 👋` : "Welcome! 👋"}
+        </Text>
+        <Text style={s.headline}>Your AI Travel{"\n"}Companion</Text>
+        <Text style={s.sub}>Plan, book, and explore — all in one place</Text>
+      </Animated.View>
 
-          {/* ── Feature 2×2 grid ── */}
-          <View style={s.grid}>
-            {FEATURES.map((f) => (
-              <View key={f.label} style={s.card}>
-                {/* Uniform dark glass background */}
-                <View style={s.cardBg} />
-                {/* Subtle top-left color accent */}
-                <View style={[s.cardAccent, { backgroundColor: f.color + "18" }]} />
-
-                <View style={[s.iconBox, { backgroundColor: f.color + "22" }]}>
-                  <IconSymbol name={f.icon} size={20} color={f.color} />
-                </View>
-                <Text style={s.cardLabel}>{f.label}</Text>
-                <Text style={s.cardSub}>{f.sub}</Text>
-              </View>
-            ))}
-          </View>
-
-          {/* ── CTA ── */}
-          <View style={s.cta}>
-            {/* Hint pill */}
-            <View style={s.pill}>
-              <IconSymbol name="star.fill" size={11} color="#A78BFA" />
-              <Text style={s.pillText}>10 quick scenarios · 2 minutes</Text>
+      {/* ─── Feature list ─── */}
+      <Animated.View style={[s.list, { opacity: fade, transform: [{ translateY: listY }] }]}>
+        {FEATURES.map((f, i) => (
+          <View key={i} style={s.row}>
+            <View style={[s.iconCircle, { backgroundColor: f.color + "20" }]}>
+              <IconSymbol name={f.icon} size={18} color={f.color} />
             </View>
-
-            {/* Primary button */}
-            <TouchableOpacity style={s.btn} onPress={handleStart} activeOpacity={0.85}>
-              <LinearGradient
-                colors={["#6443F4", "#C2185B", "#F94498"]}
-                start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
-                style={s.btnGrad}
-              >
-                <Text style={s.btnText}>Build My Traveler Profile</Text>
-                <IconSymbol name="arrow.right" size={17} color="#fff" />
-              </LinearGradient>
-            </TouchableOpacity>
-
-            <TouchableOpacity onPress={handleSkip} activeOpacity={0.65} style={s.skip}>
-              <Text style={s.skipText}>Skip for now</Text>
-            </TouchableOpacity>
+            <View style={s.rowText}>
+              <Text style={s.rowTitle}>{f.title}</Text>
+              <Text style={s.rowDesc}>{f.desc}</Text>
+            </View>
           </View>
+        ))}
+      </Animated.View>
 
-        </Animated.View>
-      </ScrollView>
+      {/* ─── CTA ─── */}
+      <Animated.View style={[s.cta, { opacity: fade, transform: [{ translateY: ctaY }] }]}>
+        <TouchableOpacity
+          style={s.btn}
+          onPress={() => router.push("/(auth)/quiz" as never)}
+          activeOpacity={0.88}
+        >
+          <LinearGradient
+            colors={["#6443F4", "#B91C7C", "#F94498"]}
+            start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
+            style={s.btnGrad}
+          >
+            <Text style={s.btnText}>Build My Traveler Profile</Text>
+            <IconSymbol name="arrow.right" size={17} color="#fff" />
+          </LinearGradient>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          onPress={() => {
+            dispatch({ type: "SET_ONBOARDING_COMPLETED" });
+            router.replace("/(tabs)" as never);
+          }}
+          activeOpacity={0.6}
+          style={s.skip}
+        >
+          <Text style={s.skipText}>Skip for now</Text>
+        </TouchableOpacity>
+      </Animated.View>
     </View>
   );
 }
 
 const s = StyleSheet.create({
-  root: { flex: 1, backgroundColor: "#100825" },
+  root: {
+    flex: 1,
+    backgroundColor: "#0C0720",
+    paddingHorizontal: 28,
+    paddingTop: height * 0.06,
+    paddingBottom: 32,
+    justifyContent: "space-between",
+  },
 
+  // Ambient glows — pushed to corners
   glowTR: {
-    position: "absolute", width: 260, height: 260, borderRadius: 130,
-    top: -90, right: -90, backgroundColor: "rgba(100,67,244,0.14)",
+    position: "absolute",
+    width: 300, height: 300, borderRadius: 150,
+    top: -120, right: -120,
+    backgroundColor: "rgba(100,67,244,0.16)",
   },
   glowBL: {
-    position: "absolute", width: 220, height: 220, borderRadius: 110,
-    bottom: 50, left: -80, backgroundColor: "rgba(249,68,152,0.10)",
+    position: "absolute",
+    width: 260, height: 260, borderRadius: 130,
+    bottom: -80, left: -100,
+    backgroundColor: "rgba(249,68,152,0.11)",
   },
 
-  scroll: { paddingHorizontal: 24, paddingTop: 60, paddingBottom: 40, gap: 28 },
+  // Duck
+  duckWrap: { alignItems: "center" },
+  duck: { width: width * 0.52, height: width * 0.52 },
 
-  // Hero
-  hero: { alignItems: "center", gap: 8 },
-  mascot: { width: 150, height: 150, marginBottom: 4 },
-  greeting: { fontSize: 14, color: "rgba(196,181,217,0.70)", fontWeight: "500" },
+  // Headline block
+  headlineWrap: { gap: 6 },
+  greeting: {
+    fontSize: 14,
+    color: "rgba(196,181,217,0.65)",
+    fontWeight: "500",
+    textAlign: "center",
+  },
   headline: {
-    fontSize: 34, fontWeight: "800", color: "#FFFFFF",
-    textAlign: "center", lineHeight: 40, letterSpacing: -0.5,
+    fontSize: 36,
+    fontWeight: "800",
+    color: "#FFFFFF",
+    textAlign: "center",
+    lineHeight: 42,
+    letterSpacing: -0.8,
   },
-  tagline: { fontSize: 15, color: "rgba(196,181,217,0.60)", textAlign: "center", lineHeight: 21 },
+  sub: {
+    fontSize: 14,
+    color: "rgba(196,181,217,0.55)",
+    textAlign: "center",
+    lineHeight: 20,
+  },
 
-  // Grid — strict 2×2, every card identical
-  grid: { flexDirection: "row", flexWrap: "wrap", gap: 12 },
-  card: {
-    width: CARD, height: CARD * 0.88,
-    borderRadius: 18, overflow: "hidden",
-    borderWidth: 1, borderColor: "rgba(255,255,255,0.08)",
-    padding: 16, gap: 8,
-    backgroundColor: "rgba(255,255,255,0.05)",
-  },
-  cardBg: { ...StyleSheet.absoluteFillObject, backgroundColor: "rgba(255,255,255,0.03)" },
-  cardAccent: { position: "absolute", top: 0, left: 0, right: 0, height: "50%", borderRadius: 18 },
-  iconBox: {
-    width: 40, height: 40, borderRadius: 12,
+  // Feature list — horizontal rows, no cards
+  list: { gap: 14 },
+  row: { flexDirection: "row", alignItems: "center", gap: 14 },
+  iconCircle: {
+    width: 42, height: 42, borderRadius: 13,
     alignItems: "center", justifyContent: "center",
+    flexShrink: 0,
   },
-  cardLabel: { fontSize: 13, fontWeight: "700", color: "#FFFFFF", lineHeight: 18 },
-  cardSub: { fontSize: 11, color: "rgba(196,181,217,0.65)", lineHeight: 15 },
+  rowText: { flex: 1, gap: 2 },
+  rowTitle: { fontSize: 14, fontWeight: "700", color: "#FFFFFF" },
+  rowDesc:  { fontSize: 12, color: "rgba(196,181,217,0.60)", lineHeight: 17 },
 
   // CTA
-  cta: { gap: 14, alignItems: "center" },
-  pill: {
-    flexDirection: "row", alignItems: "center", gap: 6,
-    paddingHorizontal: 14, paddingVertical: 7, borderRadius: 20,
-    backgroundColor: "rgba(124,92,252,0.18)",
-    borderWidth: 1, borderColor: "rgba(124,92,252,0.35)",
-  },
-  pillText: { fontSize: 12, color: "#A78BFA", fontWeight: "500" },
+  cta: { gap: 12, alignItems: "center" },
   btn: { width: "100%", borderRadius: 16, overflow: "hidden" },
   btnGrad: {
     flexDirection: "row", alignItems: "center", justifyContent: "center",
     paddingVertical: 17, gap: 10,
   },
   btnText: { fontSize: 16, fontWeight: "700", color: "#FFFFFF" },
-  skip: { paddingVertical: 8 },
-  skipText: { fontSize: 13, color: "rgba(196,181,217,0.45)", fontWeight: "500" },
+  skip: { paddingVertical: 6 },
+  skipText: { fontSize: 14, color: "rgba(196,181,217,0.60)", fontWeight: "500" },
 });
