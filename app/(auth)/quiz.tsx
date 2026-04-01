@@ -112,8 +112,9 @@ export default function QuizScreen() {
   const resultAnim = useRef(new Animated.Value(0)).current;
   const scaleAnim = useRef(new Animated.Value(1)).current;
 
-  const question = QUESTIONS[currentQ];
-  const progress = currentQ / QUESTIONS.length;
+  const safeQ = Math.max(0, Math.min(Number.isFinite(currentQ) ? currentQ : 0, QUESTIONS.length - 1));
+  const question = QUESTIONS[safeQ];
+  const progress = Math.min(safeQ, QUESTIONS.length) / QUESTIONS.length;
 
   useEffect(() => {
     Animated.timing(progressAnim, { toValue: progress, duration: 400, useNativeDriver: false }).start();
@@ -155,6 +156,8 @@ export default function QuizScreen() {
     dispatch({ type: "SET_ONBOARDING_COMPLETED" });
     router.replace("/(tabs)/" as never);
   };
+
+  if (!question) return null;
 
   if (showResult) {
     return (
