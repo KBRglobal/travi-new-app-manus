@@ -120,11 +120,11 @@ export default function ProfileSetupScreen() {
                 colors={nameFocused ? ["rgba(123,47,190,0.3)", "rgba(233,30,140,0.15)"] : ["rgba(255,255,255,0.07)", "rgba(255,255,255,0.03)"]}
                 style={styles.inputGradient}
               >
-                <IconSymbol name="person.fill" size={18} color={nameFocused ? "#F94498" : "#5A4D72"} />
+                <IconSymbol name="person.fill" size={18} color={nameFocused ? "#F94498" : "#9B8EC4"} />
                 <TextInput
                   style={styles.input}
                   placeholder="What should we call you?"
-                  placeholderTextColor="#3D3050"
+                  placeholderTextColor="#7B6FA0"
                   value={name}
                   onChangeText={setName}
                   returnKeyType="done"
@@ -170,7 +170,7 @@ export default function ProfileSetupScreen() {
               style={styles.ctaGradient}
             >
               <Text style={[styles.ctaText, !name.trim() && styles.ctaTextDim]}>Continue</Text>
-              <IconSymbol name="arrow.right" size={18} color={name.trim() ? "#FFFFFF" : "#3D3050"} />
+              <IconSymbol name="arrow.right" size={18} color={name.trim() ? "#FFFFFF" : "#8B7AAA"} />
             </LinearGradient>
           </TouchableOpacity>
         </ScrollView>
@@ -191,13 +191,13 @@ const styles = StyleSheet.create({
   title: { fontSize: 30, fontWeight: "800", color: "#FFFFFF", letterSpacing: -0.5 },
   subtitle: { fontSize: 15, color: "#8B7AAA" },
   avatarSection: { gap: 16 },
-  sectionLabel: { fontSize: 11, fontWeight: "700", color: "#5A4D72", letterSpacing: 1.5 },
+  sectionLabel: { fontSize: 11, fontWeight: "700", color: "#9B8EC4", letterSpacing: 1.5 },
   selectedAvatarWrap: { alignSelf: "center", width: 90, height: 90, alignItems: "center", justifyContent: "center" },
   selectedAvatarRing: { width: 90, height: 90, borderRadius: 28, padding: 3 },
   selectedAvatarInner: { flex: 1, borderRadius: 25, alignItems: "center", justifyContent: "center" },
   selectedAvatarGlow: { position: "absolute", width: 90, height: 90, borderRadius: 45, backgroundColor: "rgba(123,47,190,0.2)", shadowColor: "#6443F4", shadowOffset: { width: 0, height: 0 }, shadowOpacity: 0.8, shadowRadius: 25 },
   avatarGrid: { flexDirection: "row", flexWrap: "wrap", gap: 10, justifyContent: "center" },
-  avatarItem: { width: 52, height: 52, borderRadius: 16, alignItems: "center", justifyContent: "center", borderWidth: 1.5, borderColor: "rgba(255,255,255,0.08)", backgroundColor: "rgba(255,255,255,0.04)", overflow: "hidden" },
+  avatarItem: { width: 52, height: 52, borderRadius: 16, alignItems: "center", justifyContent: "center", borderWidth: 1.5, borderColor: "rgba(255,255,255,0.15)", backgroundColor: "rgba(255,255,255,0.08)", overflow: "hidden" },
   avatarItemSelected: { borderColor: "rgba(233,30,140,0.8)" },
   avatarIconWrap: { width: 36, height: 36, borderRadius: 10, alignItems: "center", justifyContent: "center" },
   nameSection: { gap: 12 },
@@ -216,5 +216,5 @@ const styles = StyleSheet.create({
   cta: { borderRadius: 16, overflow: "hidden" },
   ctaGradient: { flexDirection: "row", alignItems: "center", justifyContent: "center", paddingVertical: 17, gap: 10 },
   ctaText: { color: "#FFFFFF", fontSize: 16, fontWeight: "700" },
-  ctaTextDim: { color: "#3D3050" },
+  ctaTextDim: { color: "#8B7AAA" },
 });
