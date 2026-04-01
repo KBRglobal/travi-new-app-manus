@@ -283,6 +283,10 @@ export default function QuizScreen() {
               activeOpacity={0.85}
             >
               <LinearGradient colors={option.colors} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={StyleSheet.absoluteFillObject} />
+              {/* Ghost watermark icon */}
+              <View style={S.ghostIconWrap} pointerEvents="none">
+                <IconSymbol name={option.iconName as never} size={90} color="rgba(255,255,255,0.10)" />
+              </View>
               {isSelected && <View style={S.selectedOverlay} />}
               <View style={S.optionIconWrap}>
                 <IconSymbol name={option.iconName as never} size={26} color="rgba(255,255,255,0.9)" />
@@ -323,8 +327,9 @@ const S = StyleSheet.create({
   duckBubbleText: { color: "rgba(192,132,252,0.9)", fontSize: 12, fontWeight: "700" },
   questionText: { color: "#FFFFFF", fontSize: 24, fontWeight: "900", lineHeight: 30, letterSpacing: -0.5 },
   questionSubtitle: { color: "rgba(255,255,255,0.45)", fontSize: 14, lineHeight: 20 },
-  optionsGrid: { flex: 1, flexDirection: "row", flexWrap: "wrap", paddingHorizontal: 16, gap: 12, paddingBottom: 24, alignContent: "flex-start", alignItems: "flex-start" },
-  optionCard: { width: CARD_W, height: CARD_W * 0.95, borderRadius: 22, overflow: "hidden", padding: 14, gap: 4, borderWidth: 2, borderColor: "transparent", justifyContent: "flex-end" },
+  optionsGrid: { flex: 1, flexDirection: "row", flexWrap: "wrap", paddingHorizontal: 16, gap: 12, paddingBottom: 24, alignContent: "stretch" },
+  optionCard: { width: CARD_W, flexGrow: 1, flexBasis: CARD_W * 0.95, borderRadius: 22, overflow: "hidden", padding: 14, gap: 4, borderWidth: 2, borderColor: "transparent", justifyContent: "flex-end" },
+  ghostIconWrap: { position: "absolute", bottom: -10, right: -10, opacity: 1 },
   optionCardSelected: { borderColor: "rgba(255,255,255,0.7)" },
   selectedOverlay: { position: "absolute", top: 0, left: 0, right: 0, bottom: 0, backgroundColor: "rgba(255,255,255,0.18)" },
   optionIconWrap: { width: 46, height: 46, borderRadius: 14, backgroundColor: "rgba(0,0,0,0.25)", alignItems: "center", justifyContent: "center", marginBottom: 6 },
