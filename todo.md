@@ -163,3 +163,45 @@
 - [x] Redesign Explore screen with full-bleed photo grid
 - [x] Improve Trips screen with trip cover photos
 - [ ] Add visual richness to Wallet screen
+
+## Phase 17 — Wallet Gamification & New Screens
+- [ ] Redesign Wallet with full gamification (level card, animated progress bar, streak counter, achievement badges)
+- [ ] Add Subscription Plans tab in Wallet (Free / Plus / Elite comparison with visual cards)
+- [ ] Add Cashback display with real-time calculation
+- [ ] Build Split Payment screen with friend avatars and amount splitting
+- [ ] Build Refer-a-Friend screen with share code and rewards display
+- [ ] Fix Home screen hero with full-bleed photo background
+- [ ] Fix TypeScript errors in quiz.tsx (image source type)
+
+## Phase 18 — Missing Screens from Figma App Flow
+- [ ] Build Notifications screen (price alerts, trip updates, friend invites)
+- [ ] Build End-of-Trip Summary screen (photos, expenses, points earned, memories)
+- [ ] Build Restaurant Details screen (info, menu preview, reserve table)
+- [ ] Build Flight Details screen (booking info, change flight option)
+- [ ] Build Hotel Details screen (room info, amenities, edit booking)
+- [ ] Build Add Activity screen (for live trip - search & add to itinerary)
+- [ ] Build Refer-a-Friend screen (invite code, share link, rewards)
+- [ ] Build KYC / Balance screen (identity verification + wallet balance)
+- [ ] Build Subscription Plans screen (Free/Plus/Elite with feature comparison)
+- [ ] Build Invited Travel Partner flow (accept/decline trip invite)
+- [ ] Wire all new screens into navigation
+
+## Phase 19 — New Screens & Navigation (Current)
+- [x] Build Notifications screen (price alerts, trip updates, friend invites, system)
+- [x] Build Trip Summary / End-of-Trip screen (memories, stats, badges, rating)
+- [x] Build Expenses Management screen (categories, pie chart, add expense, split)
+- [x] Build Split Payment screen (equal/custom/percentage modes, payment methods)
+- [x] Build Connecting / Travel Partners screen (discover, match, requests)
+- [x] Build Schedule / Itinerary screen (day-by-day timeline, weather, events)
+- [x] Wire all new screens into navigation (live layout + tabs layout)
+- [x] Wire notification bell to Notifications screen
+- [x] Wire Connecting to Quick Actions on Home screen
+- [x] Wire Schedule, Expenses, Trip Summary to Live Trip Quick Actions
+- [x] Fix all TypeScript errors (0 errors)
+- [x] Wire Split Payment from Expenses screen
+- [x] Build Subscription Plans screen
+- [x] Build Refer-a-Friend screen
+- [x] Wire Subscription and Refer to Profile screen
+- [x] Replace all icon.png with official mascot-dark.png logos
+- [x] Update all screens to use correct TRAVI logos (dark/light backgrounds)
+- [ ] Build Restaurant/Hotel/Flight Details screens

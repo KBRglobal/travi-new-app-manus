@@ -240,9 +240,10 @@ export default function LiveHomeScreen() {
           <View style={styles.actionsGrid}>
             {([
               { id: "chat", icon: "bubble.left.fill" as const, label: "Ask TRAVI", sub: "AI assistant", route: "/(live)/chat", colors: ["#7B2FBE", "#5A1E9E"] as [string, string] },
-              { id: "plan", icon: "list.bullet.clipboard.fill" as const, label: "Today's Plan", sub: "View schedule", route: "/(live)/itinerary", colors: ["#1A3A5C", "#2D1B69"] as [string, string] },
+              { id: "plan", icon: "calendar" as const, label: "Schedule", sub: "Day by day", route: "/(live)/schedule", colors: ["#1A3A5C", "#2D1B69"] as [string, string] },
               { id: "map", icon: "map.fill" as const, label: "Nearby", sub: "Explore area", route: "/(live)/map", colors: ["#1B4D1E", "#2D3A1B"] as [string, string] },
-              { id: "split", icon: "person.2.fill" as const, label: "Split Bill", sub: "Shared expenses", route: "/(live)/split", colors: ["#1A3A1A", "#2D3A2D"] as [string, string] },
+              { id: "split", icon: "dollarsign.circle.fill" as const, label: "Expenses", sub: "Track & split", route: "/(live)/expenses", colors: ["#1A3A1A", "#2D3A2D"] as [string, string] },
+              { id: "summary", icon: "trophy.fill" as const, label: "Trip Summary", sub: "Memories & stats", route: "/(live)/trip-summary", colors: ["#3A2A00", "#2D1B00"] as [string, string] },
               { id: "emergency", icon: "exclamationmark.triangle.fill" as const, label: "Emergency", sub: "Get help", route: null, colors: ["#8B1A1A", "#5C1010"] as [string, string] },
             ] as const).map((action) => (
               <TouchableOpacity
@@ -269,7 +270,7 @@ export default function LiveHomeScreen() {
           <LinearGradient colors={["rgba(123,47,190,0.25)", "rgba(233,30,140,0.15)"]} style={StyleSheet.absoluteFillObject} />
           <View style={styles.tipHeader}>
             <View style={styles.tipLogoWrap}>
-              <Image source={require("@/assets/images/icon.png")} style={styles.tipLogo} contentFit="contain" />
+              <Image source={require("@/assets/logos/mascot-dark.png")} style={styles.tipLogo} contentFit="contain" />
             </View>
             <Text style={styles.tipTitle}>TRAVI Tip</Text>
           </View>

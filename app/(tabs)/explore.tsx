@@ -6,6 +6,24 @@ import { Image } from "expo-image";
 import { IconSymbol } from "@/components/ui/icon-symbol";
 import * as Haptics from "expo-haptics";
 
+const IMG = {
+  santorini: require("@/assets/destinations/santorini.jpg"),
+  kyoto: require("@/assets/destinations/kyoto.jpg"),
+  bali: require("@/assets/destinations/bali.jpg"),
+  paris: require("@/assets/destinations/paris.jpg"),
+  maldives: require("@/assets/destinations/maldives.jpg"),
+  newyork: require("@/assets/destinations/newyork.jpg"),
+  machupicchu: require("@/assets/destinations/machupicchu.jpg"),
+  amsterdam: require("@/assets/destinations/amsterdam.jpg"),
+  phuket: require("@/assets/destinations/phuket.jpg"),
+  rome: require("@/assets/destinations/rome.jpg"),
+  patagonia: require("@/assets/destinations/patagonia.jpg"),
+  tokyo: require("@/assets/destinations/tokyo.jpg"),
+  iceland: require("@/assets/destinations/iceland.jpg"),
+  barcelona: require("@/assets/destinations/barcelona.jpg"),
+  dubai: require("@/assets/destinations/dubai.jpg"),
+};
+
 const { width } = Dimensions.get("window");
 const CARD_W = (width - 48) / 2;
 
@@ -19,34 +37,22 @@ const CATEGORIES = [
 ];
 
 const FEATURED = [
-  {
-    id: "f1", city: "Santorini", country: "Greece", tag: "Trending", tagColor: "#E91E8C",
-    temp: "24°C", desc: "Iconic white-washed cliffs and sapphire seas",
-    image: "https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?w=800&q=80",
-  },
-  {
-    id: "f2", city: "Kyoto", country: "Japan", tag: "Editor's Pick", tagColor: "#FF9800",
-    temp: "18°C", desc: "Ancient temples, cherry blossoms & zen gardens",
-    image: "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=800&q=80",
-  },
-  {
-    id: "f3", city: "Bali", country: "Indonesia", tag: "Most Booked", tagColor: "#4CAF50",
-    temp: "29°C", desc: "Tropical paradise with rice terraces and temples",
-    image: "https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=800&q=80",
-  },
+  { id: "f1", city: "Santorini", country: "Greece", tag: "Trending", tagColor: "#E91E8C", temp: "24°C", desc: "Iconic white-washed cliffs and sapphire seas", image: IMG.santorini },
+  { id: "f2", city: "Kyoto", country: "Japan", tag: "Editor's Pick", tagColor: "#FF9800", temp: "18°C", desc: "Ancient temples, cherry blossoms & zen gardens", image: IMG.kyoto },
+  { id: "f3", city: "Bali", country: "Indonesia", tag: "Most Booked", tagColor: "#4CAF50", temp: "29°C", desc: "Tropical paradise with rice terraces and temples", image: IMG.bali },
 ];
 
 const DESTINATIONS = [
-  { id: "d1", city: "Paris", country: "France", price: "from $899", rating: 4.9, category: "city", tag: "Hot", image: "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=400&q=80" },
-  { id: "d2", city: "Maldives", country: "Maldives", price: "from $2,199", rating: 4.9, category: "beach", tag: "Luxury", image: "https://images.unsplash.com/photo-1514282401047-d79a71a590e8?w=400&q=80" },
-  { id: "d3", city: "New York", country: "USA", price: "from $699", rating: 4.7, category: "city", tag: "Popular", image: "https://images.unsplash.com/photo-1485871981521-5b1fd3805eee?w=400&q=80" },
-  { id: "d4", city: "Machu Picchu", country: "Peru", price: "from $1,299", rating: 4.8, category: "adventure", tag: "Epic", image: "https://images.unsplash.com/photo-1587595431973-160d0d94add1?w=400&q=80" },
-  { id: "d5", city: "Amsterdam", country: "Netherlands", price: "from $749", rating: 4.6, category: "city", tag: "Charming", image: "https://images.unsplash.com/photo-1534351590666-13e3e96b5017?w=400&q=80" },
-  { id: "d6", city: "Phuket", country: "Thailand", price: "from $599", rating: 4.7, category: "beach", tag: "Tropical", image: "https://images.unsplash.com/photo-1589394815804-964ed0be2eb5?w=400&q=80" },
-  { id: "d7", city: "Rome", country: "Italy", price: "from $849", rating: 4.8, category: "culture", tag: "Historic", image: "https://images.unsplash.com/photo-1552832230-c0197dd311b5?w=400&q=80" },
-  { id: "d8", city: "Patagonia", country: "Argentina", price: "from $1,599", rating: 4.9, category: "nature", tag: "Wild", image: "https://images.unsplash.com/photo-1501854140801-50d01698950b?w=400&q=80" },
-  { id: "d9", city: "Tokyo", country: "Japan", price: "from $1,100", rating: 4.9, category: "city", tag: "Iconic", image: "https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=400&q=80" },
-  { id: "d10", city: "Iceland", country: "Iceland", price: "from $1,450", rating: 4.9, category: "nature", tag: "Magical", image: "https://images.unsplash.com/photo-1476610182048-b716b8518aae?w=400&q=80" },
+  { id: "d1", city: "Paris", country: "France", price: "from $899", rating: 4.9, category: "city", tag: "Hot", image: IMG.paris },
+  { id: "d2", city: "Maldives", country: "Maldives", price: "from $2,199", rating: 4.9, category: "beach", tag: "Luxury", image: IMG.maldives },
+  { id: "d3", city: "New York", country: "USA", price: "from $699", rating: 4.7, category: "city", tag: "Popular", image: IMG.newyork },
+  { id: "d4", city: "Machu Picchu", country: "Peru", price: "from $1,299", rating: 4.8, category: "adventure", tag: "Epic", image: IMG.machupicchu },
+  { id: "d5", city: "Amsterdam", country: "Netherlands", price: "from $749", rating: 4.6, category: "city", tag: "Charming", image: IMG.amsterdam },
+  { id: "d6", city: "Phuket", country: "Thailand", price: "from $599", rating: 4.7, category: "beach", tag: "Tropical", image: IMG.phuket },
+  { id: "d7", city: "Rome", country: "Italy", price: "from $849", rating: 4.8, category: "culture", tag: "Historic", image: IMG.rome },
+  { id: "d8", city: "Patagonia", country: "Argentina", price: "from $1,599", rating: 4.9, category: "nature", tag: "Wild", image: IMG.patagonia },
+  { id: "d9", city: "Tokyo", country: "Japan", price: "from $1,100", rating: 4.9, category: "city", tag: "Iconic", image: IMG.tokyo },
+  { id: "d10", city: "Iceland", country: "Iceland", price: "from $1,450", rating: 4.9, category: "nature", tag: "Magical", image: IMG.iceland },
 ];
 
 const STORIES = [
@@ -56,10 +62,10 @@ const STORIES = [
 ];
 
 const EXPERIENCES = [
-  { id: "e1", title: "Northern Lights Tour", location: "Iceland", price: 299, icon: "sparkles" as const, rating: 5.0, image: "https://images.unsplash.com/photo-1531366936337-7c912a4589a7?w=400&q=80" },
-  { id: "e2", title: "Sushi Masterclass", location: "Tokyo", price: 89, icon: "fork.knife" as const, rating: 4.9, image: "https://images.unsplash.com/photo-1579871494447-9811cf80d66c?w=400&q=80" },
-  { id: "e3", title: "Eiffel Tower Dinner", location: "Paris", price: 149, icon: "star.fill" as const, rating: 4.8, image: "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=400&q=80" },
-  { id: "e4", title: "Sunrise Yoga Bali", location: "Bali", price: 45, icon: "figure.yoga" as const, rating: 4.9, image: "https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=400&q=80" },
+  { id: "e1", title: "Northern Lights Tour", location: "Iceland", price: 299, icon: "sparkles" as const, rating: 5.0, image: IMG.iceland },
+  { id: "e2", title: "Sushi Masterclass", location: "Tokyo", price: 89, icon: "fork.knife" as const, rating: 4.9, image: IMG.tokyo },
+  { id: "e3", title: "Eiffel Tower Dinner", location: "Paris", price: 149, icon: "star.fill" as const, rating: 4.8, image: IMG.paris },
+  { id: "e4", title: "Sunrise Yoga Bali", location: "Bali", price: 45, icon: "figure.yoga" as const, rating: 4.9, image: IMG.bali },
 ];
 
 export default function ExploreScreen() {

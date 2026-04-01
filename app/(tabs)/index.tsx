@@ -12,93 +12,44 @@ import * as Haptics from "expo-haptics";
 
 const { width, height } = Dimensions.get("window");
 
-// ─── Real destination photos from Unsplash ────────────────────────────────────
+// ─── Local destination photos (bundled assets) ───────────────────────────────
+const IMG = {
+  kyoto: require("@/assets/destinations/kyoto.jpg"),
+  santorini: require("@/assets/destinations/santorini.jpg"),
+  tokyo: require("@/assets/destinations/tokyo.jpg"),
+  bali: require("@/assets/destinations/bali.jpg"),
+  barcelona: require("@/assets/destinations/barcelona.jpg"),
+  paris: require("@/assets/destinations/paris.jpg"),
+  amsterdam: require("@/assets/destinations/amsterdam.jpg"),
+  maldives: require("@/assets/destinations/maldives.jpg"),
+  rome: require("@/assets/destinations/rome.jpg"),
+  iceland: require("@/assets/destinations/iceland.jpg"),
+  dubai: require("@/assets/destinations/dubai.jpg"),
+  machupicchu: require("@/assets/destinations/machupicchu.jpg"),
+  phuket: require("@/assets/destinations/phuket.jpg"),
+  patagonia: require("@/assets/destinations/patagonia.jpg"),
+  newyork: require("@/assets/destinations/newyork.jpg"),
+};
 
 const FEATURED_DESTINATIONS = [
-  {
-    id: "1",
-    city: "Kyoto",
-    country: "Japan",
-    tagline: "Cherry blossoms & ancient temples",
-    image: "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=600&q=80",
-    price: "From $1,240",
-    badge: "DNA Match",
-    badgeColor: "#E91E8C",
-  },
-  {
-    id: "2",
-    city: "Santorini",
-    country: "Greece",
-    tagline: "Sunsets that stop time",
-    image: "https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?w=600&q=80",
-    price: "From $980",
-    badge: "Trending",
-    badgeColor: "#F59E0B",
-  },
-  {
-    id: "3",
-    city: "Tokyo",
-    country: "Japan",
-    tagline: "Where neon meets tradition",
-    image: "https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=600&q=80",
-    price: "From $1,450",
-    badge: "Popular",
-    badgeColor: "#7B2FBE",
-  },
-  {
-    id: "4",
-    city: "Bali",
-    country: "Indonesia",
-    tagline: "Find your inner peace",
-    image: "https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=600&q=80",
-    price: "From $760",
-    badge: "Best Value",
-    badgeColor: "#10B981",
-  },
-  {
-    id: "5",
-    city: "Barcelona",
-    country: "Spain",
-    tagline: "Art, food and endless sun",
-    image: "https://images.unsplash.com/photo-1583422409516-2895a77efded?w=600&q=80",
-    price: "From $620",
-    badge: "Hot Deal",
-    badgeColor: "#EF4444",
-  },
+  { id: "1", city: "Kyoto", country: "Japan", tagline: "Cherry blossoms & ancient temples", image: IMG.kyoto, price: "From $1,240", badge: "DNA Match", badgeColor: "#E91E8C" },
+  { id: "2", city: "Santorini", country: "Greece", tagline: "Sunsets that stop time", image: IMG.santorini, price: "From $980", badge: "Trending", badgeColor: "#F59E0B" },
+  { id: "3", city: "Tokyo", country: "Japan", tagline: "Where neon meets tradition", image: IMG.tokyo, price: "From $1,450", badge: "Popular", badgeColor: "#7B2FBE" },
+  { id: "4", city: "Bali", country: "Indonesia", tagline: "Find your inner peace", image: IMG.bali, price: "From $760", badge: "Best Value", badgeColor: "#10B981" },
+  { id: "5", city: "Barcelona", country: "Spain", tagline: "Art, food and endless sun", image: IMG.barcelona, price: "From $620", badge: "Hot Deal", badgeColor: "#EF4444" },
 ];
 
 const QUICK_ACTIONS = [
   { id: "flights", label: "Flights", iconName: "airplane", colors: ["#1E3A5F", "#2563EB"] as [string, string] },
   { id: "hotels", label: "Hotels", iconName: "bed.double.fill", colors: ["#7C3AED", "#A855F7"] as [string, string] },
-  { id: "experiences", label: "Experiences", iconName: "sparkles", colors: ["#BE185D", "#EC4899"] as [string, string] },
+  { id: "connecting", label: "Connecting", iconName: "person.2.fill", colors: ["#BE185D", "#EC4899"] as [string, string] },
   { id: "alerts", label: "Price Alert", iconName: "bell.fill", colors: ["#065F46", "#10B981"] as [string, string] },
 ];
 
 const PRICE_ALERTS = [
-  {
-    id: "1",
-    dest: "Barcelona",
-    from: "TLV",
-    price: "$420",
-    drop: "-23%",
-    image: "https://images.unsplash.com/photo-1583422409516-2895a77efded?w=400&q=80",
-  },
-  {
-    id: "2",
-    dest: "Amsterdam",
-    from: "TLV",
-    price: "$380",
-    drop: "-18%",
-    image: "https://images.unsplash.com/photo-1534351590666-13e3e96b5017?w=400&q=80",
-  },
-  {
-    id: "3",
-    dest: "Paris",
-    from: "TLV",
-    price: "$510",
-    drop: "-12%",
-    image: "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=400&q=80",
-  },
+  { id: "1", dest: "Barcelona", from: "TLV", price: "$420", drop: "-23%", image: IMG.barcelona },
+  { id: "2", dest: "Amsterdam", from: "TLV", price: "$380", drop: "-18%", image: IMG.amsterdam },
+  { id: "3", dest: "Paris", from: "TLV", price: "$510", drop: "-12%", image: IMG.paris },
 ];
 
 const TRENDING_STORIES = [
@@ -165,7 +116,7 @@ export default function HomeScreen() {
                 <Text style={S.heroGreeting}>Good morning,</Text>
                 <Text style={S.heroName}>{firstName}</Text>
               </View>
-              <TouchableOpacity style={S.notifBtn} onPress={() => router.push("/(tabs)/profile" as never)} activeOpacity={0.8}>
+              <TouchableOpacity style={S.notifBtn} onPress={() => router.push("/(tabs)/notifications" as never)} activeOpacity={0.8}>
                 <LinearGradient colors={["rgba(123,47,190,0.5)", "rgba(233,30,140,0.3)"]} style={S.notifGradient}>
                   <IconSymbol name="bell.fill" size={18} color="#FFFFFF" />
                 </LinearGradient>
@@ -242,6 +193,7 @@ export default function HomeScreen() {
                 onPress={() => {
                   if (Platform.OS !== "web") Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
                   if (action.id === "alerts") router.push("/(tabs)/alerts" as never);
+                  else if (action.id === "connecting") router.push("/(tabs)/connecting" as never);
                   else router.push("/(trip)/plan" as never);
                 }}
                 activeOpacity={0.8}

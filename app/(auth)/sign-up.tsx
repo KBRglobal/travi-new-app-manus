@@ -90,7 +90,7 @@ export default function SignUpScreen() {
             <View style={styles.logoRingOuter}>
               <LinearGradient colors={["#7B2FBE", "#E91E8C"]} style={styles.logoRingGradient}>
                 <View style={styles.logoInner}>
-                  <Image source={require("@/assets/images/icon.png")} style={styles.logo} contentFit="contain" />
+                  <Image source={require("@/assets/logos/mascot-dark.png")} style={styles.logo} contentFit="contain" />
                 </View>
               </LinearGradient>
             </View>

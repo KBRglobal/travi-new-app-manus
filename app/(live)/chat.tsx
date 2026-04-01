@@ -176,7 +176,7 @@ export default function ChatScreen() {
         {isTravi && (
           <View style={S.traviAvatar}>
             <LinearGradient colors={["#7B2FBE", "#E91E8C"]} style={S.traviAvatarGrad}>
-              <Image source={require("@/assets/images/icon.png")} style={S.traviAvatarImg} contentFit="contain" />
+              <Image source={require("@/assets/logos/mascot-dark.png")} style={S.traviAvatarImg} contentFit="contain" />
             </LinearGradient>
           </View>
         )}
@@ -221,7 +221,7 @@ export default function ChatScreen() {
         <View style={S.headerCenter}>
           <View style={S.headerAvatar}>
             <LinearGradient colors={["#7B2FBE", "#E91E8C"]} style={S.headerAvatarGrad}>
-              <Image source={require("@/assets/images/icon.png")} style={S.headerAvatarImg} contentFit="contain" />
+              <Image source={require("@/assets/logos/mascot-dark.png")} style={S.headerAvatarImg} contentFit="contain" />
             </LinearGradient>
           </View>
           <View>
@@ -260,7 +260,7 @@ export default function ChatScreen() {
               <View style={[S.msgRow, S.msgRowTravi]}>
                 <View style={S.traviAvatar}>
                   <LinearGradient colors={["#7B2FBE", "#E91E8C"]} style={S.traviAvatarGrad}>
-                    <Image source={require("@/assets/images/icon.png")} style={S.traviAvatarImg} contentFit="contain" />
+                    <Image source={require("@/assets/logos/mascot-dark.png")} style={S.traviAvatarImg} contentFit="contain" />
                   </LinearGradient>
                 </View>
                 <View style={[S.bubble, S.bubbleTravi, { paddingVertical: 16 }]}>

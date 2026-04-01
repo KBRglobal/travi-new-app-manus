@@ -66,7 +66,7 @@ export default function WelcomeScreen() {
           <View style={styles.mascotWrap}>
             <LinearGradient colors={["#7B2FBE", "#E91E8C"]} style={styles.mascotRing}>
               <View style={styles.mascotInner}>
-                <Image source={require("@/assets/images/icon.png")} style={styles.mascot} contentFit="contain" />
+                <Image source={require("@/assets/logos/mascot-dark.png")} style={styles.mascot} contentFit="contain" />
               </View>
             </LinearGradient>
             <View style={styles.mascotGlow} />

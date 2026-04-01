@@ -32,17 +32,19 @@ const MOCK_TRIPS: Trip[] = [
   },
 ];
 
-const DEST_PHOTOS: Record<string, string> = {
-  Paris: "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=600&q=80",
-  Tokyo: "https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=600&q=80",
-  Bali: "https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=600&q=80",
-  "New York": "https://images.unsplash.com/photo-1485871981521-5b1fd3805eee?w=600&q=80",
-  Santorini: "https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?w=600&q=80",
-  Dubai: "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=600&q=80",
-  Kyoto: "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=600&q=80",
-  Barcelona: "https://images.unsplash.com/photo-1583422409516-2895a77efded?w=600&q=80",
-  Maldives: "https://images.unsplash.com/photo-1514282401047-d79a71a590e8?w=600&q=80",
-  Iceland: "https://images.unsplash.com/photo-1476610182048-b716b8518aae?w=600&q=80",
+const DEST_PHOTOS: Record<string, ReturnType<typeof require>> = {
+  Paris: require("@/assets/destinations/paris.jpg"),
+  Tokyo: require("@/assets/destinations/tokyo.jpg"),
+  Bali: require("@/assets/destinations/bali.jpg"),
+  "New York": require("@/assets/destinations/newyork.jpg"),
+  Santorini: require("@/assets/destinations/santorini.jpg"),
+  Dubai: require("@/assets/destinations/dubai.jpg"),
+  Kyoto: require("@/assets/destinations/kyoto.jpg"),
+  Barcelona: require("@/assets/destinations/barcelona.jpg"),
+  Maldives: require("@/assets/destinations/maldives.jpg"),
+  Iceland: require("@/assets/destinations/iceland.jpg"),
+  Rome: require("@/assets/destinations/rome.jpg"),
+  Amsterdam: require("@/assets/destinations/amsterdam.jpg"),
 };
 
 const STATUS_CONFIG = {
@@ -53,14 +55,14 @@ const STATUS_CONFIG = {
 };
 
 function TripCard({ trip, onPress }: { trip: Trip; onPress: () => void }) {
-  const photoUrl = DEST_PHOTOS[trip.destination] || "https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=600&q=80";
+  const photoSource = DEST_PHOTOS[trip.destination] || require("@/assets/destinations/paris.jpg");
   const status = STATUS_CONFIG[trip.status];
 
   return (
     <TouchableOpacity style={styles.tripCard} onPress={() => { if (Platform.OS !== "web") Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light); onPress(); }} activeOpacity={0.88}>
       <View style={styles.tripCardInner}>
         {/* Full photo background */}
-        <Image source={{ uri: photoUrl }} style={StyleSheet.absoluteFillObject} contentFit="cover" />
+        <Image source={photoSource} style={StyleSheet.absoluteFillObject} contentFit="cover" />
         {/* Dark gradient overlay */}
         <LinearGradient colors={["rgba(0,0,0,0.15)", "rgba(0,0,0,0.65)"]} style={StyleSheet.absoluteFillObject} />
 

@@ -113,6 +113,34 @@ export default function TabLayout() {
           href: null,
         }}
       />
+      <Tabs.Screen
+        name="connecting"
+        options={{
+          title: "Connecting",
+          href: null,
+        }}
+      />
+      <Tabs.Screen
+        name="notifications"
+        options={{
+          title: "Notifications",
+          href: null,
+        }}
+      />
+      <Tabs.Screen
+        name="subscription"
+        options={{
+          title: "Subscription",
+          href: null,
+        }}
+      />
+      <Tabs.Screen
+        name="refer"
+        options={{
+          title: "Refer & Earn",
+          href: null,
+        }}
+      />
     </Tabs>
   );
 }

@@ -49,6 +49,13 @@ const SETTINGS_SECTIONS = [
     ],
   },
   {
+    title: "Premium",
+    items: [
+      { icon: "crown.fill" as const, label: "Upgrade Plan", value: "Explorer", toggleKey: "", isToggle: false, route: "/(tabs)/subscription" },
+      { icon: "gift.fill" as const, label: "Refer & Earn", value: "500 pts/friend", toggleKey: "", isToggle: false, route: "/(tabs)/refer" },
+    ],
+  },
+  {
     title: "Travel",
     items: [
       { icon: "heart.fill" as const, label: "Saved Destinations", value: "", toggleKey: "", isToggle: false },
@@ -202,7 +209,7 @@ export default function ProfileScreen() {
         </View>
 
         {/* TRAVI Pro Card */}
-        <TouchableOpacity style={styles.proCard} activeOpacity={0.88}>
+        <TouchableOpacity style={styles.proCard} activeOpacity={0.88} onPress={() => router.push("/(tabs)/subscription" as never)}>
           <LinearGradient colors={["#7B2FBE", "#E91E8C"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.proGradient}>
             <View style={styles.proCircle1} />
             <View style={styles.proCircle2} />
@@ -230,6 +237,9 @@ export default function ProfileScreen() {
                   key={item.label}
                   style={[styles.settingsRow, idx < section.items.length - 1 && styles.settingsRowBorder]}
                   activeOpacity={item.isToggle ? 1 : 0.7}
+                  onPress={() => {
+                    if (!item.isToggle && (item as any).route) router.push((item as any).route as never);
+                  }}
                 >
                   <View style={styles.settingsIconWrap}>
                     <IconSymbol name={item.icon} size={16} color="#7B2FBE" />

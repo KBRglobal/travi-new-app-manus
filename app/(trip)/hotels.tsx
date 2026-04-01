@@ -97,7 +97,7 @@ export default function HotelsScreen() {
         <View style={styles.loadingWrap}>
           <Animated.View style={[styles.duckLarge, { opacity: pulseAnim }]}>
             <LinearGradient colors={["#7B2FBE", "#E91E8C"]} style={styles.duckLargeGradient}>
-              <Image source={require("@/assets/images/icon.png")} style={styles.duckImg} contentFit="contain" />
+              <Image source={require("@/assets/logos/mascot-dark.png")} style={styles.duckImg} contentFit="contain" />
             </LinearGradient>
           </Animated.View>
           <Text style={styles.loadingTitle}>Finding hotels...</Text>
@@ -127,7 +127,7 @@ export default function HotelsScreen() {
       <View style={styles.duckRow}>
         <View style={styles.duckAvatar}>
           <LinearGradient colors={["#7B2FBE", "#E91E8C"]} style={styles.duckGradient}>
-            <Image source={require("@/assets/images/icon.png")} style={styles.duckImgSm} contentFit="contain" />
+            <Image source={require("@/assets/logos/mascot-dark.png")} style={styles.duckImgSm} contentFit="contain" />
           </LinearGradient>
         </View>
         <Animated.View style={[styles.duckBubble, { opacity: fadeAnim }]}>

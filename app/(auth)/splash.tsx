@@ -122,7 +122,7 @@ export default function SplashScreen() {
             style={styles.logoCard}
           >
             <View style={styles.logoInner}>
-              <Image source={require("@/assets/images/icon.png")} style={styles.logo} contentFit="contain" />
+              <Image source={require("@/assets/logos/mascot-dark.png")} style={styles.logo} contentFit="contain" />
             </View>
           </LinearGradient>
         </Animated.View>

@@ -83,7 +83,7 @@ export default function FlightsScreen() {
         <View style={styles.loadingWrap}>
           <Animated.View style={[styles.duckLarge, { opacity: pulseAnim }]}>
             <LinearGradient colors={["#7B2FBE", "#E91E8C"]} style={styles.duckLargeGradient}>
-              <Image source={require("@/assets/images/icon.png")} style={{ width: 60, height: 60 }} contentFit="contain" />
+              <Image source={require("@/assets/logos/mascot-dark.png")} style={{ width: 60, height: 60 }} contentFit="contain" />
             </LinearGradient>
           </Animated.View>
           <Text style={styles.loadingTitle}>Searching flights...</Text>
@@ -117,7 +117,7 @@ export default function FlightsScreen() {
       <View style={styles.duckRow}>
         <View style={styles.duckAvatar}>
           <LinearGradient colors={["#7B2FBE", "#E91E8C"]} style={styles.duckGradient}>
-            <Image source={require("@/assets/images/icon.png")} style={{ width: 32, height: 32 }} contentFit="contain" />
+            <Image source={require("@/assets/logos/mascot-dark.png")} style={{ width: 32, height: 32 }} contentFit="contain" />
           </LinearGradient>
         </View>
         <Animated.View style={[styles.duckBubble, { opacity: fadeAnim }]}>

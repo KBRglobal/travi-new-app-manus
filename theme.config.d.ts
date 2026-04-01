@@ -1,17 +1,23 @@
 export const themeColors: {
-  primary: { light: string; dark: string };
-  accent: { light: string; dark: string };
-  background: { light: string; dark: string };
-  surface: { light: string; dark: string };
-  surfaceAlt: { light: string; dark: string };
-  foreground: { light: string; dark: string };
-  muted: { light: string; dark: string };
-  border: { light: string; dark: string };
-  success: { light: string; dark: string };
-  warning: { light: string; dark: string };
-  error: { light: string; dark: string };
-  gold: { light: string; dark: string };
-  tint: { light: string; dark: string };
+  primary:     { light: string; dark: string };
+  accent:      { light: string; dark: string };
+  orange:      { light: string; dark: string };
+  green:       { light: string; dark: string };
+  background:  { light: string; dark: string };
+  surface:     { light: string; dark: string };
+  surfaceAlt:  { light: string; dark: string };
+  foreground:  { light: string; dark: string };
+  muted:       { light: string; dark: string };
+  border:      { light: string; dark: string };
+  success:     { light: string; dark: string };
+  warning:     { light: string; dark: string };
+  error:       { light: string; dark: string };
+  gold:        { light: string; dark: string };
+  tint:        { light: string; dark: string };
+  basePurple:  { light: string; dark: string };
+  cyan:        { light: string; dark: string };
+  lightPurple: { light: string; dark: string };
+  deepPurple:  { light: string; dark: string };
 };
 
 declare const themeConfig: {

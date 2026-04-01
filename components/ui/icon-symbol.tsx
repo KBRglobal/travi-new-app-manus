@@ -171,7 +171,32 @@ const MAPPING = {
   "equal": "drag-handle",
   "number": "tag",
   "at": "alternate-email",
-} as IconMapping;
+  "mappin.fill": "location-on",
+  "mappin": "location-on",
+  "apple.logo": "phone-iphone",
+  "house.circle.fill": "home",
+  "person.2.wave.2.fill": "group-add",
+  "arrow.up.left.and.arrow.down.right": "open-with",
+  "chart.pie.fill": "pie-chart",
+  "chart.line.uptrend.xyaxis": "show-chart",
+  "suitcase.fill": "work",
+  "suitcase": "work-outline",
+  "doc.badge.plus": "note-add",
+  "photo.badge.plus": "add-photo-alternate",
+  "checkmark.rectangle.fill": "check-box",
+  "exclamationmark.circle.fill": "error",
+  "exclamationmark.circle": "error-outline",
+  "info.circle": "info-outline",
+  "arrow.down.circle.fill": "download",
+  "arrow.up.circle.fill": "upload",
+  "paperclip": "attach-file",
+  "hand.raised.fill": "back-hand",
+  "bubble.right.fill": "chat-bubble",
+  "person.crop.circle": "account-circle",
+  "clock": "access-time",
+  "timer": "timer",
+  "hourglass": "hourglass-empty",
+} as unknown as IconMapping;
 
 /**
  * An icon component that uses native SF Symbols on iOS, and Material Icons on Android and web.

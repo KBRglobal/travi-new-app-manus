@@ -73,7 +73,7 @@ export default function SummaryScreen() {
           <View style={styles.duckRow}>
             <View style={styles.duckAvatar}>
               <LinearGradient colors={["#7B2FBE", "#E91E8C"]} style={styles.duckGradient}>
-                <Image source={require("@/assets/images/icon.png")} style={styles.duckImg} contentFit="contain" />
+                <Image source={require("@/assets/logos/mascot-dark.png")} style={styles.duckImg} contentFit="contain" />
               </LinearGradient>
             </View>
             <View style={styles.duckBubble}>

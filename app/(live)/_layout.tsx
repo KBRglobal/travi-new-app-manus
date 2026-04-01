@@ -8,6 +8,10 @@ export default function LiveLayout() {
       <Stack.Screen name="itinerary" />
       <Stack.Screen name="map" />
       <Stack.Screen name="split" options={{ animation: "slide_from_right" }} />
+      <Stack.Screen name="split-payment" options={{ animation: "slide_from_right" }} />
+      <Stack.Screen name="expenses" options={{ animation: "slide_from_right" }} />
+      <Stack.Screen name="schedule" options={{ animation: "slide_from_right" }} />
+      <Stack.Screen name="trip-summary" options={{ animation: "slide_from_bottom" }} />
     </Stack>
   );
 }
