@@ -5,7 +5,7 @@ import {
 } from "react-native";
 import { router } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
-import { Image } from "expo-image";
+import { Image } from "react-native";
 import { IconSymbol } from "@/components/ui/icon-symbol";
 import { BRAND, TYPE, LOGOS, RADIUS } from "@/constants/brand";
 import * as Haptics from "expo-haptics";
@@ -85,7 +85,7 @@ function TravelerCard({ traveler, onConnect }: { traveler: Traveler; onConnect: 
       {/* Top row */}
       <View style={S.cardTop}>
         <View style={S.avatarWrap}>
-          <Image source={{ uri: traveler.avatar }} style={S.avatar} contentFit="cover" />
+          <Image source={{ uri: traveler.avatar }} style={S.avatar} resizeMode="cover" />
           {traveler.verified && (
             <View style={S.verifiedBadge}>
               <LinearGradient colors={["#6443F4", "#F94498"]} style={StyleSheet.absoluteFillObject} />
@@ -226,14 +226,14 @@ export default function ConnectingScreen() {
 
   return (
     <View style={[S.container, { paddingTop: insets.top }]}>
-      <LinearGradient colors={["#24103E", "#1A0A30", "#0D0520"]} style={StyleSheet.absoluteFillObject} />
+      <LinearGradient colors={["#24103E", "#1A0A30", "#1A0A3D"]} style={StyleSheet.absoluteFillObject} />
       <View style={S.orb1} />
       <View style={S.orb2} />
 
       {/* Header */}
       <View style={S.header}>
         <View style={S.headerLeft}>
-          <Image source={LOGOS.logotypePrimary} style={S.headerLogo} contentFit="contain" />
+          <Image source={LOGOS.logotypePrimary} style={S.headerLogo} resizeMode="contain" />
         </View>
         <Text style={S.headerTitle}>Connecting</Text>
         <TouchableOpacity style={S.notifBtn} activeOpacity={0.7}>
@@ -249,7 +249,7 @@ export default function ConnectingScreen() {
           <Text style={S.heroTitle}>Find Your Travel Tribe</Text>
           <Text style={S.heroSub}>Connect with travelers who match your vibe</Text>
         </View>
-        <Image source={LOGOS.mascotDark} style={S.heroMascot} contentFit="contain" />
+        <Image source={LOGOS.mascotDark} style={S.heroMascot} resizeMode="contain" />
       </View>
 
       {/* Search */}
@@ -304,7 +304,7 @@ export default function ConnectingScreen() {
         ListEmptyComponent={
           tab === "my_trips" ? (
             <View style={S.emptyState}>
-              <Image source={LOGOS.mascotDark} style={S.emptyMascot} contentFit="contain" />
+              <Image source={LOGOS.mascotDark} style={S.emptyMascot} resizeMode="contain" />
               <Text style={S.emptyTitle}>No shared trips yet</Text>
               <Text style={S.emptyBody}>Connect with travelers and plan your first group adventure!</Text>
               <TouchableOpacity style={S.emptyBtn} onPress={() => setTab("discover")} activeOpacity={0.85}>

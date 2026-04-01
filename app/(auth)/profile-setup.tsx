@@ -24,7 +24,7 @@ const AVATARS: AvatarOption[] = [
   { id: "mountain", iconName: "mountain.2.fill", color: "#78909C", label: "Explorer" },
   { id: "globe", iconName: "globe", color: "#2196F3", label: "Globetrotter" },
   { id: "star", iconName: "star.fill", color: "#FFC107", label: "Star" },
-  { id: "heart", iconName: "heart.fill", color: "#E91E8C", label: "Romantic" },
+  { id: "heart", iconName: "heart.fill", color: "#F94498", label: "Romantic" },
   { id: "moon", iconName: "moon.fill", color: "#9C27B0", label: "Night Owl" },
   { id: "sun", iconName: "sun.max.fill", color: "#FF9800", label: "Sunny" },
   { id: "sparkles", iconName: "sparkles", color: "#00BCD4", label: "Dreamer" },
@@ -61,7 +61,7 @@ export default function ProfileSetupScreen() {
   return (
     <View style={styles.container}>
       <LinearGradient
-        colors={["#040010", "#0D0520", "#1A0A3D", "#0D0520"]}
+        colors={["#0D0628", "#1A0A3D", "#1A0A3D", "#1A0A3D"]}
         locations={[0, 0.3, 0.6, 1]}
         style={StyleSheet.absoluteFillObject}
       />
@@ -86,7 +86,7 @@ export default function ProfileSetupScreen() {
           <View style={styles.avatarSection}>
             <Text style={styles.sectionLabel}>CHOOSE YOUR AVATAR</Text>
             <View style={styles.selectedAvatarWrap}>
-              <LinearGradient colors={["#7B2FBE", "#E91E8C"]} style={styles.selectedAvatarRing}>
+              <LinearGradient colors={["#6443F4", "#F94498"]} style={styles.selectedAvatarRing}>
                 <View style={[styles.selectedAvatarInner, { backgroundColor: selectedAvatar.color + "22" }]}>
                   <IconSymbol name={selectedAvatar.iconName} size={42} color={selectedAvatar.color} />
                 </View>
@@ -120,7 +120,7 @@ export default function ProfileSetupScreen() {
                 colors={nameFocused ? ["rgba(123,47,190,0.3)", "rgba(233,30,140,0.15)"] : ["rgba(255,255,255,0.07)", "rgba(255,255,255,0.03)"]}
                 style={styles.inputGradient}
               >
-                <IconSymbol name="person.fill" size={18} color={nameFocused ? "#E91E8C" : "#5A4D72"} />
+                <IconSymbol name="person.fill" size={18} color={nameFocused ? "#F94498" : "#5A4D72"} />
                 <TextInput
                   style={styles.input}
                   placeholder="What should we call you?"
@@ -165,7 +165,7 @@ export default function ProfileSetupScreen() {
             disabled={!name.trim()}
           >
             <LinearGradient
-              colors={name.trim() ? ["#7B2FBE", "#C2185B", "#E91E8C"] : ["rgba(255,255,255,0.06)", "rgba(255,255,255,0.03)"]}
+              colors={name.trim() ? ["#6443F4", "#C2185B", "#F94498"] : ["rgba(255,255,255,0.06)", "rgba(255,255,255,0.03)"]}
               start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
               style={styles.ctaGradient}
             >
@@ -180,7 +180,7 @@ export default function ProfileSetupScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#040010" },
+  container: { flex: 1, backgroundColor: "#0D0628" },
   orb1: { position: "absolute", width: width * 0.9, height: width * 0.9, borderRadius: width * 0.45, top: -width * 0.3, left: -width * 0.2, backgroundColor: "rgba(123,47,190,0.10)" },
   orb2: { position: "absolute", width: width * 0.7, height: width * 0.7, borderRadius: width * 0.35, bottom: 0, right: -width * 0.25, backgroundColor: "rgba(233,30,140,0.07)" },
   scroll: { flexGrow: 1, paddingHorizontal: 24, paddingTop: 64, paddingBottom: 40, gap: 28 },
@@ -195,7 +195,7 @@ const styles = StyleSheet.create({
   selectedAvatarWrap: { alignSelf: "center", width: 90, height: 90, alignItems: "center", justifyContent: "center" },
   selectedAvatarRing: { width: 90, height: 90, borderRadius: 28, padding: 3 },
   selectedAvatarInner: { flex: 1, borderRadius: 25, alignItems: "center", justifyContent: "center" },
-  selectedAvatarGlow: { position: "absolute", width: 90, height: 90, borderRadius: 45, backgroundColor: "rgba(123,47,190,0.2)", shadowColor: "#7B2FBE", shadowOffset: { width: 0, height: 0 }, shadowOpacity: 0.8, shadowRadius: 25 },
+  selectedAvatarGlow: { position: "absolute", width: 90, height: 90, borderRadius: 45, backgroundColor: "rgba(123,47,190,0.2)", shadowColor: "#6443F4", shadowOffset: { width: 0, height: 0 }, shadowOpacity: 0.8, shadowRadius: 25 },
   avatarGrid: { flexDirection: "row", flexWrap: "wrap", gap: 10, justifyContent: "center" },
   avatarItem: { width: 52, height: 52, borderRadius: 16, alignItems: "center", justifyContent: "center", borderWidth: 1.5, borderColor: "rgba(255,255,255,0.08)", backgroundColor: "rgba(255,255,255,0.04)", overflow: "hidden" },
   avatarItemSelected: { borderColor: "rgba(233,30,140,0.8)" },

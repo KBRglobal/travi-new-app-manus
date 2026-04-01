@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, Dimensions, Animated, Platform, ScrollView } from "react-native";
 import { router } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
-import { Image } from "expo-image";
+import { Image } from "react-native";
 import { IconSymbol } from "@/components/ui/icon-symbol";
 import { useStore } from "@/lib/store";
 import * as Haptics from "expo-haptics";
@@ -18,13 +18,13 @@ const QUESTIONS: QuizQuestion[] = [
     { id: "1a", label: "Cafe & Croissant", sublabel: "Watching the city wake up", colors: ["#C2410C", "#EA580C"], iconName: "cup.and.saucer.fill", tags: ["culture", "urban", "relax"] },
     { id: "1b", label: "Sunrise Hike", sublabel: "Chasing the golden hour", colors: ["#0369A1", "#0EA5E9"], iconName: "figure.hiking", tags: ["adventure", "nature", "solo"] },
     { id: "1c", label: "Street Food Tour", sublabel: "Eating your way through the market", colors: ["#15803D", "#22C55E"], iconName: "fork.knife", tags: ["food", "social", "culture"] },
-    { id: "1d", label: "Rooftop Pool", sublabel: "Sipping something cold with a view", colors: ["#7C3AED", "#A855F7"], iconName: "drop.fill", tags: ["luxury", "relax", "social"] },
+    { id: "1d", label: "Rooftop Pool", sublabel: "Sipping something cold with a view", colors: ["#6443F4", "#9077EF"], iconName: "drop.fill", tags: ["luxury", "relax", "social"] },
   ]},
   { id: 2, question: "The perfect travel photo", subtitle: "What fills your camera roll?", options: [
     { id: "2a", label: "Ancient Ruins", sublabel: "History you can touch", colors: ["#92400E", "#D97706"], iconName: "building.columns.fill", tags: ["culture", "solo", "planned"] },
-    { id: "2b", label: "Wild Landscapes", sublabel: "Nature at its most raw", colors: ["#065F46", "#059669"], iconName: "mountain.2.fill", tags: ["nature", "adventure", "solo"] },
-    { id: "2c", label: "Local People", sublabel: "Faces that tell stories", colors: ["#1E3A5F", "#2563EB"], iconName: "person.2.fill", tags: ["social", "culture", "spontaneous"] },
-    { id: "2d", label: "Dreamy Hotels", sublabel: "Spaces that inspire", colors: ["#831843", "#EC4899"], iconName: "bed.double.fill", tags: ["luxury", "relax", "planned"] },
+    { id: "2b", label: "Wild Landscapes", sublabel: "Nature at its most raw", colors: ["#02A65C", "#059669"], iconName: "mountain.2.fill", tags: ["nature", "adventure", "solo"] },
+    { id: "2c", label: "Local People", sublabel: "Faces that tell stories", colors: ["#6443F4", "#6443F4"], iconName: "person.2.fill", tags: ["social", "culture", "spontaneous"] },
+    { id: "2d", label: "Dreamy Hotels", sublabel: "Spaces that inspire", colors: ["#831843", "#F94498"], iconName: "bed.double.fill", tags: ["luxury", "relax", "planned"] },
   ]},
   { id: 3, question: "Your ideal dinner abroad", subtitle: "Where are you sitting tonight?", options: [
     { id: "3a", label: "Michelin Star", sublabel: "Tasting menu, wine pairing", colors: ["#292524", "#78716C"], iconName: "star.fill", tags: ["luxury", "food", "planned"] },
@@ -39,40 +39,40 @@ const QUESTIONS: QuizQuestion[] = [
     { id: "4d", label: "Local Transit", sublabel: "Live like a local", colors: ["#0F766E", "#14B8A6"], iconName: "tram.fill", tags: ["culture", "social", "spontaneous"] },
   ]},
   { id: 5, question: "The perfect evening", subtitle: "How does your ideal night end?", options: [
-    { id: "5a", label: "Live Music", sublabel: "Jazz bar or local band", colors: ["#6B21A8", "#9333EA"], iconName: "music.note", tags: ["culture", "social", "urban"] },
+    { id: "5a", label: "Live Music", sublabel: "Jazz bar or local band", colors: ["#6B21A8", "#6443F4"], iconName: "music.note", tags: ["culture", "social", "urban"] },
     { id: "5b", label: "Spa & Sleep", sublabel: "Early to bed, early to rise", colors: ["#0E7490", "#06B6D4"], iconName: "moon.fill", tags: ["relax", "luxury", "solo"] },
-    { id: "5c", label: "Night Hike", sublabel: "Stars and silence", colors: ["#1E3A5F", "#1D4ED8"], iconName: "moon.stars.fill", tags: ["adventure", "nature", "solo"] },
-    { id: "5d", label: "Rooftop Party", sublabel: "New friends, great views", colors: ["#9D174D", "#EC4899"], iconName: "person.3.fill", tags: ["social", "urban", "spontaneous"] },
+    { id: "5c", label: "Night Hike", sublabel: "Stars and silence", colors: ["#6443F4", "#1D4ED8"], iconName: "moon.stars.fill", tags: ["adventure", "nature", "solo"] },
+    { id: "5d", label: "Rooftop Party", sublabel: "New friends, great views", colors: ["#9D174D", "#F94498"], iconName: "person.3.fill", tags: ["social", "urban", "spontaneous"] },
   ]},
   { id: 6, question: "When plans fall apart...", subtitle: "Your flight is cancelled. You:", options: [
     { id: "6a", label: "Improvise!", sublabel: "Best stories start here", colors: ["#B45309", "#F59E0B"], iconName: "bolt.fill", tags: ["spontaneous", "adventure", "solo"] },
     { id: "6b", label: "Find the lounge", sublabel: "Make the most of it", colors: ["#292524", "#44403C"], iconName: "sofa.fill", tags: ["luxury", "relax", "planned"] },
-    { id: "6c", label: "Explore the city", sublabel: "Bonus destination!", colors: ["#065F46", "#10B981"], iconName: "map.fill", tags: ["adventure", "culture", "spontaneous"] },
-    { id: "6d", label: "Rebook ASAP", sublabel: "Stick to the plan", colors: ["#1E3A5F", "#3B82F6"], iconName: "calendar", tags: ["planned", "solo", "relax"] },
+    { id: "6c", label: "Explore the city", sublabel: "Bonus destination!", colors: ["#02A65C", "#02A65C"], iconName: "map.fill", tags: ["adventure", "culture", "spontaneous"] },
+    { id: "6d", label: "Rebook ASAP", sublabel: "Stick to the plan", colors: ["#6443F4", "#3B82F6"], iconName: "calendar", tags: ["planned", "solo", "relax"] },
   ]},
   { id: 7, question: "Your dream accommodation", subtitle: "Where do you sleep best?", options: [
-    { id: "7a", label: "Boutique Hotel", sublabel: "Unique, local, personal", colors: ["#7C3AED", "#8B5CF6"], iconName: "building.2.fill", tags: ["culture", "luxury", "planned"] },
+    { id: "7a", label: "Boutique Hotel", sublabel: "Unique, local, personal", colors: ["#6443F4", "#9077EF"], iconName: "building.2.fill", tags: ["culture", "luxury", "planned"] },
     { id: "7b", label: "Jungle Villa", sublabel: "Nature all around you", colors: ["#14532D", "#22C55E"], iconName: "house.fill", tags: ["nature", "adventure", "relax"] },
     { id: "7c", label: "City Penthouse", sublabel: "Skyline views, everything close", colors: ["#0F172A", "#334155"], iconName: "building.fill", tags: ["urban", "luxury", "social"] },
     { id: "7d", label: "Hostel Common Room", sublabel: "Where the stories happen", colors: ["#7C2D12", "#F97316"], iconName: "person.3.fill", tags: ["social", "spontaneous", "solo"] },
   ]},
   { id: 8, question: "Must-do on every trip", subtitle: "The thing you always make time for", options: [
-    { id: "8a", label: "Local Museum", sublabel: "Context makes everything richer", colors: ["#1E3A5F", "#1D4ED8"], iconName: "building.columns.fill", tags: ["culture", "solo", "planned"] },
+    { id: "8a", label: "Local Museum", sublabel: "Context makes everything richer", colors: ["#6443F4", "#1D4ED8"], iconName: "building.columns.fill", tags: ["culture", "solo", "planned"] },
     { id: "8b", label: "Extreme Sport", sublabel: "Skydive, surf, climb — yes", colors: ["#7C2D12", "#EF4444"], iconName: "figure.surfing", tags: ["adventure", "spontaneous", "solo"] },
     { id: "8c", label: "Fine Dining", sublabel: "At least one special meal", colors: ["#292524", "#78716C"], iconName: "fork.knife.circle.fill", tags: ["food", "luxury", "planned"] },
     { id: "8d", label: "Spa Day", sublabel: "Recharge is non-negotiable", colors: ["#0E7490", "#22D3EE"], iconName: "sparkles", tags: ["relax", "luxury", "solo"] },
   ]},
   { id: 9, question: "Your travel soundtrack", subtitle: "What plays in your earphones?", options: [
     { id: "9a", label: "Local Music", sublabel: "Discover culture through sound", colors: ["#92400E", "#F59E0B"], iconName: "music.note.list", tags: ["culture", "social", "spontaneous"] },
-    { id: "9b", label: "Podcasts", sublabel: "Learn while you explore", colors: ["#1E3A5F", "#6366F1"], iconName: "mic.fill", tags: ["solo", "planned", "culture"] },
-    { id: "9c", label: "Pure Silence", sublabel: "Just the sounds of the place", colors: ["#065F46", "#10B981"], iconName: "waveform", tags: ["nature", "solo", "relax"] },
-    { id: "9d", label: "Party Playlist", sublabel: "Energy up, always", colors: ["#6B21A8", "#EC4899"], iconName: "headphones", tags: ["social", "urban", "spontaneous"] },
+    { id: "9b", label: "Podcasts", sublabel: "Learn while you explore", colors: ["#6443F4", "#6366F1"], iconName: "mic.fill", tags: ["solo", "planned", "culture"] },
+    { id: "9c", label: "Pure Silence", sublabel: "Just the sounds of the place", colors: ["#02A65C", "#02A65C"], iconName: "waveform", tags: ["nature", "solo", "relax"] },
+    { id: "9d", label: "Party Playlist", sublabel: "Energy up, always", colors: ["#6B21A8", "#F94498"], iconName: "headphones", tags: ["social", "urban", "spontaneous"] },
   ]},
   { id: 10, question: "Your travel philosophy", subtitle: "Which one is you?", options: [
     { id: "10a", label: "Plan Everything", sublabel: "Spreadsheet, bookings, itinerary", colors: ["#1E40AF", "#3B82F6"], iconName: "list.bullet.clipboard.fill", tags: ["planned", "luxury", "solo"] },
     { id: "10b", label: "Go with the Flow", sublabel: "One bag, no agenda", colors: ["#B45309", "#F59E0B"], iconName: "wind", tags: ["spontaneous", "adventure", "social"] },
-    { id: "10c", label: "Deep Dive", sublabel: "One place, really know it", colors: ["#065F46", "#059669"], iconName: "magnifyingglass", tags: ["culture", "solo", "planned"] },
-    { id: "10d", label: "Collect Countries", sublabel: "Passport stamps > everything", colors: ["#7C3AED", "#C084FC"], iconName: "globe", tags: ["adventure", "spontaneous", "social"] },
+    { id: "10c", label: "Deep Dive", sublabel: "One place, really know it", colors: ["#02A65C", "#059669"], iconName: "magnifyingglass", tags: ["culture", "solo", "planned"] },
+    { id: "10d", label: "Collect Countries", sublabel: "Passport stamps > everything", colors: ["#6443F4", "#C084FC"], iconName: "globe", tags: ["adventure", "spontaneous", "social"] },
   ]},
 ];
 
@@ -97,18 +97,18 @@ const QIMG = {
 };
 type DestinationEntry = { name: string; image: number };
 const DNA_PROFILES: Record<string, { title: string; iconName: DNAIconName; description: string; destinations: DestinationEntry[]; colors: [string, string] }> = {
-  culture: { title: "Cultural Explorer", iconName: "building.columns.fill", description: "You travel to understand the world. Museums, history, and authentic local experiences fuel your soul.", destinations: [{ name: "Kyoto, Japan", image: QIMG.kyoto }, { name: "Rome, Italy", image: QIMG.rome }, { name: "Amsterdam", image: QIMG.amsterdam }], colors: ["#1E3A5F", "#2563EB"] },
+  culture: { title: "Cultural Explorer", iconName: "building.columns.fill", description: "You travel to understand the world. Museums, history, and authentic local experiences fuel your soul.", destinations: [{ name: "Kyoto, Japan", image: QIMG.kyoto }, { name: "Rome, Italy", image: QIMG.rome }, { name: "Amsterdam", image: QIMG.amsterdam }], colors: ["#6443F4", "#6443F4"] },
   food: { title: "Culinary Nomad", iconName: "fork.knife", description: "Your itinerary is built around meals. You know the best street food spots before you land.", destinations: [{ name: "Tokyo, Japan", image: QIMG.tokyo }, { name: "Barcelona, Spain", image: QIMG.barcelona }, { name: "Phuket, Thailand", image: QIMG.phuket }], colors: ["#7C2D12", "#DC2626"] },
-  adventure: { title: "Adrenaline Seeker", iconName: "mountain.2.fill", description: "You need the rush. Hikes, dives, and off-the-beaten-path discoveries define your trips.", destinations: [{ name: "Iceland", image: QIMG.iceland }, { name: "Patagonia", image: QIMG.patagonia }, { name: "Machu Picchu", image: QIMG.machupicchu }], colors: ["#065F46", "#10B981"] },
+  adventure: { title: "Adrenaline Seeker", iconName: "mountain.2.fill", description: "You need the rush. Hikes, dives, and off-the-beaten-path discoveries define your trips.", destinations: [{ name: "Iceland", image: QIMG.iceland }, { name: "Patagonia", image: QIMG.patagonia }, { name: "Machu Picchu", image: QIMG.machupicchu }], colors: ["#02A65C", "#02A65C"] },
   luxury: { title: "Luxury Connoisseur", iconName: "crown.fill", description: "You believe travel should be an experience of the finest things. Quality over quantity, always.", destinations: [{ name: "Maldives", image: QIMG.maldives }, { name: "Santorini", image: QIMG.santorini }, { name: "Dubai, UAE", image: QIMG.dubai }], colors: ["#292524", "#78716C"] },
-  social: { title: "Social Butterfly", iconName: "person.2.fill", description: "You travel for the people — locals, fellow travelers, and the connections that last a lifetime.", destinations: [{ name: "Barcelona, Spain", image: QIMG.barcelona }, { name: "Bali, Indonesia", image: QIMG.bali }, { name: "Amsterdam", image: QIMG.amsterdam }], colors: ["#6B21A8", "#EC4899"] },
+  social: { title: "Social Butterfly", iconName: "person.2.fill", description: "You travel for the people — locals, fellow travelers, and the connections that last a lifetime.", destinations: [{ name: "Barcelona, Spain", image: QIMG.barcelona }, { name: "Bali, Indonesia", image: QIMG.bali }, { name: "Amsterdam", image: QIMG.amsterdam }], colors: ["#6B21A8", "#F94498"] },
   nature: { title: "Nature Wanderer", iconName: "leaf.fill", description: "The best views have no WiFi. You seek wild places that remind you how small we are.", destinations: [{ name: "Iceland", image: QIMG.iceland }, { name: "Patagonia", image: QIMG.patagonia }, { name: "Bali, Indonesia", image: QIMG.bali }], colors: ["#14532D", "#22C55E"] },
   relax: { title: "Mindful Traveler", iconName: "moon.fill", description: "You travel to restore. Slow mornings, beautiful surroundings, and zero rush define your perfect trip.", destinations: [{ name: "Santorini, Greece", image: QIMG.santorini }, { name: "Maldives", image: QIMG.maldives }, { name: "Bali", image: QIMG.bali }], colors: ["#0E7490", "#06B6D4"] },
   urban: { title: "City Connoisseur", iconName: "building.fill", description: "Skylines, rooftops, and the electric energy of great cities are your natural habitat.", destinations: [{ name: "New York, USA", image: QIMG.newyork }, { name: "Tokyo, Japan", image: QIMG.tokyo }, { name: "Amsterdam", image: QIMG.amsterdam }], colors: ["#0F172A", "#334155"] },
   spontaneous: { title: "Free Spirit", iconName: "bolt.fill", description: "Rules are for other travelers. You live for the unplanned moments that become the best stories.", destinations: [{ name: "Bali, Indonesia", image: QIMG.bali }, { name: "Phuket, Thailand", image: QIMG.phuket }, { name: "Barcelona", image: QIMG.barcelona }], colors: ["#B45309", "#F59E0B"] },
   planned: { title: "Master Planner", iconName: "list.bullet.clipboard.fill", description: "You know the best table at the best restaurant 3 months before you land. Precision is your superpower.", destinations: [{ name: "Kyoto, Japan", image: QIMG.kyoto }, { name: "Paris, France", image: QIMG.paris }, { name: "Amsterdam", image: QIMG.amsterdam }], colors: ["#1E40AF", "#3B82F6"] },
-  solo: { title: "Solo Adventurer", iconName: "figure.walk", description: "You travel on your own terms. Every decision is yours, every discovery is personal.", destinations: [{ name: "Japan", image: QIMG.kyoto }, { name: "Iceland", image: QIMG.iceland }, { name: "Patagonia", image: QIMG.patagonia }], colors: ["#7C3AED", "#A855F7"] },
-  default: { title: "Free Spirit Traveler", iconName: "globe", description: "You defy categories. Every trip is different, every destination a new chapter.", destinations: [{ name: "Bali, Indonesia", image: QIMG.bali }, { name: "Santorini", image: QIMG.santorini }, { name: "Tokyo", image: QIMG.tokyo }], colors: ["#7B2FBE", "#E91E8C"] },
+  solo: { title: "Solo Adventurer", iconName: "figure.walk", description: "You travel on your own terms. Every decision is yours, every discovery is personal.", destinations: [{ name: "Japan", image: QIMG.kyoto }, { name: "Iceland", image: QIMG.iceland }, { name: "Patagonia", image: QIMG.patagonia }], colors: ["#6443F4", "#9077EF"] },
+  default: { title: "Free Spirit Traveler", iconName: "globe", description: "You defy categories. Every trip is different, every destination a new chapter.", destinations: [{ name: "Bali, Indonesia", image: QIMG.bali }, { name: "Santorini", image: QIMG.santorini }, { name: "Tokyo", image: QIMG.tokyo }], colors: ["#6443F4", "#F94498"] },
 };
 
 function getDNAProfile(tagCounts: Record<string, number>) {
@@ -180,7 +180,7 @@ export default function QuizScreen() {
   if (showResult) {
     return (
       <View style={S.container}>
-        <LinearGradient colors={["#040010", "#0D0520", "#1A0A3D"]} style={StyleSheet.absoluteFillObject} />
+        <LinearGradient colors={["#0D0628", "#1A0A3D", "#1A0A3D"]} style={StyleSheet.absoluteFillObject} />
         <View style={S.orb1} />
         <Animated.ScrollView
           contentContainerStyle={S.resultScroll}
@@ -203,7 +203,7 @@ export default function QuizScreen() {
               <TouchableOpacity key={i} style={S.destCard} activeOpacity={0.85}
                 onPress={() => { if (Platform.OS !== "web") Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light); }}>
                 {/* Destination photo background */}
-                <Image source={dest.image} style={S.destCardImg} contentFit="cover" />
+                <Image source={dest.image} style={S.destCardImg} resizeMode="cover" />
                 <LinearGradient colors={["rgba(0,0,0,0.1)", "rgba(0,0,0,0.65)"]} style={StyleSheet.absoluteFillObject} />
                 <View style={S.destNum}><Text style={S.destNumText}>{i + 1}</Text></View>
                 <Text style={S.destText}>{dest.name}</Text>
@@ -230,7 +230,7 @@ export default function QuizScreen() {
             </View>
           </View>
           <TouchableOpacity style={S.ctaBtn} onPress={handleFinish} activeOpacity={0.88}>
-            <LinearGradient colors={["#7B2FBE", "#E91E8C"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={S.ctaGradient}>
+            <LinearGradient colors={["#6443F4", "#F94498"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={S.ctaGradient}>
               <Text style={S.ctaText}>Start Exploring</Text>
               <IconSymbol name="arrow.right" size={20} color="#FFFFFF" />
             </LinearGradient>
@@ -242,7 +242,7 @@ export default function QuizScreen() {
 
   return (
     <View style={S.container}>
-      <LinearGradient colors={["#040010", "#0D0520", "#1A0A3D"]} style={StyleSheet.absoluteFillObject} />
+      <LinearGradient colors={["#0D0628", "#1A0A3D", "#1A0A3D"]} style={StyleSheet.absoluteFillObject} />
       <View style={S.orb1} />
       <View style={S.orb2} />
       <View style={S.header}>
@@ -251,7 +251,7 @@ export default function QuizScreen() {
         </TouchableOpacity>
         <View style={S.progressTrack}>
           <Animated.View style={[S.progressFill, { width: progressAnim.interpolate({ inputRange: [0, 1], outputRange: ["0%", "100%"] }) }]}>
-            <LinearGradient colors={["#7B2FBE", "#E91E8C"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={StyleSheet.absoluteFillObject} />
+            <LinearGradient colors={["#6443F4", "#F94498"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={StyleSheet.absoluteFillObject} />
           </Animated.View>
         </View>
         <Text style={S.progressText}>{currentQ + 1}/{QUESTIONS.length}</Text>
@@ -259,8 +259,8 @@ export default function QuizScreen() {
       <Animated.View style={[S.questionBlock, { opacity: cardAnim, transform: [{ scale: scaleAnim }] }]}>
         <View style={S.duckRow}>
           <View style={S.duckAvatar}>
-            <LinearGradient colors={["#7B2FBE", "#E91E8C"]} style={S.duckGradient}>
-              <Image source={require("@/assets/logos/mascot-dark.png")} style={S.duckImg} contentFit="contain" />
+            <LinearGradient colors={["#6443F4", "#F94498"]} style={S.duckGradient}>
+              <Image source={require("@/assets/logos/mascot-dark.png")} style={S.duckImg} resizeMode="contain" />
             </LinearGradient>
           </View>
           <View style={S.duckBubble}>
@@ -304,7 +304,7 @@ export default function QuizScreen() {
 
 const CARD_W = (width - 44) / 2;
 const S = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#040010" },
+  container: { flex: 1, backgroundColor: "#0D0628" },
   orb1: { position: "absolute", width: width * 1.4, height: width * 1.4, borderRadius: width * 0.7, top: -width * 0.5, left: -width * 0.3, backgroundColor: "rgba(123,47,190,0.1)" },
   orb2: { position: "absolute", width: width, height: width, borderRadius: width / 2, bottom: -width * 0.3, right: -width * 0.3, backgroundColor: "rgba(233,30,140,0.07)" },
   header: { flexDirection: "row", alignItems: "center", paddingHorizontal: 20, paddingTop: 60, paddingBottom: 20, gap: 12 },

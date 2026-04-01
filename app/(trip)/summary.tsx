@@ -2,7 +2,7 @@ import { useRef, useEffect } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, ScrollView, Dimensions, Animated, Platform } from "react-native";
 import { router, useLocalSearchParams } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
-import { Image } from "expo-image";
+import { Image } from "react-native";
 import { IconSymbol } from "@/components/ui/icon-symbol";
 import { useStore } from "@/lib/store";
 import * as Haptics from "expo-haptics";
@@ -35,7 +35,7 @@ export default function SummaryScreen() {
   if (!trip) {
     return (
       <View style={styles.container}>
-        <LinearGradient colors={["#040010", "#0D0520"]} style={StyleSheet.absoluteFillObject} />
+        <LinearGradient colors={["#0D0628", "#1A0A3D"]} style={StyleSheet.absoluteFillObject} />
         <View style={styles.centerWrap}>
           <Text style={styles.errorText}>Trip not found</Text>
           <TouchableOpacity onPress={() => router.back()} style={styles.backBtnCenter}>
@@ -58,7 +58,7 @@ export default function SummaryScreen() {
 
   return (
     <View style={styles.container}>
-      <LinearGradient colors={["#040010", "#0D0520", "#1A0A3D"]} style={StyleSheet.absoluteFillObject} />
+      <LinearGradient colors={["#0D0628", "#1A0A3D", "#1A0A3D"]} style={StyleSheet.absoluteFillObject} />
       <View style={styles.orb1} />
       <View style={styles.orb2} />
       <View style={styles.header}>
@@ -72,8 +72,8 @@ export default function SummaryScreen() {
         <Animated.View style={{ opacity: fadeAnim, transform: [{ translateY: slideAnim }], gap: 16 }}>
           <View style={styles.duckRow}>
             <View style={styles.duckAvatar}>
-              <LinearGradient colors={["#7B2FBE", "#E91E8C"]} style={styles.duckGradient}>
-                <Image source={require("@/assets/logos/mascot-dark.png")} style={styles.duckImg} contentFit="contain" />
+              <LinearGradient colors={["#6443F4", "#F94498"]} style={styles.duckGradient}>
+                <Image source={require("@/assets/logos/mascot-dark.png")} style={styles.duckImg} resizeMode="contain" />
               </LinearGradient>
             </View>
             <View style={styles.duckBubble}>
@@ -91,7 +91,7 @@ export default function SummaryScreen() {
                 <Text style={styles.heroCountry}>{trip.country}</Text>
               </View>
               <View style={styles.heroBadge}>
-                <LinearGradient colors={["#7B2FBE", "#E91E8C"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.heroBadgeGradient}>
+                <LinearGradient colors={["#6443F4", "#F94498"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.heroBadgeGradient}>
                   <Text style={styles.heroBadgeText}>{nights}N / {nights + 1}D</Text>
                 </LinearGradient>
               </View>
@@ -121,7 +121,7 @@ export default function SummaryScreen() {
               <LinearGradient colors={["rgba(255,255,255,0.06)", "rgba(255,255,255,0.02)"]} style={StyleSheet.absoluteFillObject} />
               <View style={styles.sectionHeader}>
                 <View style={styles.sectionIconWrap}>
-                  <LinearGradient colors={["#7B2FBE", "#5B21B6"]} style={styles.sectionIconGradient}>
+                  <LinearGradient colors={["#6443F4", "#5B21B6"]} style={styles.sectionIconGradient}>
                     <IconSymbol name="airplane" size={18} color="#FFFFFF" />
                   </LinearGradient>
                 </View>
@@ -141,7 +141,7 @@ export default function SummaryScreen() {
                   <View style={styles.flightLine}>
                     <View style={styles.flightDot} />
                     <View style={styles.flightLineBar} />
-                    <IconSymbol name="airplane" size={14} color="#E91E8C" />
+                    <IconSymbol name="airplane" size={14} color="#F94498" />
                     <View style={styles.flightLineBar} />
                     <View style={styles.flightDot} />
                   </View>
@@ -163,7 +163,7 @@ export default function SummaryScreen() {
               <LinearGradient colors={["rgba(255,255,255,0.06)", "rgba(255,255,255,0.02)"]} style={StyleSheet.absoluteFillObject} />
               <View style={styles.sectionHeader}>
                 <View style={styles.sectionIconWrap}>
-                  <LinearGradient colors={["#E91E8C", "#C2185B"]} style={styles.sectionIconGradient}>
+                  <LinearGradient colors={["#F94498", "#C2185B"]} style={styles.sectionIconGradient}>
                     <IconSymbol name="building.2.fill" size={18} color="#FFFFFF" />
                   </LinearGradient>
                 </View>
@@ -194,7 +194,7 @@ export default function SummaryScreen() {
               <LinearGradient colors={["rgba(255,255,255,0.06)", "rgba(255,255,255,0.02)"]} style={StyleSheet.absoluteFillObject} />
               <View style={styles.sectionHeader}>
                 <View style={styles.sectionIconWrap}>
-                  <LinearGradient colors={["#FF6B35", "#E91E8C"]} style={styles.sectionIconGradient}>
+                  <LinearGradient colors={["#FF6B35", "#F94498"]} style={styles.sectionIconGradient}>
                     <IconSymbol name="heart.fill" size={18} color="#FFFFFF" />
                   </LinearGradient>
                 </View>
@@ -232,7 +232,7 @@ export default function SummaryScreen() {
       </ScrollView>
       <View style={styles.ctaWrap}>
         <TouchableOpacity style={styles.ctaBtn} onPress={handleConfirm} activeOpacity={0.88}>
-          <LinearGradient colors={["#7B2FBE", "#E91E8C"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.ctaGradient}>
+          <LinearGradient colors={["#6443F4", "#F94498"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.ctaGradient}>
             <IconSymbol name="checkmark.circle.fill" size={22} color="#FFFFFF" />
             <Text style={styles.ctaText}>Confirm Booking</Text>
           </LinearGradient>
@@ -246,7 +246,7 @@ export default function SummaryScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#040010" },
+  container: { flex: 1, backgroundColor: "#0D0628" },
   orb1: { position: "absolute", width: width * 1.2, height: width * 1.2, borderRadius: width * 0.6, top: -width * 0.5, left: -width * 0.3, backgroundColor: "rgba(123,47,190,0.08)" },
   orb2: { position: "absolute", width: width, height: width, borderRadius: width / 2, bottom: 0, right: -width * 0.3, backgroundColor: "rgba(233,30,140,0.06)" },
   header: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 20, paddingTop: 60, paddingBottom: 16 },
@@ -296,7 +296,7 @@ const styles = StyleSheet.create({
   flightStops: { color: "rgba(255,255,255,0.4)", fontSize: 11 },
   cardFooter: { flexDirection: "row", justifyContent: "space-between", alignItems: "center", paddingTop: 8, borderTopWidth: 1, borderTopColor: "rgba(255,255,255,0.06)" },
   cardAirline: { color: "rgba(255,255,255,0.5)", fontSize: 13 },
-  cardPrice: { color: "#E91E8C", fontSize: 20, fontWeight: "900" },
+  cardPrice: { color: "#F94498", fontSize: 20, fontWeight: "900" },
   hotelName: { color: "#FFFFFF", fontSize: 18, fontWeight: "800" },
   hotelMeta: { flexDirection: "row", alignItems: "center", gap: 6 },
   hotelLocation: { color: "rgba(255,255,255,0.4)", fontSize: 12, flex: 1 },

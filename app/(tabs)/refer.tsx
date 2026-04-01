@@ -6,7 +6,7 @@ import {
 } from "react-native";
 import { router } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
-import { Image } from "expo-image";
+import { Image } from "react-native";
 import { IconSymbol } from "@/components/ui/icon-symbol";
 import * as Haptics from "expo-haptics";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -15,21 +15,21 @@ const { width: W } = Dimensions.get("window");
 
 const REFERRAL_CODE = "TRAVI-MAYA42";
 const REFERRED_FRIENDS = [
-  { id: "1", name: "Lior K.", joined: "2 days ago", status: "completed", reward: 500, initial: "L", color: "#7B2FBE" },
-  { id: "2", name: "Noa S.", joined: "1 week ago", status: "completed", reward: 500, initial: "N", color: "#E91E8C" },
-  { id: "3", name: "Tal M.", joined: "2 weeks ago", status: "pending", reward: 0, initial: "T", color: "#10B981" },
+  { id: "1", name: "Lior K.", joined: "2 days ago", status: "completed", reward: 500, initial: "L", color: "#6443F4" },
+  { id: "2", name: "Noa S.", joined: "1 week ago", status: "completed", reward: 500, initial: "N", color: "#F94498" },
+  { id: "3", name: "Tal M.", joined: "2 weeks ago", status: "pending", reward: 0, initial: "T", color: "#02A65C" },
 ];
 
 const REWARDS = [
   { icon: "star.fill", title: "500 Points", sub: "Per successful referral", color: "#FFD112" },
-  { icon: "gift.fill", title: "Free Month", sub: "After 5 referrals", color: "#7B2FBE" },
-  { icon: "crown.fill", title: "Elite Upgrade", sub: "After 10 referrals", color: "#E91E8C" },
+  { icon: "gift.fill", title: "Free Month", sub: "After 5 referrals", color: "#6443F4" },
+  { icon: "crown.fill", title: "Elite Upgrade", sub: "After 10 referrals", color: "#F94498" },
 ];
 
 const SHARE_OPTIONS = [
   { id: "whatsapp", label: "WhatsApp", icon: "message.fill", color: "#25D366" },
   { id: "instagram", label: "Instagram", icon: "camera.fill", color: "#E1306C" },
-  { id: "link", label: "Copy Link", icon: "link", color: "#7B2FBE" },
+  { id: "link", label: "Copy Link", icon: "link", color: "#6443F4" },
   { id: "more", label: "More", icon: "square.and.arrow.up", color: "#9BA1A6" },
 ];
 
@@ -62,7 +62,7 @@ export default function ReferScreen() {
 
   return (
     <View style={S.container}>
-      <LinearGradient colors={["#040010", "#0D0520", "#1A0A3D"]} style={StyleSheet.absoluteFillObject} />
+      <LinearGradient colors={["#0D0628", "#1A0A3D", "#1A0A3D"]} style={StyleSheet.absoluteFillObject} />
       <View style={S.orb1} />
       <View style={S.orb2} />
 
@@ -82,7 +82,7 @@ export default function ReferScreen() {
         <View style={S.hero}>
           <LinearGradient colors={["rgba(123,47,190,0.3)", "rgba(233,30,140,0.2)", "transparent"]} style={StyleSheet.absoluteFillObject} />
           <View style={S.heroIconWrap}>
-            <LinearGradient colors={["#7B2FBE", "#E91E8C"]} style={S.heroIconGrad}>
+            <LinearGradient colors={["#6443F4", "#F94498"]} style={S.heroIconGrad}>
               <IconSymbol name="gift.fill" size={34} color="#FFFFFF" />
             </LinearGradient>
           </View>
@@ -105,7 +105,7 @@ export default function ReferScreen() {
             <View style={S.statDivider} />
             <View style={S.statCard}>
               <LinearGradient colors={["rgba(16,185,129,0.2)", "rgba(16,185,129,0.1)"]} style={StyleSheet.absoluteFillObject} />
-              <Text style={[S.statValue, { color: "#10B981" }]}>{10 - completedCount}</Text>
+              <Text style={[S.statValue, { color: "#02A65C" }]}>{10 - completedCount}</Text>
               <Text style={S.statLabel}>Until Elite</Text>
             </View>
           </View>
@@ -121,8 +121,8 @@ export default function ReferScreen() {
               <Text style={S.codeValue}>{REFERRAL_CODE}</Text>
             </View>
             <TouchableOpacity style={[S.copyBtn, copied && S.copyBtnSuccess]} onPress={handleCopyCode} activeOpacity={0.8}>
-              <IconSymbol name={copied ? "checkmark" : "doc.on.doc.fill"} size={16} color={copied ? "#10B981" : "#FFFFFF"} />
-              <Text style={[S.copyBtnText, copied && { color: "#10B981" }]}>{copied ? "Copied!" : "Copy"}</Text>
+              <IconSymbol name={copied ? "checkmark" : "doc.on.doc.fill"} size={16} color={copied ? "#02A65C" : "#FFFFFF"} />
+              <Text style={[S.copyBtnText, copied && { color: "#02A65C" }]}>{copied ? "Copied!" : "Copy"}</Text>
             </TouchableOpacity>
           </Animated.View>
         </View>
@@ -190,8 +190,8 @@ export default function ReferScreen() {
                     <Text style={S.friendName}>{friend.name}</Text>
                     <Text style={S.friendJoined}>Joined {friend.joined}</Text>
                   </View>
-                  <View style={[S.friendStatus, { backgroundColor: friend.status === "completed" ? "#10B98122" : "#F59E0B22" }]}>
-                    <Text style={[S.friendStatusText, { color: friend.status === "completed" ? "#10B981" : "#F59E0B" }]}>
+                  <View style={[S.friendStatus, { backgroundColor: friend.status === "completed" ? "#02A65C22" : "#F59E0B22" }]}>
+                    <Text style={[S.friendStatusText, { color: friend.status === "completed" ? "#02A65C" : "#F59E0B" }]}>
                       {friend.status === "completed" ? `+${friend.reward} pts` : "Pending"}
                     </Text>
                   </View>
@@ -204,7 +204,7 @@ export default function ReferScreen() {
         {/* Big Share CTA */}
         <View style={S.ctaWrap}>
           <TouchableOpacity style={S.ctaBtn} onPress={handleShare} activeOpacity={0.88}>
-            <LinearGradient colors={["#7B2FBE", "#C026D3", "#E91E8C"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={StyleSheet.absoluteFillObject} />
+            <LinearGradient colors={["#6443F4", "#F94498", "#F94498"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={StyleSheet.absoluteFillObject} />
             <IconSymbol name="square.and.arrow.up" size={20} color="#FFFFFF" />
             <Text style={S.ctaBtnText}>Invite Friends Now</Text>
           </TouchableOpacity>
@@ -215,7 +215,7 @@ export default function ReferScreen() {
 }
 
 const S = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#040010" },
+  container: { flex: 1, backgroundColor: "#0D0628" },
   orb1: { position: "absolute", width: W * 1.2, height: W * 1.2, borderRadius: W * 0.6, top: -W * 0.5, left: -W * 0.3, backgroundColor: "rgba(123,47,190,0.1)" },
   orb2: { position: "absolute", width: W * 0.8, height: W * 0.8, borderRadius: W * 0.4, bottom: 100, right: -W * 0.3, backgroundColor: "rgba(233,30,140,0.07)" },
   header: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 20, paddingBottom: 12 },

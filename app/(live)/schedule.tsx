@@ -5,7 +5,7 @@ import {
 } from "react-native";
 import { router } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
-import { Image } from "expo-image";
+import { Image } from "react-native";
 import { IconSymbol } from "@/components/ui/icon-symbol";
 import { BRAND, TYPE, RADIUS } from "@/constants/brand";
 import * as Haptics from "expo-haptics";
@@ -117,7 +117,7 @@ function EventCard({ event, isLast }: { event: ScheduleEvent; isLast: boolean })
         <LinearGradient colors={["rgba(255,255,255,0.05)", "rgba(255,255,255,0.02)"]} style={StyleSheet.absoluteFillObject} />
 
         {event.image && (
-          <Image source={{ uri: event.image }} style={S.eventImage} contentFit="cover" />
+          <Image source={{ uri: event.image }} style={S.eventImage} resizeMode="cover" />
         )}
 
         <View style={S.eventCardContent}>
@@ -198,7 +198,7 @@ export default function ScheduleScreen() {
 
   return (
     <View style={[S.container, { paddingTop: insets.top }]}>
-      <LinearGradient colors={["#24103E", "#1A0A30", "#0D0520"]} style={StyleSheet.absoluteFillObject} />
+      <LinearGradient colors={["#24103E", "#1A0A30", "#1A0A3D"]} style={StyleSheet.absoluteFillObject} />
       <View style={S.orb1} />
 
       {/* Header */}

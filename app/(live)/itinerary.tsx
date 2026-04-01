@@ -18,10 +18,10 @@ const CATEGORY_ICON_NAMES: Record<string, "fork.knife" | "theatermasks.fill" | "
 
 const CATEGORY_COLORS: Record<string, string> = {
   food: "#FF9800",
-  activity: "#7B2FBE",
+  activity: "#6443F4",
   hotel: "#4CAF50",
   transport: "#2196F3",
-  flight: "#E91E8C",
+  flight: "#F94498",
 };
 
 export default function ItineraryScreen() {
@@ -79,7 +79,7 @@ export default function ItineraryScreen() {
             </View>
           )}
           renderItem={({ item, index }) => {
-            const color = CATEGORY_COLORS[item.category] || "#7B2FBE";
+            const color = CATEGORY_COLORS[item.category] || "#6443F4";
             const iconName = CATEGORY_ICON_NAMES[item.category] || "location.fill";
             const isLast = index === currentDay.activities.length - 1;
             return (
@@ -119,15 +119,15 @@ export default function ItineraryScreen() {
                   {/* Action Buttons */}
                   <View style={styles.actionRow}>
                     <TouchableOpacity style={styles.actionBtn}>
-                      <IconSymbol name="map.fill" size={13} color="#7B2FBE" />
+                      <IconSymbol name="map.fill" size={13} color="#6443F4" />
                       <Text style={styles.actionBtnText}>Directions</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.actionBtn}>
-                      <IconSymbol name="info.circle.fill" size={13} color="#7B2FBE" />
+                      <IconSymbol name="info.circle.fill" size={13} color="#6443F4" />
                       <Text style={styles.actionBtnText}>Details</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.actionBtn}>
-                      <IconSymbol name="arrow.left.arrow.right" size={13} color="#7B2FBE" />
+                      <IconSymbol name="arrow.left.arrow.right" size={13} color="#6443F4" />
                       <Text style={styles.actionBtnText}>Swap</Text>
                     </TouchableOpacity>
                   </View>
@@ -137,7 +137,7 @@ export default function ItineraryScreen() {
           }}
           ListFooterComponent={
             <TouchableOpacity style={styles.addActivityBtn} activeOpacity={0.8}>
-              <IconSymbol name="plus.circle.fill" size={18} color="#7B2FBE" />
+              <IconSymbol name="plus.circle.fill" size={18} color="#6443F4" />
               <Text style={styles.addActivityText}>Add Activity</Text>
             </TouchableOpacity>
           }
@@ -182,7 +182,7 @@ const styles = StyleSheet.create({
   dayTabActive: { backgroundColor: "#3D2580" },
   dayTabText: { color: "#A78BCA", fontSize: 13, fontWeight: "600" },
   dayTabTextActive: { color: "#FFFFFF" },
-  dayTabDot: { width: 4, height: 4, borderRadius: 2, backgroundColor: "#E91E8C" },
+  dayTabDot: { width: 4, height: 4, borderRadius: 2, backgroundColor: "#F94498" },
   list: { padding: 20, paddingBottom: 100 },
   dayHeader: {
     flexDirection: "row",
@@ -214,7 +214,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
     paddingVertical: 2,
   },
-  activityTimeText: { color: "#7B2FBE", fontSize: 12, fontWeight: "700" },
+  activityTimeText: { color: "#6443F4", fontSize: 12, fontWeight: "700" },
   categoryBadge: {
     flexDirection: "row",
     alignItems: "center",
@@ -252,7 +252,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 5,
   },
-  actionBtnText: { color: "#7B2FBE", fontSize: 12, fontWeight: "600" },
+  actionBtnText: { color: "#6443F4", fontSize: 12, fontWeight: "600" },
   addActivityBtn: {
     flexDirection: "row",
     alignItems: "center",
@@ -266,7 +266,7 @@ const styles = StyleSheet.create({
     borderStyle: "dashed",
     marginTop: 8,
   },
-  addActivityText: { color: "#7B2FBE", fontSize: 15, fontWeight: "600" },
+  addActivityText: { color: "#6443F4", fontSize: 15, fontWeight: "600" },
   emptyState: { flex: 1, alignItems: "center", justifyContent: "center", padding: 40 },
   emptyText: { color: "#FFFFFF", fontSize: 18, fontWeight: "700", marginBottom: 8 },
   emptySubtext: { color: "#A78BCA", fontSize: 14, textAlign: "center" },

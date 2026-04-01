@@ -21,17 +21,17 @@ import * as Haptics from "expo-haptics";
 import { router } from "expo-router";
 
 const TRIP_MEMBERS = [
-  { id: "me", name: "You", avatar: "Y", color: "#7C3AED" },
-  { id: "sarah", name: "Sarah", avatar: "S", color: "#EC4899" },
+  { id: "me", name: "You", avatar: "Y", color: "#6443F4" },
+  { id: "sarah", name: "Sarah", avatar: "S", color: "#F94498" },
   { id: "mike", name: "Mike", avatar: "M", color: "#3B82F6" },
-  { id: "anna", name: "Anna", avatar: "A", color: "#10B981" },
+  { id: "anna", name: "Anna", avatar: "A", color: "#02A65C" },
 ];
 
 const CATEGORIES = [
   { id: "food", label: "Food & Drinks", icon: "fork.knife" as const, color: "#F59E0B" },
   { id: "transport", label: "Transport", icon: "car.fill" as const, color: "#3B82F6" },
-  { id: "accommodation", label: "Hotel", icon: "bed.double.fill" as const, color: "#8B5CF6" },
-  { id: "activity", label: "Activity", icon: "figure.run" as const, color: "#10B981" },
+  { id: "accommodation", label: "Hotel", icon: "bed.double.fill" as const, color: "#9077EF" },
+  { id: "activity", label: "Activity", icon: "figure.run" as const, color: "#02A65C" },
   { id: "other", label: "Other", icon: "ellipsis.circle" as const, color: "#6B7280" },
 ] as const;
 
@@ -242,7 +242,7 @@ export default function SplitBillScreen() {
           </View>
           <Pressable style={styles.addBtn} onPress={openModal}>
             <LinearGradient
-              colors={["#7C3AED", "#EC4899"]}
+              colors={["#6443F4", "#F94498"]}
               style={styles.addBtnGradient}
               start={{ x: 0, y: 0 }}
               end={{ x: 1, y: 1 }}
@@ -255,7 +255,7 @@ export default function SplitBillScreen() {
         {/* Summary Card */}
         <View style={styles.summaryCard}>
           <LinearGradient
-            colors={["#7C3AED", "#EC4899"]}
+            colors={["#6443F4", "#F94498"]}
             style={styles.summaryGradient}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 1 }}
@@ -290,7 +290,7 @@ export default function SplitBillScreen() {
               return (
                 <View key={member.id} style={styles.balanceCard}>
                   <LinearGradient
-                    colors={isNeutral ? ["#1E0A3C", "#1E0A3C"] : isPositive ? ["#10B98122", "#10B98111"] : ["#EF444422", "#EF444411"]}
+                    colors={isNeutral ? ["#1E0A3C", "#1E0A3C"] : isPositive ? ["#02A65C22", "#02A65C11"] : ["#EF444422", "#EF444411"]}
                     style={styles.balanceGradient}
                   >
                     <Text style={styles.balanceAvatar}>{member.avatar}</Text>
@@ -346,7 +346,7 @@ export default function SplitBillScreen() {
               onPress={() => Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success)}
             >
               <LinearGradient
-                colors={["#10B981", "#059669"]}
+                colors={["#02A65C", "#059669"]}
                 style={styles.settleBtnGradient}
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 0 }}
@@ -436,7 +436,7 @@ export default function SplitBillScreen() {
                   {TRIP_MEMBERS.map((member) => (
                     <Pressable
                       key={member.id}
-                      style={[styles.paidByChip, selectedMembers.includes(member.id) && { backgroundColor: "#7C3AED33", borderColor: "#7C3AED" }]}
+                      style={[styles.paidByChip, selectedMembers.includes(member.id) && { backgroundColor: "#6443F433", borderColor: "#6443F4" }]}
                       onPress={() => toggleMember(member.id)}
                     >
                       <Text style={styles.memberAvatar}>{member.avatar}</Text>
@@ -464,7 +464,7 @@ export default function SplitBillScreen() {
                   disabled={!title || !amount}
                 >
                   <LinearGradient
-                    colors={title && amount ? ["#7C3AED", "#EC4899"] : ["#374151", "#374151"]}
+                    colors={title && amount ? ["#6443F4", "#F94498"] : ["#374151", "#374151"]}
                     style={styles.addExpenseBtnGradient}
                     start={{ x: 0, y: 0 }}
                     end={{ x: 1, y: 0 }}
@@ -509,7 +509,7 @@ const styles = StyleSheet.create({
   section: { paddingHorizontal: 20, marginBottom: 24 },
   sectionTitle: { fontSize: 17, fontWeight: "700", color: "#F9FAFB", marginBottom: 14 },
   balancesGrid: { flexDirection: "row", gap: 10 },
-  balanceCard: { flex: 1, borderRadius: 16, overflow: "hidden", borderWidth: 1, borderColor: "#7C3AED22" },
+  balanceCard: { flex: 1, borderRadius: 16, overflow: "hidden", borderWidth: 1, borderColor: "#6443F422" },
   balanceGradient: { padding: 12, alignItems: "center", gap: 4 },
   balanceAvatar: { fontSize: 24 },
   balanceName: { fontSize: 12, color: "#E5E7EB", fontWeight: "600" },
@@ -524,7 +524,7 @@ const styles = StyleSheet.create({
     padding: 16,
     marginBottom: 10,
     borderWidth: 1,
-    borderColor: "#7C3AED22",
+    borderColor: "#6443F422",
   },
   expenseCardSettled: { opacity: 0.6 },
   expenseHeader: { flexDirection: "row", alignItems: "center", gap: 12, marginBottom: 12 },
@@ -555,7 +555,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   owedBannerRed: { backgroundColor: "#EF444422" },
-  owedBannerGreen: { backgroundColor: "#10B98122" },
+  owedBannerGreen: { backgroundColor: "#02A65C22" },
   owedText: { fontSize: 13, fontWeight: "600" },
   owedTextRed: { color: "#F87171" },
   owedTextGreen: { color: "#34D399" },
@@ -591,7 +591,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#1E0A3C",
     borderRadius: 14,
     borderWidth: 1.5,
-    borderColor: "#7C3AED44",
+    borderColor: "#6443F444",
     paddingHorizontal: 14,
   },
   input: { flex: 1, fontSize: 16, color: "#F9FAFB", paddingVertical: 14 },
@@ -629,7 +629,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     gap: 6,
-    backgroundColor: "#7C3AED22",
+    backgroundColor: "#6443F422",
     borderRadius: 12,
     padding: 12,
     marginTop: 16,

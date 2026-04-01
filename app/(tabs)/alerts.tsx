@@ -21,8 +21,8 @@ import * as Haptics from "expo-haptics";
 
 const DESTINATIONS = [
   { code: "TLV", city: "Tel Aviv", country: "Israel", emoji: "IL", gradient: ["#1a0a2e", "#6B21A8"] as const },
-  { code: "CDG", city: "Paris", country: "France", emoji: "FR", gradient: ["#1a0a2e", "#7C3AED"] as const },
-  { code: "JFK", city: "New York", country: "USA", emoji: "US", gradient: ["#1a0a2e", "#2563EB"] as const },
+  { code: "CDG", city: "Paris", country: "France", emoji: "FR", gradient: ["#1a0a2e", "#6443F4"] as const },
+  { code: "JFK", city: "New York", country: "USA", emoji: "US", gradient: ["#1a0a2e", "#6443F4"] as const },
   { code: "NRT", city: "Tokyo", country: "Japan", emoji: "JP", gradient: ["#1a0a2e", "#DB2777"] as const },
   { code: "DXB", city: "Dubai", country: "UAE", emoji: "AE", gradient: ["#1a0a2e", "#D97706"] as const },
   { code: "BCN", city: "Barcelona", country: "Spain", emoji: "ES", gradient: ["#1a0a2e", "#DC2626"] as const },
@@ -114,7 +114,7 @@ export default function AlertsScreen() {
       <View style={[styles.alertCard, isTriggered && styles.alertCardTriggered]}>
         {isTriggered && (
           <LinearGradient
-            colors={["#7C3AED22", "#EC489922"]}
+            colors={["#6443F422", "#F9449822"]}
             style={StyleSheet.absoluteFillObject}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 1 }}
@@ -168,7 +168,7 @@ export default function AlertsScreen() {
           <View style={styles.progressSection}>
             <View style={styles.progressBar}>
               <LinearGradient
-                colors={["#7C3AED", "#EC4899"]}
+                colors={["#6443F4", "#F94498"]}
                 style={[styles.progressFill, { width: `${progress * 100}%` }]}
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 0 }}
@@ -186,7 +186,7 @@ export default function AlertsScreen() {
             onPress={() => Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success)}
           >
             <LinearGradient
-              colors={["#7C3AED", "#EC4899"]}
+              colors={["#6443F4", "#F94498"]}
               style={styles.bookNowGradient}
               start={{ x: 0, y: 0 }}
               end={{ x: 1, y: 0 }}
@@ -220,7 +220,7 @@ export default function AlertsScreen() {
           </View>
           <Pressable style={styles.addBtn} onPress={openModal}>
             <LinearGradient
-              colors={["#7C3AED", "#EC4899"]}
+              colors={["#6443F4", "#F94498"]}
               style={styles.addBtnGradient}
               start={{ x: 0, y: 0 }}
               end={{ x: 1, y: 1 }}
@@ -233,21 +233,21 @@ export default function AlertsScreen() {
         {/* Stats Row */}
         <View style={styles.statsRow}>
           <View style={styles.statCard}>
-            <LinearGradient colors={["#7C3AED22", "#7C3AED11"]} style={styles.statGradient}>
+            <LinearGradient colors={["#6443F422", "#6443F411"]} style={styles.statGradient}>
               <IconSymbol name="bell.fill" size={20} color="#A78BFA" />
               <Text style={styles.statNum}>{alerts.length}</Text>
               <Text style={styles.statLabel}>Active</Text>
             </LinearGradient>
           </View>
           <View style={styles.statCard}>
-            <LinearGradient colors={["#EC489922", "#EC489911"]} style={styles.statGradient}>
+            <LinearGradient colors={["#F9449822", "#F9449811"]} style={styles.statGradient}>
               <IconSymbol name="bolt.fill" size={20} color="#F472B6" />
               <Text style={styles.statNum}>{triggeredAlerts.length}</Text>
               <Text style={styles.statLabel}>Triggered</Text>
             </LinearGradient>
           </View>
           <View style={styles.statCard}>
-            <LinearGradient colors={["#10B98122", "#10B98111"]} style={styles.statGradient}>
+            <LinearGradient colors={["#02A65C22", "#02A65C11"]} style={styles.statGradient}>
               <IconSymbol name="dollarsign.circle.fill" size={20} color="#34D399" />
               <Text style={styles.statNum}>
                 ${triggeredAlerts.reduce((sum, a) => sum + Math.max(0, a.currentPrice - a.maxPrice), 0)}
@@ -295,7 +295,7 @@ export default function AlertsScreen() {
         {alerts.length === 0 && (
           <View style={styles.emptyState}>
             <LinearGradient
-              colors={["#7C3AED22", "#EC489922"]}
+              colors={["#6443F422", "#F9449822"]}
               style={styles.emptyIcon}
             >
               <IconSymbol name="bell.fill" size={40} color="#A78BFA" />
@@ -306,7 +306,7 @@ export default function AlertsScreen() {
             </Text>
             <Pressable style={styles.emptyBtn} onPress={openModal}>
               <LinearGradient
-                colors={["#7C3AED", "#EC4899"]}
+                colors={["#6443F4", "#F94498"]}
                 style={styles.emptyBtnGradient}
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 0 }}
@@ -328,7 +328,7 @@ export default function AlertsScreen() {
           ].map((item, i) => (
             <View key={i} style={styles.howItem}>
               <View style={styles.howIconWrap}>
-                <LinearGradient colors={["#7C3AED33", "#EC489933"]} style={styles.howIconBg}>
+                <LinearGradient colors={["#6443F433", "#F9449833"]} style={styles.howIconBg}>
                   <IconSymbol name={item.icon} size={18} color="#A78BFA" />
                 </LinearGradient>
               </View>
@@ -420,7 +420,7 @@ export default function AlertsScreen() {
                       disabled={!maxPrice}
                     >
                       <LinearGradient
-                        colors={maxPrice ? ["#7C3AED", "#EC4899"] : ["#374151", "#374151"]}
+                        colors={maxPrice ? ["#6443F4", "#F94498"] : ["#374151", "#374151"]}
                         style={styles.createBtnGradient}
                         start={{ x: 0, y: 0 }}
                         end={{ x: 1, y: 0 }}
@@ -456,7 +456,7 @@ const styles = StyleSheet.create({
   addBtn: { borderRadius: 16, overflow: "hidden" },
   addBtnGradient: { width: 48, height: 48, alignItems: "center", justifyContent: "center" },
   statsRow: { flexDirection: "row", paddingHorizontal: 20, gap: 10, marginBottom: 24 },
-  statCard: { flex: 1, borderRadius: 16, overflow: "hidden", borderWidth: 1, borderColor: "#7C3AED33" },
+  statCard: { flex: 1, borderRadius: 16, overflow: "hidden", borderWidth: 1, borderColor: "#6443F433" },
   statGradient: { padding: 14, alignItems: "center", gap: 4 },
   statNum: { fontSize: 20, fontWeight: "800", color: "#F9FAFB" },
   statLabel: { fontSize: 11, color: "#9CA3AF" },
@@ -469,11 +469,11 @@ const styles = StyleSheet.create({
     padding: 18,
     marginBottom: 12,
     borderWidth: 1,
-    borderColor: "#7C3AED33",
+    borderColor: "#6443F433",
     overflow: "hidden",
     position: "relative",
   },
-  alertCardTriggered: { borderColor: "#EC4899" },
+  alertCardTriggered: { borderColor: "#F94498" },
   alertHeader: { flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: 16 },
   alertLeft: { flexDirection: "row", alignItems: "center", gap: 12 },
   alertEmoji: { fontSize: 32 },
@@ -483,7 +483,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     gap: 4,
-    backgroundColor: "#EC4899",
+    backgroundColor: "#F94498",
     paddingHorizontal: 10,
     paddingVertical: 5,
     borderRadius: 20,
@@ -493,12 +493,12 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     gap: 4,
-    backgroundColor: "#7C3AED22",
+    backgroundColor: "#6443F422",
     paddingHorizontal: 10,
     paddingVertical: 5,
     borderRadius: 20,
     borderWidth: 1,
-    borderColor: "#7C3AED44",
+    borderColor: "#6443F444",
   },
   watchingText: { fontSize: 11, fontWeight: "600", color: "#A78BFA" },
   priceRow: { flexDirection: "row", alignItems: "center", marginBottom: 14 },
@@ -589,7 +589,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#1E0A3C",
     borderRadius: 16,
     borderWidth: 1.5,
-    borderColor: "#7C3AED",
+    borderColor: "#6443F4",
     paddingHorizontal: 16,
     paddingVertical: 4,
   },
@@ -599,12 +599,12 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     gap: 8,
-    backgroundColor: "#10B98122",
+    backgroundColor: "#02A65C22",
     borderRadius: 12,
     padding: 12,
     marginTop: 12,
     borderWidth: 1,
-    borderColor: "#10B98144",
+    borderColor: "#02A65C44",
   },
   alertNowText: { flex: 1, fontSize: 13, color: "#34D399", lineHeight: 18 },
   createBtn: { borderRadius: 16, overflow: "hidden" },

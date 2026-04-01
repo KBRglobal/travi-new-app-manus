@@ -2,7 +2,7 @@ import { useState } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, ScrollView, Dimensions, TextInput, Platform } from "react-native";
 import { router } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
-import { Image } from "expo-image";
+import { Image } from "react-native";
 import { IconSymbol } from "@/components/ui/icon-symbol";
 import * as Haptics from "expo-haptics";
 
@@ -37,7 +37,7 @@ const CATEGORIES = [
 ];
 
 const FEATURED = [
-  { id: "f1", city: "Santorini", country: "Greece", tag: "Trending", tagColor: "#E91E8C", temp: "24°C", desc: "Iconic white-washed cliffs and sapphire seas", image: IMG.santorini },
+  { id: "f1", city: "Santorini", country: "Greece", tag: "Trending", tagColor: "#F94498", temp: "24°C", desc: "Iconic white-washed cliffs and sapphire seas", image: IMG.santorini },
   { id: "f2", city: "Kyoto", country: "Japan", tag: "Editor's Pick", tagColor: "#FF9800", temp: "18°C", desc: "Ancient temples, cherry blossoms & zen gardens", image: IMG.kyoto },
   { id: "f3", city: "Bali", country: "Indonesia", tag: "Most Booked", tagColor: "#4CAF50", temp: "29°C", desc: "Tropical paradise with rice terraces and temples", image: IMG.bali },
 ];
@@ -56,8 +56,8 @@ const DESTINATIONS = [
 ];
 
 const STORIES = [
-  { id: "s1", user: "Sofia M.", dest: "Tokyo", text: "3 weeks in Japan changed my perspective on everything. The food, the people, the culture — absolutely magical!", likes: 847, time: "2h ago", color: "#7B2FBE" },
-  { id: "s2", user: "Marco R.", dest: "Bali", text: "Sunrise at Mount Batur was worth every step of the 3am hike. TRAVI's itinerary was spot on!", likes: 1203, time: "5h ago", color: "#E91E8C" },
+  { id: "s1", user: "Sofia M.", dest: "Tokyo", text: "3 weeks in Japan changed my perspective on everything. The food, the people, the culture — absolutely magical!", likes: 847, time: "2h ago", color: "#6443F4" },
+  { id: "s2", user: "Marco R.", dest: "Bali", text: "Sunrise at Mount Batur was worth every step of the 3am hike. TRAVI's itinerary was spot on!", likes: 1203, time: "5h ago", color: "#F94498" },
   { id: "s3", user: "Aisha K.", dest: "Morocco", text: "Lost in the Marrakech medina was the best thing that happened to me. Found a hidden riad that wasn't in any guide.", likes: 562, time: "1d ago", color: "#FF9800" },
 ];
 
@@ -88,7 +88,7 @@ export default function ExploreScreen() {
 
   return (
     <View style={S.container}>
-      <LinearGradient colors={["#040010", "#0D0520", "#1A0A3D"]} locations={[0, 0.4, 1]} style={StyleSheet.absoluteFillObject} />
+      <LinearGradient colors={["#0D0628", "#1A0A3D", "#1A0A3D"]} locations={[0, 0.4, 1]} style={StyleSheet.absoluteFillObject} />
       <View style={S.orb1} />
       <View style={S.orb2} />
 
@@ -127,7 +127,7 @@ export default function ExploreScreen() {
 
         {/* Featured Destination — Full Photo Hero */}
         <TouchableOpacity style={S.featuredCard} activeOpacity={0.92} onPress={() => router.push("/(trip)/plan" as never)}>
-          <Image source={{ uri: featured.image }} style={StyleSheet.absoluteFillObject} contentFit="cover" />
+          <Image source={{ uri: featured.image }} style={StyleSheet.absoluteFillObject} resizeMode="cover" />
           <LinearGradient colors={["rgba(0,0,0,0.1)", "rgba(0,0,0,0.2)", "rgba(0,0,0,0.8)"]} locations={[0, 0.4, 1]} style={StyleSheet.absoluteFillObject} />
           {/* Tag */}
           <View style={[S.featuredTag, { backgroundColor: featured.tagColor + "CC" }]}>
@@ -148,7 +148,7 @@ export default function ExploreScreen() {
               <Text style={S.featuredDesc}>{featured.desc}</Text>
             </View>
             <TouchableOpacity style={S.featuredBtn} onPress={() => router.push("/(trip)/plan" as never)} activeOpacity={0.85}>
-              <LinearGradient colors={["#7B2FBE", "#E91E8C"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={S.featuredBtnGradient}>
+              <LinearGradient colors={["#6443F4", "#F94498"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={S.featuredBtnGradient}>
                 <Text style={S.featuredBtnText}>Plan Trip</Text>
                 <IconSymbol name="arrow.right" size={14} color="#FFFFFF" />
               </LinearGradient>
@@ -188,12 +188,12 @@ export default function ExploreScreen() {
           {filtered.map((dest) => (
             <TouchableOpacity key={dest.id} style={S.destCard} onPress={() => router.push("/(trip)/plan" as never)} activeOpacity={0.88}>
               {/* Full photo background */}
-              <Image source={{ uri: dest.image }} style={StyleSheet.absoluteFillObject} contentFit="cover" />
+              <Image source={{ uri: dest.image }} style={StyleSheet.absoluteFillObject} resizeMode="cover" />
               {/* Gradient overlay */}
               <LinearGradient colors={["transparent", "rgba(0,0,0,0.75)"]} locations={[0.3, 1]} style={StyleSheet.absoluteFillObject} />
               {/* Save button */}
               <TouchableOpacity style={S.saveBtn} onPress={() => toggleSave(dest.id)} activeOpacity={0.7}>
-                <IconSymbol name={savedDests.includes(dest.id) ? "heart.fill" : "heart"} size={16} color={savedDests.includes(dest.id) ? "#E91E8C" : "rgba(255,255,255,0.8)"} />
+                <IconSymbol name={savedDests.includes(dest.id) ? "heart.fill" : "heart"} size={16} color={savedDests.includes(dest.id) ? "#F94498" : "rgba(255,255,255,0.8)"} />
               </TouchableOpacity>
               {/* Tag */}
               <View style={S.destTagWrap}>
@@ -226,7 +226,7 @@ export default function ExploreScreen() {
           {EXPERIENCES.map((exp) => (
             <TouchableOpacity key={exp.id} style={S.expCard} activeOpacity={0.88}
               onPress={() => { if (Platform.OS !== "web") Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light); }}>
-              <Image source={{ uri: exp.image }} style={StyleSheet.absoluteFillObject} contentFit="cover" />
+              <Image source={{ uri: exp.image }} style={StyleSheet.absoluteFillObject} resizeMode="cover" />
               <LinearGradient colors={["transparent", "rgba(0,0,0,0.8)"]} locations={[0.3, 1]} style={StyleSheet.absoluteFillObject} />
               <View style={S.expBottom}>
                 <Text style={S.expTitle}>{exp.title}</Text>
@@ -271,7 +271,7 @@ export default function ExploreScreen() {
               <Text style={S.storyText} numberOfLines={2}>{story.text}</Text>
               <View style={S.storyFooter}>
                 <View style={S.storyLikes}>
-                  <IconSymbol name="heart.fill" size={12} color="#E91E8C" />
+                  <IconSymbol name="heart.fill" size={12} color="#F94498" />
                   <Text style={S.storyLikesText}>{story.likes.toLocaleString()}</Text>
                 </View>
                 <Text style={S.storyTime}>{story.time}</Text>
@@ -287,7 +287,7 @@ export default function ExploreScreen() {
 }
 
 const S = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#040010" },
+  container: { flex: 1, backgroundColor: "#0D0628" },
   orb1: { position: "absolute", width: width * 1.4, height: width * 1.4, borderRadius: width * 0.7, top: -width * 0.5, left: -width * 0.3, backgroundColor: "rgba(123,47,190,0.1)" },
   orb2: { position: "absolute", width: width, height: width, borderRadius: width / 2, bottom: -width * 0.3, right: -width * 0.3, backgroundColor: "rgba(233,30,140,0.07)" },
   scroll: { paddingBottom: 40 },

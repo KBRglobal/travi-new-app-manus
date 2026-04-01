@@ -5,7 +5,7 @@ import {
 } from "react-native";
 import { router } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
-import { Image } from "expo-image";
+import { Image } from "react-native";
 import { IconSymbol } from "@/components/ui/icon-symbol";
 import { useStore } from "@/lib/store";
 import { BRAND, TYPE, LOGOS, RADIUS, SPACING } from "@/constants/brand";
@@ -129,7 +129,7 @@ function NotifCard({ item, onPress, onDismiss }: { item: Notif; onPress: () => v
           {/* Icon or Image */}
           {item.meta?.image ? (
             <View style={[S.notifImgWrap, { borderColor: style.color + "40" }]}>
-              <Image source={{ uri: item.meta.image }} style={S.notifImg} contentFit="cover" />
+              <Image source={{ uri: item.meta.image }} style={S.notifImg} resizeMode="cover" />
               <View style={[S.notifImgBadge, { backgroundColor: style.bg }]}>
                 <IconSymbol name={style.icon} size={10} color={style.color} />
               </View>
@@ -230,7 +230,7 @@ export default function NotificationsScreen() {
   return (
     <View style={[S.container, { paddingTop: insets.top }]}>
       <StatusBar barStyle="light-content" />
-      <LinearGradient colors={["#24103E", "#1A0A30", "#0D0520"]} style={StyleSheet.absoluteFillObject} />
+      <LinearGradient colors={["#24103E", "#1A0A30", "#1A0A3D"]} style={StyleSheet.absoluteFillObject} />
 
       {/* Ambient orbs */}
       <View style={S.orb1} />
@@ -297,7 +297,7 @@ export default function NotificationsScreen() {
               <View style={S.emptyState}>
                 <View style={S.emptyIconWrap}>
                   <LinearGradient colors={["rgba(100,67,244,0.2)", "rgba(249,68,152,0.1)"]} style={StyleSheet.absoluteFillObject} />
-                  <Image source={LOGOS.mascotDark} style={S.emptyMascot} contentFit="contain" />
+                  <Image source={LOGOS.mascotDark} style={S.emptyMascot} resizeMode="contain" />
                 </View>
                 <Text style={S.emptyTitle}>All caught up!</Text>
                 <Text style={S.emptyBody}>No {filter === "unread" ? "unread " : ""}notifications right now. We'll let you know when something exciting happens.</Text>

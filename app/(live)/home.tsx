@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, StyleSheet, ScrollView, Dimensions, Anima
 import { router } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
 import { IconSymbol } from "@/components/ui/icon-symbol";
-import { Image } from "expo-image";
+import { Image } from "react-native";
 import { useStore } from "@/lib/store";
 
 const { width } = Dimensions.get("window");
@@ -102,7 +102,7 @@ export default function LiveHomeScreen() {
 
   return (
     <View style={styles.container}>
-      <LinearGradient colors={["#040010", "#0A0520", "#0D1A0D"]} locations={[0, 0.6, 1]} style={StyleSheet.absoluteFillObject} />
+      <LinearGradient colors={["#0D0628", "#0A0520", "#0D1A0D"]} locations={[0, 0.6, 1]} style={StyleSheet.absoluteFillObject} />
       <View style={styles.orb1} />
       <View style={styles.orb2} />
       <Animated.View style={[styles.orb3, { opacity: glowAnim }]} />
@@ -166,7 +166,7 @@ export default function LiveHomeScreen() {
                 <Text style={styles.progressPct}>{completedActivities}/{totalActivities} activities</Text>
               </View>
               <View style={styles.progressBar}>
-                <LinearGradient colors={["#4CAF50", "#7B2FBE"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={[styles.progressFill, { width: `${dayProgress * 100}%` as any }]} />
+                <LinearGradient colors={["#4CAF50", "#6443F4"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={[styles.progressFill, { width: `${dayProgress * 100}%` as any }]} />
               </View>
             </View>
           </LinearGradient>
@@ -176,7 +176,7 @@ export default function LiveHomeScreen() {
         {currentActivity && (
           <View style={styles.section}>
             <View style={styles.sectionTitleRow}>
-              <IconSymbol name="location.fill" size={16} color="#7B2FBE" />
+              <IconSymbol name="location.fill" size={16} color="#6443F4" />
               <Text style={styles.sectionTitle}> Happening Now</Text>
             </View>
             <View style={styles.currentCard}>
@@ -193,13 +193,13 @@ export default function LiveHomeScreen() {
               <Text style={styles.currentTitle}>{currentActivity.title}</Text>
               <Text style={styles.currentDesc}>{currentActivity.description}</Text>
               <View style={styles.currentLocationRow}>
-                <IconSymbol name="location.fill" size={13} color="#7B2FBE" />
+                <IconSymbol name="location.fill" size={13} color="#6443F4" />
                 <Text style={styles.currentLocationText}>{currentActivity.location}</Text>
                 {currentActivity.price > 0 && <Text style={styles.currentPrice}>${currentActivity.price}</Text>}
               </View>
               <View style={styles.currentBtns}>
                 <TouchableOpacity style={styles.dirBtn} onPress={() => router.push("/(live)/map" as never)} activeOpacity={0.85}>
-                  <LinearGradient colors={["#7B2FBE", "#E91E8C"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.dirBtnGradient}>
+                  <LinearGradient colors={["#6443F4", "#F94498"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.dirBtnGradient}>
                     <IconSymbol name="location.north.fill" size={14} color="#FFFFFF" />
                     <Text style={styles.dirBtnText}>Directions</Text>
                   </LinearGradient>
@@ -239,7 +239,7 @@ export default function LiveHomeScreen() {
           <Text style={styles.sectionTitle}>Quick Actions</Text>
           <View style={styles.actionsGrid}>
             {([
-              { id: "chat", icon: "bubble.left.fill" as const, label: "Ask TRAVI", sub: "AI assistant", route: "/(live)/chat", colors: ["#7B2FBE", "#5A1E9E"] as [string, string] },
+              { id: "chat", icon: "bubble.left.fill" as const, label: "Ask TRAVI", sub: "AI assistant", route: "/(live)/chat", colors: ["#6443F4", "#5A1E9E"] as [string, string] },
               { id: "plan", icon: "calendar" as const, label: "Schedule", sub: "Day by day", route: "/(live)/schedule", colors: ["#1A3A5C", "#2D1B69"] as [string, string] },
               { id: "map", icon: "map.fill" as const, label: "Nearby", sub: "Explore area", route: "/(live)/map", colors: ["#1B4D1E", "#2D3A1B"] as [string, string] },
               { id: "split", icon: "dollarsign.circle.fill" as const, label: "Expenses", sub: "Track & split", route: "/(live)/expenses", colors: ["#1A3A1A", "#2D3A2D"] as [string, string] },
@@ -270,7 +270,7 @@ export default function LiveHomeScreen() {
           <LinearGradient colors={["rgba(123,47,190,0.25)", "rgba(233,30,140,0.15)"]} style={StyleSheet.absoluteFillObject} />
           <View style={styles.tipHeader}>
             <View style={styles.tipLogoWrap}>
-              <Image source={require("@/assets/logos/mascot-dark.png")} style={styles.tipLogo} contentFit="contain" />
+              <Image source={require("@/assets/logos/mascot-dark.png")} style={styles.tipLogo} resizeMode="contain" />
             </View>
             <Text style={styles.tipTitle}>TRAVI Tip</Text>
           </View>
@@ -362,7 +362,7 @@ export default function LiveHomeScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#040010" },
+  container: { flex: 1, backgroundColor: "#0D0628" },
   orb1: { position: "absolute", width: width * 1.2, height: width * 1.2, borderRadius: width * 0.6, top: -width * 0.5, left: -width * 0.3, backgroundColor: "rgba(123,47,190,0.12)" },
   orb2: { position: "absolute", width: width * 0.8, height: width * 0.8, borderRadius: width * 0.4, bottom: 100, right: -width * 0.3, backgroundColor: "rgba(76,175,80,0.08)" },
   orb3: { position: "absolute", width: width * 0.6, height: width * 0.6, borderRadius: width * 0.3, top: width * 0.3, right: -width * 0.2, backgroundColor: "rgba(233,30,140,0.07)" },
@@ -410,7 +410,7 @@ const styles = StyleSheet.create({
   currentDesc: { color: "#8B7AAA", fontSize: 14, lineHeight: 20 },
   currentLocationRow: { flexDirection: "row", alignItems: "center", gap: 6 },
   currentLocationText: { flex: 1, color: "#8B7AAA", fontSize: 13 },
-  currentPrice: { color: "#E91E8C", fontSize: 14, fontWeight: "700" },
+  currentPrice: { color: "#F94498", fontSize: 14, fontWeight: "700" },
   currentBtns: { flexDirection: "row", gap: 10, marginTop: 4 },
   dirBtn: { flex: 1, borderRadius: 14, overflow: "hidden" },
   dirBtnGradient: { flexDirection: "row", alignItems: "center", justifyContent: "center", paddingVertical: 12, gap: 6 },
@@ -439,7 +439,7 @@ const styles = StyleSheet.create({
   tipText: { color: "#C4B5D9", fontSize: 14, lineHeight: 22 },
   tipDots: { flexDirection: "row", gap: 5 },
   tipDot: { width: 5, height: 5, borderRadius: 2.5, backgroundColor: "rgba(255,255,255,0.2)" },
-  tipDotActive: { width: 14, backgroundColor: "#7B2FBE" },
+  tipDotActive: { width: 14, backgroundColor: "#6443F4" },
   weatherDetails: { borderRadius: 20, padding: 18, gap: 14, overflow: "hidden", borderWidth: 1.5, borderColor: "rgba(255,255,255,0.08)" },
   weatherTitleRow: { flexDirection: "row", alignItems: "center" },
   weatherTitle: { color: "#FFFFFF", fontSize: 15, fontWeight: "700" },

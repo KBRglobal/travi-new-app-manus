@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, FlatList, Dimensions, Animated, Platform } from "react-native";
 import { router, useLocalSearchParams } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
-import { Image } from "expo-image";
+import { Image } from "react-native";
 import { IconSymbol } from "@/components/ui/icon-symbol";
 import { useStore } from "@/lib/store";
 import * as Haptics from "expo-haptics";
@@ -55,11 +55,11 @@ const LANDMARKS: Record<string, { id: string; name: string; type: string; rating
 };
 
 const ICON_COLORS: Record<LandmarkIcon, string> = {
-  "building.columns.fill": "#7B2FBE",
+  "building.columns.fill": "#6443F4",
   "mountain.2.fill": "#4CAF50",
   "beach.umbrella": "#2196F3",
   "building.2.fill": "#FF9800",
-  "paintbrush.fill": "#E91E8C",
+  "paintbrush.fill": "#F94498",
   "fork.knife": "#FF6B35",
   "leaf.fill": "#8BC34A",
   "globe": "#00BCD4",
@@ -93,7 +93,7 @@ export default function LandmarksScreen() {
 
   return (
     <View style={styles.container}>
-      <LinearGradient colors={["#040010", "#0D0520", "#1A0A3D"]} style={StyleSheet.absoluteFillObject} />
+      <LinearGradient colors={["#0D0628", "#1A0A3D", "#1A0A3D"]} style={StyleSheet.absoluteFillObject} />
       <View style={styles.orb1} />
 
       <View style={styles.header}>
@@ -111,8 +111,8 @@ export default function LandmarksScreen() {
 
       <View style={styles.duckRow}>
         <View style={styles.duckAvatar}>
-          <LinearGradient colors={["#7B2FBE", "#E91E8C"]} style={styles.duckGradient}>
-            <Image source={require("@/assets/logos/mascot-dark.png")} style={styles.duckImg} contentFit="contain" />
+          <LinearGradient colors={["#6443F4", "#F94498"]} style={styles.duckGradient}>
+            <Image source={require("@/assets/logos/mascot-dark.png")} style={styles.duckImg} resizeMode="contain" />
           </LinearGradient>
         </View>
         <Animated.View style={[styles.duckBubble, { opacity: fadeAnim }]}>
@@ -131,7 +131,7 @@ export default function LandmarksScreen() {
           contentContainerStyle={styles.list}
           renderItem={({ item }) => {
             const isSelected = selected.includes(item.id);
-            const color = ICON_COLORS[item.icon] || "#7B2FBE";
+            const color = ICON_COLORS[item.icon] || "#6443F4";
             return (
               <TouchableOpacity
                 style={[styles.card, isSelected && { borderColor: color + "AA" }]}
@@ -178,7 +178,7 @@ export default function LandmarksScreen() {
           activeOpacity={0.88}
         >
           <LinearGradient
-            colors={selected.length > 0 ? ["#7B2FBE", "#E91E8C"] : ["rgba(255,255,255,0.08)", "rgba(255,255,255,0.05)"]}
+            colors={selected.length > 0 ? ["#6443F4", "#F94498"] : ["rgba(255,255,255,0.08)", "rgba(255,255,255,0.05)"]}
             start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
             style={styles.ctaGradient}
           >
@@ -192,13 +192,13 @@ export default function LandmarksScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#040010" },
+  container: { flex: 1, backgroundColor: "#0D0628" },
   orb1: { position: "absolute", width: width, height: width, borderRadius: width / 2, top: -width * 0.4, right: -width * 0.3, backgroundColor: "rgba(233,30,140,0.07)" },
   header: { flexDirection: "row", alignItems: "center", paddingHorizontal: 20, paddingTop: 60, paddingBottom: 16, gap: 12 },
   backBtn: { width: 40, height: 40, borderRadius: 14, backgroundColor: "rgba(255,255,255,0.08)", alignItems: "center", justifyContent: "center" },
   progressWrap: { flex: 1, gap: 6 },
   progressTrack: { height: 4, backgroundColor: "rgba(255,255,255,0.1)", borderRadius: 2, overflow: "hidden" },
-  progressFill: { height: "100%", backgroundColor: "#E91E8C", borderRadius: 2 },
+  progressFill: { height: "100%", backgroundColor: "#F94498", borderRadius: 2 },
   progressLabel: { color: "rgba(255,255,255,0.4)", fontSize: 12, textAlign: "right" },
   duckRow: { flexDirection: "row", alignItems: "flex-end", paddingHorizontal: 20, paddingBottom: 16, gap: 10 },
   duckAvatar: { width: 44, height: 44, borderRadius: 22, overflow: "hidden" },

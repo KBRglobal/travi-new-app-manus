@@ -5,7 +5,7 @@ import {
 } from "react-native";
 import { router } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
-import { Image } from "expo-image";
+import { Image } from "react-native";
 import { IconSymbol } from "@/components/ui/icon-symbol";
 import { BRAND, TYPE, LOGOS, RADIUS } from "@/constants/brand";
 import * as Haptics from "expo-haptics";
@@ -70,7 +70,7 @@ function StatCard({ icon, value, label, color }: { icon: string; value: string; 
 function HighlightCard({ item }: { item: typeof HIGHLIGHTS[0] }) {
   return (
     <View style={S.highlightCard}>
-      <Image source={{ uri: item.image }} style={S.highlightImage} contentFit="cover" />
+      <Image source={{ uri: item.image }} style={S.highlightImage} resizeMode="cover" />
       <LinearGradient colors={["transparent", "rgba(0,0,0,0.85)"]} style={S.highlightGradient} />
       <View style={S.highlightContent}>
         <Text style={S.highlightEmoji}>{item.emoji}</Text>
@@ -119,7 +119,7 @@ export default function TripSummaryScreen() {
 
   return (
     <View style={[S.container, { paddingTop: insets.top }]}>
-      <LinearGradient colors={["#24103E", "#1A0A30", "#0D0520"]} style={StyleSheet.absoluteFillObject} />
+      <LinearGradient colors={["#24103E", "#1A0A30", "#1A0A3D"]} style={StyleSheet.absoluteFillObject} />
 
       {/* Header */}
       <View style={S.header}>
@@ -135,11 +135,11 @@ export default function TripSummaryScreen() {
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 120 }}>
         {/* Hero cover */}
         <View style={S.heroWrap}>
-          <Image source={{ uri: TRIP.coverImage }} style={S.heroCover} contentFit="cover" />
+          <Image source={{ uri: TRIP.coverImage }} style={S.heroCover} resizeMode="cover" />
           <LinearGradient colors={["transparent", "rgba(13,5,32,0.95)"]} style={S.heroGradient} />
           <View style={S.heroContent}>
             <View style={S.heroLogoWrap}>
-              <Image source={LOGOS.logotypeDark} style={S.heroLogo} contentFit="contain" />
+              <Image source={LOGOS.logotypeDark} style={S.heroLogo} resizeMode="contain" />
             </View>
             <Text style={S.heroTitle}>{TRIP.title}</Text>
             <Text style={S.heroDates}>{TRIP.dates} · {TRIP.duration}</Text>
@@ -162,7 +162,7 @@ export default function TripSummaryScreen() {
             <Text style={S.dnaMatchLabel}>DNA Match</Text>
             <Text style={S.dnaMatchSub}>This trip matched your traveler DNA perfectly!</Text>
           </View>
-          <Image source={LOGOS.mascotDark} style={S.dnaMascot} contentFit="contain" />
+          <Image source={LOGOS.mascotDark} style={S.dnaMascot} resizeMode="contain" />
         </View>
 
         {/* Stats grid */}
@@ -223,7 +223,7 @@ export default function TripSummaryScreen() {
         <View style={S.memoriesGrid}>
           {MEMORIES_GRID.map((uri, i) => (
             <TouchableOpacity key={i} style={[S.memoryCell, i === 0 && S.memoryCellLarge]} activeOpacity={0.9}>
-              <Image source={{ uri }} style={StyleSheet.absoluteFillObject} contentFit="cover" />
+              <Image source={{ uri }} style={StyleSheet.absoluteFillObject} resizeMode="cover" />
               {i === 5 && (
                 <View style={S.moreOverlay}>
                   <Text style={S.moreText}>+{TRIP.photosCount - 5}</Text>
@@ -276,7 +276,7 @@ export default function TripSummaryScreen() {
 
       {/* Bottom CTA */}
       <View style={[S.bottomCTA, { paddingBottom: insets.bottom + 16 }]}>
-        <LinearGradient colors={["rgba(13,5,32,0)", "#0D0520"]} style={StyleSheet.absoluteFillObject} />
+        <LinearGradient colors={["rgba(13,5,32,0)", "#1A0A3D"]} style={StyleSheet.absoluteFillObject} />
         <TouchableOpacity
           style={S.planNextBtn}
           onPress={() => {

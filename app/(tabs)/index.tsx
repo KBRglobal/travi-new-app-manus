@@ -5,7 +5,7 @@ import {
 } from "react-native";
 import { router } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
-import { Image } from "expo-image";
+import { Image } from "react-native";
 import { IconSymbol } from "@/components/ui/icon-symbol";
 import { useStore } from "@/lib/store";
 import * as Haptics from "expo-haptics";
@@ -32,18 +32,18 @@ const IMG = {
 };
 
 const FEATURED_DESTINATIONS = [
-  { id: "1", city: "Kyoto", country: "Japan", tagline: "Cherry blossoms & ancient temples", image: IMG.kyoto, price: "From $1,240", badge: "DNA Match", badgeColor: "#E91E8C" },
+  { id: "1", city: "Kyoto", country: "Japan", tagline: "Cherry blossoms & ancient temples", image: IMG.kyoto, price: "From $1,240", badge: "DNA Match", badgeColor: "#F94498" },
   { id: "2", city: "Santorini", country: "Greece", tagline: "Sunsets that stop time", image: IMG.santorini, price: "From $980", badge: "Trending", badgeColor: "#F59E0B" },
-  { id: "3", city: "Tokyo", country: "Japan", tagline: "Where neon meets tradition", image: IMG.tokyo, price: "From $1,450", badge: "Popular", badgeColor: "#7B2FBE" },
-  { id: "4", city: "Bali", country: "Indonesia", tagline: "Find your inner peace", image: IMG.bali, price: "From $760", badge: "Best Value", badgeColor: "#10B981" },
+  { id: "3", city: "Tokyo", country: "Japan", tagline: "Where neon meets tradition", image: IMG.tokyo, price: "From $1,450", badge: "Popular", badgeColor: "#6443F4" },
+  { id: "4", city: "Bali", country: "Indonesia", tagline: "Find your inner peace", image: IMG.bali, price: "From $760", badge: "Best Value", badgeColor: "#02A65C" },
   { id: "5", city: "Barcelona", country: "Spain", tagline: "Art, food and endless sun", image: IMG.barcelona, price: "From $620", badge: "Hot Deal", badgeColor: "#EF4444" },
 ];
 
 const QUICK_ACTIONS = [
-  { id: "flights", label: "Flights", iconName: "airplane", colors: ["#1E3A5F", "#2563EB"] as [string, string] },
-  { id: "hotels", label: "Hotels", iconName: "bed.double.fill", colors: ["#7C3AED", "#A855F7"] as [string, string] },
-  { id: "connecting", label: "Connecting", iconName: "person.2.fill", colors: ["#BE185D", "#EC4899"] as [string, string] },
-  { id: "alerts", label: "Price Alert", iconName: "bell.fill", colors: ["#065F46", "#10B981"] as [string, string] },
+  { id: "flights", label: "Flights", iconName: "airplane", colors: ["#6443F4", "#6443F4"] as [string, string] },
+  { id: "hotels", label: "Hotels", iconName: "bed.double.fill", colors: ["#6443F4", "#9077EF"] as [string, string] },
+  { id: "connecting", label: "Connecting", iconName: "person.2.fill", colors: ["#F94498", "#F94498"] as [string, string] },
+  { id: "alerts", label: "Price Alert", iconName: "bell.fill", colors: ["#02A65C", "#02A65C"] as [string, string] },
 ];
 
 const PRICE_ALERTS = [
@@ -54,8 +54,8 @@ const PRICE_ALERTS = [
 
 const TRENDING_STORIES = [
   { id: "1", author: "Maya R.", dest: "Lisbon", text: "The most underrated city in Europe. Pastéis de nata changed my life.", avatar: "M", gradient: ["#C2410C", "#EA580C"] as [string, string] },
-  { id: "2", author: "James K.", dest: "Kyoto", text: "Woke up at 5am to see Fushimi Inari alone. Worth every second.", avatar: "J", gradient: ["#1E3A5F", "#2563EB"] as [string, string] },
-  { id: "3", author: "Sara L.", dest: "Bali", text: "Ubud rice terraces at sunrise. No words. Just go.", avatar: "S", gradient: ["#065F46", "#10B981"] as [string, string] },
+  { id: "2", author: "James K.", dest: "Kyoto", text: "Woke up at 5am to see Fushimi Inari alone. Worth every second.", avatar: "J", gradient: ["#6443F4", "#6443F4"] as [string, string] },
+  { id: "3", author: "Sara L.", dest: "Bali", text: "Ubud rice terraces at sunrise. No words. Just go.", avatar: "S", gradient: ["#02A65C", "#02A65C"] as [string, string] },
 ];
 
 export default function HomeScreen() {
@@ -86,7 +86,7 @@ export default function HomeScreen() {
   return (
     <View style={S.container}>
       <StatusBar barStyle="light-content" />
-      <LinearGradient colors={["#040010", "#0D0520", "#1A0A3D"]} style={StyleSheet.absoluteFillObject} />
+      <LinearGradient colors={["#0D0628", "#1A0A3D", "#1A0A3D"]} style={StyleSheet.absoluteFillObject} />
       <View style={S.orb1} />
       <View style={S.orb2} />
 
@@ -108,7 +108,7 @@ export default function HomeScreen() {
       >
         {/* ── Hero Header ── */}
         <View style={S.hero}>
-          <LinearGradient colors={["#040010", "#1A0A3D", "#2D0A5C"]} style={StyleSheet.absoluteFillObject} />
+          <LinearGradient colors={["#0D0628", "#1A0A3D", "#2D0A5C"]} style={StyleSheet.absoluteFillObject} />
           <View style={S.heroOrb} />
           <View style={S.heroContent}>
             <View style={S.heroTop}>
@@ -140,7 +140,7 @@ export default function HomeScreen() {
               </View>
               <View style={S.pointsRight}>
                 <View style={S.tierBadge}>
-                  <LinearGradient colors={["#7B2FBE", "#E91E8C"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={StyleSheet.absoluteFillObject} />
+                  <LinearGradient colors={["#6443F4", "#F94498"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={StyleSheet.absoluteFillObject} />
                   <Text style={S.tierText}>{points < 1000 ? "Explorer" : points < 5000 ? "Adventurer" : "Elite"}</Text>
                 </View>
                 <IconSymbol name="star.fill" size={36} color="rgba(255,215,0,0.3)" />
@@ -157,7 +157,7 @@ export default function HomeScreen() {
                   <Text style={S.activeTripDest}>{activeTrip.destination}, {activeTrip.country}</Text>
                 </View>
                 <View style={S.activeTripArrow}>
-                  <IconSymbol name="chevron.right" size={16} color="#10B981" />
+                  <IconSymbol name="chevron.right" size={16} color="#02A65C" />
                 </View>
               </TouchableOpacity>
             )}
@@ -167,7 +167,7 @@ export default function HomeScreen() {
         {/* ── Plan New Trip CTA ── */}
         <View style={S.section}>
           <TouchableOpacity style={S.planCta} onPress={handlePlan} activeOpacity={0.88}>
-            <LinearGradient colors={["#7B2FBE", "#C026D3", "#E91E8C"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={StyleSheet.absoluteFillObject} />
+            <LinearGradient colors={["#6443F4", "#F94498", "#F94498"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={StyleSheet.absoluteFillObject} />
             <View style={S.planCtaLeft}>
               <View style={S.planCtaIcon}>
                 <IconSymbol name="airplane" size={22} color="rgba(255,255,255,0.9)" />
@@ -222,7 +222,7 @@ export default function HomeScreen() {
               <TouchableOpacity key={alert.id} style={S.alertCard} activeOpacity={0.88}
                 onPress={() => { if (Platform.OS !== "web") Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light); }}>
                 {/* Background photo */}
-                <Image source={{ uri: alert.image }} style={StyleSheet.absoluteFillObject} contentFit="cover" />
+                <Image source={{ uri: alert.image }} style={StyleSheet.absoluteFillObject} resizeMode="cover" />
                 {/* Dark overlay gradient */}
                 <LinearGradient colors={["rgba(0,0,0,0.15)", "rgba(0,0,0,0.75)"]} style={StyleSheet.absoluteFillObject} />
                 <View style={S.alertTop}>
@@ -270,7 +270,7 @@ export default function HomeScreen() {
                 activeOpacity={0.9}
               >
                 {/* Full-bleed destination photo */}
-                <Image source={{ uri: item.image }} style={StyleSheet.absoluteFillObject} contentFit="cover" />
+                <Image source={{ uri: item.image }} style={StyleSheet.absoluteFillObject} resizeMode="cover" />
                 {/* Cinematic gradient overlay — bottom heavy */}
                 <LinearGradient
                   colors={["transparent", "rgba(0,0,0,0.25)", "rgba(0,0,0,0.85)"]}
@@ -290,7 +290,7 @@ export default function HomeScreen() {
                   <View style={S.featPriceRow}>
                     <Text style={S.featPrice}>{item.price}</Text>
                     <View style={S.featPlanBtn}>
-                      <LinearGradient colors={["#7B2FBE", "#E91E8C"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={StyleSheet.absoluteFillObject} />
+                      <LinearGradient colors={["#6443F4", "#F94498"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={StyleSheet.absoluteFillObject} />
                       <Text style={S.featPlanText}>Plan</Text>
                     </View>
                   </View>
@@ -320,7 +320,7 @@ export default function HomeScreen() {
                 <View style={S.tripCardBorder} />
                 <View style={S.tripCardLeft}>
                   <View style={S.tripIconWrap}>
-                    <LinearGradient colors={["#7B2FBE", "#E91E8C"]} style={S.tripIconGradient}>
+                    <LinearGradient colors={["#6443F4", "#F94498"]} style={S.tripIconGradient}>
                       <IconSymbol name="airplane" size={18} color="#FFFFFF" />
                     </LinearGradient>
                   </View>
@@ -330,7 +330,7 @@ export default function HomeScreen() {
                   </View>
                 </View>
                 <View style={[S.tripStatus, { backgroundColor: trip.status === "active" ? "rgba(16,185,129,0.2)" : "rgba(123,47,190,0.2)" }]}>
-                  <Text style={[S.tripStatusText, { color: trip.status === "active" ? "#10B981" : "#C084FC" }]}>
+                  <Text style={[S.tripStatusText, { color: trip.status === "active" ? "#02A65C" : "#C084FC" }]}>
                     {trip.status === "active" ? "Live" : "Upcoming"}
                   </Text>
                 </View>
@@ -375,7 +375,7 @@ export default function HomeScreen() {
 }
 
 const S = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#040010" },
+  container: { flex: 1, backgroundColor: "#0D0628" },
   orb1: { position: "absolute", width: width * 1.5, height: width * 1.5, borderRadius: width * 0.75, top: -width * 0.6, left: -width * 0.4, backgroundColor: "rgba(123,47,190,0.12)" },
   orb2: { position: "absolute", width: width, height: width, borderRadius: width / 2, top: height * 0.3, right: -width * 0.4, backgroundColor: "rgba(233,30,140,0.06)" },
   stickyHeader: { position: "absolute", top: 0, left: 0, right: 0, zIndex: 100, flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 24, paddingTop: 56, paddingBottom: 12 },
@@ -401,8 +401,8 @@ const S = StyleSheet.create({
   tierBadge: { borderRadius: 12, overflow: "hidden", paddingHorizontal: 10, paddingVertical: 4 },
   tierText: { color: "#FFFFFF", fontSize: 11, fontWeight: "800" },
   activeTripBanner: { flexDirection: "row", alignItems: "center", gap: 12, borderRadius: 16, overflow: "hidden", padding: 14, borderWidth: 1, borderColor: "rgba(16,185,129,0.3)" },
-  activeDot: { width: 8, height: 8, borderRadius: 4, backgroundColor: "#10B981" },
-  activeTripLabel: { color: "#10B981", fontSize: 10, fontWeight: "800", letterSpacing: 1.5 },
+  activeDot: { width: 8, height: 8, borderRadius: 4, backgroundColor: "#02A65C" },
+  activeTripLabel: { color: "#02A65C", fontSize: 10, fontWeight: "800", letterSpacing: 1.5 },
   activeTripDest: { color: "#FFFFFF", fontSize: 15, fontWeight: "700" },
   activeTripArrow: { width: 28, height: 28, borderRadius: 14, backgroundColor: "rgba(16,185,129,0.2)", alignItems: "center", justifyContent: "center" },
   section: { paddingTop: 24 },

@@ -94,7 +94,7 @@ export default function VerifyScreen() {
   return (
     <View style={styles.container}>
       <LinearGradient
-        colors={["#040010", "#0D0520", "#1A0A3D", "#0D0520"]}
+        colors={["#0D0628", "#1A0A3D", "#1A0A3D", "#1A0A3D"]}
         locations={[0, 0.3, 0.6, 1]}
         style={StyleSheet.absoluteFillObject}
       />
@@ -113,7 +113,7 @@ export default function VerifyScreen() {
           {/* Icon */}
           <View style={styles.iconWrap}>
             <LinearGradient colors={["rgba(123,47,190,0.45)", "rgba(233,30,140,0.25)"]} style={styles.iconGradient}>
-              <IconSymbol name="envelope.fill" size={48} color="#7B2FBE" />
+              <IconSymbol name="envelope.fill" size={48} color="#6443F4" />
             </LinearGradient>
             <View style={styles.iconGlow} />
           </View>
@@ -162,7 +162,7 @@ export default function VerifyScreen() {
           {verified && (
             <Animated.View style={[styles.successBadge, { opacity: successOpacity, transform: [{ scale: successScale }] }]}>
               <LinearGradient colors={["rgba(0,230,118,0.25)", "rgba(0,188,212,0.15)"]} style={styles.successGradient}>
-                <IconSymbol name="checkmark" size={28} color="#10B981" />
+                <IconSymbol name="checkmark" size={28} color="#02A65C" />
                 <Text style={styles.successText}>Verified! Redirecting...</Text>
               </LinearGradient>
             </Animated.View>
@@ -176,7 +176,7 @@ export default function VerifyScreen() {
               activeOpacity={0.85}
             >
               <LinearGradient
-                colors={code.every(Boolean) ? ["#7B2FBE", "#E91E8C"] : ["rgba(255,255,255,0.06)", "rgba(255,255,255,0.03)"]}
+                colors={code.every(Boolean) ? ["#6443F4", "#F94498"] : ["rgba(255,255,255,0.06)", "rgba(255,255,255,0.03)"]}
                 start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
                 style={styles.verifyGradient}
               >
@@ -205,7 +205,7 @@ export default function VerifyScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#040010" },
+  container: { flex: 1, backgroundColor: "#0D0628" },
   orb1: {
     position: "absolute", width: width, height: width, borderRadius: width / 2,
     top: -width * 0.4, left: -width * 0.2, backgroundColor: "rgba(123,47,190,0.10)",
@@ -219,11 +219,11 @@ const styles = StyleSheet.create({
   backGradient: { width: 44, height: 44, borderRadius: 14, alignItems: "center", justifyContent: "center", borderWidth: 1, borderColor: "rgba(255,255,255,0.08)" },
   iconWrap: { width: 90, height: 90, alignItems: "center", justifyContent: "center", marginBottom: 28 },
   iconGradient: { width: 90, height: 90, borderRadius: 28, alignItems: "center", justifyContent: "center", borderWidth: 1, borderColor: "rgba(123,47,190,0.5)" },
-  iconGlow: { position: "absolute", width: 90, height: 90, borderRadius: 45, backgroundColor: "rgba(123,47,190,0.15)", shadowColor: "#7B2FBE", shadowOffset: { width: 0, height: 0 }, shadowOpacity: 0.9, shadowRadius: 30 },
+  iconGlow: { position: "absolute", width: 90, height: 90, borderRadius: 45, backgroundColor: "rgba(123,47,190,0.15)", shadowColor: "#6443F4", shadowOffset: { width: 0, height: 0 }, shadowOpacity: 0.9, shadowRadius: 30 },
   iconEmoji: { fontSize: 38 },
   title: { fontSize: 28, fontWeight: "800", color: "#FFFFFF", letterSpacing: -0.5, marginBottom: 10, textAlign: "center" },
   subtitle: { fontSize: 15, color: "#8B7AAA", textAlign: "center", lineHeight: 22, marginBottom: 36 },
-  emailHighlight: { color: "#E91E8C", fontWeight: "700" },
+  emailHighlight: { color: "#F94498", fontWeight: "700" },
   codeRow: { flexDirection: "row", gap: 10, marginBottom: 20 },
   codeBox: {
     width: 46, height: 60, borderRadius: 14, overflow: "hidden",
@@ -246,6 +246,6 @@ const styles = StyleSheet.create({
   verifyTextDim: { color: "#3D3050" },
   resendRow: { flexDirection: "row", alignItems: "center" },
   resendLabel: { color: "#5A4D72", fontSize: 14 },
-  resendLink: { color: "#7B2FBE", fontSize: 14, fontWeight: "600" },
+  resendLink: { color: "#6443F4", fontSize: 14, fontWeight: "600" },
   resendTimer: { color: "#5A4D72", fontSize: 14 },
 });

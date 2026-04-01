@@ -90,7 +90,7 @@ const CATEGORY_COLORS: Record<string, string> = {
   hotel: "#2196F3",
   transport: "#4CAF50",
   pharmacy: "#F44336",
-  all: "#7B2FBE",
+  all: "#6443F4",
 };
 
 // Fake map grid with colored cells to simulate a map
@@ -143,7 +143,7 @@ function MockMap({ destination }: { destination: string }) {
 
         {/* Destination label */}
         <View style={styles.mapLabel}>
-          <IconSymbol name="location.fill" size={12} color="#7B2FBE" />
+          <IconSymbol name="location.fill" size={12} color="#6443F4" />
           <Text style={styles.mapLabelText}> {destination}</Text>
         </View>
 
@@ -156,7 +156,7 @@ function MockMap({ destination }: { destination: string }) {
             <Text style={styles.mapControlText}>−</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.mapControlBtn}>
-            <IconSymbol name="location.north.fill" size={16} color="#7B2FBE" />
+            <IconSymbol name="location.north.fill" size={16} color="#6443F4" />
           </TouchableOpacity>
         </View>
       </LinearGradient>
@@ -205,7 +205,7 @@ export default function MapScreen() {
       >
         {CATEGORIES.map((cat) => {
           const isActive = selectedCategory === cat.id;
-          const color = CATEGORY_COLORS[cat.id] || "#7B2FBE";
+          const color = CATEGORY_COLORS[cat.id] || "#6443F4";
           return (
             <TouchableOpacity
               key={cat.id}
@@ -229,7 +229,7 @@ export default function MapScreen() {
         contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 100, gap: 10 }}
         showsVerticalScrollIndicator={false}
         renderItem={({ item }) => {
-          const iconColor = CATEGORY_COLORS[item.category] || "#7B2FBE";
+          const iconColor = CATEGORY_COLORS[item.category] || "#6443F4";
           return (
             <TouchableOpacity
               style={styles.placeCard}
@@ -285,17 +285,17 @@ export default function MapScreen() {
                     </View>
                     <View style={styles.placeActions}>
                       <TouchableOpacity style={styles.placeActionBtn}>
-                        <LinearGradient colors={["#7B2FBE", "#E91E8C"]} style={styles.placeActionGradient}>
+                        <LinearGradient colors={["#6443F4", "#F94498"]} style={styles.placeActionGradient}>
                           <IconSymbol name="location.north.fill" size={14} color="#FFFFFF" />
                           <Text style={styles.placeActionText}>Directions</Text>
                         </LinearGradient>
                       </TouchableOpacity>
                       <TouchableOpacity style={styles.placeActionBtnOutline}>
-                        <IconSymbol name="bookmark.fill" size={14} color="#7B2FBE" />
+                        <IconSymbol name="bookmark.fill" size={14} color="#6443F4" />
                         <Text style={styles.placeActionTextOutline}>Save</Text>
                       </TouchableOpacity>
                       <TouchableOpacity style={styles.placeActionBtnOutline}>
-                        <IconSymbol name="bubble.left.fill" size={14} color="#7B2FBE" />
+                        <IconSymbol name="bubble.left.fill" size={14} color="#6443F4" />
                         <Text style={styles.placeActionTextOutline}>Ask TRAVI</Text>
                       </TouchableOpacity>
                     </View>
@@ -338,7 +338,7 @@ const styles = StyleSheet.create({
   marker: { position: "absolute", alignItems: "center" },
   markerYou: {
     width: 28, height: 28, borderRadius: 14,
-    backgroundColor: "#7B2FBE", alignItems: "center", justifyContent: "center",
+    backgroundColor: "#6443F4", alignItems: "center", justifyContent: "center",
     borderWidth: 2, borderColor: "#FFFFFF",
   },
   markerIcon: {
@@ -349,7 +349,7 @@ const styles = StyleSheet.create({
     borderWidth: 1, borderColor: "rgba(255,255,255,0.2)",
   },
   markerLabel: {
-    backgroundColor: "#7B2FBE", borderRadius: 6,
+    backgroundColor: "#6443F4", borderRadius: 6,
     paddingHorizontal: 6, paddingVertical: 2, marginTop: 2,
   },
   markerLabelText: { color: "#FFFFFF", fontSize: 10, fontWeight: "700" },

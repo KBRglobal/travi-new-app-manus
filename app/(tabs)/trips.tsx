@@ -2,7 +2,7 @@ import { useState } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, FlatList, Dimensions, Platform } from "react-native";
 import { router } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
-import { Image } from "expo-image";
+import { Image } from "react-native";
 import { IconSymbol } from "@/components/ui/icon-symbol";
 import { useStore, Trip } from "@/lib/store";
 import * as Haptics from "expo-haptics";
@@ -62,7 +62,7 @@ function TripCard({ trip, onPress }: { trip: Trip; onPress: () => void }) {
     <TouchableOpacity style={styles.tripCard} onPress={() => { if (Platform.OS !== "web") Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light); onPress(); }} activeOpacity={0.88}>
       <View style={styles.tripCardInner}>
         {/* Full photo background */}
-        <Image source={photoSource} style={StyleSheet.absoluteFillObject} contentFit="cover" />
+        <Image source={photoSource} style={StyleSheet.absoluteFillObject} resizeMode="cover" />
         {/* Dark gradient overlay */}
         <LinearGradient colors={["rgba(0,0,0,0.15)", "rgba(0,0,0,0.65)"]} style={StyleSheet.absoluteFillObject} />
 
@@ -107,7 +107,7 @@ function TripCard({ trip, onPress }: { trip: Trip; onPress: () => void }) {
             onPress={() => router.push({ pathname: "/(live)/home" as never, params: { tripId: trip.id } })}
             activeOpacity={0.85}
           >
-            <LinearGradient colors={["#7B2FBE", "#E91E8C"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.liveBtnGradient}>
+            <LinearGradient colors={["#6443F4", "#F94498"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.liveBtnGradient}>
               <View style={styles.liveDot} />
               <Text style={styles.liveBtnText}>Live</Text>
             </LinearGradient>
@@ -138,7 +138,7 @@ export default function TripsScreen() {
 
   return (
     <View style={styles.container}>
-      <LinearGradient colors={["#040010", "#0D0520", "#1A0A3D"]} locations={[0, 0.4, 1]} style={StyleSheet.absoluteFillObject} />
+      <LinearGradient colors={["#0D0628", "#1A0A3D", "#1A0A3D"]} locations={[0, 0.4, 1]} style={StyleSheet.absoluteFillObject} />
       <View style={styles.orb1} />
       <View style={styles.orb2} />
 
@@ -156,7 +156,7 @@ export default function TripsScreen() {
                 <Text style={styles.headerSub}>Your travel collection</Text>
               </View>
               <TouchableOpacity style={styles.newTripBtn} onPress={() => router.push("/(trip)/plan" as never)} activeOpacity={0.85}>
-                <LinearGradient colors={["#7B2FBE", "#E91E8C"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.newTripGradient}>
+                <LinearGradient colors={["#6443F4", "#F94498"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.newTripGradient}>
                   <IconSymbol name="plus" size={16} color="#FFFFFF" />
                   <Text style={styles.newTripText}>New Trip</Text>
                 </LinearGradient>
@@ -207,11 +207,11 @@ export default function TripsScreen() {
         )}
         ListEmptyComponent={
           <View style={styles.emptyState}>
-            <View style={styles.emptyIconWrap}><IconSymbol name="airplane" size={40} color="#7B2FBE" /></View>
+            <View style={styles.emptyIconWrap}><IconSymbol name="airplane" size={40} color="#6443F4" /></View>
             <Text style={styles.emptyTitle}>No trips yet</Text>
             <Text style={styles.emptySub}>Plan your first adventure with TRAVI</Text>
             <TouchableOpacity style={styles.emptyBtn} onPress={() => router.push("/(trip)/plan" as never)} activeOpacity={0.85}>
-              <LinearGradient colors={["#7B2FBE", "#E91E8C"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.emptyBtnGradient}>
+              <LinearGradient colors={["#6443F4", "#F94498"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.emptyBtnGradient}>
                 <Text style={styles.emptyBtnText}>Plan a Trip</Text>
               </LinearGradient>
             </TouchableOpacity>
@@ -223,7 +223,7 @@ export default function TripsScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#040010" },
+  container: { flex: 1, backgroundColor: "#0D0628" },
   orb1: { position: "absolute", width: width, height: width, borderRadius: width / 2, top: -width * 0.4, left: -width * 0.3, backgroundColor: "rgba(123,47,190,0.09)" },
   orb2: { position: "absolute", width: width * 0.7, height: width * 0.7, borderRadius: width * 0.35, bottom: 0, right: -width * 0.3, backgroundColor: "rgba(233,30,140,0.06)" },
   listContent: { paddingHorizontal: 22, paddingTop: 60, paddingBottom: 100, gap: 14 },

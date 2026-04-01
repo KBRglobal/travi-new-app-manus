@@ -10,20 +10,20 @@ const { width } = Dimensions.get("window");
 type IconName = "figure.run" | "building.columns.fill" | "fork.knife" | "figure.yoga" | "moon.fill" | "leaf.fill" | "crown.fill" | "dollarsign.circle.fill";
 
 const DNA_CONFIG: Record<string, { label: string; icon: IconName; color: string }> = {
-  adventure: { label: "Adventurer", icon: "figure.run", color: "#E91E8C" },
-  culture: { label: "Culture Lover", icon: "building.columns.fill", color: "#7B2FBE" },
+  adventure: { label: "Adventurer", icon: "figure.run", color: "#F94498" },
+  culture: { label: "Culture Lover", icon: "building.columns.fill", color: "#6443F4" },
   food: { label: "Foodie", icon: "fork.knife", color: "#FF9800" },
   relaxation: { label: "Relaxer", icon: "figure.yoga", color: "#4CAF50" },
   nightlife: { label: "Night Owl", icon: "moon.fill", color: "#2196F3" },
-  nature: { label: "Nature Seeker", icon: "leaf.fill", color: "#10B981" },
+  nature: { label: "Nature Seeker", icon: "leaf.fill", color: "#02A65C" },
   luxury: { label: "Luxury Traveler", icon: "crown.fill", color: "#FFD700" },
   budget: { label: "Budget Savvy", icon: "dollarsign.circle.fill", color: "#06B6D4" },
 };
 
 type AchIcon = "airplane" | "safari.fill" | "star.fill" | "person.2.fill" | "crown.fill" | "camera.fill";
 const ACHIEVEMENTS: { id: string; icon: AchIcon; iconColor: string; title: string; desc: string; earned: boolean }[] = [
-  { id: "a1", icon: "airplane", iconColor: "#7B2FBE", title: "First Flight", desc: "Booked first trip", earned: true },
-  { id: "a2", icon: "safari.fill", iconColor: "#E91E8C", title: "Globe Trotter", desc: "3+ countries", earned: true },
+  { id: "a1", icon: "airplane", iconColor: "#6443F4", title: "First Flight", desc: "Booked first trip", earned: true },
+  { id: "a2", icon: "safari.fill", iconColor: "#F94498", title: "Globe Trotter", desc: "3+ countries", earned: true },
   { id: "a3", icon: "star.fill", iconColor: "#FFD700", title: "5-Star Traveler", desc: "Stayed in 5-star hotel", earned: true },
   { id: "a4", icon: "person.2.fill", iconColor: "#2196F3", title: "Social Butterfly", desc: "Refer 3 friends", earned: false },
   { id: "a5", icon: "crown.fill", iconColor: "#FF9800", title: "Elite Nomad", desc: "Reach Elite tier", earned: false },
@@ -96,7 +96,7 @@ export default function ProfileScreen() {
 
   return (
     <View style={styles.container}>
-      <LinearGradient colors={["#040010", "#0D0520", "#1A0A3D"]} locations={[0, 0.4, 1]} style={StyleSheet.absoluteFillObject} />
+      <LinearGradient colors={["#0D0628", "#1A0A3D", "#1A0A3D"]} locations={[0, 0.4, 1]} style={StyleSheet.absoluteFillObject} />
       <View style={styles.orb1} />
       <View style={styles.orb2} />
 
@@ -104,13 +104,13 @@ export default function ProfileScreen() {
         {/* Hero */}
         <View style={styles.hero}>
           <View style={styles.avatarWrap}>
-            <LinearGradient colors={["#7B2FBE", "#E91E8C"]} style={styles.avatarRing}>
+            <LinearGradient colors={["#6443F4", "#F94498"]} style={styles.avatarRing}>
               <View style={styles.avatarInner}>
                 <Text style={styles.avatarText}>{initials}</Text>
               </View>
             </LinearGradient>
             <TouchableOpacity style={styles.editAvatarBtn} activeOpacity={0.8}>
-              <LinearGradient colors={["#7B2FBE", "#E91E8C"]} style={styles.editAvatarGradient}>
+              <LinearGradient colors={["#6443F4", "#F94498"]} style={styles.editAvatarGradient}>
                 <IconSymbol name="camera.fill" size={12} color="#FFFFFF" />
               </LinearGradient>
             </TouchableOpacity>
@@ -161,7 +161,7 @@ export default function ProfileScreen() {
           </View>
           <View style={styles.dnaRow}>
             {dnaEntries.map(([key]) => {
-              const cfg = DNA_CONFIG[key] || { label: key, icon: "safari.fill" as const, color: "#7B2FBE" };
+              const cfg = DNA_CONFIG[key] || { label: key, icon: "safari.fill" as const, color: "#6443F4" };
               return (
                 <View key={key} style={styles.dnaBadge}>
                   <LinearGradient colors={[cfg.color + "33", cfg.color + "18"]} style={styles.dnaBadgeGradient}>
@@ -210,7 +210,7 @@ export default function ProfileScreen() {
 
         {/* TRAVI Pro Card */}
         <TouchableOpacity style={styles.proCard} activeOpacity={0.88} onPress={() => router.push("/(tabs)/subscription" as never)}>
-          <LinearGradient colors={["#7B2FBE", "#E91E8C"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.proGradient}>
+          <LinearGradient colors={["#6443F4", "#F94498"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.proGradient}>
             <View style={styles.proCircle1} />
             <View style={styles.proCircle2} />
             <View style={styles.proContent}>
@@ -242,14 +242,14 @@ export default function ProfileScreen() {
                   }}
                 >
                   <View style={styles.settingsIconWrap}>
-                    <IconSymbol name={item.icon} size={16} color="#7B2FBE" />
+                    <IconSymbol name={item.icon} size={16} color="#6443F4" />
                   </View>
                   <Text style={styles.settingsLabel}>{item.label}</Text>
                   {item.isToggle ? (
                     <Switch
                       value={toggles[item.toggleKey as keyof typeof toggles]}
                       onValueChange={(v) => setToggles((t) => ({ ...t, [item.toggleKey]: v }))}
-                      trackColor={{ false: "rgba(255,255,255,0.1)", true: "#7B2FBE" }}
+                      trackColor={{ false: "rgba(255,255,255,0.1)", true: "#6443F4" }}
                       thumbColor="#FFFFFF"
                     />
                   ) : (
@@ -279,7 +279,7 @@ export default function ProfileScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#040010" },
+  container: { flex: 1, backgroundColor: "#0D0628" },
   orb1: { position: "absolute", width: width, height: width, borderRadius: width / 2, top: -width * 0.4, left: -width * 0.3, backgroundColor: "rgba(123,47,190,0.09)" },
   orb2: { position: "absolute", width: width * 0.7, height: width * 0.7, borderRadius: width * 0.35, bottom: 0, right: -width * 0.3, backgroundColor: "rgba(233,30,140,0.06)" },
   scroll: { paddingHorizontal: 22, paddingTop: 60, paddingBottom: 110, gap: 24 },

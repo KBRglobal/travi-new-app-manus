@@ -1,7 +1,7 @@
 import { useRef, useEffect } from "react";
 import { View, Text, StyleSheet, Animated, Dimensions, TouchableOpacity, ScrollView } from "react-native";
 import { router } from "expo-router";
-import { Image } from "expo-image";
+import { Image } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { IconSymbol } from "@/components/ui/icon-symbol";
 import { useStore } from "@/lib/store";
@@ -9,8 +9,8 @@ import { useStore } from "@/lib/store";
 const { width, height } = Dimensions.get("window");
 
 const FEATURES = [
-  { iconName: "sparkles" as const, title: "AI That Knows You", desc: "Learns your travel personality through fun scenarios", color: "#7B2FBE" },
-  { iconName: "dollarsign.circle.fill" as const, title: "Zero Hidden Fees", desc: "All commissions returned as TRAVI Points", color: "#E91E8C" },
+  { iconName: "sparkles" as const, title: "AI That Knows You", desc: "Learns your travel personality through fun scenarios", color: "#6443F4" },
+  { iconName: "dollarsign.circle.fill" as const, title: "Zero Hidden Fees", desc: "All commissions returned as TRAVI Points", color: "#F94498" },
   { iconName: "location.fill" as const, title: "Real-Time Agent", desc: "Your AI guide knows exactly where you are", color: "#00BCD4" },
   { iconName: "trophy.fill" as const, title: "Travel Gamified", desc: "Earn badges, climb tiers, unlock rewards", color: "#FFD700" },
 ];
@@ -53,7 +53,7 @@ export default function WelcomeScreen() {
   return (
     <View style={styles.container}>
       <LinearGradient
-        colors={["#040010", "#0D0520", "#1A0A3D", "#0D0520"]}
+        colors={["#0D0628", "#1A0A3D", "#1A0A3D", "#1A0A3D"]}
         locations={[0, 0.3, 0.6, 1]}
         style={StyleSheet.absoluteFillObject}
       />
@@ -62,20 +62,18 @@ export default function WelcomeScreen() {
 
       <ScrollView contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
         <Animated.View style={[styles.heroSection, { opacity: fadeAnim, transform: [{ translateY: mascotY }] }]}>
-          {/* Mascot */}
-          <View style={styles.mascotWrap}>
-            <LinearGradient colors={["#7B2FBE", "#E91E8C"]} style={styles.mascotRing}>
-              <View style={styles.mascotInner}>
-                <Image source={require("@/assets/logos/mascot-dark.png")} style={styles.mascot} contentFit="contain" />
-              </View>
-            </LinearGradient>
-            <View style={styles.mascotGlow} />
-          </View>
+          {/* Mascot — no ring, just the duck */}
+          <Image source={require("@/assets/logos/mascot-centered.png")} style={styles.mascot} resizeMode="contain" />
 
           <Text style={styles.greeting}>
             {state.profile?.name ? `Hey ${state.profile.name}!` : "Welcome aboard!"}
           </Text>
-          <Text style={styles.title}>Meet TRAVI</Text>
+          {/* Official TRAVI logotype — white version for dark background */}
+          <Image
+            source={require("@/assets/logos/logotype-white.webp")}
+            style={styles.logotype}
+            resizeMode="contain"
+          />
           <Text style={styles.subtitle}>
             Your personal AI travel agent that plans, books, and guides your perfect trips
           </Text>
@@ -109,7 +107,7 @@ export default function WelcomeScreen() {
           </View>
 
           <TouchableOpacity style={styles.ctaBtn} onPress={handleGetStarted} activeOpacity={0.85}>
-            <LinearGradient colors={["#7B2FBE", "#C2185B", "#E91E8C"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.ctaGradient}>
+            <LinearGradient colors={["#6443F4", "#C2185B", "#F94498"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.ctaGradient}>
               <Text style={styles.ctaText}>Build My Traveler Profile</Text>
               <IconSymbol name="arrow.right" size={18} color="#FFFFFF" />
             </LinearGradient>
@@ -125,18 +123,14 @@ export default function WelcomeScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#040010" },
+  container: { flex: 1, backgroundColor: "#0D0628" },
   orb1: { position: "absolute", width: width * 0.9, height: width * 0.9, borderRadius: width * 0.45, top: -width * 0.3, left: -width * 0.2, backgroundColor: "rgba(123,47,190,0.12)" },
   orb2: { position: "absolute", width: width * 0.7, height: width * 0.7, borderRadius: width * 0.35, bottom: height * 0.1, right: -width * 0.25, backgroundColor: "rgba(233,30,140,0.08)" },
   scroll: { flexGrow: 1, paddingHorizontal: 22, paddingTop: 64, paddingBottom: 40, gap: 28 },
   heroSection: { alignItems: "center", gap: 12 },
-  mascotWrap: { width: 120, height: 120, alignItems: "center", justifyContent: "center", marginBottom: 8 },
-  mascotRing: { width: 120, height: 120, borderRadius: 36, padding: 3 },
-  mascotInner: { flex: 1, borderRadius: 33, backgroundColor: "#0D0520", alignItems: "center", justifyContent: "center", overflow: "hidden" },
-  mascot: { width: 100, height: 100 },
-  mascotGlow: { position: "absolute", width: 120, height: 120, borderRadius: 60, backgroundColor: "rgba(123,47,190,0.2)", shadowColor: "#7B2FBE", shadowOffset: { width: 0, height: 0 }, shadowOpacity: 0.8, shadowRadius: 30 },
+  mascot: { width: 160, height: 160, marginBottom: 4 },
+  logotype: { width: 160, height: 52 },
   greeting: { color: "#8B7AAA", fontSize: 15, fontWeight: "500" },
-  title: { fontSize: 36, fontWeight: "900", color: "#FFFFFF", letterSpacing: -1, textAlign: "center" },
   subtitle: { fontSize: 15, color: "#8B7AAA", textAlign: "center", lineHeight: 22, maxWidth: 300 },
   featuresGrid: { flexDirection: "row", flexWrap: "wrap", gap: 12 },
   featureCard: { width: (width - 56) / 2, borderRadius: 20, overflow: "hidden", borderWidth: 1, borderColor: "rgba(255,255,255,0.08)" },

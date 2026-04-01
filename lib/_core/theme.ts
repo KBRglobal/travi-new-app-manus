@@ -44,10 +44,10 @@ function buildRuntimePalette(scheme: ColorScheme): RuntimePalette {
     ...base,
     text: base.foreground,
     background: base.background,
-    tint: base.tint ?? base.primary,
+    tint: base.primary,
     icon: base.muted,
     tabIconDefault: base.muted,
-    tabIconSelected: base.tint ?? base.primary,
+    tabIconSelected: base.primary,
     border: base.border,
   };
 }

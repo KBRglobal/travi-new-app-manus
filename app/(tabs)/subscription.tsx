@@ -48,7 +48,7 @@ const PLANS = [
     period: "/ month",
     tagline: "Most popular choice",
     gradient: ["#2D1B69", "#4A1E9E"] as [string, string],
-    accentColor: "#7B2FBE",
+    accentColor: "#6443F4",
     borderColor: "rgba(123,47,190,0.6)",
     badge: "MOST POPULAR",
     features: [
@@ -95,10 +95,10 @@ const PLANS = [
 ];
 
 const PERKS = [
-  { icon: "sparkles", label: "AI-Powered", sub: "Smart trip building", color: "#7B2FBE" },
+  { icon: "sparkles", label: "AI-Powered", sub: "Smart trip building", color: "#6443F4" },
   { icon: "star.fill", label: "5x Points", sub: "On Elite plan", color: "#FFD112" },
-  { icon: "shield.fill", label: "Insurance", sub: "Travel coverage", color: "#10B981" },
-  { icon: "person.2.fill", label: "Matching", sub: "DNA-matched friends", color: "#E91E8C" },
+  { icon: "shield.fill", label: "Insurance", sub: "Travel coverage", color: "#02A65C" },
+  { icon: "person.2.fill", label: "Matching", sub: "DNA-matched friends", color: "#F94498" },
 ];
 
 export default function SubscriptionScreen() {
@@ -124,7 +124,7 @@ export default function SubscriptionScreen() {
 
   return (
     <View style={S.container}>
-      <LinearGradient colors={["#040010", "#0D0520", "#1A0A3D"]} style={StyleSheet.absoluteFillObject} />
+      <LinearGradient colors={["#0D0628", "#1A0A3D", "#1A0A3D"]} style={StyleSheet.absoluteFillObject} />
       <View style={S.orb1} />
       <View style={S.orb2} />
 
@@ -147,7 +147,7 @@ export default function SubscriptionScreen() {
         <View style={S.hero}>
           <LinearGradient colors={["rgba(123,47,190,0.2)", "rgba(233,30,140,0.1)", "transparent"]} style={StyleSheet.absoluteFillObject} />
           <View style={S.heroIconWrap}>
-            <LinearGradient colors={["#7B2FBE", "#E91E8C"]} style={S.heroIconGrad}>
+            <LinearGradient colors={["#6443F4", "#F94498"]} style={S.heroIconGrad}>
               <IconSymbol name="crown.fill" size={32} color="#FFD112" />
             </LinearGradient>
           </View>
@@ -258,7 +258,7 @@ export default function SubscriptionScreen() {
                   >
                     {isSelected ? (
                       <LinearGradient
-                        colors={plan.id === "elite" ? ["#FFD112", "#FF8C00"] : ["#7B2FBE", "#E91E8C"]}
+                        colors={plan.id === "elite" ? ["#FFD112", "#FF8C00"] : ["#6443F4", "#F94498"]}
                         start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
                         style={StyleSheet.absoluteFillObject}
                       />
@@ -287,7 +287,7 @@ export default function SubscriptionScreen() {
 }
 
 const S = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#040010" },
+  container: { flex: 1, backgroundColor: "#0D0628" },
   orb1: { position: "absolute", width: W * 1.2, height: W * 1.2, borderRadius: W * 0.6, top: -W * 0.5, left: -W * 0.3, backgroundColor: "rgba(123,47,190,0.1)" },
   orb2: { position: "absolute", width: W * 0.8, height: W * 0.8, borderRadius: W * 0.4, bottom: 100, right: -W * 0.3, backgroundColor: "rgba(233,30,140,0.07)" },
   header: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 20, paddingBottom: 12 },
@@ -311,7 +311,7 @@ const S = StyleSheet.create({
   billingBtnActive: { backgroundColor: "rgba(123,47,190,0.5)" },
   billingBtnText: { color: "rgba(255,255,255,0.5)", fontSize: 14, fontWeight: "600" },
   billingBtnTextActive: { color: "#FFFFFF" },
-  saveBadge: { backgroundColor: "#10B981", borderRadius: 6, paddingHorizontal: 6, paddingVertical: 2 },
+  saveBadge: { backgroundColor: "#02A65C", borderRadius: 6, paddingHorizontal: 6, paddingVertical: 2 },
   saveBadgeText: { color: "#FFFFFF", fontSize: 10, fontWeight: "800" },
   plansContainer: { paddingHorizontal: 20, gap: 16 },
   planCardWrap: {},

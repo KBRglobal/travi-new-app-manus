@@ -2,13 +2,13 @@ import { useRef, useEffect, useState } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, Dimensions, Animated, Platform } from "react-native";
 import { router, useLocalSearchParams } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
-import { Image } from "expo-image";
+import { Image } from "react-native";
 import { IconSymbol } from "@/components/ui/icon-symbol";
 import { useStore } from "@/lib/store";
 import * as Haptics from "expo-haptics";
 
 const { width, height } = Dimensions.get("window");
-const CONFETTI_COLORS = ["#7B2FBE", "#E91E8C", "#FFD700", "#4CAF50", "#00BCD4", "#FF6B35", "#C084FC"];
+const CONFETTI_COLORS = ["#6443F4", "#F94498", "#FFD700", "#4CAF50", "#00BCD4", "#FF6B35", "#C084FC"];
 
 function ConfettiPiece({ color, delay }: { color: string; delay: number }) {
   const anim = useRef(new Animated.Value(0)).current;
@@ -66,7 +66,7 @@ export default function CompletionScreen() {
 
   return (
     <View style={styles.container}>
-      <LinearGradient colors={["#040010", "#0D0520", "#1A0A3D"]} style={StyleSheet.absoluteFillObject} />
+      <LinearGradient colors={["#0D0628", "#1A0A3D", "#1A0A3D"]} style={StyleSheet.absoluteFillObject} />
       <View style={styles.orb1} />
       <View style={styles.orb2} />
       <View style={StyleSheet.absoluteFillObject} pointerEvents="none">
@@ -74,7 +74,7 @@ export default function CompletionScreen() {
       </View>
       <View style={styles.content}>
         <Animated.View style={[styles.successIconWrap, { transform: [{ scale: scaleAnim }] }]}>
-          <LinearGradient colors={["#7B2FBE", "#E91E8C"]} style={styles.successIconGradient}>
+          <LinearGradient colors={["#6443F4", "#F94498"]} style={styles.successIconGradient}>
             <IconSymbol name="checkmark" size={52} color="#FFFFFF" />
           </LinearGradient>
           <View style={styles.successRing} />
@@ -127,8 +127,8 @@ export default function CompletionScreen() {
         </Animated.View>
         <Animated.View style={[styles.duckRow, { opacity: fadeAnim }]}>
           <View style={styles.duckAvatar}>
-            <LinearGradient colors={["#7B2FBE", "#E91E8C"]} style={styles.duckGradient}>
-              <Image source={require("@/assets/logos/mascot-dark.png")} style={styles.duckImg} contentFit="contain" />
+            <LinearGradient colors={["#6443F4", "#F94498"]} style={styles.duckGradient}>
+              <Image source={require("@/assets/logos/mascot-dark.png")} style={styles.duckImg} resizeMode="contain" />
             </LinearGradient>
           </View>
           <View style={styles.duckBubble}>
@@ -147,7 +147,7 @@ export default function CompletionScreen() {
           }}
           activeOpacity={0.88}
         >
-          <LinearGradient colors={["#7B2FBE", "#E91E8C"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.ctaGradient}>
+          <LinearGradient colors={["#6443F4", "#F94498"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.ctaGradient}>
             <Text style={styles.ctaText}>Go to My Trips</Text>
             <IconSymbol name="arrow.right" size={20} color="#FFFFFF" />
           </LinearGradient>
@@ -171,7 +171,7 @@ export default function CompletionScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#040010" },
+  container: { flex: 1, backgroundColor: "#0D0628" },
   orb1: { position: "absolute", width: width * 1.4, height: width * 1.4, borderRadius: width * 0.7, top: -width * 0.6, left: -width * 0.3, backgroundColor: "rgba(123,47,190,0.1)" },
   orb2: { position: "absolute", width: width, height: width, borderRadius: width / 2, bottom: 0, right: -width * 0.3, backgroundColor: "rgba(233,30,140,0.08)" },
   content: { flex: 1, alignItems: "center", justifyContent: "center", paddingHorizontal: 24, gap: 20 },
@@ -181,7 +181,7 @@ const styles = StyleSheet.create({
   textBlock: { alignItems: "center", gap: 8 },
   title: { color: "#FFFFFF", fontSize: 36, fontWeight: "900", letterSpacing: -0.5 },
   subtitle: { color: "rgba(255,255,255,0.6)", fontSize: 16, textAlign: "center", lineHeight: 24 },
-  subtitleAccent: { color: "#E91E8C", fontWeight: "700" },
+  subtitleAccent: { color: "#F94498", fontWeight: "700" },
   pointsCard: { width: "100%", borderRadius: 20, overflow: "hidden", borderWidth: 1, borderColor: "rgba(123,47,190,0.5)" },
   pointsCardInner: { flexDirection: "row", alignItems: "center", padding: 16, gap: 14 },
   pointsStarWrap: { borderRadius: 14, overflow: "hidden" },

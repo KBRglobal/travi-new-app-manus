@@ -18,8 +18,8 @@ const MOCK_TRANSACTIONS = [
 ];
 
 const REDEEM_OPTIONS = [
-  { id: "r1", title: "Flight Discount", desc: "10% off next flight", cost: 1000, iconName: "airplane" as const, color: "#7B2FBE" },
-  { id: "r2", title: "Hotel Upgrade", desc: "Free room upgrade", cost: 1500, iconName: "bed.double.fill" as const, color: "#E91E8C" },
+  { id: "r1", title: "Flight Discount", desc: "10% off next flight", cost: 1000, iconName: "airplane" as const, color: "#6443F4" },
+  { id: "r2", title: "Hotel Upgrade", desc: "Free room upgrade", cost: 1500, iconName: "bed.double.fill" as const, color: "#F94498" },
   { id: "r3", title: "Airport Transfer", desc: "Free taxi to airport", cost: 800, iconName: "car.fill" as const, color: "#FF9800" },
   { id: "r4", title: "Travel Insurance", desc: "7-day coverage", cost: 2000, iconName: "shield.fill" as const, color: "#4CAF50" },
   { id: "r5", title: "Lounge Access", desc: "Airport VIP lounge", cost: 1200, iconName: "star.fill" as const, color: "#2196F3" },
@@ -34,8 +34,8 @@ const TIERS = [
 ];
 
 const EARN_ROWS = [
-  { iconName: "airplane" as const, action: "Book a flight", pts: "5% of value", color: "#7B2FBE" },
-  { iconName: "bed.double.fill" as const, action: "Book a hotel", pts: "5% of value", color: "#E91E8C" },
+  { iconName: "airplane" as const, action: "Book a flight", pts: "5% of value", color: "#6443F4" },
+  { iconName: "bed.double.fill" as const, action: "Book a hotel", pts: "5% of value", color: "#F94498" },
   { iconName: "theatermasks.fill" as const, action: "Book activities", pts: "3% of value", color: "#FF9800" },
   { iconName: "person.badge.plus" as const, action: "Refer a friend", pts: "500 pts", color: "#4CAF50" },
   { iconName: "star.fill" as const, action: "Leave a review", pts: "50 pts", color: "#FFD700" },
@@ -74,7 +74,7 @@ export default function WalletScreen() {
 
   return (
     <View style={styles.container}>
-      <LinearGradient colors={["#040010", "#0D0520", "#1A0A3D"]} locations={[0, 0.4, 1]} style={StyleSheet.absoluteFillObject} />
+      <LinearGradient colors={["#0D0628", "#1A0A3D", "#1A0A3D"]} locations={[0, 0.4, 1]} style={StyleSheet.absoluteFillObject} />
       <View style={styles.orb1} />
       <View style={styles.orb2} />
 
@@ -131,7 +131,7 @@ export default function WalletScreen() {
                 </View>
                 <View style={styles.progressTrack}>
                   <LinearGradient
-                    colors={[currentTier.color, "#E91E8C"]}
+                    colors={[currentTier.color, "#F94498"]}
                     start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
                     style={[styles.progressFill, { width: `${Math.min(tierProgress, 100)}%` }]}
                   />
@@ -270,13 +270,13 @@ export default function WalletScreen() {
             {transactions.map((tx) => (
               <View key={tx.id} style={styles.txRow}>
                 <View style={[styles.txIconWrap, { backgroundColor: tx.amount > 0 ? "rgba(76,175,80,0.2)" : "rgba(233,30,140,0.2)" }]}>
-                  <IconSymbol name={tx.iconName} size={20} color={tx.amount > 0 ? "#4CAF50" : "#E91E8C"} />
+                  <IconSymbol name={tx.iconName} size={20} color={tx.amount > 0 ? "#4CAF50" : "#F94498"} />
                 </View>
                 <View style={styles.txInfo}>
                   <Text style={styles.txDesc}>{tx.description}</Text>
                   <Text style={styles.txDate}>{tx.date}</Text>
                 </View>
-                <Text style={[styles.txAmount, { color: tx.amount > 0 ? "#4CAF50" : "#E91E8C" }]}>
+                <Text style={[styles.txAmount, { color: tx.amount > 0 ? "#4CAF50" : "#F94498" }]}>
                   {tx.amount > 0 ? "+" : ""}{tx.amount.toLocaleString()} pts
                 </Text>
               </View>
@@ -291,7 +291,7 @@ export default function WalletScreen() {
 const CARD_W = (width - 44 - 12) / 2;
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#040010" },
+  container: { flex: 1, backgroundColor: "#0D0628" },
   orb1: { position: "absolute", width: width, height: width, borderRadius: width / 2, top: -width * 0.4, left: -width * 0.3, backgroundColor: "rgba(123,47,190,0.1)" },
   orb2: { position: "absolute", width: width * 0.8, height: width * 0.8, borderRadius: width * 0.4, bottom: 0, right: -width * 0.3, backgroundColor: "rgba(233,30,140,0.07)" },
   scroll: { paddingHorizontal: 22, paddingTop: 60, paddingBottom: 100, gap: 20 },
@@ -352,7 +352,7 @@ const styles = StyleSheet.create({
   redeemDesc: { color: "#8B7AAA", fontSize: 11, lineHeight: 16 },
   redeemCostBadge: { alignSelf: "flex-start", borderRadius: 8, borderWidth: 1, paddingHorizontal: 8, paddingVertical: 3 },
   redeemCostText: { fontSize: 11, fontWeight: "700" },
-  redeemNeedMore: { color: "#E91E8C", fontSize: 10 },
+  redeemNeedMore: { color: "#F94498", fontSize: 10 },
   txRow: { flexDirection: "row", alignItems: "center", gap: 14, borderRadius: 14, padding: 14, borderWidth: 1, borderColor: "rgba(255,255,255,0.08)", backgroundColor: "rgba(255,255,255,0.04)" },
   txIconWrap: { width: 44, height: 44, borderRadius: 14, alignItems: "center", justifyContent: "center" },
   txInfo: { flex: 1, gap: 3 },

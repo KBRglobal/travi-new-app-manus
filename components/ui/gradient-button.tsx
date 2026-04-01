@@ -66,7 +66,7 @@ export function GradientButton({
       activeOpacity={0.85}
     >
       <LinearGradient
-        colors={["#7B2FBE", "#E91E8C"]}
+        colors={["#6443F4", "#F94498"]}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 0 }}
         style={[styles.gradient, sizeStyles[size]]}
@@ -93,12 +93,12 @@ const styles = StyleSheet.create({
   },
   outlineButton: {
     borderWidth: 1.5,
-    borderColor: "#7B2FBE",
+    borderColor: "#6443F4",
     alignItems: "center",
     justifyContent: "center",
   },
   outlineText: {
-    color: "#7B2FBE",
+    color: "#6443F4",
     fontWeight: "600",
   },
   ghostText: {

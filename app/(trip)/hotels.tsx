@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, FlatList, Dimensions, Animated, Platform } from "react-native";
 import { router, useLocalSearchParams } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
-import { Image } from "expo-image";
+import { Image } from "react-native";
 import { IconSymbol } from "@/components/ui/icon-symbol";
 import { useStore } from "@/lib/store";
 import * as Haptics from "expo-haptics";
@@ -83,7 +83,7 @@ export default function HotelsScreen() {
   if (loading) {
     return (
       <View style={styles.container}>
-        <LinearGradient colors={["#040010", "#0D0520", "#1A0A3D"]} style={StyleSheet.absoluteFillObject} />
+        <LinearGradient colors={["#0D0628", "#1A0A3D", "#1A0A3D"]} style={StyleSheet.absoluteFillObject} />
         <View style={styles.header}>
           <TouchableOpacity style={styles.backBtn} onPress={() => router.back()} activeOpacity={0.7}>
             <IconSymbol name="chevron.left" size={22} color="#FFFFFF" />
@@ -96,8 +96,8 @@ export default function HotelsScreen() {
         </View>
         <View style={styles.loadingWrap}>
           <Animated.View style={[styles.duckLarge, { opacity: pulseAnim }]}>
-            <LinearGradient colors={["#7B2FBE", "#E91E8C"]} style={styles.duckLargeGradient}>
-              <Image source={require("@/assets/logos/mascot-dark.png")} style={styles.duckImg} contentFit="contain" />
+            <LinearGradient colors={["#6443F4", "#F94498"]} style={styles.duckLargeGradient}>
+              <Image source={require("@/assets/logos/mascot-dark.png")} style={styles.duckImg} resizeMode="contain" />
             </LinearGradient>
           </Animated.View>
           <Text style={styles.loadingTitle}>Finding hotels...</Text>
@@ -112,7 +112,7 @@ export default function HotelsScreen() {
 
   return (
     <View style={styles.container}>
-      <LinearGradient colors={["#040010", "#0D0520", "#1A0A3D"]} style={StyleSheet.absoluteFillObject} />
+      <LinearGradient colors={["#0D0628", "#1A0A3D", "#1A0A3D"]} style={StyleSheet.absoluteFillObject} />
       <View style={styles.orb1} />
       <View style={styles.header}>
         <TouchableOpacity style={styles.backBtn} onPress={() => router.back()} activeOpacity={0.7}>
@@ -126,8 +126,8 @@ export default function HotelsScreen() {
       </View>
       <View style={styles.duckRow}>
         <View style={styles.duckAvatar}>
-          <LinearGradient colors={["#7B2FBE", "#E91E8C"]} style={styles.duckGradient}>
-            <Image source={require("@/assets/logos/mascot-dark.png")} style={styles.duckImgSm} contentFit="contain" />
+          <LinearGradient colors={["#6443F4", "#F94498"]} style={styles.duckGradient}>
+            <Image source={require("@/assets/logos/mascot-dark.png")} style={styles.duckImgSm} resizeMode="contain" />
           </LinearGradient>
         </View>
         <Animated.View style={[styles.duckBubble, { opacity: fadeAnim }]}>
@@ -154,7 +154,7 @@ export default function HotelsScreen() {
                   </LinearGradient>
                   {item.tag && (
                     <View style={styles.tagBadge}>
-                      <LinearGradient colors={["#7B2FBE", "#E91E8C"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.tagGradient}>
+                      <LinearGradient colors={["#6443F4", "#F94498"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.tagGradient}>
                         <Text style={styles.tagText}>{item.tag}</Text>
                       </LinearGradient>
                     </View>
@@ -173,7 +173,7 @@ export default function HotelsScreen() {
                       </View>
                     </View>
                     <View style={{ alignItems: "flex-end" }}>
-                      <Text style={[styles.hotelPrice, isSelected && { color: "#E91E8C" }]}>{"$" + item.pricePerNight}</Text>
+                      <Text style={[styles.hotelPrice, isSelected && { color: "#F94498" }]}>{"$" + item.pricePerNight}</Text>
                       <Text style={styles.perNight}>per night</Text>
                     </View>
                   </View>
@@ -195,7 +195,7 @@ export default function HotelsScreen() {
                 </View>
                 {isSelected && (
                   <View style={styles.selectedBadge}>
-                    <LinearGradient colors={["#7B2FBE", "#E91E8C"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.selectedBadgeGradient}>
+                    <LinearGradient colors={["#6443F4", "#F94498"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.selectedBadgeGradient}>
                       <IconSymbol name="checkmark" size={12} color="#FFFFFF" />
                       <Text style={styles.selectedBadgeText}>Selected</Text>
                     </LinearGradient>
@@ -208,7 +208,7 @@ export default function HotelsScreen() {
       </Animated.View>
       <View style={styles.ctaWrap}>
         <TouchableOpacity style={[styles.ctaBtn, !selectedHotel && styles.ctaBtnDisabled]} onPress={handleNext} activeOpacity={0.88}>
-          <LinearGradient colors={selectedHotel ? ["#7B2FBE", "#E91E8C"] : ["rgba(255,255,255,0.08)", "rgba(255,255,255,0.05)"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.ctaGradient}>
+          <LinearGradient colors={selectedHotel ? ["#6443F4", "#F94498"] : ["rgba(255,255,255,0.08)", "rgba(255,255,255,0.05)"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.ctaGradient}>
             <Text style={[styles.ctaText, !selectedHotel && styles.ctaTextDisabled]}>Review My Trip</Text>
             <IconSymbol name="arrow.right" size={20} color={selectedHotel ? "#FFFFFF" : "#3A2D4E"} />
           </LinearGradient>
@@ -219,13 +219,13 @@ export default function HotelsScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#040010" },
+  container: { flex: 1, backgroundColor: "#0D0628" },
   orb1: { position: "absolute", width: width, height: width, borderRadius: width / 2, top: -width * 0.4, right: -width * 0.3, backgroundColor: "rgba(233,30,140,0.07)" },
   header: { flexDirection: "row", alignItems: "center", paddingHorizontal: 20, paddingTop: 60, paddingBottom: 16, gap: 12 },
   backBtn: { width: 40, height: 40, borderRadius: 14, backgroundColor: "rgba(255,255,255,0.08)", alignItems: "center", justifyContent: "center" },
   progressWrap: { flex: 1, gap: 6 },
   progressTrack: { height: 4, backgroundColor: "rgba(255,255,255,0.1)", borderRadius: 2, overflow: "hidden" },
-  progressFill: { height: "100%", backgroundColor: "#E91E8C", borderRadius: 2 },
+  progressFill: { height: "100%", backgroundColor: "#F94498", borderRadius: 2 },
   progressLabel: { color: "rgba(255,255,255,0.4)", fontSize: 12, textAlign: "right" },
   loadingWrap: { flex: 1, alignItems: "center", justifyContent: "center", gap: 16 },
   duckLarge: { width: 90, height: 90, borderRadius: 45, overflow: "hidden" },
@@ -235,7 +235,7 @@ const styles = StyleSheet.create({
   loadingTitle: { color: "#FFFFFF", fontSize: 24, fontWeight: "800" },
   loadingSubtitle: { color: "rgba(255,255,255,0.5)", fontSize: 14, textAlign: "center", paddingHorizontal: 40, lineHeight: 22 },
   dotsRow: { flexDirection: "row", gap: 8 },
-  dot: { width: 8, height: 8, borderRadius: 4, backgroundColor: "#E91E8C" },
+  dot: { width: 8, height: 8, borderRadius: 4, backgroundColor: "#F94498" },
   duckRow: { flexDirection: "row", alignItems: "flex-end", paddingHorizontal: 20, paddingBottom: 12, gap: 10 },
   duckAvatar: { width: 44, height: 44, borderRadius: 22, overflow: "hidden" },
   duckGradient: { flex: 1, alignItems: "center", justifyContent: "center" },

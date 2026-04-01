@@ -4,7 +4,7 @@ import {
   Dimensions, Animated, KeyboardAvoidingView, Platform, ScrollView
 } from "react-native";
 import { router } from "expo-router";
-import { Image } from "expo-image";
+import { Image } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { IconSymbol } from "@/components/ui/icon-symbol";
 import { useStore } from "@/lib/store";
@@ -74,7 +74,7 @@ export default function SignUpScreen() {
     <View style={styles.container}>
       {/* Deep background */}
       <LinearGradient
-        colors={["#040010", "#0D0520", "#1A0A3D", "#0D0520"]}
+        colors={["#0D0628", "#1A0A3D", "#1A0A3D", "#1A0A3D"]}
         locations={[0, 0.3, 0.6, 1]}
         style={StyleSheet.absoluteFillObject}
       />
@@ -87,14 +87,8 @@ export default function SignUpScreen() {
 
           {/* Logo area */}
           <View style={styles.logoArea}>
-            <View style={styles.logoRingOuter}>
-              <LinearGradient colors={["#7B2FBE", "#E91E8C"]} style={styles.logoRingGradient}>
-                <View style={styles.logoInner}>
-                  <Image source={require("@/assets/logos/mascot-dark.png")} style={styles.logo} contentFit="contain" />
-                </View>
-              </LinearGradient>
-            </View>
-            <Text style={styles.appName}>TRAVI</Text>
+            <Image source={require("@/assets/logos/mascot-centered.png")} style={styles.logo} resizeMode="contain" />
+            <Image source={require("@/assets/logos/logotype-white.webp")} style={styles.appLogotype} resizeMode="contain" />
             <Text style={styles.appTagline}>Your AI Travel Companion</Text>
           </View>
 
@@ -109,7 +103,7 @@ export default function SignUpScreen() {
                   return (
                     <TouchableOpacity key={label} style={styles.tab} onPress={() => setIsLogin(i === 1)} activeOpacity={0.8}>
                       {active && (
-                        <LinearGradient colors={["#7B2FBE", "#E91E8C"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={StyleSheet.absoluteFillObject} />
+                        <LinearGradient colors={["#6443F4", "#F94498"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={StyleSheet.absoluteFillObject} />
                       )}
                       <Text style={[styles.tabText, active && styles.tabTextActive]}>{label}</Text>
                     </TouchableOpacity>
@@ -128,7 +122,7 @@ export default function SignUpScreen() {
                   colors={emailFocused ? ["rgba(123,47,190,0.35)", "rgba(233,30,140,0.18)"] : ["rgba(255,255,255,0.07)", "rgba(255,255,255,0.03)"]}
                   style={[styles.inputGradient, { borderColor: emailFocused ? "rgba(233,30,140,0.6)" : "rgba(255,255,255,0.10)" }]}
                 >
-                  <IconSymbol name="envelope.fill" size={18} color={emailFocused ? "#E91E8C" : "#5A4D72"} />
+                  <IconSymbol name="envelope.fill" size={18} color={emailFocused ? "#F94498" : "#5A4D72"} />
                   <TextInput
                     style={styles.input}
                     placeholder="Email address"
@@ -147,7 +141,7 @@ export default function SignUpScreen() {
 
               {/* CTA */}
               <TouchableOpacity onPress={handleContinue} activeOpacity={0.85} style={styles.cta}>
-                <LinearGradient colors={["#7B2FBE", "#C2185B", "#E91E8C"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.ctaGradient}>
+                <LinearGradient colors={["#6443F4", "#C2185B", "#F94498"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.ctaGradient}>
                   <Text style={styles.ctaText}>Continue with Email</Text>
                   <IconSymbol name="arrow.right" size={18} color="#FFFFFF" />
                 </LinearGradient>
@@ -194,7 +188,7 @@ export default function SignUpScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#040010" },
+  container: { flex: 1, backgroundColor: "#0D0628" },
   orb1: {
     position: "absolute", width: width * 0.9, height: width * 0.9,
     borderRadius: width * 0.45, top: -width * 0.3, left: -width * 0.2,
@@ -207,11 +201,8 @@ const styles = StyleSheet.create({
   },
   scroll: { flexGrow: 1, paddingHorizontal: 22, paddingTop: 64, paddingBottom: 40, alignItems: "center" },
   logoArea: { alignItems: "center", gap: 10, marginBottom: 28 },
-  logoRingOuter: { width: 88, height: 88, borderRadius: 26, overflow: "hidden" },
-  logoRingGradient: { flex: 1, padding: 2.5 },
-  logoInner: { flex: 1, borderRadius: 23, backgroundColor: "#0D0520", alignItems: "center", justifyContent: "center", overflow: "hidden" },
-  logo: { width: 70, height: 70 },
-  appName: { fontSize: 30, fontWeight: "900", color: "#FFFFFF", letterSpacing: 8 },
+  logo: { width: 110, height: 110 },
+  appLogotype: { width: 140, height: 46 },
   appTagline: { fontSize: 12, color: "rgba(196,181,217,0.55)", letterSpacing: 1.8, textTransform: "uppercase" },
   card: { width: "100%", borderRadius: 28, overflow: "hidden", borderWidth: 1, borderColor: "rgba(255,255,255,0.09)" },
   cardBg: { padding: 22, gap: 18 },
@@ -258,5 +249,5 @@ const styles = StyleSheet.create({
   guestText: { color: "#C4B5D9", fontSize: 15, fontWeight: "600" },
   guestSub: { color: "#3D3050", fontSize: 12 },
   terms: { marginTop: 18, fontSize: 12, color: "#3D3050", textAlign: "center", lineHeight: 18 },
-  termsLink: { color: "#7B2FBE", fontWeight: "600" },
+  termsLink: { color: "#6443F4", fontWeight: "600" },
 });

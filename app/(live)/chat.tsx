@@ -5,7 +5,7 @@ import {
 } from "react-native";
 import { router } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
-import { Image } from "expo-image";
+import { Image } from "react-native";
 import { IconSymbol } from "@/components/ui/icon-symbol";
 import { useStore } from "@/lib/store";
 import * as Haptics from "expo-haptics";
@@ -34,8 +34,8 @@ const SMART_RESPONSES: { keywords: string[]; response: string; cards?: Suggestio
     response: "Based on your Culinary Nomad DNA, here are 3 spots I'd personally pick for you right now:",
     cards: [
       { id: "r1", title: "Narisawa", subtitle: "Innovative Japanese · * 4.9 · 8 min walk", iconName: "fork.knife", gradient: ["#7C2D12", "#DC2626"] },
-      { id: "r2", title: "Sushi Saito", subtitle: "Omakase · * 4.8 · Book ahead", iconName: "star.fill", gradient: ["#1E3A5F", "#2563EB"] },
-      { id: "r3", title: "Ichiran Ramen", subtitle: "Solo booth ramen · * 4.7 · Open now", iconName: "flame.fill", gradient: ["#7C3AED", "#A855F7"] },
+      { id: "r2", title: "Sushi Saito", subtitle: "Omakase · * 4.8 · Book ahead", iconName: "star.fill", gradient: ["#6443F4", "#6443F4"] },
+      { id: "r3", title: "Ichiran Ramen", subtitle: "Solo booth ramen · * 4.7 · Open now", iconName: "flame.fill", gradient: ["#6443F4", "#9077EF"] },
     ],
   },
   {
@@ -59,8 +59,8 @@ const SMART_RESPONSES: { keywords: string[]; response: string; cards?: Suggestio
     response: "Here's your day at a glance:",
     cards: [
       { id: "i1", title: "Morning Market", subtitle: "9:00 AM · Fresh local breakfast", iconName: "cart.fill", gradient: ["#B45309", "#F59E0B"] },
-      { id: "i2", title: "Digital Art Museum", subtitle: "2:00 PM · Immersive experience", iconName: "sparkles", gradient: ["#6B21A8", "#EC4899"] },
-      { id: "i3", title: "Sunset Viewpoint", subtitle: "6:00 PM · Golden hour magic", iconName: "sun.max.fill", gradient: ["#1E3A5F", "#2563EB"] },
+      { id: "i2", title: "Digital Art Museum", subtitle: "2:00 PM · Immersive experience", iconName: "sparkles", gradient: ["#6B21A8", "#F94498"] },
+      { id: "i3", title: "Sunset Viewpoint", subtitle: "6:00 PM · Golden hour magic", iconName: "sun.max.fill", gradient: ["#6443F4", "#6443F4"] },
     ],
   },
   {
@@ -80,8 +80,8 @@ const SMART_RESPONSES: { keywords: string[]; response: string; cards?: Suggestio
     response: "Best shopping based on your Cultural Explorer DNA:",
     cards: [
       { id: "s1", title: "Traditional Crafts Market", subtitle: "Authentic local souvenirs", iconName: "bag.fill", gradient: ["#C2410C", "#EA580C"] },
-      { id: "s2", title: "Design District", subtitle: "Unique modern goods", iconName: "sparkles", gradient: ["#1E3A5F", "#2563EB"] },
-      { id: "s3", title: "Food Market", subtitle: "Edible gifts & local products", iconName: "cart.fill", gradient: ["#065F46", "#10B981"] },
+      { id: "s2", title: "Design District", subtitle: "Unique modern goods", iconName: "sparkles", gradient: ["#6443F4", "#6443F4"] },
+      { id: "s3", title: "Food Market", subtitle: "Edible gifts & local products", iconName: "cart.fill", gradient: ["#02A65C", "#02A65C"] },
     ],
   },
 ];
@@ -175,15 +175,15 @@ export default function ChatScreen() {
       <View style={[S.msgRow, isTravi ? S.msgRowTravi : S.msgRowUser]}>
         {isTravi && (
           <View style={S.traviAvatar}>
-            <LinearGradient colors={["#7B2FBE", "#E91E8C"]} style={S.traviAvatarGrad}>
-              <Image source={require("@/assets/logos/mascot-dark.png")} style={S.traviAvatarImg} contentFit="contain" />
+            <LinearGradient colors={["#6443F4", "#F94498"]} style={S.traviAvatarGrad}>
+              <Image source={require("@/assets/logos/mascot-dark.png")} style={S.traviAvatarImg} resizeMode="contain" />
             </LinearGradient>
           </View>
         )}
         <View style={[S.bubble, isTravi ? S.bubbleTravi : S.bubbleUser]}>
           {isTravi
             ? <LinearGradient colors={["rgba(123,47,190,0.3)", "rgba(233,30,140,0.15)"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={StyleSheet.absoluteFillObject} />
-            : <LinearGradient colors={["#7B2FBE", "#E91E8C"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={StyleSheet.absoluteFillObject} />
+            : <LinearGradient colors={["#6443F4", "#F94498"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={StyleSheet.absoluteFillObject} />
           }
           <Text style={[S.bubbleText, isTravi ? S.bubbleTextTravi : S.bubbleTextUser]}>{item.text}</Text>
           {item.cards && item.cards.length > 0 && (
@@ -211,7 +211,7 @@ export default function ChatScreen() {
 
   return (
     <View style={S.container}>
-      <LinearGradient colors={["#040010", "#0D0520", "#1A0A3D"]} style={StyleSheet.absoluteFillObject} />
+      <LinearGradient colors={["#0D0628", "#1A0A3D", "#1A0A3D"]} style={StyleSheet.absoluteFillObject} />
 
       {/* Header */}
       <View style={S.header}>
@@ -220,8 +220,8 @@ export default function ChatScreen() {
         </TouchableOpacity>
         <View style={S.headerCenter}>
           <View style={S.headerAvatar}>
-            <LinearGradient colors={["#7B2FBE", "#E91E8C"]} style={S.headerAvatarGrad}>
-              <Image source={require("@/assets/logos/mascot-dark.png")} style={S.headerAvatarImg} contentFit="contain" />
+            <LinearGradient colors={["#6443F4", "#F94498"]} style={S.headerAvatarGrad}>
+              <Image source={require("@/assets/logos/mascot-dark.png")} style={S.headerAvatarImg} resizeMode="contain" />
             </LinearGradient>
           </View>
           <View>
@@ -259,8 +259,8 @@ export default function ChatScreen() {
             isTyping ? (
               <View style={[S.msgRow, S.msgRowTravi]}>
                 <View style={S.traviAvatar}>
-                  <LinearGradient colors={["#7B2FBE", "#E91E8C"]} style={S.traviAvatarGrad}>
-                    <Image source={require("@/assets/logos/mascot-dark.png")} style={S.traviAvatarImg} contentFit="contain" />
+                  <LinearGradient colors={["#6443F4", "#F94498"]} style={S.traviAvatarGrad}>
+                    <Image source={require("@/assets/logos/mascot-dark.png")} style={S.traviAvatarImg} resizeMode="contain" />
                   </LinearGradient>
                 </View>
                 <View style={[S.bubble, S.bubbleTravi, { paddingVertical: 16 }]}>
@@ -316,7 +316,7 @@ export default function ChatScreen() {
               disabled={!input.trim() || isTyping}
             >
               {input.trim() ? (
-                <LinearGradient colors={["#7B2FBE", "#E91E8C"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={S.sendBtnGrad}>
+                <LinearGradient colors={["#6443F4", "#F94498"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={S.sendBtnGrad}>
                   <IconSymbol name="arrow.up" size={18} color="#FFFFFF" />
                 </LinearGradient>
               ) : (
@@ -333,7 +333,7 @@ export default function ChatScreen() {
 }
 
 const S = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#040010" },
+  container: { flex: 1, backgroundColor: "#0D0628" },
   header: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 16, paddingTop: 56, paddingBottom: 12 },
   backBtn: { width: 36, height: 36, borderRadius: 18, backgroundColor: "rgba(255,255,255,0.08)", alignItems: "center", justifyContent: "center" },
   headerCenter: { flexDirection: "row", alignItems: "center", gap: 10 },
@@ -343,7 +343,7 @@ const S = StyleSheet.create({
   headerAvatarImg: { width: 30, height: 30 },
   headerName: { color: "#FFFFFF", fontSize: 16, fontWeight: "800" },
   headerStatus: { flexDirection: "row", alignItems: "center", gap: 5 },
-  onlineDot: { width: 7, height: 7, borderRadius: 3.5, backgroundColor: "#10B981" },
+  onlineDot: { width: 7, height: 7, borderRadius: 3.5, backgroundColor: "#02A65C" },
   headerStatusText: { color: "rgba(255,255,255,0.45)", fontSize: 12 },
   contextBanner: { flexDirection: "row", alignItems: "center", gap: 6, marginHorizontal: 16, borderRadius: 12, overflow: "hidden", paddingHorizontal: 12, paddingVertical: 8, marginBottom: 8, borderWidth: 1, borderColor: "rgba(123,47,190,0.3)" },
   contextText: { flex: 1, color: "rgba(255,255,255,0.55)", fontSize: 12, fontWeight: "600" },

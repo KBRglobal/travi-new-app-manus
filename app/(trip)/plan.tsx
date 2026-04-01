@@ -5,7 +5,7 @@ import {
 } from "react-native";
 import { router } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
-import { Image } from "expo-image";
+import { Image } from "react-native";
 import { IconSymbol } from "@/components/ui/icon-symbol";
 import { useStore } from "@/lib/store";
 import * as Haptics from "expo-haptics";
@@ -26,16 +26,16 @@ const DESTINATIONS = [
 const TRAVEL_STYLES = [
   { id: "adventure", label: "Adventure", desc: "Hiking, extreme sports, off the beaten path", icon: "figure.run" as const, gradient: ["#1a3320", "#2d5c35"] as [string, string], color: "#4CAF50" },
   { id: "luxury", label: "Luxury", desc: "5-star hotels, fine dining, VIP experiences", icon: "crown.fill" as const, gradient: ["#3d2a00", "#6b4800"] as [string, string], color: "#FFD700" },
-  { id: "culture", label: "Culture", desc: "Museums, history, local experiences", icon: "building.columns.fill" as const, gradient: ["#1a1a4e", "#2d2d7a"] as [string, string], color: "#7B2FBE" },
+  { id: "culture", label: "Culture", desc: "Museums, history, local experiences", icon: "building.columns.fill" as const, gradient: ["#1a1a4e", "#2d2d7a"] as [string, string], color: "#6443F4" },
   { id: "chill", label: "Chill & Relax", desc: "Beaches, spas, slow travel", icon: "beach.umbrella" as const, gradient: ["#0d2040", "#1a3a5c"] as [string, string], color: "#2196F3" },
   { id: "food", label: "Foodie", desc: "Local cuisine, cooking classes, food tours", icon: "fork.knife" as const, gradient: ["#3d1a00", "#6b2d00"] as [string, string], color: "#FF9800" },
-  { id: "nightlife", label: "Nightlife", desc: "Clubs, bars, live music, entertainment", icon: "music.note" as const, gradient: ["#2d0033", "#5c0066"] as [string, string], color: "#E91E8C" },
+  { id: "nightlife", label: "Nightlife", desc: "Clubs, bars, live music, entertainment", icon: "music.note" as const, gradient: ["#2d0033", "#5c0066"] as [string, string], color: "#F94498" },
 ];
 
 const BUDGETS = [
   { id: "budget", label: "Budget", range: "Under $1,000", icon: "leaf.fill" as const, color: "#4CAF50" },
   { id: "mid", label: "Mid-Range", range: "$1,000 – $3,000", icon: "star.fill" as const, color: "#2196F3" },
-  { id: "premium", label: "Premium", range: "$3,000 – $7,000", icon: "sparkles" as const, color: "#7B2FBE" },
+  { id: "premium", label: "Premium", range: "$3,000 – $7,000", icon: "sparkles" as const, color: "#6443F4" },
   { id: "luxury", label: "Luxury", range: "$7,000+", icon: "crown.fill" as const, color: "#FFD700" },
 ];
 
@@ -129,7 +129,7 @@ export default function PlanScreen() {
 
   return (
     <View style={styles.container}>
-      <LinearGradient colors={["#040010", "#0D0520", "#1A0A3D"]} style={StyleSheet.absoluteFillObject} />
+      <LinearGradient colors={["#0D0628", "#1A0A3D", "#1A0A3D"]} style={StyleSheet.absoluteFillObject} />
       <View style={styles.orb1} />
       <View style={styles.orb2} />
 
@@ -150,8 +150,8 @@ export default function PlanScreen() {
       {/* TRAVI Duck Message */}
       <View style={styles.duckRow}>
         <Animated.View style={[styles.duckAvatar, { transform: [{ translateY: duckBounce }] }]}>
-          <LinearGradient colors={["#7B2FBE", "#E91E8C"]} style={styles.duckGradient}>
-            <Image source={require("@/assets/logos/mascot-dark.png")} style={styles.duckImg} contentFit="contain" />
+          <LinearGradient colors={["#6443F4", "#F94498"]} style={styles.duckGradient}>
+            <Image source={require("@/assets/logos/mascot-dark.png")} style={styles.duckImg} resizeMode="contain" />
           </LinearGradient>
         </Animated.View>
         <Animated.View style={[styles.duckBubble, { opacity: fadeAnim }]}>
@@ -248,7 +248,7 @@ export default function PlanScreen() {
               <View style={styles.travelersIconRow}>
                 {Array.from({ length: Math.min(travelers, 6) }).map((_, i) => (
                   <View key={i} style={[styles.travelerAvatar, { marginLeft: i > 0 ? -10 : 0, zIndex: 6 - i }]}>
-                    <LinearGradient colors={["#7B2FBE", "#E91E8C"]} style={styles.travelerAvatarGradient}>
+                    <LinearGradient colors={["#6443F4", "#F94498"]} style={styles.travelerAvatarGradient}>
                       <IconSymbol name="person.fill" size={18} color="#FFFFFF" />
                     </LinearGradient>
                   </View>
@@ -275,7 +275,7 @@ export default function PlanScreen() {
                 activeOpacity={0.8}
               >
                 <LinearGradient
-                  colors={travelers > 1 ? ["#7B2FBE", "#5A1E9E"] : ["rgba(255,255,255,0.06)", "rgba(255,255,255,0.03)"]}
+                  colors={travelers > 1 ? ["#6443F4", "#5A1E9E"] : ["rgba(255,255,255,0.06)", "rgba(255,255,255,0.03)"]}
                   style={styles.travelerBtnGradient}
                 >
                   <IconSymbol name="minus" size={24} color={travelers > 1 ? "#FFFFFF" : "#3A2D4E"} />
@@ -290,7 +290,7 @@ export default function PlanScreen() {
                 }}
                 activeOpacity={0.8}
               >
-                <LinearGradient colors={["#E91E8C", "#C2185B"]} style={styles.travelerBtnGradient}>
+                <LinearGradient colors={["#F94498", "#C2185B"]} style={styles.travelerBtnGradient}>
                   <IconSymbol name="plus" size={24} color="#FFFFFF" />
                 </LinearGradient>
               </TouchableOpacity>
@@ -366,7 +366,7 @@ export default function PlanScreen() {
               />
               <View style={styles.dateCardLeft}>
                 <View style={styles.dateIconWrap}>
-                  <IconSymbol name="airplane.departure" size={20} color="#7B2FBE" />
+                  <IconSymbol name="airplane.departure" size={20} color="#6443F4" />
                 </View>
                 <View>
                   <Text style={styles.dateCardLabel}>Departure</Text>
@@ -402,7 +402,7 @@ export default function PlanScreen() {
               />
               <View style={styles.dateCardLeft}>
                 <View style={styles.dateIconWrap}>
-                  <IconSymbol name="airplane.arrival" size={20} color="#E91E8C" />
+                  <IconSymbol name="airplane.arrival" size={20} color="#F94498" />
                 </View>
                 <View>
                   <Text style={styles.dateCardLabel}>Return</Text>
@@ -470,7 +470,7 @@ export default function PlanScreen() {
           activeOpacity={0.88}
         >
           <LinearGradient
-            colors={canProceed() ? ["#7B2FBE", "#E91E8C"] : ["rgba(255,255,255,0.08)", "rgba(255,255,255,0.05)"]}
+            colors={canProceed() ? ["#6443F4", "#F94498"] : ["rgba(255,255,255,0.08)", "rgba(255,255,255,0.05)"]}
             start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
             style={styles.ctaGradient}
           >
@@ -486,14 +486,14 @@ export default function PlanScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#040010" },
+  container: { flex: 1, backgroundColor: "#0D0628" },
   orb1: { position: "absolute", width: width, height: width, borderRadius: width / 2, top: -width * 0.4, left: -width * 0.3, backgroundColor: "rgba(123,47,190,0.09)" },
   orb2: { position: "absolute", width: width * 0.7, height: width * 0.7, borderRadius: width * 0.35, bottom: 0, right: -width * 0.3, backgroundColor: "rgba(233,30,140,0.06)" },
   header: { flexDirection: "row", alignItems: "center", paddingHorizontal: 20, paddingTop: 60, paddingBottom: 16, gap: 12 },
   backBtn: { width: 40, height: 40, borderRadius: 14, backgroundColor: "rgba(255,255,255,0.08)", alignItems: "center", justifyContent: "center" },
   progressWrap: { flex: 1, gap: 6 },
   progressTrack: { height: 4, backgroundColor: "rgba(255,255,255,0.1)", borderRadius: 2, overflow: "hidden" },
-  progressFill: { height: "100%", backgroundColor: "#E91E8C", borderRadius: 2 },
+  progressFill: { height: "100%", backgroundColor: "#F94498", borderRadius: 2 },
   progressLabel: { color: "rgba(255,255,255,0.4)", fontSize: 12, textAlign: "right" },
   duckRow: { flexDirection: "row", alignItems: "flex-end", paddingHorizontal: 20, paddingBottom: 16, gap: 10 },
   duckAvatar: { width: 44, height: 44, borderRadius: 22, overflow: "hidden" },
@@ -505,7 +505,7 @@ const styles = StyleSheet.create({
   content: { flex: 1 },
   destGrid: { paddingHorizontal: 20, gap: 12, paddingBottom: 20 },
   destCard: { borderRadius: 20, overflow: "hidden", borderWidth: 2, borderColor: "rgba(255,255,255,0.08)" },
-  destCardSelected: { borderColor: "#E91E8C" },
+  destCardSelected: { borderColor: "#F94498" },
   destGradient: { flexDirection: "row", alignItems: "center", padding: 18, gap: 16 },
   destSelectedOverlay: { ...StyleSheet.absoluteFillObject, backgroundColor: "rgba(233,30,140,0.15)" },
   destIconWrap: { width: 56, height: 56, borderRadius: 18, alignItems: "center", justifyContent: "center" },
@@ -514,7 +514,7 @@ const styles = StyleSheet.create({
   destCountry: { color: "rgba(255,255,255,0.6)", fontSize: 13 },
   destVibePill: { alignSelf: "flex-start", backgroundColor: "rgba(255,255,255,0.15)", borderRadius: 8, paddingHorizontal: 8, paddingVertical: 3, marginTop: 4 },
   destVibe: { color: "rgba(255,255,255,0.8)", fontSize: 11, fontWeight: "600" },
-  destCheck: { width: 36, height: 36, borderRadius: 18, backgroundColor: "#E91E8C", alignItems: "center", justifyContent: "center" },
+  destCheck: { width: 36, height: 36, borderRadius: 18, backgroundColor: "#F94498", alignItems: "center", justifyContent: "center" },
   styleGrid: { paddingHorizontal: 20, gap: 12, paddingBottom: 20 },
   styleCard: { flexDirection: "row", alignItems: "center", borderRadius: 20, padding: 18, gap: 16, overflow: "hidden", borderWidth: 2, borderColor: "rgba(255,255,255,0.08)" },
   styleIconWrap: { width: 56, height: 56, borderRadius: 18, alignItems: "center", justifyContent: "center" },
@@ -525,7 +525,7 @@ const styles = StyleSheet.create({
   travelersWrap: { flex: 1, paddingHorizontal: 20, alignItems: "center", gap: 24 },
   travelersCard: { width: "100%", borderRadius: 28, padding: 32, alignItems: "center", gap: 12, overflow: "hidden", borderWidth: 2, borderColor: "rgba(123,47,190,0.4)" },
   travelersIconRow: { flexDirection: "row", marginBottom: 8 },
-  travelerAvatar: { width: 40, height: 40, borderRadius: 20, overflow: "hidden", borderWidth: 2, borderColor: "#040010" },
+  travelerAvatar: { width: 40, height: 40, borderRadius: 20, overflow: "hidden", borderWidth: 2, borderColor: "#0D0628" },
   travelerAvatarGradient: { flex: 1, alignItems: "center", justifyContent: "center" },
   travelerAvatarMore: { backgroundColor: "rgba(255,255,255,0.1)", alignItems: "center", justifyContent: "center" },
   travelerMoreText: { color: "#FFFFFF", fontSize: 12, fontWeight: "700" },
