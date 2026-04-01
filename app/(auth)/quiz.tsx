@@ -302,6 +302,19 @@ export default function QuizScreen() {
           );
         })}
       </Animated.View>
+      {/* Bottom hint */}
+      <Animated.View style={[S.bottomHint, { opacity: cardAnim }]}>
+        <View style={S.hintDots}>
+          {QUESTIONS.map((_, i) => (
+            <View key={i} style={[S.hintDot, i === currentQ && S.hintDotActive, i < currentQ && S.hintDotDone]} />
+          ))}
+        </View>
+        <Text style={S.hintText}>
+          {QUESTIONS.length - currentQ - 1 > 0
+            ? `${QUESTIONS.length - currentQ - 1} more question${QUESTIONS.length - currentQ - 1 > 1 ? "s" : ""} to reveal your DNA`
+            : "Last one — make it count ✨"}
+        </Text>
+      </Animated.View>
     </View>
   );
 }
@@ -327,8 +340,8 @@ const S = StyleSheet.create({
   duckBubbleText: { color: "rgba(192,132,252,0.9)", fontSize: 12, fontWeight: "700" },
   questionText: { color: "#FFFFFF", fontSize: 24, fontWeight: "900", lineHeight: 30, letterSpacing: -0.5 },
   questionSubtitle: { color: "rgba(255,255,255,0.45)", fontSize: 14, lineHeight: 20 },
-  optionsGrid: { flex: 1, flexDirection: "row", flexWrap: "wrap", paddingHorizontal: 16, gap: 12, paddingBottom: 24, alignContent: "stretch" },
-  optionCard: { width: CARD_W, flexGrow: 1, flexBasis: CARD_W * 0.95, borderRadius: 22, overflow: "hidden", padding: 14, gap: 4, borderWidth: 2, borderColor: "transparent", justifyContent: "flex-end" },
+  optionsGrid: { flexDirection: "row", flexWrap: "wrap", paddingHorizontal: 16, gap: 12, paddingBottom: 8, alignContent: "flex-start" },
+  optionCard: { width: CARD_W, height: CARD_W * 0.95, borderRadius: 22, overflow: "hidden", padding: 14, gap: 4, borderWidth: 2, borderColor: "transparent", justifyContent: "flex-end" },
   ghostIconWrap: { position: "absolute", bottom: -10, right: -10, opacity: 1 },
   optionCardSelected: { borderColor: "rgba(255,255,255,0.7)" },
   selectedOverlay: { position: "absolute", top: 0, left: 0, right: 0, bottom: 0, backgroundColor: "rgba(255,255,255,0.18)" },
@@ -362,4 +375,11 @@ const S = StyleSheet.create({
   ctaBtn: { width: "100%", borderRadius: 20, overflow: "hidden" },
   ctaGradient: { flexDirection: "row", alignItems: "center", justifyContent: "center", paddingVertical: 18, gap: 10 },
   ctaText: { color: "#FFFFFF", fontSize: 18, fontWeight: "800" },
+  // Bottom hint
+  bottomHint: { alignItems: "center", paddingHorizontal: 24, paddingBottom: 28, paddingTop: 16, gap: 10 },
+  hintDots: { flexDirection: "row", gap: 5, alignItems: "center" },
+  hintDot: { width: 5, height: 5, borderRadius: 2.5, backgroundColor: "rgba(255,255,255,0.15)" },
+  hintDotActive: { width: 18, height: 5, borderRadius: 2.5, backgroundColor: "#6443F4" },
+  hintDotDone: { backgroundColor: "rgba(100,67,244,0.4)" },
+  hintText: { color: "rgba(255,255,255,0.35)", fontSize: 12, fontWeight: "500", textAlign: "center", letterSpacing: 0.2 },
 });
