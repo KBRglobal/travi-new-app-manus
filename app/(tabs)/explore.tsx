@@ -246,6 +246,91 @@ export default function ExploreScreen() {
           ))}
         </ScrollView>
 
+        {/* Destination Guides */}
+        <View style={S.sectionHeader}>
+          <Text style={S.sectionTitle}>Destination Guides</Text>
+          <TouchableOpacity activeOpacity={0.7} onPress={() => router.push("/(tabs)/destination-guide" as never)}>
+            <Text style={S.seeAll}>See all</Text>
+          </TouchableOpacity>
+        </View>
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ paddingHorizontal: 20, gap: 12, marginBottom: 28 }}>
+          {[
+            { id: "kyoto", city: "Kyoto", country: "Japan", flag: "🇯🇵", tags: ["Culture", "Temples", "Food"], image: IMG.kyoto },
+            { id: "dubai", city: "Dubai", country: "UAE", flag: "🇦🇪", tags: ["Luxury", "Halal", "Modern"], image: IMG.dubai },
+            { id: "barcelona", city: "Barcelona", country: "Spain", flag: "🇪🇸", tags: ["Art", "Beach", "Nightlife"], image: IMG.barcelona },
+            { id: "bali", city: "Bali", country: "Indonesia", flag: "🇮🇩", tags: ["Nature", "Yoga", "Temples"], image: IMG.bali },
+          ].map((g) => (
+            <TouchableOpacity
+              key={g.id}
+              style={S.guideCard}
+              activeOpacity={0.88}
+              onPress={() => {
+                if (Platform.OS !== "web") Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                router.push(`/(tabs)/destination-guide?id=${g.id}` as never);
+              }}
+            >
+              <Image source={{ uri: g.image }} style={StyleSheet.absoluteFillObject} resizeMode="cover" />
+              <LinearGradient colors={["transparent", "rgba(0,0,0,0.85)"]} locations={[0.3, 1]} style={StyleSheet.absoluteFillObject} />
+              <View style={S.guideContent}>
+                <View style={S.guideFlagRow}>
+                  <Text style={{ fontSize: 18 }}>{g.flag}</Text>
+                  <Text style={S.guideCountry}>{g.country}</Text>
+                </View>
+                <Text style={S.guideCity}>{g.city}</Text>
+                <View style={S.guideTags}>
+                  {g.tags.map((t) => (
+                    <View key={t} style={S.guideTag}><Text style={S.guideTagText}>{t}</Text></View>
+                  ))}
+                </View>
+              </View>
+              <View style={S.guideReadBtn}>
+                <Text style={S.guideReadText}>Read Guide →</Text>
+              </View>
+            </TouchableOpacity>
+          ))}
+        </ScrollView>
+
+        {/* Events & Experiences */}
+        <View style={S.sectionHeader}>
+          <Text style={S.sectionTitle}>Events & Experiences</Text>
+          <TouchableOpacity activeOpacity={0.7} onPress={() => router.push("/(tabs)/events" as never)}>
+            <Text style={S.seeAll}>See all</Text>
+          </TouchableOpacity>
+        </View>
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ paddingHorizontal: 20, gap: 12, marginBottom: 28 }}>
+          {[
+            { id: "e1", title: "Rio Carnival", location: "Brazil", dates: "Feb 28–Mar 5", price: "from $890", emoji: "🎭", color: "#F94498", image: IMG.machupicchu },
+            { id: "e2", title: "Cherry Blossom", location: "Japan", dates: "Mar 25–Apr 10", price: "from $1,200", emoji: "🌸", color: "#FF9800", image: IMG.kyoto },
+            { id: "e3", title: "Oktoberfest", location: "Germany", dates: "Sep 20–Oct 5", price: "from $650", emoji: "🍺", color: "#6443F4", image: IMG.amsterdam },
+            { id: "e4", title: "Diwali Festival", location: "India", dates: "Oct 20–24", price: "from $480", emoji: "✨", color: "#FFD700", image: IMG.phuket },
+          ].map((ev) => (
+            <TouchableOpacity
+              key={ev.id}
+              style={S.eventCard}
+              activeOpacity={0.88}
+              onPress={() => {
+                if (Platform.OS !== "web") Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                router.push("/(tabs)/events" as never);
+              }}
+            >
+              <Image source={{ uri: ev.image }} style={StyleSheet.absoluteFillObject} resizeMode="cover" />
+              <LinearGradient colors={["transparent", "rgba(0,0,0,0.88)"]} locations={[0.2, 1]} style={StyleSheet.absoluteFillObject} />
+              <View style={[S.eventEmoji, { backgroundColor: ev.color + "33" }]}>
+                <Text style={{ fontSize: 20 }}>{ev.emoji}</Text>
+              </View>
+              <View style={S.eventContent}>
+                <Text style={S.eventTitle}>{ev.title}</Text>
+                <View style={S.eventMeta}>
+                  <IconSymbol name="location.fill" size={11} color="rgba(255,255,255,0.6)" />
+                  <Text style={S.eventLocation}>{ev.location}</Text>
+                </View>
+                <Text style={S.eventDates}>{ev.dates}</Text>
+                <Text style={S.eventPrice}>{ev.price}</Text>
+              </View>
+            </TouchableOpacity>
+          ))}
+        </ScrollView>
+
         {/* Community Stories */}
         <View style={S.sectionHeader}>
           <Text style={S.sectionTitle}>Traveler Stories</Text>
@@ -365,4 +450,24 @@ const S = StyleSheet.create({
   storyLikes: { flexDirection: "row", alignItems: "center", gap: 5 },
   storyLikesText: { color: "rgba(255,255,255,0.45)", fontSize: 12, fontWeight: "600" },
   storyTime: { color: "rgba(255,255,255,0.3)", fontSize: 12 },
+  // Destination Guide cards
+  guideCard: { width: 200, height: 220, borderRadius: 20, overflow: "hidden", justifyContent: "flex-end" },
+  guideContent: { padding: 12, gap: 4 },
+  guideFlagRow: { flexDirection: "row", alignItems: "center", gap: 6 },
+  guideCountry: { color: "rgba(255,255,255,0.7)", fontSize: 12, fontWeight: "600" },
+  guideCity: { color: "#FFFFFF", fontSize: 20, fontWeight: "900", letterSpacing: -0.5 },
+  guideTags: { flexDirection: "row", gap: 5, flexWrap: "wrap", marginTop: 2 },
+  guideTag: { backgroundColor: "rgba(255,255,255,0.15)", borderRadius: 8, paddingHorizontal: 7, paddingVertical: 3 },
+  guideTagText: { color: "rgba(255,255,255,0.8)", fontSize: 10, fontWeight: "700" },
+  guideReadBtn: { position: "absolute", top: 12, right: 12, backgroundColor: "rgba(100,67,244,0.85)", borderRadius: 10, paddingHorizontal: 10, paddingVertical: 5 },
+  guideReadText: { color: "#FFFFFF", fontSize: 11, fontWeight: "800" },
+  // Event cards
+  eventCard: { width: 200, height: 220, borderRadius: 20, overflow: "hidden", justifyContent: "flex-end" },
+  eventEmoji: { position: "absolute", top: 12, right: 12, width: 40, height: 40, borderRadius: 12, alignItems: "center", justifyContent: "center" },
+  eventContent: { padding: 12, gap: 3 },
+  eventTitle: { color: "#FFFFFF", fontSize: 16, fontWeight: "900", letterSpacing: -0.3 },
+  eventMeta: { flexDirection: "row", alignItems: "center", gap: 4 },
+  eventLocation: { color: "rgba(255,255,255,0.6)", fontSize: 11 },
+  eventDates: { color: "rgba(255,255,255,0.5)", fontSize: 11, marginTop: 1 },
+  eventPrice: { color: "#C084FC", fontSize: 13, fontWeight: "800", marginTop: 2 },
 });

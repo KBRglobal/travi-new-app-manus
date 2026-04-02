@@ -141,6 +141,41 @@ export default function TabLayout() {
           href: null,
         }}
       />
+      <Tabs.Screen
+        name="destination-guide"
+        options={{
+          title: "Destination Guide",
+          href: null,
+        }}
+      />
+      <Tabs.Screen
+        name="events"
+        options={{
+          title: "Events",
+          href: null,
+        }}
+      />
+      <Tabs.Screen
+        name="real-estate"
+        options={{
+          title: "Real Estate",
+          href: null,
+        }}
+      />
+      <Tabs.Screen
+        name="enterprise"
+        options={{
+          title: "Enterprise",
+          href: null,
+        }}
+      />
+      <Tabs.Screen
+        name="support"
+        options={{
+          title: "Support",
+          href: null,
+        }}
+      />
     </Tabs>
   );
 }

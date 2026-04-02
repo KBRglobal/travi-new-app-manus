@@ -65,10 +65,17 @@ const SETTINGS_SECTIONS = [
     ],
   },
   {
+    title: "Business & Invest",
+    items: [
+      { icon: "building.2.fill" as const, label: "UAE Real Estate", value: "Dubai / Abu Dhabi", toggleKey: "", isToggle: false, route: "/(tabs)/real-estate" },
+      { icon: "chart.bar.fill" as const, label: "Enterprise Dashboard", value: "B2B Analytics", toggleKey: "", isToggle: false, route: "/(tabs)/enterprise" },
+    ],
+  },
+  {
     title: "Support",
     items: [
-      { icon: "bubble.left.fill" as const, label: "Help & FAQ", value: "", toggleKey: "", isToggle: false },
-      { icon: "envelope.fill" as const, label: "Contact Support", value: "", toggleKey: "", isToggle: false },
+      { icon: "bubble.left.fill" as const, label: "Help & FAQ", value: "", toggleKey: "", isToggle: false, route: "/(tabs)/support" },
+      { icon: "envelope.fill" as const, label: "Contact Support", value: "", toggleKey: "", isToggle: false, route: "/(tabs)/support" },
       { icon: "star.fill" as const, label: "Rate TRAVI", value: "", toggleKey: "", isToggle: false },
     ],
   },
