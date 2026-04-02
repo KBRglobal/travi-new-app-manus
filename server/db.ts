@@ -1,5 +1,6 @@
 import { eq, and } from "drizzle-orm";
-import { drizzle } from "drizzle-orm/mysql2";
+import { drizzle } from "drizzle-orm/node-postgres";
+import { Pool } from "pg";
 import {
   InsertUser, users,
   travelerProfiles, InsertTravelerProfile,
@@ -15,7 +16,8 @@ let _db: ReturnType<typeof drizzle> | null = null;
 export async function getDb() {
   if (!_db && process.env.DATABASE_URL) {
     try {
-      _db = drizzle(process.env.DATABASE_URL);
+      const pool = new Pool({ connectionString: process.env.DATABASE_URL, ssl: { rejectUnauthorized: false } });
+      _db = drizzle(pool);
     } catch (error) {
       console.warn("[Database] Failed to connect:", error);
       _db = null;
@@ -74,7 +76,8 @@ export async function upsertUser(user: InsertUser): Promise<void> {
       updateSet.lastSignedIn = new Date();
     }
 
-    await db.insert(users).values(values).onDuplicateKeyUpdate({
+    await db.insert(users).values(values).onConflictDoUpdate({
+      target: users.openId,
       set: updateSet,
     });
   } catch (error) {
@@ -108,7 +111,10 @@ export async function upsertTravelerProfile(data: InsertTravelerProfile) {
   if (!db) { console.warn("[Database] Cannot upsert traveler profile: database not available"); return; }
   const updateSet: Partial<InsertTravelerProfile> = { ...data };
   delete (updateSet as Record<string, unknown>)["userId"];
-  await db.insert(travelerProfiles).values(data).onDuplicateKeyUpdate({ set: updateSet });
+  await db.insert(travelerProfiles).values(data).onConflictDoUpdate({
+    target: travelerProfiles.userId,
+    set: updateSet,
+  });
 }
 
 // ─── Trips ────────────────────────────────────────────────────────────────────
@@ -128,7 +134,8 @@ export async function getTripById(tripId: number, userId: number) {
 export async function createTrip(data: InsertTrip) {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
-  return db.insert(trips).values(data);
+  const result = await db.insert(trips).values(data).returning();
+  return result[0];
 }
 
 export async function updateTrip(tripId: number, userId: number, data: Partial<InsertTrip>) {
@@ -166,7 +173,10 @@ export async function deletePriceAlert(alertId: number, userId: number) {
 export async function upsertPushToken(data: InsertPushToken) {
   const db = await getDb();
   if (!db) return;
-  await db.insert(pushTokens).values(data).onDuplicateKeyUpdate({ set: { userId: data.userId, platform: data.platform } });
+  await db.insert(pushTokens).values(data).onConflictDoUpdate({
+    target: pushTokens.token,
+    set: { userId: data.userId, platform: data.platform },
+  });
 }
 
 export async function getUserPushTokens(userId: number) {
