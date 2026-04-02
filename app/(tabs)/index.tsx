@@ -244,60 +244,42 @@ export default function HomeScreen() {
         </View>
 
         {/* ══════════════════════════════════════════
-            BLOCK 2 — DNA / Personalization
+            BLOCK 2 — Plan Your Trip CTA
         ══════════════════════════════════════════ */}
         <View style={S.block}>
-          {hasQuiz ? (
-            <TouchableOpacity
-              style={S.dnaCard}
-              onPress={() => router.push("/(auth)/quiz" as never)}
-              activeOpacity={0.88}
-            >
-              <LinearGradient
-                colors={["rgba(100,67,244,0.35)", "rgba(249,68,152,0.25)"]}
-                start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}
-                style={StyleSheet.absoluteFillObject}
-              />
-              <View style={S.dnaCardBorder} />
-              <View style={S.dnaCardLeft}>
-                <View style={S.dnaIconWrap}>
-                  <LinearGradient colors={["#6443F4", "#F94498"]} style={StyleSheet.absoluteFillObject} />
-                  <IconSymbol name="sparkles" size={20} color="#FFFFFF" />
+          <TouchableOpacity
+            style={S.planTripCard}
+            onPress={() => router.push("/(tabs)/explore" as never)}
+            activeOpacity={0.88}
+          >
+            <LinearGradient
+              colors={["#6443F4", "#F94498"]}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1.2, y: 1.2 }}
+              style={StyleSheet.absoluteFillObject}
+            />
+            {/* Glow overlay */}
+            <LinearGradient
+              colors={["rgba(255,255,255,0.15)", "transparent", "rgba(0,0,0,0.2)"]}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              style={StyleSheet.absoluteFillObject}
+            />
+            <View style={S.planTripContent}>
+              <View style={S.planTripLeft}>
+                <View style={S.planTripIconBox}>
+                  <Text style={{ fontSize: 28 }}>✈️</Text>
                 </View>
                 <View>
-                  <Text style={S.dnaCardLabel}>Your Travel DNA</Text>
-                  <Text style={S.dnaCardType}>{dnaType}</Text>
-                  <Text style={S.dnaCardSub}>Tap to see your full profile</Text>
+                  <Text style={S.planTripTitle}>Plan Your Next Trip</Text>
+                  <Text style={S.planTripSub}>Discover destinations made for you</Text>
                 </View>
               </View>
-              <IconSymbol name="chevron.right" size={18} color="rgba(255,255,255,0.4)" />
-            </TouchableOpacity>
-          ) : (
-            <TouchableOpacity
-              style={S.dnaTeaser}
-              onPress={() => router.push("/(auth)/quiz" as never)}
-              activeOpacity={0.88}
-            >
-              <LinearGradient
-                colors={["rgba(100,67,244,0.2)", "rgba(249,68,152,0.15)"]}
-                start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}
-                style={StyleSheet.absoluteFillObject}
-              />
-              <View style={S.dnaCardBorder} />
-              <View style={S.dnaTeaserContent}>
-                <View style={S.dnaTeaserLeft}>
-                  <Text style={S.dnaTeaserTitle}>What kind of traveler are you?</Text>
-                  <Text style={S.dnaTeaserSub}>
-                    Take the 2-min DNA quiz so TRAVI can plan trips made exactly for you.
-                  </Text>
-                </View>
-                <View style={S.dnaTeaserBtn}>
-                  <LinearGradient colors={["#6443F4", "#F94498"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={StyleSheet.absoluteFillObject} />
-                  <Text style={S.dnaTeaserBtnText}>Start →</Text>
-                </View>
+              <View style={S.planTripArrow}>
+                <IconSymbol name="chevron.right" size={22} color="#FFFFFF" />
               </View>
-            </TouchableOpacity>
-          )}
+            </View>
+          </TouchableOpacity>
         </View>
 
         {/* ══════════════════════════════════════════
@@ -490,6 +472,15 @@ const S = StyleSheet.create({
   block: { paddingHorizontal: 20, paddingTop: 28 },
   blockTitle: { color: "#FFFFFF", fontSize: 22, fontWeight: "900", letterSpacing: -0.5 },
   blockSub: { color: "rgba(255,255,255,0.4)", fontSize: 13, marginTop: 4, marginBottom: 16, lineHeight: 19 },
+
+  // Plan Trip CTA card
+  planTripCard: { borderRadius: 20, overflow: "hidden", padding: 18, shadowColor: "#6443F4", shadowOffset: { width: 0, height: 6 }, shadowOpacity: 0.45, shadowRadius: 18, elevation: 12 },
+  planTripContent: { flexDirection: "row", alignItems: "center", justifyContent: "space-between" },
+  planTripLeft: { flexDirection: "row", alignItems: "center", gap: 14, flex: 1 },
+  planTripIconBox: { width: 52, height: 52, borderRadius: 16, backgroundColor: "rgba(255,255,255,0.2)", alignItems: "center", justifyContent: "center" },
+  planTripTitle: { color: "#FFFFFF", fontSize: 18, fontWeight: "900", lineHeight: 22 },
+  planTripSub: { color: "rgba(255,255,255,0.7)", fontSize: 13, marginTop: 3, fontWeight: "500" },
+  planTripArrow: { width: 36, height: 36, borderRadius: 18, backgroundColor: "rgba(255,255,255,0.2)", alignItems: "center", justifyContent: "center" },
 
   // DNA card (has quiz)
   dnaCard: { borderRadius: 20, overflow: "hidden", flexDirection: "row", alignItems: "center", padding: 16, gap: 14 },
