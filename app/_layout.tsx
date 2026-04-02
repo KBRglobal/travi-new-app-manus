@@ -106,6 +106,7 @@ export default function RootLayout() {
             <Stack.Screen name="(tabs)" />
             <Stack.Screen name="(trip)" />
             <Stack.Screen name="(live)" />
+            <Stack.Screen name="(dna)" />
             <Stack.Screen name="oauth/callback" />
           </Stack>
           <StatusBar style="light" backgroundColor="#24103E" />
