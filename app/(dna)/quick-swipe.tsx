@@ -186,18 +186,8 @@ const SWIPE_ITEMS: SwipeItem[] = [
   { id: "u11", label: "Living off-grid for a week",     icon: "leaf.fill",              category: "Unique Experiences", gradient: ["#166534","#374151"], dimensions: { naturalist: 5, adventurer: 4, relaxer: 2 } },
 ];
 
-// ─── XP Tiers ─────────────────────────────────────────────────────────────────
-export const XP_TIERS = [
-  { name: "Bronze",   min: 0,      max: 999,    color: "#CD7F32", gradient: ["#CD7F32","#A0522D"] as [string,string] },
-  { name: "Silver",   min: 1000,   max: 4999,   color: "#C0C0C0", gradient: ["#C0C0C0","#A8A8A8"] as [string,string] },
-  { name: "Gold",     min: 5000,   max: 14999,  color: "#FFD700", gradient: ["#FFD700","#F59E0B"] as [string,string] },
-  { name: "Platinum", min: 15000,  max: 49999,  color: "#E5E4E2", gradient: ["#E5E4E2","#B8B8B8"] as [string,string] },
-  { name: "Diamond",  min: 50000,  max: Infinity, color: "#B9F2FF", gradient: ["#B9F2FF","#6443F4"] as [string,string] },
-];
-
-export function getTierForXP(xp: number) {
-  return XP_TIERS.find(t => xp >= t.min && xp <= t.max) ?? XP_TIERS[0];
-}
+// ─── XP Tiers (shared from lib) ──────────────────────────────────────────────
+export { XP_TIERS, getTierForXP } from "@/lib/xp-tiers";
 
 // ─── Compute 8-dimension scores from swipe history ───────────────────────────
 function computeDNAScores(

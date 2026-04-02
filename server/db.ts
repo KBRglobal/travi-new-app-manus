@@ -1,6 +1,12 @@
-import { eq } from "drizzle-orm";
+import { eq, and } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
-import { InsertUser, users } from "../drizzle/schema";
+import {
+  InsertUser, users,
+  travelerProfiles, InsertTravelerProfile,
+  trips, InsertTrip,
+  priceAlerts, InsertPriceAlert,
+  pushTokens, InsertPushToken,
+} from "../drizzle/schema";
 import { ENV } from "./_core/env";
 
 let _db: ReturnType<typeof drizzle> | null = null;
@@ -89,4 +95,82 @@ export async function getUserByOpenId(openId: string) {
   return result.length > 0 ? result[0] : undefined;
 }
 
-// TODO: add feature queries here as your schema grows.
+// ─── Traveler Profiles ────────────────────────────────────────────────────────
+export async function getTravelerProfile(userId: number) {
+  const db = await getDb();
+  if (!db) return null;
+  const result = await db.select().from(travelerProfiles).where(eq(travelerProfiles.userId, userId)).limit(1);
+  return result.length > 0 ? result[0] : null;
+}
+
+export async function upsertTravelerProfile(data: InsertTravelerProfile) {
+  const db = await getDb();
+  if (!db) { console.warn("[Database] Cannot upsert traveler profile: database not available"); return; }
+  const updateSet: Partial<InsertTravelerProfile> = { ...data };
+  delete (updateSet as Record<string, unknown>)["userId"];
+  await db.insert(travelerProfiles).values(data).onDuplicateKeyUpdate({ set: updateSet });
+}
+
+// ─── Trips ────────────────────────────────────────────────────────────────────
+export async function getUserTrips(userId: number) {
+  const db = await getDb();
+  if (!db) return [];
+  return db.select().from(trips).where(eq(trips.userId, userId));
+}
+
+export async function getTripById(tripId: number, userId: number) {
+  const db = await getDb();
+  if (!db) return null;
+  const result = await db.select().from(trips).where(and(eq(trips.id, tripId), eq(trips.userId, userId))).limit(1);
+  return result.length > 0 ? result[0] : null;
+}
+
+export async function createTrip(data: InsertTrip) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  return db.insert(trips).values(data);
+}
+
+export async function updateTrip(tripId: number, userId: number, data: Partial<InsertTrip>) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  await db.update(trips).set(data).where(and(eq(trips.id, tripId), eq(trips.userId, userId)));
+}
+
+export async function deleteTrip(tripId: number, userId: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  await db.delete(trips).where(and(eq(trips.id, tripId), eq(trips.userId, userId)));
+}
+
+// ─── Price Alerts ─────────────────────────────────────────────────────────────
+export async function getUserPriceAlerts(userId: number) {
+  const db = await getDb();
+  if (!db) return [];
+  return db.select().from(priceAlerts).where(and(eq(priceAlerts.userId, userId), eq(priceAlerts.active, 1)));
+}
+
+export async function createPriceAlert(data: InsertPriceAlert) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  await db.insert(priceAlerts).values(data);
+}
+
+export async function deletePriceAlert(alertId: number, userId: number) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  await db.update(priceAlerts).set({ active: 0 }).where(and(eq(priceAlerts.id, alertId), eq(priceAlerts.userId, userId)));
+}
+
+// ─── Push Tokens ──────────────────────────────────────────────────────────────
+export async function upsertPushToken(data: InsertPushToken) {
+  const db = await getDb();
+  if (!db) return;
+  await db.insert(pushTokens).values(data).onDuplicateKeyUpdate({ set: { userId: data.userId, platform: data.platform } });
+}
+
+export async function getUserPushTokens(userId: number) {
+  const db = await getDb();
+  if (!db) return [];
+  return db.select().from(pushTokens).where(eq(pushTokens.userId, userId));
+}

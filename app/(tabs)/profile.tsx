@@ -6,7 +6,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { IconSymbol } from "@/components/ui/icon-symbol";
 import { useStore } from "@/lib/store";
 import { getDNA, type TravelerDNA } from "@/lib/dna-store";
-import { getTierForXP, XP_TIERS } from "@/(dna)/quick-swipe";
+import { getTierForXP, XP_TIERS } from "@/lib/xp-tiers";
 
 const { width } = Dimensions.get("window");
 
@@ -372,6 +372,15 @@ const styles = StyleSheet.create({
   userEmail: { color: "#5A4D72", fontSize: 14 },
   tierBadge: { borderRadius: 14, overflow: "hidden" },
   tierGradient: { flexDirection: "row", alignItems: "center", gap: 8, paddingHorizontal: 16, paddingVertical: 10, borderRadius: 14, borderWidth: 1, borderColor: "rgba(123,47,190,0.4)" },
+  xpContainer: { width: "100%", marginTop: 12, marginBottom: 4 },
+  xpBadge: { borderRadius: 16, padding: 14, borderWidth: 1, borderColor: "rgba(100,67,244,0.35)" },
+  xpBadgeTop: { flexDirection: "row", alignItems: "center", gap: 8 },
+  xpTierDot: { width: 10, height: 10, borderRadius: 5 },
+  xpTierName: { fontSize: 14, fontWeight: "700", flex: 1 },
+  xpProgressWrap: { marginTop: 10, gap: 4 },
+  xpProgressBg: { height: 6, backgroundColor: "rgba(255,255,255,0.1)", borderRadius: 3, overflow: "hidden" },
+  xpProgressFill: { height: 6, borderRadius: 3 },
+  xpProgressLabel: { fontSize: 11, color: "rgba(255,255,255,0.5)", textAlign: "right" },
   tierName: { color: "#FFFFFF", fontSize: 14, fontWeight: "700" },
   tierSep: { width: 1, height: 14, backgroundColor: "rgba(255,255,255,0.2)" },
   tierPoints: { color: "#FFD700", fontSize: 13, fontWeight: "700" },
