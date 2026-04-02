@@ -397,3 +397,12 @@
 - [ ] Connect Plan a Trip button on Home to real planning flow
 - [ ] Connect Profile DNA traits to real quiz data
 - [ ] Sync Wallet tier badge with real points
+
+## Profile Settings Fix (Broken Navigation)
+- [x] Build Edit Profile screen
+- [x] Build Privacy - [ ] Build Privacy & Security screen Security screen
+- [x] Build Change Password screen
+- [x] Build Language selector screen
+- [x] Build Currency selector screen
+- [x] Build TRAVI Pro subscription screen
+- [x] Wire all routes in profile.tsx
