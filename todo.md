@@ -217,3 +217,12 @@
 - [ ] Property Detail screen (gallery, specs, ROI calculator, map)
 - [ ] Mexico Destination Guide (Urban vs Coastal comparison)
 - [ ] Dubai Cultural Screen (Islamic etiquette, prayer times, halal/kosher)
+
+## Phase 21 — Home Screen Redesign: "The Travel Friend You Never Had"
+- [x] Replace current Home with cinematic, emotional trip-planning experience
+- [x] Hero: full-screen rotating destination imagery, "The travel friend you never had" headline
+- [x] DNA section: personalized greeting if quiz done / teaser if not
+- [x] How It Works: 3-step visual (Know You → Plan It → Commission Back)
+- [x] No-middleman explanation block with simple visual
+- [x] "Where's your head at?" CTA with 3 options
+- [x] Remove prices, points, price alerts, trending, community stories from Home
