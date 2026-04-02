@@ -147,6 +147,21 @@ export default function ExploreScreen() {
             <Text style={S.listCount}>{filtered.length}</Text>
           </View>
 
+          {filtered.length === 0 && (
+            <View style={S.emptyState}>
+              <Text style={S.emptyIcon}>🌍</Text>
+              <Text style={S.emptyTitle}>No destinations found</Text>
+              <Text style={S.emptySub}>Try a different category or search term</Text>
+              <TouchableOpacity
+                style={S.emptyReset}
+                onPress={() => { setActiveCategory("all"); setSearchQuery(""); }}
+                activeOpacity={0.8}
+              >
+                <Text style={S.emptyResetText}>Show all destinations</Text>
+              </TouchableOpacity>
+            </View>
+          )}
+
           {filtered.map((dest) => (
             <TouchableOpacity
               key={dest.id}
@@ -295,4 +310,12 @@ const S = StyleSheet.create({
   cardCity: { color: "#FFFFFF", fontSize: 24, fontWeight: "900", letterSpacing: -0.5 },
   cardCountryRow: { flexDirection: "row", alignItems: "center", gap: 5 },
   cardCountry: { color: "rgba(255,255,255,0.7)", fontSize: 14, fontWeight: "600" },
+
+  // Empty state
+  emptyState: { alignItems: "center", paddingVertical: 60, gap: 12 },
+  emptyIcon: { fontSize: 48 },
+  emptyTitle: { color: "#FFFFFF", fontSize: 18, fontWeight: "800" },
+  emptySub: { color: "rgba(255,255,255,0.4)", fontSize: 14, textAlign: "center" },
+  emptyReset: { marginTop: 8, paddingHorizontal: 20, paddingVertical: 12, borderRadius: 16, backgroundColor: "rgba(100,67,244,0.3)", borderWidth: 1, borderColor: "rgba(100,67,244,0.5)" },
+  emptyResetText: { color: "#C084FC", fontSize: 14, fontWeight: "700" },
 });

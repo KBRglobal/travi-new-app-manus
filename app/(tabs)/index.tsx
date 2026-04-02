@@ -3,6 +3,7 @@ import {
   View, Text, TouchableOpacity, StyleSheet, Dimensions,
   ScrollView, Animated, Platform, StatusBar, ImageBackground,
 } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { router } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
 import { IconSymbol } from "@/components/ui/icon-symbol";
@@ -105,6 +106,7 @@ const START_OPTIONS = [
 
 export default function HomeScreen() {
   const { state } = useStore();
+  const insets = useSafeAreaInsets();
   const scrollY = useRef(new Animated.Value(0)).current;
   const heroFade = useRef(new Animated.Value(0)).current;
   const [heroIndex, setHeroIndex] = useState(0);
@@ -153,7 +155,7 @@ export default function HomeScreen() {
       <StatusBar barStyle="light-content" />
 
       {/* ── Sticky mini-header ── */}
-      <Animated.View style={[S.stickyHeader, { opacity: headerOpacity }]}>
+      <Animated.View style={[S.stickyHeader, { opacity: headerOpacity, paddingTop: insets.top + 8 }]}>
         <LinearGradient colors={["rgba(4,0,16,0.97)", "rgba(13,5,32,0.95)"]} style={StyleSheet.absoluteFillObject} />
         <Text style={S.stickyTitle}>TRAVI</Text>
         <TouchableOpacity onPress={() => router.push("/(tabs)/notifications" as never)} style={S.stickyNotif} activeOpacity={0.8}>
@@ -189,7 +191,7 @@ export default function HomeScreen() {
           />
 
           {/* Header row */}
-          <View style={S.heroHeader}>
+          <View style={[S.heroHeader, { paddingTop: insets.top + 8 }]}>
             <View>
               <Text style={S.heroGreeting}>Hello, {firstName}</Text>
             </View>
@@ -431,14 +433,14 @@ export default function HomeScreen() {
 const S = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#0D0628" },
 
-  // Sticky header
-  stickyHeader: { position: "absolute", top: 0, left: 0, right: 0, zIndex: 100, flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 24, paddingTop: 56, paddingBottom: 12 },
+  // Sticky header — paddingTop set dynamically via insets
+  stickyHeader: { position: "absolute", top: 0, left: 0, right: 0, zIndex: 100, flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 24, paddingBottom: 12 },
   stickyTitle: { color: "#FFFFFF", fontSize: 18, fontWeight: "900", letterSpacing: 2 },
   stickyNotif: { width: 36, height: 36, borderRadius: 18, backgroundColor: "rgba(255,255,255,0.1)", alignItems: "center", justifyContent: "center" },
 
   // Hero
   heroWrap: { height: height * 0.72, justifyContent: "flex-end", overflow: "hidden" },
-  heroHeader: { position: "absolute", top: 0, left: 0, right: 0, flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 20, paddingTop: 60, paddingBottom: 12 },
+  heroHeader: { position: "absolute", top: 0, left: 0, right: 0, flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 20, paddingBottom: 12 },
   heroGreeting: { color: "rgba(255,255,255,0.7)", fontSize: 15, fontWeight: "500" },
   notifBtn: { width: 44, height: 44, borderRadius: 22, overflow: "hidden" },
   notifGradient: { flex: 1, alignItems: "center", justifyContent: "center", borderWidth: 1, borderColor: "rgba(255,255,255,0.15)", borderRadius: 22 },
