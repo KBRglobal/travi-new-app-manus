@@ -1,7 +1,7 @@
-import { useState, useRef, useEffect } from "react";
+import React, { useRef, useCallback, useState, useEffect } from "react";
 import {
   View, Text, TouchableOpacity, StyleSheet, ScrollView,
-  Dimensions, Animated, TextInput, Platform
+  Dimensions, Animated, TextInput, Platform, PanResponder,
 } from "react-native";
 import { router } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
@@ -39,6 +39,10 @@ const BUDGETS = [
   { id: "luxury", label: "Luxury", range: "$7,000+", icon: "crown.fill" as const, color: "#FFD700" },
 ];
 
+const CUSTOM_MIN = 500;
+const CUSTOM_MAX = 20000;
+const CUSTOM_STEP = 250;
+
 const TRAVI_MESSAGES = [
   "Where does your heart want to go?",
   "What's your travel vibe?",
@@ -57,6 +61,8 @@ export default function PlanScreen() {
   const [selectedStyle, setSelectedStyle] = useState<string | null>(null);
   const [travelers, setTravelers] = useState(2);
   const [selectedBudget, setSelectedBudget] = useState<string | null>(null);
+  const [customAmount, setCustomAmount] = useState(4000);
+  const sliderWidth = width - 80;
   const [startDate, setStartDate] = useState("Apr 15, 2026");
   const [endDate, setEndDate] = useState("Apr 22, 2026");
   const [editingDate, setEditingDate] = useState<"start" | "end" | null>(null);
@@ -319,36 +325,118 @@ export default function PlanScreen() {
 
         {/* ── STEP 4: Budget ── */}
         {currentStep === "budget" && (
-          <View style={styles.budgetGrid}>
-            {BUDGETS.map((budget) => {
-              const selected = selectedBudget === budget.id;
-              return (
-                <TouchableOpacity
-                  key={budget.id}
-                  style={[styles.budgetCard, selected && { borderColor: budget.color + "AA" }]}
-                  onPress={() => {
-                    if (Platform.OS !== "web") Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-                    setSelectedBudget(budget.id);
-                  }}
-                  activeOpacity={0.88}
-                >
-                  <LinearGradient
-                    colors={selected ? [budget.color + "33", budget.color + "18"] : ["rgba(255,255,255,0.06)", "rgba(255,255,255,0.03)"]}
-                    style={StyleSheet.absoluteFillObject}
-                  />
-                  <View style={[styles.budgetIconWrap, { backgroundColor: budget.color + "22" }]}>
-                    <IconSymbol name={budget.icon} size={28} color={budget.color} />
-                  </View>
-                  <Text style={[styles.budgetLabel, selected && { color: budget.color }]}>{budget.label}</Text>
-                  <Text style={styles.budgetRange}>{budget.range}</Text>
-                  {selected && (
-                    <View style={[styles.budgetCheck, { backgroundColor: budget.color }]}>
-                      <IconSymbol name="checkmark" size={12} color="#FFFFFF" />
+          <View style={styles.budgetWrap}>
+            <View style={styles.budgetGrid}>
+              {BUDGETS.map((budget) => {
+                const selected = selectedBudget === budget.id;
+                return (
+                  <TouchableOpacity
+                    key={budget.id}
+                    style={[styles.budgetCard, selected && { borderColor: budget.color + "AA" }]}
+                    onPress={() => {
+                      if (Platform.OS !== "web") Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                      setSelectedBudget(budget.id);
+                    }}
+                    activeOpacity={0.88}
+                  >
+                    <LinearGradient
+                      colors={selected ? [budget.color + "33", budget.color + "18"] : ["rgba(255,255,255,0.06)", "rgba(255,255,255,0.03)"]}
+                      style={StyleSheet.absoluteFillObject}
+                    />
+                    <View style={[styles.budgetIconWrap, { backgroundColor: budget.color + "22" }]}>
+                      <IconSymbol name={budget.icon} size={28} color={budget.color} />
                     </View>
-                  )}
-                </TouchableOpacity>
-              );
-            })}
+                    <Text style={[styles.budgetLabel, selected && { color: budget.color }]}>{budget.label}</Text>
+                    <Text style={styles.budgetRange}>{budget.range}</Text>
+                    {selected && (
+                      <View style={[styles.budgetCheck, { backgroundColor: budget.color }]}>
+                        <IconSymbol name="checkmark" size={12} color="#FFFFFF" />
+                      </View>
+                    )}
+                  </TouchableOpacity>
+                );
+              })}
+            </View>
+
+            {/* Custom Budget Card — full width */}
+            <TouchableOpacity
+              style={[styles.customBudgetCard, selectedBudget === "custom" && styles.customBudgetCardActive]}
+              onPress={() => {
+                if (Platform.OS !== "web") Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                setSelectedBudget("custom");
+              }}
+              activeOpacity={0.88}
+            >
+              <LinearGradient
+                colors={selectedBudget === "custom" ? ["rgba(249,68,152,0.25)", "rgba(100,67,244,0.2)"] : ["rgba(255,255,255,0.06)", "rgba(255,255,255,0.03)"]}
+                style={StyleSheet.absoluteFillObject}
+              />
+              <View style={styles.customBudgetTop}>
+                <View style={[styles.budgetIconWrap, { backgroundColor: "rgba(249,68,152,0.2)" }]}>
+                  <IconSymbol name="slider.horizontal.3" size={26} color="#F94498" />
+                </View>
+                <View style={{ flex: 1 }}>
+                  <Text style={[styles.budgetLabel, selectedBudget === "custom" && { color: "#F94498" }]}>Custom Budget</Text>
+                  <Text style={styles.budgetRange}>Set your exact amount</Text>
+                </View>
+                <Text style={styles.customAmount}>${customAmount.toLocaleString()}</Text>
+                {selectedBudget === "custom" && (
+                  <View style={[styles.budgetCheck, { backgroundColor: "#F94498" }]}>
+                    <IconSymbol name="checkmark" size={12} color="#FFFFFF" />
+                  </View>
+                )}
+              </View>
+
+              {/* Slider — only visible when selected */}
+              {selectedBudget === "custom" && (
+                <View style={styles.sliderWrap}>
+                  <View style={styles.sliderTrack}>
+                    <LinearGradient
+                      colors={["#6443F4", "#F94498"]}
+                      start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
+                      style={[styles.sliderFill, { width: `${((customAmount - CUSTOM_MIN) / (CUSTOM_MAX - CUSTOM_MIN)) * 100}%` as unknown as number }]}
+                    />
+                    {/* Draggable thumb */}
+                    <View
+                      style={[
+                        styles.sliderThumb,
+                        { left: `${((customAmount - CUSTOM_MIN) / (CUSTOM_MAX - CUSTOM_MIN)) * 100}%` as unknown as number },
+                      ]}
+                      {...PanResponder.create({
+                        onStartShouldSetPanResponder: () => true,
+                        onMoveShouldSetPanResponder: () => true,
+                        onPanResponderMove: (_, gs) => {
+                          const ratio = Math.max(0, Math.min(1, gs.moveX / sliderWidth));
+                          const raw = CUSTOM_MIN + ratio * (CUSTOM_MAX - CUSTOM_MIN);
+                          const stepped = Math.round(raw / CUSTOM_STEP) * CUSTOM_STEP;
+                          setCustomAmount(stepped);
+                        },
+                      }).panHandlers}
+                    />
+                  </View>
+                  <View style={styles.sliderLabels}>
+                    <Text style={styles.sliderLabel}>${CUSTOM_MIN.toLocaleString()}</Text>
+                    <Text style={styles.sliderLabel}>${CUSTOM_MAX.toLocaleString()}</Text>
+                  </View>
+                  {/* Quick preset chips */}
+                  <View style={styles.sliderPresets}>
+                    {[1500, 3000, 5000, 8000, 12000].map((v) => (
+                      <TouchableOpacity
+                        key={v}
+                        style={[styles.presetChip, customAmount === v && styles.presetChipActive]}
+                        onPress={() => {
+                          if (Platform.OS !== "web") Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                          setCustomAmount(v);
+                        }}
+                        activeOpacity={0.8}
+                      >
+                        <Text style={[styles.presetChipText, customAmount === v && styles.presetChipTextActive]}>${(v / 1000).toFixed(v % 1000 === 0 ? 0 : 1)}k</Text>
+                      </TouchableOpacity>
+                    ))}
+                  </View>
+                </View>
+              )}
+            </TouchableOpacity>
           </View>
         )}
 
@@ -567,4 +655,19 @@ const styles = StyleSheet.create({
   ctaGradient: { flexDirection: "row", alignItems: "center", justifyContent: "center", paddingVertical: 18, gap: 10, borderRadius: 20 },
   ctaText: { color: "#FFFFFF", fontSize: 18, fontWeight: "800" },
   ctaTextDisabled: { color: "#3A2D4E" },
+  // Custom budget slider styles
+  budgetWrap: { gap: 12, paddingBottom: 20 },
+  customBudgetCard: { marginHorizontal: 20, borderRadius: 20, padding: 20, overflow: "hidden", borderWidth: 2, borderColor: "rgba(255,255,255,0.08)" },
+  customBudgetCardActive: { borderColor: "rgba(249,68,152,0.6)" },
+  customBudgetTop: { flexDirection: "row", alignItems: "center", gap: 12 },
+  customAmount: { color: "#F94498", fontSize: 18, fontWeight: "800" },
+  sliderWrap: { marginTop: 16, gap: 8 },
+  sliderTrack: { height: 6, backgroundColor: "rgba(255,255,255,0.1)", borderRadius: 3, overflow: "hidden", position: "relative" },
+  sliderFill: { height: "100%" as unknown as number, borderRadius: 3 },
+  sliderThumb: { position: "absolute", top: -9, width: 24, height: 24, borderRadius: 12, backgroundColor: "#F94498", borderWidth: 3, borderColor: "#0D0628", marginLeft: -12 },
+  sliderLabels: { flexDirection: "row", justifyContent: "space-between" },
+  sliderLabel: { color: "rgba(255,255,255,0.4)", fontSize: 11 },
+  sliderPresets: { flexDirection: "row", gap: 8, flexWrap: "wrap", marginTop: 4 },
+  presetChipText: { color: "rgba(255,255,255,0.5)", fontSize: 12, fontWeight: "600" },
+  presetChipTextActive: { color: "#C084FC" },
 });

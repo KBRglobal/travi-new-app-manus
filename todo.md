@@ -226,3 +226,16 @@
 - [x] No-middleman explanation block with simple visual
 - [x] "Where's your head at?" CTA with 3 options
 - [x] Remove prices, points, price alerts, trending, community stories from Home
+
+## Phase 22 — Immersive Trip-Building Flow
+- [ ] Redesign interests step as photo-grid picker (real images, 2-col, label pill, checkmark)
+- [ ] Build Tinder-swipe screen for attractions & restaurants (swipe right = add, left = skip)
+- [ ] Build generated itinerary screen: timeline, walking/taxi times, day-by-day loz
+- [ ] Add budget step: large visual slider that changes background by amount
+
+## Phase 23 — DNA Learning Engine
+- [ ] Build travelerDNA store with AsyncStorage persistence (interests, traits, swipes, hesitation times)
+- [ ] Photo-grid interest picker with real images — selections update DNA in real time
+- [ ] Tinder-swipe attractions screen — swipe + hesitation time feeds DNA traits
+- [ ] Generated itinerary screen — timeline with walking/taxi times between stops
+- [ ] DNA profile screen shows live-updating traits from all interactions

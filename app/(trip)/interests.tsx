@@ -1,131 +1,173 @@
-import { useState, useRef, useEffect } from "react";
-import { View, Text, TouchableOpacity, StyleSheet, ScrollView, Dimensions, Animated, Platform } from "react-native";
-import { router, useLocalSearchParams } from "expo-router";
+/**
+ * TRAVI — Interests Picker
+ * Beautiful photo-grid for selecting travel interests.
+ * Every selection feeds the DNA learning engine.
+ */
+
 import { LinearGradient } from "expo-linear-gradient";
-import { Image } from "react-native";
-import { IconSymbol } from "@/components/ui/icon-symbol";
-import { useStore } from "@/lib/store";
 import * as Haptics from "expo-haptics";
+import { router, useLocalSearchParams } from "expo-router";
+import React, { useState } from "react";
+import {
+  Dimensions,
+  Image,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { IconSymbol } from "@/components/ui/icon-symbol";
+import { recordInterestSelections, type InterestCategory } from "@/lib/dna-store";
 
 const { width } = Dimensions.get("window");
+const CARD_SIZE = (width - 48) / 2;
 
-const INTERESTS = [
-  { id: "food", label: "Local Food", icon: "fork.knife" as const, color: "#FF6B35", gradient: ["#3d1a00", "#6b2d00"] as [string, string] },
-  { id: "history", label: "History", icon: "building.columns.fill" as const, color: "#6443F4", gradient: ["#1a1a4e", "#2d2d7a"] as [string, string] },
-  { id: "nature", label: "Nature", icon: "leaf.fill" as const, color: "#4CAF50", gradient: ["#0d2a0d", "#1a4a1a"] as [string, string] },
-  { id: "art", label: "Art & Culture", icon: "paintbrush.fill" as const, color: "#F94498", gradient: ["#2d0033", "#5c0066"] as [string, string] },
-  { id: "adventure", label: "Adventure", icon: "figure.run" as const, color: "#FF9800", gradient: ["#2d1a00", "#5c3300"] as [string, string] },
-  { id: "beaches", label: "Beaches", icon: "beach.umbrella" as const, color: "#2196F3", gradient: ["#0d2040", "#1a3a5c"] as [string, string] },
-  { id: "nightlife", label: "Nightlife", icon: "music.note" as const, color: "#9C27B0", gradient: ["#1a0033", "#3d0066"] as [string, string] },
-  { id: "shopping", label: "Shopping", icon: "bag.fill" as const, color: "#F44336", gradient: ["#2d0a0a", "#5c1a1a"] as [string, string] },
-  { id: "wellness", label: "Wellness", icon: "figure.yoga" as const, color: "#00BCD4", gradient: ["#002d33", "#005c66"] as [string, string] },
-  { id: "sports", label: "Sports", icon: "dumbbell.fill" as const, color: "#8BC34A", gradient: ["#1a2d00", "#335c00"] as [string, string] },
-  { id: "photography", label: "Photography", icon: "camera.fill" as const, color: "#FF5722", gradient: ["#2d1500", "#5c2a00"] as [string, string] },
-  { id: "wine", label: "Wine & Drinks", icon: "wineglass.fill" as const, color: "#E91E63", gradient: ["#2d0020", "#5c0040"] as [string, string] },
+interface Interest {
+  id: InterestCategory;
+  label: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  image: any;
+  color: string;
+}
+
+const INTERESTS: Interest[] = [
+  { id: "landmarks", label: "Landmarks", image: { uri: "https://d2xsxph8kpxj0f.cloudfront.net/310519663492248962/5G6CWkFZowcex8zpzMErDd/landmarks_db242186.jpg" }, color: "#F94498" },
+  { id: "nature", label: "Nature", image: require("@/assets/interests/nature.jpg"), color: "#22C55E" },
+  { id: "beaches", label: "Beaches", image: require("@/assets/interests/beaches.jpg"), color: "#06B6D4" },
+  { id: "food", label: "Food & Drink", image: { uri: "https://d2xsxph8kpxj0f.cloudfront.net/310519663492248962/5G6CWkFZowcex8zpzMErDd/food_7b47d10b.jpg" }, color: "#F59E0B" },
+  { id: "nightlife", label: "Nightlife", image: require("@/assets/interests/nightlife.jpg"), color: "#8B5CF6" },
+  { id: "shopping", label: "Shopping", image: require("@/assets/interests/shopping.jpg"), color: "#EC4899" },
+  { id: "adventure", label: "Adventure", image: { uri: "https://d2xsxph8kpxj0f.cloudfront.net/310519663492248962/5G6CWkFZowcex8zpzMErDd/adventure_4cc17bda.jpg" }, color: "#EF4444" },
+  { id: "wellness", label: "Wellness & Spa", image: require("@/assets/interests/wellness.jpg"), color: "#10B981" },
+  { id: "history", label: "History", image: require("@/assets/destinations/rome.jpg"), color: "#D97706" },
+  { id: "water_sports", label: "Water Sports", image: require("@/assets/destinations/maldives.jpg"), color: "#0EA5E9" },
+  { id: "art_culture", label: "Art & Culture", image: require("@/assets/destinations/paris.jpg"), color: "#A855F7" },
+  { id: "extreme", label: "Extreme Activities", image: require("@/assets/destinations/patagonia.jpg"), color: "#F97316" },
 ];
 
 export default function InterestsScreen() {
+  const insets = useSafeAreaInsets();
   const { tripId } = useLocalSearchParams<{ tripId: string }>();
-  const { dispatch } = useStore();
-  const [selected, setSelected] = useState<string[]>([]);
-  const fadeAnim = useRef(new Animated.Value(0)).current;
+  const [selected, setSelected] = useState<Set<InterestCategory>>(new Set());
+  const [saving, setSaving] = useState(false);
 
-  useEffect(() => {
-    Animated.timing(fadeAnim, { toValue: 1, duration: 400, useNativeDriver: true }).start();
-  }, []);
-
-  const toggle = (id: string) => {
+  const toggle = (id: InterestCategory) => {
     if (Platform.OS !== "web") Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-    setSelected((prev) => prev.includes(id) ? prev.filter((i) => i !== id) : [...prev, id]);
+    setSelected((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
   };
 
-  const handleNext = () => {
-    if (selected.length === 0) return;
-    if (Platform.OS !== "web") Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-    if (tripId) dispatch({ type: "UPDATE_TRIP", payload: { id: tripId, updates: { interests: selected } } });
-    router.push({ pathname: "/(trip)/landmarks", params: { tripId } } as never);
+  const handleContinue = async () => {
+    if (selected.size === 0) return;
+    setSaving(true);
+    if (Platform.OS !== "web") Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+    await recordInterestSelections(Array.from(selected));
+    setSaving(false);
+    router.push({ pathname: "/(trip)/swipe", params: { tripId, interests: Array.from(selected).join(",") } } as never);
   };
 
   return (
-    <View style={styles.container}>
-      <LinearGradient colors={["#0D0628", "#1A0A3D", "#1A0A3D"]} style={StyleSheet.absoluteFillObject} />
+    <View style={[styles.container, { paddingTop: insets.top }]}>
       <View style={styles.orb1} />
+      <View style={styles.orb2} />
 
+      {/* Header */}
       <View style={styles.header}>
         <TouchableOpacity style={styles.backBtn} onPress={() => router.back()} activeOpacity={0.7}>
-          <IconSymbol name="chevron.left" size={22} color="#FFFFFF" />
+          <IconSymbol name="chevron.left" size={20} color="rgba(255,255,255,0.8)" />
         </TouchableOpacity>
-        <View style={styles.progressWrap}>
-          <View style={styles.progressTrack}>
-            <View style={[styles.progressFill, { width: "40%" }]} />
-          </View>
-          <Text style={styles.progressLabel}>2 of 5</Text>
+        <View style={styles.headerCenter}>
+          <Image source={require("@/assets/brand/logotype-white.webp")} style={styles.logo} resizeMode="contain" />
         </View>
-        <View style={{ width: 40 }} />
+        <View style={[styles.countBadge, selected.size > 0 && styles.countBadgeActive]}>
+          <Text style={[styles.countText, selected.size > 0 && styles.countTextActive]}>{selected.size}</Text>
+        </View>
       </View>
 
-      <View style={styles.duckRow}>
-        <View style={styles.duckAvatar}>
-          <LinearGradient colors={["#6443F4", "#F94498"]} style={styles.duckGradient}>
-            <Image source={require("@/assets/logos/mascot-dark.png")} style={styles.duckImg} resizeMode="contain" />
-          </LinearGradient>
-        </View>
-        <Animated.View style={[styles.duckBubble, { opacity: fadeAnim }]}>
-          <LinearGradient colors={["rgba(123,47,190,0.4)", "rgba(233,30,140,0.25)"]} style={styles.duckBubbleGradient}>
-            <Text style={styles.duckMessage}>What do you love doing on trips?</Text>
-            <Text style={styles.duckSub}>Pick as many as you like</Text>
-          </LinearGradient>
-        </Animated.View>
+      {/* Title */}
+      <View style={styles.titleWrap}>
+        <Text style={styles.title}>Choose your interests</Text>
+        <Text style={styles.subtitle}>Pick as many as you like — TRAVI learns your style</Text>
       </View>
 
-      <Animated.View style={[{ flex: 1 }, { opacity: fadeAnim }]}>
-        <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.grid}>
-          {INTERESTS.map((item) => {
-            const isSelected = selected.includes(item.id);
-            return (
-              <TouchableOpacity
-                key={item.id}
-                style={[styles.card, isSelected && { borderColor: item.color + "AA" }]}
-                onPress={() => toggle(item.id)}
-                activeOpacity={0.85}
-              >
-                <LinearGradient
-                  colors={isSelected ? item.gradient : ["rgba(255,255,255,0.06)", "rgba(255,255,255,0.03)"]}
-                  style={StyleSheet.absoluteFillObject}
-                />
-                <View style={[styles.iconWrap, { backgroundColor: item.color + (isSelected ? "33" : "18") }]}>
-                  <IconSymbol name={item.icon} size={26} color={item.color} />
-                </View>
-                <Text style={[styles.cardLabel, isSelected && { color: "#FFFFFF" }]}>{item.label}</Text>
-                {isSelected && (
-                  <View style={[styles.checkBadge, { backgroundColor: item.color }]}>
-                    <IconSymbol name="checkmark" size={10} color="#FFFFFF" />
+      {/* Photo Grid */}
+      <ScrollView style={styles.scroll} contentContainerStyle={styles.grid} showsVerticalScrollIndicator={false}>
+        {INTERESTS.map((item) => {
+          const isSelected = selected.has(item.id);
+          return (
+            <TouchableOpacity
+              key={item.id}
+              style={[styles.card, isSelected && { borderColor: item.color, borderWidth: 3 }]}
+              onPress={() => toggle(item.id)}
+              activeOpacity={0.88}
+            >
+              {/* Photo */}
+              <Image source={item.image} style={styles.cardImage} resizeMode="cover" />
+
+              {/* Gradient overlay */}
+              <LinearGradient
+                colors={["transparent", "rgba(0,0,0,0.8)"]}
+                style={StyleSheet.absoluteFillObject}
+              />
+
+              {/* Selected color tint */}
+              {isSelected && (
+                <View style={[StyleSheet.absoluteFillObject, { backgroundColor: item.color + "30" }]} />
+              )}
+
+              {/* Checkmark top-left */}
+              <View style={styles.checkWrap}>
+                {isSelected ? (
+                  <View style={[styles.checkFilled, { backgroundColor: item.color }]}>
+                    <IconSymbol name="checkmark" size={12} color="#FFFFFF" />
                   </View>
+                ) : (
+                  <View style={styles.checkEmpty} />
                 )}
-              </TouchableOpacity>
-            );
-          })}
-        </ScrollView>
-      </Animated.View>
+              </View>
 
-      <View style={styles.ctaWrap}>
-        {selected.length > 0 && (
-          <Text style={styles.selectedCount}>{selected.length} interests selected</Text>
-        )}
+              {/* Label pill bottom-left */}
+              <View style={styles.labelWrap}>
+                <LinearGradient
+                  colors={isSelected ? [item.color, item.color + "CC"] : ["rgba(0,0,0,0.7)", "rgba(0,0,0,0.5)"]}
+                  start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
+                  style={styles.labelPill}
+                >
+                  <Text style={styles.labelText}>{item.label}</Text>
+                </LinearGradient>
+              </View>
+            </TouchableOpacity>
+          );
+        })}
+        <View style={{ height: 120 }} />
+      </ScrollView>
+
+      {/* Continue CTA */}
+      <View style={[styles.ctaWrap, { paddingBottom: Math.max(insets.bottom, 24) }]}>
         <TouchableOpacity
-          style={[styles.ctaBtn, selected.length === 0 && styles.ctaBtnDisabled]}
-          onPress={handleNext}
+          style={[styles.ctaBtn, selected.size === 0 && styles.ctaBtnDisabled]}
+          onPress={handleContinue}
+          disabled={selected.size === 0 || saving}
           activeOpacity={0.88}
         >
           <LinearGradient
-            colors={selected.length > 0 ? ["#6443F4", "#F94498"] : ["rgba(255,255,255,0.08)", "rgba(255,255,255,0.05)"]}
+            colors={selected.size > 0 ? ["#F94498", "#6443F4"] : ["rgba(255,255,255,0.08)", "rgba(255,255,255,0.05)"]}
             start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
             style={styles.ctaGradient}
           >
-            <Text style={[styles.ctaText, selected.length === 0 && styles.ctaTextDisabled]}>
-              Choose Landmarks
+            <Text style={[styles.ctaText, selected.size === 0 && styles.ctaTextDisabled]}>
+              {saving ? "Learning your style..." : `Continue${selected.size > 0 ? ` · ${selected.size} selected` : ""}`}
             </Text>
-            <IconSymbol name="arrow.right" size={20} color={selected.length > 0 ? "#FFFFFF" : "#3A2D4E"} />
+            {selected.size > 0 && !saving && (
+              <IconSymbol name="arrow.right" size={20} color="#FFFFFF" />
+            )}
           </LinearGradient>
         </TouchableOpacity>
       </View>
@@ -136,30 +178,32 @@ export default function InterestsScreen() {
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#0D0628" },
   orb1: { position: "absolute", width: width, height: width, borderRadius: width / 2, top: -width * 0.4, left: -width * 0.3, backgroundColor: "rgba(123,47,190,0.09)" },
-  header: { flexDirection: "row", alignItems: "center", paddingHorizontal: 20, paddingTop: 60, paddingBottom: 16, gap: 12 },
+  orb2: { position: "absolute", width: width * 0.7, height: width * 0.7, borderRadius: width * 0.35, bottom: 0, right: -width * 0.3, backgroundColor: "rgba(233,30,140,0.06)" },
+  header: { flexDirection: "row", alignItems: "center", paddingHorizontal: 20, paddingBottom: 8, gap: 12 },
   backBtn: { width: 40, height: 40, borderRadius: 14, backgroundColor: "rgba(255,255,255,0.08)", alignItems: "center", justifyContent: "center" },
-  progressWrap: { flex: 1, gap: 6 },
-  progressTrack: { height: 4, backgroundColor: "rgba(255,255,255,0.1)", borderRadius: 2, overflow: "hidden" },
-  progressFill: { height: "100%", backgroundColor: "#F94498", borderRadius: 2 },
-  progressLabel: { color: "rgba(255,255,255,0.4)", fontSize: 12, textAlign: "right" },
-  duckRow: { flexDirection: "row", alignItems: "flex-end", paddingHorizontal: 20, paddingBottom: 16, gap: 10 },
-  duckAvatar: { width: 44, height: 44, borderRadius: 22, overflow: "hidden" },
-  duckGradient: { flex: 1, alignItems: "center", justifyContent: "center" },
-  duckImg: { width: 30, height: 30 },
-  duckBubble: { flex: 1, borderRadius: 18, borderBottomLeftRadius: 4, overflow: "hidden" },
-  duckBubbleGradient: { paddingHorizontal: 16, paddingVertical: 12, borderRadius: 18, borderBottomLeftRadius: 4, borderWidth: 1, borderColor: "rgba(123,47,190,0.4)" },
-  duckMessage: { color: "#FFFFFF", fontSize: 15, fontWeight: "700", lineHeight: 20 },
-  duckSub: { color: "rgba(255,255,255,0.5)", fontSize: 12, marginTop: 2 },
-  grid: { paddingHorizontal: 20, flexDirection: "row", flexWrap: "wrap", gap: 12, paddingBottom: 20 },
-  card: { width: (width - 52) / 2, borderRadius: 20, padding: 18, gap: 10, overflow: "hidden", borderWidth: 2, borderColor: "rgba(255,255,255,0.08)", alignItems: "center" },
-  iconWrap: { width: 56, height: 56, borderRadius: 18, alignItems: "center", justifyContent: "center" },
-  cardLabel: { color: "rgba(255,255,255,0.6)", fontSize: 14, fontWeight: "700", textAlign: "center" },
-  checkBadge: { position: "absolute", top: 10, right: 10, width: 22, height: 22, borderRadius: 11, alignItems: "center", justifyContent: "center" },
-  ctaWrap: { paddingHorizontal: 20, paddingBottom: 40, paddingTop: 12, gap: 8 },
-  selectedCount: { color: "rgba(192,132,252,0.8)", fontSize: 13, fontWeight: "600", textAlign: "center" },
+  headerCenter: { flex: 1, alignItems: "center" },
+  logo: { width: 80, height: 28 },
+  countBadge: { width: 40, height: 40, borderRadius: 20, backgroundColor: "rgba(255,255,255,0.06)", borderWidth: 1.5, borderColor: "rgba(255,255,255,0.1)", alignItems: "center", justifyContent: "center" },
+  countBadgeActive: { backgroundColor: "rgba(249,68,152,0.2)", borderColor: "rgba(249,68,152,0.4)" },
+  countText: { color: "rgba(255,255,255,0.4)", fontSize: 16, fontWeight: "800" },
+  countTextActive: { color: "#F94498" },
+  titleWrap: { paddingHorizontal: 20, paddingBottom: 16 },
+  title: { color: "#FFFFFF", fontSize: 26, fontWeight: "800", lineHeight: 32 },
+  subtitle: { color: "rgba(255,255,255,0.5)", fontSize: 14, marginTop: 4, lineHeight: 20 },
+  scroll: { flex: 1 },
+  grid: { paddingHorizontal: 16, flexDirection: "row", flexWrap: "wrap", gap: 12 },
+  card: { width: CARD_SIZE, height: CARD_SIZE * 1.1, borderRadius: 20, overflow: "hidden", borderWidth: 2, borderColor: "rgba(255,255,255,0.06)" },
+  cardImage: { position: "absolute", top: 0, left: 0, right: 0, bottom: 0, width: "100%", height: "100%" },
+  checkWrap: { position: "absolute", top: 10, left: 10 },
+  checkEmpty: { width: 24, height: 24, borderRadius: 12, borderWidth: 2, borderColor: "rgba(255,255,255,0.6)", backgroundColor: "rgba(0,0,0,0.3)" },
+  checkFilled: { width: 24, height: 24, borderRadius: 12, alignItems: "center", justifyContent: "center" },
+  labelWrap: { position: "absolute", bottom: 12, left: 10, right: 10 },
+  labelPill: { borderRadius: 20, paddingHorizontal: 12, paddingVertical: 6, alignSelf: "flex-start" },
+  labelText: { color: "#FFFFFF", fontSize: 13, fontWeight: "700" },
+  ctaWrap: { paddingHorizontal: 20, paddingTop: 12, backgroundColor: "rgba(13,6,40,0.95)" },
   ctaBtn: { borderRadius: 20, overflow: "hidden" },
-  ctaBtnDisabled: { opacity: 0.5 },
-  ctaGradient: { flexDirection: "row", alignItems: "center", justifyContent: "center", paddingVertical: 18, gap: 10, borderRadius: 20 },
-  ctaText: { color: "#FFFFFF", fontSize: 18, fontWeight: "800" },
-  ctaTextDisabled: { color: "#3A2D4E" },
+  ctaBtnDisabled: { opacity: 0.4 },
+  ctaGradient: { flexDirection: "row", alignItems: "center", justifyContent: "center", paddingVertical: 18, gap: 10 },
+  ctaText: { color: "#FFFFFF", fontSize: 17, fontWeight: "800" },
+  ctaTextDisabled: { color: "rgba(255,255,255,0.3)" },
 });

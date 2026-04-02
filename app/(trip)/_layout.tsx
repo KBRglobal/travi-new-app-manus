@@ -10,6 +10,8 @@ export default function TripLayout() {
       <Stack.Screen name="hotels" />
       <Stack.Screen name="summary" />
       <Stack.Screen name="completion" />
+      <Stack.Screen name="swipe" />
+      <Stack.Screen name="itinerary" />
     </Stack>
   );
 }
