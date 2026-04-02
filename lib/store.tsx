@@ -25,8 +25,13 @@ export type TravelerProfile = {
     dietary: string[];
   };
   points: number;
+  xp: number;
   lifetimeSavings: number;
   subscriptionActive: boolean;
+  dnaScores?: {
+    explorer: number; relaxer: number; adventurer: number; culturalist: number;
+    foodie: number; photographer: number; historian: number; naturalist: number;
+  };
 };
 
 export type Trip = {
@@ -159,6 +164,8 @@ type Action =
   | { type: "ADD_TRIP"; payload: Trip }
   | { type: "UPDATE_TRIP"; payload: { id: string; updates: Partial<Trip> } }
   | { type: "SET_ACTIVE_TRIP"; payload: Trip | null }
+  | { type: "ADD_XP"; payload: number }
+  | { type: "SET_DNA_SCORES"; payload: { explorer: number; relaxer: number; adventurer: number; culturalist: number; foodie: number; photographer: number; historian: number; naturalist: number } }
   | { type: "ADD_POINTS"; payload: { amount: number; description: string } }
   | { type: "SPEND_POINTS"; payload: { amount: number; description: string } }
   | { type: "ADD_NOTIFICATION"; payload: AppNotification }
@@ -199,6 +206,10 @@ function reducer(state: AppState, action: Action): AppState {
       };
     case "SET_ACTIVE_TRIP":
       return { ...state, activeTrip: action.payload };
+    case "ADD_XP":
+      return { ...state, profile: state.profile ? { ...state.profile, xp: (state.profile.xp ?? 0) + action.payload } : null };
+    case "SET_DNA_SCORES":
+      return { ...state, profile: state.profile ? { ...state.profile, dnaScores: action.payload } : null };
     case "ADD_POINTS": {
       const tx: PointTransaction = {
         id: Date.now().toString(),

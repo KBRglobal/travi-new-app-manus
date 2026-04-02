@@ -249,7 +249,7 @@ export default function HomeScreen() {
         <View style={S.block}>
           <TouchableOpacity
             style={S.dnaCard}
-            onPress={() => router.push("/(tabs)/explore" as never)}
+            onPress={() => router.push("/(dna)/quick-swipe" as never)}
             activeOpacity={0.88}
           >
             <LinearGradient
@@ -261,12 +261,12 @@ export default function HomeScreen() {
             <View style={S.dnaCardLeft}>
               <View style={S.dnaIconWrap}>
                 <LinearGradient colors={["#6443F4", "#F94498"]} style={StyleSheet.absoluteFillObject} />
-                <IconSymbol name="airplane.departure" size={22} color="#FFFFFF" />
+                <IconSymbol name="sparkles" size={22} color="#FFFFFF" />
               </View>
               <View>
-                <Text style={S.dnaCardLabel}>READY TO EXPLORE</Text>
-                <Text style={S.dnaCardType}>Plan Your Next Trip</Text>
-                <Text style={S.dnaCardSub}>Tap to discover destinations for you</Text>
+                <Text style={S.dnaCardLabel}>2 MINUTES · FREE</Text>
+                <Text style={S.dnaCardType}>Discover Your Travel DNA</Text>
+                <Text style={S.dnaCardSub}>Swipe to reveal your traveler profile</Text>
               </View>
             </View>
             <IconSymbol name="chevron.right" size={18} color="rgba(255,255,255,0.4)" />

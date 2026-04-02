@@ -6,6 +6,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { IconSymbol } from "@/components/ui/icon-symbol";
 import { useStore } from "@/lib/store";
 import { getDNA, type TravelerDNA } from "@/lib/dna-store";
+import { getTierForXP, XP_TIERS } from "@/(dna)/quick-swipe";
 
 const { width } = Dimensions.get("window");
 
@@ -117,6 +118,10 @@ export default function ProfileScreen() {
   const displayName = profile?.name || "Alex Johnson";
   const displayEmail = profile?.email || "alex@example.com";
   const points = profile?.points || 4250;
+  const xp = profile?.xp ?? 0;
+  const currentTier = getTierForXP(xp);
+  const nextTier = XP_TIERS[XP_TIERS.indexOf(currentTier) + 1];
+  const xpProgress = nextTier ? (xp - currentTier.min) / (nextTier.min - currentTier.min) : 1;
   const trips = state.trips.length || 3;
   const initials = displayName.split(" ").map((n: string) => n[0]).join("").toUpperCase();
 
@@ -150,17 +155,26 @@ export default function ProfileScreen() {
           <Text style={styles.userName}>{displayName}</Text>
           <Text style={styles.userEmail}>{displayEmail}</Text>
 
-          {/* Tier Badge */}
-          <TouchableOpacity style={styles.tierBadge} activeOpacity={0.85}>
-            <LinearGradient colors={["rgba(123,47,190,0.5)", "rgba(233,30,140,0.3)"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.tierGradient}>
-              <IconSymbol name="leaf.fill" size={14} color="#4CAF50" />
-              <Text style={styles.tierName}>Explorer Tier</Text>
-              <View style={styles.tierSep} />
-              <IconSymbol name="sparkles" size={12} color="#FFD700" />
-              <Text style={styles.tierPoints}>{points.toLocaleString()} pts</Text>
-              <IconSymbol name="chevron.right" size={14} color="rgba(255,255,255,0.5)" />
+          {/* 5-Tier XP Badge + Progress */}
+          <View style={styles.xpContainer}>
+            <LinearGradient colors={["rgba(100,67,244,0.2)","rgba(249,68,152,0.15)"]} start={{x:0,y:0}} end={{x:1,y:1}} style={styles.xpBadge}>
+              <View style={styles.xpBadgeTop}>
+                <View style={[styles.xpTierDot, { backgroundColor: currentTier.color }]} />
+                <Text style={[styles.xpTierName, { color: currentTier.color }]}>{currentTier.name} Traveler</Text>
+                <View style={styles.tierSep} />
+                <IconSymbol name="sparkles" size={12} color="#FFD700" />
+                <Text style={styles.tierPoints}>{xp.toLocaleString()} XP</Text>
+              </View>
+              {nextTier && (
+                <View style={styles.xpProgressWrap}>
+                  <View style={styles.xpProgressBg}>
+                    <View style={[styles.xpProgressFill, { width: `${Math.round(xpProgress * 100)}%` as any, backgroundColor: currentTier.color }]} />
+                  </View>
+                  <Text style={styles.xpProgressLabel}>{(nextTier.min - xp).toLocaleString()} XP to {nextTier.name}</Text>
+                </View>
+              )}
             </LinearGradient>
-          </TouchableOpacity>
+          </View>
 
           {/* Stats */}
           <View style={styles.statsRow}>

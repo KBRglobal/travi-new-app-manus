@@ -41,7 +41,7 @@ export default function SignUpScreen() {
         quizCompleted: false, travelerDNA: {},
         activityCategories: [], tripPace: "balanced" as const,
         foodPreferences: { cuisines: [], avoid: [], allergies: [], dietary: [] },
-        points: 0, lifetimeSavings: 0, subscriptionActive: false,
+        points: 0, xp: 0, lifetimeSavings: 0, subscriptionActive: false,
       },
     });
     router.replace("/(auth)/profile-setup" as never);
@@ -56,7 +56,7 @@ export default function SignUpScreen() {
         quizCompleted: false, travelerDNA: {},
         activityCategories: [], tripPace: "balanced" as const,
         foodPreferences: { cuisines: [], avoid: [], allergies: [], dietary: [] },
-        points: 0, lifetimeSavings: 0, subscriptionActive: false,
+        points: 0, xp: 0, lifetimeSavings: 0, subscriptionActive: false,
       },
     });
     router.replace("/(auth)/welcome" as never);

@@ -49,7 +49,7 @@ export default function ProfileSetupScreen() {
           quizCompleted: false, travelerDNA: {},
           activityCategories: [], tripPace: "balanced" as const,
           foodPreferences: { cuisines: [], avoid: [], allergies: [], dietary: [] },
-          points: 0, lifetimeSavings: 0, subscriptionActive: false,
+          points: 0, xp: 0, lifetimeSavings: 0, subscriptionActive: false,
         }),
         name: name.trim(),
         photo: selectedAvatarId,
