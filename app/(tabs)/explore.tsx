@@ -5,14 +5,30 @@
 import { useState } from "react";
 import {
   View, Text, TouchableOpacity, StyleSheet, ScrollView,
-  Dimensions, TextInput, Platform,
+  Dimensions, TextInput, Platform, ImageBackground,
 } from "react-native";
 import { router } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { IconSymbol } from "@/components/ui/icon-symbol";
-import { Image } from "expo-image";
 import * as Haptics from "expo-haptics";
+
+const IMG = {
+  santorini: require("@/assets/destinations/santorini.jpg"),
+  kyoto: require("@/assets/destinations/kyoto.jpg"),
+  bali: require("@/assets/destinations/bali.jpg"),
+  paris: require("@/assets/destinations/paris.jpg"),
+  maldives: require("@/assets/destinations/maldives.jpg"),
+  newyork: require("@/assets/destinations/newyork.jpg"),
+  machupicchu: require("@/assets/destinations/machupicchu.jpg"),
+  phuket: require("@/assets/destinations/phuket.jpg"),
+  rome: require("@/assets/destinations/rome.jpg"),
+  patagonia: require("@/assets/destinations/patagonia.jpg"),
+  tokyo: require("@/assets/destinations/tokyo.jpg"),
+  iceland: require("@/assets/destinations/iceland.jpg"),
+  barcelona: require("@/assets/destinations/barcelona.jpg"),
+  dubai: require("@/assets/destinations/dubai.jpg"),
+};
 
 const { width } = Dimensions.get("window");
 
@@ -25,24 +41,21 @@ const CATEGORIES = [
   { id: "adventure", label: "⛰️ Adventure" },
 ];
 
-// Real destinations from travi.world with CDN images
 const DESTINATIONS = [
-  { id: "d1", city: "Paris", country: "France", category: "city", tag: "🔥 Hot", tagColor: "#F94498", image: "https://travi.world/cards/paris.webp" },
-  { id: "d2", city: "Dubai", country: "UAE", category: "city", tag: "✨ Luxury", tagColor: "#F59E0B", image: "https://travi.world/cards/dubai.webp" },
-  { id: "d3", city: "Tokyo", country: "Japan", category: "city", tag: "🌟 Iconic", tagColor: "#6443F4", image: "https://travi.world/cards/tokyo.webp" },
-  { id: "d4", city: "New York", country: "USA", category: "city", tag: "🗽 Classic", tagColor: "#6443F4", image: "https://travi.world/cards/new-york.webp" },
-  { id: "d5", city: "London", country: "UK", category: "city", tag: "👑 Royal", tagColor: "#8B5CF6", image: "https://travi.world/cards/london.webp" },
-  { id: "d6", city: "Barcelona", country: "Spain", category: "city", tag: "🎨 Artsy", tagColor: "#EC4899", image: "https://travi.world/cards/barcelona.webp" },
-  { id: "d7", city: "Singapore", country: "Singapore", category: "city", tag: "🌿 Garden", tagColor: "#10B981", image: "https://travi.world/cards/singapore.webp" },
-  { id: "d8", city: "Bangkok", country: "Thailand", category: "city", tag: "🛕 Temple", tagColor: "#FF9800", image: "https://travi.world/cards/bangkok.webp" },
-  { id: "d9", city: "Rome", country: "Italy", category: "culture", tag: "🏛️ Historic", tagColor: "#8B5CF6", image: "https://travi.world/cards/rome.webp" },
-  { id: "d10", city: "Istanbul", country: "Turkey", category: "culture", tag: "🕌 Exotic", tagColor: "#D97706", image: "https://travi.world/cards/istanbul.webp" },
-  { id: "d11", city: "Amsterdam", country: "Netherlands", category: "city", tag: "🚲 Charming", tagColor: "#06B6D4", image: "https://travi.world/cards/amsterdam.webp" },
-  { id: "d12", city: "Miami", country: "USA", category: "beach", tag: "🌴 Beach", tagColor: "#10B981", image: "https://travi.world/cards/miami.webp" },
-  { id: "d13", city: "Las Vegas", country: "USA", category: "city", tag: "🎰 Vegas", tagColor: "#F59E0B", image: "https://travi.world/cards/las-vegas.webp" },
-  { id: "d14", city: "Los Angeles", country: "USA", category: "city", tag: "🎬 Hollywood", tagColor: "#EC4899", image: "https://travi.world/cards/los-angeles.webp" },
-  { id: "d15", city: "Hong Kong", country: "China", category: "city", tag: "🌆 Skyline", tagColor: "#3B82F6", image: "https://travi.world/cards/hong-kong.webp" },
-  { id: "d16", city: "Abu Dhabi", country: "UAE", category: "city", tag: "💎 Luxury", tagColor: "#F59E0B", image: "https://travi.world/cards/abu-dhabi.webp" },
+  { id: "d1", city: "Paris", country: "France", category: "city", tag: "🔥 Hot", tagColor: "#F94498", image: IMG.paris },
+  { id: "d2", city: "Maldives", country: "Maldives", category: "beach", tag: "✨ Luxury", tagColor: "#06B6D4", image: IMG.maldives },
+  { id: "d3", city: "Tokyo", country: "Japan", category: "city", tag: "🌟 Iconic", tagColor: "#6443F4", image: IMG.tokyo },
+  { id: "d4", city: "Santorini", country: "Greece", category: "beach", tag: "💎 Trending", tagColor: "#F94498", image: IMG.santorini },
+  { id: "d5", city: "Kyoto", country: "Japan", category: "culture", tag: "🎋 Zen", tagColor: "#FF9800", image: IMG.kyoto },
+  { id: "d6", city: "Bali", country: "Indonesia", category: "beach", tag: "🌴 Paradise", tagColor: "#4CAF50", image: IMG.bali },
+  { id: "d7", city: "New York", country: "USA", category: "city", tag: "🗽 Classic", tagColor: "#6443F4", image: IMG.newyork },
+  { id: "d8", city: "Machu Picchu", country: "Peru", category: "adventure", tag: "⛰️ Epic", tagColor: "#D97706", image: IMG.machupicchu },
+  { id: "d9", city: "Phuket", country: "Thailand", category: "beach", tag: "🏝️ Tropical", tagColor: "#10B981", image: IMG.phuket },
+  { id: "d10", city: "Rome", country: "Italy", category: "culture", tag: "🏛️ Historic", tagColor: "#8B5CF6", image: IMG.rome },
+  { id: "d11", city: "Patagonia", country: "Argentina", category: "nature", tag: "🏔️ Wild", tagColor: "#06B6D4", image: IMG.patagonia },
+  { id: "d12", city: "Iceland", country: "Iceland", category: "nature", tag: "❄️ Magical", tagColor: "#3B82F6", image: IMG.iceland },
+  { id: "d13", city: "Barcelona", country: "Spain", category: "city", tag: "🎨 Artsy", tagColor: "#EC4899", image: IMG.barcelona },
+  { id: "d14", city: "Dubai", country: "UAE", category: "city", tag: "🌆 Modern", tagColor: "#F59E0B", image: IMG.dubai },
 ];
 
 export default function ExploreScreen() {
@@ -134,21 +147,6 @@ export default function ExploreScreen() {
             <Text style={S.listCount}>{filtered.length}</Text>
           </View>
 
-          {filtered.length === 0 && (
-            <View style={S.emptyState}>
-              <Text style={S.emptyIcon}>🌍</Text>
-              <Text style={S.emptyTitle}>No destinations found</Text>
-              <Text style={S.emptySub}>Try a different category or search term</Text>
-              <TouchableOpacity
-                style={S.emptyReset}
-                onPress={() => { setActiveCategory("all"); setSearchQuery(""); }}
-                activeOpacity={0.8}
-              >
-                <Text style={S.emptyResetText}>Show all destinations</Text>
-              </TouchableOpacity>
-            </View>
-          )}
-
           {filtered.map((dest) => (
             <TouchableOpacity
               key={dest.id}
@@ -162,45 +160,45 @@ export default function ExploreScreen() {
               }}
               activeOpacity={0.88}
             >
-              <Image
-                source={{ uri: dest.image }}
+              <ImageBackground
+                source={dest.image}
                 style={S.cardBg}
-                contentFit="cover"
-                transition={200}
-              />
-              <LinearGradient
-                colors={["transparent", "rgba(0,0,0,0.82)"]}
-                locations={[0.4, 1]}
-                style={StyleSheet.absoluteFillObject}
-                pointerEvents="none"
-              />
-
-              {/* Tag */}
-              <View style={[S.tag, { backgroundColor: dest.tagColor + "E0" }]}>
-                <Text style={S.tagText}>{dest.tag}</Text>
-              </View>
-
-              {/* Save */}
-              <TouchableOpacity
-                style={S.saveBtn}
-                onPress={(e) => { e.stopPropagation(); toggleSave(dest.id); }}
-                activeOpacity={0.7}
+                imageStyle={S.cardImg}
+                resizeMode="cover"
               >
-                <IconSymbol
-                  name={savedDests.includes(dest.id) ? "heart.fill" : "heart"}
-                  size={18}
-                  color={savedDests.includes(dest.id) ? "#F94498" : "rgba(255,255,255,0.85)"}
+                <LinearGradient
+                  colors={["transparent", "rgba(0,0,0,0.82)"]}
+                  locations={[0.4, 1]}
+                  style={StyleSheet.absoluteFillObject}
                 />
-              </TouchableOpacity>
 
-              {/* Info */}
-              <View style={S.cardInfo}>
-                <Text style={S.cardCity}>{dest.city}</Text>
-                <View style={S.cardCountryRow}>
-                  <IconSymbol name="location.fill" size={12} color="rgba(255,255,255,0.65)" />
-                  <Text style={S.cardCountry}>{dest.country}</Text>
+                {/* Tag */}
+                <View style={[S.tag, { backgroundColor: dest.tagColor + "E0" }]}>
+                  <Text style={S.tagText}>{dest.tag}</Text>
                 </View>
-              </View>
+
+                {/* Save */}
+                <TouchableOpacity
+                  style={S.saveBtn}
+                  onPress={(e) => { e.stopPropagation(); toggleSave(dest.id); }}
+                  activeOpacity={0.7}
+                >
+                  <IconSymbol
+                    name={savedDests.includes(dest.id) ? "heart.fill" : "heart"}
+                    size={18}
+                    color={savedDests.includes(dest.id) ? "#F94498" : "rgba(255,255,255,0.85)"}
+                  />
+                </TouchableOpacity>
+
+                {/* Info */}
+                <View style={S.cardInfo}>
+                  <Text style={S.cardCity}>{dest.city}</Text>
+                  <View style={S.cardCountryRow}>
+                    <IconSymbol name="location.fill" size={12} color="rgba(255,255,255,0.65)" />
+                    <Text style={S.cardCountry}>{dest.country}</Text>
+                  </View>
+                </View>
+              </ImageBackground>
             </TouchableOpacity>
           ))}
 
@@ -263,18 +261,13 @@ const S = StyleSheet.create({
 
   card: {
     width: "100%",
-    height: 280,
+    height: 260,
     borderRadius: 22,
     overflow: "hidden",
     marginBottom: 16,
   },
-  cardBg: { 
-    position: "absolute",
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-  },
+  cardBg: { flex: 1, justifyContent: "flex-end" },
+  cardImg: { borderRadius: 22 },
 
   tag: {
     position: "absolute",
@@ -298,16 +291,8 @@ const S = StyleSheet.create({
     justifyContent: "center",
   },
 
-  cardInfo: { position: "absolute", bottom: 0, left: 0, right: 0, padding: 16, gap: 4 },
+  cardInfo: { padding: 16, gap: 4 },
   cardCity: { color: "#FFFFFF", fontSize: 24, fontWeight: "900", letterSpacing: -0.5 },
   cardCountryRow: { flexDirection: "row", alignItems: "center", gap: 5 },
   cardCountry: { color: "rgba(255,255,255,0.7)", fontSize: 14, fontWeight: "600" },
-
-  // Empty state
-  emptyState: { alignItems: "center", paddingVertical: 60, gap: 12 },
-  emptyIcon: { fontSize: 48 },
-  emptyTitle: { color: "#FFFFFF", fontSize: 18, fontWeight: "800" },
-  emptySub: { color: "rgba(255,255,255,0.4)", fontSize: 14, textAlign: "center" },
-  emptyReset: { marginTop: 8, paddingHorizontal: 20, paddingVertical: 12, borderRadius: 16, backgroundColor: "rgba(100,67,244,0.3)", borderWidth: 1, borderColor: "rgba(100,67,244,0.5)" },
-  emptyResetText: { color: "#C084FC", fontSize: 14, fontWeight: "700" },
 });

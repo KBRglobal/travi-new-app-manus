@@ -1,10 +1,8 @@
 import React, { useRef, useCallback, useState, useEffect } from "react";
 import {
   View, Text, TouchableOpacity, StyleSheet, Dimensions,
-  ScrollView, Animated, Platform, StatusBar,
+  ScrollView, Animated, Platform, StatusBar, ImageBackground,
 } from "react-native";
-import { Image } from "expo-image";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { router } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
 import { IconSymbol } from "@/components/ui/icon-symbol";
@@ -13,47 +11,47 @@ import * as Haptics from "expo-haptics";
 
 const { width, height } = Dimensions.get("window");
 
-// ─── Cinematic destination images — real travi.world CDN ─────────────────────
+// ─── Cinematic destination images ────────────────────────────────────────────
 const HERO_DESTINATIONS = [
   {
     id: "1",
-    city: "Dubai",
-    country: "UAE",
-    mood: "Where dreams touch the sky",
-    image: "https://cdn.travi.world/destinations/hero/dubai/dubai-hero-burj-khalifa-palms-sunset.webp",
+    city: "Santorini",
+    country: "Greece",
+    mood: "Where sunsets stop time",
+    image: require("@/assets/destinations/santorini.jpg"),
     color: "#F59E0B",
   },
   {
     id: "2",
-    city: "Tokyo",
+    city: "Kyoto",
     country: "Japan",
-    mood: "Neon dreams never sleep",
-    image: "https://cdn.travi.world/destinations/hero/tokyo/tokyo-hero-shibuya-crossing-night-neon.webp",
-    color: "#C084FC",
-  },
-  {
-    id: "3",
-    city: "Paris",
-    country: "France",
-    mood: "The city of eternal light",
-    image: "https://cdn.travi.world/destinations/hero/paris/paris-hero-eiffel-tower-golden-hour.webp",
+    mood: "Ancient beauty, modern soul",
+    image: require("@/assets/destinations/kyoto.jpg"),
     color: "#F94498",
   },
   {
+    id: "3",
+    city: "Bali",
+    country: "Indonesia",
+    mood: "Find your inner peace",
+    image: require("@/assets/destinations/bali.jpg"),
+    color: "#02A65C",
+  },
+  {
     id: "4",
-    city: "Singapore",
-    country: "Singapore",
-    mood: "The garden city of the future",
-    image: "https://cdn.travi.world/destinations/hero/singapore/singapore-hero-gardens-by-the-bay-supertrees-night.webp",
-    color: "#10B981",
+    city: "Patagonia",
+    country: "Argentina",
+    mood: "The edge of the world",
+    image: require("@/assets/destinations/patagonia.jpg"),
+    color: "#6443F4",
   },
   {
     id: "5",
-    city: "Barcelona",
-    country: "Spain",
-    mood: "Gaudí's masterpiece on the Med",
-    image: "https://cdn.travi.world/destinations/hero/barcelona/barcelona-hero-sagrada-familia-sunset.webp",
-    color: "#EC4899",
+    city: "Tokyo",
+    country: "Japan",
+    mood: "Neon dreams never sleep",
+    image: require("@/assets/destinations/tokyo.jpg"),
+    color: "#C084FC",
   },
 ];
 
@@ -107,7 +105,6 @@ const START_OPTIONS = [
 
 export default function HomeScreen() {
   const { state } = useStore();
-  const insets = useSafeAreaInsets();
   const scrollY = useRef(new Animated.Value(0)).current;
   const heroFade = useRef(new Animated.Value(0)).current;
   const [heroIndex, setHeroIndex] = useState(0);
@@ -156,7 +153,7 @@ export default function HomeScreen() {
       <StatusBar barStyle="light-content" />
 
       {/* ── Sticky mini-header ── */}
-      <Animated.View style={[S.stickyHeader, { opacity: headerOpacity, paddingTop: insets.top + 8 }]}>
+      <Animated.View style={[S.stickyHeader, { opacity: headerOpacity }]}>
         <LinearGradient colors={["rgba(4,0,16,0.97)", "rgba(13,5,32,0.95)"]} style={StyleSheet.absoluteFillObject} />
         <Text style={S.stickyTitle}>TRAVI</Text>
         <TouchableOpacity onPress={() => router.push("/(tabs)/notifications" as never)} style={S.stickyNotif} activeOpacity={0.8}>
@@ -176,7 +173,7 @@ export default function HomeScreen() {
         ══════════════════════════════════════════ */}
         <View style={S.heroWrap}>
           <Animated.View style={[StyleSheet.absoluteFillObject, { opacity: heroFade }]}>
-            <Image source={{ uri: currentDest.image }} style={StyleSheet.absoluteFillObject} contentFit="cover" />
+            <ImageBackground source={currentDest.image} style={StyleSheet.absoluteFillObject} resizeMode="cover" />
           </Animated.View>
 
           {/* Multi-layer cinematic overlay */}
@@ -192,7 +189,7 @@ export default function HomeScreen() {
           />
 
           {/* Header row */}
-          <View style={[S.heroHeader, { paddingTop: insets.top + 8 }]}>
+          <View style={S.heroHeader}>
             <View>
               <Text style={S.heroGreeting}>Hello, {firstName}</Text>
             </View>
@@ -245,39 +242,60 @@ export default function HomeScreen() {
         </View>
 
         {/* ══════════════════════════════════════════
-            BLOCK 2 — Trending Destinations
+            BLOCK 2 — DNA / Personalization
         ══════════════════════════════════════════ */}
         <View style={S.block}>
-          <View style={S.blockHeaderRow}>
-            <Text style={S.blockTitle}>Trending Now</Text>
-            <TouchableOpacity onPress={() => router.push("/(tabs)/explore" as never)} activeOpacity={0.7}>
-              <Text style={S.seeAllText}>See all →</Text>
-            </TouchableOpacity>
-          </View>
-          <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={S.trendingRow}>
-            {[
-              { city: "Dubai", country: "UAE", img: "https://travi.world/cards/dubai.webp", tag: "✨ Luxury" },
-              { city: "Tokyo", country: "Japan", img: "https://travi.world/cards/tokyo.webp", tag: "🌟 Iconic" },
-              { city: "Barcelona", country: "Spain", img: "https://travi.world/cards/barcelona.webp", tag: "🎨 Artsy" },
-              { city: "Singapore", country: "Singapore", img: "https://travi.world/cards/singapore.webp", tag: "🌿 Garden" },
-              { city: "Amsterdam", country: "Netherlands", img: "https://travi.world/cards/amsterdam.webp", tag: "🚲 Charming" },
-            ].map((d) => (
-              <TouchableOpacity
-                key={d.city}
-                style={S.trendingCard}
-                onPress={() => router.push({ pathname: "/(trip)/destination-detail", params: { id: d.city.toLowerCase() } } as never)}
-                activeOpacity={0.88}
-              >
-                <Image source={{ uri: d.img }} style={StyleSheet.absoluteFillObject} contentFit="cover" />
-                <LinearGradient colors={["transparent", "rgba(0,0,0,0.75)"]} locations={[0.4, 1]} style={StyleSheet.absoluteFillObject} pointerEvents="none" />
-                <View style={S.trendingTag}><Text style={S.trendingTagText}>{d.tag}</Text></View>
-                <View style={S.trendingInfo}>
-                  <Text style={S.trendingCity}>{d.city}</Text>
-                  <Text style={S.trendingCountry}>{d.country}</Text>
+          {hasQuiz ? (
+            <TouchableOpacity
+              style={S.dnaCard}
+              onPress={() => router.push("/(auth)/quiz" as never)}
+              activeOpacity={0.88}
+            >
+              <LinearGradient
+                colors={["rgba(100,67,244,0.35)", "rgba(249,68,152,0.25)"]}
+                start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}
+                style={StyleSheet.absoluteFillObject}
+              />
+              <View style={S.dnaCardBorder} />
+              <View style={S.dnaCardLeft}>
+                <View style={S.dnaIconWrap}>
+                  <LinearGradient colors={["#6443F4", "#F94498"]} style={StyleSheet.absoluteFillObject} />
+                  <IconSymbol name="sparkles" size={20} color="#FFFFFF" />
                 </View>
-              </TouchableOpacity>
-            ))}
-          </ScrollView>
+                <View>
+                  <Text style={S.dnaCardLabel}>Your Travel DNA</Text>
+                  <Text style={S.dnaCardType}>{dnaType}</Text>
+                  <Text style={S.dnaCardSub}>Tap to see your full profile</Text>
+                </View>
+              </View>
+              <IconSymbol name="chevron.right" size={18} color="rgba(255,255,255,0.4)" />
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity
+              style={S.dnaTeaser}
+              onPress={() => router.push("/(auth)/quiz" as never)}
+              activeOpacity={0.88}
+            >
+              <LinearGradient
+                colors={["rgba(100,67,244,0.2)", "rgba(249,68,152,0.15)"]}
+                start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}
+                style={StyleSheet.absoluteFillObject}
+              />
+              <View style={S.dnaCardBorder} />
+              <View style={S.dnaTeaserContent}>
+                <View style={S.dnaTeaserLeft}>
+                  <Text style={S.dnaTeaserTitle}>What kind of traveler are you?</Text>
+                  <Text style={S.dnaTeaserSub}>
+                    Take the 2-min DNA quiz so TRAVI can plan trips made exactly for you.
+                  </Text>
+                </View>
+                <View style={S.dnaTeaserBtn}>
+                  <LinearGradient colors={["#6443F4", "#F94498"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={StyleSheet.absoluteFillObject} />
+                  <Text style={S.dnaTeaserBtnText}>Start →</Text>
+                </View>
+              </View>
+            </TouchableOpacity>
+          )}
         </View>
 
         {/* ══════════════════════════════════════════
@@ -413,14 +431,14 @@ export default function HomeScreen() {
 const S = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#0D0628" },
 
-  // Sticky header — paddingTop set dynamically via insets
-  stickyHeader: { position: "absolute", top: 0, left: 0, right: 0, zIndex: 100, flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 24, paddingBottom: 12 },
+  // Sticky header
+  stickyHeader: { position: "absolute", top: 0, left: 0, right: 0, zIndex: 100, flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 24, paddingTop: 56, paddingBottom: 12 },
   stickyTitle: { color: "#FFFFFF", fontSize: 18, fontWeight: "900", letterSpacing: 2 },
   stickyNotif: { width: 36, height: 36, borderRadius: 18, backgroundColor: "rgba(255,255,255,0.1)", alignItems: "center", justifyContent: "center" },
 
   // Hero
   heroWrap: { height: height * 0.72, justifyContent: "flex-end", overflow: "hidden" },
-  heroHeader: { position: "absolute", top: 0, left: 0, right: 0, flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 20, paddingBottom: 12 },
+  heroHeader: { position: "absolute", top: 0, left: 0, right: 0, flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 20, paddingTop: 60, paddingBottom: 12 },
   heroGreeting: { color: "rgba(255,255,255,0.7)", fontSize: 15, fontWeight: "500" },
   notifBtn: { width: 44, height: 44, borderRadius: 22, overflow: "hidden" },
   notifGradient: { flex: 1, alignItems: "center", justifyContent: "center", borderWidth: 1, borderColor: "rgba(255,255,255,0.15)", borderRadius: 22 },
@@ -447,17 +465,6 @@ const S = StyleSheet.create({
   block: { paddingHorizontal: 20, paddingTop: 28 },
   blockTitle: { color: "#FFFFFF", fontSize: 22, fontWeight: "900", letterSpacing: -0.5 },
   blockSub: { color: "rgba(255,255,255,0.4)", fontSize: 13, marginTop: 4, marginBottom: 16, lineHeight: 19 },
-  blockHeaderRow: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginBottom: 14 },
-  seeAllText: { color: "#C084FC", fontSize: 13, fontWeight: "700" },
-
-  // Trending horizontal cards
-  trendingRow: { paddingRight: 20, gap: 12 },
-  trendingCard: { width: 160, height: 200, borderRadius: 18, overflow: "hidden" },
-  trendingTag: { position: "absolute", top: 10, left: 10, backgroundColor: "rgba(0,0,0,0.55)", borderRadius: 8, paddingHorizontal: 8, paddingVertical: 4 },
-  trendingTagText: { color: "#FFFFFF", fontSize: 11, fontWeight: "700" },
-  trendingInfo: { position: "absolute", bottom: 0, left: 0, right: 0, padding: 12 },
-  trendingCity: { color: "#FFFFFF", fontSize: 16, fontWeight: "900", letterSpacing: -0.3 },
-  trendingCountry: { color: "rgba(255,255,255,0.65)", fontSize: 12, fontWeight: "600" },
 
   // DNA card (has quiz)
   dnaCard: { borderRadius: 20, overflow: "hidden", flexDirection: "row", alignItems: "center", padding: 16, gap: 14 },
