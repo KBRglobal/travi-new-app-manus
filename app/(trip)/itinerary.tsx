@@ -110,13 +110,13 @@ const SAMPLE_ITINERARY: DayPlan[] = [
       { mode: "walk", duration: "5 min", distance: "400 m" } as Transfer,
       {
         id: "s6", time: "11:30", name: "Dubai Mall & Aquarium", type: "Experience",
-        duration: "2 hrs", image: require("@/assets/interests/shopping.jpg"), color: "#06B6D4",
+        duration: "2 hrs", image: require("@/assets/destinations/barcelona.jpg"), color: "#06B6D4",
         notes: "World's largest indoor aquarium. Tunnel walk included.",
       },
       { mode: "taxi", duration: "25 min", distance: "9 km", cost: "$15" } as Transfer,
       {
         id: "s7", time: "14:30", name: "Gold Souk", type: "Shopping",
-        duration: "1.5 hrs", image: require("@/assets/interests/shopping.jpg"), color: "#D97706",
+        duration: "1.5 hrs", image: require("@/assets/destinations/barcelona.jpg"), color: "#D97706",
         notes: "Bargain! Start at 60% of asking price.",
       },
       { mode: "walk", duration: "3 min", distance: "200 m" } as Transfer,
@@ -157,13 +157,13 @@ const SAMPLE_ITINERARY: DayPlan[] = [
       { mode: "taxi", duration: "45 min", distance: "55 km", cost: "Included" } as Transfer,
       {
         id: "s13", time: "14:00", name: "Pool Recovery at Hotel", type: "Wellness",
-        duration: "2 hrs", image: require("@/assets/interests/wellness.jpg"), color: "#10B981",
+        duration: "2 hrs", image: require("@/assets/destinations/maldives.jpg"), color: "#10B981",
         notes: "You earned this.",
       },
       { mode: "metro", duration: "18 min", distance: "8 km", cost: "$2" } as Transfer,
       {
         id: "s14", time: "20:00", name: "Dubai Marina Night Walk", type: "Nightlife",
-        duration: "2 hrs", image: require("@/assets/interests/nightlife.jpg"), color: "#8B5CF6",
+        duration: "2 hrs", image: require("@/assets/destinations/tokyo.jpg"), color: "#8B5CF6",
         notes: "Yacht-lined waterfront. Dozens of restaurants.",
       },
     ],

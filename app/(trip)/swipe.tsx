@@ -147,7 +147,7 @@ const ALL_ATTRACTIONS: Attraction[] = [
 
 export default function SwipeScreen() {
   const insets = useSafeAreaInsets();
-  const { tripId, interests } = useLocalSearchParams<{ tripId: string; interests: string }>();
+  const { tripId, interests, destination } = useLocalSearchParams<{ tripId: string; interests: string; destination: string }>();
 
   // Filter cards by selected interests if provided
   const filteredAttractions = interests
@@ -289,7 +289,7 @@ export default function SwipeScreen() {
           </View>
           <TouchableOpacity
             style={styles.ctaBtn}
-            onPress={() => router.push({ pathname: "/(trip)/itinerary", params: { tripId, likedIds: liked.map((a) => a.id).join(",") } } as never)}
+            onPress={() => router.push({ pathname: "/(trip)/dna-update", params: { tripId, destination: destination ?? "dubai", liked: liked.map((a) => a.id).join(","), interests } } as never)}
             activeOpacity={0.88}
           >
             <LinearGradient colors={["#F94498", "#6443F4"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.ctaGradient}>

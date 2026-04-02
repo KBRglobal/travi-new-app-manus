@@ -70,7 +70,7 @@ export default function InterestsScreen() {
     if (Platform.OS !== "web") Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
     await recordInterestSelections(Array.from(selected));
     setSaving(false);
-    router.push({ pathname: "/(trip)/swipe", params: { tripId, interests: Array.from(selected).join(",") } } as never);
+    router.push({ pathname: "/(trip)/destination-pick", params: { tripId, interests: Array.from(selected).join(",") } } as never);
   };
 
   return (

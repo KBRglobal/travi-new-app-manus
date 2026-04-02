@@ -239,3 +239,15 @@
 - [ ] Tinder-swipe attractions screen — swipe + hesitation time feeds DNA traits
 - [ ] Generated itinerary screen — timeline with walking/taxi times between stops
 - [ ] DNA profile screen shows live-updating traits from all interactions
+
+## Phase 24 — Destination Picker Before Swipe
+- [ ] Build destination picker screen (visual grid of destinations with real photos)
+- [ ] Wire: interests → destination picker → swipe (filtered by chosen destination)
+- [ ] Pass chosen destination to swipe screen so only relevant attractions show
+- [ ] Pass destination to itinerary screen for accurate loz generation
+
+## Phase 24 — Destination Picker + DNA Summary
+- [x] Build destination picker screen (visual grid with real photos, wire after interests)
+- [x] Filter swipe attractions by chosen destination
+- [x] Build DNA personality summary screen after swipe (what we learned, traits updated, interests boosted)
+- [x] Wire: interests → destination picker → swipe → DNA summary → itinerary
