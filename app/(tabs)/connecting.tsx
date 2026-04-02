@@ -30,6 +30,8 @@ interface Traveler {
   mutual: number;
   verified: boolean;
   connected: boolean;
+  dnaMatch: number;
+  topActivities: string[];
 }
 
 // ─── Mock Data ────────────────────────────────────────────────────────────────
@@ -39,35 +41,40 @@ const TRAVELERS: Traveler[] = [
     avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200",
     destinations: ["Tokyo", "Bali", "Lisbon"], dates: "Mar 15–30",
     bio: "Solo traveler obsessed with street food and hidden gems. Looking for adventure buddies!",
-    mutual: 3, verified: true, connected: false,
+    mutual: 3, verified: true, connected: false, dnaMatch: 94,
+    topActivities: ["🍜 Food", "🏖️ Beaches", "🎨 Art"],
   },
   {
     id: "2", name: "Lior Cohen", age: 31, location: "Haifa", dnaType: "Adventurer", dnaColor: BRAND.orange,
     avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200",
     destinations: ["Barcelona", "Kyoto", "NYC"], dates: "Apr 1–15",
     bio: "Photographer & hiker. I find the best sunrise spots. Let's explore together!",
-    mutual: 5, verified: true, connected: true,
+    mutual: 5, verified: true, connected: true, dnaMatch: 82,
+    topActivities: ["🥾 Hiking", "🪂 Adventure", "📸 Photography"],
   },
   {
     id: "3", name: "Noa Levy", age: 25, location: "Jerusalem", dnaType: "Culture Seeker", dnaColor: BRAND.pink,
     avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=200",
     destinations: ["Paris", "Rome", "Athens"], dates: "May 10–25",
     bio: "Art museums, local markets, and good wine. Culture is my travel language.",
-    mutual: 2, verified: false, connected: false,
+    mutual: 2, verified: false, connected: false, dnaMatch: 76,
+    topActivities: ["🏛️ Culture", "🎨 Art", "🍷 Food"],
   },
   {
     id: "4", name: "Eitan Bar", age: 33, location: "Tel Aviv", dnaType: "Luxury Traveler", dnaColor: "#FFD112",
     avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200",
     destinations: ["Dubai", "Maldives", "Monaco"], dates: "Jun 5–20",
     bio: "5-star hotels, business class, and Michelin restaurants. Life's too short for less.",
-    mutual: 1, verified: true, connected: false,
+    mutual: 1, verified: true, connected: false, dnaMatch: 61,
+    topActivities: ["🛍️ Shopping", "🧘 Wellness", "🍽️ Fine Dining"],
   },
   {
     id: "5", name: "Shira Mizrahi", age: 27, location: "Beer Sheva", dnaType: "Budget Explorer", dnaColor: BRAND.green,
     avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=200",
     destinations: ["Thailand", "Vietnam", "Cambodia"], dates: "Jul 1–30",
     bio: "Backpacker at heart. Hostels, local buses, and authentic experiences only.",
-    mutual: 4, verified: true, connected: false,
+    mutual: 4, verified: true, connected: false, dnaMatch: 88,
+    topActivities: ["🌿 Nature", "🥾 Hiking", "🍜 Food"],
   },
 ];
 
@@ -119,6 +126,19 @@ function TravelerCard({ traveler, onConnect }: { traveler: Traveler; onConnect: 
             {traveler.connected ? "Connected ✓" : "Connect"}
           </Text>
         </TouchableOpacity>
+      </View>
+
+      {/* DNA Match */}
+      <View style={S.dnaMatchRow}>
+        <View style={S.dnaMatchBarWrap}>
+          <View style={[S.dnaMatchFill, { width: `${traveler.dnaMatch}%`, backgroundColor: traveler.dnaMatch >= 90 ? "#22C55E" : traveler.dnaMatch >= 75 ? "#F59E0B" : "#6443F4" }]} />
+        </View>
+        <Text style={[S.dnaMatchScore, { color: traveler.dnaMatch >= 90 ? "#22C55E" : traveler.dnaMatch >= 75 ? "#F59E0B" : "#6443F4" }]}>{traveler.dnaMatch}% DNA match</Text>
+      </View>
+      <View style={S.activitiesRow}>
+        {traveler.topActivities.map((a) => (
+          <View key={a} style={S.activityPill}><Text style={S.activityPillText}>{a}</Text></View>
+        ))}
       </View>
 
       {/* Bio */}
@@ -399,4 +419,12 @@ const S = StyleSheet.create({
   emptyBody: { ...TYPE.body, color: BRAND.textSecondary, textAlign: "center", lineHeight: 22, marginBottom: 24 },
   emptyBtn: { overflow: "hidden", borderRadius: RADIUS.xl, paddingHorizontal: 24, paddingVertical: 14 },
   emptyBtnText: { ...TYPE.button, color: "#FFF" },
+
+  dnaMatchRow: { flexDirection: "row", alignItems: "center", gap: 8 },
+  dnaMatchBarWrap: { flex: 1, height: 4, borderRadius: 2, backgroundColor: "rgba(255,255,255,0.08)", overflow: "hidden" },
+  dnaMatchFill: { height: "100%", borderRadius: 2 },
+  dnaMatchScore: { fontSize: 11, fontWeight: "800", minWidth: 90, textAlign: "right" },
+  activitiesRow: { flexDirection: "row", flexWrap: "wrap", gap: 6 },
+  activityPill: { backgroundColor: "rgba(255,255,255,0.07)", borderRadius: 8, paddingHorizontal: 8, paddingVertical: 3, borderWidth: 1, borderColor: "rgba(255,255,255,0.1)" },
+  activityPillText: { color: "rgba(255,255,255,0.5)", fontSize: 11 },
 });

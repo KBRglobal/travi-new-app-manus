@@ -186,9 +186,14 @@ export default function ProfileScreen() {
               <IconSymbol name="sparkles" size={16} color="#C084FC" />
               <Text style={styles.sectionTitle}>Traveler DNA</Text>
             </View>
-            <TouchableOpacity onPress={() => router.push("/(auth)/quiz" as never)} activeOpacity={0.7}>
-              <Text style={styles.seeAll}>Retake quiz</Text>
-            </TouchableOpacity>
+            <View style={{ flexDirection: "row", gap: 12, alignItems: "center" }}>
+              <TouchableOpacity onPress={() => router.push("/(tabs)/dna-evolution" as never)} activeOpacity={0.7}>
+                <Text style={[styles.seeAll, { color: "#A855F7" }]}>Evolution →</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => router.push("/(auth)/quiz" as never)} activeOpacity={0.7}>
+                <Text style={styles.seeAll}>Retake quiz</Text>
+              </TouchableOpacity>
+            </View>
           </View>
           <View style={styles.dnaTraitsCard}>
             <LinearGradient colors={["rgba(100,67,244,0.08)", "rgba(249,68,152,0.06)"]} style={StyleSheet.absoluteFillObject} />
