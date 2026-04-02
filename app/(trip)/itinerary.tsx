@@ -92,7 +92,7 @@ const SAMPLE_ITINERARY: DayPlan[] = [
       { mode: "taxi", duration: "20 min", distance: "7 km", cost: "$12" } as Transfer,
       {
         id: "s4", time: "20:00", name: "Dinner — Zuma Dubai", type: "Restaurant",
-        duration: "2 hrs", image: require("@/assets/interests/food.jpg"), color: "#F59E0B",
+        duration: "2 hrs", image: { uri: "https://d2xsxph8kpxj0f.cloudfront.net/310519663492248962/5G6CWkFZowcex8zpzMErDd/food_7b47d10b.jpg" }, color: "#F59E0B",
         notes: "Japanese robata. Reservation confirmed.",
       },
     ],
@@ -122,7 +122,7 @@ const SAMPLE_ITINERARY: DayPlan[] = [
       { mode: "walk", duration: "3 min", distance: "200 m" } as Transfer,
       {
         id: "s8", time: "16:30", name: "Spice Souk", type: "Food & Culture",
-        duration: "45 min", image: require("@/assets/interests/food.jpg"), color: "#F97316",
+        duration: "45 min", image: { uri: "https://d2xsxph8kpxj0f.cloudfront.net/310519663492248962/5G6CWkFZowcex8zpzMErDd/food_7b47d10b.jpg" }, color: "#F97316",
         notes: "Try the saffron and dried limes.",
       },
       { mode: "boat", duration: "10 min", distance: "Dubai Creek", cost: "$1" } as Transfer,
