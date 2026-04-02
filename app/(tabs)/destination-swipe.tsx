@@ -221,7 +221,15 @@ export default function DestinationSwipeScreen() {
         <TouchableOpacity style={[S.actionBtn, S.skipBtn]} onPress={() => handleButtonSwipe("left")} activeOpacity={0.8}>
           <Text style={S.skipBtnText}>✕</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={[S.actionBtn, S.infoBtn]} onPress={() => {}} activeOpacity={0.8}>
+        <TouchableOpacity
+          style={[S.actionBtn, S.infoBtn]}
+          onPress={() => {
+            if (Platform.OS !== "web") Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+            const current = DESTINATIONS[index];
+            router.push({ pathname: "/(trip)/destination-detail", params: { id: current.city.toLowerCase() } } as never);
+          }}
+          activeOpacity={0.8}
+        >
           <IconSymbol name="info.circle.fill" size={22} color="#9BA1A6" />
         </TouchableOpacity>
         <TouchableOpacity style={[S.actionBtn, S.saveBtn]} onPress={() => handleButtonSwipe("right")} activeOpacity={0.8}>
