@@ -60,22 +60,22 @@ const HOW_IT_WORKS = [
     icon: "sparkles" as const,
     color: "#C084FC",
     gradient: ["#6443F4", "#9077EF"] as [string, string],
-    title: "We learn you",
-    desc: "Your travel DNA, your pace, your non-negotiables. TRAVI remembers everything.",
+    title: "Your Travel DNA",
+    desc: "Answer 7 questions once. TRAVI learns your travel personality — your pace, your vibe, your non-negotiables.",
   },
   {
     icon: "airplane" as const,
     color: "#F94498",
     gradient: ["#F94498", "#C2185B"] as [string, string],
-    title: "We plan it all",
-    desc: "Flights, hotels, experiences — curated for you, booked in minutes.",
+    title: "AI plans everything",
+    desc: "Flights, hotels, and experiences curated for you — not for the masses. Built around your DNA.",
   },
   {
     icon: "dollarsign.circle.fill" as const,
     color: "#FFD700",
     gradient: ["#F59E0B", "#D97706"] as [string, string],
-    title: "The commission is yours",
-    desc: "No middleman. The fee that used to go to a travel agent? It comes back to you.",
+    title: "Cashback, not commissions",
+    desc: "The 10–15% that used to go to a travel agent? After your trip, it comes back to you as TRAVI cashback.",
   },
 ];
 
@@ -336,7 +336,7 @@ export default function HomeScreen() {
         ══════════════════════════════════════════ */}
         <View style={S.block}>
           <Text style={S.blockTitle}>How TRAVI works</Text>
-          <Text style={S.blockSub}>No middleman. No hidden fees. Just you and your trip.</Text>
+          <Text style={S.blockSub}>The travel friend you never had — who works only for you.</Text>
 
           <View style={S.howItWorksWrap}>
             {HOW_IT_WORKS.map((step, i) => (
@@ -380,7 +380,7 @@ export default function HomeScreen() {
             </View>
 
             <Text style={S.manifestoText}>
-              Every time you book a trip, a travel agent takes a commission — usually 10–15% of your total cost. With TRAVI, there is no agent. You plan, you book, and that commission comes straight back to you as cashback after your trip.
+              Traditional travel agents take 10–15% of every booking — without you knowing. TRAVI removes the middleman entirely. You plan, you book directly, and that commission comes back to you as cashback after your trip. No hidden fees. No surprises.
             </Text>
 
             <View style={S.manifestoComparison}>
@@ -414,8 +414,8 @@ export default function HomeScreen() {
               style={StyleSheet.absoluteFillObject}
             />
             <View style={S.finalCtaContent}>
-              <Text style={S.finalCtaTitle}>Let's build your trip</Text>
-              <Text style={S.finalCtaSub}>Free to plan · You only pay when you book</Text>
+              <Text style={S.finalCtaTitle}>Plan your next trip</Text>
+              <Text style={S.finalCtaSub}>Free to plan · Pay only when you book · Cashback guaranteed</Text>
             </View>
             <View style={S.finalCtaArrow}>
               <IconSymbol name="arrow.right" size={20} color="#FFFFFF" />

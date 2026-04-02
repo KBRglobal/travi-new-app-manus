@@ -42,20 +42,20 @@ const CATEGORIES = [
 ];
 
 const DESTINATIONS = [
-  { id: "d1", city: "Paris", country: "France", category: "city", tag: "🔥 Hot", tagColor: "#F94498", image: IMG.paris },
-  { id: "d2", city: "Maldives", country: "Maldives", category: "beach", tag: "✨ Luxury", tagColor: "#06B6D4", image: IMG.maldives },
-  { id: "d3", city: "Tokyo", country: "Japan", category: "city", tag: "🌟 Iconic", tagColor: "#6443F4", image: IMG.tokyo },
-  { id: "d4", city: "Santorini", country: "Greece", category: "beach", tag: "💎 Trending", tagColor: "#F94498", image: IMG.santorini },
-  { id: "d5", city: "Kyoto", country: "Japan", category: "culture", tag: "🎋 Zen", tagColor: "#FF9800", image: IMG.kyoto },
-  { id: "d6", city: "Bali", country: "Indonesia", category: "beach", tag: "🌴 Paradise", tagColor: "#4CAF50", image: IMG.bali },
-  { id: "d7", city: "New York", country: "USA", category: "city", tag: "🗽 Classic", tagColor: "#6443F4", image: IMG.newyork },
-  { id: "d8", city: "Machu Picchu", country: "Peru", category: "adventure", tag: "⛰️ Epic", tagColor: "#D97706", image: IMG.machupicchu },
-  { id: "d9", city: "Phuket", country: "Thailand", category: "beach", tag: "🏝️ Tropical", tagColor: "#10B981", image: IMG.phuket },
-  { id: "d10", city: "Rome", country: "Italy", category: "culture", tag: "🏛️ Historic", tagColor: "#8B5CF6", image: IMG.rome },
-  { id: "d11", city: "Patagonia", country: "Argentina", category: "nature", tag: "🏔️ Wild", tagColor: "#06B6D4", image: IMG.patagonia },
-  { id: "d12", city: "Iceland", country: "Iceland", category: "nature", tag: "❄️ Magical", tagColor: "#3B82F6", image: IMG.iceland },
-  { id: "d13", city: "Barcelona", country: "Spain", category: "city", tag: "🎨 Artsy", tagColor: "#EC4899", image: IMG.barcelona },
-  { id: "d14", city: "Dubai", country: "UAE", category: "city", tag: "🌆 Modern", tagColor: "#F59E0B", image: IMG.dubai },
+  { id: "d1", city: "Paris", country: "France", category: "city", tag: "🔥 Hot", tagColor: "#F94498", image: IMG.paris, tagline: "The city of eternal light" },
+  { id: "d2", city: "Maldives", country: "Maldives", category: "beach", tag: "✨ Luxury", tagColor: "#06B6D4", image: IMG.maldives, tagline: "Overwater bliss at the edge of the world" },
+  { id: "d3", city: "Tokyo", country: "Japan", category: "city", tag: "🌟 Iconic", tagColor: "#6443F4", image: IMG.tokyo, tagline: "Neon dreams that never sleep" },
+  { id: "d4", city: "Santorini", country: "Greece", category: "beach", tag: "💎 Trending", tagColor: "#F94498", image: IMG.santorini, tagline: "Where sunsets stop time" },
+  { id: "d5", city: "Kyoto", country: "Japan", category: "culture", tag: "🎋 Zen", tagColor: "#FF9800", image: IMG.kyoto, tagline: "Ancient beauty, modern soul" },
+  { id: "d6", city: "Bali", country: "Indonesia", category: "beach", tag: "🌴 Paradise", tagColor: "#4CAF50", image: IMG.bali, tagline: "Find your inner peace" },
+  { id: "d7", city: "New York", country: "USA", category: "city", tag: "🗽 Classic", tagColor: "#6443F4", image: IMG.newyork, tagline: "The city that never sleeps" },
+  { id: "d8", city: "Machu Picchu", country: "Peru", category: "adventure", tag: "⛰️ Epic", tagColor: "#D97706", image: IMG.machupicchu, tagline: "Lost city of the Incas" },
+  { id: "d9", city: "Phuket", country: "Thailand", category: "beach", tag: "🏝️ Tropical", tagColor: "#10B981", image: IMG.phuket, tagline: "Crystal waters, endless summer" },
+  { id: "d10", city: "Rome", country: "Italy", category: "culture", tag: "🏛️ Historic", tagColor: "#8B5CF6", image: IMG.rome, tagline: "All roads lead here" },
+  { id: "d11", city: "Patagonia", country: "Argentina", category: "nature", tag: "🏔️ Wild", tagColor: "#06B6D4", image: IMG.patagonia, tagline: "The edge of the world" },
+  { id: "d12", city: "Iceland", country: "Iceland", category: "nature", tag: "❄️ Magical", tagColor: "#3B82F6", image: IMG.iceland, tagline: "Fire, ice, and the northern lights" },
+  { id: "d13", city: "Barcelona", country: "Spain", category: "city", tag: "🎨 Artsy", tagColor: "#EC4899", image: IMG.barcelona, tagline: "Gaudí's masterpiece on the Med" },
+  { id: "d14", city: "Dubai", country: "UAE", category: "city", tag: "🌆 Modern", tagColor: "#F59E0B", image: IMG.dubai, tagline: "Where dreams touch the sky" },
 ];
 
 export default function ExploreScreen() {
@@ -197,6 +197,9 @@ export default function ExploreScreen() {
                     <IconSymbol name="location.fill" size={12} color="rgba(255,255,255,0.65)" />
                     <Text style={S.cardCountry}>{dest.country}</Text>
                   </View>
+                  {dest.tagline ? (
+                    <Text style={S.cardTagline}>{dest.tagline}</Text>
+                  ) : null}
                 </View>
               </ImageBackground>
             </TouchableOpacity>
@@ -295,4 +298,13 @@ const S = StyleSheet.create({
   cardCity: { color: "#FFFFFF", fontSize: 24, fontWeight: "900", letterSpacing: -0.5 },
   cardCountryRow: { flexDirection: "row", alignItems: "center", gap: 5 },
   cardCountry: { color: "rgba(255,255,255,0.7)", fontSize: 14, fontWeight: "600" },
+  cardTagline: { color: "rgba(255,255,255,0.5)", fontSize: 12, fontStyle: "italic", marginTop: 2 },
+
+  emptyState: { alignItems: "center", paddingTop: 60, paddingHorizontal: 40 },
+  emptyIcon: { fontSize: 48, marginBottom: 16 },
+  emptyTitle: { color: "#FFFFFF", fontSize: 20, fontWeight: "800", textAlign: "center" },
+  emptyText: { color: "rgba(255,255,255,0.4)", fontSize: 14, textAlign: "center", marginTop: 8, lineHeight: 20 },
+  emptyBtn: { marginTop: 24, borderRadius: 14, overflow: "hidden" },
+  emptyBtnGrad: { paddingHorizontal: 24, paddingVertical: 12 },
+  emptyBtnText: { color: "#FFFFFF", fontSize: 15, fontWeight: "800" },
 });
