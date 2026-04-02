@@ -199,16 +199,12 @@ export default function WalletScreen() {
   });
 
   return (
-    <View style={[S.container, { paddingTop: insets.top }]}>
+    <View style={[S.container]}>
       <LinearGradient colors={["#0D0628", "#1A0A3D", "#0D0628"]} locations={[0, 0.4, 1]} style={StyleSheet.absoluteFillObject} />
 
-      {/* Header */}
-      <View style={S.header}>
+      {/* Header — sits below status bar */}
+      <View style={[S.header, { paddingTop: insets.top + 8 }]}>
         <Text style={S.headerTitle}>TRAVI Wallet</Text>
-        <View style={[S.pointsBadge]}>
-          <LinearGradient colors={["rgba(100,67,244,0.4)", "rgba(249,68,152,0.3)"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={StyleSheet.absoluteFillObject} />
-          <Text style={S.pointsBadgeText}>✦ {points.toLocaleString()}</Text>
-        </View>
       </View>
 
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 120 }}>
@@ -421,7 +417,7 @@ export default function WalletScreen() {
 const S = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#0D0628" },
 
-  header: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 20, paddingBottom: 16, paddingTop: 8 },
+  header: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 20, paddingBottom: 16 },
   headerTitle: { color: "#FFFFFF", fontSize: 26, fontWeight: "900", letterSpacing: -0.5 },
   pointsBadge: { borderRadius: 20, overflow: "hidden", paddingHorizontal: 14, paddingVertical: 7 },
   pointsBadgeText: { color: "#FFFFFF", fontSize: 14, fontWeight: "800" },

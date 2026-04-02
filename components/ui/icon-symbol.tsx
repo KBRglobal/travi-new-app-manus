@@ -31,6 +31,8 @@ const MAPPING = {
   "checkmark.circle.fill": "check-circle",
   "arrow.right": "arrow-forward",
   "arrow.left": "arrow-back",
+  "arrow.up": "arrow-upward",
+  "arrow.down": "arrow-downward",
   // Travel
   "airplane": "flight",
   "airplane.departure": "flight-takeoff",

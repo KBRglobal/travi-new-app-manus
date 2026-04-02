@@ -83,6 +83,11 @@ export default function ExploreScreen() {
   });
 
   const featured = FEATURED[featuredIndex];
+  const featuredAnim = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    Animated.timing(featuredAnim, { toValue: 1, duration: 400, useNativeDriver: true }).start();
+  }, [featuredIndex]);
   const toggleSave = (id: string) => {
     if (Platform.OS !== "web") Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     setSavedDests((prev) => prev.includes(id) ? prev.filter((d) => d !== id) : [...prev, id]);
@@ -129,7 +134,7 @@ export default function ExploreScreen() {
 
         {/* Featured Destination — Full Photo Hero */}
         <TouchableOpacity style={S.featuredCard} activeOpacity={0.92} onPress={() => router.push("/(trip)/plan" as never)}>
-          <Image source={{ uri: featured.image }} style={StyleSheet.absoluteFillObject} resizeMode="cover" />
+          <Image source={featured.image} style={StyleSheet.absoluteFillObject} resizeMode="cover" />
           <LinearGradient colors={["rgba(0,0,0,0.1)", "rgba(0,0,0,0.2)", "rgba(0,0,0,0.8)"]} locations={[0, 0.4, 1]} style={StyleSheet.absoluteFillObject} />
           {/* Tag */}
           <View style={[S.featuredTag, { backgroundColor: featured.tagColor + "CC" }]}>
@@ -190,7 +195,7 @@ export default function ExploreScreen() {
           {filtered.map((dest) => (
             <TouchableOpacity key={dest.id} style={S.destCard} onPress={() => router.push({ pathname: "/(trip)/destination-detail", params: { id: dest.city.toLowerCase().replace(/ /g, "") } } as never)} activeOpacity={0.88}>
               {/* Full photo background */}
-              <Image source={{ uri: dest.image }} style={StyleSheet.absoluteFillObject} resizeMode="cover" />
+              <Image source={dest.image} style={StyleSheet.absoluteFillObject} resizeMode="cover" />
               {/* Gradient overlay */}
               <LinearGradient colors={["transparent", "rgba(0,0,0,0.75)"]} locations={[0.3, 1]} style={StyleSheet.absoluteFillObject} />
               {/* Save button */}
@@ -228,7 +233,7 @@ export default function ExploreScreen() {
           {EXPERIENCES.map((exp) => (
             <TouchableOpacity key={exp.id} style={S.expCard} activeOpacity={0.88}
               onPress={() => { if (Platform.OS !== "web") Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light); }}>
-              <Image source={{ uri: exp.image }} style={StyleSheet.absoluteFillObject} resizeMode="cover" />
+              <Image source={exp.image} style={StyleSheet.absoluteFillObject} resizeMode="cover" />
               <LinearGradient colors={["transparent", "rgba(0,0,0,0.8)"]} locations={[0.3, 1]} style={StyleSheet.absoluteFillObject} />
               <View style={S.expBottom}>
                 <Text style={S.expTitle}>{exp.title}</Text>
@@ -271,7 +276,7 @@ export default function ExploreScreen() {
                 router.push(`/(tabs)/destination-guide?id=${g.id}` as never);
               }}
             >
-              <Image source={{ uri: g.image }} style={StyleSheet.absoluteFillObject} resizeMode="cover" />
+              <Image source={g.image} style={StyleSheet.absoluteFillObject} resizeMode="cover" />
               <LinearGradient colors={["transparent", "rgba(0,0,0,0.85)"]} locations={[0.3, 1]} style={StyleSheet.absoluteFillObject} />
               <View style={S.guideContent}>
                 <View style={S.guideFlagRow}>

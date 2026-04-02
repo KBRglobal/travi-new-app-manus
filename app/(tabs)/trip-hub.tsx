@@ -379,6 +379,23 @@ export default function TripHubScreen() {
         ))}
       </View>
 
+      {/* Floating Chat Button */}
+      <TouchableOpacity
+        style={styles.floatingChat}
+        onPress={() => {
+          if (Platform.OS !== "web") Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+          router.push({ pathname: "/(trip)/trip-chat" as never, params: { destination } });
+        }}
+        activeOpacity={0.85}
+      >
+        <LinearGradient colors={["#6443F4", "#F94498"]} style={styles.floatingChatGradient}>
+          <Text style={styles.floatingChatEmoji}>✨</Text>
+        </LinearGradient>
+        <View style={styles.floatingChatBadge}>
+          <Text style={styles.floatingChatBadgeText}>24/7</Text>
+        </View>
+      </TouchableOpacity>
+
       <ScrollView
         style={styles.scroll}
         contentContainerStyle={styles.scrollContent}
@@ -802,4 +819,36 @@ const styles = StyleSheet.create({
   },
   payLabel: { color: "#9BA1A6", fontSize: 14 },
   payAmount: { color: "#fff", fontSize: 14, fontWeight: "600" },
+
+  floatingChat: {
+    position: "absolute",
+    bottom: 24,
+    right: 20,
+    zIndex: 100,
+  },
+  floatingChatGradient: {
+    width: 58,
+    height: 58,
+    borderRadius: 29,
+    alignItems: "center",
+    justifyContent: "center",
+    shadowColor: "#6443F4",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.5,
+    shadowRadius: 12,
+    elevation: 10,
+  },
+  floatingChatEmoji: { fontSize: 26 },
+  floatingChatBadge: {
+    position: "absolute",
+    top: -4,
+    right: -4,
+    backgroundColor: "#F94498",
+    borderRadius: 8,
+    paddingHorizontal: 5,
+    paddingVertical: 2,
+    borderWidth: 1.5,
+    borderColor: "#0d0118",
+  },
+  floatingChatBadgeText: { color: "#fff", fontSize: 8, fontWeight: "800" },
 });

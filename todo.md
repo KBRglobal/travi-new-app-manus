@@ -383,3 +383,10 @@
 - [x] Wallet history tab: grouped by trip, transaction detail modal
 - [x] Destination Detail screen: hero slideshow, personality match, neighborhoods, experiences+prices+cashback, food, hidden gems
 - [x] Connect Explore destination cards to destination-detail screen
+
+## Phase 37 — Explore Fix + In-Trip Chat
+- [ ] Fix Explore screen broken images (replace with working Unsplash URLs)
+- [ ] Improve Explore visual design: more color, better hero card with real image
+- [ ] Build in-trip chat screen (AI concierge) accessible from Trip Hub
+- [ ] Chat: context-aware quick suggestions (nearby restaurant, change plan, I'm lost)
+- [ ] Floating chat button on Trip Hub
