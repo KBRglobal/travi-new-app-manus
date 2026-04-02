@@ -48,6 +48,103 @@ const DEST_PHOTOS: Record<string, ReturnType<typeof require>> = {
   Amsterdam: require("@/assets/destinations/amsterdam.jpg"),
 };
 
+// ── Weather mock data per destination ───────────────────────────────────────
+const WEATHER_DATA: Record<string, { temp: number; condition: string; icon: string; humidity: number; wind: number }> = {
+  Paris:      { temp: 16, condition: "Partly Cloudy", icon: "⛅", humidity: 72, wind: 18 },
+  Tokyo:      { temp: 22, condition: "Sunny",         icon: "☀️", humidity: 60, wind: 12 },
+  Bali:       { temp: 30, condition: "Tropical",      icon: "🌤️", humidity: 80, wind: 8  },
+  Dubai:      { temp: 38, condition: "Hot & Sunny",   icon: "☀️", humidity: 35, wind: 15 },
+  "New York": { temp: 18, condition: "Cloudy",        icon: "🌥️", humidity: 65, wind: 22 },
+  Santorini:  { temp: 24, condition: "Clear",         icon: "☀️", humidity: 55, wind: 20 },
+  Kyoto:      { temp: 20, condition: "Partly Cloudy", icon: "⛅", humidity: 68, wind: 10 },
+  Barcelona:  { temp: 26, condition: "Sunny",         icon: "☀️", humidity: 50, wind: 14 },
+  Maldives:   { temp: 31, condition: "Tropical",      icon: "🌤️", humidity: 82, wind: 7  },
+  Iceland:    { temp: 4,  condition: "Overcast",      icon: "🌫️", humidity: 85, wind: 35 },
+  Rome:       { temp: 23, condition: "Sunny",         icon: "☀️", humidity: 48, wind: 11 },
+  Amsterdam:  { temp: 13, condition: "Rainy",         icon: "🌧️", humidity: 78, wind: 25 },
+};
+
+function getDaysUntil(dateStr: string): number {
+  const target = new Date(dateStr);
+  const now = new Date();
+  const diff = Math.ceil((target.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
+  return Math.max(0, diff);
+}
+
+// ── Weather + Countdown Widget ────────────────────────────────────────────────
+function WeatherCountdownWidget({ trip }: { trip: Trip }) {
+  const weather = WEATHER_DATA[trip.destination] ?? { temp: 25, condition: "Sunny", icon: "☀️", humidity: 60, wind: 15 };
+  const daysUntil = getDaysUntil(trip.startDate);
+  const isVerySoon = daysUntil <= 7;
+
+  return (
+    <View style={wS.widget}>
+      <LinearGradient
+        colors={isVerySoon ? ["rgba(249,68,152,0.2)", "rgba(100,67,244,0.15)"] : ["rgba(100,67,244,0.15)", "rgba(14,165,233,0.1)"]}
+        start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}
+        style={StyleSheet.absoluteFillObject}
+      />
+      <View style={wS.widgetHeader}>
+        <Text style={wS.widgetTitle}>✈️ {trip.destination}</Text>
+        {isVerySoon && (
+          <View style={wS.soonBadge}>
+            <Text style={wS.soonBadgeText}>🔥 Very soon!</Text>
+          </View>
+        )}
+      </View>
+      <View style={wS.widgetBody}>
+        {/* Countdown */}
+        <View style={wS.countdownBlock}>
+          <Text style={[wS.countdownNumber, isVerySoon && { color: "#F94498" }]}>{daysUntil}</Text>
+          <Text style={wS.countdownLabel}>days to go</Text>
+          <Text style={wS.countdownDate}>{trip.startDate}</Text>
+        </View>
+        {/* Divider */}
+        <View style={wS.divider} />
+        {/* Weather */}
+        <View style={wS.weatherBlock}>
+          <Text style={wS.weatherIcon}>{weather.icon}</Text>
+          <Text style={wS.weatherTemp}>{weather.temp}°C</Text>
+          <Text style={wS.weatherCondition}>{weather.condition}</Text>
+          <View style={wS.weatherMeta}>
+            <Text style={wS.weatherMetaText}>💧 {weather.humidity}%</Text>
+            <Text style={wS.weatherMetaText}>💨 {weather.wind}km/h</Text>
+          </View>
+        </View>
+      </View>
+      <TouchableOpacity
+        style={wS.widgetCta}
+        onPress={() => router.push({ pathname: "/(trip)/trip-companions", params: { destination: trip.destination, totalCost: String(trip.totalCost) } } as never)}
+        activeOpacity={0.8}
+      >
+        <Text style={wS.widgetCtaText}>👥 Invite companions →</Text>
+      </TouchableOpacity>
+    </View>
+  );
+}
+
+const wS = StyleSheet.create({
+  widget: { borderRadius: 20, overflow: "hidden", padding: 16, gap: 12, borderWidth: 1.5, borderColor: "rgba(100,67,244,0.3)", marginBottom: 4 },
+  widgetHeader: { flexDirection: "row", alignItems: "center", justifyContent: "space-between" },
+  widgetTitle: { color: "#FFFFFF", fontSize: 16, fontWeight: "800" },
+  soonBadge: { backgroundColor: "rgba(249,68,152,0.25)", borderRadius: 10, paddingHorizontal: 10, paddingVertical: 4, borderWidth: 1, borderColor: "rgba(249,68,152,0.5)" },
+  soonBadgeText: { color: "#F94498", fontSize: 11, fontWeight: "800" },
+  widgetBody: { flexDirection: "row", alignItems: "center", gap: 16 },
+  countdownBlock: { flex: 1, alignItems: "center", gap: 2 },
+  countdownNumber: { color: "#6443F4", fontSize: 48, fontWeight: "900", lineHeight: 52 },
+  countdownLabel: { color: "rgba(255,255,255,0.5)", fontSize: 12 },
+  countdownDate: { color: "rgba(255,255,255,0.35)", fontSize: 11, marginTop: 2 },
+  divider: { width: 1, height: 80, backgroundColor: "rgba(255,255,255,0.1)" },
+  weatherBlock: { flex: 1, alignItems: "center", gap: 2 },
+  weatherIcon: { fontSize: 32 },
+  weatherTemp: { color: "#FFFFFF", fontSize: 28, fontWeight: "900" },
+  weatherCondition: { color: "rgba(255,255,255,0.5)", fontSize: 11 },
+  weatherMeta: { flexDirection: "row", gap: 8, marginTop: 4 },
+  weatherMetaText: { color: "rgba(255,255,255,0.35)", fontSize: 10 },
+  widgetCta: { backgroundColor: "rgba(255,255,255,0.07)", borderRadius: 12, paddingVertical: 8, alignItems: "center", borderWidth: 1, borderColor: "rgba(255,255,255,0.1)" },
+  widgetCtaText: { color: "rgba(192,132,252,0.8)", fontSize: 13, fontWeight: "700" },
+});
+
 const STATUS_CONFIG = {
   upcoming: { label: "Upcoming", color: "#2196F3", bg: "rgba(33,150,243,0.15)" },
   active: { label: "Live Now", color: "#4CAF50", bg: "rgba(76,175,80,0.15)" },
@@ -181,6 +278,12 @@ export default function TripsScreen() {
                 ))}
               </LinearGradient>
             </View>
+
+            {/* Weather + Countdown for next upcoming trip */}
+            {(() => {
+              const nextTrip = allTrips.find((t) => t.status === "upcoming" || t.status === "active");
+              return nextTrip ? <WeatherCountdownWidget trip={nextTrip} /> : null;
+            })()}
 
             {/* Filter Tabs */}
             <View style={styles.filterRow}>

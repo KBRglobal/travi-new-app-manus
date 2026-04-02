@@ -320,7 +320,7 @@ export default function ItineraryBuilderScreen() {
           </View>
           <TouchableOpacity
             style={S.confirmTripBtn}
-            onPress={() => { haptic(Haptics.ImpactFeedbackStyle.Medium); router.push("/(trip)/summary" as never); }}
+            onPress={() => { haptic(Haptics.ImpactFeedbackStyle.Medium); router.push({ pathname: "/(trip)/post-booking", params: { destination, totalCost: String(days.reduce((s, d) => s + d.totalCost, 0)) } } as never); }}
             activeOpacity={0.88}
           >
             <LinearGradient colors={["#6443F4", "#F94498"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={StyleSheet.absoluteFillObject} />
