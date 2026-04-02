@@ -216,7 +216,7 @@ const S = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#0D0628" },
   safeArea: { flex: 1 },
 
-  header: { paddingHorizontal: 20, paddingTop: 6, paddingBottom: 14 },
+  header: { paddingHorizontal: 20, paddingTop: 16, paddingBottom: 14 },
   headerTitle: { color: "#FFFFFF", fontSize: 28, fontWeight: "900", letterSpacing: -0.5 },
   headerSub: { color: "rgba(255,255,255,0.4)", fontSize: 14, marginTop: 2 },
 

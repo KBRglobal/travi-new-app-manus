@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, FlatList, Dimensions, Platform } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { router } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
 import { Image } from "react-native";
@@ -124,6 +125,7 @@ function TripCard({ trip, onPress }: { trip: Trip; onPress: () => void }) {
 
 export default function TripsScreen() {
   const { state } = useStore();
+  const insets = useSafeAreaInsets();
   const [filter, setFilter] = useState<"all" | "upcoming" | "completed">("all");
 
   const allTrips = state.trips.length > 0 ? state.trips : MOCK_TRIPS;
@@ -145,7 +147,7 @@ export default function TripsScreen() {
       <FlatList
         data={filtered}
         keyExtractor={(item) => item.id}
-        contentContainerStyle={styles.listContent}
+        contentContainerStyle={[styles.listContent, { paddingTop: insets.top + 16 }]}
         showsVerticalScrollIndicator={false}
         ListHeaderComponent={
           <>
@@ -226,7 +228,7 @@ const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#0D0628" },
   orb1: { position: "absolute", width: width, height: width, borderRadius: width / 2, top: -width * 0.4, left: -width * 0.3, backgroundColor: "rgba(123,47,190,0.09)" },
   orb2: { position: "absolute", width: width * 0.7, height: width * 0.7, borderRadius: width * 0.35, bottom: 0, right: -width * 0.3, backgroundColor: "rgba(233,30,140,0.06)" },
-  listContent: { paddingHorizontal: 22, paddingTop: 60, paddingBottom: 100, gap: 14 },
+  listContent: { paddingHorizontal: 22, paddingTop: 0, paddingBottom: 100, gap: 14 },
   header: { flexDirection: "row", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 6 },
   headerTitle: { color: "#FFFFFF", fontSize: 28, fontWeight: "800" },
   headerSub: { color: "#5A4D72", fontSize: 13, marginTop: 2 },
