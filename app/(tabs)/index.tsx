@@ -248,37 +248,28 @@ export default function HomeScreen() {
         ══════════════════════════════════════════ */}
         <View style={S.block}>
           <TouchableOpacity
-            style={S.planTripCard}
+            style={S.dnaCard}
             onPress={() => router.push("/(tabs)/explore" as never)}
             activeOpacity={0.88}
           >
             <LinearGradient
-              colors={["#6443F4", "#F94498"]}
-              start={{ x: 0, y: 0 }}
-              end={{ x: 1.2, y: 1.2 }}
+              colors={["rgba(100,67,244,0.35)", "rgba(249,68,152,0.25)"]}
+              start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}
               style={StyleSheet.absoluteFillObject}
             />
-            {/* Glow overlay */}
-            <LinearGradient
-              colors={["rgba(255,255,255,0.15)", "transparent", "rgba(0,0,0,0.2)"]}
-              start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 1 }}
-              style={StyleSheet.absoluteFillObject}
-            />
-            <View style={S.planTripContent}>
-              <View style={S.planTripLeft}>
-                <View style={S.planTripIconBox}>
-                  <Text style={{ fontSize: 28 }}>✈️</Text>
-                </View>
-                <View>
-                  <Text style={S.planTripTitle}>Plan Your Next Trip</Text>
-                  <Text style={S.planTripSub}>Discover destinations made for you</Text>
-                </View>
+            <View style={S.dnaCardBorder} />
+            <View style={S.dnaCardLeft}>
+              <View style={S.dnaIconWrap}>
+                <LinearGradient colors={["#6443F4", "#F94498"]} style={StyleSheet.absoluteFillObject} />
+                <Text style={{ fontSize: 22 }}>✈️</Text>
               </View>
-              <View style={S.planTripArrow}>
-                <IconSymbol name="chevron.right" size={22} color="#FFFFFF" />
+              <View>
+                <Text style={S.dnaCardLabel}>READY TO EXPLORE</Text>
+                <Text style={S.dnaCardType}>Plan Your Next Trip</Text>
+                <Text style={S.dnaCardSub}>Tap to discover destinations for you</Text>
               </View>
             </View>
+            <IconSymbol name="chevron.right" size={18} color="rgba(255,255,255,0.4)" />
           </TouchableOpacity>
         </View>
 
