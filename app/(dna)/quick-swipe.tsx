@@ -16,6 +16,8 @@ import { IconSymbol } from "@/components/ui/icon-symbol";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import * as Haptics from "expo-haptics";
 import { useStore } from "@/lib/store";
+import { trpc } from "@/lib/trpc";
+import { useAuth } from "@/hooks/use-auth";
 
 const { width: W, height: H } = Dimensions.get("window");
 const SWIPE_THRESHOLD = W * 0.32;
@@ -284,6 +286,8 @@ function SwipeCard({
 export default function QuickSwipeScreen() {
   const insets = useSafeAreaInsets();
   const { dispatch } = useStore();
+  const { isAuthenticated } = useAuth();
+  const profileSync = trpc.profile.sync.useMutation();
   const [index, setIndex] = useState(0);
   const [likes, setLikes] = useState<string[]>([]);
   const [nopes, setNopes] = useState<string[]>([]);
@@ -320,6 +324,21 @@ export default function QuickSwipeScreen() {
       setDone(true);
       // Award 250 XP
       dispatch({ type: "ADD_XP", payload: 250 });
+      // Sync DNA scores to backend if authenticated
+      if (isAuthenticated) {
+        profileSync.mutate({
+          explorerScore:     computed.explorer,
+          relaxerScore:      computed.relaxer,
+          adventurerScore:   computed.adventurer,
+          culturalistScore:  computed.culturalist,
+          foodieScore:       computed.foodie,
+          photographerScore: computed.photographer,
+          historianScore:    computed.historian,
+          naturalistScore:   computed.naturalist,
+          xp:                250,
+          swipeCompleted:    1,
+        });
+      }
     } else {
       setIndex(newIndex);
     }

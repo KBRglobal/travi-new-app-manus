@@ -3,6 +3,7 @@ import { COOKIE_NAME } from "../shared/const.js";
 import { getSessionCookieOptions } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
 import { protectedProcedure, publicProcedure, router } from "./_core/trpc";
+import { invokeLLM } from "./_core/llm";
 import {
   getTravelerProfile, upsertTravelerProfile,
   getUserTrips, getTripById, createTrip, updateTrip, deleteTrip,
@@ -116,6 +117,42 @@ export const appRouter = router({
       .mutation(async ({ ctx, input }) => {
         await deletePriceAlert(input.alertId, ctx.user.id);
         return { success: true };
+      }),
+  }),
+
+  // ─── AI Cultural Guide ─────────────────────────────────────────────────────────────
+  culturalGuide: router({
+    generate: publicProcedure
+      .input(z.object({ destination: z.string().min(1).max(100) }))
+      .query(async ({ input }) => {
+        const dest = input.destination;
+        const prompt = `Generate a cultural travel guide for "${dest}" as JSON with this exact structure:
+{
+  "headline": "one sentence describing the culture/vibe",
+  "emoji": "flag emoji",
+  "religion": [{"label":"...","value":"...","type":"do"},...],
+  "dress": [{"label":"...","value":"...","type":"info"},...],
+  "food": [{"label":"...","value":"...","type":"tip"},...],
+  "laws": [{"label":"...","value":"...","type":"dont"},...],
+  "etiquette": [{"label":"...","value":"...","type":"do"},...],
+  "visa": [{"label":"...","value":"...","type":"info"},...]
+}
+Each section needs 4 items. type must be one of: do, dont, info, tip.
+For visa: include Israeli, US, and EU passport info.
+Return ONLY valid JSON, no markdown.`;
+        try {
+          const response = await invokeLLM({
+            messages: [
+              { role: "system", content: "You are a travel cultural expert. Return only valid JSON." },
+              { role: "user", content: prompt },
+            ],
+            response_format: { type: "json_object" },
+          });
+          const raw = response.choices[0].message.content;
+          return JSON.parse(typeof raw === "string" ? raw : JSON.stringify(raw));
+        } catch {
+          return null;
+        }
       }),
   }),
 

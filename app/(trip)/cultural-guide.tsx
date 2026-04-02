@@ -1,13 +1,15 @@
 import { useState } from "react";
 import {
   View, Text, TouchableOpacity, StyleSheet, ScrollView,
-  Platform,
+  Platform, ActivityIndicator,
 } from "react-native";
 import { router, useLocalSearchParams } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
 import { IconSymbol } from "@/components/ui/icon-symbol";
 import * as Haptics from "expo-haptics";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { trpc } from "@/lib/trpc";
+import { getCulturalData, KNOWN_DESTINATIONS } from "@/lib/cultural-data";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 interface CulturalSection {
@@ -25,9 +27,6 @@ interface CulturalItem {
   type: "do" | "dont" | "info" | "tip";
 }
 
-// ─── Cultural Data (from Travi.world) ────────────────────────────────────────
-import { getCulturalData } from "@/lib/cultural-data";
-
 // ─── Item Badge ───────────────────────────────────────────────────────────────
 const TYPE_CONFIG = {
   do: { label: "DO", bg: "#10B98120", text: "#10B981", border: "#10B98140" },
@@ -37,7 +36,7 @@ const TYPE_CONFIG = {
 };
 
 function CulturalItemRow({ item }: { item: CulturalItem }) {
-  const cfg = TYPE_CONFIG[item.type];
+  const cfg = TYPE_CONFIG[item.type] ?? TYPE_CONFIG.info;
   return (
     <View style={S.itemRow}>
       <View style={[S.typeBadge, { backgroundColor: cfg.bg, borderColor: cfg.border }]}>
@@ -76,19 +75,100 @@ function SectionCard({ section, expanded, onToggle }: { section: CulturalSection
   );
 }
 
+// ─── Visa Card ────────────────────────────────────────────────────────────────
+function VisaCard({ items, expanded, onToggle }: { items: CulturalItem[]; expanded: boolean; onToggle: () => void }) {
+  return (
+    <View style={[S.sectionCard, S.visaCard]}>
+      <TouchableOpacity style={S.sectionHeader} onPress={onToggle} activeOpacity={0.8}>
+        <LinearGradient colors={["#0EA5E9", "#0369A1"]} style={S.sectionIcon} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}>
+          <IconSymbol name="airplane.circle.fill" size={18} color="#fff" />
+        </LinearGradient>
+        <Text style={S.sectionTitle}>Visa & Entry</Text>
+        <View style={[S.sectionCount, { backgroundColor: "#0EA5E920" }]}>
+          <Text style={[S.sectionCountText, { color: "#0EA5E9" }]}>{items.length}</Text>
+        </View>
+        <IconSymbol name={expanded ? "chevron.down" : "chevron.right"} size={16} color="#9BA1A6" />
+      </TouchableOpacity>
+      {expanded && (
+        <View style={S.sectionBody}>
+          {items.map((item, i) => (
+            <CulturalItemRow key={i} item={item} />
+          ))}
+        </View>
+      )}
+    </View>
+  );
+}
+
+// ─── Helpers ──────────────────────────────────────────────────────────────────
+function formatDestinationName(dest: string): string {
+  return dest
+    .split("-")
+    .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+    .join(" ");
+}
+
+function buildSectionsFromAI(aiData: Record<string, unknown>): CulturalSection[] {
+  const SECTION_DEFS = [
+    { id: "religion", key: "religion", icon: "moon.stars.fill", title: "Religion & Customs", color: "#8B5CF6", gradient: ["#8B5CF6", "#6D28D9"] as [string, string] },
+    { id: "dress", key: "dress", icon: "tshirt.fill", title: "Dress Code", color: "#EC4899", gradient: ["#EC4899", "#BE185D"] as [string, string] },
+    { id: "food", key: "food", icon: "fork.knife", title: "Food & Drink", color: "#F59E0B", gradient: ["#F59E0B", "#D97706"] as [string, string] },
+    { id: "laws", key: "laws", icon: "shield.fill", title: "Laws & Rules", color: "#EF4444", gradient: ["#EF4444", "#B91C1C"] as [string, string] },
+    { id: "etiquette", key: "etiquette", icon: "hand.raised.fill", title: "Etiquette & Tips", color: "#10B981", gradient: ["#10B981", "#059669"] as [string, string] },
+  ];
+  return SECTION_DEFS.map((def) => ({
+    id: def.id,
+    icon: def.icon,
+    title: def.title,
+    color: def.color,
+    gradient: def.gradient,
+    items: (Array.isArray(aiData[def.key]) ? aiData[def.key] as CulturalItem[] : []),
+  })).filter((s) => s.items.length > 0);
+}
+
 // ─── Main Screen ──────────────────────────────────────────────────────────────
 export default function CulturalGuideScreen() {
   const { destination = "dubai" } = useLocalSearchParams<{ destination: string }>();
   const insets = useSafeAreaInsets();
-  const data = getCulturalData(destination);
-  const [expanded, setExpanded] = useState<string>("religion");
+  const [expanded, setExpanded] = useState<string>("visa");
+
+  const normalizedKey = destination?.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z-]/g, "");
+  const isKnown = KNOWN_DESTINATIONS.includes(normalizedKey);
+
+  // Use static data for known destinations
+  const staticData = isKnown ? getCulturalData(destination) : null;
+
+  // Use AI for unknown destinations
+  const { data: aiData, isLoading: aiLoading } = trpc.culturalGuide.generate.useQuery(
+    { destination },
+    { enabled: !isKnown, staleTime: 1000 * 60 * 30 }
+  );
 
   function toggle(id: string) {
     if (Platform.OS !== "web") Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     setExpanded((prev) => (prev === id ? "" : id));
   }
 
-  const displayName = destination.charAt(0).toUpperCase() + destination.slice(1);
+  const displayName = formatDestinationName(destination);
+
+  // Build display data
+  let headline = "";
+  let emoji = "🌍";
+  let sections: CulturalSection[] = [];
+  let visaItems: CulturalItem[] = [];
+
+  if (staticData) {
+    headline = staticData.headline;
+    emoji = staticData.emoji;
+    sections = staticData.sections as CulturalSection[];
+    visaItems = (staticData.visa ?? []) as CulturalItem[];
+  } else if (aiData) {
+    const ai = aiData as Record<string, unknown>;
+    headline = (ai.headline as string) ?? `Cultural guide for ${displayName}`;
+    emoji = (ai.emoji as string) ?? "🌍";
+    sections = buildSectionsFromAI(ai);
+    visaItems = (Array.isArray(ai.visa) ? ai.visa : []) as CulturalItem[];
+  }
 
   return (
     <View style={[S.root, { paddingTop: insets.top }]}>
@@ -98,38 +178,60 @@ export default function CulturalGuideScreen() {
           <IconSymbol name="chevron.left" size={20} color="#fff" />
         </TouchableOpacity>
         <View style={S.headerCenter}>
-          <Text style={S.headerEmoji}>{data.emoji}</Text>
+          <Text style={S.headerEmoji}>{emoji}</Text>
           <Text style={S.headerTitle}>{displayName}</Text>
           <Text style={S.headerSub}>Cultural Guide</Text>
         </View>
         <View style={{ width: 40 }} />
       </LinearGradient>
 
+      {/* AI Loading State */}
+      {!isKnown && aiLoading && (
+        <View style={S.loadingContainer}>
+          <ActivityIndicator size="large" color="#A78BFA" />
+          <Text style={S.loadingText}>Generating cultural guide for {displayName}...</Text>
+          <Text style={S.loadingSubtext}>Powered by TRAVI AI</Text>
+        </View>
+      )}
+
       {/* Headline */}
-      <View style={S.headlineBanner}>
-        <IconSymbol name="info.circle.fill" size={16} color="#A78BFA" />
-        <Text style={S.headlineText}>{data.headline}</Text>
-      </View>
+      {headline ? (
+        <View style={S.headlineBanner}>
+          <IconSymbol name="info.circle.fill" size={16} color="#A78BFA" />
+          <Text style={S.headlineText}>{headline}</Text>
+        </View>
+      ) : null}
 
       {/* Sections */}
-      <ScrollView style={S.scroll} contentContainerStyle={{ paddingBottom: insets.bottom + 32 }} showsVerticalScrollIndicator={false}>
-        {data.sections.map((section) => (
-          <SectionCard
-            key={section.id}
-            section={section}
-            expanded={expanded === section.id}
-            onToggle={() => toggle(section.id)}
-          />
-        ))}
+      {!aiLoading && (
+        <ScrollView style={S.scroll} contentContainerStyle={{ paddingBottom: insets.bottom + 32 }} showsVerticalScrollIndicator={false}>
+          {/* Visa & Entry — pinned at top */}
+          {visaItems.length > 0 && (
+            <VisaCard
+              items={visaItems}
+              expanded={expanded === "visa"}
+              onToggle={() => toggle("visa")}
+            />
+          )}
 
-        {/* Footer note */}
-        <View style={S.footerNote}>
-          <IconSymbol name="exclamationmark.triangle.fill" size={14} color="#F59E0B" />
-          <Text style={S.footerNoteText}>
-            Cultural norms evolve. Always verify current local guidelines before your trip.
-          </Text>
-        </View>
-      </ScrollView>
+          {sections.map((section) => (
+            <SectionCard
+              key={section.id}
+              section={section}
+              expanded={expanded === section.id}
+              onToggle={() => toggle(section.id)}
+            />
+          ))}
+
+          {/* Footer note */}
+          <View style={S.footerNote}>
+            <IconSymbol name="exclamationmark.triangle.fill" size={14} color="#F59E0B" />
+            <Text style={S.footerNoteText}>
+              Cultural norms and visa requirements evolve. Always verify current local guidelines before your trip.
+            </Text>
+          </View>
+        </ScrollView>
+      )}
     </View>
   );
 }
@@ -158,10 +260,19 @@ const S = StyleSheet.create({
   },
   headlineText: { flex: 1, fontSize: 13, color: "#C4B5FD", lineHeight: 19 },
   scroll: { flex: 1, paddingHorizontal: 16, paddingTop: 12 },
+  loadingContainer: {
+    flex: 1, alignItems: "center", justifyContent: "center", gap: 12, padding: 32,
+  },
+  loadingText: { fontSize: 15, color: "#C4B5FD", textAlign: "center", fontWeight: "600" },
+  loadingSubtext: { fontSize: 12, color: "#6B7280", textAlign: "center" },
   sectionCard: {
     backgroundColor: "#1A0A2E", borderRadius: 16,
     borderWidth: 1, borderColor: "rgba(255,255,255,0.07)",
     marginBottom: 10, overflow: "hidden",
+  },
+  visaCard: {
+    borderColor: "rgba(14,165,233,0.25)",
+    backgroundColor: "#0A1929",
   },
   sectionHeader: {
     flexDirection: "row", alignItems: "center", gap: 12,

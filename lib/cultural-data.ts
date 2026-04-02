@@ -7,6 +7,7 @@ export const TRAVI_CULTURAL_DATA: Record<string, {
     id: string; icon: string; title: string; color: string; gradient: [string, string];
     items: Array<{ label: string; value: string; type: "do"|"dont"|"info"|"tip" }>;
   }>;
+  visa?: Array<{ label: string; value: string; type: "do"|"dont"|"info"|"tip" }>;
 }> = {
   'dubai': {
     headline: 'Dubai rises from Arabian desert sands as a testament to modern ambition, where the world\'s tallest building pierces the sky, artificial islands reshape coastlines, and traditional souks still trade gold and spices by the creek.',
@@ -78,6 +79,12 @@ export const TRAVI_CULTURAL_DATA: Record<string, {
         ],
       },
     ],
+    visa: [
+      { label: 'Israelis — Visa Free', value: 'Israeli passport holders can enter the UAE visa-free for up to 30 days since the Abraham Accords (2020). No prior arrangement needed.', type: 'do' },
+      { label: 'US/EU — Visa on Arrival', value: 'US and EU citizens receive a free visa on arrival valid for 30 days, extendable once for another 30 days.', type: 'info' },
+      { label: 'Passport Validity', value: 'Your passport must be valid for at least 6 months from your date of entry.', type: 'tip' },
+      { label: 'No Israeli Stamps Issue', value: 'The UAE no longer refuses entry due to Israeli passport stamps since normalization in 2020.', type: 'info' },
+    ],
   },
   'paris': {
     headline: 'Paris is a city of art, romance, and joie de vivre, constantly surprising visitors with its charm and everyday moments.',
@@ -144,6 +151,12 @@ export const TRAVI_CULTURAL_DATA: Record<string, {
         ],
       },
     ],
+    visa: [
+      { label: 'Israelis — Visa Free (Schengen)', value: 'Israeli citizens can visit France and all Schengen countries for up to 90 days in any 180-day period without a visa.', type: 'do' },
+      { label: 'US — Visa Free (90 days)', value: 'US citizens can stay in France for up to 90 days without a visa for tourism or business.', type: 'info' },
+      { label: 'ETIAS from 2025', value: 'From 2025, non-EU visitors (including Israelis and Americans) will need to register for ETIAS (€7) before entering the Schengen Zone.', type: 'tip' },
+      { label: 'Passport Validity', value: 'Passport must be valid for at least 3 months beyond your planned departure from the Schengen Area.', type: 'tip' },
+    ],
   },
   'tokyo': {
     headline: 'Tokyo: A city where ancient traditions and futuristic innovation coexist, with a strong emphasis on quiet respect and meticulous etiquette.',
@@ -206,6 +219,12 @@ export const TRAVI_CULTURAL_DATA: Record<string, {
           { label: 'Ask for help politely', value: 'Japanese people are generally very helpful if approached politely, so don\'t hesitate to ask for assistance.', type: 'tip' },
         ],
       },
+    ],
+    visa: [
+      { label: 'Israelis — Visa Free', value: 'Israeli passport holders can enter Japan visa-free for up to 90 days for tourism.', type: 'do' },
+      { label: 'US/EU — Visa Free (90 days)', value: 'US and EU citizens can visit Japan for up to 90 days without a visa.', type: 'info' },
+      { label: 'Visit Japan Web', value: 'Register on Visit Japan Web before arrival to speed up immigration and customs. It\'s free and saves significant time.', type: 'tip' },
+      { label: 'No Work Allowed', value: 'Visa-free entry is for tourism only. Working without a proper visa is illegal and can result in deportation.', type: 'dont' },
     ],
   },
   'new-york': {
@@ -278,6 +297,12 @@ export const TRAVI_CULTURAL_DATA: Record<string, {
         ],
       },
     ],
+    visa: [
+      { label: 'Israelis — ESTA Required', value: 'Israeli citizens must apply for ESTA (Electronic System for Travel Authorization) before traveling to the US. Cost: $21, valid 2 years.', type: 'info' },
+      { label: 'EU — ESTA Required', value: 'EU citizens also need ESTA for visits up to 90 days under the Visa Waiver Program. Apply at esta.cbp.dhs.gov.', type: 'info' },
+      { label: 'Apply Early', value: 'Apply for ESTA at least 72 hours before departure. Most approvals are instant but some take longer.', type: 'tip' },
+      { label: 'CBP Declaration', value: 'All visitors must complete a CBP Declaration Form on arrival. Declare all food, plants, and amounts over $10,000 in cash.', type: 'do' },
+    ],
   },
   'london': {
     headline: 'London is a vibrant, multicultural hub where tradition meets modernity, offering a rich tapestry of history, arts, and diverse communities.',
@@ -344,6 +369,12 @@ export const TRAVI_CULTURAL_DATA: Record<string, {
           { label: 'Polite greetings', value: 'A simple \'please\' and \'thank you\' go a long way in daily interactions.', type: 'do' },
         ],
       },
+    ],
+    visa: [
+      { label: 'Israelis — eTA Required (2025)', value: 'From 2025, Israeli citizens need a UK Electronic Travel Authorisation (ETA) to visit the UK. Cost: £10, valid 2 years.', type: 'info' },
+      { label: 'US/EU — ETA Required (2025)', value: 'US and EU citizens also need the UK ETA from 2025. Apply via the UK ETA app or gov.uk website.', type: 'info' },
+      { label: 'No Schengen Link', value: 'The UK is NOT part of the Schengen Area. A Schengen visa does not allow entry to the UK — you need a separate UK visa/ETA.', type: 'dont' },
+      { label: 'Passport Validity', value: 'Your passport must be valid for the entire duration of your stay in the UK.', type: 'tip' },
     ],
   },
   'barcelona': {
@@ -414,6 +445,12 @@ export const TRAVI_CULTURAL_DATA: Record<string, {
         ],
       },
     ],
+    visa: [
+      { label: 'Israelis — Visa Free (Schengen)', value: 'Israeli citizens can visit Spain and all Schengen countries for up to 90 days in any 180-day period without a visa.', type: 'do' },
+      { label: 'US — Visa Free (90 days)', value: 'US citizens can stay in Spain for up to 90 days without a visa for tourism.', type: 'info' },
+      { label: 'ETIAS from 2025', value: 'From 2025, non-EU visitors will need ETIAS registration (€7) before entering Schengen. Apply online in advance.', type: 'tip' },
+      { label: 'Tourist Tax', value: 'Barcelona charges a tourist tax of €3.25–€6.75 per night depending on accommodation type. Pay at check-in.', type: 'info' },
+    ],
   },
   'singapore': {
     headline: 'Singapore is a vibrant city-state known for its harmonious blend of cultures, strict laws, and a passion for food.',
@@ -479,6 +516,12 @@ export const TRAVI_CULTURAL_DATA: Record<string, {
           { label: 'Remove Shoes Indoors', value: 'It is customary to remove your shoes before entering someone\'s home or certain religious establishments.', type: 'do' },
         ],
       },
+    ],
+    visa: [
+      { label: 'Israelis — Visa Free (30 days)', value: 'Israeli passport holders can enter Singapore visa-free for up to 30 days for tourism.', type: 'do' },
+      { label: 'US/EU — Visa Free (30 days)', value: 'US and EU citizens can visit Singapore for up to 30 days without a visa.', type: 'info' },
+      { label: 'SG Arrival Card', value: 'All visitors must complete the Singapore Arrival Card (SGAC) within 3 days before arrival. It\'s free at eservices.ica.gov.sg.', type: 'tip' },
+      { label: 'Extension Available', value: 'You can extend your stay at the ICA Building in Singapore for up to 30 additional days if needed.', type: 'info' },
     ],
   },
   'bangkok': {
@@ -549,6 +592,12 @@ export const TRAVI_CULTURAL_DATA: Record<string, {
         ],
       },
     ],
+    visa: [
+      { label: 'Israelis — Visa on Arrival', value: 'Israeli citizens can get a visa on arrival in Thailand for 30 days (fee: ~1,000 THB ≈ $27). Or apply for an e-Visa in advance.', type: 'info' },
+      { label: 'US/EU — Visa Exemption', value: 'US and EU citizens get 30-day visa exemption on arrival. Extended to 60 days for some nationalities from 2024.', type: 'do' },
+      { label: 'Thailand e-Visa', value: 'Apply for a Thailand e-Visa online before travel to avoid queues at the airport. Available at thaievisa.go.th.', type: 'tip' },
+      { label: 'Overstay Penalties', value: 'Overstaying your visa in Thailand results in a fine of 500 THB per day and possible blacklisting. Leave on time.', type: 'dont' },
+    ],
   },
   'rome': {
     headline: 'Rome layers 2,800 years of history across seven hills, blending ancient ruins with Renaissance masterpieces and modern Italian life.',
@@ -614,6 +663,12 @@ export const TRAVI_CULTURAL_DATA: Record<string, {
           { label: 'Respect Local Pace', value: 'Embrace the Roman pace of life, including long lunches and late dinners. Fighting this rhythm will lead to exhaustion.', type: 'do' },
         ],
       },
+    ],
+    visa: [
+      { label: 'Israelis — Visa Free (Schengen)', value: 'Israeli citizens can visit Italy and all Schengen countries for up to 90 days in any 180-day period without a visa.', type: 'do' },
+      { label: 'US — Visa Free (90 days)', value: 'US citizens can stay in Italy for up to 90 days without a visa for tourism.', type: 'info' },
+      { label: 'ETIAS from 2025', value: 'From 2025, non-EU visitors will need ETIAS (€7) before entering Schengen. Apply online at etias.com.', type: 'tip' },
+      { label: 'Vatican Entry', value: 'Vatican City is a separate country. No additional visa is needed for tourists already in Italy.', type: 'info' },
     ],
   },
   'istanbul': {
@@ -684,6 +739,12 @@ export const TRAVI_CULTURAL_DATA: Record<string, {
         ],
       },
     ],
+    visa: [
+      { label: 'Israelis — e-Visa Required', value: 'Israeli citizens must obtain a Turkish e-Visa before arrival. Cost: $50, valid 180 days, allows 90-day stay. Apply at evisa.gov.tr.', type: 'info' },
+      { label: 'US/EU — e-Visa Required', value: 'US and EU citizens also need a Turkish e-Visa ($50). Apply online at evisa.gov.tr at least 48 hours before travel.', type: 'info' },
+      { label: 'Apply in Advance', value: 'Do not wait until the airport — apply for your e-Visa at least 48 hours before departure to avoid issues.', type: 'tip' },
+      { label: 'Passport Validity', value: 'Your passport must be valid for at least 6 months beyond your planned departure from Turkey.', type: 'tip' },
+    ],
   },
   'amsterdam': {
     headline: 'Amsterdam is a vibrant city known for its artistic heritage, elaborate canal system, and cycling culture.',
@@ -750,6 +811,12 @@ export const TRAVI_CULTURAL_DATA: Record<string, {
         ],
       },
     ],
+    visa: [
+      { label: 'Israelis — Visa Free (Schengen)', value: 'Israeli citizens can visit the Netherlands and all Schengen countries for up to 90 days in any 180-day period without a visa.', type: 'do' },
+      { label: 'US — Visa Free (90 days)', value: 'US citizens can stay in the Netherlands for up to 90 days without a visa.', type: 'info' },
+      { label: 'ETIAS from 2025', value: 'From 2025, non-EU visitors will need ETIAS (€7) before entering Schengen. Apply online before travel.', type: 'tip' },
+      { label: 'Tourist Tax', value: 'Amsterdam charges a tourist tax of 12.5% on accommodation costs. This is usually included in your booking price.', type: 'info' },
+    ],
   },
   'miami': {
     headline: 'Where Latin Soul Meets Ocean Breeze',
@@ -814,6 +881,12 @@ export const TRAVI_CULTURAL_DATA: Record<string, {
           { label: 'Weather Preparedness', value: 'Be prepared for warm weather year-round. Even in winter, temperatures are mild, but summer brings significant heat and humidity.', type: 'tip' },
         ],
       },
+    ],
+    visa: [
+      { label: 'Israelis — ESTA Required', value: 'Israeli citizens must apply for ESTA before traveling to the US. Cost: $21, valid 2 years, allows multiple 90-day visits.', type: 'info' },
+      { label: 'EU — ESTA Required', value: 'EU citizens need ESTA for visits up to 90 days under the Visa Waiver Program. Apply at esta.cbp.dhs.gov.', type: 'info' },
+      { label: 'Apply Early', value: 'Apply for ESTA at least 72 hours before departure. Most approvals are instant but some take up to 72 hours.', type: 'tip' },
+      { label: 'State Tax', value: 'Florida has no state income tax, but sales tax of 6–8% applies to most purchases. Hotel taxes are typically 12–13%.', type: 'info' },
     ],
   },
   'las-vegas': {
@@ -883,6 +956,12 @@ export const TRAVI_CULTURAL_DATA: Record<string, {
         ],
       },
     ],
+    visa: [
+      { label: 'Israelis — ESTA Required', value: 'Israeli citizens must apply for ESTA before traveling to the US. Cost: $21, valid 2 years.', type: 'info' },
+      { label: 'EU — ESTA Required', value: 'EU citizens need ESTA for visits up to 90 days under the Visa Waiver Program.', type: 'info' },
+      { label: 'Nevada Resort Fees', value: 'Most Las Vegas hotels charge mandatory resort fees ($30–$50/night) not included in the advertised room rate.', type: 'tip' },
+      { label: 'Gambling Age', value: 'The legal gambling age in Nevada is 21. ID is strictly checked at all casinos. Minors cannot even walk through casino floors.', type: 'info' },
+    ],
   },
   'los-angeles': {
     headline: 'Los Angeles: A vibrant hub of entertainment, diverse cultures, and a laid-back, trendsetting lifestyle.',
@@ -945,6 +1024,12 @@ export const TRAVI_CULTURAL_DATA: Record<string, {
           { label: 'Beach Culture', value: 'Enjoy the vibrant beach culture, but be mindful of local regulations regarding bonfires, alcohol, and noise.', type: 'do' },
         ],
       },
+    ],
+    visa: [
+      { label: 'Israelis — ESTA Required', value: 'Israeli citizens must apply for ESTA before traveling to the US. Cost: $21, valid 2 years.', type: 'info' },
+      { label: 'EU — ESTA Required', value: 'EU citizens need ESTA for visits up to 90 days under the Visa Waiver Program.', type: 'info' },
+      { label: 'CBP Declaration', value: 'Declare all food, plants, and cash over $10,000 on your CBP Declaration Form on arrival at LAX.', type: 'do' },
+      { label: 'California Sales Tax', value: 'California has a base sales tax of 7.25%, with LA County adding up to 10.25% total. Hotel taxes are typically 15–16%.', type: 'info' },
     ],
   },
   'hong-kong': {
@@ -1017,6 +1102,12 @@ export const TRAVI_CULTURAL_DATA: Record<string, {
         ],
       },
     ],
+    visa: [
+      { label: 'Israelis — Visa Free (90 days)', value: 'Israeli passport holders can enter Hong Kong visa-free for up to 90 days.', type: 'do' },
+      { label: 'US/EU — Visa Free (90 days)', value: 'US and EU citizens can visit Hong Kong for up to 90 days without a visa.', type: 'info' },
+      { label: 'Separate from China', value: 'Hong Kong has its own immigration policy. A visa for mainland China does NOT allow entry to Hong Kong, and vice versa.', type: 'dont' },
+      { label: 'Arrival Registration', value: 'Complete the Hong Kong e-Channel registration to speed up immigration. Available to most nationalities.', type: 'tip' },
+    ],
   },
   'abu-dhabi': {
     headline: 'Abu Dhabi blends rich Arabian heritage with ambitious modernity, offering a culturally deep experience beyond its glittering facade.',
@@ -1088,6 +1179,12 @@ export const TRAVI_CULTURAL_DATA: Record<string, {
         ],
       },
     ],
+    visa: [
+      { label: 'Israelis — Visa Free', value: 'Israeli passport holders can enter the UAE (including Abu Dhabi) visa-free for up to 30 days since the Abraham Accords (2020).', type: 'do' },
+      { label: 'US/EU — Visa on Arrival', value: 'US and EU citizens receive a free visa on arrival valid for 30 days, extendable once for another 30 days.', type: 'info' },
+      { label: 'Passport Validity', value: 'Your passport must be valid for at least 6 months from your date of entry into the UAE.', type: 'tip' },
+      { label: 'Abu Dhabi vs Dubai', value: 'Abu Dhabi is more conservative than Dubai. Dress modestly in public areas and avoid public displays of affection.', type: 'info' },
+    ],
   },
   'ras-al-khaimah': {
     headline: 'Ras Al Khaimah offers an authentic Arabian experience with a focus on nature, adventure, and heritage, providing a less crowded and more affordable alternative to Dubai.',
@@ -1158,8 +1255,16 @@ export const TRAVI_CULTURAL_DATA: Record<string, {
         ],
       },
     ],
+    visa: [
+      { label: 'Israelis — Visa Free', value: 'Israeli passport holders can enter the UAE (including RAK) visa-free for up to 30 days since the Abraham Accords (2020).', type: 'do' },
+      { label: 'US/EU — Visa on Arrival', value: 'US and EU citizens receive a free visa on arrival valid for 30 days, extendable once for another 30 days.', type: 'info' },
+      { label: 'Passport Validity', value: 'Your passport must be valid for at least 6 months from your date of entry into the UAE.', type: 'tip' },
+      { label: 'More Conservative', value: 'RAK is more traditional than Dubai. Dress modestly outside of resort areas and respect local customs.', type: 'info' },
+    ],
   },
 };
+
+export const KNOWN_DESTINATIONS = Object.keys(TRAVI_CULTURAL_DATA);
 
 export function getCulturalData(destination: string) {
   const key = destination?.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z-]/g, '');

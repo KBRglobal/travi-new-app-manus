@@ -227,6 +227,27 @@ export default function HomeScreen() {
             </Text>
           </View>
 
+          {/* Upcoming trip countdown banner */}
+          {!activeTrip && state.trips.filter(t => t.status === "upcoming").length > 0 && (() => {
+            const upcoming = state.trips.filter(t => t.status === "upcoming").sort((a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime())[0];
+            const daysLeft = Math.ceil((new Date(upcoming.startDate).getTime() - Date.now()) / (1000 * 60 * 60 * 24));
+            return (
+              <TouchableOpacity style={S.upcomingBanner} onPress={() => router.push("/(tabs)/trip-hub" as never)} activeOpacity={0.88}>
+                <LinearGradient colors={["rgba(100,67,244,0.3)", "rgba(249,68,152,0.2)"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={StyleSheet.absoluteFillObject} />
+                <View style={S.upcomingCountdown}>
+                  <Text style={S.upcomingDays}>{daysLeft}</Text>
+                  <Text style={S.upcomingDaysLabel}>days</Text>
+                </View>
+                <View style={{ flex: 1 }}>
+                  <Text style={S.upcomingLabel}>UPCOMING TRIP</Text>
+                  <Text style={S.upcomingDest}>{upcoming.destination}, {upcoming.country}</Text>
+                </View>
+                <View style={S.activeTripArrow}>
+                  <IconSymbol name="chevron.right" size={16} color="#A78BFA" />
+                </View>
+              </TouchableOpacity>
+            );
+          })()}
           {/* Active trip banner */}
           {activeTrip && (
             <TouchableOpacity style={S.activeTripBanner} onPress={handleLiveTrip} activeOpacity={0.88}>
@@ -453,6 +474,12 @@ const S = StyleSheet.create({
   heroHeadline: { color: "#FFFFFF", fontSize: 28, fontWeight: "900", letterSpacing: -0.8, lineHeight: 34 },
   heroSub: { color: "rgba(255,255,255,0.5)", fontSize: 14, lineHeight: 21, marginTop: 8 },
 
+  upcomingBanner: { flexDirection: "row", alignItems: "center", gap: 12, marginHorizontal: 20, marginBottom: 16, borderRadius: 16, overflow: "hidden", padding: 14, borderWidth: 1, borderColor: "rgba(100,67,244,0.3)" },
+  upcomingCountdown: { width: 44, height: 44, borderRadius: 12, backgroundColor: "rgba(100,67,244,0.25)", alignItems: "center", justifyContent: "center" },
+  upcomingDays: { fontSize: 18, fontWeight: "800", color: "#A78BFA", lineHeight: 20 },
+  upcomingDaysLabel: { fontSize: 9, color: "#A78BFA", fontWeight: "600", letterSpacing: 0.5 },
+  upcomingLabel: { color: "#A78BFA", fontSize: 10, fontWeight: "800", letterSpacing: 1.5 },
+  upcomingDest: { color: "#FFFFFF", fontSize: 15, fontWeight: "700" },
   activeTripBanner: { flexDirection: "row", alignItems: "center", gap: 12, marginHorizontal: 20, marginBottom: 20, borderRadius: 16, overflow: "hidden", padding: 14, borderWidth: 1, borderColor: "rgba(16,185,129,0.3)" },
   activeDot: { width: 8, height: 8, borderRadius: 4, backgroundColor: "#02A65C" },
   activeTripLabel: { color: "#02A65C", fontSize: 10, fontWeight: "800", letterSpacing: 1.5 },

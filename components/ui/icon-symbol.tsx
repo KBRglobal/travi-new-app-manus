@@ -232,6 +232,7 @@ const MAPPING = {
   "arrow.left.and.right": "swap-horiz",
   "arrow.down.to.line": "vertical-align-bottom",
   "wineglass": "wine-bar",
+  "airplane.circle.fill": "connecting-airports",
 } as unknown as IconMapping;
 
 /**
