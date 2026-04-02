@@ -20,6 +20,7 @@ export default function TripLayout() {
       <Stack.Screen name="destination-detail" />
       <Stack.Screen name="trip-hub" />
       <Stack.Screen name="trip-chat" />
+      <Stack.Screen name="cultural-guide" />
     </Stack>
   );
 }
