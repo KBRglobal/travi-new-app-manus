@@ -7,6 +7,7 @@ import { router } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
 import { IconSymbol } from "@/components/ui/icon-symbol";
 import { useStore } from "@/lib/store";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import * as Haptics from "expo-haptics";
 
 const { width, height } = Dimensions.get("window");
@@ -105,6 +106,7 @@ const START_OPTIONS = [
 
 export default function HomeScreen() {
   const { state } = useStore();
+  const insets = useSafeAreaInsets();
   const scrollY = useRef(new Animated.Value(0)).current;
   const heroFade = useRef(new Animated.Value(0)).current;
   const [heroIndex, setHeroIndex] = useState(0);
@@ -189,7 +191,7 @@ export default function HomeScreen() {
           />
 
           {/* Header row */}
-          <View style={S.heroHeader}>
+          <View style={[S.heroHeader, { paddingTop: Math.max(insets.top, 44) + 8 }]}>
             <View>
               <Text style={S.heroGreeting}>Hello, {firstName}</Text>
             </View>

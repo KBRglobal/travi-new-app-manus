@@ -203,7 +203,7 @@ export default function WalletScreen() {
       <LinearGradient colors={["#0D0628", "#1A0A3D", "#0D0628"]} locations={[0, 0.4, 1]} style={StyleSheet.absoluteFillObject} />
 
       {/* Header — sits below status bar */}
-      <View style={[S.header, { paddingTop: insets.top + 8 }]}>
+      <View style={[S.header, { paddingTop: Math.max(insets.top, 44) + 8 }]}>
         <Text style={S.headerTitle}>TRAVI Wallet</Text>
       </View>
 

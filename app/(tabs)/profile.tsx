@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, ScrollView, Switch, Dimensions, Animated } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { router } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
 import { IconSymbol } from "@/components/ui/icon-symbol";
@@ -93,6 +94,7 @@ const TRAIT_CONFIG = [
 
 export default function ProfileScreen() {
   const { state, dispatch } = useStore();
+  const insets = useSafeAreaInsets();
   const profile = state.profile;
   const [toggles, setToggles] = useState({ darkMode: false, notifications: true });
   const [liveDNA, setLiveDNA] = useState<TravelerDNA | null>(null);
@@ -129,7 +131,7 @@ export default function ProfileScreen() {
       <View style={styles.orb1} />
       <View style={styles.orb2} />
 
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scroll}>
+      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={[styles.scroll, { paddingTop: Math.max(insets.top, 44) + 16 }]}>
         {/* Hero */}
         <View style={styles.hero}>
           <View style={styles.avatarWrap}>
