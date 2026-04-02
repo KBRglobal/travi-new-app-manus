@@ -70,7 +70,14 @@ export default function InterestsScreen() {
     if (Platform.OS !== "web") Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
     await recordInterestSelections(Array.from(selected));
     setSaving(false);
-    router.push({ pathname: "/(trip)/swipe", params: { tripId, interests: Array.from(selected).join(","), destination: destination ?? "dubai", budget: budget ?? "mid" } } as never);
+    const interestsList = Array.from(selected).join(",");
+    const commonParams = { tripId, interests: interestsList, destination: destination ?? "dubai", budget: budget ?? "mid" };
+    // If food is selected, collect food preferences first
+    if (selected.has("food")) {
+      router.push({ pathname: "/(trip)/food-preferences", params: commonParams } as never);
+    } else {
+      router.push({ pathname: "/(trip)/swipe", params: commonParams } as never);
+    }
   };
 
   return (

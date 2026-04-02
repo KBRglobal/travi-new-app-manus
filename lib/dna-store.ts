@@ -55,11 +55,20 @@ export interface DNATraits {
   natureConnection: number;
 }
 
+export interface FoodPreferences {
+  cuisines: string[];           // e.g. ["Italian", "Japanese"]
+  avoid: string[];              // e.g. ["Pork", "Beef"]
+  allergies: string[];          // e.g. ["Nuts", "Dairy"]
+  notes: string;                // free text
+  updatedAt: number;
+}
+
 export interface TravelerDNA {
   interests: Partial<Record<InterestCategory, InterestScore>>;
   traits: DNATraits;
   pace: "slow" | "moderate" | "packed";
   budgetStyle: "budget" | "mid" | "premium" | "luxury";
+  foodPreferences?: FoodPreferences;
   swipeHistory: SwipeRecord[];
   trips: TripRecord[];
   totalInteractions: number;
@@ -281,6 +290,30 @@ export function getDNALabel(dna: TravelerDNA): string {
     extreme: "Adrenaline Junkie",
   };
   return top.map((c) => labels[c] ?? c).join(" + ") || "Traveler";
+}
+
+/**
+ * Record food preferences — saved to DNA and used to filter restaurant swipes.
+ */
+export async function recordFoodPreferences(
+  prefs: Omit<FoodPreferences, "updatedAt">
+): Promise<TravelerDNA> {
+  const dna = await getDNA();
+
+  dna.foodPreferences = { ...prefs, updatedAt: Date.now() };
+
+  // Boost foodieness trait based on specificity
+  const specificity = prefs.cuisines.length + prefs.avoid.length + prefs.allergies.length;
+  const prev = dna.interests["food"] ?? { score: 30, interactions: 0, lastUpdated: 0 };
+  dna.interests["food"] = {
+    score: clamp(prev.score + Math.min(specificity * 3, 25)),
+    interactions: prev.interactions + 1,
+    lastUpdated: Date.now(),
+  };
+
+  dna.totalInteractions += 1;
+  await saveDNA(dna);
+  return dna;
 }
 
 /** Reset DNA (for testing / re-onboarding) */

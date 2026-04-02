@@ -183,6 +183,13 @@ export default function TabLayout() {
           href: null,
         }}
       />
+      <Tabs.Screen
+        name="trip-hub"
+        options={{
+          title: "Trip Hub",
+          href: null,
+        }}
+      />
     </Tabs>
   );
 }

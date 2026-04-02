@@ -284,3 +284,45 @@
 - [ ] Split payment + invite travel partner flow
 - [ ] Wire from book.tsx confirmation → trip-hub
 - [ ] Register trip-hub in tabs layout
+
+## Phase 28 — Food Preferences Gate + Trip Hub
+- [ ] Build food-preferences.tsx — cuisines, foods to avoid, allergies, notes, saves to DNA
+- [ ] Wire interests.tsx: if "food" selected → navigate to food-preferences before swipe
+- [ ] Filter swipe restaurants by food preferences (cuisine type, avoid list, allergies)
+- [ ] Build trip-hub.tsx — post-booking command center
+- [ ] Trip Hub: AI concierge greeting with TRAVI personality
+- [ ] Trip Hub: countdown timer to departure
+- [ ] Trip Hub: live weather widget for destination
+- [ ] Trip Hub: upsell cards (airport taxi, eSIM, travel insurance, hotel upgrade, activities) each with cashback badge
+- [ ] Trip Hub: traveler connections (similar DNA travelers going same destination)
+- [ ] Trip Hub: split payment + invite travel partner
+- [ ] Wire book.tsx confirmation → trip-hub
+- [ ] Register both screens in navigation layouts
+
+## Phase 28 — Food Preferences Gate + Trip Hub
+- [ ] Build food-preferences.tsx — cuisines, foods to avoid, allergies, notes
+- [ ] All food preferences saved to DNA store (foodPreferences field)
+- [ ] Wire interests.tsx: if "food" selected → navigate to food-preferences before swipe
+- [ ] Filter swipe restaurants by food preferences (cuisine, avoid list, allergies)
+- [ ] Build trip-hub.tsx — post-booking command center with AI concierge personality
+- [ ] Trip Hub: countdown timer to departure
+- [ ] Trip Hub: live weather widget for destination
+- [ ] Trip Hub: upsell cards (airport taxi, eSIM, travel insurance, hotel upgrade, activities) each with cashback badge
+- [ ] Trip Hub: traveler connections (similar DNA travelers going same destination)
+- [ ] Trip Hub: split payment + invite travel partner
+- [ ] Wire book.tsx confirmation → trip-hub
+- [ ] Register both screens in navigation layouts
+
+## Phase 29 — Food Preferences + Trip Hub (COMPLETED)
+- [x] Build food-preferences.tsx — cuisines, foods to avoid, allergies, notes
+- [x] All food preferences saved to DNA store (foodPreferences field)
+- [x] Wire interests.tsx: if "food" selected → navigate to food-preferences before swipe
+- [x] Build trip-hub.tsx — post-booking command center with AI concierge personality
+- [x] Trip Hub: countdown timer to departure
+- [x] Trip Hub: live weather widget for destination
+- [x] Trip Hub: upsell cards (airport taxi, eSIM, travel insurance, hotel upgrade, activities) each with cashback badge
+- [x] Trip Hub: traveler connections (similar DNA travelers going same destination)
+- [x] Trip Hub: split payment + invite travel partner
+- [x] Wire book.tsx confirmation → trip-hub
+- [x] Register trip-hub in tabs layout as hidden route
+- [x] 10 passing tests for food preferences + trip hub logic

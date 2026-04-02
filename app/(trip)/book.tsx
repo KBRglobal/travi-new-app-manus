@@ -225,7 +225,15 @@ export default function BookTripScreen() {
                 style={styles.modalBtnInner}
                 onPress={() => {
                   setShowCashbackModal(false);
-                  router.push("/(tabs)/trips" as never);
+                  router.push({
+                    pathname: "/(tabs)/trip-hub" as never,
+                    params: {
+                      destination: destination ?? "dubai",
+                      tripName: `${(destination ?? "Dubai").charAt(0).toUpperCase() + (destination ?? "Dubai").slice(1)} Adventure`,
+                      totalCashback: String(totalCashback),
+                      departureDate: new Date(Date.now() + 18 * 24 * 60 * 60 * 1000).toISOString(),
+                    },
+                  });
                 }}
                 activeOpacity={0.88}
               >
