@@ -174,7 +174,7 @@ const ALL_ATTRACTIONS: Attraction[] = [
 
 export default function SwipeScreen() {
   const insets = useSafeAreaInsets();
-  const { tripId, interests, destination, budget } = useLocalSearchParams<{ tripId: string; interests: string; destination: string; budget: string }>();
+  const { tripId, interests, destination, budget, foodCuisines, foodAvoid, foodAllergies } = useLocalSearchParams<{ tripId: string; interests: string; destination: string; budget: string; foodCuisines?: string; foodAvoid?: string; foodAllergies?: string }>();
 
   // 1. Filter by destination (exact match)
   const destFiltered = destination
@@ -186,14 +186,41 @@ export default function SwipeScreen() {
     ? destFiltered.filter((a) => budgetAllows(a.priceLevel, budget))
     : destFiltered;
 
-  // 3. Sort: selected interest categories first, then rest
+  // 3. Filter restaurants by food preferences (if provided)
+  const cuisineList = foodCuisines ? foodCuisines.split(",").map((c) => c.toLowerCase()) : [];
+  const avoidList = foodAvoid ? foodAvoid.split(",").map((a) => a.toLowerCase()) : [];
+  const allergyList = foodAllergies ? foodAllergies.split(",").map((a) => a.toLowerCase()) : [];
+
+  const foodFiltered = budgetFiltered.filter((a) => {
+    if (a.category !== "food") return true; // non-food items always pass
+
+    // If user has cuisine preferences, only show matching restaurants
+    if (cuisineList.length > 0) {
+      const matchesCuisine = cuisineList.some((c) =>
+        a.name.toLowerCase().includes(c) || a.description.toLowerCase().includes(c) || a.tags.some((t) => t.toLowerCase().includes(c))
+      );
+      if (!matchesCuisine) return false;
+    }
+
+    // Filter out restaurants with avoid items or allergens
+    const hasAvoidItem = avoidList.some((avoid) =>
+      a.name.toLowerCase().includes(avoid) || a.description.toLowerCase().includes(avoid) || a.tags.some((t) => t.toLowerCase().includes(avoid))
+    );
+    const hasAllergen = allergyList.some((allergy) =>
+      a.name.toLowerCase().includes(allergy) || a.description.toLowerCase().includes(allergy) || a.tags.some((t) => t.toLowerCase().includes(allergy))
+    );
+
+    return !hasAvoidItem && !hasAllergen;
+  });
+
+  // 4. Sort: selected interest categories first, then rest
   const selectedInterests = interests ? interests.split(",") : [];
   const filteredAttractions = selectedInterests.length > 0
     ? [
-        ...budgetFiltered.filter((a) => selectedInterests.includes(a.category)),
-        ...budgetFiltered.filter((a) => !selectedInterests.includes(a.category)),
+        ...foodFiltered.filter((a) => selectedInterests.includes(a.category)),
+        ...foodFiltered.filter((a) => !selectedInterests.includes(a.category)),
       ]
-    : budgetFiltered;
+    : foodFiltered;
 
   const [cards, setCards] = useState(filteredAttractions);
   const [liked, setLiked] = useState<Attraction[]>([]);

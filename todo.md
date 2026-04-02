@@ -326,3 +326,9 @@
 - [x] Wire book.tsx confirmation → trip-hub
 - [x] Register trip-hub in tabs layout as hidden route
 - [x] 10 passing tests for food preferences + trip hub logic
+
+## Phase 30 — Restaurant Filtering + Weather API + Push Notifications (COMPLETED)
+- [x] Filter swipe restaurants by food preferences from DNA (cuisine match, avoid list, allergies)
+- [x] Integrate Open-Meteo live weather API in Trip Hub (real temperature + condition + humidity)
+- [x] Push notifications for trip reminders (3 days before: book taxi, 1 day before: check-in reminder)
+- [x] Zero TypeScript errors

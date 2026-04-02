@@ -21,6 +21,8 @@ import { Image } from "expo-image";
 import { useRouter, useLocalSearchParams } from "expo-router";
 import * as Haptics from "expo-haptics";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import * as Notifications from "expo-notifications";
+import { fetchWeather, type WeatherData } from "@/lib/weather";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -240,9 +242,62 @@ export default function TripHubScreen() {
   const [activeTab, setActiveTab] = useState<"concierge" | "travelers" | "split">("concierge");
   const [splitAmount] = useState(1840);
   const [travelers] = useState(2);
+  const [weather, setWeather] = useState<WeatherData | null>(null);
+  const [weatherLoading, setWeatherLoading] = useState(true);
 
-  // Weather mock
-  const weather = { temp: 34, condition: "Sunny", icon: "☀️", humidity: 45, wind: 12 };
+  // Fetch live weather on mount
+  useEffect(() => {
+    fetchWeather(destination).then((data) => {
+      setWeather(data);
+      setWeatherLoading(false);
+    });
+  }, [destination]);
+
+  // Schedule trip reminder notifications
+  useEffect(() => {
+    async function scheduleReminders() {
+      if (Platform.OS === "web") return;
+      try {
+        const { status } = await Notifications.requestPermissionsAsync();
+        if (status !== "granted") return;
+
+        // Cancel any existing trip reminders
+        await Notifications.cancelAllScheduledNotificationsAsync();
+
+        const now = Date.now();
+        const depTime = departureDate.getTime();
+
+        // 3 days before: book taxi reminder
+        const threeDaysBefore = depTime - 3 * 24 * 60 * 60 * 1000;
+        if (threeDaysBefore > now) {
+          await Notifications.scheduleNotificationAsync({
+            content: {
+              title: "✈️ 3 days to go!",
+              body: `Don't forget to book your airport taxi for ${destination}. Book now and earn cashback!`,
+              data: { type: "taxi_reminder" },
+            },
+            trigger: { type: Notifications.SchedulableTriggerInputTypes.DATE, date: new Date(threeDaysBefore) },
+          });
+        }
+
+        // 1 day before: check-in reminder
+        const oneDayBefore = depTime - 24 * 60 * 60 * 1000;
+        if (oneDayBefore > now) {
+          await Notifications.scheduleNotificationAsync({
+            content: {
+              title: "🌍 Tomorrow you fly!",
+              body: `Check in online for your ${destination} flight and pack your bags. Have an amazing trip!`,
+              data: { type: "checkin_reminder" },
+            },
+            trigger: { type: Notifications.SchedulableTriggerInputTypes.DATE, date: new Date(oneDayBefore) },
+          });
+        }
+      } catch (err) {
+        console.warn("[notifications] Failed to schedule:", err);
+      }
+    }
+    scheduleReminders();
+  }, [destination, departureDate]);
 
   function handleBook(id: string) {
     setUpsells((prev) =>
@@ -286,8 +341,8 @@ export default function TripHubScreen() {
           {/* Weather + Cashback row */}
           <View style={styles.statsRow}>
             <View style={styles.statCard}>
-              <Text style={styles.statIcon}>{weather.icon}</Text>
-              <Text style={styles.statValue}>{weather.temp}°C</Text>
+              <Text style={styles.statIcon}>{weather?.icon ?? "🌡️"}</Text>
+              <Text style={styles.statValue}>{weatherLoading ? "--" : `${weather?.temp ?? "--"}°C`}</Text>
               <Text style={styles.statLabel}>{destination}</Text>
             </View>
             <View style={styles.statDivider} />
@@ -301,7 +356,7 @@ export default function TripHubScreen() {
             <View style={styles.statDivider} />
             <View style={styles.statCard}>
               <Text style={styles.statIcon}>🌡️</Text>
-              <Text style={styles.statValue}>{weather.humidity}%</Text>
+              <Text style={styles.statValue}>{weatherLoading ? "--" : `${weather?.humidity ?? "--"}%`}</Text>
               <Text style={styles.statLabel}>Humidity</Text>
             </View>
           </View>
