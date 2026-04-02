@@ -176,7 +176,7 @@ function isTransfer(item: Stop | Transfer): item is Transfer {
 
 export default function ItineraryScreen() {
   const insets = useSafeAreaInsets();
-  const { tripId } = useLocalSearchParams<{ tripId: string }>();
+  const { tripId, destination } = useLocalSearchParams<{ tripId: string; destination: string }>();
   const [activeDay, setActiveDay] = useState(0);
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const [building, setBuilding] = useState(true);
@@ -329,7 +329,7 @@ export default function ItineraryScreen() {
           style={styles.bookBtn}
           onPress={() => {
             if (Platform.OS !== "web") Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-            router.push("/(tabs)/trips" as never);
+            router.push({ pathname: "/(trip)/book", params: { destination: destination ?? "dubai", tripId } } as never);
           }}
           activeOpacity={0.88}
         >

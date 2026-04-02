@@ -1,9 +1,10 @@
-import { useState } from "react";
-import { View, Text, TouchableOpacity, StyleSheet, ScrollView, Switch, Dimensions } from "react-native";
+import { useEffect, useRef, useState } from "react";
+import { View, Text, TouchableOpacity, StyleSheet, ScrollView, Switch, Dimensions, Animated } from "react-native";
 import { router } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
 import { IconSymbol } from "@/components/ui/icon-symbol";
 import { useStore } from "@/lib/store";
+import { getDNA, type TravelerDNA } from "@/lib/dna-store";
 
 const { width } = Dimensions.get("window");
 
@@ -81,20 +82,41 @@ const SETTINGS_SECTIONS = [
   },
 ];
 
+const TRAIT_CONFIG = [
+  { key: "adventureLevel" as const, label: "Adventure", color: "#F94498", emoji: "🏄" },
+  { key: "culturalDepth" as const, label: "Culture", color: "#6443F4", emoji: "🏛️" },
+  { key: "foodieness" as const, label: "Foodie", color: "#F97316", emoji: "🍜" },
+  { key: "luxuryAffinity" as const, label: "Luxury", color: "#FFD700", emoji: "👑" },
+  { key: "natureConnection" as const, label: "Nature", color: "#22C55E", emoji: "🌿" },
+  { key: "socialEnergy" as const, label: "Social", color: "#06B6D4", emoji: "🎉" },
+];
+
 export default function ProfileScreen() {
   const { state, dispatch } = useStore();
   const profile = state.profile;
   const [toggles, setToggles] = useState({ darkMode: false, notifications: true });
+  const [liveDNA, setLiveDNA] = useState<TravelerDNA | null>(null);
+  const traitAnims = useRef(TRAIT_CONFIG.map(() => new Animated.Value(0))).current;
+
+  useEffect(() => {
+    getDNA().then((dna) => {
+      setLiveDNA(dna);
+      const animations = TRAIT_CONFIG.map((t, i) =>
+        Animated.timing(traitAnims[i], {
+          toValue: dna.traits[t.key] / 100,
+          duration: 800 + i * 100,
+          useNativeDriver: false,
+        })
+      );
+      Animated.stagger(80, animations).start();
+    });
+  }, []);
 
   const displayName = profile?.name || "Alex Johnson";
   const displayEmail = profile?.email || "alex@example.com";
   const points = profile?.points || 4250;
   const trips = state.trips.length || 3;
   const initials = displayName.split(" ").map((n: string) => n[0]).join("").toUpperCase();
-
-  const dnaEntries = profile?.travelerDNA
-    ? Object.entries(profile.travelerDNA).slice(0, 4)
-    : [["culture", "high"], ["food", "high"], ["adventure", "medium"], ["luxury", "low"]];
 
   const handleLogout = () => {
     dispatch({ type: "LOGOUT" });
@@ -155,7 +177,7 @@ export default function ProfileScreen() {
           </View>
         </View>
 
-        {/* Traveler DNA */}
+        {/* Traveler DNA — Live Traits */}
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
             <View style={styles.sectionTitleRow}>
@@ -166,18 +188,46 @@ export default function ProfileScreen() {
               <Text style={styles.seeAll}>Retake quiz</Text>
             </TouchableOpacity>
           </View>
-          <View style={styles.dnaRow}>
-            {dnaEntries.map(([key]) => {
-              const cfg = DNA_CONFIG[key] || { label: key, icon: "safari.fill" as const, color: "#6443F4" };
-              return (
-                <View key={key} style={styles.dnaBadge}>
-                  <LinearGradient colors={[cfg.color + "33", cfg.color + "18"]} style={styles.dnaBadgeGradient}>
-                    <IconSymbol name={cfg.icon as never} size={14} color={cfg.color} />
-                    <Text style={[styles.dnaBadgeText, { color: cfg.color }]}>{cfg.label}</Text>
+          <View style={styles.dnaTraitsCard}>
+            <LinearGradient colors={["rgba(100,67,244,0.08)", "rgba(249,68,152,0.06)"]} style={StyleSheet.absoluteFillObject} />
+            {liveDNA && liveDNA.totalInteractions > 0 ? (
+              <>
+                <Text style={styles.dnaCardLabel}>Your profile is {Math.min(100, Math.round(liveDNA.totalInteractions * 2))}% complete</Text>
+                {TRAIT_CONFIG.map((trait, i) => {
+                  const value = liveDNA.traits[trait.key];
+                  const barWidth = traitAnims[i].interpolate({ inputRange: [0, 1], outputRange: ["0%", "100%"] });
+                  return (
+                    <View key={trait.key} style={styles.traitRow}>
+                      <Text style={styles.traitEmoji}>{trait.emoji}</Text>
+                      <View style={styles.traitInfo}>
+                        <View style={styles.traitLabelRow}>
+                          <Text style={styles.traitLabel}>{trait.label}</Text>
+                          <Text style={[styles.traitScore, { color: trait.color }]}>{Math.round(value)}</Text>
+                        </View>
+                        <View style={styles.traitTrack}>
+                          <Animated.View style={[styles.traitBar, { width: barWidth, backgroundColor: trait.color }]} />
+                        </View>
+                      </View>
+                    </View>
+                  );
+                })}
+              </>
+            ) : (
+              <View style={styles.dnaEmptyWrap}>
+                <Text style={styles.dnaEmptyEmoji}>🧬</Text>
+                <Text style={styles.dnaEmptyTitle}>Your DNA is just getting started</Text>
+                <Text style={styles.dnaEmptySub}>Plan a trip or take the quiz to build your traveler profile</Text>
+                <TouchableOpacity
+                  style={styles.dnaEmptyBtn}
+                  onPress={() => router.push("/(auth)/quiz" as never)}
+                  activeOpacity={0.85}
+                >
+                  <LinearGradient colors={["#6443F4", "#F94498"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.dnaEmptyBtnGradient}>
+                    <Text style={styles.dnaEmptyBtnText}>Take the DNA Quiz →</Text>
                   </LinearGradient>
-                </View>
-              );
-            })}
+                </TouchableOpacity>
+              </View>
+            )}
           </View>
         </View>
 
@@ -348,4 +398,23 @@ const styles = StyleSheet.create({
   logoutGradient: { flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 10, paddingVertical: 16, borderRadius: 16, borderWidth: 1, borderColor: "rgba(244,67,54,0.3)" },
   logoutText: { color: "#F44336", fontSize: 16, fontWeight: "700" },
   version: { color: "#3A2D4E", fontSize: 12, textAlign: "center" },
+  // DNA Traits
+  dnaTraitsCard: { borderRadius: 20, overflow: "hidden", borderWidth: 1.5, borderColor: "rgba(255,255,255,0.08)", backgroundColor: "rgba(255,255,255,0.03)", padding: 16, gap: 12 },
+  dnaCardLabel: { color: "#C084FC", fontSize: 12, fontWeight: "600", marginBottom: 4 },
+  traitRow: { flexDirection: "row", alignItems: "center", gap: 10 },
+  traitEmoji: { fontSize: 18, width: 28, textAlign: "center" },
+  traitInfo: { flex: 1, gap: 4 },
+  traitLabelRow: { flexDirection: "row", justifyContent: "space-between", alignItems: "center" },
+  traitLabel: { color: "rgba(255,255,255,0.85)", fontSize: 13, fontWeight: "600" },
+  traitScore: { fontSize: 12, fontWeight: "700" },
+  traitTrack: { height: 6, backgroundColor: "rgba(255,255,255,0.08)", borderRadius: 3, overflow: "hidden" },
+  traitBar: { height: 6, borderRadius: 3 },
+  // DNA Empty State
+  dnaEmptyWrap: { alignItems: "center", gap: 10, paddingVertical: 8 },
+  dnaEmptyEmoji: { fontSize: 36 },
+  dnaEmptyTitle: { color: "#FFFFFF", fontSize: 15, fontWeight: "700", textAlign: "center" },
+  dnaEmptySub: { color: "#5A4D72", fontSize: 13, textAlign: "center", lineHeight: 18 },
+  dnaEmptyBtn: { borderRadius: 14, overflow: "hidden", marginTop: 4 },
+  dnaEmptyBtnGradient: { paddingHorizontal: 20, paddingVertical: 12, borderRadius: 14 },
+  dnaEmptyBtnText: { color: "#FFFFFF", fontSize: 14, fontWeight: "700" },
 });

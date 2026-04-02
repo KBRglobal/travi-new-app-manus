@@ -200,7 +200,7 @@ export default function TripsScreen() {
               if (item.status === "active") {
                 router.push({ pathname: "/(live)/home" as never, params: { tripId: item.id } });
               } else {
-                router.push({ pathname: "/(trip)/summary" as never, params: { tripId: item.id } });
+                router.push({ pathname: "/(tabs)/trip-detail" as never, params: { destination: item.destination?.toLowerCase() ?? "dubai", tripName: `My ${item.destination} Trip` } });
               }
             }}
           />

@@ -176,6 +176,13 @@ export default function TabLayout() {
           href: null,
         }}
       />
+      <Tabs.Screen
+        name="trip-detail"
+        options={{
+          title: "Trip Detail",
+          href: null,
+        }}
+      />
     </Tabs>
   );
 }

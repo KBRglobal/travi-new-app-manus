@@ -134,7 +134,11 @@ export default function HomeScreen() {
 
   const handleStart = useCallback((optionId: string) => {
     if (Platform.OS !== "web") Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-    router.push("/(trip)/plan" as never);
+    if (optionId === "inspiration") {
+      router.push("/(trip)/surprise" as never);
+    } else {
+      router.push("/(trip)/plan" as never);
+    }
   }, []);
 
   const handleLiveTrip = useCallback(() => {

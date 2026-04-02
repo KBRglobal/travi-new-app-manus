@@ -14,6 +14,8 @@ export default function TripLayout() {
       <Stack.Screen name="itinerary" />
       <Stack.Screen name="destination-pick" />
       <Stack.Screen name="dna-update" />
+      <Stack.Screen name="book" />
+      <Stack.Screen name="surprise" />
     </Stack>
   );
 }

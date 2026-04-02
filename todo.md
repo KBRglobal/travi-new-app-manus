@@ -258,3 +258,29 @@
 - [x] Fix slow image loading in interests grid (use Expo Image with lazy loading)
 - [x] Filter swipe attractions by destination + budget level + selected interests
 - [x] Add budget-aware filtering (e.g. Shopping + Luxury → high-end malls only)
+
+## Phase 26 — All 9 Improvements
+
+### High Priority
+- [ ] Unique Unsplash images per attraction in swipe cards (not generic destination image)
+- [ ] Book This Trip flow: cost summary + cashback calculation + booking buttons per component
+- [ ] Trip Detail screen: tap trip → see full itinerary + edit/add/remove stops
+
+### Medium Priority
+- [ ] DNA Profile visualization in Profile tab: animated trait bars, traveler type badge
+- [ ] "Surprise Me" mode in destination selection: pick destination by DNA
+- [ ] Multi-traveler invite: "Add a traveler" → share link → merge DNA profiles
+
+### Polish
+- [ ] Onboarding screens (3 slides): philosophy explanation before first use
+- [ ] Beautiful empty states across all screens with actionable CTAs
+
+## Phase 27 — Trip Hub (Post-Booking Command Center)
+- [ ] Build trip-hub.tsx — post-booking screen with AI concierge personality
+- [ ] Countdown timer to departure date
+- [ ] Live weather widget for destination
+- [ ] Upsell cards with cashback badge: airport taxi, eSIM, travel insurance, hotel upgrade, activities
+- [ ] Traveler connections: similar-DNA travelers going to same destination
+- [ ] Split payment + invite travel partner flow
+- [ ] Wire from book.tsx confirmation → trip-hub
+- [ ] Register trip-hub in tabs layout
