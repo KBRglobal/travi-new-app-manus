@@ -67,7 +67,7 @@ const config: ExpoConfig = {
         dark: { backgroundColor: "#24103E" },
       },
     ],
-    ["expo-build-properties", { android: { buildArchs: ["armeabi-v7a", "arm64-v8a"] } }],
+    ["expo-build-properties", { android: { buildArchs: ["armeabi-v7a", "arm64-v8a"], minSdkVersion: 24 } }],
   ],
   experiments: {
     typedRoutes: true,
