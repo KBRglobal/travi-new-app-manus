@@ -36,17 +36,17 @@ const SETTINGS_SECTIONS = [
   {
     title: "Account",
     items: [
-      { icon: "person.fill" as const, label: "Edit Profile", value: "", toggleKey: "", isToggle: false, route: "/(tabs)/edit-profile" },
+      { icon: "person.fill" as const, label: "Edit Profile", value: "", toggleKey: "", isToggle: false, route: "/(settings)/edit-profile" },
       { icon: "bell.fill" as const, label: "Notifications", value: "", toggleKey: "notifications", isToggle: true },
-      { icon: "shield.fill" as const, label: "Privacy & Security", value: "", toggleKey: "", isToggle: false, route: "/(tabs)/privacy-security" },
-      { icon: "lock.fill" as const, label: "Change Password", value: "", toggleKey: "", isToggle: false, route: "/(tabs)/change-password" },
+      { icon: "shield.fill" as const, label: "Privacy & Security", value: "", toggleKey: "", isToggle: false, route: "/(settings)/privacy-security" },
+      { icon: "lock.fill" as const, label: "Change Password", value: "", toggleKey: "", isToggle: false, route: "/(settings)/change-password" },
     ],
   },
   {
     title: "Preferences",
     items: [
-      { icon: "globe" as const, label: "Language", value: "English", toggleKey: "", isToggle: false, route: "/(tabs)/language-selector" },
-      { icon: "dollarsign.circle.fill" as const, label: "Currency", value: "USD", toggleKey: "", isToggle: false, route: "/(tabs)/currency-selector" },
+      { icon: "globe" as const, label: "Language", value: "English", toggleKey: "", isToggle: false, route: "/(settings)/language-selector" },
+      { icon: "dollarsign.circle.fill" as const, label: "Currency", value: "USD", toggleKey: "", isToggle: false, route: "/(settings)/currency-selector" },
       { icon: "moon.fill" as const, label: "Dark Mode", value: "", toggleKey: "darkMode", isToggle: true },
     ],
   },

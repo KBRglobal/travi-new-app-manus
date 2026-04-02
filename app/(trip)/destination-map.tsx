@@ -1,19 +1,13 @@
-import { useState, useRef } from "react";
+import React, { useState } from "react";
 import {
-  View, Text, TouchableOpacity, StyleSheet, ScrollView,
-  Platform, Dimensions, Animated
+  View, Text, TouchableOpacity, StyleSheet, ScrollView, FlatList
 } from "react-native";
 import { router, useLocalSearchParams } from "expo-router";
-// @ts-ignore - react-native-maps not available on web
-const MapView = Platform.OS !== "web" ? require("react-native-maps").default : null;
-const Marker = Platform.OS !== "web" ? require("react-native-maps").Marker : null;
-const PROVIDER_DEFAULT = Platform.OS !== "web" ? require("react-native-maps").PROVIDER_DEFAULT : null;
 import { LinearGradient } from "expo-linear-gradient";
 import { IconSymbol } from "@/components/ui/icon-symbol";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import * as Haptics from "expo-haptics";
-
-const { height } = Dimensions.get("window");
+import { useColors } from "@/hooks/use-colors";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 interface MapPin {
@@ -48,256 +42,177 @@ const DEST_DATA: Record<string, { lat: number; lng: number; delta: number; pins:
       { id: "d1", name: "Burj Khalifa", category: "must_see", emoji: "🏙️", lat: 25.1972, lng: 55.2744, rating: 4.9, duration: "2h", price: "$40", day: 1 },
       { id: "d2", name: "Dubai Mall", category: "shopping", emoji: "🛍️", lat: 25.1980, lng: 55.2793, rating: 4.8, duration: "3h", price: "Free", day: 1 },
       { id: "d3", name: "Dubai Fountain", category: "must_see", emoji: "⛲", lat: 25.1959, lng: 55.2742, rating: 4.8, duration: "30m", price: "Free", day: 1 },
-      { id: "d4", name: "Desert Safari", category: "nature", emoji: "🏜️", lat: 24.9857, lng: 55.4272, rating: 4.9, duration: "6h", price: "$80", day: 2 },
-      { id: "d5", name: "Gold Souk", category: "shopping", emoji: "💛", lat: 25.2697, lng: 55.3094, rating: 4.6, duration: "2h", price: "Free", day: 3 },
-      { id: "d6", name: "Palm Jumeirah", category: "beach", emoji: "🏖️", lat: 25.1124, lng: 55.1390, rating: 4.7, duration: "3h", price: "Free", day: 2 },
-    ],
-  },
-  Bali: {
-    lat: -8.4095, lng: 115.1889, delta: 0.3,
-    pins: [
-      { id: "b1", name: "Tanah Lot Temple", category: "must_see", emoji: "⛩️", lat: -8.6215, lng: 115.0866, rating: 4.8, duration: "2h", price: "$5", day: 1 },
-      { id: "b2", name: "Ubud Rice Terraces", category: "nature", emoji: "🌾", lat: -8.4095, lng: 115.2519, rating: 4.9, duration: "2h", price: "Free", day: 2 },
-      { id: "b3", name: "Seminyak Beach", category: "beach", emoji: "🏖️", lat: -8.6900, lng: 115.1600, rating: 4.7, duration: "4h", price: "Free", day: 3 },
-      { id: "b4", name: "Uluwatu Temple", category: "culture", emoji: "🌅", lat: -8.8291, lng: 115.0849, rating: 4.8, duration: "2h", price: "$3", day: 4 },
-      { id: "b5", name: "Tegallalang", category: "nature", emoji: "🌿", lat: -8.4317, lng: 115.2789, rating: 4.7, duration: "1.5h", price: "$2", day: 2 },
+      { id: "d4", name: "Jumeirah Beach", category: "beach", emoji: "🏖️", lat: 25.2020, lng: 55.2388, rating: 4.7, duration: "3h", price: "Free", day: 2 },
+      { id: "d5", name: "Gold Souk", category: "shopping", emoji: "💍", lat: 25.2708, lng: 55.3005, rating: 4.6, duration: "2h", price: "Varies", day: 2 },
+      { id: "d6", name: "Desert Safari", category: "nature", emoji: "🏜️", lat: 24.8607, lng: 55.7765, rating: 4.9, duration: "5h", price: "$65", day: 3 },
     ],
   },
 };
 
 const CATEGORY_COLORS: Record<string, string> = {
-  must_see: "#F94498",
-  beach: "#06B6D4",
-  food: "#F59E0B",
+  must_see: "#FF6B6B",
+  beach: "#4ECDC4",
+  food: "#FFD93D",
   culture: "#A78BFA",
-  shopping: "#FB923C",
-  nature: "#22C55E",
+  shopping: "#F472B6",
+  nature: "#34D399",
 };
 
-const CATEGORY_LABELS: Record<string, string> = {
-  must_see: "Must-See",
-  beach: "Beach",
-  food: "Food",
-  culture: "Culture",
-  shopping: "Shopping",
-  nature: "Nature",
-};
-
-// ─── Main Screen ──────────────────────────────────────────────────────────────
+// ─── Component ────────────────────────────────────────────────────────────────
 export default function DestinationMapScreen() {
+  const { destination } = useLocalSearchParams<{ destination: string }>();
   const insets = useSafeAreaInsets();
-  const params = useLocalSearchParams<{ destination?: string }>();
-  const destination = params.destination ?? "Tokyo";
-  const destData = DEST_DATA[destination] ?? DEST_DATA["Tokyo"];
+  const colors = useColors();
 
-  const [selectedPin, setSelectedPin] = useState<MapPin | null>(null);
-  const [activeFilter, setActiveFilter] = useState<string>("all");
-  const mapRef = useRef<any>(null);
-  const sheetAnim = useRef(new Animated.Value(0)).current;
+  const destKey = destination || "Dubai";
+  const data = DEST_DATA[destKey] || DEST_DATA.Dubai;
 
-  const filteredPins = activeFilter === "all"
-    ? destData.pins
-    : destData.pins.filter((p) => p.category === activeFilter);
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+
+  const filteredPins = selectedCategory
+    ? data.pins.filter((p) => p.category === selectedCategory)
+    : data.pins;
+
+  const categories = Array.from(new Set(data.pins.map((p) => p.category)));
+
+  const handleCategoryPress = (cat: string) => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    setSelectedCategory(selectedCategory === cat ? null : cat);
+  };
 
   const handlePinPress = (pin: MapPin) => {
-    if (Platform.OS !== "web") Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-    setSelectedPin(pin);
-    mapRef.current?.animateToRegion({
-      latitude: pin.lat - 0.01,
-      longitude: pin.lng,
-      latitudeDelta: 0.05,
-      longitudeDelta: 0.05,
-    }, 400);
-    Animated.spring(sheetAnim, { toValue: 1, useNativeDriver: true, tension: 80, friction: 12 }).start();
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+    // Could navigate to activity detail here
   };
 
-  const handleCloseSheet = () => {
-    Animated.timing(sheetAnim, { toValue: 0, duration: 250, useNativeDriver: true }).start(() => setSelectedPin(null));
+  const renderPin = ({ item }: { item: MapPin }) => {
+    const catColor = CATEGORY_COLORS[item.category] || "#888";
+    return (
+      <TouchableOpacity
+        style={[S.pinCard, { backgroundColor: colors.surface, borderLeftColor: catColor }]}
+        activeOpacity={0.7}
+        onPress={() => handlePinPress(item)}
+      >
+        <View style={S.pinHeader}>
+          <Text style={S.pinEmoji}>{item.emoji}</Text>
+          <View style={{ flex: 1 }}>
+            <Text style={[S.pinName, { color: colors.foreground }]}>{item.name}</Text>
+            <Text style={[S.pinMeta, { color: colors.muted }]}>
+              ⭐ {item.rating} · {item.duration} · {item.price}
+            </Text>
+          </View>
+          {item.day && (
+            <View style={[S.dayBadge, { backgroundColor: catColor }]}>
+              <Text style={S.dayText}>Day {item.day}</Text>
+            </View>
+          )}
+        </View>
+      </TouchableOpacity>
+    );
   };
-
-  const categories = ["all", ...Array.from(new Set(destData.pins.map((p) => p.category)))];
-
-  const sheetTranslate = sheetAnim.interpolate({ inputRange: [0, 1], outputRange: [300, 0] });
 
   return (
-    <View style={[S.container, { paddingTop: insets.top }]}>
-      {/* Header overlay */}
-      <View style={[S.header, { paddingTop: insets.top + 4 }]}>
-        <LinearGradient colors={["rgba(13,6,40,0.95)", "rgba(13,6,40,0)"]} style={StyleSheet.absoluteFillObject} />
-        <TouchableOpacity style={S.backBtn} onPress={() => router.back()} activeOpacity={0.7}>
-          <View style={S.backBtnInner}>
-            <IconSymbol name="chevron.left" size={20} color="#FFF" />
-          </View>
+    <View style={[S.container, { backgroundColor: colors.background }]}>
+      {/* Header */}
+      <View style={[S.header, { paddingTop: insets.top + 8 }]}>
+        <TouchableOpacity
+          style={[S.backBtn, { backgroundColor: colors.surface }]}
+          onPress={() => router.back()}
+          activeOpacity={0.8}
+        >
+          <IconSymbol name="chevron.left" size={24} color={colors.foreground} />
         </TouchableOpacity>
-        <Text style={S.headerTitle}>{destination} Map</Text>
+        <Text style={[S.headerTitle, { color: colors.foreground }]}>{destKey} Map</Text>
         <View style={{ width: 40 }} />
       </View>
 
-      {/* Map */}
-      {Platform.OS === "web" ? (
-        <View style={[StyleSheet.absoluteFillObject, { alignItems: "center", justifyContent: "center", backgroundColor: "#1A0A3D" }]}>
-          <Text style={{ fontSize: 48, marginBottom: 12 }}>🗺️</Text>
-          <Text style={{ color: "#FFF", fontSize: 16, fontWeight: "700" }}>Map View</Text>
-          <Text style={{ color: "#9BA1A6", fontSize: 13, marginTop: 4 }}>Available on iOS & Android</Text>
-          <View style={{ marginTop: 24, gap: 8, width: "80%" }}>
-            {filteredPins.map((pin) => (
-              <TouchableOpacity key={pin.id} style={[S.webPinRow, { borderLeftColor: CATEGORY_COLORS[pin.category] }]} onPress={() => handlePinPress(pin)} activeOpacity={0.8}>
-                <Text style={{ fontSize: 20 }}>{pin.emoji}</Text>
-                <View style={{ flex: 1 }}>
-                  <Text style={{ color: "#FFF", fontSize: 14, fontWeight: "700" }}>{pin.name}</Text>
-                  <Text style={{ color: "#9BA1A6", fontSize: 12 }}>{CATEGORY_LABELS[pin.category]} · {pin.duration}</Text>
-                </View>
-              </TouchableOpacity>
-            ))}
-          </View>
-        </View>
-      ) : MapView ? (
-        <MapView
-          ref={mapRef}
-          style={StyleSheet.absoluteFillObject}
-          provider={PROVIDER_DEFAULT}
-          initialRegion={{
-            latitude: destData.lat,
-            longitude: destData.lng,
-            latitudeDelta: destData.delta,
-            longitudeDelta: destData.delta,
-          }}
-          userInterfaceStyle="dark"
-          showsUserLocation={false}
-          showsCompass={false}
-          showsScale={false}
-        >
-          {filteredPins.map((pin) => (
-            Marker ? <Marker
-              key={pin.id}
-              coordinate={{ latitude: pin.lat, longitude: pin.lng }}
-              onPress={() => handlePinPress(pin)}
-            >
-              <View style={[S.pin, { backgroundColor: CATEGORY_COLORS[pin.category] }]}>
-                <Text style={{ fontSize: 14 }}>{pin.emoji}</Text>
-              </View>
-              <View style={[S.pinTail, { borderTopColor: CATEGORY_COLORS[pin.category] }]} />
-            </Marker> : null
-          ))}
-        </MapView>
-      ) : null}
-
-      {/* Category filters */}
-      <View style={[S.filtersWrap, { top: insets.top + 60 }]}>
-        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ paddingHorizontal: 16, gap: 8 }}>
-          {categories.map((cat) => (
+      {/* Category Filter */}
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={S.filterRow}
+        style={{ flexGrow: 0 }}
+      >
+        {categories.map((cat) => {
+          const isActive = selectedCategory === cat;
+          const catColor = CATEGORY_COLORS[cat] || "#888";
+          return (
             <TouchableOpacity
               key={cat}
-              style={[S.filterChip, activeFilter === cat && { backgroundColor: (CATEGORY_COLORS[cat] ?? "#6443F4") + "CC", borderColor: CATEGORY_COLORS[cat] ?? "#6443F4" }]}
-              onPress={() => {
-                setActiveFilter(cat);
-                if (Platform.OS !== "web") Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-              }}
+              style={[
+                S.filterChip,
+                { backgroundColor: isActive ? catColor : colors.surface },
+              ]}
               activeOpacity={0.8}
+              onPress={() => handleCategoryPress(cat)}
             >
-              <Text style={[S.filterChipText, activeFilter === cat && { color: "#FFF" }]}>
-                {cat === "all" ? "All" : CATEGORY_LABELS[cat]}
+              <Text
+                style={[
+                  S.filterText,
+                  { color: isActive ? "#fff" : colors.foreground },
+                ]}
+              >
+                {cat.replace("_", " ")}
               </Text>
             </TouchableOpacity>
-          ))}
-        </ScrollView>
-      </View>
+          );
+        })}
+      </ScrollView>
 
-      {/* Pin count badge */}
-      <View style={[S.countBadge, { top: insets.top + 110 }]}>
-        <Text style={S.countBadgeText}>{filteredPins.length} spots</Text>
-      </View>
-
-      {/* Selected pin bottom sheet */}
-      {selectedPin && (
-        <Animated.View style={[S.sheet, { transform: [{ translateY: sheetTranslate }], paddingBottom: insets.bottom + 16 }]}>
-          <LinearGradient colors={["#1A0A3D", "#0D0628"]} style={StyleSheet.absoluteFillObject} />
-          <View style={[S.sheetAccent, { backgroundColor: CATEGORY_COLORS[selectedPin.category] }]} />
-
-          <View style={S.sheetHandle} />
-
-          <View style={S.sheetContent}>
-            <View style={S.sheetLeft}>
-              <Text style={{ fontSize: 36 }}>{selectedPin.emoji}</Text>
-            </View>
-            <View style={{ flex: 1 }}>
-              <View style={S.sheetTopRow}>
-                <View style={[S.categoryBadge, { backgroundColor: CATEGORY_COLORS[selectedPin.category] + "25", borderColor: CATEGORY_COLORS[selectedPin.category] + "50" }]}>
-                  <Text style={[S.categoryBadgeText, { color: CATEGORY_COLORS[selectedPin.category] }]}>
-                    {CATEGORY_LABELS[selectedPin.category]}
-                  </Text>
-                </View>
-                {selectedPin.day && <Text style={S.dayLabel}>Day {selectedPin.day}</Text>}
-              </View>
-              <Text style={S.sheetName}>{selectedPin.name}</Text>
-              <View style={S.sheetMeta}>
-                <Text style={S.sheetMetaItem}>⭐ {selectedPin.rating}</Text>
-                <Text style={S.sheetMetaDot}>·</Text>
-                <Text style={S.sheetMetaItem}>⏱ {selectedPin.duration}</Text>
-                <Text style={S.sheetMetaDot}>·</Text>
-                <Text style={S.sheetMetaItem}>💰 {selectedPin.price}</Text>
-              </View>
-            </View>
-            <TouchableOpacity style={S.closeSheetBtn} onPress={handleCloseSheet} activeOpacity={0.7}>
-              <IconSymbol name="xmark" size={14} color="rgba(255,255,255,0.4)" />
-            </TouchableOpacity>
-          </View>
-
-          <View style={S.sheetActions}>
-            <TouchableOpacity style={S.sheetActionBtn} activeOpacity={0.8}>
-              <LinearGradient colors={["#6443F4", "#F94498"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={StyleSheet.absoluteFillObject} />
-              <IconSymbol name="plus.circle.fill" size={18} color="#FFF" />
-              <Text style={S.sheetActionBtnText}>Add to Itinerary</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={S.sheetSecondaryBtn} activeOpacity={0.8}>
-              <IconSymbol name="location.fill" size={16} color="#A78BFA" />
-              <Text style={S.sheetSecondaryBtnText}>Directions</Text>
-            </TouchableOpacity>
-          </View>
-        </Animated.View>
-      )}
+      {/* Pins List */}
+      <FlatList
+        data={filteredPins}
+        keyExtractor={(item) => item.id}
+        renderItem={renderPin}
+        contentContainerStyle={[S.listContent, { paddingBottom: insets.bottom + 80 }]}
+        showsVerticalScrollIndicator={false}
+      />
     </View>
   );
 }
 
-// ─── Styles ───────────────────────────────────────────────────────────────────
 const S = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#0D0628" },
-
-  header: { position: "absolute", top: 0, left: 0, right: 0, zIndex: 10, flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 16, paddingBottom: 20 },
-  backBtn: { zIndex: 1 },
-  backBtnInner: { width: 38, height: 38, borderRadius: 19, backgroundColor: "rgba(13,6,40,0.8)", alignItems: "center", justifyContent: "center", borderWidth: 1, borderColor: "rgba(255,255,255,0.15)" },
-  headerTitle: { color: "#FFF", fontSize: 17, fontWeight: "800" },
-
-  filtersWrap: { position: "absolute", left: 0, right: 0, zIndex: 10 },
-  filterChip: { borderRadius: 20, paddingHorizontal: 14, paddingVertical: 7, backgroundColor: "rgba(13,6,40,0.85)", borderWidth: 1, borderColor: "rgba(255,255,255,0.15)" },
-  filterChipText: { color: "#9BA1A6", fontSize: 13, fontWeight: "600" },
-
-  countBadge: { position: "absolute", right: 16, zIndex: 10, backgroundColor: "rgba(13,6,40,0.85)", borderRadius: 12, paddingHorizontal: 10, paddingVertical: 5, borderWidth: 1, borderColor: "rgba(255,255,255,0.1)" },
-  countBadgeText: { color: "#9BA1A6", fontSize: 12, fontWeight: "700" },
-
-  pin: { width: 36, height: 36, borderRadius: 18, alignItems: "center", justifyContent: "center", borderWidth: 2, borderColor: "#FFF", shadowColor: "#000", shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.4, shadowRadius: 4, elevation: 6 },
-  pinTail: { width: 0, height: 0, borderLeftWidth: 6, borderRightWidth: 6, borderTopWidth: 8, borderLeftColor: "transparent", borderRightColor: "transparent", alignSelf: "center", marginTop: -1 },
-
-  sheet: { position: "absolute", bottom: 0, left: 0, right: 0, borderTopLeftRadius: 28, borderTopRightRadius: 28, overflow: "hidden", paddingHorizontal: 20, paddingTop: 12, gap: 16, borderWidth: 1, borderColor: "rgba(255,255,255,0.08)" },
-  sheetAccent: { position: "absolute", top: 0, left: 0, right: 0, height: 3 },
-  sheetHandle: { width: 40, height: 4, borderRadius: 2, backgroundColor: "rgba(255,255,255,0.2)", alignSelf: "center", marginBottom: 4 },
-  sheetContent: { flexDirection: "row", alignItems: "flex-start", gap: 12 },
-  sheetLeft: { width: 56, height: 56, borderRadius: 16, backgroundColor: "rgba(255,255,255,0.06)", alignItems: "center", justifyContent: "center" },
-  sheetTopRow: { flexDirection: "row", alignItems: "center", gap: 8, marginBottom: 4 },
-  categoryBadge: { borderRadius: 8, paddingHorizontal: 8, paddingVertical: 3, borderWidth: 1 },
-  categoryBadgeText: { fontSize: 11, fontWeight: "700" },
-  dayLabel: { color: "#9BA1A6", fontSize: 11 },
-  sheetName: { color: "#FFF", fontSize: 18, fontWeight: "800", marginBottom: 6 },
-  sheetMeta: { flexDirection: "row", alignItems: "center", gap: 6 },
-  sheetMetaItem: { color: "#9BA1A6", fontSize: 13 },
-  sheetMetaDot: { color: "rgba(255,255,255,0.2)", fontSize: 13 },
-  closeSheetBtn: { width: 32, height: 32, borderRadius: 10, backgroundColor: "rgba(255,255,255,0.06)", alignItems: "center", justifyContent: "center" },
-
-  sheetActions: { flexDirection: "row", gap: 10 },
-  sheetActionBtn: { flex: 1, borderRadius: 14, overflow: "hidden", flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 6, paddingVertical: 13 },
-  sheetActionBtnText: { color: "#FFF", fontSize: 14, fontWeight: "700" },
-  sheetSecondaryBtn: { borderRadius: 14, paddingHorizontal: 16, paddingVertical: 13, flexDirection: "row", alignItems: "center", gap: 6, backgroundColor: "rgba(167,139,250,0.1)", borderWidth: 1, borderColor: "rgba(167,139,250,0.25)" },
-  sheetSecondaryBtnText: { color: "#A78BFA", fontSize: 14, fontWeight: "700" },
-  webPinRow: { flexDirection: "row", alignItems: "center", gap: 12, backgroundColor: "rgba(255,255,255,0.06)", borderRadius: 12, padding: 12, borderLeftWidth: 3 },
+  container: { flex: 1 },
+  header: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingHorizontal: 16,
+    paddingBottom: 12,
+  },
+  backBtn: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  headerTitle: { fontSize: 18, fontWeight: "700" },
+  filterRow: {
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    gap: 8,
+  },
+  filterChip: {
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: 20,
+  },
+  filterText: { fontSize: 14, fontWeight: "600", textTransform: "capitalize" },
+  listContent: { paddingHorizontal: 16, paddingTop: 8, gap: 12 },
+  pinCard: {
+    borderRadius: 16,
+    padding: 16,
+    borderLeftWidth: 4,
+  },
+  pinHeader: { flexDirection: "row", alignItems: "center", gap: 12 },
+  pinEmoji: { fontSize: 32 },
+  pinName: { fontSize: 16, fontWeight: "700", marginBottom: 4 },
+  pinMeta: { fontSize: 13 },
+  dayBadge: {
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    borderRadius: 12,
+  },
+  dayText: { color: "#fff", fontSize: 12, fontWeight: "700" },
 });

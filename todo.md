@@ -406,3 +406,7 @@
 - [x] Build Currency selector screen
 - [x] Build TRAVI Pro subscription screen
 - [x] Wire all routes in profile.tsx
+
+## Critical Bug Fixes
+- [x] Move settings screens out of (tabs)/ to prevent them appearing in tab bar
+- [x] Fix react-native-maps iOS crash
