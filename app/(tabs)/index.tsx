@@ -261,7 +261,7 @@ export default function HomeScreen() {
             <View style={S.dnaCardLeft}>
               <View style={S.dnaIconWrap}>
                 <LinearGradient colors={["#6443F4", "#F94498"]} style={StyleSheet.absoluteFillObject} />
-                <Text style={{ fontSize: 22 }}>✈️</Text>
+                <IconSymbol name="airplane.departure" size={22} color="#FFFFFF" />
               </View>
               <View>
                 <Text style={S.dnaCardLabel}>READY TO EXPLORE</Text>
