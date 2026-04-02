@@ -62,6 +62,7 @@ export default function ExploreScreen() {
   const [activeCategory, setActiveCategory] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
   const [savedDests, setSavedDests] = useState<string[]>([]);
+  const [gridMode, setGridMode] = useState(false);
 
   const filtered = DESTINATIONS.filter((d) => {
     const matchCat = activeCategory === "all" || d.category === activeCategory;
@@ -144,10 +145,46 @@ export default function ExploreScreen() {
                 ? "All Destinations"
                 : CATEGORIES.find((c) => c.id === activeCategory)?.label}
             </Text>
-            <Text style={S.listCount}>{filtered.length}</Text>
+            <View style={{ flexDirection: "row", alignItems: "center", gap: 12 }}>
+              <Text style={S.listCount}>{filtered.length}</Text>
+              <TouchableOpacity
+                onPress={() => { if (Platform.OS !== "web") Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light); setGridMode((g) => !g); }}
+                style={S.gridToggle}
+                activeOpacity={0.7}
+              >
+                <IconSymbol name={gridMode ? "rectangle.grid.1x2.fill" : "square.grid.2x2.fill"} size={18} color="rgba(255,255,255,0.6)" />
+              </TouchableOpacity>
+            </View>
           </View>
 
-          {filtered.map((dest) => (
+          {gridMode ? (
+            <View style={S.grid}>
+              {filtered.map((dest) => (
+                <TouchableOpacity
+                  key={dest.id}
+                  style={S.gridCard}
+                  onPress={() => { if (Platform.OS !== "web") Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium); router.push({ pathname: "/(trip)/destination-detail", params: { id: dest.city.toLowerCase().replace(/ /g, "") } } as never); }}
+                  activeOpacity={0.88}
+                >
+                  <ImageBackground source={dest.image} style={S.gridCardBg} imageStyle={S.gridCardImg} resizeMode="cover">
+                    <LinearGradient colors={["transparent", "rgba(0,0,0,0.85)"]} locations={[0.4, 1]} style={StyleSheet.absoluteFillObject} />
+                    <View style={[S.gridTag, { backgroundColor: dest.tagColor + "D0" }]}>
+                      <Text style={S.gridTagText}>{dest.tag}</Text>
+                    </View>
+                    <TouchableOpacity style={S.gridSaveBtn} onPress={(e) => { e.stopPropagation(); toggleSave(dest.id); }} activeOpacity={0.7}>
+                      <IconSymbol name={savedDests.includes(dest.id) ? "heart.fill" : "heart"} size={14} color={savedDests.includes(dest.id) ? "#F94498" : "rgba(255,255,255,0.85)"} />
+                    </TouchableOpacity>
+                    <View style={S.gridCardInfo}>
+                      <Text style={S.gridCardCity}>{dest.city}</Text>
+                      <Text style={S.gridCardCountry}>{dest.country}</Text>
+                    </View>
+                  </ImageBackground>
+                </TouchableOpacity>
+              ))}
+            </View>
+          ) : null}
+
+          {!gridMode && filtered.map((dest) => (
             <TouchableOpacity
               key={dest.id}
               style={S.card}
@@ -205,6 +242,7 @@ export default function ExploreScreen() {
             </TouchableOpacity>
           ))}
 
+          {!gridMode && null}
           <View style={{ height: 100 }} />
         </ScrollView>
       </SafeAreaView>
@@ -299,6 +337,53 @@ const S = StyleSheet.create({
   cardCountryRow: { flexDirection: "row", alignItems: "center", gap: 5 },
   cardCountry: { color: "rgba(255,255,255,0.7)", fontSize: 14, fontWeight: "600" },
   cardTagline: { color: "rgba(255,255,255,0.5)", fontSize: 12, fontStyle: "italic", marginTop: 2 },
+
+  gridToggle: {
+    width: 34,
+    height: 34,
+    borderRadius: 10,
+    backgroundColor: "rgba(255,255,255,0.08)",
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: 1,
+    borderColor: "rgba(255,255,255,0.12)",
+  },
+  grid: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: 12,
+  },
+  gridCard: {
+    width: (width - 40 - 12) / 2,
+    height: 180,
+    borderRadius: 18,
+    overflow: "hidden",
+  },
+  gridCardBg: { flex: 1, justifyContent: "flex-end" },
+  gridCardImg: { borderRadius: 18 },
+  gridTag: {
+    position: "absolute",
+    top: 10,
+    left: 10,
+    borderRadius: 8,
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+  },
+  gridTagText: { color: "#FFFFFF", fontSize: 10, fontWeight: "800" },
+  gridSaveBtn: {
+    position: "absolute",
+    top: 8,
+    right: 8,
+    width: 28,
+    height: 28,
+    borderRadius: 14,
+    backgroundColor: "rgba(0,0,0,0.45)",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  gridCardInfo: { padding: 10, gap: 2 },
+  gridCardCity: { color: "#FFFFFF", fontSize: 16, fontWeight: "900", letterSpacing: -0.3 },
+  gridCardCountry: { color: "rgba(255,255,255,0.6)", fontSize: 11, fontWeight: "600" },
 
   emptyState: { alignItems: "center", paddingTop: 60, paddingHorizontal: 40 },
   emptyIcon: { fontSize: 48, marginBottom: 16 },

@@ -142,6 +142,7 @@ const MAPPING = {
   "list.bullet": "list",
   "list.bullet.clipboard.fill": "assignment",
   "square.grid.2x2.fill": "grid-view",
+  "rectangle.grid.1x2.fill": "view-agenda",
   "slider.horizontal.3": "tune",
   "arrow.up.right.square.fill": "open-in-new",
   "doc.text.fill": "article",

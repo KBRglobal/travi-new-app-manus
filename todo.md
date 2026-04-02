@@ -390,3 +390,10 @@
 - [ ] Build in-trip chat screen (AI concierge) accessible from Trip Hub
 - [ ] Chat: context-aware quick suggestions (nearby restaurant, change plan, I'm lost)
 - [ ] Floating chat button on Trip Hub
+
+## Phase 30 — Screen Improvements
+- [ ] Destination Detail screen (tap card in Explore → full screen with hero image, attractions, CTA)
+- [ ] Explore 2-column grid toggle view
+- [ ] Connect Plan a Trip button on Home to real planning flow
+- [ ] Connect Profile DNA traits to real quiz data
+- [ ] Sync Wallet tier badge with real points

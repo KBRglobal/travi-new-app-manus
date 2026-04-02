@@ -5,6 +5,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { Image } from "react-native";
 import { IconSymbol } from "@/components/ui/icon-symbol";
 import { useStore } from "@/lib/store";
+import { recordInterestSelections } from "@/lib/dna-store";
 import { DNAResultScreen } from "@/components/dna-result-screen";
 import * as Haptics from "expo-haptics";
 
@@ -169,10 +170,22 @@ export default function QuizScreen() {
     }, 250);
   };
 
-  const handleFinish = () => {
+  const handleFinish = async () => {
+    // Save to main store
     dispatch({ type: "UPDATE_PROFILE", payload: { travelerDNA: { type: dnaProfile.title, ...Object.fromEntries(Object.keys(tagCounts).map((t) => [t, "1"])) }, quizCompleted: true } });
     dispatch({ type: "ADD_POINTS", payload: { amount: 250, description: "Completed Traveler DNA Quiz" } });
     dispatch({ type: "SET_ONBOARDING_COMPLETED" });
+    // Populate dna-store with quiz answers — map quiz tags to InterestCategory
+    const TAG_TO_INTEREST: Record<string, string> = {
+      culture: "art_culture", adventure: "adventure", food: "food",
+      luxury: "landmarks", social: "nightlife", nature: "nature",
+      urban: "landmarks", relax: "wellness", solo: "wellness",
+      spontaneous: "adventure", planned: "landmarks",
+    };
+    const interests = [...new Set(
+      Object.keys(tagCounts).map((t) => TAG_TO_INTEREST[t]).filter(Boolean)
+    )] as import("@/lib/dna-store").InterestCategory[];
+    if (interests.length > 0) await recordInterestSelections(interests);
     router.replace("/(tabs)/" as never);
   };
 
