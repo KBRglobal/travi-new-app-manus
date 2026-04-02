@@ -21,6 +21,7 @@ import * as Haptics from "expo-haptics";
 import * as WebBrowser from "expo-web-browser";
 import { useStore } from "@/lib/store";
 import type { ActivityCategory } from "@/lib/store";
+import { ActivityBookingModal, type BookableActivity } from "@/components/activity-booking";
 
 const { width, height } = Dimensions.get("window");
 
@@ -215,7 +216,7 @@ export default function DestinationDetailScreen() {
   const handleBack = () => { haptic(); router.back(); };
   const handlePlanTrip = () => {
     if (Platform.OS !== "web") Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-    router.push({ pathname: "/(trip)/plan", params: { destination: dest.name } } as never);
+    router.push({ pathname: "/(trip)/itinerary-builder", params: { destination: dest.name, days: "5" } } as never);
   };
   const handleMoreInfo = async (url: string) => {
     haptic();
@@ -238,6 +239,27 @@ export default function DestinationDetailScreen() {
     : dest.activities;
 
   const maxActivities = getMaxActivities(userPace);
+
+  // ── Booking modal state ───────────────────────────────────────────────────
+  const [bookingActivity, setBookingActivity] = useState<BookableActivity | null>(null);
+  const [bookingVisible, setBookingVisible] = useState(false);
+
+  const handleBookActivity = (item: ActivityItem) => {
+    if (Platform.OS !== "web") Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+    setBookingActivity({
+      id: item.id,
+      title: item.title,
+      desc: item.desc,
+      price: item.price,
+      cashback: item.cashback,
+      rating: item.rating,
+      reviews: item.reviews,
+      duration: item.duration,
+      image: item.image,
+      url: item.url,
+    });
+    setBookingVisible(true);
+  };
 
   // ── Render helpers ────────────────────────────────────────────────────────
 
@@ -293,10 +315,18 @@ export default function DestinationDetailScreen() {
 
         <Text style={S.actDesc} numberOfLines={2}>{item.desc}</Text>
 
-        <TouchableOpacity style={S.actMoreBtn} onPress={() => handleMoreInfo(item.url)} activeOpacity={0.8}>
-          <Text style={S.actMoreText}>More Info</Text>
-          <IconSymbol name="chevron.right" size={13} color="rgba(255,255,255,0.6)" />
-        </TouchableOpacity>
+        <View style={S.actActions}>
+          <TouchableOpacity style={S.actMoreBtn} onPress={() => handleMoreInfo(item.url)} activeOpacity={0.8}>
+            <Text style={S.actMoreText}>More Info</Text>
+            <IconSymbol name="chevron.right" size={13} color="rgba(255,255,255,0.6)" />
+          </TouchableOpacity>
+          {item.price > 0 && (
+            <TouchableOpacity style={S.actBookBtn} onPress={() => handleBookActivity(item)} activeOpacity={0.85}>
+              <LinearGradient colors={["#6443F4", "#F94498"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={StyleSheet.absoluteFillObject} />
+              <Text style={S.actBookBtnText}>Book · ${item.price}</Text>
+            </TouchableOpacity>
+          )}
+        </View>
       </View>
     </View>
   );
@@ -545,6 +575,13 @@ export default function DestinationDetailScreen() {
           <Text style={S.planBtnText}>Plan This Trip →</Text>
         </TouchableOpacity>
       </View>
+
+      {/* Booking modal */}
+      <ActivityBookingModal
+        activity={bookingActivity}
+        visible={bookingVisible}
+        onClose={() => setBookingVisible(false)}
+      />
     </View>
   );
 }
@@ -644,8 +681,11 @@ const S = StyleSheet.create({
   actCashback: { flexDirection: "row", alignItems: "center", gap: 5, backgroundColor: "rgba(255,215,0,0.12)", borderRadius: 10, paddingHorizontal: 10, paddingVertical: 6 },
   actCashbackText: { color: "#FFD700", fontSize: 13, fontWeight: "800" },
   actDesc: { color: "rgba(255,255,255,0.5)", fontSize: 13, lineHeight: 19 },
-  actMoreBtn: { flexDirection: "row", alignItems: "center", gap: 4, paddingTop: 4 },
+  actActions: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingTop: 4 },
+  actMoreBtn: { flexDirection: "row", alignItems: "center", gap: 4 },
   actMoreText: { color: "rgba(255,255,255,0.5)", fontSize: 13, fontWeight: "600" },
+  actBookBtn: { borderRadius: 12, overflow: "hidden", paddingHorizontal: 14, paddingVertical: 8 },
+  actBookBtnText: { color: "#FFFFFF", fontSize: 13, fontWeight: "800" },
 
   // Food
   foodCard: { marginBottom: 12, borderRadius: 18, overflow: "hidden", height: 120 },
