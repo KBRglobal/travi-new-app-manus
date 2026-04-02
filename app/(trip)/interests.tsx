@@ -84,7 +84,7 @@ export default function InterestsScreen() {
           <IconSymbol name="chevron.left" size={20} color="rgba(255,255,255,0.8)" />
         </TouchableOpacity>
         <View style={styles.headerCenter}>
-          <Image source={require("@/assets/brand/logotype-white.webp")} style={styles.logo} resizeMode="contain" />
+          <Text style={styles.logoText}>TRAVI</Text>
         </View>
         <View style={[styles.countBadge, selected.size > 0 && styles.countBadgeActive]}>
           <Text style={[styles.countText, selected.size > 0 && styles.countTextActive]}>{selected.size}</Text>
@@ -183,6 +183,7 @@ const styles = StyleSheet.create({
   backBtn: { width: 40, height: 40, borderRadius: 14, backgroundColor: "rgba(255,255,255,0.08)", alignItems: "center", justifyContent: "center" },
   headerCenter: { flex: 1, alignItems: "center" },
   logo: { width: 80, height: 28 },
+  logoText: { color: "#FFFFFF", fontSize: 20, fontWeight: "900", letterSpacing: 2 },
   countBadge: { width: 40, height: 40, borderRadius: 20, backgroundColor: "rgba(255,255,255,0.06)", borderWidth: 1.5, borderColor: "rgba(255,255,255,0.1)", alignItems: "center", justifyContent: "center" },
   countBadgeActive: { backgroundColor: "rgba(249,68,152,0.2)", borderColor: "rgba(249,68,152,0.4)" },
   countText: { color: "rgba(255,255,255,0.4)", fontSize: 16, fontWeight: "800" },
