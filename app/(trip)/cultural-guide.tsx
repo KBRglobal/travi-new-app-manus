@@ -1,15 +1,13 @@
 import { useState } from "react";
 import {
   View, Text, TouchableOpacity, StyleSheet, ScrollView,
-  Dimensions, Platform,
+  Platform,
 } from "react-native";
 import { router, useLocalSearchParams } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
 import { IconSymbol } from "@/components/ui/icon-symbol";
 import * as Haptics from "expo-haptics";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-
-const { width: W } = Dimensions.get("window");
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 interface CulturalSection {
@@ -27,217 +25,8 @@ interface CulturalItem {
   type: "do" | "dont" | "info" | "tip";
 }
 
-// ─── Cultural Data per Destination ───────────────────────────────────────────
-const CULTURAL_DATA: Record<string, { headline: string; emoji: string; sections: CulturalSection[] }> = {
-  dubai: {
-    headline: "Islamic culture with modern cosmopolitan flair",
-    emoji: "🇦🇪",
-    sections: [
-      {
-        id: "religion", icon: "moon.stars.fill", title: "Religion & Customs", color: "#8B5CF6", gradient: ["#8B5CF6", "#6D28D9"],
-        items: [
-          { label: "Prayer Times", value: "5 times daily — shops may briefly close. Respect the call to prayer.", type: "info" },
-          { label: "Ramadan", value: "No eating, drinking, or smoking in public during daylight hours.", type: "dont" },
-          { label: "Mosques", value: "Remove shoes, cover arms & legs. Women cover hair. Non-Muslims welcome in many mosques.", type: "do" },
-          { label: "Friday", value: "Holy day — many businesses open late or close. Plan accordingly.", type: "tip" },
-        ],
-      },
-      {
-        id: "dress", icon: "tshirt.fill", title: "Dress Code", color: "#EC4899", gradient: ["#EC4899", "#BE185D"],
-        items: [
-          { label: "Public Areas", value: "Cover shoulders and knees. Swimwear only at beaches/pools.", type: "do" },
-          { label: "Malls & Souks", value: "Modest clothing required. Avoid very short shorts or revealing tops.", type: "do" },
-          { label: "Couples", value: "Public displays of affection are frowned upon.", type: "dont" },
-          { label: "Beaches", value: "Swimwear acceptable at designated beach areas only.", type: "info" },
-        ],
-      },
-      {
-        id: "food", icon: "fork.knife", title: "Food & Drink", color: "#F59E0B", gradient: ["#F59E0B", "#D97706"],
-        items: [
-          { label: "Halal Only", value: "All food is halal. Pork is rare and only in licensed international hotels.", type: "info" },
-          { label: "Alcohol", value: "Only served in licensed hotels, restaurants, and bars. Illegal in public.", type: "dont" },
-          { label: "Kosher", value: "Limited kosher options available — check with your hotel concierge.", type: "tip" },
-          { label: "Tap Water", value: "Safe to drink but most locals prefer bottled water.", type: "info" },
-        ],
-      },
-      {
-        id: "laws", icon: "shield.fill", title: "Laws & Rules", color: "#EF4444", gradient: ["#EF4444", "#B91C1C"],
-        items: [
-          { label: "Photography", value: "Never photograph government buildings, military, or people without consent.", type: "dont" },
-          { label: "Drugs", value: "Zero tolerance. Even trace amounts can lead to imprisonment.", type: "dont" },
-          { label: "VPN", value: "VoIP calls (WhatsApp, FaceTime) may be restricted. Use local SIM.", type: "tip" },
-          { label: "Currency", value: "UAE Dirham (AED). Cards widely accepted. ATMs everywhere.", type: "info" },
-        ],
-      },
-      {
-        id: "etiquette", icon: "hand.raised.fill", title: "Etiquette & Tips", color: "#10B981", gradient: ["#10B981", "#059669"],
-        items: [
-          { label: "Greetings", value: "\"As-salamu alaykum\" is warmly received. Handshakes common between same genders.", type: "tip" },
-          { label: "Left Hand", value: "Avoid using left hand for eating or giving/receiving items.", type: "dont" },
-          { label: "Bargaining", value: "Expected in souks. Not appropriate in malls.", type: "tip" },
-          { label: "Tipping", value: "10–15% in restaurants. Not mandatory but appreciated.", type: "info" },
-        ],
-      },
-    ],
-  },
-  tokyo: {
-    headline: "Deep respect, harmony, and ancient traditions",
-    emoji: "🇯🇵",
-    sections: [
-      {
-        id: "religion", icon: "moon.stars.fill", title: "Religion & Customs", color: "#8B5CF6", gradient: ["#8B5CF6", "#6D28D9"],
-        items: [
-          { label: "Shrines & Temples", value: "Bow at the torii gate. Wash hands at the purification fountain before entering.", type: "do" },
-          { label: "Shoes", value: "Remove shoes when entering homes, traditional restaurants, and some temples.", type: "do" },
-          { label: "Silence", value: "Speak quietly in public spaces, trains, and temples.", type: "do" },
-          { label: "Gifts", value: "Giving gifts is a meaningful gesture. Present with both hands.", type: "tip" },
-        ],
-      },
-      {
-        id: "dress", icon: "tshirt.fill", title: "Dress Code", color: "#EC4899", gradient: ["#EC4899", "#BE185D"],
-        items: [
-          { label: "General", value: "Smart casual is the norm. Japanese dress neatly in public.", type: "info" },
-          { label: "Tattoos", value: "Cover tattoos in onsen (hot springs) and some gyms — they may deny entry.", type: "dont" },
-          { label: "Temples", value: "No specific dress code but modest clothing is respectful.", type: "info" },
-          { label: "Shoes", value: "Wear easy slip-on shoes — you'll remove them often.", type: "tip" },
-        ],
-      },
-      {
-        id: "food", icon: "fork.knife", title: "Food & Drink", color: "#F59E0B", gradient: ["#F59E0B", "#D97706"],
-        items: [
-          { label: "Chopsticks", value: "Never stick chopsticks upright in rice — it's a funeral symbol.", type: "dont" },
-          { label: "Slurping", value: "Slurping noodles is a compliment to the chef.", type: "do" },
-          { label: "Tipping", value: "Tipping is considered rude — never leave a tip.", type: "dont" },
-          { label: "Eating While Walking", value: "Generally frowned upon except at festivals.", type: "dont" },
-        ],
-      },
-      {
-        id: "laws", icon: "shield.fill", title: "Laws & Rules", color: "#EF4444", gradient: ["#EF4444", "#B91C1C"],
-        items: [
-          { label: "Smoking", value: "Only in designated smoking areas. Heavy fines for smoking on streets.", type: "dont" },
-          { label: "Trash", value: "Almost no public bins — carry your trash until you find one.", type: "tip" },
-          { label: "Drugs", value: "Zero tolerance. Even cannabis from legal countries can lead to arrest.", type: "dont" },
-          { label: "Currency", value: "Japan is still largely cash-based. Carry yen.", type: "tip" },
-        ],
-      },
-      {
-        id: "etiquette", icon: "hand.raised.fill", title: "Etiquette & Tips", color: "#10B981", gradient: ["#10B981", "#059669"],
-        items: [
-          { label: "Bowing", value: "A slight bow is the standard greeting. The deeper the bow, the more respect.", type: "do" },
-          { label: "Trains", value: "No phone calls. Quiet mode. Give up seats for elderly and pregnant.", type: "do" },
-          { label: "Queuing", value: "Always queue — pushing or cutting is extremely rude.", type: "do" },
-          { label: "Business Cards", value: "Receive with both hands and study it before putting away.", type: "tip" },
-        ],
-      },
-    ],
-  },
-  paris: {
-    headline: "Elegance, art, and refined social etiquette",
-    emoji: "🇫🇷",
-    sections: [
-      {
-        id: "religion", icon: "moon.stars.fill", title: "Culture & Society", color: "#8B5CF6", gradient: ["#8B5CF6", "#6D28D9"],
-        items: [
-          { label: "Secularism", value: "France is strictly secular. Religion is a private matter.", type: "info" },
-          { label: "Churches", value: "Dress modestly when visiting cathedrals and churches.", type: "do" },
-          { label: "Politics", value: "Avoid discussing politics with strangers — it can get heated.", type: "tip" },
-          { label: "Sundays", value: "Many shops close on Sunday. Plan grocery shopping in advance.", type: "info" },
-        ],
-      },
-      {
-        id: "dress", icon: "tshirt.fill", title: "Dress Code", color: "#EC4899", gradient: ["#EC4899", "#BE185D"],
-        items: [
-          { label: "General", value: "Parisians dress elegantly. Avoid overly casual tourist looks.", type: "tip" },
-          { label: "Restaurants", value: "Smart casual for most restaurants. Formal for fine dining.", type: "do" },
-          { label: "Beaches", value: "Topless sunbathing is legal but becoming less common.", type: "info" },
-          { label: "Sneakers", value: "Fashionable sneakers are fine — clean and stylish is the rule.", type: "info" },
-        ],
-      },
-      {
-        id: "food", icon: "fork.knife", title: "Food & Drink", color: "#F59E0B", gradient: ["#F59E0B", "#D97706"],
-        items: [
-          { label: "Greetings First", value: "Always say \"Bonjour\" before ordering or asking for anything.", type: "do" },
-          { label: "Tipping", value: "Service is included. A small extra tip (€1–2) is appreciated but not required.", type: "info" },
-          { label: "Lunch Hours", value: "12–2pm is sacred. Many restaurants only serve during this window.", type: "tip" },
-          { label: "Bread", value: "Bread is served with every meal. It's free and refilled.", type: "info" },
-        ],
-      },
-      {
-        id: "laws", icon: "shield.fill", title: "Laws & Rules", color: "#EF4444", gradient: ["#EF4444", "#B91C1C"],
-        items: [
-          { label: "Pickpockets", value: "Very common near Eiffel Tower, Metro, and tourist areas. Use a money belt.", type: "dont" },
-          { label: "Photography", value: "Eiffel Tower at night is copyrighted — commercial use requires permission.", type: "info" },
-          { label: "Scooters", value: "Rental e-scooters banned in Paris since 2023.", type: "info" },
-          { label: "Currency", value: "Euro (€). Cards widely accepted everywhere.", type: "info" },
-        ],
-      },
-      {
-        id: "etiquette", icon: "hand.raised.fill", title: "Etiquette & Tips", color: "#10B981", gradient: ["#10B981", "#059669"],
-        items: [
-          { label: "La Bise", value: "Cheek kisses (1–2 depending on region) are the standard greeting between friends.", type: "info" },
-          { label: "Bonjour!", value: "Always greet shopkeepers when entering and say \"Au revoir\" when leaving.", type: "do" },
-          { label: "Patience", value: "Service can be slow — it's intentional. Rushing is considered rude.", type: "tip" },
-          { label: "Noise", value: "Keep voices low in restaurants and public spaces.", type: "do" },
-        ],
-      },
-    ],
-  },
-  // Generic fallback for any other destination
-  default: {
-    headline: "Local culture, customs, and travel tips",
-    emoji: "🌍",
-    sections: [
-      {
-        id: "religion", icon: "moon.stars.fill", title: "Religion & Customs", color: "#8B5CF6", gradient: ["#8B5CF6", "#6D28D9"],
-        items: [
-          { label: "Research Local Religion", value: "Check the dominant religion and its customs before visiting places of worship.", type: "tip" },
-          { label: "Places of Worship", value: "Dress modestly, remove shoes if required, and speak quietly.", type: "do" },
-          { label: "Local Holidays", value: "Check if your trip coincides with religious holidays — services may change.", type: "tip" },
-        ],
-      },
-      {
-        id: "dress", icon: "tshirt.fill", title: "Dress Code", color: "#EC4899", gradient: ["#EC4899", "#BE185D"],
-        items: [
-          { label: "General Rule", value: "When in doubt, dress modestly. Locals will appreciate the respect.", type: "do" },
-          { label: "Beaches", value: "Check local norms — some beaches require more coverage than others.", type: "info" },
-          { label: "Religious Sites", value: "Cover shoulders and knees at most religious sites worldwide.", type: "do" },
-        ],
-      },
-      {
-        id: "food", icon: "fork.knife", title: "Food & Drink", color: "#F59E0B", gradient: ["#F59E0B", "#D97706"],
-        items: [
-          { label: "Tap Water", value: "Check if tap water is safe to drink at your destination.", type: "tip" },
-          { label: "Dietary Needs", value: "Research halal, kosher, vegetarian, or vegan options in advance.", type: "tip" },
-          { label: "Tipping", value: "Tipping customs vary widely — research local norms before you go.", type: "info" },
-          { label: "Street Food", value: "Often the best local experience — look for busy stalls with high turnover.", type: "do" },
-        ],
-      },
-      {
-        id: "laws", icon: "shield.fill", title: "Laws & Rules", color: "#EF4444", gradient: ["#EF4444", "#B91C1C"],
-        items: [
-          { label: "Photography", value: "Always ask before photographing people, military sites, or government buildings.", type: "do" },
-          { label: "Drugs", value: "Laws vary drastically. Research before assuming anything is legal.", type: "dont" },
-          { label: "Currency", value: "Check the local currency and whether cards are widely accepted.", type: "tip" },
-          { label: "Emergency Number", value: "Save the local emergency number before you arrive.", type: "do" },
-        ],
-      },
-      {
-        id: "etiquette", icon: "hand.raised.fill", title: "Etiquette & Tips", color: "#10B981", gradient: ["#10B981", "#059669"],
-        items: [
-          { label: "Learn a Few Words", value: "\"Hello\", \"Thank you\", and \"Sorry\" in the local language go a long way.", type: "do" },
-          { label: "Bargaining", value: "Common in markets in many countries — but not in shops or restaurants.", type: "tip" },
-          { label: "Personal Space", value: "Varies by culture — observe locals and follow their lead.", type: "info" },
-          { label: "Patience", value: "Things move at different paces in different cultures. Embrace it.", type: "tip" },
-        ],
-      },
-    ],
-  },
-};
-
-function getDestinationData(destination: string) {
-  const key = destination?.toLowerCase().replace(/\s+/g, "");
-  return CULTURAL_DATA[key] ?? { ...CULTURAL_DATA.default, headline: `Local culture and customs for ${destination}` };
-}
+// ─── Cultural Data (from Travi.world) ────────────────────────────────────────
+import { getCulturalData } from "@/lib/cultural-data";
 
 // ─── Item Badge ───────────────────────────────────────────────────────────────
 const TYPE_CONFIG = {
@@ -291,7 +80,7 @@ function SectionCard({ section, expanded, onToggle }: { section: CulturalSection
 export default function CulturalGuideScreen() {
   const { destination = "dubai" } = useLocalSearchParams<{ destination: string }>();
   const insets = useSafeAreaInsets();
-  const data = getDestinationData(destination);
+  const data = getCulturalData(destination);
   const [expanded, setExpanded] = useState<string>("religion");
 
   function toggle(id: string) {
