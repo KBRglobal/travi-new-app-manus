@@ -4,7 +4,10 @@ import {
   Platform, Dimensions, Animated
 } from "react-native";
 import { router, useLocalSearchParams } from "expo-router";
-import MapView, { Marker, Callout, PROVIDER_DEFAULT } from "react-native-maps";
+// @ts-ignore - react-native-maps not available on web
+const MapView = Platform.OS !== "web" ? require("react-native-maps").default : null;
+const Marker = Platform.OS !== "web" ? require("react-native-maps").Marker : null;
+const PROVIDER_DEFAULT = Platform.OS !== "web" ? require("react-native-maps").PROVIDER_DEFAULT : null;
 import { LinearGradient } from "expo-linear-gradient";
 import { IconSymbol } from "@/components/ui/icon-symbol";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -89,7 +92,7 @@ export default function DestinationMapScreen() {
 
   const [selectedPin, setSelectedPin] = useState<MapPin | null>(null);
   const [activeFilter, setActiveFilter] = useState<string>("all");
-  const mapRef = useRef<MapView>(null);
+  const mapRef = useRef<any>(null);
   const sheetAnim = useRef(new Animated.Value(0)).current;
 
   const filteredPins = activeFilter === "all"
@@ -131,34 +134,53 @@ export default function DestinationMapScreen() {
       </View>
 
       {/* Map */}
-      <MapView
-        ref={mapRef}
-        style={StyleSheet.absoluteFillObject}
-        provider={PROVIDER_DEFAULT}
-        initialRegion={{
-          latitude: destData.lat,
-          longitude: destData.lng,
-          latitudeDelta: destData.delta,
-          longitudeDelta: destData.delta,
-        }}
-        userInterfaceStyle="dark"
-        showsUserLocation={false}
-        showsCompass={false}
-        showsScale={false}
-      >
-        {filteredPins.map((pin) => (
-          <Marker
-            key={pin.id}
-            coordinate={{ latitude: pin.lat, longitude: pin.lng }}
-            onPress={() => handlePinPress(pin)}
-          >
-            <View style={[S.pin, { backgroundColor: CATEGORY_COLORS[pin.category] }]}>
-              <Text style={{ fontSize: 14 }}>{pin.emoji}</Text>
-            </View>
-            <View style={[S.pinTail, { borderTopColor: CATEGORY_COLORS[pin.category] }]} />
-          </Marker>
-        ))}
-      </MapView>
+      {Platform.OS === "web" ? (
+        <View style={[StyleSheet.absoluteFillObject, { alignItems: "center", justifyContent: "center", backgroundColor: "#1A0A3D" }]}>
+          <Text style={{ fontSize: 48, marginBottom: 12 }}>🗺️</Text>
+          <Text style={{ color: "#FFF", fontSize: 16, fontWeight: "700" }}>Map View</Text>
+          <Text style={{ color: "#9BA1A6", fontSize: 13, marginTop: 4 }}>Available on iOS & Android</Text>
+          <View style={{ marginTop: 24, gap: 8, width: "80%" }}>
+            {filteredPins.map((pin) => (
+              <TouchableOpacity key={pin.id} style={[S.webPinRow, { borderLeftColor: CATEGORY_COLORS[pin.category] }]} onPress={() => handlePinPress(pin)} activeOpacity={0.8}>
+                <Text style={{ fontSize: 20 }}>{pin.emoji}</Text>
+                <View style={{ flex: 1 }}>
+                  <Text style={{ color: "#FFF", fontSize: 14, fontWeight: "700" }}>{pin.name}</Text>
+                  <Text style={{ color: "#9BA1A6", fontSize: 12 }}>{CATEGORY_LABELS[pin.category]} · {pin.duration}</Text>
+                </View>
+              </TouchableOpacity>
+            ))}
+          </View>
+        </View>
+      ) : MapView ? (
+        <MapView
+          ref={mapRef}
+          style={StyleSheet.absoluteFillObject}
+          provider={PROVIDER_DEFAULT}
+          initialRegion={{
+            latitude: destData.lat,
+            longitude: destData.lng,
+            latitudeDelta: destData.delta,
+            longitudeDelta: destData.delta,
+          }}
+          userInterfaceStyle="dark"
+          showsUserLocation={false}
+          showsCompass={false}
+          showsScale={false}
+        >
+          {filteredPins.map((pin) => (
+            Marker ? <Marker
+              key={pin.id}
+              coordinate={{ latitude: pin.lat, longitude: pin.lng }}
+              onPress={() => handlePinPress(pin)}
+            >
+              <View style={[S.pin, { backgroundColor: CATEGORY_COLORS[pin.category] }]}>
+                <Text style={{ fontSize: 14 }}>{pin.emoji}</Text>
+              </View>
+              <View style={[S.pinTail, { borderTopColor: CATEGORY_COLORS[pin.category] }]} />
+            </Marker> : null
+          ))}
+        </MapView>
+      ) : null}
 
       {/* Category filters */}
       <View style={[S.filtersWrap, { top: insets.top + 60 }]}>
@@ -277,4 +299,5 @@ const S = StyleSheet.create({
   sheetActionBtnText: { color: "#FFF", fontSize: 14, fontWeight: "700" },
   sheetSecondaryBtn: { borderRadius: 14, paddingHorizontal: 16, paddingVertical: 13, flexDirection: "row", alignItems: "center", gap: 6, backgroundColor: "rgba(167,139,250,0.1)", borderWidth: 1, borderColor: "rgba(167,139,250,0.25)" },
   sheetSecondaryBtnText: { color: "#A78BFA", fontSize: 14, fontWeight: "700" },
+  webPinRow: { flexDirection: "row", alignItems: "center", gap: 12, backgroundColor: "rgba(255,255,255,0.06)", borderRadius: 12, padding: 12, borderLeftWidth: 3 },
 });
