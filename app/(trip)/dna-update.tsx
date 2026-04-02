@@ -72,6 +72,8 @@ function TraitBar({ trait, delay }: { trait: TraitDisplay; delay: number }) {
     outputRange: ["0%", "100%"],
   });
 
+  const scoreDisplay = Math.round(trait.value);
+
   return (
     <View style={styles.traitRow}>
       <View style={styles.traitLeft}>
@@ -88,7 +90,7 @@ function TraitBar({ trait, delay }: { trait: TraitDisplay; delay: number }) {
           />
         </View>
         <View style={styles.traitScoreWrap}>
-          <Text style={[styles.traitScore, { color: trait.color }]}>{trait.value}</Text>
+          <Text style={[styles.traitScore, { color: trait.color }]}>{scoreDisplay}</Text>
           {trait.delta > 0 && (
             <Animated.View style={[styles.deltaBadge, { opacity: deltaAnim }]}>
               <Text style={styles.deltaText}>+{trait.delta}</Text>
@@ -282,26 +284,26 @@ const styles = StyleSheet.create({
   heroEmoji: { fontSize: 52, marginBottom: 12 },
   heroTitle: { color: "#FFFFFF", fontSize: 24, fontWeight: "800", textAlign: "center", marginBottom: 8 },
   heroSub: { color: "rgba(255,255,255,0.6)", fontSize: 14, textAlign: "center", lineHeight: 20 },
-  typeCard: { marginHorizontal: 20, marginBottom: 24, borderRadius: 20, overflow: "hidden" },
-  typeGradient: { padding: 24 },
-  typeLabel: { color: "rgba(255,255,255,0.7)", fontSize: 13, fontWeight: "600", marginBottom: 4 },
-  typeName: { color: "#FFFFFF", fontSize: 28, fontWeight: "900", marginBottom: 10 },
-  typeDesc: { color: "rgba(255,255,255,0.75)", fontSize: 14, lineHeight: 20 },
+  typeCard: { marginHorizontal: 20, marginBottom: 24, borderRadius: 24, overflow: "hidden", shadowColor: "#F94498", shadowOffset: { width: 0, height: 8 }, shadowOpacity: 0.35, shadowRadius: 16, elevation: 10 },
+  typeGradient: { padding: 26 },
+  typeLabel: { color: "rgba(255,255,255,0.75)", fontSize: 12, fontWeight: "700", marginBottom: 6, letterSpacing: 1, textTransform: "uppercase" },
+  typeName: { color: "#FFFFFF", fontSize: 30, fontWeight: "900", marginBottom: 12, lineHeight: 36 },
+  typeDesc: { color: "rgba(255,255,255,0.8)", fontSize: 14, lineHeight: 21 },
   section: { marginHorizontal: 20, marginBottom: 24 },
   sectionTitle: { color: "#FFFFFF", fontSize: 18, fontWeight: "800", marginBottom: 2 },
   sectionSub: { color: "rgba(255,255,255,0.4)", fontSize: 13, marginBottom: 14 },
-  traitsCard: { backgroundColor: "rgba(255,255,255,0.04)", borderRadius: 20, padding: 16, gap: 16 },
+  traitsCard: { backgroundColor: "rgba(255,255,255,0.05)", borderRadius: 20, padding: 18, gap: 18, borderWidth: 1, borderColor: "rgba(255,255,255,0.07)" },
   traitRow: { flexDirection: "row", alignItems: "center", gap: 10 },
-  traitLeft: { flexDirection: "row", alignItems: "center", gap: 8, width: 160 },
-  traitIcon: { fontSize: 18 },
-  traitLabel: { color: "rgba(255,255,255,0.8)", fontSize: 13, fontWeight: "600", flex: 1 },
-  traitRight: { flex: 1, flexDirection: "row", alignItems: "center", gap: 8 },
-  barTrack: { flex: 1, height: 6, backgroundColor: "rgba(255,255,255,0.08)", borderRadius: 3, overflow: "hidden" },
-  barFill: { height: "100%", borderRadius: 3 },
-  traitScoreWrap: { flexDirection: "row", alignItems: "center", gap: 4, width: 52 },
-  traitScore: { fontSize: 14, fontWeight: "800", width: 28, textAlign: "right" },
-  deltaBadge: { backgroundColor: "rgba(34,197,94,0.2)", borderRadius: 8, paddingHorizontal: 5, paddingVertical: 1 },
-  deltaText: { color: "#22C55E", fontSize: 10, fontWeight: "700" },
+  traitLeft: { flexDirection: "row", alignItems: "center", gap: 10, width: 155 },
+  traitIcon: { fontSize: 20 },
+  traitLabel: { color: "rgba(255,255,255,0.85)", fontSize: 13, fontWeight: "700", flex: 1 },
+  traitRight: { flex: 1, flexDirection: "row", alignItems: "center", gap: 10 },
+  barTrack: { flex: 1, height: 8, backgroundColor: "rgba(255,255,255,0.08)", borderRadius: 4, overflow: "hidden" },
+  barFill: { height: "100%", borderRadius: 4 },
+  traitScoreWrap: { flexDirection: "row", alignItems: "center", gap: 4, width: 48, justifyContent: "flex-end" },
+  traitScore: { fontSize: 15, fontWeight: "900", width: 30, textAlign: "right" },
+  deltaBadge: { backgroundColor: "rgba(34,197,94,0.2)", borderRadius: 8, paddingHorizontal: 5, paddingVertical: 2, borderWidth: 1, borderColor: "rgba(34,197,94,0.3)" },
+  deltaText: { color: "#22C55E", fontSize: 10, fontWeight: "800" },
   interestPills: { flexDirection: "row", flexWrap: "wrap", gap: 8 },
   interestPill: { borderRadius: 20, overflow: "hidden" },
   pillGrad: { paddingHorizontal: 14, paddingVertical: 8 },

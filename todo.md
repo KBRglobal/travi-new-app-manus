@@ -332,3 +332,25 @@
 - [x] Integrate Open-Meteo live weather API in Trip Hub (real temperature + condition + humidity)
 - [x] Push notifications for trip reminders (3 days before: book taxi, 1 day before: check-in reminder)
 - [x] Zero TypeScript errors
+
+## Phase 31 — Itinerary & DNA Update Design Improvements
+- [ ] Itinerary: Replace gray header with gradient (brand colors)
+- [ ] Itinerary: Add animated day tab transitions
+- [ ] Itinerary: Polish stop cards with shadows and better spacing
+- [ ] Itinerary: Improve typography hierarchy
+- [ ] DNA Update: Animate trait bars (fill animation on mount)
+- [ ] DNA Update: Add gradient fills to trait bars
+- [ ] DNA Update: Fix duplicate score display bug
+- [ ] DNA Update: Add icons animation on mount
+
+## Phase 32 — Booking Flow Redesign (2-Phase)
+- [x] Phase 1: Flight-only booking with 15-minute countdown timer (airline-style urgency)
+- [x] Phase 1: Flight card with full details (airline, route, times, class, cashback)
+- [x] Phase 1: Apple Pay / "Book Flight" CTA
+- [x] Phase 2: Full trip summary — hotel + all swipe-selected attractions
+- [x] Phase 2: Each item has description + "More Info" link (opens in-app browser)
+- [x] Phase 2: Total cashback summary
+- [x] Phase 2: Apple Pay payment button
+- [x] Phase 2: "Invite Friend to Split" button
+- [x] Redesign itinerary.tsx — gradient header, better stop cards
+- [x] Redesign dna-update.tsx — fix duplicate scores, animated bars with gradient fills
