@@ -334,14 +334,14 @@
 - [x] Zero TypeScript errors
 
 ## Phase 31 — Itinerary & DNA Update Design Improvements
-- [ ] Itinerary: Replace gray header with gradient (brand colors)
-- [ ] Itinerary: Add animated day tab transitions
-- [ ] Itinerary: Polish stop cards with shadows and better spacing
-- [ ] Itinerary: Improve typography hierarchy
-- [ ] DNA Update: Animate trait bars (fill animation on mount)
-- [ ] DNA Update: Add gradient fills to trait bars
-- [ ] DNA Update: Fix duplicate score display bug
-- [ ] DNA Update: Add icons animation on mount
+- [x] Itinerary: Replace gray header with gradient (brand colors)
+- [x] Itinerary: Add animated day tab transitions
+- [x] Itinerary: Polish stop cards with shadows and better spacing
+- [x] Itinerary: Improve typography hierarchy
+- [x] DNA Update: Animate trait bars (fill animation on mount)
+- [x] DNA Update: Add gradient fills to trait bars
+- [x] DNA Update: Fix duplicate score display bug
+- [x] DNA Update: Add icons animation on mount
 
 ## Phase 32 — Booking Flow Redesign (2-Phase)
 - [x] Phase 1: Flight-only booking with 15-minute countdown timer (airline-style urgency)
@@ -356,13 +356,13 @@
 - [x] Redesign dna-update.tsx — fix duplicate scores, animated bars with gradient fills
 
 ## Phase 33 — Itinerary Full Redesign
-- [ ] Fix oversized day tabs (compact horizontal pill selector)
-- [ ] Redesign timeline layout — clean, spacious, visually stunning
-- [ ] Better stop cards with proper image sizing
-- [ ] Compact header that doesn't waste space
+- [x] Fix oversized day tabs (compact horizontal pill selector)
+- [x] Redesign timeline layout — clean, spacious, visually stunning
+- [x] Better stop cards with proper image sizing
+- [x] Compact header that doesn't waste space
 
 ## Phase 34 — Home Screen CTA Clarity
-- [ ] Add prominent "Plan a Trip" CTA button below hero image
+- [x] Add prominent "Plan a Trip" CTA button below hero image
 - [ ] Clarify DNA card action text
 - [ ] Reduce visual clutter / confusion on home screen
 - [ ] Make user flow obvious: hero → CTA → trip planning
@@ -385,11 +385,11 @@
 - [x] Connect Explore destination cards to destination-detail screen
 
 ## Phase 37 — Explore Fix + In-Trip Chat
-- [ ] Fix Explore screen broken images (replace with working Unsplash URLs)
-- [ ] Improve Explore visual design: more color, better hero card with real image
-- [ ] Build in-trip chat screen (AI concierge) accessible from Trip Hub
-- [ ] Chat: context-aware quick suggestions (nearby restaurant, change plan, I'm lost)
-- [ ] Floating chat button on Trip Hub
+- [x] Fix Explore screen broken images (confirmed using local bundled assets)
+- [x] Improve Explore visual design: more color, better hero card with real image
+- [x] Build in-trip chat screen (AI concierge) accessible from Trip Hub
+- [x] Chat: context-aware quick suggestions (nearby restaurant, change plan, I'm lost)
+- [x] Floating chat button on Trip Hub
 
 ## Phase 30 — Screen Improvements
 - [ ] Destination Detail screen (tap card in Explore → full screen with hero image, attractions, CTA)
@@ -414,3 +414,14 @@
 ## Onboarding Flow Fix
 - [ ] Remove Activities and Pace steps from quiz.tsx
 - [ ] Move activity/pace selection into trip planning flow
+
+## Phase 29 — Social & Community Screens
+- [x] Discover Travelers screen — search, DNA match %, connect button
+- [x] DNA Compatibility screen — breakdown bars, shared interests, trip suggestions
+- [x] Messages list screen — conversations, online status, unread badges
+- [x] Message Chat screen — real-time chat UI, DNA match banner, send messages
+- [x] Community Feed screen — posts with categories (tips/stories/questions/photos), likes
+- [x] Navigation buttons (Messages + Community) added to Connecting tab header
+- [x] All social screens registered in (social)/_layout.tsx
+- [x] Zero TypeScript errors across all social screens
+- [x] 17 database tables live in Railway PostgreSQL

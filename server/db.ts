@@ -1,23 +1,25 @@
 import { eq, and } from "drizzle-orm";
-import { drizzle } from "drizzle-orm/node-postgres";
+import { drizzle, type NodePgDatabase } from "drizzle-orm/node-postgres";
 import { Pool } from "pg";
-import {
-  InsertUser, users,
-  travelerProfiles, InsertTravelerProfile,
-  trips, InsertTrip,
-  priceAlerts, InsertPriceAlert,
-  pushTokens, InsertPushToken,
+import * as schema from "../drizzle/schema";
+import type {
+  InsertUser,
+  InsertTravelerProfile,
+  InsertTrip,
+  InsertPriceAlert,
+  InsertPushToken,
 } from "../drizzle/schema";
+const { users, travelerProfiles, trips, priceAlerts, pushTokens } = schema;
 import { ENV } from "./_core/env";
 
-let _db: ReturnType<typeof drizzle> | null = null;
+let _db: NodePgDatabase<typeof schema> | null = null;
 
 // Lazily create the drizzle instance so local tooling can run without a DB.
 export async function getDb() {
   if (!_db && process.env.DATABASE_URL) {
     try {
       const pool = new Pool({ connectionString: process.env.DATABASE_URL, ssl: { rejectUnauthorized: false } });
-      _db = drizzle(pool);
+      _db = drizzle(pool, { schema });
     } catch (error) {
       console.warn("[Database] Failed to connect:", error);
       _db = null;

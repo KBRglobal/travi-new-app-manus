@@ -8,6 +8,13 @@
       "when": 1775168606121,
       "tag": "0000_curved_mephistopheles",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1775169063643,
+      "tag": "0001_tense_hercules",
+      "breakpoints": true
     }
   ]
 }

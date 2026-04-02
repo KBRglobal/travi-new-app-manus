@@ -85,9 +85,16 @@ function TraitBar({ trait, delay }: { trait: TraitDisplay; delay: number }) {
           <Animated.View
             style={[
               styles.barFill,
-              { width: barWidth, backgroundColor: trait.color },
+              { width: barWidth },
             ]}
-          />
+          >
+            <LinearGradient
+              colors={[trait.color, trait.color + "99"]}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 0 }}
+              style={StyleSheet.absoluteFillObject}
+            />
+          </Animated.View>
         </View>
         <View style={styles.traitScoreWrap}>
           <Text style={[styles.traitScore, { color: trait.color }]}>{scoreDisplay}</Text>

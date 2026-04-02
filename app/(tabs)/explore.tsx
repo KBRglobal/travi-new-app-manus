@@ -159,6 +159,37 @@ export default function ExploreScreen() {
           showsVerticalScrollIndicator={false}
           contentContainerStyle={S.listContent}
         >
+          {/* Featured Hero Card — shown only in All view */}
+          {activeCategory === "all" && !searchQuery && (
+            <TouchableOpacity
+              style={S.heroCard}
+              onPress={() => {
+                if (Platform.OS !== "web") Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+                router.push({ pathname: "/(trip)/destination-detail", params: { id: "dubai" } } as never);
+              }}
+              activeOpacity={0.9}
+            >
+              <ImageBackground source={IMG.dubai} style={S.heroCardBg} imageStyle={S.heroCardImg} resizeMode="cover">
+                <LinearGradient colors={["transparent", "rgba(0,0,0,0.92)"]} locations={[0.3, 1]} style={StyleSheet.absoluteFillObject} />
+                <LinearGradient colors={["rgba(249,68,152,0.3)", "transparent"]} locations={[0, 0.5]} style={StyleSheet.absoluteFillObject} />
+                <View style={S.heroCardBadge}>
+                  <Text style={S.heroCardBadgeText}>🌟 FEATURED</Text>
+                </View>
+                <View style={S.heroCardInfo}>
+                  <Text style={S.heroCardTagline}>Where dreams touch the sky</Text>
+                  <Text style={S.heroCardCity}>Dubai</Text>
+                  <View style={S.heroCardRow}>
+                    <IconSymbol name="location.fill" size={13} color="rgba(255,255,255,0.7)" />
+                    <Text style={S.heroCardCountry}>United Arab Emirates</Text>
+                    <View style={S.heroCardCashback}>
+                      <Text style={S.heroCardCashbackText}>💰 Up to $120 cashback</Text>
+                    </View>
+                  </View>
+                </View>
+              </ImageBackground>
+            </TouchableOpacity>
+          )}
+
           <View style={S.listHeader}>
             <Text style={S.listTitle}>
               {activeCategory === "all"
@@ -421,6 +452,18 @@ const S = StyleSheet.create({
   emptyIcon: { fontSize: 48, marginBottom: 16 },
   emptyTitle: { color: "#FFFFFF", fontSize: 20, fontWeight: "800", textAlign: "center" },
   emptyText: { color: "rgba(255,255,255,0.4)", fontSize: 14, textAlign: "center", marginTop: 8, lineHeight: 20 },
+  heroCard: { width: "100%", height: 320, borderRadius: 24, overflow: "hidden", marginBottom: 20 },
+  heroCardBg: { flex: 1, justifyContent: "flex-end" },
+  heroCardImg: { borderRadius: 24 },
+  heroCardBadge: { position: "absolute", top: 16, left: 16, backgroundColor: "rgba(249,68,152,0.85)", borderRadius: 10, paddingHorizontal: 10, paddingVertical: 5 },
+  heroCardBadgeText: { color: "#FFFFFF", fontSize: 11, fontWeight: "800", letterSpacing: 1 },
+  heroCardInfo: { padding: 20, gap: 4 },
+  heroCardTagline: { color: "rgba(255,255,255,0.6)", fontSize: 13, fontStyle: "italic" },
+  heroCardCity: { color: "#FFFFFF", fontSize: 36, fontWeight: "900", letterSpacing: -1, lineHeight: 42 },
+  heroCardRow: { flexDirection: "row", alignItems: "center", gap: 6, marginTop: 4 },
+  heroCardCountry: { color: "rgba(255,255,255,0.7)", fontSize: 14, fontWeight: "600", flex: 1 },
+  heroCardCashback: { backgroundColor: "rgba(255,215,18,0.2)", borderRadius: 8, paddingHorizontal: 8, paddingVertical: 4, borderWidth: 1, borderColor: "rgba(255,215,18,0.3)" },
+  heroCardCashbackText: { color: "#FFD712", fontSize: 11, fontWeight: "700" },
   emptyBtn: { marginTop: 24, borderRadius: 14, overflow: "hidden" },
   emptyBtnGrad: { paddingHorizontal: 24, paddingVertical: 12 },
   emptyBtnText: { color: "#FFFFFF", fontSize: 15, fontWeight: "800" },

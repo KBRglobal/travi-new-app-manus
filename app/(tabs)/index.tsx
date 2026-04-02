@@ -244,6 +244,22 @@ export default function HomeScreen() {
             <Text style={S.heroSub}>
               Someone who knows exactly how you travel — and works only for you.
             </Text>
+            {/* Prominent Plan a Trip CTA */}
+            <TouchableOpacity
+              style={S.heroPlanBtn}
+              onPress={() => router.push("/(trip)/plan" as never)}
+              activeOpacity={0.88}
+            >
+              <LinearGradient
+                colors={["#6443F4", "#F94498"]}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 0 }}
+                style={StyleSheet.absoluteFillObject}
+              />
+              <IconSymbol name="airplane" size={18} color="#FFFFFF" />
+              <Text style={S.heroPlanBtnText}>Plan a Trip</Text>
+              <IconSymbol name="chevron.right" size={16} color="rgba(255,255,255,0.7)" />
+            </TouchableOpacity>
           </View>
 
           {/* Upcoming trip countdown banner */}
@@ -495,6 +511,8 @@ const S = StyleSheet.create({
   heroHeadlineWrap: { paddingHorizontal: 20, paddingBottom: 28 },
   heroHeadline: { color: "#FFFFFF", fontSize: 28, fontWeight: "900", letterSpacing: -0.8, lineHeight: 34 },
   heroSub: { color: "rgba(255,255,255,0.5)", fontSize: 14, lineHeight: 21, marginTop: 8 },
+  heroPlanBtn: { flexDirection: "row", alignItems: "center", gap: 8, marginTop: 18, borderRadius: 28, paddingVertical: 14, paddingHorizontal: 24, overflow: "hidden", alignSelf: "flex-start" },
+  heroPlanBtnText: { color: "#FFFFFF", fontSize: 16, fontWeight: "700", letterSpacing: 0.2 },
 
   upcomingBanner: { flexDirection: "row", alignItems: "center", gap: 12, marginHorizontal: 20, marginBottom: 16, borderRadius: 16, overflow: "hidden", padding: 14, borderWidth: 1, borderColor: "rgba(100,67,244,0.3)" },
   upcomingCountdown: { width: 44, height: 44, borderRadius: 12, backgroundColor: "rgba(100,67,244,0.25)", alignItems: "center", justifyContent: "center" },

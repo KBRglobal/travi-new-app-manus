@@ -256,10 +256,22 @@ export default function ConnectingScreen() {
           <Image source={LOGOS.logotypePrimary} style={S.headerLogo} resizeMode="contain" />
         </View>
         <Text style={S.headerTitle}>Connecting</Text>
-        <TouchableOpacity style={S.notifBtn} activeOpacity={0.7}>
-          <View style={S.notifDot} />
-          <IconSymbol name="bell.fill" size={20} color="#FFF" />
-        </TouchableOpacity>
+        <View style={{ flexDirection: "row", gap: 8, alignItems: "center" }}>
+          <TouchableOpacity
+            style={S.notifBtn}
+            activeOpacity={0.7}
+            onPress={() => router.push("/(social)/messages")}
+          >
+            <IconSymbol name="message.fill" size={20} color="#FFF" />
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={S.notifBtn}
+            activeOpacity={0.7}
+            onPress={() => router.push("/(social)/community")}
+          >
+            <IconSymbol name="person.2.fill" size={20} color="#FFF" />
+          </TouchableOpacity>
+        </View>
       </View>
 
       {/* Hero banner */}
