@@ -47,6 +47,7 @@ export default function ProfileSetupScreen() {
         ...(state.profile || {
           id: Date.now().toString(), email: "",
           quizCompleted: false, travelerDNA: {},
+          activityCategories: [], tripPace: "balanced" as const,
           foodPreferences: { cuisines: [], avoid: [], allergies: [], dietary: [] },
           points: 0, lifetimeSavings: 0, subscriptionActive: false,
         }),

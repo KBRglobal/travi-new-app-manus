@@ -3,6 +3,12 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
+export type ActivityCategory =
+  | "beaches" | "hiking" | "food" | "nightlife" | "culture" | "adventure"
+  | "wellness" | "shopping" | "nature" | "art" | "music" | "architecture";
+
+export type TripPace = "slow" | "balanced" | "full";
+
 export type TravelerProfile = {
   id: string;
   name: string;
@@ -10,6 +16,8 @@ export type TravelerProfile = {
   photo?: string;
   quizCompleted: boolean;
   travelerDNA: Record<string, string>;
+  activityCategories: ActivityCategory[];
+  tripPace: TripPace;
   foodPreferences: {
     cuisines: string[];
     avoid: string[];

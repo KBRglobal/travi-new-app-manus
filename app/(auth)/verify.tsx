@@ -65,6 +65,7 @@ export default function VerifyScreen() {
           payload: {
             id: Date.now().toString(), name: "", email: email || "",
             quizCompleted: false, travelerDNA: {},
+            activityCategories: [], tripPace: "balanced" as const,
             foodPreferences: { cuisines: [], avoid: [], allergies: [], dietary: [] },
             points: 0, lifetimeSavings: 0, subscriptionActive: false,
           },

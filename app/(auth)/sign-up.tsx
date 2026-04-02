@@ -39,6 +39,7 @@ export default function SignUpScreen() {
         id: Date.now().toString(), name: "",
         email: `user@${provider.toLowerCase()}.com`,
         quizCompleted: false, travelerDNA: {},
+        activityCategories: [], tripPace: "balanced" as const,
         foodPreferences: { cuisines: [], avoid: [], allergies: [], dietary: [] },
         points: 0, lifetimeSavings: 0, subscriptionActive: false,
       },
@@ -53,6 +54,7 @@ export default function SignUpScreen() {
       payload: {
         id: "guest", name: "Traveler", email: "",
         quizCompleted: false, travelerDNA: {},
+        activityCategories: [], tripPace: "balanced" as const,
         foodPreferences: { cuisines: [], avoid: [], allergies: [], dietary: [] },
         points: 0, lifetimeSavings: 0, subscriptionActive: false,
       },
