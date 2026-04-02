@@ -36,125 +36,164 @@ interface Attraction {
   type: string;
   category: InterestCategory;
   location: string;
+  destination: string; // destination code e.g. "dubai", "kyoto"
   rating: number;
   reviews: number;
   duration: string;
   price: string;
+  priceLevel: "budget" | "mid" | "premium" | "luxury"; // for budget filtering
   tags: string[];
   image: any;
   description: string;
   color: string;
 }
 
+// Budget level ordering: budget < mid < premium < luxury
+const BUDGET_LEVELS = ["budget", "mid", "premium", "luxury"] as const;
+type BudgetLevel = typeof BUDGET_LEVELS[number];
+
+function budgetAllows(itemLevel: BudgetLevel, userBudget: string): boolean {
+  const userIdx = BUDGET_LEVELS.indexOf(userBudget as BudgetLevel);
+  const itemIdx = BUDGET_LEVELS.indexOf(itemLevel);
+  if (userIdx === -1) return true; // unknown budget = show all
+  // Show items at or below user's budget level (luxury users see everything)
+  return itemIdx <= userIdx + 1;
+}
+
 const ALL_ATTRACTIONS: Attraction[] = [
-  {
-    id: "a1", name: "Burj Khalifa Observation Deck", type: "Landmark", category: "landmarks",
-    location: "Dubai, UAE", rating: 4.8, reviews: 142000, duration: "2–3 hrs", price: "$40",
-    tags: ["Views", "Architecture", "Iconic"],
-    image: require("@/assets/destinations/dubai.jpg"),
-    description: "Stand at the top of the world's tallest building. 360° views that will leave you speechless.",
-    color: "#F94498",
-  },
-  {
-    id: "a2", name: "Fushimi Inari Shrine", type: "Cultural Site", category: "history",
-    location: "Kyoto, Japan", rating: 4.9, reviews: 89000, duration: "2–4 hrs", price: "Free",
-    tags: ["Spiritual", "Photography", "Hiking"],
-    image: require("@/assets/destinations/kyoto.jpg"),
-    description: "Thousands of vermillion torii gates winding up a sacred mountain. Pure magic at dawn.",
-    color: "#F97316",
-  },
-  {
-    id: "a3", name: "Maldives Snorkeling Safari", type: "Water Activity", category: "water_sports",
-    location: "North Malé Atoll", rating: 4.9, reviews: 23000, duration: "Half day", price: "$85",
-    tags: ["Ocean", "Marine Life", "Adventure"],
-    image: require("@/assets/destinations/maldives.jpg"),
-    description: "Swim alongside manta rays, sea turtles, and technicolor reef fish in crystal-clear lagoons.",
-    color: "#06B6D4",
-  },
-  {
-    id: "a4", name: "Sagrada Família", type: "Architecture", category: "art_culture",
-    location: "Barcelona, Spain", rating: 4.8, reviews: 210000, duration: "1–2 hrs", price: "$30",
-    tags: ["Gaudí", "Art", "Architecture"],
-    image: require("@/assets/destinations/barcelona.jpg"),
-    description: "Gaudí's unfinished masterpiece — a cathedral that looks like it grew from the earth itself.",
-    color: "#A855F7",
-  },
-  {
-    id: "a5", name: "Ubud Rice Terraces Trek", type: "Nature Walk", category: "nature",
-    location: "Bali, Indonesia", rating: 4.7, reviews: 45000, duration: "3–4 hrs", price: "$15",
-    tags: ["Hiking", "Nature", "Photography"],
-    image: require("@/assets/destinations/bali.jpg"),
-    description: "Walk through emerald-green rice terraces carved into hillsides over 2,000 years ago.",
-    color: "#22C55E",
-  },
-  {
-    id: "a6", name: "Torres del Paine Trek", type: "Adventure", category: "adventure",
-    location: "Patagonia, Chile", rating: 4.9, reviews: 18000, duration: "Full day", price: "$25",
-    tags: ["Trekking", "Wilderness", "Epic"],
-    image: require("@/assets/destinations/patagonia.jpg"),
-    description: "Granite towers, glacial lakes, and wind that tries to blow you off the planet. Worth every step.",
-    color: "#EF4444",
-  },
-  {
-    id: "a7", name: "Santorini Sunset Cruise", type: "Experience", category: "beaches",
-    location: "Santorini, Greece", rating: 4.8, reviews: 67000, duration: "4 hrs", price: "$70",
-    tags: ["Sunset", "Romantic", "Sailing"],
-    image: require("@/assets/destinations/santorini.jpg"),
-    description: "Watch the sun melt into the Aegean from a catamaran. Hot springs, wine, and magic.",
-    color: "#F59E0B",
-  },
-  {
-    id: "a8", name: "Tokyo Ramen Alley", type: "Food Experience", category: "food",
-    location: "Shinjuku, Tokyo", rating: 4.7, reviews: 34000, duration: "2 hrs", price: "$20",
-    tags: ["Ramen", "Street Food", "Local"],
-    image: require("@/assets/destinations/tokyo.jpg"),
-    description: "Twelve tiny ramen shops in one alley. Each one a different broth, a different story.",
-    color: "#F59E0B",
-  },
-  {
-    id: "a9", name: "Northern Lights Snowmobile", type: "Adventure", category: "extreme",
-    location: "Iceland", rating: 4.9, reviews: 12000, duration: "4 hrs", price: "$150",
-    tags: ["Aurora", "Snow", "Adrenaline"],
-    image: require("@/assets/destinations/iceland.jpg"),
-    description: "Race across a frozen tundra under dancing curtains of green and purple light.",
-    color: "#8B5CF6",
-  },
-  {
-    id: "a10", name: "Machu Picchu Sunrise", type: "Wonder", category: "landmarks",
-    location: "Cusco, Peru", rating: 5.0, reviews: 98000, duration: "Full day", price: "$50",
-    tags: ["Inca", "Sunrise", "Iconic"],
-    image: require("@/assets/destinations/machupicchu.jpg"),
-    description: "Watch mist lift off the lost city of the Incas as the sun rises over the Andes.",
-    color: "#D97706",
-  },
-  {
-    id: "a11", name: "Amsterdam Canal Kayak", type: "Water Activity", category: "water_sports",
-    location: "Amsterdam, Netherlands", rating: 4.6, reviews: 28000, duration: "2 hrs", price: "$35",
-    tags: ["Canals", "Kayaking", "City"],
-    image: require("@/assets/destinations/amsterdam.jpg"),
-    description: "Paddle through 17th-century canals, under drawbridges, past houseboat gardens.",
-    color: "#0EA5E9",
-  },
-  {
-    id: "a12", name: "Phuket Night Market", type: "Food & Shopping", category: "nightlife",
-    location: "Phuket, Thailand", rating: 4.5, reviews: 52000, duration: "3 hrs", price: "$10",
-    tags: ["Street Food", "Shopping", "Nightlife"],
-    image: require("@/assets/destinations/phuket.jpg"),
-    description: "A sensory overload of pad thai, mango sticky rice, silk scarves, and neon lights.",
-    color: "#EC4899",
-  },
+  // ── DUBAI ──
+  { id: "d1", name: "Burj Khalifa Observation Deck", type: "Landmark", category: "landmarks", destination: "dubai",
+    location: "Downtown Dubai", rating: 4.8, reviews: 142000, duration: "2–3 hrs", price: "$40", priceLevel: "mid",
+    tags: ["Views", "Architecture", "Iconic"], image: require("@/assets/destinations/dubai.jpg"),
+    description: "Stand at the top of the world's tallest building. 360° views that will leave you speechless.", color: "#F94498" },
+  { id: "d2", name: "Dubai Mall & Aquarium", type: "Shopping & Experience", category: "shopping", destination: "dubai",
+    location: "Downtown Dubai", rating: 4.7, reviews: 210000, duration: "3–5 hrs", price: "$30", priceLevel: "mid",
+    tags: ["Shopping", "Aquarium", "Family"], image: require("@/assets/destinations/dubai.jpg"),
+    description: "The world's largest mall with an indoor aquarium, ice rink, and 1,200+ stores.", color: "#06B6D4" },
+  { id: "d3", name: "Gold Souk & Spice Souk", type: "Shopping", category: "shopping", destination: "dubai",
+    location: "Deira, Dubai", rating: 4.5, reviews: 89000, duration: "2 hrs", price: "Free", priceLevel: "budget",
+    tags: ["Gold", "Bargain", "Authentic"], image: require("@/assets/destinations/dubai.jpg"),
+    description: "Narrow alleyways glittering with gold and fragrant with spices. Bargain hard.", color: "#D97706" },
+  { id: "d4", name: "Desert Safari & BBQ Dinner", type: "Adventure", category: "adventure", destination: "dubai",
+    location: "Dubai Desert", rating: 4.8, reviews: 67000, duration: "6 hrs", price: "$80", priceLevel: "mid",
+    tags: ["Dunes", "Camel", "Sunset"], image: require("@/assets/destinations/dubai.jpg"),
+    description: "Dune bashing, camel rides, and a BBQ dinner under the stars in the Arabian desert.", color: "#F97316" },
+  { id: "d5", name: "Atlantis Aquaventure Waterpark", type: "Water Park", category: "water_sports", destination: "dubai",
+    location: "Palm Jumeirah", rating: 4.7, reviews: 45000, duration: "Full day", price: "$90", priceLevel: "premium",
+    tags: ["Slides", "Beach", "Family"], image: require("@/assets/destinations/dubai.jpg"),
+    description: "The Middle East's best waterpark with 105 rides, a private beach, and a marine habitat.", color: "#0EA5E9" },
+  { id: "d6", name: "Burj Al Arab Afternoon Tea", type: "Luxury Dining", category: "food", destination: "dubai",
+    location: "Jumeirah", rating: 4.9, reviews: 12000, duration: "2 hrs", price: "$150", priceLevel: "luxury",
+    tags: ["Luxury", "Iconic", "Tea"], image: require("@/assets/destinations/dubai.jpg"),
+    description: "Afternoon tea in the world's most iconic hotel. Gold-plated everything.", color: "#F59E0B" },
+  { id: "d7", name: "Dubai Frame", type: "Landmark", category: "landmarks", destination: "dubai",
+    location: "Zabeel Park", rating: 4.4, reviews: 38000, duration: "1–2 hrs", price: "$15", priceLevel: "budget",
+    tags: ["Views", "Architecture", "Instagram"], image: require("@/assets/destinations/dubai.jpg"),
+    description: "A 150m picture frame with old Dubai on one side and new Dubai on the other.", color: "#A855F7" },
+  { id: "d8", name: "Dubai Marina Night Walk", type: "Nightlife", category: "nightlife", destination: "dubai",
+    location: "Dubai Marina", rating: 4.6, reviews: 55000, duration: "2–3 hrs", price: "Free", priceLevel: "budget",
+    tags: ["Yachts", "Restaurants", "Nightlife"], image: require("@/assets/destinations/dubai.jpg"),
+    description: "Yacht-lined waterfront with dozens of restaurants, bars, and a buzzing atmosphere.", color: "#8B5CF6" },
+
+  // ── KYOTO ──
+  { id: "k1", name: "Fushimi Inari Shrine", type: "Cultural Site", category: "history", destination: "kyoto",
+    location: "Fushimi, Kyoto", rating: 4.9, reviews: 89000, duration: "2–4 hrs", price: "Free", priceLevel: "budget",
+    tags: ["Torii Gates", "Spiritual", "Hiking"], image: require("@/assets/destinations/kyoto.jpg"),
+    description: "Thousands of vermillion torii gates winding up a sacred mountain. Pure magic at dawn.", color: "#F97316" },
+  { id: "k2", name: "Arashiyama Bamboo Grove", type: "Nature", category: "nature", destination: "kyoto",
+    location: "Arashiyama, Kyoto", rating: 4.7, reviews: 72000, duration: "1–2 hrs", price: "Free", priceLevel: "budget",
+    tags: ["Bamboo", "Photography", "Zen"], image: require("@/assets/destinations/kyoto.jpg"),
+    description: "Walk through towering bamboo stalks that creak and sway in the wind. Otherworldly.", color: "#22C55E" },
+  { id: "k3", name: "Kinkaku-ji Golden Pavilion", type: "Temple", category: "art_culture", destination: "kyoto",
+    location: "Kita, Kyoto", rating: 4.8, reviews: 115000, duration: "1 hr", price: "$5", priceLevel: "budget",
+    tags: ["Gold", "Temple", "Iconic"], image: require("@/assets/destinations/kyoto.jpg"),
+    description: "A Zen temple covered in gold leaf, reflected perfectly in a mirror pond.", color: "#D97706" },
+  { id: "k4", name: "Nishiki Market Food Tour", type: "Food Experience", category: "food", destination: "kyoto",
+    location: "Central Kyoto", rating: 4.6, reviews: 43000, duration: "2 hrs", price: "$30", priceLevel: "mid",
+    tags: ["Street Food", "Tofu", "Pickles"], image: require("@/assets/destinations/kyoto.jpg"),
+    description: "'Kyoto's Kitchen' — 400-year-old covered market with 100+ stalls of local delicacies.", color: "#F59E0B" },
+  { id: "k5", name: "Geisha District Night Walk", type: "Cultural Experience", category: "art_culture", destination: "kyoto",
+    location: "Gion, Kyoto", rating: 4.7, reviews: 61000, duration: "2 hrs", price: "Free", priceLevel: "budget",
+    tags: ["Geisha", "Lanterns", "History"], image: require("@/assets/destinations/kyoto.jpg"),
+    description: "Cobblestone streets lined with ochaya teahouses. Spot a geiko if you're lucky.", color: "#EC4899" },
+
+  // ── BALI ──
+  { id: "b1", name: "Ubud Rice Terraces Trek", type: "Nature Walk", category: "nature", destination: "bali",
+    location: "Ubud, Bali", rating: 4.7, reviews: 45000, duration: "3–4 hrs", price: "$15", priceLevel: "budget",
+    tags: ["Hiking", "Nature", "Photography"], image: require("@/assets/destinations/bali.jpg"),
+    description: "Walk through emerald-green rice terraces carved into hillsides over 2,000 years ago.", color: "#22C55E" },
+  { id: "b2", name: "Tanah Lot Temple Sunset", type: "Temple", category: "landmarks", destination: "bali",
+    location: "Tabanan, Bali", rating: 4.8, reviews: 78000, duration: "2 hrs", price: "$5", priceLevel: "budget",
+    tags: ["Sunset", "Temple", "Ocean"], image: require("@/assets/destinations/bali.jpg"),
+    description: "A sea temple perched on a rock formation, silhouetted against a blazing sunset.", color: "#F97316" },
+  { id: "b3", name: "Seminyak Beach Club Day", type: "Beach", category: "beaches", destination: "bali",
+    location: "Seminyak, Bali", rating: 4.6, reviews: 52000, duration: "Full day", price: "$50", priceLevel: "premium",
+    tags: ["Pool", "Beach", "Cocktails"], image: require("@/assets/destinations/bali.jpg"),
+    description: "Bali's most stylish beach clubs with infinity pools, DJs, and ocean views.", color: "#06B6D4" },
+  { id: "b4", name: "Balinese Cooking Class", type: "Food Experience", category: "food", destination: "bali",
+    location: "Ubud, Bali", rating: 4.8, reviews: 23000, duration: "4 hrs", price: "$45", priceLevel: "mid",
+    tags: ["Cooking", "Spices", "Local"], image: require("@/assets/destinations/bali.jpg"),
+    description: "Visit a local market, then cook 8 traditional dishes in an open-air kitchen.", color: "#F59E0B" },
+
+  // ── BARCELONA ──
+  { id: "bc1", name: "Sagrada Família", type: "Architecture", category: "art_culture", destination: "barcelona",
+    location: "Eixample, Barcelona", rating: 4.8, reviews: 210000, duration: "1–2 hrs", price: "$30", priceLevel: "mid",
+    tags: ["Gaudí", "Art", "Architecture"], image: require("@/assets/destinations/barcelona.jpg"),
+    description: "Gaudí's unfinished masterpiece — a cathedral that looks like it grew from the earth itself.", color: "#A855F7" },
+  { id: "bc2", name: "La Boqueria Market", type: "Food Experience", category: "food", destination: "barcelona",
+    location: "Las Ramblas, Barcelona", rating: 4.5, reviews: 145000, duration: "1–2 hrs", price: "Free", priceLevel: "budget",
+    tags: ["Market", "Tapas", "Fresh"], image: require("@/assets/destinations/barcelona.jpg"),
+    description: "Europe's most famous food market. Jamón, seafood, fresh fruit, and chaos.", color: "#F59E0B" },
+  { id: "bc3", name: "Barceloneta Beach", type: "Beach", category: "beaches", destination: "barcelona",
+    location: "Barceloneta, Barcelona", rating: 4.4, reviews: 98000, duration: "Half day", price: "Free", priceLevel: "budget",
+    tags: ["Beach", "Sun", "City"], image: require("@/assets/destinations/barcelona.jpg"),
+    description: "City beach with golden sand, beach bars, and the Mediterranean at your feet.", color: "#06B6D4" },
+  { id: "bc4", name: "Gothic Quarter Night Tour", type: "History Walk", category: "history", destination: "barcelona",
+    location: "Barri Gòtic, Barcelona", rating: 4.7, reviews: 34000, duration: "2 hrs", price: "$20", priceLevel: "mid",
+    tags: ["History", "Medieval", "Night"], image: require("@/assets/destinations/barcelona.jpg"),
+    description: "2,000 years of history in a labyrinth of narrow streets. Roman ruins under your feet.", color: "#D97706" },
+
+  // ── TOKYO ──
+  { id: "t1", name: "Shibuya Crossing", type: "Landmark", category: "landmarks", destination: "tokyo",
+    location: "Shibuya, Tokyo", rating: 4.7, reviews: 187000, duration: "30 min", price: "Free", priceLevel: "budget",
+    tags: ["Iconic", "Crowds", "Photography"], image: require("@/assets/destinations/tokyo.jpg"),
+    description: "The world's busiest pedestrian crossing. 3,000 people cross at once. Pure Tokyo energy.", color: "#F94498" },
+  { id: "t2", name: "Tsukiji Outer Market", type: "Food Experience", category: "food", destination: "tokyo",
+    location: "Chuo, Tokyo", rating: 4.7, reviews: 92000, duration: "2 hrs", price: "$20", priceLevel: "mid",
+    tags: ["Sushi", "Seafood", "Morning"], image: require("@/assets/destinations/tokyo.jpg"),
+    description: "The world's freshest sushi at 6am. Tuna, sea urchin, and tamagoyaki straight from the source.", color: "#F59E0B" },
+  { id: "t3", name: "Shinjuku Nightlife", type: "Nightlife", category: "nightlife", destination: "tokyo",
+    location: "Shinjuku, Tokyo", rating: 4.6, reviews: 73000, duration: "4 hrs", price: "$30", priceLevel: "mid",
+    tags: ["Bars", "Neon", "Izakaya"], image: require("@/assets/destinations/tokyo.jpg"),
+    description: "200 bars in one block. Golden Gai, Robot Restaurant, and izakayas that never close.", color: "#8B5CF6" },
+  { id: "t4", name: "teamLab Planets", type: "Art Experience", category: "art_culture", destination: "tokyo",
+    location: "Toyosu, Tokyo", rating: 4.9, reviews: 41000, duration: "2 hrs", price: "$35", priceLevel: "mid",
+    tags: ["Digital Art", "Immersive", "Unique"], image: require("@/assets/destinations/tokyo.jpg"),
+    description: "Walk through rooms of infinite mirrors, floating flowers, and digital waterfalls. Mind-bending.", color: "#EC4899" },
 ];
 
 export default function SwipeScreen() {
   const insets = useSafeAreaInsets();
-  const { tripId, interests, destination } = useLocalSearchParams<{ tripId: string; interests: string; destination: string }>();
+  const { tripId, interests, destination, budget } = useLocalSearchParams<{ tripId: string; interests: string; destination: string; budget: string }>();
 
-  // Filter cards by selected interests if provided
-  const filteredAttractions = interests
-    ? ALL_ATTRACTIONS.filter((a) => interests.split(",").includes(a.category)).concat(
-        ALL_ATTRACTIONS.filter((a) => !interests.split(",").includes(a.category))
-      )
+  // 1. Filter by destination (exact match)
+  const destFiltered = destination
+    ? ALL_ATTRACTIONS.filter((a) => a.destination === destination.toLowerCase())
     : ALL_ATTRACTIONS;
+
+  // 2. Filter by budget level
+  const budgetFiltered = budget
+    ? destFiltered.filter((a) => budgetAllows(a.priceLevel, budget))
+    : destFiltered;
+
+  // 3. Sort: selected interest categories first, then rest
+  const selectedInterests = interests ? interests.split(",") : [];
+  const filteredAttractions = selectedInterests.length > 0
+    ? [
+        ...budgetFiltered.filter((a) => selectedInterests.includes(a.category)),
+        ...budgetFiltered.filter((a) => !selectedInterests.includes(a.category)),
+      ]
+    : budgetFiltered;
 
   const [cards, setCards] = useState(filteredAttractions);
   const [liked, setLiked] = useState<Attraction[]>([]);

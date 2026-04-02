@@ -8,9 +8,9 @@ import { LinearGradient } from "expo-linear-gradient";
 import * as Haptics from "expo-haptics";
 import { router, useLocalSearchParams } from "expo-router";
 import React, { useState } from "react";
+import { Image } from "expo-image";
 import {
   Dimensions,
-  Image,
   Platform,
   ScrollView,
   StyleSheet,
@@ -34,23 +34,23 @@ interface Interest {
 }
 
 const INTERESTS: Interest[] = [
-  { id: "landmarks", label: "Landmarks", image: { uri: "https://d2xsxph8kpxj0f.cloudfront.net/310519663492248962/5G6CWkFZowcex8zpzMErDd/landmarks_db242186.jpg" }, color: "#F94498" },
-  { id: "nature", label: "Nature", image: require("@/assets/interests/nature.jpg"), color: "#22C55E" },
-  { id: "beaches", label: "Beaches", image: require("@/assets/interests/beaches.jpg"), color: "#06B6D4" },
-  { id: "food", label: "Food & Drink", image: { uri: "https://d2xsxph8kpxj0f.cloudfront.net/310519663492248962/5G6CWkFZowcex8zpzMErDd/food_7b47d10b.jpg" }, color: "#F59E0B" },
-  { id: "nightlife", label: "Nightlife", image: require("@/assets/interests/nightlife.jpg"), color: "#8B5CF6" },
-  { id: "shopping", label: "Shopping", image: require("@/assets/interests/shopping.jpg"), color: "#EC4899" },
-  { id: "adventure", label: "Adventure", image: { uri: "https://d2xsxph8kpxj0f.cloudfront.net/310519663492248962/5G6CWkFZowcex8zpzMErDd/adventure_4cc17bda.jpg" }, color: "#EF4444" },
-  { id: "wellness", label: "Wellness & Spa", image: require("@/assets/interests/wellness.jpg"), color: "#10B981" },
-  { id: "history", label: "History", image: require("@/assets/destinations/rome.jpg"), color: "#D97706" },
-  { id: "water_sports", label: "Water Sports", image: require("@/assets/destinations/maldives.jpg"), color: "#0EA5E9" },
-  { id: "art_culture", label: "Art & Culture", image: require("@/assets/destinations/paris.jpg"), color: "#A855F7" },
-  { id: "extreme", label: "Extreme Activities", image: require("@/assets/destinations/patagonia.jpg"), color: "#F97316" },
+  { id: "landmarks",  label: "Landmarks",         image: "https://images.unsplash.com/photo-1499856871958-5b9627545d1a?w=400&q=70", color: "#F94498" },
+  { id: "nature",     label: "Nature",             image: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=400&q=70", color: "#22C55E" },
+  { id: "beaches",    label: "Beaches",            image: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=400&q=70", color: "#06B6D4" },
+  { id: "food",       label: "Food & Drink",       image: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=400&q=70", color: "#F59E0B" },
+  { id: "nightlife",  label: "Nightlife",          image: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=400&q=70", color: "#8B5CF6" },
+  { id: "shopping",   label: "Shopping",           image: "https://images.unsplash.com/photo-1483985988355-763728e1935b?w=400&q=70", color: "#EC4899" },
+  { id: "adventure",  label: "Adventure",          image: "https://images.unsplash.com/photo-1551632811-561732d1e306?w=400&q=70", color: "#EF4444" },
+  { id: "wellness",   label: "Wellness & Spa",     image: "https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=400&q=70", color: "#10B981" },
+  { id: "history",    label: "History",            image: "https://images.unsplash.com/photo-1552832230-c0197dd311b5?w=400&q=70", color: "#D97706" },
+  { id: "water_sports", label: "Water Sports",    image: "https://images.unsplash.com/photo-1530870110042-98b2cb110834?w=400&q=70", color: "#0EA5E9" },
+  { id: "art_culture", label: "Art & Culture",    image: "https://images.unsplash.com/photo-1565060169194-19fabf63012c?w=400&q=70", color: "#A855F7" },
+  { id: "extreme",    label: "Extreme Activities", image: "https://images.unsplash.com/photo-1601024445121-e5b82f020549?w=400&q=70", color: "#F97316" },
 ];
 
 export default function InterestsScreen() {
   const insets = useSafeAreaInsets();
-  const { tripId } = useLocalSearchParams<{ tripId: string }>();
+  const { tripId, destination, budget } = useLocalSearchParams<{ tripId: string; destination: string; budget: string }>();
   const [selected, setSelected] = useState<Set<InterestCategory>>(new Set());
   const [saving, setSaving] = useState(false);
 
@@ -70,7 +70,7 @@ export default function InterestsScreen() {
     if (Platform.OS !== "web") Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
     await recordInterestSelections(Array.from(selected));
     setSaving(false);
-    router.push({ pathname: "/(trip)/destination-pick", params: { tripId, interests: Array.from(selected).join(",") } } as never);
+    router.push({ pathname: "/(trip)/swipe", params: { tripId, interests: Array.from(selected).join(","), destination: destination ?? "dubai", budget: budget ?? "mid" } } as never);
   };
 
   return (
@@ -109,7 +109,13 @@ export default function InterestsScreen() {
               activeOpacity={0.88}
             >
               {/* Photo */}
-              <Image source={item.image} style={styles.cardImage} resizeMode="cover" />
+              <Image
+                source={item.image}
+                style={styles.cardImage}
+                contentFit="cover"
+                transition={200}
+                cachePolicy="memory-disk"
+              />
 
               {/* Gradient overlay */}
               <LinearGradient

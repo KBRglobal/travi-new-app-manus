@@ -251,3 +251,10 @@
 - [x] Filter swipe attractions by chosen destination
 - [x] Build DNA personality summary screen after swipe (what we learned, traits updated, interests boosted)
 - [x] Wire: interests → destination picker → swipe → DNA summary → itinerary
+
+## Phase 25 — Flow Fix + Smart Swipe Filtering
+- [x] Remove destination-pick from flow (destination already chosen in plan.tsx)
+- [x] Wire interests → swipe directly, passing destination + budget from plan.tsx
+- [x] Fix slow image loading in interests grid (use Expo Image with lazy loading)
+- [x] Filter swipe attractions by destination + budget level + selected interests
+- [x] Add budget-aware filtering (e.g. Shopping + Luxury → high-end malls only)
