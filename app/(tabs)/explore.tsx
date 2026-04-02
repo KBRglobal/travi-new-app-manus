@@ -81,7 +81,7 @@ export default function ExploreScreen() {
   };
 
   return (
-    <View style={[S.container, { paddingTop: insets.top }]}>
+    <View style={S.container}>
       <LinearGradient
         colors={["#0D0628", "#1A0A3D", "#0D0628"]}
         locations={[0, 0.5, 1]}
@@ -89,7 +89,7 @@ export default function ExploreScreen() {
       />
 
       {/* Header */}
-      <View style={S.header}>
+      <View style={[S.header, { paddingTop: insets.top + 8 }]}>
         <View>
           <Text style={S.headerTitle}>Explore</Text>
           <Text style={S.headerSub}>Discover your next adventure</Text>
@@ -139,6 +139,7 @@ export default function ExploreScreen() {
               <LinearGradient
                 colors={["rgba(100,67,244,0.4)", "rgba(249,68,152,0.25)"]}
                 style={StyleSheet.absoluteFillObject}
+                pointerEvents="none"
               />
             )}
             <IconSymbol
