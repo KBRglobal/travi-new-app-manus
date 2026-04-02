@@ -34,7 +34,7 @@ export default function EditProfileScreen() {
         {/* Avatar */}
         <View style={S.avatarSection}>
           <View style={[S.avatarCircle, { backgroundColor: colors.surface }]}>
-            <Image source={require("@/assets/images/mascot-dark.png")} style={S.avatarImg} />
+            <Image source={require("@/assets/images/icon.png")} style={S.avatarImg} />
           </View>
           <TouchableOpacity style={S.changePhotoBtn} activeOpacity={0.8}>
             <Text style={S.changePhotoText}>Change Photo</Text>
