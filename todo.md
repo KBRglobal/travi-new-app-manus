@@ -410,3 +410,7 @@
 ## Critical Bug Fixes
 - [x] Move settings screens out of (tabs)/ to prevent them appearing in tab bar
 - [x] Fix react-native-maps iOS crash
+
+## Onboarding Flow Fix
+- [ ] Remove Activities and Pace steps from quiz.tsx
+- [ ] Move activity/pace selection into trip planning flow

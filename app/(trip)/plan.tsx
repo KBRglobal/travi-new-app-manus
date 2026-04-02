@@ -46,19 +46,21 @@ const CUSTOM_STEP = 250;
 const TRAVI_MESSAGES = [
   "Where does your heart want to go?",
   "What's your travel vibe?",
+  "How do you like to travel?",
   "How many people are going?",
   "What's your budget range?",
   "When are you traveling?",
 ];
 
-type Step = "destination" | "style" | "travelers" | "budget" | "dates";
-const STEPS: Step[] = ["destination", "style", "travelers", "budget", "dates"];
+type Step = "destination" | "style" | "pace" | "travelers" | "budget" | "dates";
+const STEPS: Step[] = ["destination", "style", "pace", "travelers", "budget", "dates"];
 
 export default function PlanScreen() {
   const { dispatch } = useStore();
   const [stepIndex, setStepIndex] = useState(0);
   const [selectedDest, setSelectedDest] = useState<typeof DESTINATIONS[0] | null>(null);
   const [selectedStyle, setSelectedStyle] = useState<string | null>(null);
+  const [selectedPace, setSelectedPace] = useState<"slow" | "balanced" | "full" | null>(null);
   const [travelers, setTravelers] = useState(2);
   const [selectedBudget, setSelectedBudget] = useState<string | null>(null);
   const [customAmount, setCustomAmount] = useState(4000);
@@ -89,6 +91,7 @@ export default function PlanScreen() {
   const canProceed = () => {
     if (currentStep === "destination") return !!selectedDest;
     if (currentStep === "style") return !!selectedStyle;
+    if (currentStep === "pace") return !!selectedPace;
     if (currentStep === "travelers") return travelers > 0;
     if (currentStep === "budget") return !!selectedBudget;
     if (currentStep === "dates") return !!startDate && !!endDate;
@@ -246,7 +249,40 @@ export default function PlanScreen() {
           </ScrollView>
         )}
 
-        {/* ── STEP 3: Travelers ── */}
+        {/* ── STEP 3: Pace ── */}
+        {currentStep === "pace" && (
+          <View style={styles.paceWrap}>
+            {[
+              { id: "slow", label: "Slow & Deep", desc: "2-3 things a day, really feel each place", emoji: "🌿", color: "#4CAF50" },
+              { id: "balanced", label: "Balanced", desc: "Mix of must-sees and free time", emoji: "⚡", color: "#2196F3" },
+              { id: "full", label: "Full Send", desc: "Every hour counts, I'll sleep at home", emoji: "🔥", color: "#F94498" },
+            ].map((pace) => {
+              const selected = selectedPace === pace.id;
+              return (
+                <TouchableOpacity
+                  key={pace.id}
+                  style={[styles.paceCard, selected && { borderColor: pace.color, backgroundColor: pace.color + "22" }]}
+                  onPress={() => {
+                    if (Platform.OS !== "web") Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+                    setSelectedPace(pace.id as "slow" | "balanced" | "full");
+                  }}
+                  activeOpacity={0.88}
+                >
+                  <Text style={styles.paceEmoji}>{pace.emoji}</Text>
+                  <Text style={[styles.paceLabel, selected && { color: pace.color }]}>{pace.label}</Text>
+                  <Text style={styles.paceDesc}>{pace.desc}</Text>
+                  {selected && (
+                    <View style={[styles.paceCheck, { backgroundColor: pace.color }]}>
+                      <IconSymbol name="checkmark" size={12} color="#FFFFFF" />
+                    </View>
+                  )}
+                </TouchableOpacity>
+              );
+            })}
+          </View>
+        )}
+
+        {/* ── STEP 4: Travelers ── */}
         {currentStep === "travelers" && (
           <View style={styles.travelersWrap}>
             <View style={styles.travelersCard}>
@@ -670,4 +706,10 @@ const styles = StyleSheet.create({
   sliderPresets: { flexDirection: "row", gap: 8, flexWrap: "wrap", marginTop: 4 },
   presetChipText: { color: "rgba(255,255,255,0.5)", fontSize: 12, fontWeight: "600" },
   presetChipTextActive: { color: "#C084FC" },
+  paceWrap: { flex: 1, paddingHorizontal: 20, paddingTop: 8, gap: 12 },
+  paceCard: { borderRadius: 16, borderWidth: 1.5, borderColor: "rgba(255,255,255,0.1)", backgroundColor: "rgba(255,255,255,0.05)", padding: 20, flexDirection: "row", alignItems: "center", gap: 16, position: "relative" },
+  paceEmoji: { fontSize: 32 },
+  paceLabel: { fontSize: 17, fontWeight: "700", color: "#FFFFFF", marginBottom: 4 },
+  paceDesc: { fontSize: 13, color: "rgba(255,255,255,0.55)", lineHeight: 18 },
+  paceCheck: { position: "absolute", top: 12, right: 12, width: 22, height: 22, borderRadius: 11, alignItems: "center", justifyContent: "center" },
 });

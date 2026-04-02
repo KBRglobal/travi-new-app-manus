@@ -240,7 +240,7 @@ function getDNAProfile(tagCounts: Record<string, number>) {
 
 // ── Quiz phases ───────────────────────────────────────────────────────────────
 
-type Phase = "activities" | "pace" | "questions" | "result";
+type Phase = "questions" | "result";
 
 // ── Component ─────────────────────────────────────────────────────────────────
 
@@ -248,7 +248,7 @@ export default function QuizScreen() {
   const { dispatch } = useStore();
 
   // Phase state
-  const [phase, setPhase] = useState<Phase>("activities");
+  const [phase, setPhase] = useState<Phase>("questions");
 
   // Phase A
   const [selectedActivities, setSelectedActivities] = useState<ActivityCategory[]>([]);
@@ -273,9 +273,9 @@ export default function QuizScreen() {
   const safeQ = Math.max(0, Math.min(Number.isFinite(currentQ) ? currentQ : 0, QUESTIONS.length - 1));
   const question = QUESTIONS[safeQ];
 
-  // Progress: activities=0, pace=0.08, questions=0.1..1
-  const totalSteps = 2 + QUESTIONS.length; // activities + pace + 10 questions
-  const currentStep = phase === "activities" ? 0 : phase === "pace" ? 1 : phase === "questions" ? 2 + currentQ : totalSteps;
+  // Progress: questions only
+  const totalSteps = QUESTIONS.length;
+  const currentStep = phase === "questions" ? currentQ : totalSteps;
   const progress = currentStep / totalSteps;
 
   useEffect(() => {
@@ -294,29 +294,7 @@ export default function QuizScreen() {
     });
   };
 
-  // ── Phase A handlers ──────────────────────────────────────────────────────
-
-  const toggleActivity = (id: ActivityCategory) => {
-    haptic();
-    setSelectedActivities((prev) =>
-      prev.includes(id) ? prev.filter((a) => a !== id) : [...prev, id]
-    );
-  };
-
-  const handleActivitiesContinue = () => {
-    haptic(Haptics.ImpactFeedbackStyle.Medium);
-    animatePhaseTransition(() => setPhase("pace"));
-  };
-
-  // ── Phase B handlers ──────────────────────────────────────────────────────
-
-  const handlePaceSelect = (pace: TripPace) => {
-    haptic(Haptics.ImpactFeedbackStyle.Medium);
-    setSelectedPace(pace);
-    setTimeout(() => {
-      animatePhaseTransition(() => setPhase("questions"));
-    }, 300);
-  };
+  // ── Removed: Phase A & B handlers (moved to trip planning flow) ──────────
 
   // ── Phase C handlers ──────────────────────────────────────────────────────
 
@@ -402,144 +380,6 @@ export default function QuizScreen() {
       <Text style={S.progressText}>{stepLabel}</Text>
     </View>
   );
-
-  // ── Phase A: Activities ───────────────────────────────────────────────────
-
-  if (phase === "activities") {
-    const canContinue = selectedActivities.length >= 3;
-    return (
-      <View style={S.container}>
-        {renderBackground()}
-        {renderHeader(`${selectedActivities.length}/12`)}
-        <Animated.View style={{ flex: 1, opacity: phaseAnim }}>
-          <View style={S.phaseHeader}>
-            <View style={S.duckRow}>
-              <View style={S.duckAvatar}>
-                <LinearGradient colors={["#6443F4", "#F94498"]} style={S.duckGradient}>
-                  <Image source={require("@/assets/logos/mascot-dark.png")} style={S.duckImg} resizeMode="contain" />
-                </LinearGradient>
-              </View>
-              <View style={S.duckBubble}>
-                <LinearGradient colors={["rgba(123,47,190,0.35)", "rgba(233,30,140,0.2)"]} style={S.duckBubbleGradient}>
-                  <Text style={S.duckBubbleText}>Step 1 of 3</Text>
-                </LinearGradient>
-              </View>
-            </View>
-            <Text style={S.phaseTitle}>What do you love doing on a trip?</Text>
-            <Text style={S.phaseSubtitle}>Pick at least 3 — we'll filter everything to match.</Text>
-          </View>
-
-          <ScrollView
-            contentContainerStyle={S.activitiesGrid}
-            showsVerticalScrollIndicator={false}
-          >
-            {ACTIVITIES.map((act) => {
-              const isSelected = selectedActivities.includes(act.id);
-              return (
-                <TouchableOpacity
-                  key={act.id}
-                  style={[S.activityChip, isSelected && { borderColor: act.color, backgroundColor: act.color + "22" }]}
-                  onPress={() => toggleActivity(act.id)}
-                  activeOpacity={0.8}
-                >
-                  {isSelected && (
-                    <View style={[S.activityChipGlow, { backgroundColor: act.color + "15" }]} />
-                  )}
-                  <Text style={S.activityEmoji}>{act.emoji}</Text>
-                  <Text style={[S.activityLabel, isSelected && { color: "#FFFFFF" }]}>{act.label}</Text>
-                  {isSelected && (
-                    <View style={[S.activityCheck, { backgroundColor: act.color }]}>
-                      <IconSymbol name="checkmark" size={9} color="#FFFFFF" />
-                    </View>
-                  )}
-                </TouchableOpacity>
-              );
-            })}
-          </ScrollView>
-
-          <View style={S.continueWrap}>
-            <TouchableOpacity
-              style={[S.continueBtn, !canContinue && S.continueBtnDisabled]}
-              onPress={canContinue ? handleActivitiesContinue : undefined}
-              activeOpacity={0.88}
-            >
-              <LinearGradient
-                colors={canContinue ? ["#6443F4", "#F94498"] : ["rgba(255,255,255,0.1)", "rgba(255,255,255,0.05)"]}
-                start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
-                style={StyleSheet.absoluteFillObject}
-              />
-              <Text style={[S.continueBtnText, !canContinue && S.continueBtnTextDisabled]}>
-                {canContinue ? `Continue with ${selectedActivities.length} interests →` : `Pick at least ${3 - selectedActivities.length} more`}
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </Animated.View>
-      </View>
-    );
-  }
-
-  // ── Phase B: Pace ─────────────────────────────────────────────────────────
-
-  if (phase === "pace") {
-    return (
-      <View style={S.container}>
-        {renderBackground()}
-        {renderHeader("2 / 3")}
-        <Animated.View style={[{ flex: 1 }, { opacity: phaseAnim }]}>
-          <View style={S.phaseHeader}>
-            <View style={S.duckRow}>
-              <View style={S.duckAvatar}>
-                <LinearGradient colors={["#6443F4", "#F94498"]} style={S.duckGradient}>
-                  <Image source={require("@/assets/logos/mascot-dark.png")} style={S.duckImg} resizeMode="contain" />
-                </LinearGradient>
-              </View>
-              <View style={S.duckBubble}>
-                <LinearGradient colors={["rgba(123,47,190,0.35)", "rgba(233,30,140,0.2)"]} style={S.duckBubbleGradient}>
-                  <Text style={S.duckBubbleText}>Step 2 of 3</Text>
-                </LinearGradient>
-              </View>
-            </View>
-            <Text style={S.phaseTitle}>How do you like to travel?</Text>
-            <Text style={S.phaseSubtitle}>This shapes how many activities we pack into each day.</Text>
-          </View>
-
-          <View style={S.paceCards}>
-            {PACE_OPTIONS.map((opt) => {
-              const isSelected = selectedPace === opt.id;
-              return (
-                <TouchableOpacity
-                  key={opt.id}
-                  style={[S.paceCard, isSelected && S.paceCardSelected]}
-                  onPress={() => handlePaceSelect(opt.id)}
-                  activeOpacity={0.85}
-                >
-                  <LinearGradient
-                    colors={isSelected ? opt.colors : ["rgba(255,255,255,0.05)", "rgba(255,255,255,0.02)"]}
-                    start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}
-                    style={StyleSheet.absoluteFillObject}
-                  />
-                  {isSelected && <View style={S.paceCardGlow} />}
-                  <View style={S.paceCardLeft}>
-                    <Text style={S.paceEmoji}>{opt.emoji}</Text>
-                    <View style={{ flex: 1 }}>
-                      <Text style={S.paceLabel}>{opt.label}</Text>
-                      <Text style={S.paceSublabel}>{opt.sublabel}</Text>
-                      <Text style={S.paceDesc}>{opt.desc}</Text>
-                    </View>
-                  </View>
-                  {isSelected && (
-                    <View style={S.paceCheck}>
-                      <IconSymbol name="checkmark" size={12} color="#FFFFFF" />
-                    </View>
-                  )}
-                </TouchableOpacity>
-              );
-            })}
-          </View>
-        </Animated.View>
-      </View>
-    );
-  }
 
   // ── Phase D: Result ───────────────────────────────────────────────────────
 
