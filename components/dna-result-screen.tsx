@@ -515,17 +515,28 @@ export function DNAResultScreen({ dnaProfile, tagCounts, resultAnim, onFinish, o
           ]}
         >
           {/* Points card */}
-          <View style={RS.pointsCard}>
+          <LinearGradient
+            colors={["#2A1A00", "#1A0D00"]}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+            style={RS.pointsCard}
+          >
+            {/* Glow overlay */}
             <LinearGradient
-              colors={["rgba(255,215,0,0.18)", "rgba(255,149,0,0.08)"]}
+              colors={["rgba(255,200,0,0.22)", "rgba(255,120,0,0.10)", "transparent"]}
               start={{ x: 0, y: 0 }}
               end={{ x: 1, y: 1 }}
               style={StyleSheet.absoluteFillObject}
             />
             <View style={RS.pointsLeft}>
-              <View style={RS.pointsIconBox}>
-                <Text style={{ fontSize: 22 }}>⭐</Text>
-              </View>
+              <LinearGradient
+                colors={["#FFD700", "#FF8C00"]}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 1 }}
+                style={RS.pointsIconBox}
+              >
+                <Text style={{ fontSize: 24 }}>⭐</Text>
+              </LinearGradient>
               <View>
                 <Text style={RS.pointsValue}>+{pointsDisplay}</Text>
                 <Text style={RS.pointsPillLabel}>TRAVI Points earned</Text>
@@ -533,11 +544,16 @@ export function DNAResultScreen({ dnaProfile, tagCounts, resultAnim, onFinish, o
             </View>
             <View style={RS.pointsRight}>
               <Text style={RS.pointsRightLabel}>Quiz{"\n"}Complete</Text>
-              <View style={[RS.completeBadge, { backgroundColor: dnaProfile.colors[0] + "33", borderColor: dnaProfile.colors[0] + "66" }]}>
-                <Text style={{ fontSize: 16 }}>✓</Text>
-              </View>
+              <LinearGradient
+                colors={["#FFD700", "#FF8C00"]}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 1 }}
+                style={RS.completeBadge}
+              >
+                <Text style={{ fontSize: 16, color: "#1A0D00", fontWeight: "900" }}>✓</Text>
+              </LinearGradient>
             </View>
-          </View>
+          </LinearGradient>
 
           {/* CTA */}
           <TouchableOpacity style={RS.ctaBtn} onPress={onFinish} activeOpacity={0.88}>
@@ -641,22 +657,27 @@ const RS = StyleSheet.create({
   // Points card
   pointsCard: {
     width: "100%",
-    borderRadius: 18,
+    borderRadius: 20,
     overflow: "hidden",
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    padding: 16,
-    borderWidth: 1,
-    borderColor: "rgba(255,215,0,0.2)",
+    padding: 18,
+    borderWidth: 1.5,
+    borderColor: "rgba(255,200,0,0.45)",
+    shadowColor: "#FFD700",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.35,
+    shadowRadius: 16,
+    elevation: 10,
   },
-  pointsLeft: { flexDirection: "row", alignItems: "center", gap: 12 },
-  pointsIconBox: { width: 44, height: 44, borderRadius: 14, backgroundColor: "rgba(255,215,0,0.15)", alignItems: "center", justifyContent: "center" },
-  pointsValue: { color: "#FFD700", fontSize: 32, fontWeight: "900", lineHeight: 36 },
-  pointsPillLabel: { color: "rgba(255,215,0,0.6)", fontSize: 11, fontWeight: "600", marginTop: 1 },
-  pointsRight: { alignItems: "center", gap: 6 },
-  pointsRightLabel: { color: "rgba(255,255,255,0.35)", fontSize: 10, fontWeight: "600", textAlign: "center" },
-  completeBadge: { width: 32, height: 32, borderRadius: 10, borderWidth: 1, alignItems: "center", justifyContent: "center" },
+  pointsLeft: { flexDirection: "row", alignItems: "center", gap: 14 },
+  pointsIconBox: { width: 52, height: 52, borderRadius: 16, alignItems: "center", justifyContent: "center" },
+  pointsValue: { color: "#FFD700", fontSize: 36, fontWeight: "900", lineHeight: 40, textShadowColor: "rgba(255,215,0,0.5)", textShadowOffset: { width: 0, height: 0 }, textShadowRadius: 8 },
+  pointsPillLabel: { color: "rgba(255,200,80,0.85)", fontSize: 12, fontWeight: "700", marginTop: 2, letterSpacing: 0.3 },
+  pointsRight: { alignItems: "center", gap: 8 },
+  pointsRightLabel: { color: "rgba(255,200,80,0.75)", fontSize: 10, fontWeight: "700", textAlign: "center", letterSpacing: 0.5, textTransform: "uppercase" },
+  completeBadge: { width: 38, height: 38, borderRadius: 12, alignItems: "center", justifyContent: "center" },
 
   // CTA
   ctaBtn: { width: "100%", borderRadius: 18, overflow: "hidden" },
