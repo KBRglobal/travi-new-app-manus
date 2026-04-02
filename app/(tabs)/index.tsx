@@ -9,6 +9,7 @@ import { IconSymbol } from "@/components/ui/icon-symbol";
 import { useStore } from "@/lib/store";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import * as Haptics from "expo-haptics";
+import { fetchWeather, type WeatherData } from "@/lib/weather";
 
 const { width, height } = Dimensions.get("window");
 
@@ -117,6 +118,24 @@ export default function HomeScreen() {
   const dnaType = profile?.travelerDNA?.type;
   const firstName = profile?.name?.split(" ")[0] || "Traveler";
   const hasQuiz = !!dnaType;
+  const [upcomingWeather, setUpcomingWeather] = useState<WeatherData | null>(null);
+
+  // Time-based greeting
+  const greeting = (() => {
+    const h = new Date().getHours();
+    if (h < 12) return "Good morning";
+    if (h < 17) return "Good afternoon";
+    if (h < 21) return "Good evening";
+    return "Good night";
+  })();
+
+  // Fetch weather for upcoming trip
+  useEffect(() => {
+    const upcoming = state.trips.filter(t => t.status === "upcoming").sort((a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime())[0];
+    if (upcoming) {
+      fetchWeather(upcoming.destination).then(w => setUpcomingWeather(w));
+    }
+  }, [state.trips]);
 
   const headerOpacity = scrollY.interpolate({ inputRange: [0, 100], outputRange: [0, 1], extrapolate: "clamp" });
 
@@ -193,7 +212,7 @@ export default function HomeScreen() {
           {/* Header row */}
           <View style={[S.heroHeader, { paddingTop: Math.max(insets.top, 44) + 8 }]}>
             <View>
-              <Text style={S.heroGreeting}>Hello, {firstName}</Text>
+              <Text style={S.heroGreeting}>{greeting}, {firstName}</Text>
             </View>
             <TouchableOpacity style={S.notifBtn} onPress={() => router.push("/(tabs)/notifications" as never)} activeOpacity={0.8}>
               <LinearGradient colors={["rgba(123,47,190,0.5)", "rgba(233,30,140,0.3)"]} style={S.notifGradient}>
@@ -241,6 +260,9 @@ export default function HomeScreen() {
                 <View style={{ flex: 1 }}>
                   <Text style={S.upcomingLabel}>UPCOMING TRIP</Text>
                   <Text style={S.upcomingDest}>{upcoming.destination}, {upcoming.country}</Text>
+                  {upcomingWeather && (
+                    <Text style={S.upcomingWeather}>{upcomingWeather.icon} {upcomingWeather.temp}°C · {upcomingWeather.condition}</Text>
+                  )}
                 </View>
                 <View style={S.activeTripArrow}>
                   <IconSymbol name="chevron.right" size={16} color="#A78BFA" />
@@ -480,6 +502,7 @@ const S = StyleSheet.create({
   upcomingDaysLabel: { fontSize: 9, color: "#A78BFA", fontWeight: "600", letterSpacing: 0.5 },
   upcomingLabel: { color: "#A78BFA", fontSize: 10, fontWeight: "800", letterSpacing: 1.5 },
   upcomingDest: { color: "#FFFFFF", fontSize: 15, fontWeight: "700" },
+  upcomingWeather: { color: "rgba(167,139,250,0.8)", fontSize: 11, marginTop: 2 },
   activeTripBanner: { flexDirection: "row", alignItems: "center", gap: 12, marginHorizontal: 20, marginBottom: 20, borderRadius: 16, overflow: "hidden", padding: 14, borderWidth: 1, borderColor: "rgba(16,185,129,0.3)" },
   activeDot: { width: 8, height: 8, borderRadius: 4, backgroundColor: "#02A65C" },
   activeTripLabel: { color: "#02A65C", fontSize: 10, fontWeight: "800", letterSpacing: 1.5 },

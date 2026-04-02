@@ -3,6 +3,7 @@
  */
 
 import { useState } from "react";
+import { useStore } from "@/lib/store";
 import {
   View, Text, TouchableOpacity, StyleSheet, ScrollView,
   Dimensions, TextInput, Platform, ImageBackground,
@@ -58,11 +59,30 @@ const DESTINATIONS = [
   { id: "d14", city: "Dubai", country: "UAE", category: "city", tag: "🌆 Modern", tagColor: "#F59E0B", image: IMG.dubai, tagline: "Where dreams touch the sky" },
 ];
 
+// DNA compatibility weights per destination category
+const DNA_WEIGHTS: Record<string, Partial<Record<string, number>>> = {
+  beach:     { relaxer: 40, naturalist: 30, photographer: 20, adventurer: 10 },
+  city:      { explorer: 35, foodie: 25, culturalist: 25, photographer: 15 },
+  culture:   { culturalist: 40, historian: 35, photographer: 15, explorer: 10 },
+  adventure: { adventurer: 45, explorer: 30, naturalist: 15, photographer: 10 },
+  nature:    { naturalist: 45, adventurer: 25, photographer: 20, relaxer: 10 },
+};
+
+function dnaCompatibility(category: string, scores?: Record<string, number>): number {
+  if (!scores) return 0;
+  const w = DNA_WEIGHTS[category] ?? {};
+  let s = 0, t = 0;
+  for (const [k, v] of Object.entries(w)) { s += ((scores[k] ?? 0) / 100) * (v as number); t += v as number; }
+  return t > 0 ? Math.round((s / t) * 100) : 0;
+}
+
 export default function ExploreScreen() {
+  const { state } = useStore();
   const [activeCategory, setActiveCategory] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
   const [savedDests, setSavedDests] = useState<string[]>([]);
   const [gridMode, setGridMode] = useState(false);
+  const dnaScores = state.profile?.dnaScores as Record<string, number> | undefined;
 
   const filtered = DESTINATIONS.filter((d) => {
     const matchCat = activeCategory === "all" || d.category === activeCategory;
@@ -226,6 +246,18 @@ export default function ExploreScreen() {
                     color={savedDests.includes(dest.id) ? "#F94498" : "rgba(255,255,255,0.85)"}
                   />
                 </TouchableOpacity>
+
+                {/* DNA Compatibility badge */}
+                {dnaScores && (() => {
+                  const compat = dnaCompatibility(dest.category, dnaScores);
+                  if (compat === 0) return null;
+                  const color = compat >= 75 ? "#02A65C" : compat >= 50 ? "#F59E0B" : "#9BA1A6";
+                  return (
+                    <View style={[S.compatBadge, { backgroundColor: color + "CC" }]}>
+                      <Text style={S.compatText}>{compat}% match</Text>
+                    </View>
+                  );
+                })()}
 
                 {/* Info */}
                 <View style={S.cardInfo}>
@@ -392,4 +424,6 @@ const S = StyleSheet.create({
   emptyBtn: { marginTop: 24, borderRadius: 14, overflow: "hidden" },
   emptyBtnGrad: { paddingHorizontal: 24, paddingVertical: 12 },
   emptyBtnText: { color: "#FFFFFF", fontSize: 15, fontWeight: "800" },
+  compatBadge: { position: "absolute", bottom: 52, left: 12, borderRadius: 8, paddingHorizontal: 8, paddingVertical: 3 },
+  compatText: { color: "#FFFFFF", fontSize: 10, fontWeight: "800", letterSpacing: 0.5 },
 });
