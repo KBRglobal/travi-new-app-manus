@@ -316,7 +316,7 @@ export default function ConnectingScreen() {
         data={(tab === "discover" ? filtered : tab === "requests" ? REQUESTS : []) as any[]}
         keyExtractor={(item) => item.id}
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 100, gap: 12, paddingTop: 8 }}
+        contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 110, gap: 12, paddingTop: 8 }}
         renderItem={({ item }) => {
           if (tab === "discover") return <TravelerCard traveler={item as unknown as Traveler} onConnect={handleConnect} />;
           return <RequestCard req={item as unknown as typeof REQUESTS[0]} />;

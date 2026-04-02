@@ -290,7 +290,7 @@ const S = StyleSheet.create({
   chipText: { color: "#9BA1A6", fontSize: 13, fontWeight: "600" },
   chipTextActive: { color: "#C084FC", fontWeight: "700" },
 
-  listContent: { paddingHorizontal: 20 },
+  listContent: { paddingHorizontal: 20, paddingBottom: 110 },
   listHeader: {
     flexDirection: "row",
     alignItems: "center",
