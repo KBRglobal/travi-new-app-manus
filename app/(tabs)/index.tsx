@@ -301,6 +301,29 @@ export default function HomeScreen() {
         </View>
 
         {/* ══════════════════════════════════════════
+            BLOCK 2.5 — DNA-Powered Daily Tips
+        ══════════════════════════════════════════ */}
+        {hasQuiz && (
+          <View style={S.block}>
+            <Text style={S.blockTitle}>Made for you today</Text>
+            <Text style={S.blockSub}>Based on your {dnaType} profile</Text>
+            <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: 12, paddingBottom: 4 }}>
+              {[
+                { emoji: "🏖️", tip: "Book beach activities early — best spots sell out 3 days ahead", color: "#06B6D4" },
+                { emoji: "🍜", tip: "Try the local market for lunch — 3x better value than tourist restaurants", color: "#F59E0B" },
+                { emoji: "🗺️", tip: "Your Balanced pace = 4-5 stops/day. Don't over-schedule Day 1", color: "#6443F4" },
+              ].map((tip, i) => (
+                <View key={i} style={[S.tipCard, { borderColor: tip.color + "30" }]}>
+                  <LinearGradient colors={[tip.color + "18", tip.color + "06"]} style={StyleSheet.absoluteFillObject} />
+                  <Text style={{ fontSize: 24 }}>{tip.emoji}</Text>
+                  <Text style={S.tipText}>{tip.tip}</Text>
+                </View>
+              ))}
+            </ScrollView>
+          </View>
+        )}
+
+        {/* ══════════════════════════════════════════
             BLOCK 3 — "Where's your head at?" CTA
         ══════════════════════════════════════════ */}
         <View style={S.block}>
@@ -519,6 +542,8 @@ const S = StyleSheet.create({
   manifestoCompBadgeText: { color: "#F87171", fontSize: 12, fontWeight: "700" },
   manifestoVs: { width: 32, height: 32, borderRadius: 16, backgroundColor: "rgba(255,255,255,0.07)", alignItems: "center", justifyContent: "center" },
   manifestoVsText: { color: "rgba(255,255,255,0.4)", fontSize: 11, fontWeight: "700" },
+  tipCard: { width: 200, borderRadius: 16, padding: 14, gap: 8, overflow: "hidden", borderWidth: 1 },
+  tipText: { color: "#ECEDEE", fontSize: 13, lineHeight: 19 },
 
   // Final CTA
   finalCta: { borderRadius: 22, overflow: "hidden", flexDirection: "row", alignItems: "center", padding: 20 },
