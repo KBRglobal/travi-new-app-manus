@@ -48,6 +48,7 @@ interface DayPlan {
   day: number;
   date: string;
   theme: string;
+  emoji: string;
   stops: (Stop | Transfer)[];
 }
 
@@ -65,12 +66,12 @@ const TRANSPORT_COLORS: Record<TransportMode, string> = {
   boat: "#06B6D4",
 };
 
-// Sample generated itinerary — in production this would be built from liked attractions
 const SAMPLE_ITINERARY: DayPlan[] = [
   {
     day: 1,
     date: "Mon, Sep 15",
     theme: "Arrive & Explore",
+    emoji: "🌅",
     stops: [
       {
         id: "s1", time: "14:00", name: "Check in — Burj Al Arab", type: "Hotel",
@@ -101,6 +102,7 @@ const SAMPLE_ITINERARY: DayPlan[] = [
     day: 2,
     date: "Tue, Sep 16",
     theme: "Heights & Souks",
+    emoji: "🏙️",
     stops: [
       {
         id: "s5", time: "09:00", name: "Burj Khalifa — At the Top", type: "Landmark",
@@ -137,6 +139,7 @@ const SAMPLE_ITINERARY: DayPlan[] = [
     day: 3,
     date: "Wed, Sep 17",
     theme: "Desert & Dunes",
+    emoji: "🏜️",
     stops: [
       {
         id: "s10", time: "06:00", name: "Desert Safari Pickup", type: "Adventure",
@@ -182,7 +185,6 @@ export default function ItineraryScreen() {
   const [building, setBuilding] = useState(true);
 
   useEffect(() => {
-    // Simulate AI building the itinerary
     const timer = setTimeout(() => {
       setBuilding(false);
       Animated.timing(fadeAnim, { toValue: 1, duration: 600, useNativeDriver: true }).start();
@@ -191,7 +193,13 @@ export default function ItineraryScreen() {
     return () => clearTimeout(timer);
   }, []);
 
+  const switchDay = (i: number) => {
+    setActiveDay(i);
+    if (Platform.OS !== "web") Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+  };
+
   const day = SAMPLE_ITINERARY[activeDay];
+  const totalStops = SAMPLE_ITINERARY.reduce((acc, d) => acc + d.stops.filter((s) => !isTransfer(s)).length, 0);
 
   if (building) {
     return (
@@ -217,73 +225,87 @@ export default function ItineraryScreen() {
       <View style={styles.orb1} />
       <View style={styles.orb2} />
 
-      {/* Header */}
+      {/* Compact Header */}
       <View style={styles.header}>
         <TouchableOpacity style={styles.backBtn} onPress={() => router.back()} activeOpacity={0.7}>
           <IconSymbol name="chevron.left" size={20} color="rgba(255,255,255,0.8)" />
         </TouchableOpacity>
         <View style={styles.headerCenter}>
-          <Text style={styles.headerTitle}>Your Itinerary</Text>
-          <Text style={styles.headerSub}>Dubai · 3 days · {SAMPLE_ITINERARY.reduce((acc, d) => acc + d.stops.filter((s) => !isTransfer(s)).length, 0)} stops</Text>
+          <Text style={styles.headerTitle}>{destination ? destination.charAt(0).toUpperCase() + destination.slice(1) : "Dubai"}</Text>
+          <Text style={styles.headerSub}>{SAMPLE_ITINERARY.length} days · {totalStops} stops</Text>
         </View>
         <TouchableOpacity style={styles.shareBtn} activeOpacity={0.7}>
           <IconSymbol name="square.and.arrow.up" size={18} color="rgba(255,255,255,0.8)" />
         </TouchableOpacity>
       </View>
 
-      {/* Day selector */}
-      <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.dayTabs}>
+      {/* Compact Day Pill Selector */}
+      <View style={styles.dayRow}>
         {SAMPLE_ITINERARY.map((d, i) => (
           <TouchableOpacity
             key={d.day}
-            style={[styles.dayTab, i === activeDay && styles.dayTabActive]}
-            onPress={() => {
-              setActiveDay(i);
-              if (Platform.OS !== "web") Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-            }}
+            style={[styles.dayPill, i === activeDay && styles.dayPillActive]}
+            onPress={() => switchDay(i)}
             activeOpacity={0.8}
           >
             {i === activeDay && (
-              <LinearGradient colors={["#F94498", "#6443F4"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={StyleSheet.absoluteFillObject} />
+              <LinearGradient
+                colors={["#F94498", "#6443F4"]}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 0 }}
+                style={StyleSheet.absoluteFillObject}
+              />
             )}
-            <Text style={[styles.dayTabNum, i === activeDay && styles.dayTabNumActive]}>Day {d.day}</Text>
-            <Text style={[styles.dayTabDate, i === activeDay && styles.dayTabDateActive]}>{d.date.split(",")[0]}</Text>
+            <Text style={[styles.dayPillText, i === activeDay && styles.dayPillTextActive]}>
+              Day {d.day}
+            </Text>
+            <Text style={[styles.dayPillDate, i === activeDay && styles.dayPillDateActive]}>
+              {d.date.split(",")[0]}
+            </Text>
           </TouchableOpacity>
         ))}
-      </ScrollView>
+      </View>
 
-      {/* Day theme */}
-      <View style={styles.dayThemeWrap}>
-        <LinearGradient colors={["rgba(249,68,152,0.15)", "rgba(100,67,244,0.1)"]} style={styles.dayThemeBg} />
-        <Text style={styles.dayThemeEmoji}>✨</Text>
-        <View>
-          <Text style={styles.dayThemeLabel}>{day.date}</Text>
-          <Text style={styles.dayThemeName}>{day.theme}</Text>
+      {/* Day Theme Bar */}
+      <View style={styles.themeBar}>
+        <Text style={styles.themeEmoji}>{day.emoji}</Text>
+        <View style={styles.themeInfo}>
+          <Text style={styles.themeDate}>{day.date}</Text>
+          <Text style={styles.themeName}>{day.theme}</Text>
+        </View>
+        <View style={styles.stopCountBadge}>
+          <Text style={styles.stopCountText}>
+            {day.stops.filter((s) => !isTransfer(s)).length} stops
+          </Text>
         </View>
       </View>
 
       {/* Timeline */}
-      <ScrollView style={styles.scroll} showsVerticalScrollIndicator={false} contentContainerStyle={styles.timeline}>
+      <ScrollView
+        style={styles.scroll}
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={styles.timeline}
+      >
         {day.stops.map((item, idx) => {
           if (isTransfer(item)) {
             return (
               <View key={`t-${idx}`} style={styles.transferRow}>
-                <View style={styles.transferLine} />
-                <View style={[styles.transferBubble, { borderColor: TRANSPORT_COLORS[item.mode] + "50" }]}>
+                <View style={styles.transferDotLine}>
+                  <View style={styles.transferVertLine} />
+                </View>
+                <View style={[styles.transferChip, { borderColor: TRANSPORT_COLORS[item.mode] + "40" }]}>
                   <LinearGradient
-                    colors={[TRANSPORT_COLORS[item.mode] + "20", TRANSPORT_COLORS[item.mode] + "10"]}
+                    colors={[TRANSPORT_COLORS[item.mode] + "18", TRANSPORT_COLORS[item.mode] + "08"]}
                     style={StyleSheet.absoluteFillObject}
                   />
                   <Text style={styles.transferIcon}>{TRANSPORT_ICONS[item.mode]}</Text>
-                  <View style={styles.transferInfo}>
-                    <Text style={[styles.transferMode, { color: TRANSPORT_COLORS[item.mode] }]}>
-                      {item.mode.charAt(0).toUpperCase() + item.mode.slice(1)}
-                      {item.distance ? ` · ${item.distance}` : ""}
-                    </Text>
-                    <Text style={styles.transferDuration}>{item.duration}{item.cost ? ` · ${item.cost}` : ""}</Text>
-                  </View>
+                  <Text style={[styles.transferText, { color: TRANSPORT_COLORS[item.mode] }]}>
+                    {item.mode.charAt(0).toUpperCase() + item.mode.slice(1)}
+                    {item.distance ? ` · ${item.distance}` : ""}
+                    {" · "}{item.duration}
+                    {item.cost ? ` · ${item.cost}` : ""}
+                  </Text>
                 </View>
-                <View style={styles.transferLine} />
               </View>
             );
           }
@@ -291,36 +313,46 @@ export default function ItineraryScreen() {
           const stop = item as Stop;
           return (
             <View key={stop.id} style={styles.stopRow}>
-              {/* Time column */}
-              <View style={styles.timeCol}>
+              {/* Left: time + dot + line */}
+              <View style={styles.timelineLeft}>
                 <Text style={styles.stopTime}>{stop.time}</Text>
-                <View style={[styles.timeDot, { backgroundColor: stop.color }]} />
+                <View style={[styles.stopDot, { backgroundColor: stop.color }]}>
+                  <View style={styles.stopDotInner} />
+                </View>
+                <View style={styles.stopLine} />
               </View>
 
-              {/* Card */}
-              <View style={[styles.stopCard, { borderColor: stop.color + "30" }]}>
-                <Image source={stop.image} style={styles.stopImage} resizeMode="cover" />
-                <LinearGradient colors={["transparent", "rgba(0,0,0,0.85)"]} style={StyleSheet.absoluteFillObject} />
-
-                <View style={styles.stopContent}>
-                  <View style={styles.stopTypePill}>
-                    <Text style={styles.stopTypeText}>{stop.type}</Text>
+              {/* Right: card */}
+              <View style={styles.stopCardWrap}>
+                <View style={[styles.stopCard, { borderColor: stop.color + "25" }]}>
+                  {/* Image */}
+                  <Image source={stop.image} style={styles.stopImage} resizeMode="cover" />
+                  <LinearGradient
+                    colors={["transparent", "rgba(0,0,0,0.9)"]}
+                    style={styles.stopImageOverlay}
+                  />
+                  {/* Type pill */}
+                  <View style={[styles.typePill, { backgroundColor: stop.color + "CC" }]}>
+                    <Text style={styles.typePillText}>{stop.type}</Text>
                   </View>
-                  <Text style={styles.stopName}>{stop.name}</Text>
-                  <View style={styles.stopMeta}>
-                    <Text style={styles.stopDuration}>⏱ {stop.duration}</Text>
-                  </View>
-                  {stop.notes && (
-                    <View style={styles.stopNote}>
-                      <Text style={styles.stopNoteText}>💡 {stop.notes}</Text>
+                  {/* Content */}
+                  <View style={styles.stopContent}>
+                    <Text style={styles.stopName}>{stop.name}</Text>
+                    <View style={styles.stopMeta}>
+                      <Text style={styles.stopDuration}>⏱ {stop.duration}</Text>
                     </View>
-                  )}
+                    {stop.notes && (
+                      <View style={styles.stopNote}>
+                        <Text style={styles.stopNoteText}>💡 {stop.notes}</Text>
+                      </View>
+                    )}
+                  </View>
                 </View>
               </View>
             </View>
           );
         })}
-        <View style={{ height: 100 }} />
+        <View style={{ height: 110 }} />
       </ScrollView>
 
       {/* Bottom CTA */}
@@ -333,7 +365,12 @@ export default function ItineraryScreen() {
           }}
           activeOpacity={0.88}
         >
-          <LinearGradient colors={["#F94498", "#6443F4"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.bookBtnGradient}>
+          <LinearGradient
+            colors={["#F94498", "#6443F4"]}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 0 }}
+            style={styles.bookBtnGradient}
+          >
             <Text style={styles.bookBtnText}>Book This Trip</Text>
             <IconSymbol name="arrow.right" size={20} color="#FFFFFF" />
           </LinearGradient>
@@ -362,8 +399,8 @@ function BuildingDot({ delay }: { delay: number }) {
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#0D0628" },
-  orb1: { position: "absolute", width: width, height: width, borderRadius: width / 2, top: -width * 0.4, left: -width * 0.3, backgroundColor: "rgba(123,47,190,0.09)" },
-  orb2: { position: "absolute", width: width * 0.7, height: width * 0.7, borderRadius: width * 0.35, bottom: 0, right: -width * 0.3, backgroundColor: "rgba(233,30,140,0.06)" },
+  orb1: { position: "absolute", width: width, height: width, borderRadius: width / 2, top: -width * 0.5, left: -width * 0.3, backgroundColor: "rgba(123,47,190,0.07)" },
+  orb2: { position: "absolute", width: width * 0.7, height: width * 0.7, borderRadius: width * 0.35, bottom: 0, right: -width * 0.3, backgroundColor: "rgba(233,30,140,0.05)" },
   // Building state
   buildingContainer: { alignItems: "center", justifyContent: "center" },
   buildingContent: { alignItems: "center", gap: 16, paddingHorizontal: 40 },
@@ -372,56 +409,62 @@ const styles = StyleSheet.create({
   buildingSub: { color: "rgba(255,255,255,0.5)", fontSize: 14, textAlign: "center", lineHeight: 20 },
   buildingDots: { flexDirection: "row", gap: 10, marginTop: 8 },
   dot: { width: 10, height: 10, borderRadius: 5, backgroundColor: "#F94498" },
-  // Header
-  header: { flexDirection: "row", alignItems: "center", paddingHorizontal: 20, paddingBottom: 16, gap: 12 },
-  backBtn: { width: 40, height: 40, borderRadius: 14, backgroundColor: "rgba(255,255,255,0.1)", alignItems: "center", justifyContent: "center", borderWidth: 1, borderColor: "rgba(255,255,255,0.12)" },
+  // Header — compact
+  header: { flexDirection: "row", alignItems: "center", paddingHorizontal: 20, paddingVertical: 10, gap: 12 },
+  backBtn: { width: 36, height: 36, borderRadius: 12, backgroundColor: "rgba(255,255,255,0.09)", alignItems: "center", justifyContent: "center" },
   headerCenter: { flex: 1, alignItems: "center" },
-  headerTitle: { color: "#FFFFFF", fontSize: 18, fontWeight: "800", letterSpacing: 0.2 },
-  headerSub: { color: "rgba(249,68,152,0.8)", fontSize: 12, marginTop: 3, fontWeight: "600" },
-  shareBtn: { width: 40, height: 40, borderRadius: 14, backgroundColor: "rgba(255,255,255,0.1)", alignItems: "center", justifyContent: "center", borderWidth: 1, borderColor: "rgba(255,255,255,0.12)" },
-  // Day tabs
-  dayTabs: { paddingHorizontal: 20, gap: 10, paddingBottom: 14 },
-  dayTab: { borderRadius: 18, paddingHorizontal: 20, paddingVertical: 12, backgroundColor: "rgba(255,255,255,0.06)", borderWidth: 1.5, borderColor: "rgba(255,255,255,0.1)", overflow: "hidden", alignItems: "center", gap: 3, minWidth: 80 },
-  dayTabActive: { borderColor: "transparent", shadowColor: "#F94498", shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.4, shadowRadius: 8, elevation: 8 },
-  dayTabNum: { color: "rgba(255,255,255,0.5)", fontSize: 14, fontWeight: "800" },
-  dayTabNumActive: { color: "#FFFFFF" },
-  dayTabDate: { color: "rgba(255,255,255,0.35)", fontSize: 11, fontWeight: "500" },
-  dayTabDateActive: { color: "rgba(255,255,255,0.9)", fontWeight: "600" },
-  // Day theme
-  dayThemeWrap: { flexDirection: "row", alignItems: "center", gap: 14, marginHorizontal: 20, borderRadius: 18, padding: 16, marginBottom: 10, overflow: "hidden", borderWidth: 1, borderColor: "rgba(249,68,152,0.25)" },
-  dayThemeBg: { ...StyleSheet.absoluteFillObject },
-  dayThemeEmoji: { fontSize: 28 },
-  dayThemeLabel: { color: "rgba(249,68,152,0.8)", fontSize: 11, fontWeight: "700", letterSpacing: 0.5, textTransform: "uppercase" },
-  dayThemeName: { color: "#FFFFFF", fontSize: 18, fontWeight: "900", marginTop: 2 },
+  headerTitle: { color: "#FFFFFF", fontSize: 17, fontWeight: "800" },
+  headerSub: { color: "rgba(249,68,152,0.75)", fontSize: 11, marginTop: 1, fontWeight: "600" },
+  shareBtn: { width: 36, height: 36, borderRadius: 12, backgroundColor: "rgba(255,255,255,0.09)", alignItems: "center", justifyContent: "center" },
+  // Day pill selector — compact horizontal
+  dayRow: { flexDirection: "row", paddingHorizontal: 20, gap: 8, marginBottom: 10 },
+  dayPill: { flex: 1, borderRadius: 12, paddingVertical: 8, backgroundColor: "rgba(255,255,255,0.06)", borderWidth: 1, borderColor: "rgba(255,255,255,0.08)", overflow: "hidden", alignItems: "center", gap: 1 },
+  dayPillActive: { borderColor: "transparent" },
+  dayPillText: { color: "rgba(255,255,255,0.5)", fontSize: 13, fontWeight: "800" },
+  dayPillTextActive: { color: "#FFFFFF" },
+  dayPillDate: { color: "rgba(255,255,255,0.3)", fontSize: 10 },
+  dayPillDateActive: { color: "rgba(255,255,255,0.85)" },
+  // Theme bar
+  themeBar: { flexDirection: "row", alignItems: "center", marginHorizontal: 20, marginBottom: 12, gap: 10 },
+  themeEmoji: { fontSize: 22 },
+  themeInfo: { flex: 1 },
+  themeDate: { color: "rgba(255,255,255,0.4)", fontSize: 11, fontWeight: "600" },
+  themeName: { color: "#FFFFFF", fontSize: 15, fontWeight: "800", marginTop: 1 },
+  stopCountBadge: { backgroundColor: "rgba(255,255,255,0.08)", borderRadius: 8, paddingHorizontal: 8, paddingVertical: 4 },
+  stopCountText: { color: "rgba(255,255,255,0.5)", fontSize: 11, fontWeight: "700" },
   // Timeline
   scroll: { flex: 1 },
-  timeline: { paddingHorizontal: 20, paddingTop: 8 },
-  stopRow: { flexDirection: "row", gap: 12, marginBottom: 4 },
-  timeCol: { width: 52, alignItems: "center", paddingTop: 14 },
-  stopTime: { color: "rgba(255,255,255,0.5)", fontSize: 12, fontWeight: "700" },
-  timeDot: { width: 10, height: 10, borderRadius: 5, marginTop: 6 },
-  stopCard: { flex: 1, borderRadius: 22, overflow: "hidden", borderWidth: 1, marginBottom: 4, shadowColor: "#000", shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.3, shadowRadius: 8, elevation: 6 },
-  stopImage: { position: "absolute", top: 0, left: 0, right: 0, bottom: 0, width: "100%", height: 170 },
-  stopContent: { padding: 16, paddingTop: 90, gap: 5 },
-  stopTypePill: { alignSelf: "flex-start", backgroundColor: "rgba(255,255,255,0.18)", borderRadius: 8, paddingHorizontal: 10, paddingVertical: 4 },
-  stopTypeText: { color: "rgba(255,255,255,0.9)", fontSize: 10, fontWeight: "800", letterSpacing: 0.8, textTransform: "uppercase" },
-  stopName: { color: "#FFFFFF", fontSize: 17, fontWeight: "900", lineHeight: 23 },
-  stopMeta: { flexDirection: "row", gap: 12 },
-  stopDuration: { color: "rgba(255,255,255,0.6)", fontSize: 12, fontWeight: "500" },
-  stopNote: { backgroundColor: "rgba(255,255,255,0.08)", borderRadius: 10, padding: 10, marginTop: 4, borderWidth: 1, borderColor: "rgba(255,255,255,0.06)" },
-  stopNoteText: { color: "rgba(255,255,255,0.7)", fontSize: 12, lineHeight: 17 },
+  timeline: { paddingLeft: 16, paddingRight: 16, paddingTop: 4 },
+  // Stop row
+  stopRow: { flexDirection: "row", gap: 10, marginBottom: 2 },
+  timelineLeft: { width: 48, alignItems: "center" },
+  stopTime: { color: "rgba(255,255,255,0.5)", fontSize: 11, fontWeight: "700", marginBottom: 4 },
+  stopDot: { width: 12, height: 12, borderRadius: 6, alignItems: "center", justifyContent: "center" },
+  stopDotInner: { width: 5, height: 5, borderRadius: 2.5, backgroundColor: "rgba(0,0,0,0.4)" },
+  stopLine: { flex: 1, width: 2, backgroundColor: "rgba(255,255,255,0.07)", marginTop: 4 },
+  stopCardWrap: { flex: 1, marginBottom: 12 },
+  stopCard: { borderRadius: 18, overflow: "hidden", borderWidth: 1 },
+  stopImage: { width: "100%", height: 140 },
+  stopImageOverlay: { position: "absolute", left: 0, right: 0, bottom: 0, height: 140 },
+  typePill: { position: "absolute", top: 10, left: 10, borderRadius: 8, paddingHorizontal: 8, paddingVertical: 3 },
+  typePillText: { color: "#FFFFFF", fontSize: 10, fontWeight: "800", letterSpacing: 0.5 },
+  stopContent: { padding: 12, gap: 4 },
+  stopName: { color: "#FFFFFF", fontSize: 15, fontWeight: "800", lineHeight: 20 },
+  stopMeta: { flexDirection: "row" },
+  stopDuration: { color: "rgba(255,255,255,0.5)", fontSize: 12 },
+  stopNote: { backgroundColor: "rgba(255,255,255,0.06)", borderRadius: 8, padding: 8, marginTop: 2 },
+  stopNoteText: { color: "rgba(255,255,255,0.6)", fontSize: 11, lineHeight: 16 },
   // Transfer
-  transferRow: { flexDirection: "row", alignItems: "center", marginLeft: 64, gap: 8, marginVertical: 4 },
-  transferLine: { flex: 1, height: 1, backgroundColor: "rgba(255,255,255,0.06)" },
-  transferBubble: { flexDirection: "row", alignItems: "center", gap: 8, borderRadius: 12, paddingHorizontal: 12, paddingVertical: 8, borderWidth: 1, overflow: "hidden" },
-  transferIcon: { fontSize: 16 },
-  transferInfo: { gap: 1 },
-  transferMode: { fontSize: 12, fontWeight: "700" },
-  transferDuration: { color: "rgba(255,255,255,0.4)", fontSize: 11 },
+  transferRow: { flexDirection: "row", gap: 10, marginBottom: 2, alignItems: "center" },
+  transferDotLine: { width: 48, alignItems: "center" },
+  transferVertLine: { width: 2, height: 28, backgroundColor: "rgba(255,255,255,0.07)" },
+  transferChip: { flex: 1, flexDirection: "row", alignItems: "center", gap: 6, borderRadius: 10, paddingHorizontal: 10, paddingVertical: 7, borderWidth: 1, overflow: "hidden", marginBottom: 6 },
+  transferIcon: { fontSize: 14 },
+  transferText: { fontSize: 12, fontWeight: "600", flex: 1 },
   // Bottom bar
-  bottomBar: { paddingHorizontal: 20, paddingTop: 14, backgroundColor: "rgba(13,6,40,0.98)", gap: 10, borderTopWidth: 1, borderTopColor: "rgba(255,255,255,0.06)" },
-  bookBtn: { borderRadius: 20, overflow: "hidden", shadowColor: "#F94498", shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.4, shadowRadius: 12, elevation: 8 },
-  bookBtnGradient: { flexDirection: "row", alignItems: "center", justifyContent: "center", paddingVertical: 18, gap: 10 },
-  bookBtnText: { color: "#FFFFFF", fontSize: 18, fontWeight: "900", letterSpacing: 0.3 },
-  bookNote: { color: "rgba(255,255,255,0.4)", fontSize: 12, textAlign: "center", fontWeight: "500" },
+  bottomBar: { paddingHorizontal: 20, paddingTop: 12, backgroundColor: "rgba(13,6,40,0.98)", gap: 8, borderTopWidth: 1, borderTopColor: "rgba(255,255,255,0.05)" },
+  bookBtn: { borderRadius: 18, overflow: "hidden" },
+  bookBtnGradient: { flexDirection: "row", alignItems: "center", justifyContent: "center", paddingVertical: 16, gap: 10 },
+  bookBtnText: { color: "#FFFFFF", fontSize: 17, fontWeight: "900" },
+  bookNote: { color: "rgba(255,255,255,0.35)", fontSize: 12, textAlign: "center" },
 });

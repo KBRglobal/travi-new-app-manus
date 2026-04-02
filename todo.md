@@ -354,3 +354,32 @@
 - [x] Phase 2: "Invite Friend to Split" button
 - [x] Redesign itinerary.tsx — gradient header, better stop cards
 - [x] Redesign dna-update.tsx — fix duplicate scores, animated bars with gradient fills
+
+## Phase 33 — Itinerary Full Redesign
+- [ ] Fix oversized day tabs (compact horizontal pill selector)
+- [ ] Redesign timeline layout — clean, spacious, visually stunning
+- [ ] Better stop cards with proper image sizing
+- [ ] Compact header that doesn't waste space
+
+## Phase 34 — Home Screen CTA Clarity
+- [ ] Add prominent "Plan a Trip" CTA button below hero image
+- [ ] Clarify DNA card action text
+- [ ] Reduce visual clutter / confusion on home screen
+- [ ] Make user flow obvious: hero → CTA → trip planning
+
+## Phase 35 — Explore Screen: Destination-Specific Immersive UI
+- [ ] Destination-specific hero with cinematic slideshow
+- [ ] Personality match score (% match based on DNA)
+- [ ] Neighborhoods section with photos and vibe descriptions
+- [ ] Top Experiences with price + cashback per item
+- [ ] Food & Drink section with mouth-watering photos
+- [ ] Hidden Gems section
+- [ ] "Plan This Trip" CTA throughout
+- [ ] Casino-level visual design: colorful, addictive, stunning
+
+## Phase 36 — Wallet Redesign (Revolut-style) + Destination Detail
+- [x] Wallet main: dramatic gradient balance card, tier progress, lifetime stats
+- [x] Wallet redeem tab: featured rewards with photos, ways to redeem list
+- [x] Wallet history tab: grouped by trip, transaction detail modal
+- [x] Destination Detail screen: hero slideshow, personality match, neighborhoods, experiences+prices+cashback, food, hidden gems
+- [x] Connect Explore destination cards to destination-detail screen

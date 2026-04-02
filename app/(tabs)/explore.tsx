@@ -1,10 +1,12 @@
-import { useState } from "react";
-import { View, Text, TouchableOpacity, StyleSheet, ScrollView, Dimensions, TextInput, Platform } from "react-native";
+import { useState, useRef, useEffect } from "react";
+import { View, Text, TouchableOpacity, StyleSheet, ScrollView, Dimensions, TextInput, Platform, Animated, ImageBackground, FlatList } from "react-native";
 import { router } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
 import { Image } from "react-native";
 import { IconSymbol } from "@/components/ui/icon-symbol";
 import * as Haptics from "expo-haptics";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useStore } from "@/lib/store";
 
 const IMG = {
   santorini: require("@/assets/destinations/santorini.jpg"),
@@ -186,7 +188,7 @@ export default function ExploreScreen() {
         </View>
         <View style={S.destGrid}>
           {filtered.map((dest) => (
-            <TouchableOpacity key={dest.id} style={S.destCard} onPress={() => router.push("/(trip)/plan" as never)} activeOpacity={0.88}>
+            <TouchableOpacity key={dest.id} style={S.destCard} onPress={() => router.push({ pathname: "/(trip)/destination-detail", params: { id: dest.city.toLowerCase().replace(/ /g, "") } } as never)} activeOpacity={0.88}>
               {/* Full photo background */}
               <Image source={{ uri: dest.image }} style={StyleSheet.absoluteFillObject} resizeMode="cover" />
               {/* Gradient overlay */}
