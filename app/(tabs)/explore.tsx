@@ -11,9 +11,9 @@ import {
 import { router } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
 import { Image } from "expo-image";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { IconSymbol } from "@/components/ui/icon-symbol";
 import * as Haptics from "expo-haptics";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const IMG = {
   santorini: require("@/assets/destinations/santorini.jpg"),
@@ -61,7 +61,6 @@ const DESTINATIONS = [
 ];
 
 export default function ExploreScreen() {
-  const insets = useSafeAreaInsets();
   const [activeCategory, setActiveCategory] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
   const [savedDests, setSavedDests] = useState<string[]>([]);
@@ -81,6 +80,7 @@ export default function ExploreScreen() {
   };
 
   return (
+    // Outer View fills full screen including behind status bar
     <View style={S.container}>
       <LinearGradient
         colors={["#0D0628", "#1A0A3D", "#0D0628"]}
@@ -88,155 +88,156 @@ export default function ExploreScreen() {
         style={StyleSheet.absoluteFillObject}
       />
 
-      {/* Header */}
-      <View style={[S.header, { paddingTop: insets.top + 8 }]}>
-        <View>
-          <Text style={S.headerTitle}>Explore</Text>
-          <Text style={S.headerSub}>Discover your next adventure</Text>
+      {/* SafeAreaView handles the notch/status bar properly */}
+      <SafeAreaView style={S.safeArea} edges={["top", "left", "right"]}>
+
+        {/* Header */}
+        <View style={S.header}>
+          <View>
+            <Text style={S.headerTitle}>Explore</Text>
+            <Text style={S.headerSub}>Discover your next adventure</Text>
+          </View>
         </View>
-      </View>
 
-      {/* Search Bar */}
-      <View style={S.searchWrap}>
-        <LinearGradient
-          colors={["rgba(255,255,255,0.08)", "rgba(255,255,255,0.04)"]}
-          style={S.searchGradient}
-        >
-          <IconSymbol name="magnifyingglass" size={18} color="#9BA1A6" />
-          <TextInput
-            style={S.searchInput}
-            placeholder="Search destinations..."
-            placeholderTextColor="#5A4D72"
-            value={searchQuery}
-            onChangeText={setSearchQuery}
-          />
-          {searchQuery.length > 0 && (
-            <TouchableOpacity onPress={() => setSearchQuery("")} activeOpacity={0.7}>
-              <IconSymbol name="xmark.circle.fill" size={18} color="#5A4D72" />
-            </TouchableOpacity>
-          )}
-        </LinearGradient>
-      </View>
-
-      {/* Categories */}
-      <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        style={S.categoriesScroll}
-        contentContainerStyle={S.categoriesContent}
-      >
-        {CATEGORIES.map((cat) => (
-          <TouchableOpacity
-            key={cat.id}
-            style={[S.categoryChip, activeCategory === cat.id && S.categoryChipActive]}
-            onPress={() => {
-              if (Platform.OS !== "web") Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-              setActiveCategory(cat.id);
-            }}
-            activeOpacity={0.8}
+        {/* Search Bar */}
+        <View style={S.searchWrap}>
+          <LinearGradient
+            colors={["rgba(255,255,255,0.08)", "rgba(255,255,255,0.04)"]}
+            style={S.searchGradient}
           >
-            {activeCategory === cat.id && (
-              <LinearGradient
-                colors={["rgba(100,67,244,0.4)", "rgba(249,68,152,0.25)"]}
-                style={StyleSheet.absoluteFillObject}
-                pointerEvents="none"
-              />
-            )}
-            <IconSymbol
-              name={cat.icon}
-              size={16}
-              color={activeCategory === cat.id ? "#C084FC" : "#5A4D72"}
+            <IconSymbol name="magnifyingglass" size={18} color="#9BA1A6" />
+            <TextInput
+              style={S.searchInput}
+              placeholder="Search destinations..."
+              placeholderTextColor="#5A4D72"
+              value={searchQuery}
+              onChangeText={setSearchQuery}
             />
-            <Text style={[S.categoryLabel, activeCategory === cat.id && S.categoryLabelActive]}>
-              {cat.label}
-            </Text>
-          </TouchableOpacity>
-        ))}
-      </ScrollView>
-
-      {/* Destinations Grid */}
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={S.scroll}>
-        <View style={S.sectionHeader}>
-          <Text style={S.sectionTitle}>
-            {activeCategory === "all"
-              ? "All Destinations"
-              : CATEGORIES.find((c) => c.id === activeCategory)?.label}
-          </Text>
-          <Text style={S.countBadge}>{filtered.length}</Text>
+            {searchQuery.length > 0 && (
+              <TouchableOpacity onPress={() => setSearchQuery("")} activeOpacity={0.7}>
+                <IconSymbol name="xmark.circle.fill" size={18} color="#5A4D72" />
+              </TouchableOpacity>
+            )}
+          </LinearGradient>
         </View>
 
-        <View style={S.destGrid}>
-          {filtered.map((dest) => (
+        {/* Categories */}
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          style={S.categoriesScroll}
+          contentContainerStyle={S.categoriesContent}
+        >
+          {CATEGORIES.map((cat) => (
             <TouchableOpacity
-              key={dest.id}
-              style={S.destCard}
+              key={cat.id}
+              style={[S.categoryChip, activeCategory === cat.id && S.categoryChipActive]}
               onPress={() => {
-                if (Platform.OS !== "web") Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-                router.push({
-                  pathname: "/(trip)/destination-detail",
-                  params: { id: dest.city.toLowerCase().replace(/ /g, "") },
-                } as never);
+                if (Platform.OS !== "web") Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                setActiveCategory(cat.id);
               }}
-              activeOpacity={0.88}
+              activeOpacity={0.8}
             >
-              {/* Image container with padding to show full image */}
-              <View style={S.imageContainer}>
-                <Image source={dest.image} style={S.destImage} contentFit="cover" />
-              </View>
-
-              {/* Gradient overlay at bottom */}
-              <LinearGradient
-                colors={["transparent", "rgba(0,0,0,0.85)"]}
-                locations={[0.5, 1]}
-                style={S.destGradient}
-                pointerEvents="none"
-              />
-
-              {/* Save button */}
-              <TouchableOpacity
-                style={S.saveBtn}
-                onPress={(e) => {
-                  e.stopPropagation();
-                  toggleSave(dest.id);
-                }}
-                activeOpacity={0.7}
-              >
-                <IconSymbol
-                  name={savedDests.includes(dest.id) ? "heart.fill" : "heart"}
-                  size={18}
-                  color={savedDests.includes(dest.id) ? "#F94498" : "rgba(255,255,255,0.8)"}
+              {activeCategory === cat.id && (
+                <LinearGradient
+                  colors={["rgba(100,67,244,0.4)", "rgba(249,68,152,0.25)"]}
+                  style={[StyleSheet.absoluteFillObject, { borderRadius: 20 }]}
+                  pointerEvents="none"
                 />
-              </TouchableOpacity>
-
-              {/* Tag */}
-              <View style={[S.destTag, { backgroundColor: dest.tagColor + "DD" }]}>
-                <Text style={S.destTagText}>{dest.tag}</Text>
-              </View>
-
-              {/* Bottom info */}
-              <View style={S.destBottom}>
-                <Text style={S.destCity}>{dest.city}</Text>
-                <View style={S.destCountryRow}>
-                  <IconSymbol name="location.fill" size={12} color="rgba(255,255,255,0.6)" />
-                  <Text style={S.destCountry}>{dest.country}</Text>
-                </View>
-              </View>
+              )}
+              <IconSymbol
+                name={cat.icon}
+                size={16}
+                color={activeCategory === cat.id ? "#C084FC" : "#5A4D72"}
+              />
+              <Text style={[S.categoryLabel, activeCategory === cat.id && S.categoryLabelActive]}>
+                {cat.label}
+              </Text>
             </TouchableOpacity>
           ))}
-        </View>
+        </ScrollView>
 
-        <View style={{ height: 100 }} />
-      </ScrollView>
+        {/* Destinations List */}
+        <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={S.scroll}>
+          <View style={S.sectionHeader}>
+            <Text style={S.sectionTitle}>
+              {activeCategory === "all"
+                ? "All Destinations"
+                : CATEGORIES.find((c) => c.id === activeCategory)?.label}
+            </Text>
+            <Text style={S.countBadge}>{filtered.length}</Text>
+          </View>
+
+          <View style={S.destGrid}>
+            {filtered.map((dest) => (
+              <TouchableOpacity
+                key={dest.id}
+                style={S.destCard}
+                onPress={() => {
+                  if (Platform.OS !== "web") Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+                  router.push({
+                    pathname: "/(trip)/destination-detail",
+                    params: { id: dest.city.toLowerCase().replace(/ /g, "") },
+                  } as never);
+                }}
+                activeOpacity={0.88}
+              >
+                {/* Full image */}
+                <Image source={dest.image} style={S.destImage} contentFit="cover" />
+
+                {/* Gradient overlay */}
+                <LinearGradient
+                  colors={["transparent", "rgba(0,0,0,0.85)"]}
+                  locations={[0.45, 1]}
+                  style={S.destGradient}
+                  pointerEvents="none"
+                />
+
+                {/* Save button */}
+                <TouchableOpacity
+                  style={S.saveBtn}
+                  onPress={(e) => {
+                    e.stopPropagation();
+                    toggleSave(dest.id);
+                  }}
+                  activeOpacity={0.7}
+                >
+                  <IconSymbol
+                    name={savedDests.includes(dest.id) ? "heart.fill" : "heart"}
+                    size={18}
+                    color={savedDests.includes(dest.id) ? "#F94498" : "rgba(255,255,255,0.8)"}
+                  />
+                </TouchableOpacity>
+
+                {/* Tag */}
+                <View style={[S.destTag, { backgroundColor: dest.tagColor + "DD" }]}>
+                  <Text style={S.destTagText}>{dest.tag}</Text>
+                </View>
+
+                {/* Bottom info */}
+                <View style={S.destBottom}>
+                  <Text style={S.destCity}>{dest.city}</Text>
+                  <View style={S.destCountryRow}>
+                    <IconSymbol name="location.fill" size={12} color="rgba(255,255,255,0.6)" />
+                    <Text style={S.destCountry}>{dest.country}</Text>
+                  </View>
+                </View>
+              </TouchableOpacity>
+            ))}
+          </View>
+
+          <View style={{ height: 100 }} />
+        </ScrollView>
+
+      </SafeAreaView>
     </View>
   );
 }
 
 const S = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#0D0628" },
+  safeArea: { flex: 1 },
   header: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
     paddingHorizontal: 20,
     paddingTop: 8,
     paddingBottom: 16,
@@ -286,36 +287,21 @@ const S = StyleSheet.create({
   },
   sectionTitle: { color: "#FFFFFF", fontSize: 20, fontWeight: "900", letterSpacing: -0.3 },
   countBadge: { color: "rgba(255,255,255,0.35)", fontSize: 14, fontWeight: "600" },
-  destGrid: {
-    paddingHorizontal: 20,
-    gap: 16,
-  },
+  destGrid: { paddingHorizontal: 20, gap: 16 },
   destCard: {
     width: "100%",
     height: 280,
     borderRadius: 24,
     overflow: "hidden",
-    backgroundColor: "rgba(255,255,255,0.03)",
-    borderWidth: 1,
-    borderColor: "rgba(255,255,255,0.08)",
+    backgroundColor: "#1A0A3D",
   },
-  imageContainer: {
-    width: "100%",
-    height: "100%",
-    position: "absolute",
-    top: 0,
-    left: 0,
-  },
-  destImage: {
-    width: "100%",
-    height: "100%",
-  },
+  destImage: { width: "100%", height: "100%", position: "absolute" },
   destGradient: {
     position: "absolute",
     bottom: 0,
     left: 0,
     right: 0,
-    height: "50%",
+    height: "55%",
   },
   saveBtn: {
     position: "absolute",
