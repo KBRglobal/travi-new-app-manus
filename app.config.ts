@@ -75,7 +75,11 @@ const config: ExpoConfig = {
   },
   extra: {
     logoUrl: env.logoUrl,
+    eas: {
+      projectId: "2d85cc93-eb81-4426-a948-32d49680e078",
+    },
   },
+  owner: "kbr_global",
 };
 
 export default config;

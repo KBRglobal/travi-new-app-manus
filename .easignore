@@ -1,0 +1,11 @@
+.git
+.expo
+node_modules
+dist
+tests
+PRD.md
+RAILWAY_DEPLOY.md
+Dockerfile
+railway.toml
+.github
+scripts/seed.ts
