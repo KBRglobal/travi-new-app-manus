@@ -94,16 +94,16 @@ export default function EditProfileScreen() {
 
 const S = StyleSheet.create({
   header: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 20, paddingVertical: 16, borderBottomWidth: 0.5 },
-  headerTitle: { fontSize: 18, fontWeight: "600" },
-  saveBtn: { fontSize: 16, fontWeight: "600" },
+  headerTitle: { fontSize: 18, fontFamily: "Chillax-Semibold", fontWeight: "600" },
+  saveBtn: { fontSize: 16, fontFamily: "Chillax-Semibold", fontWeight: "600" },
   scroll: { padding: 20, paddingBottom: 100 },
   avatarSection: { alignItems: "center", marginBottom: 32 },
   avatarCircle: { width: 100, height: 100, borderRadius: 50, alignItems: "center", justifyContent: "center", marginBottom: 12 },
   avatarImg: { width: 60, height: 60, resizeMode: "contain" },
   changePhotoBtn: { paddingHorizontal: 16, paddingVertical: 8 },
-  changePhotoText: { color: "#6443F4", fontSize: 15, fontWeight: "600" },
+  changePhotoText: { color: "#6443F4", fontSize: 15, fontFamily: "Chillax-Semibold", fontWeight: "600" },
   form: { gap: 20 },
   field: { gap: 8 },
-  label: { fontSize: 14, fontWeight: "500" },
-  input: { height: 50, borderRadius: 12, borderWidth: 1, paddingHorizontal: 16, fontSize: 16 },
+  label: { fontSize: 14, fontFamily: "Satoshi-Regular", fontWeight: "500" },
+  input: { height: 50, borderRadius: 12, borderWidth: 1, paddingHorizontal: 16, fontSize: 16, fontFamily: "Satoshi-Regular" },
 });

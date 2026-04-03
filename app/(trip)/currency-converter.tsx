@@ -82,7 +82,7 @@ function CurrencyPicker({ selected, onSelect, onClose }: { selected: string; onS
               onPress={() => { onSelect(item); onClose(); }}
               activeOpacity={0.8}
             >
-              <Text style={{ fontSize: 24 }}>{item.flag}</Text>
+              <Text style={{ fontSize: 24, fontFamily: "Satoshi-Regular" }}>{item.flag}</Text>
               <View style={{ flex: 1 }}>
                 <Text style={P.currencyCode}>{item.code}</Text>
                 <Text style={P.currencyName}>{item.name}</Text>
@@ -140,7 +140,7 @@ export default function CurrencyConverterScreen() {
           <Text style={S.converterLabel}>From</Text>
           <View style={S.converterRow}>
             <TouchableOpacity style={S.currencyBtn} onPress={() => setShowPicker("from")} activeOpacity={0.8}>
-              <Text style={{ fontSize: 22 }}>{fromCurrency.flag}</Text>
+              <Text style={{ fontSize: 22, fontFamily: "Satoshi-Regular" }}>{fromCurrency.flag}</Text>
               <Text style={S.currencyBtnCode}>{fromCurrency.code}</Text>
               <IconSymbol name="chevron.down" size={14} color="#9BA1A6" />
             </TouchableOpacity>
@@ -160,7 +160,7 @@ export default function CurrencyConverterScreen() {
             <View style={S.dividerLine} />
             <TouchableOpacity style={S.swapBtn} onPress={handleSwap} activeOpacity={0.8}>
               <LinearGradient colors={["#6443F4", "#F94498"]} style={StyleSheet.absoluteFillObject} />
-              <Text style={{ fontSize: 16 }}>⇅</Text>
+              <Text style={{ fontSize: 16, fontFamily: "Satoshi-Regular" }}>⇅</Text>
             </TouchableOpacity>
             <View style={S.dividerLine} />
           </View>
@@ -169,7 +169,7 @@ export default function CurrencyConverterScreen() {
           <Text style={S.converterLabel}>To</Text>
           <View style={S.converterRow}>
             <TouchableOpacity style={S.currencyBtn} onPress={() => setShowPicker("to")} activeOpacity={0.8}>
-              <Text style={{ fontSize: 22 }}>{toCurrency.flag}</Text>
+              <Text style={{ fontSize: 22, fontFamily: "Satoshi-Regular" }}>{toCurrency.flag}</Text>
               <Text style={S.currencyBtnCode}>{toCurrency.code}</Text>
               <IconSymbol name="chevron.down" size={14} color="#9BA1A6" />
             </TouchableOpacity>
@@ -215,7 +215,7 @@ export default function CurrencyConverterScreen() {
             const rate = convert(1, fromCurrency, c);
             return (
               <View key={c.code} style={[S.rateItem, i > 0 && S.rateItemBorder]}>
-                <Text style={{ fontSize: 20 }}>{c.flag}</Text>
+                <Text style={{ fontSize: 20, fontFamily: "Satoshi-Regular" }}>{c.flag}</Text>
                 <View style={{ flex: 1 }}>
                   <Text style={S.rateItemCode}>{c.code}</Text>
                   <Text style={S.rateItemName}>{c.name}</Text>
@@ -244,16 +244,16 @@ const S = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#0D0628" },
   header: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 16, paddingBottom: 16, paddingTop: 4 },
   backBtn: { width: 40, height: 40, alignItems: "center", justifyContent: "center" },
-  headerTitle: { color: "#FFF", fontSize: 18, fontWeight: "800" },
+  headerTitle: { color: "#FFF", fontSize: 18, fontFamily: "Chillax-Bold", fontWeight: "800" },
 
   converterCard: { borderRadius: 24, overflow: "hidden", borderWidth: 1, borderColor: "rgba(100,67,244,0.3)", padding: 20, gap: 8, marginBottom: 24 },
-  converterLabel: { color: "rgba(255,255,255,0.4)", fontSize: 11, fontWeight: "700", letterSpacing: 0.5, textTransform: "uppercase" },
+  converterLabel: { color: "rgba(255,255,255,0.4)", fontSize: 11, fontFamily: "Chillax-Semibold", fontWeight: "700", letterSpacing: 0.5, textTransform: "uppercase" },
   converterRow: { flexDirection: "row", alignItems: "center", gap: 12 },
   currencyBtn: { flexDirection: "row", alignItems: "center", gap: 6, backgroundColor: "rgba(255,255,255,0.06)", borderRadius: 12, paddingHorizontal: 12, paddingVertical: 10, borderWidth: 1, borderColor: "rgba(255,255,255,0.1)" },
-  currencyBtnCode: { color: "#FFF", fontSize: 15, fontWeight: "700" },
-  amountInput: { flex: 1, color: "#FFF", fontSize: 28, fontWeight: "800", textAlign: "right" },
+  currencyBtnCode: { color: "#FFF", fontSize: 15, fontFamily: "Chillax-Semibold", fontWeight: "700" },
+  amountInput: { flex: 1, color: "#FFF", fontSize: 28, fontFamily: "Chillax-Bold", fontWeight: "800", textAlign: "right" },
   resultWrap: { flex: 1, alignItems: "flex-end" },
-  resultAmount: { color: "#A78BFA", fontSize: 28, fontWeight: "800" },
+  resultAmount: { color: "#A78BFA", fontSize: 28, fontFamily: "Chillax-Bold", fontWeight: "800" },
 
   swapRow: { flexDirection: "row", alignItems: "center", gap: 12, marginVertical: 4 },
   dividerLine: { flex: 1, height: 1, backgroundColor: "rgba(255,255,255,0.08)" },
@@ -261,35 +261,35 @@ const S = StyleSheet.create({
 
   rateRow: { flexDirection: "row", alignItems: "center", gap: 6, marginTop: 4 },
   rateDot: { width: 6, height: 6, borderRadius: 3, backgroundColor: "#22C55E" },
-  rateText: { color: "#9BA1A6", fontSize: 12, flex: 1 },
-  rateUpdated: { color: "#22C55E", fontSize: 11, fontWeight: "700" },
+  rateText: { color: "#9BA1A6", fontSize: 12, fontFamily: "Satoshi-Regular", flex: 1 },
+  rateUpdated: { color: "#22C55E", fontSize: 11, fontFamily: "Chillax-Semibold", fontWeight: "700" },
 
-  sectionLabel: { color: "rgba(255,255,255,0.4)", fontSize: 11, fontWeight: "700", letterSpacing: 0.5, textTransform: "uppercase", marginBottom: 10 },
+  sectionLabel: { color: "rgba(255,255,255,0.4)", fontSize: 11, fontFamily: "Chillax-Semibold", fontWeight: "700", letterSpacing: 0.5, textTransform: "uppercase", marginBottom: 10 },
   quickGrid: { flexDirection: "row", flexWrap: "wrap", gap: 8, marginBottom: 24 },
   quickChip: { borderRadius: 12, paddingHorizontal: 16, paddingVertical: 9, borderWidth: 1, borderColor: "rgba(255,255,255,0.1)", backgroundColor: "rgba(255,255,255,0.04)" },
   quickChipActive: { borderColor: "#6443F4", backgroundColor: "rgba(100,67,244,0.2)" },
-  quickChipText: { color: "#9BA1A6", fontSize: 14, fontWeight: "600" },
+  quickChipText: { color: "#9BA1A6", fontSize: 14, fontFamily: "Chillax-Semibold", fontWeight: "600" },
   quickChipTextActive: { color: "#A78BFA" },
 
   ratesCard: { borderRadius: 20, overflow: "hidden", borderWidth: 1, borderColor: "rgba(255,255,255,0.06)", backgroundColor: "rgba(255,255,255,0.02)" },
   rateItem: { flexDirection: "row", alignItems: "center", gap: 12, paddingHorizontal: 16, paddingVertical: 12 },
   rateItemBorder: { borderTopWidth: 1, borderTopColor: "rgba(255,255,255,0.05)" },
-  rateItemCode: { color: "#FFF", fontSize: 14, fontWeight: "700" },
-  rateItemName: { color: "#9BA1A6", fontSize: 11 },
-  rateItemValue: { color: "#ECEDEE", fontSize: 15, fontWeight: "700" },
+  rateItemCode: { color: "#FFF", fontSize: 14, fontFamily: "Chillax-Semibold", fontWeight: "700" },
+  rateItemName: { color: "#9BA1A6", fontSize: 11, fontFamily: "Satoshi-Regular" },
+  rateItemValue: { color: "#ECEDEE", fontSize: 15, fontFamily: "Chillax-Semibold", fontWeight: "700" },
 });
 
 const P = StyleSheet.create({
   overlay: { ...StyleSheet.absoluteFillObject, backgroundColor: "rgba(0,0,0,0.7)", justifyContent: "flex-end", zIndex: 100 },
   sheet: { borderTopLeftRadius: 28, borderTopRightRadius: 28, overflow: "hidden", padding: 20, paddingBottom: 40 },
   handle: { width: 40, height: 4, borderRadius: 2, backgroundColor: "rgba(255,255,255,0.2)", alignSelf: "center", marginBottom: 16 },
-  title: { color: "#FFF", fontSize: 18, fontWeight: "800", marginBottom: 12 },
+  title: { color: "#FFF", fontSize: 18, fontFamily: "Chillax-Bold", fontWeight: "800", marginBottom: 12 },
   searchWrap: { flexDirection: "row", alignItems: "center", gap: 8, backgroundColor: "rgba(255,255,255,0.06)", borderRadius: 12, paddingHorizontal: 12, paddingVertical: 10, marginBottom: 12, borderWidth: 1, borderColor: "rgba(255,255,255,0.1)" },
-  searchInput: { flex: 1, color: "#FFF", fontSize: 15 },
+  searchInput: { flex: 1, color: "#FFF", fontSize: 15, fontFamily: "Satoshi-Regular" },
   currencyRow: { flexDirection: "row", alignItems: "center", gap: 12, paddingVertical: 12, paddingHorizontal: 4, borderRadius: 12 },
   currencyRowSelected: { backgroundColor: "rgba(100,67,244,0.15)" },
-  currencyCode: { color: "#FFF", fontSize: 15, fontWeight: "700" },
-  currencyName: { color: "#9BA1A6", fontSize: 12 },
+  currencyCode: { color: "#FFF", fontSize: 15, fontFamily: "Chillax-Semibold", fontWeight: "700" },
+  currencyName: { color: "#9BA1A6", fontSize: 12, fontFamily: "Satoshi-Regular" },
   closeBtn: { marginTop: 12, backgroundColor: "rgba(255,255,255,0.06)", borderRadius: 14, paddingVertical: 14, alignItems: "center" },
-  closeBtnText: { color: "#9BA1A6", fontSize: 16, fontWeight: "700" },
+  closeBtnText: { color: "#9BA1A6", fontSize: 16, fontFamily: "Chillax-Semibold", fontWeight: "700" },
 });

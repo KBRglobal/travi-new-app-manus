@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import {
   View, Text, TouchableOpacity, StyleSheet, FlatList,
   TextInput, KeyboardAvoidingView, Platform, Image
@@ -9,6 +9,8 @@ import { IconSymbol } from "@/components/ui/icon-symbol";
 import { BRAND, TYPE, RADIUS } from "@/constants/brand";
 import * as Haptics from "expo-haptics";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { trpc } from "@/lib/trpc";
+import { useAuth } from "@/hooks/use-auth";
 
 interface ChatMessage {
   id: string;
@@ -63,22 +65,52 @@ function MessageBubble({ message }: { message: ChatMessage }) {
 
 export default function MessageChatScreen() {
   const insets = useSafeAreaInsets();
-  const { name = "Maya Rosen" } = useLocalSearchParams<{ name?: string; conversationId?: string }>();
-  const [messages, setMessages] = useState(INITIAL_MESSAGES);
+  const { name = "Maya Rosen", partnerId } = useLocalSearchParams<{ name?: string; conversationId?: string; partnerId?: string }>();
+  const { isAuthenticated } = useAuth({ autoFetch: false });
+  const [localMessages, setLocalMessages] = useState<ChatMessage[]>(INITIAL_MESSAGES);
   const [inputText, setInputText] = useState("");
   const listRef = useRef<FlatList>(null);
 
-  const sendMessage = () => {
+  // tRPC — real DB messages (when authenticated and partnerId provided)
+  const numericPartnerId = partnerId ? Number(partnerId) : null;
+  const { data: dbMessages, refetch: refetchMessages } = trpc.social.messages.useQuery(
+    { partnerId: numericPartnerId! },
+    { enabled: isAuthenticated && !!numericPartnerId }
+  );
+  const sendMessageMutation = trpc.social.sendMessage.useMutation({
+    onSuccess: () => refetchMessages(),
+  });
+
+  // Convert DB messages to local format
+  type DbMsg = NonNullable<typeof dbMessages>[number];
+  const dbConverted: ChatMessage[] = (dbMessages ?? []).map((m: DbMsg) => ({
+    id: String(m.id),
+    fromMe: m.senderId !== numericPartnerId,
+    text: m.content,
+    time: new Date(m.createdAt ?? Date.now()).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+    status: "read" as const,
+  }));
+  const messages = isAuthenticated && numericPartnerId && dbMessages ? dbConverted : localMessages;
+
+  useEffect(() => {
+    setTimeout(() => listRef.current?.scrollToEnd({ animated: false }), 200);
+  }, [messages.length]);
+
+  const sendMessage = async () => {
     if (!inputText.trim()) return;
     if (Platform.OS !== "web") Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-    const newMsg: ChatMessage = {
-      id: Date.now().toString(),
-      fromMe: true,
-      text: inputText.trim(),
-      time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
-      status: "sent",
-    };
-    setMessages(prev => [...prev, newMsg]);
+    if (isAuthenticated && numericPartnerId) {
+      await sendMessageMutation.mutateAsync({ receiverId: numericPartnerId, content: inputText.trim() });
+    } else {
+      const newMsg: ChatMessage = {
+        id: Date.now().toString(),
+        fromMe: true,
+        text: inputText.trim(),
+        time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+        status: "sent",
+      };
+      setLocalMessages(prev => [...prev, newMsg]);
+    }
     setInputText("");
     setTimeout(() => listRef.current?.scrollToEnd({ animated: true }), 100);
   };

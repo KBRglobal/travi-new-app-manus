@@ -29,8 +29,8 @@
 ## NOW — Priority 1: Auth & Live Connections
 
 ### Auth Flow (CRITICAL — no one can use the app without this)
-- [ ] Connect sign-up screen to server OAuth (Google/Apple/Email)
-- [ ] Connect login screen to server auth
+- [x] Connect sign-up screen to server OAuth (Google/Apple/Email) — startOAuthLogin wired
+- [x] Connect login screen to server auth
 - [ ] Guest mode flow — guestToken, isGuest, 25-hour timer
 - [ ] Guest → account merge (preserve DNA, trips, favorites)
 - [ ] JWT token refresh on 401
@@ -42,11 +42,11 @@
 - [x] Trips screen → Railway PostgreSQL (real trips)
 - [x] Profile screen → Railway PostgreSQL (XP/points from traveler_profiles)
 - [ ] DNA screens → Railway PostgreSQL (dna_sessions, quick_dna_results)
-- [ ] Social screens → Railway PostgreSQL (social_connections, social_messages)
+- [x] Social screens → message-chat connected to social_messages via tRPC
 - [ ] Support screen → Railway PostgreSQL (support_tickets)
 - [ ] Enterprise screens → Railway PostgreSQL (enterprise_metrics, prospects)
-- [ ] Notifications → Railway PostgreSQL (notifications table)
-- [ ] Price Alerts → Railway PostgreSQL (price_alerts table)
+- [ ] Notifications → Railway PostgreSQL (no separate table; enriched from price_alerts + trips)
+- [x] Price Alerts → Railway PostgreSQL (price_alerts table) — alerts.tsx connected
 - [ ] Referrals → Railway PostgreSQL (referrals table)
 
 ---

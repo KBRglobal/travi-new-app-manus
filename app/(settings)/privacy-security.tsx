@@ -70,14 +70,14 @@ export default function PrivacySecurityScreen() {
 
 const S = StyleSheet.create({
   header: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 20, paddingVertical: 16, borderBottomWidth: 0.5 },
-  headerTitle: { fontSize: 18, fontWeight: "600" },
+  headerTitle: { fontSize: 18, fontFamily: "Chillax-Semibold", fontWeight: "600" },
   scroll: { padding: 20, paddingBottom: 100 },
-  section: { fontSize: 12, fontWeight: "600", letterSpacing: 1, marginBottom: 8, marginTop: 20 },
+  section: { fontSize: 12, fontFamily: "Chillax-Semibold", fontWeight: "600", letterSpacing: 1, marginBottom: 8, marginTop: 20 },
   card: { borderRadius: 16, overflow: "hidden" },
   row: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 16, paddingVertical: 14, borderBottomWidth: 0.5 },
   rowLeft: { flex: 1, marginRight: 12 },
-  rowLabel: { fontSize: 15, fontWeight: "500" },
-  rowDesc: { fontSize: 12, marginTop: 2 },
+  rowLabel: { fontSize: 15, fontFamily: "Satoshi-Regular", fontWeight: "500" },
+  rowDesc: { fontSize: 12, fontFamily: "Satoshi-Regular", marginTop: 2 },
   dangerBtn: { marginTop: 32, borderWidth: 1.5, borderRadius: 12, paddingVertical: 14, alignItems: "center" },
-  dangerText: { color: "#F94498", fontSize: 15, fontWeight: "600" },
+  dangerText: { color: "#F94498", fontSize: 15, fontFamily: "Chillax-Semibold", fontWeight: "600" },
 });

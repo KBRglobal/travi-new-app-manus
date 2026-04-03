@@ -66,10 +66,10 @@ export default function CurrencySelectorScreen() {
 
 const S = StyleSheet.create({
   header: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 20, paddingVertical: 16, borderBottomWidth: 0.5 },
-  headerTitle: { fontSize: 18, fontWeight: "600" },
+  headerTitle: { fontSize: 18, fontFamily: "Chillax-Semibold", fontWeight: "600" },
   list: { paddingBottom: 100 },
   row: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 20, paddingVertical: 16, borderBottomWidth: 0.5 },
   rowLeft: { flex: 1, marginRight: 12 },
-  name: { fontSize: 16, fontWeight: "500" },
-  code: { fontSize: 14, marginTop: 2 },
+  name: { fontSize: 16, fontFamily: "Satoshi-Regular", fontWeight: "500" },
+  code: { fontSize: 14, fontFamily: "Satoshi-Regular", marginTop: 2 },
 });
