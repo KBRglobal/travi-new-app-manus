@@ -212,7 +212,9 @@ export default function HomeScreen() {
           {/* Header row */}
           <View style={[S.heroHeader, { paddingTop: Math.max(insets.top, 44) + 8 }]}>
             <View>
-              <Text style={S.heroGreeting}>{greeting}, {firstName}</Text>
+              <Text style={S.heroGreeting}>
+                {state.isAuthenticated ? `${greeting}, ${firstName}` : greeting}
+              </Text>
             </View>
             <TouchableOpacity style={S.notifBtn} onPress={() => router.push("/(tabs)/notifications" as never)} activeOpacity={0.8}>
               <LinearGradient colors={["rgba(123,47,190,0.5)", "rgba(233,30,140,0.3)"]} style={S.notifGradient}>
@@ -301,6 +303,33 @@ export default function HomeScreen() {
             </TouchableOpacity>
           )}
         </View>
+
+        {/* ══════════════════════════════════════════
+            AUTH GATE — Sign Up CTA for unauthenticated
+        ══════════════════════════════════════════ */}
+        {!state.isAuthenticated && (
+          <View style={S.block}>
+            <TouchableOpacity
+              style={S.authCtaCard}
+              onPress={() => router.push("/(auth)/splash" as never)}
+              activeOpacity={0.88}
+            >
+              <LinearGradient
+                colors={["#6443F4", "#F94498"]}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 0 }}
+                style={StyleSheet.absoluteFillObject}
+              />
+              <View style={S.authCtaContent}>
+                <Text style={S.authCtaTitle}>Join TRAVI for free</Text>
+                <Text style={S.authCtaSub}>Get personalized trips, earn cashback, and unlock your Travel DNA</Text>
+              </View>
+              <View style={S.authCtaArrow}>
+                <IconSymbol name="arrow.right" size={18} color="#FFFFFF" />
+              </View>
+            </TouchableOpacity>
+          </View>
+        )}
 
         {/* ══════════════════════════════════════════
             BLOCK 2 — Plan Your Trip CTA
@@ -631,6 +660,13 @@ const S = StyleSheet.create({
   finalCtaTitle: { color: "#FFFFFF", fontSize: 18, fontWeight: "900", fontFamily: "Chillax-Bold" },
   finalCtaSub: { color: "rgba(255,255,255,0.65)", fontSize: 12, marginTop: 3 },
   finalCtaArrow: { width: 40, height: 40, borderRadius: 20, backgroundColor: "rgba(255,255,255,0.06)", alignItems: "center", justifyContent: "center" },
+
+  // Auth CTA
+  authCtaCard: { flexDirection: "row", alignItems: "center", borderRadius: 20, overflow: "hidden", padding: 20, gap: 14 },
+  authCtaContent: { flex: 1, gap: 4 },
+  authCtaTitle: { color: "#FFFFFF", fontSize: 18, fontWeight: "900", fontFamily: "Chillax-Bold" },
+  authCtaSub: { color: "rgba(255,255,255,0.7)", fontSize: 13, lineHeight: 18, fontFamily: "Satoshi-Regular" },
+  authCtaArrow: { width: 40, height: 40, borderRadius: 20, backgroundColor: "rgba(255,255,255,0.15)", alignItems: "center", justifyContent: "center" },
 
   // AI Agent FAB
   agentFab: { position: "absolute", right: 20, flexDirection: "row", alignItems: "center", gap: 8, paddingHorizontal: 18, paddingVertical: 14, borderRadius: 28, overflow: "hidden", shadowColor: "#7C3AED", shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.6, shadowRadius: 16, elevation: 12 },

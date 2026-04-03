@@ -23,6 +23,8 @@ import {
   getEnterpriseMetrics, upsertEnterpriseMetric,
   getProspects, createProspect, updateProspect,
   getUserPreferences, upsertUserPreferences,
+  mergeGuestData,
+  createGuestUser,
 } from "./db";
 
 export const appRouter = router({
@@ -35,6 +37,29 @@ export const appRouter = router({
       ctx.res.clearCookie(COOKIE_NAME, { ...cookieOptions, maxAge: -1 });
       return { success: true } as const;
     }),
+    initGuest: publicProcedure
+      .mutation(async () => {
+        try {
+          const { guestToken, userId } = await createGuestUser();
+          return { success: true, guestToken, userId };
+        } catch (error) {
+          console.error("[Auth] Guest init failed:", error);
+          return { success: false, guestToken: null, userId: null, error: error instanceof Error ? error.message : "Guest init failed" };
+        }
+      }),
+    mergeGuest: protectedProcedure
+      .input(z.object({ guestToken: z.string().min(1) }))
+      .mutation(async ({ ctx, input }) => {
+        try {
+          const result = await mergeGuestData(input.guestToken, ctx.user.id);
+          return { success: true, itemsMerged: result.itemsMerged };
+        } catch (error) {
+          console.error("[Auth] Guest merge failed:", error);
+          // Return failure but don't throw — the real account is already created,
+          // guest data stays intact for a retry
+          return { success: false, itemsMerged: 0, error: error instanceof Error ? error.message : "Merge failed" };
+        }
+      }),
   }),
 
   // ─── Traveler Profile ────────────────────────────────────────────────────────────────────

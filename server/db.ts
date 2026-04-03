@@ -101,6 +101,37 @@ export async function getUserByOpenId(openId: string) {
   return result.length > 0 ? result[0] : undefined;
 }
 
+// ─── Guest Users ─────────────────────────────────────────────────────────────
+export async function createGuestUser(): Promise<{ guestToken: string; userId: number }> {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+
+  // Generate a unique guest token and openId
+  const guestToken = `guest_${Date.now()}_${Math.random().toString(36).substring(2, 15)}`;
+  const openId = `guest_${guestToken}`;
+
+  const result = await db.insert(users).values({
+    openId,
+    name: "Guest Traveler",
+    loginMethod: "guest",
+    isGuest: true,
+    guestToken,
+  }).returning();
+
+  return { guestToken, userId: result[0].id };
+}
+
+export async function getGuestUser(guestToken: string) {
+  const db = await getDb();
+  if (!db) return null;
+  const result = await db
+    .select()
+    .from(users)
+    .where(and(eq(users.guestToken, guestToken), eq(users.isGuest, true)))
+    .limit(1);
+  return result.length > 0 ? result[0] : null;
+}
+
 // ─── Traveler Profiles ────────────────────────────────────────────────────────
 export async function getTravelerProfile(userId: number) {
   const db = await getDb();
@@ -429,6 +460,113 @@ export async function updateProspect(id: number, data: Partial<InsertProspect>) 
   const db = await getDb();
   if (!db) throw new Error("Database not available");
   await db.update(prospects).set(data).where(eq(prospects.id, id));
+}
+
+// ─── Guest → Account Merge ───────────────────────────────────────────────────
+export async function mergeGuestData(guestToken: string, realUserId: number): Promise<{ merged: boolean; itemsMerged: number }> {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+
+  // 1. Find the guest user by guestToken
+  const guestRows = await db
+    .select()
+    .from(users)
+    .where(and(eq(users.guestToken, guestToken), eq(users.isGuest, true)))
+    .limit(1);
+
+  if (guestRows.length === 0) {
+    throw new Error("Guest user not found or token invalid");
+  }
+
+  const guestUser = guestRows[0];
+  const guestUserId: number = guestUser.id;
+
+  // Prevent merging into self
+  if (guestUserId === realUserId) {
+    throw new Error("Cannot merge guest user into itself");
+  }
+
+  let itemsMerged = 0;
+
+  try {
+    // 2. Transfer all data tables from guestUserId → realUserId
+    // Each update returns the affected rows; we count them.
+
+    const transferTable = async (table: any, userIdCol: any) => {
+      const result = await db
+        .update(table)
+        .set({ [userIdCol.name]: realUserId })
+        .where(eq(userIdCol, guestUserId));
+      return result?.rowCount ?? 0;
+    };
+
+    // Trips
+    itemsMerged += await transferTable(trips, trips.userId);
+
+    // Quick DNA Results (unique constraint on userId — delete target first if exists, then transfer)
+    const existingDna = await db.select().from(quickDnaResults).where(eq(quickDnaResults.userId, realUserId)).limit(1);
+    if (existingDna.length === 0) {
+      itemsMerged += await transferTable(quickDnaResults, quickDnaResults.userId);
+    } else {
+      // Real user already has DNA results — keep theirs, delete guest's
+      await db.delete(quickDnaResults).where(eq(quickDnaResults.userId, guestUserId));
+    }
+
+    // Wallet transactions
+    itemsMerged += await transferTable(walletTransactions, walletTransactions.userId);
+
+    // Itinerary items
+    itemsMerged += await transferTable(itineraryItems, itineraryItems.userId);
+
+    // Support tickets
+    itemsMerged += await transferTable(supportTickets, supportTickets.userId);
+
+    // Referrals (referrerId)
+    itemsMerged += await transferTable(referrals, referrals.referrerId);
+
+    // Price alerts
+    itemsMerged += await transferTable(priceAlerts, priceAlerts.userId);
+
+    // User preferences (unique constraint on userId — same merge logic as DNA)
+    const existingPrefs = await db.select().from(userPreferences).where(eq(userPreferences.userId, realUserId)).limit(1);
+    if (existingPrefs.length === 0) {
+      itemsMerged += await transferTable(userPreferences, userPreferences.userId);
+    } else {
+      await db.delete(userPreferences).where(eq(userPreferences.userId, guestUserId));
+    }
+
+    // Trip reflections
+    itemsMerged += await transferTable(tripReflections, tripReflections.userId);
+
+    // Conversations
+    itemsMerged += await transferTable(conversations, conversations.userId);
+
+    // Messages
+    itemsMerged += await transferTable(messages, messages.userId);
+
+    // DNA sessions
+    itemsMerged += await transferTable(dnaSessions, dnaSessions.userId);
+
+    // Traveler profiles (unique constraint on userId)
+    const existingProfile = await db.select().from(travelerProfiles).where(eq(travelerProfiles.userId, realUserId)).limit(1);
+    if (existingProfile.length === 0) {
+      itemsMerged += await transferTable(travelerProfiles, travelerProfiles.userId);
+    } else {
+      await db.delete(travelerProfiles).where(eq(travelerProfiles.userId, guestUserId));
+    }
+
+    // Push tokens
+    itemsMerged += await transferTable(pushTokens, pushTokens.userId);
+
+    // 3. Delete the guest user record
+    await db.delete(users).where(eq(users.id, guestUserId));
+
+    return { merged: true, itemsMerged };
+  } catch (error) {
+    // If merge fails, do NOT delete the guest user — preserve data
+    console.error("[Database] Guest merge failed:", error);
+    throw error;
+  }
 }
 
 // ─── User Preferences ─────────────────────────────────────────────────────────

@@ -266,6 +266,38 @@ export default function WalletScreen() {
         <Text style={S.headerTitle}>TRAVI Wallet</Text>
       </View>
 
+      {/* ═══ AUTH GATE ═══ */}
+      {!state.isAuthenticated && !state.isGuest ? (
+        <View style={S.authGate}>
+          <View style={S.authGateCard}>
+            <LinearGradient
+              colors={["rgba(100,67,244,0.15)", "rgba(249,68,152,0.1)"]}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              style={StyleSheet.absoluteFillObject}
+            />
+            <View style={S.authGateIconWrap}>
+              <LinearGradient colors={["#6443F4", "#F94498"]} style={StyleSheet.absoluteFillObject} />
+              <IconSymbol name="wallet.pass.fill" size={32} color="#FFFFFF" />
+            </View>
+            <Text style={S.authGateTitle}>Sign in to access your wallet</Text>
+            <Text style={S.authGateSub}>Track your cashback, points, and rewards all in one place</Text>
+            <TouchableOpacity
+              style={S.authGateBtn}
+              onPress={() => router.push("/(auth)/splash" as never)}
+              activeOpacity={0.88}
+            >
+              <LinearGradient
+                colors={["#6443F4", "#F94498"]}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 0 }}
+                style={StyleSheet.absoluteFillObject}
+              />
+              <Text style={S.authGateBtnText}>Sign In</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      ) : (
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 130 }}>
 
         {/* ═══ BALANCE CARD ═══ */}
@@ -501,6 +533,7 @@ export default function WalletScreen() {
         )}
 
       </ScrollView>
+      )}
 
       {/* Transaction detail modal */}
       <TxModal tx={selectedTx} onClose={() => setSelectedTx(null)} />
@@ -604,4 +637,22 @@ const S = StyleSheet.create({
     overflow: "hidden", paddingVertical: 12, alignItems: "center", gap: 4, borderWidth: 1, borderColor: "rgba(255,255,255,0.12)" },
   actionBtnEmoji: { fontSize: 20 },
   actionBtnText: { color: "#FFFFFF", fontSize: 11, fontWeight: "700" },
+
+  // Auth gate
+  authGate: { flex: 1, alignItems: "center", justifyContent: "center", paddingHorizontal: 24, paddingTop: 60 },
+  authGateCard: {
+    width: "100%",
+    alignItems: "center",
+    borderRadius: 24,
+    overflow: "hidden",
+    padding: 32,
+    gap: 16,
+    borderWidth: 1.5,
+    borderColor: "rgba(100,67,244,0.3)",
+  },
+  authGateIconWrap: { width: 72, height: 72, borderRadius: 36, overflow: "hidden", alignItems: "center", justifyContent: "center" },
+  authGateTitle: { color: "#FFFFFF", fontSize: 20, fontWeight: "900", textAlign: "center", fontFamily: "Chillax-Bold" },
+  authGateSub: { color: "rgba(255,255,255,0.55)", fontSize: 14, textAlign: "center", lineHeight: 20, fontFamily: "Satoshi-Regular" },
+  authGateBtn: { borderRadius: 16, overflow: "hidden", paddingHorizontal: 32, paddingVertical: 14, marginTop: 8 },
+  authGateBtnText: { color: "#FFFFFF", fontSize: 16, fontWeight: "800", fontFamily: "Chillax-Bold" },
 });

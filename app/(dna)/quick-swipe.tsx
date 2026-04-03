@@ -285,7 +285,7 @@ function SwipeCard({
 // ─── Main Screen ──────────────────────────────────────────────────────────────
 export default function QuickSwipeScreen() {
   const insets = useSafeAreaInsets();
-  const { dispatch } = useStore();
+  const { state, dispatch } = useStore();
   const { isAuthenticated } = useAuth();
   const profileSync = trpc.profile.sync.useMutation();
   const [index, setIndex] = useState(0);
@@ -410,6 +410,28 @@ export default function QuickSwipeScreen() {
               <Text style={styles.xpSub}>Quick DNA complete — upgrade to First Class DNA for 580 signals</Text>
             </View>
           </View>
+
+          {/* Guest prompt to save DNA */}
+          {state.isGuest && (
+            <TouchableOpacity
+              style={styles.guestDnaCard}
+              onPress={() => router.push("/(auth)/splash" as never)}
+              activeOpacity={0.88}
+            >
+              <LinearGradient
+                colors={["rgba(249,68,152,0.2)", "rgba(100,67,244,0.15)"]}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 1 }}
+                style={StyleSheet.absoluteFillObject}
+              />
+              <IconSymbol name="person.badge.plus" size={22} color="#F94498" />
+              <View style={{ flex: 1, gap: 2 }}>
+                <Text style={styles.guestDnaTitle}>Create an account to save your DNA</Text>
+                <Text style={styles.guestDnaSub}>Your results will be lost when your guest session expires</Text>
+              </View>
+              <IconSymbol name="chevron.right" size={16} color="rgba(255,255,255,0.5)" />
+            </TouchableOpacity>
+          )}
 
           {/* CTA */}
           <TouchableOpacity
@@ -545,4 +567,19 @@ const styles = StyleSheet.create({
   ctaText: { color: "#FFFFFF", fontSize: 16, fontWeight: "800", fontFamily: "Chillax-Bold" },
   secondaryCta: { alignItems: "center", paddingVertical: 12 },
   secondaryCtaText: { color: "rgba(255,255,255,0.5)", fontSize: 13, fontFamily: "Satoshi-Regular", textDecorationLine: "underline" },
+
+  // Guest DNA prompt
+  guestDnaCard: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 14,
+    borderRadius: 18,
+    overflow: "hidden",
+    padding: 16,
+    marginBottom: 16,
+    borderWidth: 1,
+    borderColor: "rgba(249,68,152,0.3)",
+  },
+  guestDnaTitle: { color: "#FFFFFF", fontSize: 14, fontWeight: "700", fontFamily: "Satoshi-Bold" },
+  guestDnaSub: { color: "rgba(255,255,255,0.5)", fontSize: 12, fontFamily: "Satoshi-Regular" },
 });

@@ -83,6 +83,7 @@ export default function ExploreScreen() {
   const [searchQuery, setSearchQuery] = useState("");
   const [savedDests, setSavedDests] = useState<string[]>([]);
   const [gridMode, setGridMode] = useState(false);
+  const [showGuestSaveBanner, setShowGuestSaveBanner] = useState(false);
   const dnaScores = state.profile?.dnaScores as Record<string, number> | undefined;
 
   const filtered = DESTINATIONS.filter((d) => {
@@ -97,6 +98,10 @@ export default function ExploreScreen() {
   const toggleSave = (id: string) => {
     if (Platform.OS !== "web") Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     setSavedDests((prev) => (prev.includes(id) ? prev.filter((d) => d !== id) : [...prev, id]));
+    if (state.isGuest && !savedDests.includes(id)) {
+      setShowGuestSaveBanner(true);
+      setTimeout(() => setShowGuestSaveBanner(false), 4000);
+    }
   };
 
   return (
@@ -113,6 +118,25 @@ export default function ExploreScreen() {
           <Text style={S.headerTitle}>Explore</Text>
           <Text style={S.headerSub}>Discover your next adventure</Text>
         </View>
+
+        {/* Guest save banner */}
+        {showGuestSaveBanner && (
+          <TouchableOpacity
+            style={S.guestBanner}
+            onPress={() => { setShowGuestSaveBanner(false); router.push("/(auth)/splash" as never); }}
+            activeOpacity={0.88}
+          >
+            <LinearGradient
+              colors={["rgba(100,67,244,0.2)", "rgba(249,68,152,0.15)"]}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 0 }}
+              style={StyleSheet.absoluteFillObject}
+            />
+            <IconSymbol name="heart.fill" size={16} color="#F94498" />
+            <Text style={S.guestBannerText}>Create an account to save favorites</Text>
+            <IconSymbol name="chevron.right" size={14} color="rgba(255,255,255,0.5)" />
+          </TouchableOpacity>
+        )}
 
         {/* Search */}
         <View style={S.searchWrap}>
@@ -494,4 +518,20 @@ const S = StyleSheet.create({
   regionBannerSub: { color: "rgba(255,255,255,0.5)", fontSize: 11, fontFamily: "Satoshi-Regular" },
   regionBannerArrow: { color: "rgba(255,255,255,0.5)", fontSize: 18, fontWeight: "700",
       fontFamily: "Chillax-Semibold" },
+
+  // Guest save banner
+  guestBanner: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 10,
+    marginHorizontal: 20,
+    marginBottom: 12,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    borderRadius: 14,
+    overflow: "hidden",
+    borderWidth: 1,
+    borderColor: "rgba(249,68,152,0.3)",
+  },
+  guestBannerText: { flex: 1, color: "rgba(255,255,255,0.85)", fontSize: 13, fontWeight: "600", fontFamily: "Satoshi-Medium" },
 });

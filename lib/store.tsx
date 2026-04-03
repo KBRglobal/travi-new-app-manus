@@ -172,6 +172,7 @@ type Action =
   | { type: "SPEND_POINTS"; payload: { amount: number; description: string } }
   | { type: "ADD_NOTIFICATION"; payload: AppNotification }
   | { type: "MARK_NOTIFICATION_READ"; payload: string }
+  | { type: "MERGE_GUEST" }
   | { type: "HYDRATE"; payload: Partial<AppState> }
   | { type: "LOGOUT" };
 
@@ -250,6 +251,14 @@ function reducer(state: AppState, action: Action): AppState {
         ...state,
         notifications: state.notifications.map((n) => (n.id === action.payload ? { ...n, read: true } : n)),
       };
+    case "MERGE_GUEST":
+      // Transition from guest to real account: keep all data, clear guest flags
+      return {
+        ...state,
+        isAuthenticated: true,
+        isGuest: false,
+        guestExpiresAt: null,
+      };
     case "HYDRATE":
       return { ...state, ...action.payload };
     case "ADD_PRICE_ALERT":
@@ -284,6 +293,35 @@ function reducer(state: AppState, action: Action): AppState {
 const StoreContext = createContext<{ state: AppState; dispatch: React.Dispatch<Action> } | null>(null);
 
 const STORAGE_KEY = "travi_app_state";
+export const GUEST_TOKEN_KEY = "travi_guest_token";
+
+/** Store a guest token in AsyncStorage. Call this when entering guest mode. */
+export async function storeGuestToken(token: string): Promise<void> {
+  try {
+    await AsyncStorage.setItem(GUEST_TOKEN_KEY, token);
+  } catch (error) {
+    console.warn("[Store] Failed to store guest token:", error);
+  }
+}
+
+/** Retrieve the guest token from AsyncStorage (if any). */
+export async function getGuestToken(): Promise<string | null> {
+  try {
+    return await AsyncStorage.getItem(GUEST_TOKEN_KEY);
+  } catch (error) {
+    console.warn("[Store] Failed to read guest token:", error);
+    return null;
+  }
+}
+
+/** Clear the guest token from AsyncStorage. Call this after successful merge. */
+export async function clearGuestToken(): Promise<void> {
+  try {
+    await AsyncStorage.removeItem(GUEST_TOKEN_KEY);
+  } catch (error) {
+    console.warn("[Store] Failed to clear guest token:", error);
+  }
+}
 
 export function TraviStoreProvider({ children }: { children: ReactNode }) {
   const [state, dispatch] = useReducer(reducer, initialState);

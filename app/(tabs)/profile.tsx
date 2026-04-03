@@ -170,6 +170,32 @@ export default function ProfileScreen() {
           <Text style={styles.userName}>{displayName}</Text>
           <Text style={styles.userEmail}>{displayEmail}</Text>
 
+          {/* Guest timer badge & CTA */}
+          {state.isGuest && (
+            <View style={styles.guestCtaWrap}>
+              {state.guestExpiresAt && (() => {
+                const msLeft = new Date(state.guestExpiresAt).getTime() - Date.now();
+                const hoursLeft = Math.max(0, Math.floor(msLeft / (1000 * 60 * 60)));
+                const minsLeft = Math.max(0, Math.floor((msLeft % (1000 * 60 * 60)) / (1000 * 60)));
+                return (
+                  <View style={styles.guestTimerBadge}>
+                    <IconSymbol name="clock.fill" size={14} color="#FBBF24" />
+                    <Text style={styles.guestTimerText}>Guest session: {hoursLeft}h {minsLeft}m remaining</Text>
+                  </View>
+                );
+              })()}
+              <TouchableOpacity
+                style={styles.guestCtaBtn}
+                onPress={() => router.push("/(auth)/splash" as never)}
+                activeOpacity={0.88}
+              >
+                <LinearGradient colors={["#6443F4", "#F94498"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={StyleSheet.absoluteFillObject} />
+                <Text style={styles.guestCtaBtnText}>Complete Your Profile</Text>
+                <IconSymbol name="chevron.right" size={16} color="rgba(255,255,255,0.7)" />
+              </TouchableOpacity>
+            </View>
+          )}
+
           {/* 5-Tier XP Badge + Progress */}
           <View style={styles.xpContainer}>
             <LinearGradient colors={["rgba(100,67,244,0.2)","rgba(249,68,152,0.15)"]} start={{x:0,y:0}} end={{x:1,y:1}} style={styles.xpBadge}>
@@ -470,4 +496,31 @@ const styles = StyleSheet.create({
   dnaEmptyBtn: { borderRadius: 14, overflow: "hidden", marginTop: 4 },
   dnaEmptyBtnGradient: { paddingHorizontal: 20, paddingVertical: 12, borderRadius: 14 },
   dnaEmptyBtnText: { color: "#FFFFFF", fontSize: 14, fontWeight: "700", fontFamily: "Satoshi-Bold" },
+
+  // Guest CTA
+  guestCtaWrap: { width: "100%", gap: 12, marginTop: 8 },
+  guestTimerBadge: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
+    alignSelf: "center",
+    backgroundColor: "rgba(251,191,36,0.12)",
+    borderRadius: 12,
+    paddingHorizontal: 14,
+    paddingVertical: 8,
+    borderWidth: 1,
+    borderColor: "rgba(251,191,36,0.3)",
+  },
+  guestTimerText: { color: "#FBBF24", fontSize: 12, fontWeight: "700", fontFamily: "Satoshi-Bold" },
+  guestCtaBtn: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 8,
+    borderRadius: 16,
+    overflow: "hidden",
+    paddingVertical: 14,
+    paddingHorizontal: 24,
+  },
+  guestCtaBtnText: { color: "#FFFFFF", fontSize: 15, fontWeight: "800", fontFamily: "Chillax-Bold" },
 });

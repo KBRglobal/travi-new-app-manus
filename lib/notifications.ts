@@ -142,3 +142,19 @@ export async function cancelTripReminders(notificationIds: string[]): Promise<vo
     await Notifications.cancelScheduledNotificationAsync(id);
   }
 }
+
+/**
+ * Subscribe to foreground notification events and tap responses.
+ * Returns a cleanup function to remove both listeners.
+ */
+export function addNotificationListeners(
+  onReceived: (notification: Notifications.Notification) => void,
+  onTapped: (response: Notifications.NotificationResponse) => void,
+): () => void {
+  const receivedSub = Notifications.addNotificationReceivedListener(onReceived);
+  const responseSub = Notifications.addNotificationResponseReceivedListener(onTapped);
+  return () => {
+    receivedSub.remove();
+    responseSub.remove();
+  };
+}
