@@ -3,7 +3,7 @@ import { Appearance, View } from "react-native";
 import { colorScheme as nativewindColorScheme, vars } from "nativewind";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-import { SchemeColors, type ColorScheme } from "@/constants/theme";
+import { SchemeColors, Colors, type ColorScheme } from "@/constants/theme";
 
 const THEME_STORAGE_KEY = "@travi_theme";
 
@@ -66,8 +66,8 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
         "color-success":    SchemeColors[colorScheme].success,
         "color-warning":    SchemeColors[colorScheme].warning,
         "color-error":      SchemeColors[colorScheme].error,
-        "color-accent":     SchemeColors[colorScheme].accent ?? SchemeColors[colorScheme].primary,
-        "color-tint":       SchemeColors[colorScheme].tint   ?? SchemeColors[colorScheme].primary,
+        "color-accent":     Colors[colorScheme].accent ?? Colors[colorScheme].primary,
+        "color-tint":       Colors[colorScheme].tint   ?? Colors[colorScheme].primary,
       }),
     [colorScheme],
   );

@@ -1,18 +1,22 @@
 import { useRef, useState } from "react";
 import {
   View, Text, TouchableOpacity, StyleSheet,
-  Animated, KeyboardAvoidingView, Platform, ScrollView, TextInput
+  Animated, KeyboardAvoidingView, Platform, ScrollView, TextInput, Alert
 } from "react-native";
 import { router } from "expo-router";
 import { Image } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
-import { Svg, Path, G, Rect, Circle } from "react-native-svg";
+import { Svg, Path } from "react-native-svg";
 import * as WebBrowser from "expo-web-browser";
+import * as Google from "expo-auth-session/providers/google";
+import * as AppleAuthentication from "expo-apple-authentication";
 import { IconSymbol } from "@/components/ui/icon-symbol";
 import { useStore } from "@/lib/store";
 import { trpc } from "@/lib/trpc";
 import { Brand, Gradients, Text as DS, Border, Typography, Radius, Spacing } from "@/lib/design-system";
-import { startOAuthLogin } from "@/constants/oauth";
+
+// Complete any pending auth sessions on mount
+WebBrowser.maybeCompleteAuthSession();
 
 // ── Google "G" SVG (official brand colours) ──────────────────────────────────
 function GoogleIcon({ size = 18 }: { size?: number }) {
@@ -86,8 +90,90 @@ export default function SignUpScreen() {
     router.push({ pathname: "/(auth)/verify" as never, params: { email } });
   };
 
-  const handleSocial = async (_provider: string) => {
-    await startOAuthLogin();
+  // ── Google OAuth ──
+  // webClientId is required on web platform; we use iosClientId as fallback so the
+  // hook doesn't throw on web (the button will be disabled on web anyway).
+  const [_googleRequest, googleResponse, promptGoogleAsync] = Google.useAuthRequest({
+    iosClientId: process.env.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID,
+    androidClientId: process.env.EXPO_PUBLIC_GOOGLE_ANDROID_CLIENT_ID,
+    webClientId: process.env.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID, // required on web; OAuth won't work on web but prevents crash
+  });
+
+  const handleGoogle = async () => {
+    if (Platform.OS === "web") {
+      Alert.alert("Google Sign-In", "Please use the iOS or Android app to sign in with Google.");
+      return;
+    }
+    try {
+      const result = await promptGoogleAsync();
+      if (result?.type === "success") {
+        const { authentication } = result;
+        // Fetch user info from Google
+        const userInfoRes = await fetch("https://www.googleapis.com/userinfo/v2/me", {
+          headers: { Authorization: `Bearer ${authentication?.accessToken}` },
+        });
+        const userInfo = await userInfoRes.json();
+        dispatch({
+          type: "SET_AUTH",
+          payload: { isAuthenticated: true, isGuest: false },
+        });
+        dispatch({
+          type: "SET_PROFILE",
+          payload: {
+            id: userInfo.id ?? "google-user",
+            name: userInfo.name ?? "Traveler",
+            email: userInfo.email ?? "",
+            quizCompleted: false, travelerDNA: {},
+            activityCategories: [], tripPace: "balanced" as const,
+            foodPreferences: { cuisines: [], avoid: [], allergies: [], dietary: [] },
+            points: 0, xp: 0, lifetimeSavings: 0, subscriptionActive: false,
+          },
+        });
+        router.replace("/(auth)/welcome" as never);
+      }
+    } catch (e) {
+      console.error("[Google OAuth]", e);
+      Alert.alert("Sign in failed", "Could not sign in with Google. Please try again.");
+    }
+  };
+
+  // ── Apple Sign-In ──
+  const handleApple = async () => {
+    if (Platform.OS !== "ios") {
+      Alert.alert("Apple Sign-In", "Apple Sign-In is only available on iOS devices.");
+      return;
+    }
+    try {
+      const credential = await AppleAuthentication.signInAsync({
+        requestedScopes: [
+          AppleAuthentication.AppleAuthenticationScope.FULL_NAME,
+          AppleAuthentication.AppleAuthenticationScope.EMAIL,
+        ],
+      });
+      dispatch({
+        type: "SET_AUTH",
+        payload: { isAuthenticated: true, isGuest: false },
+      });
+      dispatch({
+        type: "SET_PROFILE",
+        payload: {
+          id: credential.user,
+          name: credential.fullName
+            ? `${credential.fullName.givenName ?? ""} ${credential.fullName.familyName ?? ""}`.trim()
+            : "Traveler",
+          email: credential.email ?? "",
+          quizCompleted: false, travelerDNA: {},
+          activityCategories: [], tripPace: "balanced" as const,
+          foodPreferences: { cuisines: [], avoid: [], allergies: [], dietary: [] },
+          points: 0, xp: 0, lifetimeSavings: 0, subscriptionActive: false,
+        },
+      });
+      router.replace("/(auth)/welcome" as never);
+    } catch (e: any) {
+      if (e?.code !== "ERR_REQUEST_CANCELED") {
+        Alert.alert("Sign in failed", "Could not sign in with Apple. Please try again.");
+      }
+    }
   };
 
   const handleGuest = async () => {
@@ -206,13 +292,13 @@ export default function SignUpScreen() {
 
               {/* Social buttons */}
               <View style={s.socialRow}>
-                <TouchableOpacity style={s.socialBtn} onPress={() => handleSocial("Google")} activeOpacity={0.8}>
+                <TouchableOpacity style={s.socialBtn} onPress={handleGoogle} activeOpacity={0.8}>
                   <LinearGradient colors={["rgba(255,255,255,0.06)", "rgba(255,255,255,0.06)"]} style={s.socialGradient}>
                     <GoogleIcon size={18} />
                     <Text style={s.socialLabel}>Google</Text>
                   </LinearGradient>
                 </TouchableOpacity>
-                <TouchableOpacity style={s.socialBtn} onPress={() => handleSocial("Apple")} activeOpacity={0.8}>
+                <TouchableOpacity style={s.socialBtn} onPress={handleApple} activeOpacity={0.8}>
                   <LinearGradient colors={["rgba(255,255,255,0.06)", "rgba(255,255,255,0.06)"]} style={s.socialGradient}>
                     <AppleIcon size={18} color="#FFFFFF" />
                     <Text style={s.socialLabel}>Apple</Text>

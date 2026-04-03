@@ -201,7 +201,7 @@ export default function ReferScreen() {
             </View>
           ) : (
             <View style={S.friendsList}>
-              {displayReferrals.map((friend) => (
+              {displayReferrals.map((friend: typeof REFERRED_FRIENDS[0]) => (
                 <View key={friend.id} style={S.friendRow}>
                   <LinearGradient colors={["rgba(255,255,255,0.06)", "transparent"]} style={StyleSheet.absoluteFillObject} />
                   <View style={[S.friendAvatar, { backgroundColor: friend.color + "25", borderColor: friend.color + "50" }]}>
