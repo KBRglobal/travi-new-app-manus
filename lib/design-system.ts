@@ -77,7 +77,7 @@ export const Gradients = {
   /** Subtle CTA variant */
   ctaSubtle:    ["rgba(100,67,244,0.80)", "rgba(249,68,152,0.80)"] as const,
   /** Auth/Splash background */
-  authBg:       ["#0D0628", "#1A0A3D", "#1A0A3D"] as const,
+  authBg:       ["#1A0B2E", "#1A0B2E", "#24103E"] as const,
   /** Home hero overlay */
   heroOverlay:  ["rgba(26,10,61,0.55)", "rgba(26,10,61,0.10)", "rgba(26,10,61,0.85)"] as const,
   /** Card surface */

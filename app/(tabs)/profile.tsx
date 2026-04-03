@@ -203,7 +203,7 @@ const S = StyleSheet.create({
   lockedBadgeText: { color: C.textMuted, fontSize: 9, fontFamily: 'Satoshi-Medium' },
   settingsCard: { backgroundColor: C.surface, borderRadius: 20, overflow: 'hidden', borderWidth: 1, borderColor: C.glassStroke },
   settingsRow: { flexDirection: 'row', alignItems: 'center', gap: 12, paddingHorizontal: 16, paddingVertical: 14, borderBottomWidth: 1, borderBottomColor: 'rgba(123,68,230,0.15)' },
-  settingsIconWrap: { width: 36, height: 36, borderRadius: 10, backgroundColor: 'rgba(100,67,244,0.15)', alignItems: 'center', justifyContent: 'center' },
+  settingsIconWrap: { width: 36, height: 36, alignItems: 'center', justifyContent: 'center' },
   settingsLabel: { flex: 1, color: C.textPrimary, fontSize: 15, fontFamily: 'Satoshi-Medium' },
   settingsRight: { flexDirection: 'row', alignItems: 'center', gap: 6 },
   settingsValue: { color: C.textMuted, fontSize: 14, fontFamily: 'Satoshi-Regular' },

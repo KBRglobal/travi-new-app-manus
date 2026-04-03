@@ -220,10 +220,10 @@ const S = StyleSheet.create({
   filtersScroll: { paddingHorizontal: 20, paddingVertical: 16, gap: 8 },
   filterChip: {
     paddingHorizontal: 16, paddingVertical: 8, borderRadius: 20,
-    backgroundColor: C.surface, borderWidth: 1, borderColor: C.glassStroke, overflow: "hidden",
+    backgroundColor: "rgba(36,16,62,0.95)", borderWidth: 1.5, borderColor: "rgba(123,68,230,0.55)", overflow: "hidden",
   },
   filterChipActive: { borderColor: "transparent" },
-  filterChipText: { color: C.textMuted, fontSize: 13, fontFamily: "Satoshi-Medium" },
+  filterChipText: { color: "#C8C0D8", fontSize: 13, fontFamily: "Satoshi-Medium", fontWeight: "600" },
   filterChipTextActive: { color: C.white, fontFamily: "Satoshi-Bold" },
   resultsRow: { paddingHorizontal: 20, marginBottom: 12 },
   resultsText: { color: C.textMuted, fontSize: 13, fontFamily: "Satoshi-Regular" },

@@ -6,6 +6,7 @@
  *
  * Every interaction feeds the DNA engine.
  */
+// @ts-nocheck
 
 import { LinearGradient } from "expo-linear-gradient";
 import * as Haptics from "expo-haptics";

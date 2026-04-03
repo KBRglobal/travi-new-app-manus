@@ -361,7 +361,7 @@ export default function QuizScreen() {
 
   const renderBackground = () => (
     <>
-      <LinearGradient colors={["#0D0628", "#1A0A3D", "#1A0A3D"]} style={StyleSheet.absoluteFillObject} />
+      <LinearGradient colors={["#1A0B2E", "#1A0A3D", "#1A0A3D"]} style={StyleSheet.absoluteFillObject} />
       <View style={S.orb1} />
       <View style={S.orb2} />
     </>
@@ -400,7 +400,7 @@ export default function QuizScreen() {
 
   return (
     <View style={S.container}>
-      <LinearGradient colors={["#0D0628", "#1A0A3D", "#0D0628"]} style={StyleSheet.absoluteFillObject} />
+      <LinearGradient colors={["#1A0B2E", "#1A0A3D", "#1A0B2E"]} style={StyleSheet.absoluteFillObject} />
       <View style={S.orb1} />
       <View style={S.orb2} />
 
@@ -496,7 +496,7 @@ export default function QuizScreen() {
 
 const CARD_W = (width - 44) / 2;
 const S = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#0D0628" },
+  container: { flex: 1, backgroundColor: "#1A0B2E" },
   orb1: { position: "absolute", width: width * 1.4, height: width * 1.4, borderRadius: width * 0.7, top: -width * 0.5, left: -width * 0.3, backgroundColor: "rgba(123,47,190,0.1)" },
   orb2: { position: "absolute", width: width, height: width, borderRadius: width / 2, bottom: -width * 0.3, right: -width * 0.3, backgroundColor: "rgba(233,30,140,0.07)" },
   header: { flexDirection: "row", alignItems: "center", paddingHorizontal: 20, paddingTop: 58, paddingBottom: 12, gap: 12 },

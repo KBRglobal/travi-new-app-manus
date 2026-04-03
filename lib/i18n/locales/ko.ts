@@ -87,5 +87,130 @@ export default {
       "visa": "두바이 비자 필요한가요?",
       "budget": "파리 여행 예산은?"
     }
-  }
+  },
+
+  explore: {
+    title: "Explore",
+    searchPlaceholder: "Search destinations...",
+    filters: {
+      all: "All",
+      flights: "Flights",
+      hotels: "Hotels",
+      activities: "Activities",
+      food: "Food",
+      nature: "Nature",
+    },
+    sections: {
+      trending: "Trending",
+      hiddenGems: "Hidden Gems",
+      nearYou: "Near You",
+      topRated: "Top Rated",
+    },
+    dnaMatch: "DNA Match",
+    perNight: "/ night",
+    perPerson: "/ person",
+  },
+  trips: {
+    title: "My Trips",
+    filters: {
+      all: "All",
+      upcoming: "Upcoming",
+      active: "Active",
+      past: "Past",
+    },
+    stats: {
+      countries: "Countries",
+      trips: "Trips",
+      miles: "Miles",
+      days: "Days",
+    },
+    empty: {
+      title: "No trips yet",
+      subtitle: "Start planning your next adventure",
+      cta: "Plan a Trip",
+    },
+    status: {
+      upcoming: "Upcoming",
+      active: "Active Now",
+      completed: "Completed",
+      cancelled: "Cancelled",
+    },
+    days: "{{count}} days",
+    viewDetails: "View Details",
+    addTrip: "Add Trip",
+  },
+  wallet: {
+    title: "Wallet",
+    subtitle: "Manage your travel funds",
+    balance: {
+      total: "Total Balance",
+      points: "Travel Points",
+      cashback: "Cashback",
+    },
+    cards: {
+      title: "My Cards",
+      addCard: "Add Card",
+      active: "Active",
+    },
+    actions: {
+      topUp: "Top Up",
+      transfer: "Transfer",
+      redeem: "Redeem",
+      history: "History",
+    },
+    points: {
+      title: "Travel Points",
+      credit: "travel credit",
+      toGold: "pts to Gold status",
+      redeemBtn: "Redeem",
+    },
+    redeemTitle: "Redeem Points",
+    waysToRedeem: "Ways to Redeem",
+    recentActivity: "Recent Activity",
+    redeemOptions: {
+      miles: "Airline Miles",
+      giftCards: "Gift Cards",
+      hotels: "Hotel Stays",
+      esim: "eSIM Data",
+      experiences: "Experiences",
+      lounges: "Lounges",
+    },
+  },
+  profile: {
+    title: "Profile",
+    stats: {
+      countries: "Countries",
+      trips: "Trips",
+      points: "Points",
+      rating: "Rating",
+    },
+    dna: {
+      title: "Travel DNA",
+      retake: "Retake Quiz",
+      traits: {
+        adventure: "Adventure",
+        culture: "Culture",
+        wellness: "Wellness",
+        food: "Food",
+        nature: "Nature",
+      },
+    },
+    achievements: {
+      title: "Achievements",
+      locked: "Locked",
+    },
+    settings: {
+      preferences: "Preferences",
+      account: "Account",
+      language: "Language",
+      currency: "Currency",
+      notifications: "Notifications",
+      darkMode: "Dark Mode",
+      editProfile: "Edit Profile",
+      privacy: "Privacy & Security",
+      payment: "Payment Methods",
+      help: "Help & Support",
+    },
+    signOut: "Sign Out",
+  },
 } as const;
