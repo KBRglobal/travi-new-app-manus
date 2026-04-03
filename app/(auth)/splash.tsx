@@ -12,12 +12,12 @@ const ORANGE = "#FF9327";
 const PINK = "#F94498";
 const GREEN = "#02A65C";
 
-const DOTS = Array.from({ length: 30 }, (_, i) => ({
+const DOTS = Array.from({ length: 10 }, (_, i) => ({
   id: i,
-  top: (i * 47 + 19) % height,
-  left: (i * 61 + 31) % width,
-  size: i % 5 === 0 ? 6 : i % 3 === 0 ? 4 : 3,
-  opacity: 0.08 + (i % 5) * 0.05,
+  top: (i * 97 + 40) % height,
+  left: (i * 83 + 25) % width,
+  size: i % 3 === 0 ? 5 : 3,
+  opacity: 0.06 + (i % 4) * 0.03,
   color: i % 4 === 0 ? ORANGE : i % 4 === 1 ? PINK : i % 4 === 2 ? GREEN : PURPLE,
 }));
 
@@ -181,7 +181,7 @@ const styles = StyleSheet.create({
   dot: { position: "absolute", borderRadius: 3 },
   center: { flex: 1, alignItems: "center", justifyContent: "center", gap: 20 },
   mascotImage: {
-    width: 240, height: 240,
+    width: 200, height: 200,
   },
   logotype: { width: 160, height: 56 },
   titleWrap: { alignItems: "center", gap: 10 },
@@ -189,7 +189,7 @@ const styles = StyleSheet.create({
   tagline: {
     fontSize: 13, color: "rgba(200,190,230,0.7)",
     letterSpacing: 3, fontWeight: "500", textAlign: "center",
-    textTransform: "uppercase",
+    textTransform: "uppercase", fontFamily: "Satoshi-Medium",
   },
   bottomArea: { paddingHorizontal: 50, paddingBottom: 64, gap: 12, alignItems: "center", width: "100%" },
   progressTrack: {
@@ -204,5 +204,6 @@ const styles = StyleSheet.create({
   loadingText: {
     color: "rgba(160,145,200,0.6)", fontSize: 11,
     letterSpacing: 2, fontWeight: "600", textTransform: "uppercase",
+    fontFamily: "Satoshi-Medium",
   },
 });

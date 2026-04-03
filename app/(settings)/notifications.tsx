@@ -94,7 +94,7 @@ const S = StyleSheet.create({
   header: { flexDirection: "row", alignItems: "center", paddingHorizontal: 20, paddingBottom: 16, gap: 12 },
   backBtn: { width: 36, height: 36, borderRadius: 18, backgroundColor: "rgba(255,255,255,0.08)", alignItems: "center", justifyContent: "center" },
   backText: { color: "#FFFFFF", fontSize: 18, fontWeight: "700" },
-  headerTitle: { flex: 1, color: "#FFFFFF", fontSize: 20, fontWeight: "900", textAlign: "center" },
+  headerTitle: { flex: 1, color: "#FFFFFF", fontSize: 20, fontWeight: "900", textAlign: "center", fontFamily: "Chillax-Bold" },
   section: { paddingHorizontal: 20, marginBottom: 24 },
   sectionTitle: { color: "rgba(255,255,255,0.4)", fontSize: 11, fontWeight: "800", textTransform: "uppercase", letterSpacing: 1.5, marginBottom: 12 },
   row: { flexDirection: "row", alignItems: "center", paddingVertical: 12, borderBottomWidth: 1, borderBottomColor: "rgba(255,255,255,0.04)", gap: 12 },

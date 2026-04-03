@@ -400,6 +400,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "700",
     color: "#fff",
+    fontFamily: "Chillax-Semibold",
   },
   headerStatus: {
     fontSize: 11,

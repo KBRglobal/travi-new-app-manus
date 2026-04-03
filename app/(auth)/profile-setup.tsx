@@ -199,8 +199,8 @@ const s = StyleSheet.create({
   stepText: { ...Typography.label, color: DS.secondary },
 
   heading: { gap: 6 },
-  title:    { ...Typography.h2 },
-  subtitle: { ...Typography.body, color: DS.muted },
+  title:    { ...Typography.h2, fontFamily: "Chillax-Bold" },
+  subtitle: { ...Typography.body, color: DS.muted, fontFamily: "Satoshi-Regular" },
 
   section: { gap: 12 },
   sectionLabel: { ...Typography.label },
@@ -224,18 +224,18 @@ const s = StyleSheet.create({
     paddingHorizontal: Spacing.md, paddingVertical: Spacing.md,
     backgroundColor: "rgba(255,255,255,0.04)",
   },
-  input: { flex: 1, color: DS.primary, fontSize: 16, fontWeight: "500" },
+  input: { flex: 1, color: DS.primary, fontSize: 16, fontWeight: "500", fontFamily: "Satoshi-Medium" },
 
   previewCard: { borderRadius: Radius.xl, overflow: "hidden", borderWidth: 1, borderColor: Border.card },
   previewGradient: { flexDirection: "row", alignItems: "center", gap: 14, padding: 18 },
   previewAvatar: { width: 48, height: 48, borderRadius: 14, alignItems: "center", justifyContent: "center" },
-  previewName: { ...Typography.h4 },
-  previewSub: { ...Typography.small, color: DS.muted, marginTop: 2 },
+  previewName: { ...Typography.h4, fontFamily: "Chillax-Semibold" },
+  previewSub: { ...Typography.small, color: DS.muted, marginTop: 2, fontFamily: "Satoshi-Regular" },
   newBadge: { paddingHorizontal: 10, paddingVertical: 4, borderRadius: 8 },
-  newBadgeText: { fontSize: 11, fontWeight: "800", color: "#000000", letterSpacing: 0.5 },
+  newBadgeText: { fontSize: 11, fontWeight: "800", color: "#000000", letterSpacing: 0.5, fontFamily: "Chillax-Bold" },
 
   cta: { borderRadius: Radius.lg, overflow: "hidden" },
   ctaGradient: { flexDirection: "row", alignItems: "center", justifyContent: "center", paddingVertical: 17, gap: 10 },
-  ctaText: { ...Typography.cta },
+  ctaText: { ...Typography.cta, fontFamily: "Chillax-Semibold" },
   ctaDim: { color: DS.disabled },
 });

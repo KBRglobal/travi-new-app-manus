@@ -653,7 +653,7 @@ const styles = StyleSheet.create({
   backArrow: { color: "#fff", fontSize: 20 },
   heroContent: { paddingHorizontal: 20, paddingTop: 8 },
   heroLabel: { color: "#F94498", fontSize: 11, fontWeight: "700", letterSpacing: 1.5, marginBottom: 6 },
-  heroTitle: { color: "#fff", fontSize: 26, fontWeight: "800", marginBottom: 20 },
+  heroTitle: { color: "#fff", fontSize: 26, fontWeight: "800", marginBottom: 20, fontFamily: "Chillax-Bold" },
 
   countdownCard: {
     backgroundColor: "rgba(255,255,255,0.07)",
@@ -666,7 +666,7 @@ const styles = StyleSheet.create({
   countdownTitle: { color: "#9BA1A6", fontSize: 12, fontWeight: "600", marginBottom: 12, textAlign: "center" },
   countdownRow: { flexDirection: "row", justifyContent: "center", gap: 24 },
   countdownUnit: { alignItems: "center" },
-  countdownNumber: { color: "#fff", fontSize: 36, fontWeight: "800", lineHeight: 40 },
+  countdownNumber: { color: "#fff", fontSize: 36, fontWeight: "800", lineHeight: 40, fontFamily: "Chillax-Bold" },
   countdownLabel: { color: "#6443F4", fontSize: 10, fontWeight: "700", letterSpacing: 1 },
 
   statsRow: {
@@ -679,7 +679,7 @@ const styles = StyleSheet.create({
   },
   statCard: { flex: 1, alignItems: "center" },
   statIcon: { fontSize: 22, marginBottom: 4 },
-  statValue: { color: "#fff", fontSize: 18, fontWeight: "700" },
+  statValue: { color: "#fff", fontSize: 18, fontWeight: "700", fontFamily: "Chillax-Semibold" },
   statLabel: { color: "#9BA1A6", fontSize: 10, marginTop: 2 },
   statDivider: { width: 1, backgroundColor: "rgba(255,255,255,0.1)", marginHorizontal: 8 },
 
@@ -716,13 +716,13 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     flexShrink: 0,
   },
-  conciergeAvatarText: { color: "#fff", fontSize: 20, fontWeight: "800" },
+  conciergeAvatarText: { color: "#fff", fontSize: 20, fontWeight: "800", fontFamily: "Chillax-Bold" },
   conciergeBody: { flex: 1 },
   conciergeTitle: { color: "#fff", fontSize: 15, fontWeight: "700", marginBottom: 6 },
-  conciergeText: { color: "#9BA1A6", fontSize: 13, lineHeight: 19 },
+  conciergeText: { color: "#9BA1A6", fontSize: 13, lineHeight: 19, fontFamily: "Satoshi-Regular" },
 
-  sectionTitle: { color: "#fff", fontSize: 17, fontWeight: "700", marginBottom: 4 },
-  sectionSub: { color: "#9BA1A6", fontSize: 13, marginBottom: 16 },
+  sectionTitle: { color: "#fff", fontSize: 17, fontWeight: "700", marginBottom: 4, fontFamily: "Chillax-Semibold" },
+  sectionSub: { color: "#9BA1A6", fontSize: 13, marginBottom: 16, fontFamily: "Satoshi-Regular" },
 
   upsellCard: {
     flexDirection: "row",
@@ -783,11 +783,11 @@ const styles = StyleSheet.create({
   reminderIcon: { fontSize: 24 },
   reminderBody: { flex: 1 },
   reminderTitle: { color: "#F59E0B", fontSize: 14, fontWeight: "700", marginBottom: 4 },
-  reminderText: { color: "#9BA1A6", fontSize: 13, lineHeight: 18 },
+  reminderText: { color: "#9BA1A6", fontSize: 13, lineHeight: 18, fontFamily: "Satoshi-Regular" },
 
   itineraryBtn: { borderRadius: 16, overflow: "hidden", marginBottom: 8 },
   itineraryBtnGradient: { paddingVertical: 16, alignItems: "center", borderRadius: 16 },
-  itineraryBtnText: { color: "#fff", fontSize: 16, fontWeight: "700" },
+  itineraryBtnText: { color: "#fff", fontSize: 16, fontWeight: "700", fontFamily: "Chillax-Semibold" },
 
   travelerCard: {
     flexDirection: "row",
@@ -812,7 +812,7 @@ const styles = StyleSheet.create({
   },
   traitText: { color: "#6443F4", fontSize: 11, fontWeight: "600" },
   matchBadge: { alignItems: "center", marginRight: 8 },
-  matchPct: { color: "#F94498", fontSize: 18, fontWeight: "800" },
+  matchPct: { color: "#F94498", fontSize: 18, fontWeight: "800", fontFamily: "Chillax-Bold" },
   matchLabel: { color: "#9BA1A6", fontSize: 10 },
   connectBtn: {
     backgroundColor: "rgba(100,67,244,0.25)",
@@ -826,7 +826,7 @@ const styles = StyleSheet.create({
 
   inviteBtn: { borderRadius: 16, overflow: "hidden", marginBottom: 24 },
   inviteBtnGradient: { paddingVertical: 16, alignItems: "center", borderRadius: 16 },
-  inviteBtnText: { color: "#fff", fontSize: 16, fontWeight: "700" },
+  inviteBtnText: { color: "#fff", fontSize: 16, fontWeight: "700", fontFamily: "Chillax-Semibold" },
 
   splitCard: {
     backgroundColor: "rgba(100,67,244,0.12)",
@@ -838,10 +838,10 @@ const styles = StyleSheet.create({
     borderColor: "rgba(100,67,244,0.25)",
   },
   splitTitle: { color: "#9BA1A6", fontSize: 13, fontWeight: "600", marginBottom: 8 },
-  splitAmount: { color: "#fff", fontSize: 42, fontWeight: "800", marginBottom: 12 },
+  splitAmount: { color: "#fff", fontSize: 42, fontWeight: "800", marginBottom: 12, fontFamily: "Chillax-Bold" },
   splitDivider: { width: "80%", height: 1, backgroundColor: "rgba(255,255,255,0.1)", marginBottom: 12 },
-  splitPerPerson: { color: "#F94498", fontSize: 22, fontWeight: "700" },
-  splitTravelers: { color: "#9BA1A6", fontSize: 13, marginTop: 4 },
+  splitPerPerson: { color: "#F94498", fontSize: 22, fontWeight: "700", fontFamily: "Chillax-Semibold" },
+  splitTravelers: { color: "#9BA1A6", fontSize: 13, marginTop: 4, fontFamily: "Satoshi-Regular" },
 
   cashbackCard: {
     backgroundColor: "rgba(249,68,152,0.1)",
@@ -853,8 +853,8 @@ const styles = StyleSheet.create({
     borderColor: "rgba(249,68,152,0.2)",
   },
   cashbackCardTitle: { color: "#F94498", fontSize: 14, fontWeight: "700", marginBottom: 8 },
-  cashbackCardAmount: { color: "#fff", fontSize: 36, fontWeight: "800", marginBottom: 6 },
-  cashbackCardSub: { color: "#9BA1A6", fontSize: 13, textAlign: "center" },
+  cashbackCardAmount: { color: "#fff", fontSize: 36, fontWeight: "800", marginBottom: 6, fontFamily: "Chillax-Bold" },
+  cashbackCardSub: { color: "#9BA1A6", fontSize: 13, textAlign: "center", fontFamily: "Satoshi-Regular" },
 
   payRow: {
     flexDirection: "row",
@@ -863,8 +863,8 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: "rgba(255,255,255,0.06)",
   },
-  payLabel: { color: "#9BA1A6", fontSize: 14 },
-  payAmount: { color: "#fff", fontSize: 14, fontWeight: "600" },
+  payLabel: { color: "#9BA1A6", fontSize: 14, fontFamily: "Satoshi-Regular" },
+  payAmount: { color: "#fff", fontSize: 14, fontWeight: "600", fontFamily: "Satoshi-Medium" },
 
   floatingChat: {
     position: "absolute",
@@ -896,5 +896,5 @@ const styles = StyleSheet.create({
     borderWidth: 1.5,
     borderColor: "#0d0118",
   },
-  floatingChatBadgeText: { color: "#fff", fontSize: 8, fontWeight: "800" },
+  floatingChatBadgeText: { color: "#fff", fontSize: 8, fontWeight: "800", fontFamily: "Chillax-Bold" },
 });

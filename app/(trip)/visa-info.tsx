@@ -200,12 +200,12 @@ const S = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#0D1B2A" },
   header: { flexDirection: "row", alignItems: "center", paddingHorizontal: 16, paddingBottom: 12, paddingTop: 4, gap: 8 },
   backBtn: { width: 40, height: 40, alignItems: "center", justifyContent: "center" },
-  headerTitle: { color: "#FFF", fontSize: 18, fontWeight: "800" },
+  headerTitle: { color: "#FFF", fontSize: 18, fontWeight: "800", fontFamily: "Chillax-Bold" },
   headerSub: { color: "#5A4D72", fontSize: 12 },
 
   visaHero: { marginHorizontal: 16, borderRadius: 20, padding: 16, gap: 14, overflow: "hidden", borderWidth: 1, borderColor: "rgba(255,255,255,0.08)", marginBottom: 16 },
   visaStatusBadge: { flexDirection: "row", alignItems: "center", gap: 14, borderRadius: 14, borderWidth: 1, padding: 14, backgroundColor: "rgba(255,255,255,0.03)" },
-  visaStatusLabel: { fontSize: 18, fontWeight: "800" },
+  visaStatusLabel: { fontSize: 18, fontWeight: "800", fontFamily: "Chillax-Bold" },
   visaStatusSub: { color: "#9BA1A6", fontSize: 13, marginTop: 2 },
   visaMetaRow: { flexDirection: "row", alignItems: "center" },
   visaMetaItem: { flex: 1, alignItems: "center", gap: 3 },
@@ -220,18 +220,18 @@ const S = StyleSheet.create({
   tabTextActive: { color: "#A78BFA" },
 
   infoCard: { borderRadius: 16, padding: 16, gap: 10, overflow: "hidden", borderWidth: 1 },
-  infoCardTitle: { fontSize: 14, fontWeight: "800", textTransform: "uppercase", letterSpacing: 0.5, marginBottom: 4 },
+  infoCardTitle: { fontSize: 14, fontWeight: "800", textTransform: "uppercase", letterSpacing: 0.5, marginBottom: 4, fontFamily: "Chillax-Bold" },
   infoRow: { flexDirection: "row", gap: 10, alignItems: "flex-start" },
   infoDot: { width: 6, height: 6, borderRadius: 3, marginTop: 6 },
   infoText: { color: "#ECEDEE", fontSize: 14, flex: 1, lineHeight: 20 },
 
   moneyCard: { borderRadius: 16, padding: 20, gap: 8, overflow: "hidden", borderWidth: 1, borderColor: "rgba(16,185,129,0.3)", alignItems: "center" },
-  moneyTitle: { color: "#FFF", fontSize: 18, fontWeight: "800" },
-  moneyRate: { color: "#10B981", fontSize: 28, fontWeight: "900" },
+  moneyTitle: { color: "#FFF", fontSize: 18, fontWeight: "800", fontFamily: "Chillax-Bold" },
+  moneyRate: { color: "#10B981", fontSize: 28, fontWeight: "900", fontFamily: "Chillax-Bold" },
   moneyTip: { color: "#9BA1A6", fontSize: 13, textAlign: "center", lineHeight: 20, marginTop: 8 },
 
   emergencyCard: { borderRadius: 16, overflow: "hidden", borderWidth: 1, borderColor: "rgba(239,68,68,0.3)", backgroundColor: "rgba(239,68,68,0.05)" },
   emergencyRow: { flexDirection: "row", justifyContent: "space-between", alignItems: "center", padding: 16, borderBottomWidth: 1, borderBottomColor: "rgba(255,255,255,0.06)" },
   emergencyLabel: { color: "#9BA1A6", fontSize: 14 },
-  emergencyNumber: { color: "#EF4444", fontSize: 16, fontWeight: "800" },
+  emergencyNumber: { color: "#EF4444", fontSize: 16, fontWeight: "800", fontFamily: "Chillax-Bold" },
 });

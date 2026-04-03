@@ -476,15 +476,15 @@ const S = StyleSheet.create({
   orb2: { position: "absolute", width: width, height: width, borderRadius: width / 2, bottom: -width * 0.3, right: -width * 0.3, backgroundColor: "rgba(233,30,140,0.07)" },
   header: { flexDirection: "row", alignItems: "center", paddingHorizontal: 20, paddingTop: 60, paddingBottom: 20, gap: 12 },
   skipBtn: { paddingHorizontal: 12, paddingVertical: 6, borderRadius: 12, backgroundColor: "rgba(255,255,255,0.08)" },
-  skipText: { color: "rgba(255,255,255,0.5)", fontSize: 14, fontWeight: "600" },
+  skipText: { color: "rgba(255,255,255,0.5)", fontSize: 14, fontWeight: "600", fontFamily: "Satoshi-Medium" },
   progressTrack: { flex: 1, height: 6, borderRadius: 3, backgroundColor: "rgba(255,255,255,0.1)", overflow: "hidden" },
   progressFill: { height: "100%", borderRadius: 3 },
-  progressText: { color: "rgba(255,255,255,0.5)", fontSize: 13, fontWeight: "700", minWidth: 36, textAlign: "right" },
+  progressText: { color: "rgba(255,255,255,0.5)", fontSize: 13, fontWeight: "700", minWidth: 36, textAlign: "right", fontFamily: "Satoshi-Bold" },
 
   // Phase header
   phaseHeader: { paddingHorizontal: 24, paddingBottom: 20, gap: 8 },
-  phaseTitle: { color: "#FFFFFF", fontSize: 24, fontWeight: "900", lineHeight: 30, letterSpacing: -0.5 },
-  phaseSubtitle: { color: "rgba(255,255,255,0.45)", fontSize: 14, lineHeight: 20 },
+  phaseTitle: { color: "#FFFFFF", fontSize: 24, fontWeight: "900", lineHeight: 30, letterSpacing: -0.5, fontFamily: "Chillax-Bold" },
+  phaseSubtitle: { color: "rgba(255,255,255,0.45)", fontSize: 14, lineHeight: 20, fontFamily: "Satoshi-Regular" },
 
   // Duck avatar
   duckRow: { flexDirection: "row", alignItems: "center", gap: 10, marginBottom: 10 },
@@ -518,7 +518,7 @@ const S = StyleSheet.create({
   continueWrap: { paddingHorizontal: 20, paddingBottom: 32, paddingTop: 8 },
   continueBtn: { borderRadius: 20, overflow: "hidden", paddingVertical: 18, alignItems: "center", justifyContent: "center" },
   continueBtnDisabled: {},
-  continueBtnText: { color: "#FFFFFF", fontSize: 16, fontWeight: "800" },
+  continueBtnText: { color: "#FFFFFF", fontSize: 16, fontWeight: "800", fontFamily: "Chillax-Bold" },
   continueBtnTextDisabled: { color: "rgba(255,255,255,0.35)" },
 
   // Pace
@@ -537,15 +537,15 @@ const S = StyleSheet.create({
   paceCardGlow: { position: "absolute", top: 0, left: 0, right: 0, bottom: 0, backgroundColor: "rgba(255,255,255,0.05)" },
   paceCardLeft: { flex: 1, flexDirection: "row", alignItems: "flex-start", gap: 14 },
   paceEmoji: { fontSize: 32, lineHeight: 38 },
-  paceLabel: { color: "#FFFFFF", fontSize: 18, fontWeight: "800", lineHeight: 22 },
+  paceLabel: { color: "#FFFFFF", fontSize: 18, fontWeight: "800", lineHeight: 22, fontFamily: "Chillax-Bold" },
   paceSublabel: { color: "rgba(255,255,255,0.6)", fontSize: 12, fontWeight: "700", marginTop: 2 },
   paceDesc: { color: "rgba(255,255,255,0.4)", fontSize: 12, lineHeight: 17, marginTop: 4 },
   paceCheck: { width: 28, height: 28, borderRadius: 14, backgroundColor: "rgba(255,255,255,0.25)", alignItems: "center", justifyContent: "center", borderWidth: 1.5, borderColor: "rgba(255,255,255,0.7)" },
 
   // DNA Questions
   questionBlock: { paddingHorizontal: 24, paddingBottom: 16, gap: 8 },
-  questionText: { color: "#FFFFFF", fontSize: 24, fontWeight: "900", lineHeight: 30, letterSpacing: -0.5 },
-  questionSubtitle: { color: "rgba(255,255,255,0.45)", fontSize: 14, lineHeight: 20 },
+  questionText: { color: "#FFFFFF", fontSize: 24, fontWeight: "900", lineHeight: 30, letterSpacing: -0.5, fontFamily: "Chillax-Bold" },
+  questionSubtitle: { color: "rgba(255,255,255,0.45)", fontSize: 14, lineHeight: 20, fontFamily: "Satoshi-Regular" },
   optionsGrid: { flex: 1, flexDirection: "column", paddingHorizontal: 16, gap: 10, paddingBottom: 8 },
   optionCard: { flex: 1, width: "100%", borderRadius: 22, overflow: "hidden", padding: 18, gap: 4, borderWidth: 2, borderColor: "transparent", justifyContent: "flex-end", flexDirection: "row", alignItems: "center" },
   ghostIconWrap: { position: "absolute", right: 16, top: "50%", opacity: 1, transform: [{ translateY: -45 }] },
@@ -553,7 +553,7 @@ const S = StyleSheet.create({
   selectedOverlay: { position: "absolute", top: 0, left: 0, right: 0, bottom: 0, backgroundColor: "rgba(255,255,255,0.18)" },
   optionIconWrap: { width: 50, height: 50, borderRadius: 16, backgroundColor: "rgba(0,0,0,0.25)", alignItems: "center", justifyContent: "center", marginRight: 14, flexShrink: 0 },
   optionTextBlock: { flex: 1 },
-  optionLabel: { color: "#FFFFFF", fontSize: 16, fontWeight: "800", lineHeight: 20 },
+  optionLabel: { color: "#FFFFFF", fontSize: 16, fontWeight: "800", lineHeight: 20, fontFamily: "Chillax-Bold" },
   optionSublabel: { color: "rgba(255,255,255,0.6)", fontSize: 11, lineHeight: 15 },
   checkBadge: { position: "absolute", top: 10, right: 10, width: 22, height: 22, borderRadius: 11, backgroundColor: "rgba(255,255,255,0.3)", alignItems: "center", justifyContent: "center", borderWidth: 1.5, borderColor: "rgba(255,255,255,0.9)" },
 

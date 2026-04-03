@@ -249,7 +249,7 @@ const S = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#0D0628" },
   header: { flexDirection: "row", alignItems: "center", paddingHorizontal: 16, paddingBottom: 8, paddingTop: 4 },
   backBtn: { width: 40, height: 40, alignItems: "center", justifyContent: "center" },
-  headerTitle: { color: "#FFF", fontSize: 18, fontWeight: "800", flex: 1, textAlign: "center" },
+  headerTitle: { color: "#FFF", fontSize: 18, fontWeight: "800", fontFamily: "Chillax-Bold", flex: 1, textAlign: "center" },
   savedCount: { width: 40, alignItems: "flex-end" },
   savedCountText: { color: "#FFF", fontSize: 14, fontWeight: "700" },
   subtitle: { color: "#5A4D72", fontSize: 13, textAlign: "center", marginBottom: 16 },
@@ -261,9 +261,9 @@ const S = StyleSheet.create({
   cardGradient: { ...StyleSheet.absoluteFillObject },
 
   likeStamp: { position: "absolute", top: 40, left: 20, borderWidth: 3, borderColor: "#22C55E", borderRadius: 8, paddingHorizontal: 12, paddingVertical: 6, transform: [{ rotate: "-15deg" }] },
-  likeText: { color: "#22C55E", fontSize: 20, fontWeight: "900" },
+  likeText: { color: "#22C55E", fontSize: 20, fontWeight: "900", fontFamily: "Chillax-Bold" },
   nopeStamp: { position: "absolute", top: 40, right: 20, borderWidth: 3, borderColor: "#EF4444", borderRadius: 8, paddingHorizontal: 12, paddingVertical: 6, transform: [{ rotate: "15deg" }] },
-  nopeText: { color: "#EF4444", fontSize: 20, fontWeight: "900" },
+  nopeText: { color: "#EF4444", fontSize: 20, fontWeight: "900", fontFamily: "Chillax-Bold" },
 
   matchBadge: { position: "absolute", top: 16, right: 16, borderRadius: 12, overflow: "hidden" },
   matchBadgeGrad: { paddingHorizontal: 12, paddingVertical: 6 },
@@ -271,7 +271,7 @@ const S = StyleSheet.create({
 
   cardContent: { position: "absolute", bottom: 0, left: 0, right: 0, padding: 20, gap: 8 },
   cardTop: { gap: 2 },
-  cardCity: { color: "#FFF", fontSize: 32, fontWeight: "900" },
+  cardCity: { color: "#FFF", fontSize: 32, fontWeight: "900", fontFamily: "Chillax-Bold" },
   cardCountry: { color: "rgba(255,255,255,0.7)", fontSize: 16, fontWeight: "600" },
   cardMeta: { flexDirection: "row", gap: 16 },
   metaRow: { flexDirection: "row", alignItems: "center", gap: 4 },
@@ -285,7 +285,7 @@ const S = StyleSheet.create({
   actionRow: { flexDirection: "row", justifyContent: "center", alignItems: "center", gap: 20, paddingVertical: 20 },
   actionBtn: { width: 60, height: 60, borderRadius: 30, alignItems: "center", justifyContent: "center", overflow: "hidden" },
   skipBtn: { backgroundColor: "rgba(255,255,255,0.08)", borderWidth: 1, borderColor: "rgba(255,255,255,0.15)" },
-  skipBtnText: { color: "#EF4444", fontSize: 24, fontWeight: "700" },
+  skipBtnText: { color: "#EF4444", fontSize: 24, fontWeight: "700", fontFamily: "Chillax-Semibold" },
   infoBtn: { width: 44, height: 44, borderRadius: 22, backgroundColor: "rgba(255,255,255,0.06)" },
   saveBtn: { width: 70, height: 70, borderRadius: 35 },
   saveBtnText: { fontSize: 28 },
@@ -293,9 +293,9 @@ const S = StyleSheet.create({
   progress: { color: "#5A4D72", fontSize: 12, textAlign: "center", paddingBottom: 20 },
 
   doneWrap: { flex: 1, alignItems: "center", justifyContent: "center", gap: 16, paddingHorizontal: 32 },
-  doneTitle: { color: "#FFF", fontSize: 24, fontWeight: "800", textAlign: "center" },
+  doneTitle: { color: "#FFF", fontSize: 24, fontWeight: "800", fontFamily: "Chillax-Bold", textAlign: "center" },
   doneSub: { color: "#9BA1A6", fontSize: 15, textAlign: "center", lineHeight: 22 },
   planBtn: { borderRadius: 16, overflow: "hidden", marginTop: 8 },
   planBtnGrad: { paddingHorizontal: 28, paddingVertical: 16 },
-  planBtnText: { color: "#FFF", fontSize: 16, fontWeight: "800" },
+  planBtnText: { color: "#FFF", fontSize: 16, fontWeight: "800", fontFamily: "Chillax-Bold" },
 });
