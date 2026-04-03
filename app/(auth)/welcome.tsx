@@ -9,7 +9,10 @@ import { IconSymbol } from "@/components/ui/icon-symbol";
 import { useStore } from "@/lib/store";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-const { width } = Dimensions.get("window");
+const { width, height } = Dimensions.get("window");
+
+// Mascot sized relative to screen height so it never overflows
+const MASCOT_SIZE = Math.min(width * 0.36, height * 0.18);
 
 const FEATURES = [
   {
@@ -38,17 +41,15 @@ const FEATURES = [
   },
 ];
 
-const MASCOT_SIZE = width * 0.42;
-
 export default function WelcomeScreen() {
   const { state, dispatch } = useStore();
   const insets = useSafeAreaInsets();
 
   const fade   = useRef(new Animated.Value(0)).current;
-  const duckY  = useRef(new Animated.Value(-20)).current;
-  const textY  = useRef(new Animated.Value(16)).current;
-  const listY  = useRef(new Animated.Value(24)).current;
-  const ctaY   = useRef(new Animated.Value(16)).current;
+  const duckY  = useRef(new Animated.Value(-16)).current;
+  const textY  = useRef(new Animated.Value(14)).current;
+  const listY  = useRef(new Animated.Value(20)).current;
+  const ctaY   = useRef(new Animated.Value(14)).current;
 
   useEffect(() => {
     Animated.sequence([
@@ -66,8 +67,12 @@ export default function WelcomeScreen() {
 
   const firstName = state.profile?.name?.split(" ")[0];
 
+  // Top section: mascot + headline — pushed down 24px below safe area
+  const topPad = insets.top + 24;
+  const botPad = insets.bottom + 16;
+
   return (
-    <View style={[s.root, { paddingTop: insets.top + 36, paddingBottom: insets.bottom + 16 }]}>
+    <View style={[s.root, { paddingTop: topPad, paddingBottom: botPad }]}>
       {/* Background */}
       <LinearGradient
         colors={["#0C0720", "#160B35", "#1A0D3A"]}
@@ -77,25 +82,26 @@ export default function WelcomeScreen() {
       <View style={s.glowTR} />
       <View style={s.glowBL} />
 
-      {/* ─── Mascot ─── */}
-      <Animated.View style={[s.duckWrap, { opacity: fade, transform: [{ translateY: duckY }] }]}>
-        <Image
-          source={require("@/assets/logos/mascot-centered.png")}
-          style={s.duck}
-          resizeMode="contain"
-        />
-      </Animated.View>
+      {/* ─── TOP: mascot + headline ─── */}
+      <View style={s.top}>
+        <Animated.View style={[s.duckWrap, { opacity: fade, transform: [{ translateY: duckY }] }]}>
+          <Image
+            source={require("@/assets/logos/mascot-centered.png")}
+            style={s.duck}
+            resizeMode="contain"
+          />
+        </Animated.View>
 
-      {/* ─── Headline ─── */}
-      <Animated.View style={[s.headlineWrap, { opacity: fade, transform: [{ translateY: textY }] }]}>
-        <Text style={s.greeting}>
-          {firstName && firstName !== "Traveler" ? `Hey ${firstName}! 👋` : "Hey there! 👋"}
-        </Text>
-        <Text style={s.headline}>Travel like{"\n"}never before</Text>
-        <Text style={s.sub}>Smart planning, real bookings, zero hassle</Text>
-      </Animated.View>
+        <Animated.View style={[s.headlineWrap, { opacity: fade, transform: [{ translateY: textY }] }]}>
+          <Text style={s.greeting}>
+            {firstName && firstName !== "Traveler" ? `Hey ${firstName}! 👋` : "Hey there! 👋"}
+          </Text>
+          <Text style={s.headline}>Travel like{"\n"}never before</Text>
+          <Text style={s.sub}>Smart planning, real bookings, zero hassle</Text>
+        </Animated.View>
+      </View>
 
-      {/* ─── Feature list — flex:1 so it fills remaining space ─── */}
+      {/* ─── MIDDLE: feature list — flex:1 fills remaining space ─── */}
       <Animated.View style={[s.list, { opacity: fade, transform: [{ translateY: listY }] }]}>
         {FEATURES.map((f, i) => (
           <View key={i} style={s.row}>
@@ -110,7 +116,7 @@ export default function WelcomeScreen() {
         ))}
       </Animated.View>
 
-      {/* ─── CTA — pinned to bottom ─── */}
+      {/* ─── BOTTOM: CTA ─── */}
       <Animated.View style={[s.cta, { opacity: fade, transform: [{ translateY: ctaY }] }]}>
         <TouchableOpacity
           style={s.btn}
@@ -147,7 +153,6 @@ const s = StyleSheet.create({
     flex: 1,
     backgroundColor: "#0C0720",
     paddingHorizontal: 28,
-    // top/bottom set dynamically via insets
   },
 
   glowTR: {
@@ -163,25 +168,26 @@ const s = StyleSheet.create({
     backgroundColor: "rgba(249,68,152,0.11)",
   },
 
-  // Mascot — sits at top, no flex growth
-  duckWrap: { alignItems: "center", marginBottom: 4 },
+  // Top section — mascot + headline, no flex growth
+  top: { alignItems: "center", gap: 10 },
+
+  duckWrap: { alignItems: "center" },
   duck: { width: MASCOT_SIZE, height: MASCOT_SIZE },
 
-  // Headline
-  headlineWrap: { gap: 6, alignItems: "center", marginBottom: 20 },
+  headlineWrap: { gap: 6, alignItems: "center" },
   greeting: {
-    fontSize: 15,
+    fontSize: 14,
     color: "rgba(196,181,217,0.80)",
     fontWeight: "500",
     fontFamily: "Satoshi-Medium",
     textAlign: "center",
   },
   headline: {
-    fontSize: 36,
+    fontSize: 34,
     fontWeight: "800",
     color: "#FFFFFF",
     textAlign: "center",
-    lineHeight: 42,
+    lineHeight: 40,
     letterSpacing: -0.8,
     fontFamily: "Chillax-Bold",
   },
@@ -193,20 +199,20 @@ const s = StyleSheet.create({
     fontFamily: "Satoshi-Regular",
   },
 
-  // Feature list — flex:1 fills the middle space
-  list: { flex: 1, gap: 14, justifyContent: "center" },
+  // Feature list — flex:1 fills the middle space, vertically centered
+  list: { flex: 1, gap: 0, justifyContent: "space-evenly", paddingVertical: 16 },
   row: { flexDirection: "row", alignItems: "center", gap: 14 },
   iconCircle: {
-    width: 46, height: 46, borderRadius: 14,
+    width: 44, height: 44, borderRadius: 13,
     alignItems: "center", justifyContent: "center",
     flexShrink: 0,
   },
   rowText: { flex: 1, gap: 3 },
-  rowTitle: { fontSize: 15, fontWeight: "700", color: "#FFFFFF", fontFamily: "Satoshi-Bold" },
+  rowTitle: { fontSize: 14, fontWeight: "700", color: "#FFFFFF", fontFamily: "Satoshi-Bold" },
   rowDesc:  { fontSize: 13, color: "rgba(196,181,217,0.75)", lineHeight: 18, fontFamily: "Satoshi-Regular" },
 
-  // CTA — anchored at bottom
-  cta: { gap: 12, alignItems: "center", marginTop: 20 },
+  // CTA
+  cta: { gap: 12, alignItems: "center" },
   btn: {
     width: "100%", borderRadius: 16, overflow: "hidden",
     shadowColor: "#F94498", shadowOffset: { width: 0, height: 6 },
