@@ -605,7 +605,7 @@
 
 ### Database & Backend
 - [ ] Database schema — 17 tables (trips, dna_profiles, activities, bookings, wallet, transactions, points, badges, destinations, properties, re_contacts, social_connections, messages, notifications, price_alerts, compliance_rules)
-- [ ] Seed data — realistic mock data for all tables
+- [x] Seed data — realistic mock data for all tables (23 tables, Railway PostgreSQL)
 - [ ] tRPC router: trips (CRUD, search, filter)
 - [ ] tRPC router: dna (profile, update, scoring)
 - [ ] tRPC router: bookings (create, cancel, history)
@@ -628,9 +628,9 @@
 - [ ] Expand to 116 items across 11 categories
 
 ### Missing Screens
-- [ ] Revenue Dashboard (MRR, CAC, CLV, Churn, pricing tiers)
-- [ ] Prospects / CRM — B2B lead management
-- [ ] Regulations Tracker — compliance
+- [x] Revenue Dashboard (MRR, CAC, CLV, Churn, pricing tiers)
+- [x] Prospects / CRM — B2B lead management
+- [x] Regulations Tracker — compliance
 - [ ] Dubai Cultural Guide (prayers, kosher/halal, customs)
 - [ ] Trip Preparation Hub — pre-trip services, AI checklist
 - [ ] Property Detail — gallery, ROI calculator, specs
@@ -649,13 +649,13 @@
 - [ ] Push Notifications — Expo Notifications connected
 
 ### Tests
-- [ ] Vitest unit tests for DNA Scoring Engine
-- [ ] Vitest unit tests for Matching Engine
-- [ ] Vitest unit tests for Points Engine
-- [ ] Vitest unit tests for tRPC routers
+- [x] Vitest unit tests for DNA Scoring Engine
+- [x] Vitest unit tests for Matching Engine
+- [x] Vitest unit tests for Points Engine
+- [x] Vitest unit tests for tRPC routers (wallet logic)
 
 ### Infrastructure
-- [ ] Dockerfile for server
-- [ ] Railway deployment configuration
-- [ ] CI/CD — GitHub Actions (lint, test, build, deploy)
-- [ ] Environment variables for production
+- [x] Dockerfile for server
+- [x] Railway deployment configuration
+- [x] CI/CD — GitHub Actions (lint, test, build, deploy)
+- [x] Environment variables for production
