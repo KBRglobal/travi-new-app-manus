@@ -64,8 +64,8 @@ export default function SplashScreen() {
   const taglineOpacity = useRef(new Animated.Value(0)).current;
   const taglineY       = useRef(new Animated.Value(16)).current;
 
-  const progressWidth  = useRef(new Animated.Value(0)).current;
-  const progressOpacity = useRef(new Animated.Value(0)).current;
+  const screenOpacity  = useRef(new Animated.Value(1)).current;
+  const dotsOpacity    = useRef(new Animated.Value(0)).current;
 
   const particleAnims  = useRef(PARTICLES.map(() => ({
     opacity: new Animated.Value(0),
@@ -173,14 +173,13 @@ export default function SplashScreen() {
 
       Animated.delay(100),
 
-      // 7. Progress bar appears
-      Animated.timing(progressOpacity, { toValue: 1, duration: 350, useNativeDriver: true }),
+      // 7. (no progress bar)
     ]).start();
 
-    // Progress fill (non-native — runs in parallel)
-    Animated.timing(progressWidth, {
-      toValue: 1, duration: 2200, delay: 1600,
-      useNativeDriver: false, easing: Easing.inOut(Easing.quad),
+    // Dots fade in after tagline
+    Animated.timing(dotsOpacity, {
+      toValue: 1, duration: 400, delay: 2000,
+      useNativeDriver: true,
     }).start();
 
     // Mascot float loop (after entrance)
@@ -191,18 +190,23 @@ export default function SplashScreen() {
       ])).start();
     }, 1400);
 
-    // Navigate
+    // Navigate with fade-out
     const timer = setTimeout(() => {
-      if (state.isAuthenticated || state.isGuest) {
-        if (!state.onboardingCompleted) {
-          router.replace("/(auth)/welcome" as never);
+      Animated.timing(screenOpacity, {
+        toValue: 0, duration: 500,
+        useNativeDriver: true, easing: Easing.in(Easing.cubic),
+      }).start(() => {
+        if (state.isAuthenticated || state.isGuest) {
+          if (!state.onboardingCompleted) {
+            router.replace("/(auth)/welcome" as never);
+          } else {
+            router.replace("/(tabs)" as never);
+          }
         } else {
-          router.replace("/(tabs)" as never);
+          router.replace("/(auth)/sign-up" as never);
         }
-      } else {
-        router.replace("/(auth)/sign-up" as never);
-      }
-    }, 3800);
+      });
+    }, 3400);
     return () => clearTimeout(timer);
   }, []);
 
@@ -211,7 +215,7 @@ export default function SplashScreen() {
   });
 
   return (
-    <View style={s.root}>
+    <Animated.View style={[s.root, { opacity: screenOpacity }]}>
       {/* ── Background ── */}
       <Animated.View style={[StyleSheet.absoluteFillObject, { opacity: bgOpacity }]}>
         <LinearGradient
@@ -316,26 +320,18 @@ export default function SplashScreen() {
         </Animated.Text>
       </View>
 
-      {/* ── Progress bar ── */}
-      <Animated.View style={[s.bottom, { opacity: progressOpacity }]}>
-        <View style={s.progressTrack}>
-          <Animated.View style={[s.progressFill, {
-            width: progressWidth.interpolate({ inputRange: [0, 1], outputRange: ["0%", "100%"] }),
-          }]}>
-            <LinearGradient
-              colors={[PURPLE, PINK, ORANGE]}
-              start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
-              style={StyleSheet.absoluteFillObject}
-            />
-            <View style={s.progressGlow} />
-          </Animated.View>
+      {/* ── Dots indicator ── */}
+      <Animated.View style={[s.bottom, { opacity: dotsOpacity }]}>
+        <View style={s.dotsRow}>
+          {[0, 1, 2].map((i) => (
+            <View key={i} style={[s.dot, i === 1 && s.dotActive]} />
+          ))}
         </View>
-        <Text style={s.loadingText}>Preparing your adventure...</Text>
       </Animated.View>
 
       {/* ── Flash overlay ── */}
       <Animated.View style={[StyleSheet.absoluteFillObject, s.flash, { opacity: flashOpacity }]} />
-    </View>
+    </Animated.View>
   );
 }
 
@@ -422,29 +418,20 @@ const s = StyleSheet.create({
     alignItems: "center",
     width: "100%",
   },
-  progressTrack: {
-    width: "100%", height: 3,
-    backgroundColor: "rgba(255,255,255,0.07)",
-    borderRadius: 2,
-    overflow: "hidden",
+  dotsRow: {
+    flexDirection: "row",
+    gap: 8,
+    alignItems: "center",
   },
-  progressFill: {
-    height: "100%",
-    borderRadius: 2,
-    position: "relative",
+  dot: {
+    width: 6, height: 6,
+    borderRadius: 3,
+    backgroundColor: "rgba(255,255,255,0.25)",
   },
-  progressGlow: {
-    position: "absolute",
-    right: 0, top: -5,
-    width: 28, height: 12,
-    backgroundColor: "rgba(249,68,152,0.95)",
-    borderRadius: 6,
-  },
-  loadingText: {
-    fontSize: 12,
-    color: "rgba(196,181,217,0.55)",
-    letterSpacing: 0.8,
-    fontWeight: "500",
+  dotActive: {
+    width: 20, height: 6,
+    borderRadius: 3,
+    backgroundColor: PINK,
   },
   flash: {
     backgroundColor: "#FFFFFF",
