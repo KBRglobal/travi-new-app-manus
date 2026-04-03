@@ -600,3 +600,62 @@
 - [x] Fix server/db.ts TypeScript type issue (NodePgDatabase → any)
 - [x] Add tsconfig.server.json for server-side TypeScript
 - [x] Add skipLibCheck to tsconfig.json
+
+## Phase 29 — Full Build: Backend, Engines, Screens, Railway
+
+### Database & Backend
+- [ ] Database schema — 17 tables (trips, dna_profiles, activities, bookings, wallet, transactions, points, badges, destinations, properties, re_contacts, social_connections, messages, notifications, price_alerts, compliance_rules)
+- [ ] Seed data — realistic mock data for all tables
+- [ ] tRPC router: trips (CRUD, search, filter)
+- [ ] tRPC router: dna (profile, update, scoring)
+- [ ] tRPC router: bookings (create, cancel, history)
+- [ ] tRPC router: wallet (balance, transfer, exchange)
+- [ ] tRPC router: ai (chat, itinerary, recommendations)
+- [ ] tRPC router: social (connections, messages, community)
+- [ ] tRPC router: support (tickets, FAQ)
+- [ ] tRPC router: enterprise (CRM, revenue, prospects)
+
+### Logic Engines
+- [ ] DNA Scoring Engine — 8 dimensions (0-100), confidence scores
+- [ ] Matching Engine — destination scoring based on DNA
+- [ ] Points Engine — earn/spend rules, tier progression
+- [ ] XP/Gamification — 5 tiers (Bronze→Diamond), badges
+- [ ] Learning Engine — 7 phases, implicit signals tracking
+- [ ] Multi-currency Wallet — 12 currencies, exchange rates
+- [ ] Price Alert Monitor — background job
+
+### DNA Swipe
+- [ ] Expand to 116 items across 11 categories
+
+### Missing Screens
+- [ ] Revenue Dashboard (MRR, CAC, CLV, Churn, pricing tiers)
+- [ ] Prospects / CRM — B2B lead management
+- [ ] Regulations Tracker — compliance
+- [ ] Dubai Cultural Guide (prayers, kosher/halal, customs)
+- [ ] Trip Preparation Hub — pre-trip services, AI checklist
+- [ ] Property Detail — gallery, ROI calculator, specs
+- [ ] RE Investment Guide — guide for Israeli investors
+- [ ] RE Contacts — agents, developers, lawyers
+- [ ] South America Hub — destinations, carnival, tasks
+- [ ] Social: Discover screen
+- [ ] Social: Compatibility screen
+- [ ] Social: Messages screen
+- [ ] Social: Message Chat screen
+- [ ] Social: Community screen
+
+### Integrations
+- [ ] Stripe — payments, subscriptions, webhooks
+- [ ] Socket.IO — real-time messaging
+- [ ] Push Notifications — Expo Notifications connected
+
+### Tests
+- [ ] Vitest unit tests for DNA Scoring Engine
+- [ ] Vitest unit tests for Matching Engine
+- [ ] Vitest unit tests for Points Engine
+- [ ] Vitest unit tests for tRPC routers
+
+### Infrastructure
+- [ ] Dockerfile for server
+- [ ] Railway deployment configuration
+- [ ] CI/CD — GitHub Actions (lint, test, build, deploy)
+- [ ] Environment variables for production
