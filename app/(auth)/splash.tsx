@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import {
-  View, StyleSheet, Animated, Dimensions, Easing, Image, Text,
+  View, StyleSheet, Animated, Dimensions, Easing, Image,
 } from "react-native";
 import { router } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
@@ -11,6 +11,7 @@ const { width, height } = Dimensions.get("window");
 const PURPLE = "#6443F4";
 const PINK   = "#F94498";
 const ORANGE = "#FF9327";
+const GREEN  = "#22C55E";
 
 // ── Particles ─────────────────────────────────────────────────────────────────
 const PARTICLES = Array.from({ length: 32 }, (_, i) => ({
@@ -31,43 +32,64 @@ const RINGS = [
   { size: width * 1.10, color: PURPLE + "12", delay: 1100, duration: 900 },
 ];
 
+// Total splash timeline:
+// 0–500ms: flash fade
+// 500–1700ms: bg + orbs + glow + mascot
+// 1700–2400ms: logotype + tagline
+// 2400–3200ms: idle / float
+// 3200ms: dots appear
+// 4200ms: completion animation starts (green check)
+// 4900ms: fade-out begins → navigate at 5400ms
+
 export default function SplashScreen() {
   const { state } = useStore();
 
   // ── Animated values ──────────────────────────────────────────────────────────
-  const flashOpacity   = useRef(new Animated.Value(1)).current;
-  const bgOpacity      = useRef(new Animated.Value(0)).current;
+  const flashOpacity    = useRef(new Animated.Value(1)).current;
+  const bgOpacity       = useRef(new Animated.Value(0)).current;
 
-  const orb1Scale      = useRef(new Animated.Value(0)).current;
-  const orb2Scale      = useRef(new Animated.Value(0)).current;
-  const orb3Scale      = useRef(new Animated.Value(0)).current;
-  const breathe1       = useRef(new Animated.Value(1)).current;
-  const breathe2       = useRef(new Animated.Value(1)).current;
+  const orb1Scale       = useRef(new Animated.Value(0)).current;
+  const orb2Scale       = useRef(new Animated.Value(0)).current;
+  const orb3Scale       = useRef(new Animated.Value(0)).current;
+  const breathe1        = useRef(new Animated.Value(1)).current;
+  const breathe2        = useRef(new Animated.Value(1)).current;
 
-  const ringAnims      = useRef(RINGS.map(() => ({
+  const ringAnims       = useRef(RINGS.map(() => ({
     scale:   new Animated.Value(0),
     opacity: new Animated.Value(0),
   }))).current;
 
-  const mascotScale    = useRef(new Animated.Value(0)).current;
-  const mascotOpacity  = useRef(new Animated.Value(0)).current;
-  const mascotRotate   = useRef(new Animated.Value(-8)).current;
-  const floatY         = useRef(new Animated.Value(0)).current;
+  const mascotScale     = useRef(new Animated.Value(0)).current;
+  const mascotOpacity   = useRef(new Animated.Value(0)).current;
+  const mascotRotate    = useRef(new Animated.Value(-8)).current;
+  const floatY          = useRef(new Animated.Value(0)).current;
 
-  const glowScale      = useRef(new Animated.Value(0.4)).current;
-  const glowOpacity    = useRef(new Animated.Value(0)).current;
+  const glowScale       = useRef(new Animated.Value(0.4)).current;
+  const glowOpacity     = useRef(new Animated.Value(0)).current;
 
-  const logoOpacity    = useRef(new Animated.Value(0)).current;
-  const logoY          = useRef(new Animated.Value(40)).current;
-  const logoScale      = useRef(new Animated.Value(0.85)).current;
+  const logoOpacity     = useRef(new Animated.Value(0)).current;
+  const logoY           = useRef(new Animated.Value(40)).current;
+  const logoScale       = useRef(new Animated.Value(0.85)).current;
 
-  const taglineOpacity = useRef(new Animated.Value(0)).current;
-  const taglineY       = useRef(new Animated.Value(16)).current;
+  const taglineOpacity  = useRef(new Animated.Value(0)).current;
+  const taglineY        = useRef(new Animated.Value(16)).current;
 
-  const screenOpacity  = useRef(new Animated.Value(1)).current;
-  const dotsOpacity    = useRef(new Animated.Value(0)).current;
+  const screenOpacity   = useRef(new Animated.Value(1)).current;
 
-  const particleAnims  = useRef(PARTICLES.map(() => ({
+  // Dots: 3 animated values for color transition
+  const dotsOpacity     = useRef(new Animated.Value(0)).current;
+  const dot1Scale       = useRef(new Animated.Value(1)).current;
+  const dot2Scale       = useRef(new Animated.Value(1)).current;
+  const dot3Scale       = useRef(new Animated.Value(1)).current;
+
+  // Completion: green ring + checkmark
+  const checkOpacity    = useRef(new Animated.Value(0)).current;
+  const checkScale      = useRef(new Animated.Value(0.3)).current;
+  const checkPulse      = useRef(new Animated.Value(1)).current;
+  const checkRingScale  = useRef(new Animated.Value(0.5)).current;
+  const checkRingOpacity = useRef(new Animated.Value(0)).current;
+
+  const particleAnims   = useRef(PARTICLES.map(() => ({
     opacity: new Animated.Value(0),
     y:       new Animated.Value(0),
     x:       new Animated.Value(0),
@@ -118,12 +140,11 @@ export default function SplashScreen() {
 
     // ── Main cinematic sequence ───────────────────────────────────────────────
     Animated.sequence([
-      // 1. Flash fades out — dramatic black reveal
+      // 1. Flash fades out
       Animated.timing(flashOpacity, {
         toValue: 0, duration: 500,
         useNativeDriver: true, easing: Easing.out(Easing.cubic),
       }),
-
       // 2. Background + orbs burst in
       Animated.parallel([
         Animated.timing(bgOpacity, { toValue: 1, duration: 600, useNativeDriver: true }),
@@ -131,58 +152,60 @@ export default function SplashScreen() {
         Animated.spring(orb2Scale, { toValue: 1, friction: 4,   tension: 30, useNativeDriver: true }),
         Animated.spring(orb3Scale, { toValue: 1, friction: 5,   tension: 25, useNativeDriver: true }),
       ]),
-
       Animated.delay(80),
-
-      // 3. Glow halo expands behind mascot
+      // 3. Glow halo
       Animated.parallel([
         Animated.timing(glowOpacity, { toValue: 0.75, duration: 700, useNativeDriver: true }),
         Animated.timing(glowScale,   { toValue: 1,    duration: 800, useNativeDriver: true, easing: Easing.out(Easing.cubic) }),
       ]),
-
       Animated.delay(60),
-
-      // 4. Mascot SLAMS in — scale from 0 with rotation snap
+      // 4. Mascot slams in
       Animated.parallel([
         Animated.timing(mascotOpacity, { toValue: 1, duration: 200, useNativeDriver: true }),
-        Animated.spring(mascotScale, {
-          toValue: 1, friction: 3.5, tension: 70, useNativeDriver: true,
-        }),
-        Animated.timing(mascotRotate, {
-          toValue: 0, duration: 500, useNativeDriver: true,
-          easing: Easing.out(Easing.back(2)),
-        }),
+        Animated.spring(mascotScale, { toValue: 1, friction: 3.5, tension: 70, useNativeDriver: true }),
+        Animated.timing(mascotRotate, { toValue: 0, duration: 500, useNativeDriver: true, easing: Easing.out(Easing.back(2)) }),
       ]),
-
       Animated.delay(200),
-
-      // 5. Logotype slides up with scale pop
+      // 5. Logotype slides up
       Animated.parallel([
         Animated.timing(logoOpacity, { toValue: 1, duration: 450, useNativeDriver: true }),
         Animated.timing(logoY,       { toValue: 0, duration: 500, useNativeDriver: true, easing: Easing.out(Easing.back(1.2)) }),
         Animated.spring(logoScale,   { toValue: 1, friction: 5, tension: 80, useNativeDriver: true }),
       ]),
-
       Animated.delay(120),
-
       // 6. Tagline drifts up
       Animated.parallel([
         Animated.timing(taglineOpacity, { toValue: 1, duration: 500, useNativeDriver: true }),
         Animated.timing(taglineY,       { toValue: 0, duration: 550, useNativeDriver: true, easing: Easing.out(Easing.cubic) }),
       ]),
-
-      Animated.delay(100),
-
-      // 7. (no progress bar)
     ]).start();
 
-    // Dots fade in after tagline
+    // Dots appear at 2400ms
     Animated.timing(dotsOpacity, {
-      toValue: 1, duration: 400, delay: 2000,
+      toValue: 1, duration: 400, delay: 2400,
       useNativeDriver: true,
     }).start();
 
-    // Mascot float loop (after entrance)
+    // Dots wave animation at 2800ms
+    setTimeout(() => {
+      const waveOne = (anim: Animated.Value, delay: number) =>
+        Animated.loop(
+          Animated.sequence([
+            Animated.delay(delay),
+            Animated.timing(anim, { toValue: 1.6, duration: 300, useNativeDriver: true, easing: Easing.out(Easing.quad) }),
+            Animated.timing(anim, { toValue: 1.0, duration: 300, useNativeDriver: true, easing: Easing.in(Easing.quad) }),
+            Animated.delay(600),
+          ]),
+          { iterations: 3 }
+        );
+      Animated.parallel([
+        waveOne(dot1Scale, 0),
+        waveOne(dot2Scale, 150),
+        waveOne(dot3Scale, 300),
+      ]).start();
+    }, 2800);
+
+    // Mascot float loop
     setTimeout(() => {
       Animated.loop(Animated.sequence([
         Animated.timing(floatY, { toValue: -12, duration: 2000, useNativeDriver: true, easing: Easing.inOut(Easing.sin) }),
@@ -190,7 +213,31 @@ export default function SplashScreen() {
       ])).start();
     }, 1400);
 
-    // Navigate with fade-out
+    // ── Completion animation at 4200ms ────────────────────────────────────────
+    setTimeout(() => {
+      // Outer ring expands
+      Animated.parallel([
+        Animated.timing(checkRingOpacity, { toValue: 1, duration: 250, useNativeDriver: true }),
+        Animated.timing(checkRingScale,   { toValue: 1, duration: 400, useNativeDriver: true, easing: Easing.out(Easing.back(1.5)) }),
+      ]).start();
+      // Check icon pops in
+      setTimeout(() => {
+        Animated.parallel([
+          Animated.timing(checkOpacity, { toValue: 1, duration: 200, useNativeDriver: true }),
+          Animated.spring(checkScale, { toValue: 1, friction: 4, tension: 80, useNativeDriver: true }),
+        ]).start(() => {
+          // Pulse twice
+          Animated.sequence([
+            Animated.timing(checkPulse, { toValue: 1.15, duration: 200, useNativeDriver: true }),
+            Animated.timing(checkPulse, { toValue: 1.0,  duration: 200, useNativeDriver: true }),
+            Animated.timing(checkPulse, { toValue: 1.10, duration: 180, useNativeDriver: true }),
+            Animated.timing(checkPulse, { toValue: 1.0,  duration: 180, useNativeDriver: true }),
+          ]).start();
+        });
+      }, 300);
+    }, 4200);
+
+    // ── Navigate with fade-out at 5000ms ─────────────────────────────────────
     const timer = setTimeout(() => {
       Animated.timing(screenOpacity, {
         toValue: 0, duration: 500,
@@ -206,7 +253,7 @@ export default function SplashScreen() {
           router.replace("/(auth)/sign-up" as never);
         }
       });
-    }, 3400);
+    }, 5000);
     return () => clearTimeout(timer);
   }, []);
 
@@ -320,13 +367,32 @@ export default function SplashScreen() {
         </Animated.Text>
       </View>
 
-      {/* ── Dots indicator ── */}
+      {/* ── Bottom: dots + completion check ── */}
       <Animated.View style={[s.bottom, { opacity: dotsOpacity }]}>
+        {/* Dots row */}
         <View style={s.dotsRow}>
-          {[0, 1, 2].map((i) => (
-            <View key={i} style={[s.dot, i === 1 && s.dotActive]} />
-          ))}
+          <Animated.View style={[s.dot, { transform: [{ scale: dot1Scale }] }]} />
+          <Animated.View style={[s.dot, s.dotActive, { transform: [{ scale: dot2Scale }] }]} />
+          <Animated.View style={[s.dot, { transform: [{ scale: dot3Scale }] }]} />
         </View>
+
+        {/* Completion check — appears over dots */}
+        <Animated.View style={[s.checkWrap, {
+          opacity: checkOpacity,
+          transform: [{ scale: Animated.multiply(checkScale, checkPulse) }],
+        }]}>
+          {/* Outer ring */}
+          <Animated.View style={[s.checkRing, {
+            opacity: checkRingOpacity,
+            transform: [{ scale: checkRingScale }],
+          }]} />
+          {/* Green circle */}
+          <View style={s.checkCircle}>
+            {/* Checkmark drawn with two rotated views */}
+            <View style={s.checkmarkShort} />
+            <View style={s.checkmarkLong} />
+          </View>
+        </Animated.View>
       </Animated.View>
 
       {/* ── Flash overlay ── */}
@@ -413,10 +479,9 @@ const s = StyleSheet.create({
   },
   bottom: {
     paddingHorizontal: 44,
-    paddingBottom: 110,
-    gap: 10,
+    paddingBottom: 100,
     alignItems: "center",
-    width: "100%",
+    gap: 0,
   },
   dotsRow: {
     flexDirection: "row",
@@ -432,6 +497,43 @@ const s = StyleSheet.create({
     width: 20, height: 6,
     borderRadius: 3,
     backgroundColor: PINK,
+  },
+  // Completion check
+  checkWrap: {
+    position: "absolute",
+    alignItems: "center",
+    justifyContent: "center",
+    width: 52, height: 52,
+  },
+  checkRing: {
+    position: "absolute",
+    width: 52, height: 52,
+    borderRadius: 26,
+    borderWidth: 2,
+    borderColor: GREEN + "60",
+  },
+  checkCircle: {
+    width: 40, height: 40,
+    borderRadius: 20,
+    backgroundColor: GREEN,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  checkmarkShort: {
+    position: "absolute",
+    width: 8, height: 3,
+    backgroundColor: "#fff",
+    borderRadius: 2,
+    left: 8, top: 20,
+    transform: [{ rotate: "45deg" }],
+  },
+  checkmarkLong: {
+    position: "absolute",
+    width: 16, height: 3,
+    backgroundColor: "#fff",
+    borderRadius: 2,
+    left: 13, top: 16,
+    transform: [{ rotate: "-45deg" }],
   },
   flash: {
     backgroundColor: "#FFFFFF",

@@ -83,22 +83,16 @@ export default function SignUpScreen() {
   const shakeAnim  = useRef(new Animated.Value(0)).current;
 
   /* Entrance animations */
-  const logoOpacity = useRef(new Animated.Value(0)).current;
-  const logoY       = useRef(new Animated.Value(-20)).current;
   const cardOpacity = useRef(new Animated.Value(0)).current;
-  const cardY       = useRef(new Animated.Value(28)).current;
+  const cardY       = useRef(new Animated.Value(32)).current;
   const btmOpacity  = useRef(new Animated.Value(0)).current;
   const btmY        = useRef(new Animated.Value(16)).current;
 
   useEffect(() => {
     Animated.sequence([
       Animated.parallel([
-        Animated.timing(logoOpacity, { toValue: 1, duration: 400, useNativeDriver: true }),
-        Animated.timing(logoY,       { toValue: 0, duration: 400, useNativeDriver: true }),
-      ]),
-      Animated.parallel([
-        Animated.timing(cardOpacity, { toValue: 1, duration: 360, useNativeDriver: true }),
-        Animated.timing(cardY,       { toValue: 0, duration: 360, useNativeDriver: true }),
+        Animated.timing(cardOpacity, { toValue: 1, duration: 400, useNativeDriver: true }),
+        Animated.timing(cardY,       { toValue: 0, duration: 400, useNativeDriver: true }),
       ]),
       Animated.parallel([
         Animated.timing(btmOpacity,  { toValue: 1, duration: 280, useNativeDriver: true }),
@@ -260,19 +254,7 @@ export default function SignUpScreen() {
       */}
       <SafeAreaView edges={["top", "bottom"]} style={s.safe}>
 
-        {/* ── ZONE 1: Logo (top, fixed height) ── */}
-        <Animated.View
-          style={[s.logoZone, { opacity: logoOpacity, transform: [{ translateY: logoY }] }]}
-        >
-          <Image
-            source={require("@/assets/logos/logotype-white.webp")}
-            style={s.logotype}
-            resizeMode="contain"
-          />
-          <Text style={s.tagline}>YOUR AI TRAVEL COMPANION</Text>
-        </Animated.View>
-
-        {/* ── ZONE 2: Auth card (flex:1, fills middle) ── */}
+        {/* ── ZONE 2: Auth card (fills middle, mascot+logo inside) ── */}
         <KeyboardAvoidingView
           behavior={Platform.OS === "ios" ? "padding" : "height"}
           style={s.cardZone}
@@ -280,12 +262,31 @@ export default function SignUpScreen() {
           <Animated.View
             style={[s.cardWrap, { opacity: cardOpacity, transform: [{ translateY: cardY }] }]}
           >
+            {/* Mascot floating above card */}
+            <View style={s.mascotWrap}>
+              <Image
+                source={require("@/assets/logos/mascot-centered.png")}
+                style={s.mascot}
+                resizeMode="contain"
+              />
+            </View>
+
             {/* Glass card */}
             <View style={s.card}>
               <LinearGradient
                 colors={["rgba(255,255,255,0.07)", "rgba(255,255,255,0.04)"]}
                 style={s.cardInner}
               >
+                {/* Logotype + tagline inside card */}
+                <View style={s.brandRow}>
+                  <Image
+                    source={require("@/assets/logos/logotype-white.webp")}
+                    style={s.logotype}
+                    resizeMode="contain"
+                  />
+                  <Text style={s.tagline}>YOUR AI TRAVEL COMPANION</Text>
+                </View>
+
                 {/* Tab toggle: Sign Up / Log In */}
                 <View style={s.tabRow}>
                   {(["Sign Up", "Log In"] as const).map((label, i) => {
@@ -444,26 +445,37 @@ const s = StyleSheet.create({
   safe: {
     flex: 1,
     paddingHorizontal: 22,
-    justifyContent: "space-between",
+    justifyContent: "flex-end",
+    paddingBottom: 8,
   },
 
-  /* Zone 1 — Logo */
-  logoZone: {
+  /* Mascot above card */
+  mascotWrap: {
     alignItems: "center",
-    paddingTop: 8,
-    gap: 6,
+    zIndex: 10,
+    marginBottom: -36,
   },
-  logotype: { width: 150, height: 48 },
+  mascot: {
+    width: 100, height: 100,
+  },
+
+  /* Brand inside card */
+  brandRow: {
+    alignItems: "center",
+    paddingTop: 28,
+    gap: 4,
+  },
+  logotype: { width: 130, height: 42 },
   tagline: {
     fontSize: 10,
     letterSpacing: 2.5,
     textTransform: "uppercase",
-    color: "rgba(255,255,255,0.6)",
+    color: "rgba(255,255,255,0.5)",
     fontWeight: "500",
   },
 
   /* Zone 2 — Card */
-  cardZone: { flex: 1, justifyContent: "center", paddingVertical: 20 },
+  cardZone: { flex: 1, justifyContent: "center", paddingVertical: 16 },
   cardWrap: { width: "100%" },
   card: {
     borderRadius: Radius.xxl,
