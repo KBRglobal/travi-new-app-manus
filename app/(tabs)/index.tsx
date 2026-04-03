@@ -110,7 +110,7 @@ export default function HomeScreen() {
         {/* ══════════════════════════════════════════════════════
             HERO — Full-bleed destination photo
         ══════════════════════════════════════════════════════ */}
-        <View style={S.heroWrap}>
+        <View style={[S.heroWrap, { height: 380 + insets.top }]}>
           {/* Background image with fade */}
           <Animated.View style={[StyleSheet.absoluteFillObject, { opacity: heroFade }]}>
             <ImageBackground
@@ -265,22 +265,7 @@ export default function HomeScreen() {
             </View>
           </TouchableOpacity>
 
-          {/* ── Guest join CTA ── */}
-          {!state.isAuthenticated && (
-            <TouchableOpacity
-              style={S.joinCard}
-              onPress={() => router.push("/(auth)/splash" as never)}
-              activeOpacity={0.88}
-            >
-              <View style={{ flex: 1 }}>
-                <Text style={S.joinTitle}>Join TRAVI — it's free</Text>
-                <Text style={S.joinSub}>Cashback · Travel DNA · AI agent</Text>
-              </View>
-              <View style={S.joinArrow}>
-                <IconSymbol name="arrow.right" size={16} color={B.purple} />
-              </View>
-            </TouchableOpacity>
-          )}
+
 
           {/* ── Where's your head at ── */}
           <View style={S.section}>
@@ -349,7 +334,7 @@ export default function HomeScreen() {
                     <View style={[S.tipIcon, { backgroundColor: tip.color + "18" }]}>
                       <IconSymbol name={tip.icon} size={18} color={tip.color} />
                     </View>
-                    <Text style={S.tipText}>{tip.tip}</Text>
+                    <Text style={S.tipText} numberOfLines={4}>{tip.tip}</Text>
                   </View>
                 ))}
               </ScrollView>
@@ -435,7 +420,6 @@ const S = StyleSheet.create({
 
   // ── Hero ──
   heroWrap: {
-    height: 380,
     overflow: "hidden",
     justifyContent: "space-between",
     flexDirection: "column",
@@ -818,12 +802,14 @@ const S = StyleSheet.create({
 
   // ── Tips ──
   tipCard: {
-    width: width * 0.58,
+    width: width * 0.62,
     backgroundColor: B.purpleMid,
     borderRadius: 14,
     borderWidth: 1,
     padding: 14,
     gap: 10,
+    flexDirection: "column",
+    alignItems: "flex-start",
   },
   tipIcon: {
     width: 36,
@@ -831,12 +817,15 @@ const S = StyleSheet.create({
     borderRadius: 10,
     alignItems: "center",
     justifyContent: "center",
+    flexShrink: 0,
   },
   tipText: {
     color: B.offWhite,
     fontSize: 13,
     fontFamily: "Satoshi-Regular",
-    lineHeight: 18,
+    lineHeight: 19,
+    flexShrink: 1,
+    flexWrap: "wrap",
   },
 
   // ── How it works ──

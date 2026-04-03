@@ -277,7 +277,7 @@ export default function TripsScreen() {
       <FlatList
         data={filtered}
         keyExtractor={(item) => item.id}
-        contentContainerStyle={[styles.listContent, { paddingTop: insets.top + 16 }]}
+        contentContainerStyle={[styles.listContent, { paddingTop: insets.top + 20 }]}
         showsVerticalScrollIndicator={false}
         ListHeaderComponent={
           <>
@@ -384,13 +384,13 @@ const styles = StyleSheet.create({
   filterTabText: { color: "#5A4D72", fontSize: 14, fontWeight: "600", fontFamily: "Satoshi-Medium" },
   filterTabTextActive: { color: "#FFFFFF" },
   tripCard: { borderRadius: 20, overflow: "hidden", borderWidth: 1, borderColor: "rgba(255,255,255,0.12)" },
-  tripCardInner: { flexDirection: "row", alignItems: "center", padding: 16, gap: 14, overflow: "hidden", minHeight: 100 },
+  tripCardInner: { flexDirection: "row", alignItems: "center", padding: 16, gap: 14, overflow: "hidden", minHeight: 110 },
   accentBar: { position: "absolute", left: 0, top: 0, bottom: 0, width: 3, borderRadius: 2 },
   tripEmojiWrap: { width: 52, height: 52, borderRadius: 16, backgroundColor: "rgba(255,255,255,0.06)", alignItems: "center", justifyContent: "center" },
   tripEmoji: { fontSize: 28 },
-  tripInfo: { flex: 1, gap: 6 },
-  tripTopRow: { flexDirection: "row", justifyContent: "space-between", alignItems: "flex-start" },
-  tripDest: { color: "#FFFFFF", fontSize: 17, fontWeight: "800", fontFamily: "Chillax-Bold", textShadowColor: "rgba(0,0,0,0.5)", textShadowOffset: { width: 0, height: 1 }, textShadowRadius: 4 },
+  tripInfo: { flex: 1, gap: 6, minWidth: 0 },
+  tripTopRow: { flexDirection: "row", justifyContent: "space-between", alignItems: "center", gap: 8 },
+  tripDest: { color: "#FFFFFF", fontSize: 17, fontWeight: "800", fontFamily: "Chillax-Bold", textShadowColor: "rgba(0,0,0,0.5)", textShadowOffset: { width: 0, height: 1 }, textShadowRadius: 4, flexShrink: 1 },
   tripCountry: { color: "rgba(255,255,255,0.65)", fontSize: 12, marginTop: 1 },
   statusBadge: { flexDirection: "row", alignItems: "center", gap: 5, borderRadius: 8, borderWidth: 1, paddingHorizontal: 8, paddingVertical: 3, backgroundColor: "rgba(0,0,0,0.4)" },
   statusDot: { width: 6, height: 6, borderRadius: 3 },

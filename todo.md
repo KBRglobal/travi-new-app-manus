@@ -217,3 +217,8 @@ Rules:
 - [ ] Explore: filter tabs (All/Beach/City/etc.) almost invisible — background too transparent
 - [ ] Trips: stats row (Upcoming/Completed/Points) showing 0 with broken circular indicators
 - [ ] Profile: "Your profile is 46% complete" bar text too low contrast (purple on purple)
+- [ ] My Trips: header (title + "New Trip" button) overlaps status bar — needs safe area fix
+- [ ] My Trips: layout not clean — cards overlap, inconsistent image coverage
+
+- [ ] My Trips: header overlaps status bar (title + New Trip button cover time/battery)
+- [ ] My Trips: card layout cleanup — inconsistent image coverage, elements overlapping
