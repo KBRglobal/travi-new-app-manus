@@ -458,8 +458,8 @@ const s = StyleSheet.create({
     fontSize: 10,
     letterSpacing: 2.5,
     textTransform: "uppercase",
-    color: "rgba(255,255,255,0.7)",
-    fontFamily: "Satoshi-Regular",
+    color: "rgba(255,255,255,0.6)",
+    fontWeight: "500",
   },
 
   /* Zone 2 — Card */
