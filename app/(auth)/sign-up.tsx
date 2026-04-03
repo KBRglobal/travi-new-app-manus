@@ -1,13 +1,13 @@
 /**
- * SignUpScreen — TRAVI
+ * SignUpScreen — TRAVI Auth Screen
  *
- * Layout:
- *   - Full screen background with 2 symmetric orbs (top-left purple, bottom-right pink)
- *   - SafeAreaView flex:1, justifyContent:space-between
- *   - MIDDLE (flex:1): Mascot floating above card + Card with logotype inside
- *   - BOTTOM: Guest CTA + Legal
+ * Layout (3 fixed zones, no outer ScrollView):
+ *   Zone 1 [flex:0] — Logo + tagline (top, ~18% height)
+ *   Zone 2 [flex:1] — Auth card with inner ScrollView for keyboard
+ *   Zone 3 [flex:0] — Guest CTA + legal text (bottom, ~18% height)
  *
- * No top zone — logotype lives inside the card header.
+ * Safe area handled by SafeAreaView with edges top+bottom.
+ * KeyboardAvoidingView wraps only Zone 2 so bottom zone stays anchored.
  */
 import { useRef, useState, useEffect } from "react";
 import {
@@ -20,24 +20,32 @@ import {
   Platform,
   TextInput,
   Alert,
-  Dimensions,
+  ScrollView,
 } from "react-native";
-import { Image } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { Image } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { Svg, Path } from "react-native-svg";
 import { router } from "expo-router";
 import * as WebBrowser from "expo-web-browser";
+import * as Google from "expo-auth-session/providers/google";
 import * as AppleAuthentication from "expo-apple-authentication";
+import { IconSymbol } from "@/components/ui/icon-symbol";
 import { useStore } from "@/lib/store";
 import { trpc } from "@/lib/trpc";
+import {
+  Brand,
+  Gradients,
+  Text as DS,
+  Border,
+  Typography,
+  Radius,
+  Spacing,
+} from "@/lib/design-system";
 
 WebBrowser.maybeCompleteAuthSession();
 
-const { width: W, height: H } = Dimensions.get("window");
-const MASCOT_SIZE = Math.round(W * 0.24); // ~93px on 390px screen
-
-/* ─── Google icon ─────────────────────────────────────────────────────────── */
+/* ─── Google "G" icon ─────────────────────────────────────────────────────── */
 function GoogleIcon({ size = 18 }: { size?: number }) {
   return (
     <Svg width={size} height={size} viewBox="0 0 48 48">
@@ -45,6 +53,7 @@ function GoogleIcon({ size = 18 }: { size?: number }) {
       <Path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z" />
       <Path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z" />
       <Path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z" />
+      <Path fill="none" d="M0 0h48v48H0z" />
     </Svg>
   );
 }
@@ -61,26 +70,7 @@ function AppleIcon({ size = 18, color = "#FFF" }: { size?: number; color?: strin
   );
 }
 
-/* ─── Arrow right icon ────────────────────────────────────────────────────── */
-function ArrowRight({ size = 16, color = "#FFF" }: { size?: number; color?: string }) {
-  return (
-    <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
-      <Path d="M5 12h14M12 5l7 7-7 7" stroke={color} strokeWidth={2.2} strokeLinecap="round" strokeLinejoin="round" />
-    </Svg>
-  );
-}
-
-/* ─── Mail icon ───────────────────────────────────────────────────────────── */
-function MailIcon({ size = 16, color = "rgba(255,255,255,0.4)" }: { size?: number; color?: string }) {
-  return (
-    <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
-      <Path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" stroke={color} strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" />
-      <Path d="M22 6l-10 7L2 6" stroke={color} strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" />
-    </Svg>
-  );
-}
-
-/* ─── Component ───────────────────────────────────────────────────────────── */
+/* ─── Main component ──────────────────────────────────────────────────────── */
 export default function SignUpScreen() {
   const { dispatch } = useStore();
   const [email, setEmail]           = useState("");
@@ -88,47 +78,56 @@ export default function SignUpScreen() {
   const [emailFocused, setFocused]  = useState(false);
   const [emailError, setEmailError] = useState("");
 
-  const shakeAnim  = useRef(new Animated.Value(0)).current;
+  /* Micro-animations */
   const inputScale = useRef(new Animated.Value(1)).current;
+  const shakeAnim  = useRef(new Animated.Value(0)).current;
 
-  // Entrance animations
+  /* Entrance animations */
+  const logoOpacity = useRef(new Animated.Value(0)).current;
+  const logoY       = useRef(new Animated.Value(-20)).current;
   const cardOpacity = useRef(new Animated.Value(0)).current;
-  const cardY       = useRef(new Animated.Value(32)).current;
+  const cardY       = useRef(new Animated.Value(28)).current;
   const btmOpacity  = useRef(new Animated.Value(0)).current;
   const btmY        = useRef(new Animated.Value(16)).current;
 
   useEffect(() => {
     Animated.sequence([
       Animated.parallel([
-        Animated.timing(cardOpacity, { toValue: 1, duration: 420, useNativeDriver: true }),
-        Animated.timing(cardY,       { toValue: 0, duration: 420, useNativeDriver: true }),
+        Animated.timing(logoOpacity, { toValue: 1, duration: 400, useNativeDriver: true }),
+        Animated.timing(logoY,       { toValue: 0, duration: 400, useNativeDriver: true }),
       ]),
       Animated.parallel([
-        Animated.timing(btmOpacity, { toValue: 1, duration: 280, useNativeDriver: true }),
-        Animated.timing(btmY,       { toValue: 0, duration: 280, useNativeDriver: true }),
+        Animated.timing(cardOpacity, { toValue: 1, duration: 360, useNativeDriver: true }),
+        Animated.timing(cardY,       { toValue: 0, duration: 360, useNativeDriver: true }),
+      ]),
+      Animated.parallel([
+        Animated.timing(btmOpacity,  { toValue: 1, duration: 280, useNativeDriver: true }),
+        Animated.timing(btmY,        { toValue: 0, duration: 280, useNativeDriver: true }),
       ]),
     ]).start();
   }, []);
 
+  /* tRPC */
   const initGuestMutation = trpc.auth.initGuest.useMutation();
 
+  /* Input handlers */
   const handleFocus = () => {
     setFocused(true);
     setEmailError("");
-    Animated.timing(inputScale, { toValue: 1.015, duration: 120, useNativeDriver: true }).start();
+    Animated.timing(inputScale, { toValue: 1.015, duration: 140, useNativeDriver: true }).start();
   };
   const handleBlur = () => {
     setFocused(false);
-    Animated.timing(inputScale, { toValue: 1, duration: 120, useNativeDriver: true }).start();
+    Animated.timing(inputScale, { toValue: 1, duration: 140, useNativeDriver: true }).start();
   };
 
   const shake = () => {
     shakeAnim.setValue(0);
     Animated.sequence([
-      Animated.timing(shakeAnim, { toValue: 9,  duration: 55, useNativeDriver: true }),
-      Animated.timing(shakeAnim, { toValue: -9, duration: 55, useNativeDriver: true }),
-      Animated.timing(shakeAnim, { toValue: 6,  duration: 55, useNativeDriver: true }),
-      Animated.timing(shakeAnim, { toValue: -6, duration: 55, useNativeDriver: true }),
+      Animated.timing(shakeAnim, { toValue: 8,  duration: 55, useNativeDriver: true }),
+      Animated.timing(shakeAnim, { toValue: -8, duration: 55, useNativeDriver: true }),
+      Animated.timing(shakeAnim, { toValue: 5,  duration: 55, useNativeDriver: true }),
+      Animated.timing(shakeAnim, { toValue: -5, duration: 55, useNativeDriver: true }),
       Animated.timing(shakeAnim, { toValue: 0,  duration: 55, useNativeDriver: true }),
     ]).start();
   };
@@ -145,10 +144,44 @@ export default function SignUpScreen() {
     router.push({ pathname: "/(auth)/verify" as never, params: { email } });
   };
 
+  /* Google OAuth */
+  const [, , promptGoogleAsync] = Google.useAuthRequest({
+    iosClientId:     process.env.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID,
+    androidClientId: process.env.EXPO_PUBLIC_GOOGLE_ANDROID_CLIENT_ID,
+    webClientId:     process.env.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID,
+  });
+
   const handleGoogle = async () => {
-    Alert.alert("Google Sign-In", "Please use the iOS or Android app.");
+    if (Platform.OS === "web") {
+      Alert.alert("Google Sign-In", "Please use the iOS or Android app.");
+      return;
+    }
+    try {
+      const result = await promptGoogleAsync();
+      if (result?.type === "success") {
+        const res = await fetch("https://www.googleapis.com/userinfo/v2/me", {
+          headers: { Authorization: `Bearer ${result.authentication?.accessToken}` },
+        });
+        const info = await res.json();
+        dispatch({ type: "SET_AUTH", payload: { isAuthenticated: true, isGuest: false } });
+        dispatch({
+          type: "SET_PROFILE",
+          payload: {
+            id: info.id ?? "google-user", name: info.name ?? "Traveler",
+            email: info.email ?? "", quizCompleted: false, travelerDNA: {},
+            activityCategories: [], tripPace: "balanced" as const,
+            foodPreferences: { cuisines: [], avoid: [], allergies: [], dietary: [] },
+            points: 0, xp: 0, lifetimeSavings: 0, subscriptionActive: false,
+          },
+        });
+        router.replace("/(auth)/welcome" as never);
+      }
+    } catch (e) {
+      Alert.alert("Sign in failed", "Could not sign in with Google. Please try again.");
+    }
   };
 
+  /* Apple Sign-In */
   const handleApple = async () => {
     if (Platform.OS !== "ios") {
       Alert.alert("Apple Sign-In", "Apple Sign-In is only available on iOS.");
@@ -183,6 +216,7 @@ export default function SignUpScreen() {
     }
   };
 
+  /* Guest */
   const handleGuest = async () => {
     const expiresAt = new Date(Date.now() + 25 * 60 * 60 * 1000).toISOString();
     const result    = await initGuestMutation.mutateAsync().catch(() => null);
@@ -208,158 +242,169 @@ export default function SignUpScreen() {
   const hasError = emailError.length > 0;
 
   return (
+    /* Full-screen background */
     <View style={s.root}>
-      {/* Background gradient */}
       <LinearGradient
-        colors={["#0D0B1E", "#130E2B", "#1A0D2E"]}
-        locations={[0, 0.5, 1]}
+        colors={Gradients.authBg}
+        locations={[0, 0.35, 1]}
         style={StyleSheet.absoluteFillObject}
       />
+      {/* Ambient orbs */}
+      <View style={s.orbTR} />
+      <View style={s.orbBL} />
 
-      {/* Symmetric orbs — same size, opposite corners */}
-      <View style={s.orbTL} />
-      <View style={s.orbBR} />
-
+      {/*
+        SafeAreaView with edges top+bottom ensures content never hides
+        behind Dynamic Island or home indicator.
+        flex:1 + justifyContent:space-between = 3-zone layout.
+      */}
       <SafeAreaView edges={["top", "bottom"]} style={s.safe}>
 
-        {/* ══ MIDDLE: Mascot + Card (flex:1 centers vertically) ══ */}
+        {/* ── ZONE 1: Logo (top, fixed height) ── */}
+        <Animated.View
+          style={[s.logoZone, { opacity: logoOpacity, transform: [{ translateY: logoY }] }]}
+        >
+          <Image
+            source={require("@/assets/logos/logotype-white.webp")}
+            style={s.logotype}
+            resizeMode="contain"
+          />
+          <Text style={s.tagline}>YOUR AI TRAVEL COMPANION</Text>
+        </Animated.View>
+
+        {/* ── ZONE 2: Auth card (flex:1, fills middle) ── */}
         <KeyboardAvoidingView
           behavior={Platform.OS === "ios" ? "padding" : "height"}
-          style={s.midZone}
+          style={s.cardZone}
         >
-          <Animated.View style={[s.midInner, { opacity: cardOpacity, transform: [{ translateY: cardY }] }]}>
-
-            {/* Mascot floats above card */}
-            <View style={s.mascotWrap}>
-              <Image
-                source={require("@/assets/logos/mascot-centered.png")}
-                style={s.mascot}
-                resizeMode="contain"
-              />
-            </View>
-
-            {/* Auth card */}
+          <Animated.View
+            style={[s.cardWrap, { opacity: cardOpacity, transform: [{ translateY: cardY }] }]}
+          >
+            {/* Glass card */}
             <View style={s.card}>
-              {/* Logotype inside card header */}
-              <View style={s.cardHeader}>
-                <Image
-                  source={require("@/assets/logos/logotype-white.webp")}
-                  style={s.logotype}
-                  resizeMode="contain"
-                />
-                <Text style={s.tagline}>YOUR AI TRAVEL COMPANION</Text>
-              </View>
+              <LinearGradient
+                colors={["rgba(255,255,255,0.07)", "rgba(255,255,255,0.04)"]}
+                style={s.cardInner}
+              >
+                {/* Tab toggle: Sign Up / Log In */}
+                <View style={s.tabRow}>
+                  {(["Sign Up", "Log In"] as const).map((label, i) => {
+                    const active = (i === 0 && !isLogin) || (i === 1 && isLogin);
+                    return (
+                      <TouchableOpacity
+                        key={label}
+                        style={s.tab}
+                        onPress={() => setIsLogin(i === 1)}
+                        activeOpacity={0.8}
+                      >
+                        {active && (
+                          <LinearGradient
+                            colors={["#6443F4", "#F94498"]}
+                            start={{ x: 0, y: 0 }}
+                            end={{ x: 1, y: 0 }}
+                            style={StyleSheet.absoluteFillObject}
+                          />
+                        )}
+                        <Text style={[s.tabText, active && s.tabActive]}>{label}</Text>
+                      </TouchableOpacity>
+                    );
+                  })}
+                </View>
 
-              {/* Sign Up / Log In tabs */}
-              <View style={s.tabRow}>
-                {(["Sign Up", "Log In"] as const).map((label, i) => {
-                  const active = (i === 0 && !isLogin) || (i === 1 && isLogin);
-                  return (
-                    <TouchableOpacity
-                      key={label}
-                      style={s.tab}
-                      onPress={() => setIsLogin(i === 1)}
-                      activeOpacity={0.8}
+                {/* Heading */}
+                <View style={s.heading}>
+                  <Text style={s.headTitle}>
+                    {isLogin ? "Welcome back" : "Start your journey"}
+                  </Text>
+                  <Text style={s.headSub}>
+                    {isLogin ? "Log in to your TRAVI account" : "Create your free account today"}
+                  </Text>
+                </View>
+
+                {/* Email field */}
+                <Animated.View style={{ transform: [{ translateX: shakeAnim }] }}>
+                  <Animated.View
+                    style={[
+                      s.inputWrap,
+                      emailFocused && s.inputFocused,
+                      hasError && s.inputError,
+                      { transform: [{ scale: inputScale }] },
+                    ]}
+                  >
+                    <LinearGradient
+                      colors={emailFocused ? Gradients.inputFocus : Gradients.inputIdle}
+                      style={s.inputRow}
                     >
-                      {active && (
-                        <LinearGradient
-                          colors={["#6443F4", "#F94498"]}
-                          start={{ x: 0, y: 0 }}
-                          end={{ x: 1, y: 0 }}
-                          style={StyleSheet.absoluteFillObject}
-                        />
-                      )}
-                      <Text style={[s.tabText, active && s.tabActive]}>{label}</Text>
-                    </TouchableOpacity>
-                  );
-                })}
-              </View>
-
-              {/* Heading */}
-              <View style={s.heading}>
-                <Text style={s.headTitle}>
-                  {isLogin ? "Welcome back" : "Start your journey"}
-                </Text>
-                <Text style={s.headSub}>
-                  {isLogin ? "Log in to your TRAVI account" : "Create your free account today"}
-                </Text>
-              </View>
-
-              {/* Email input */}
-              <Animated.View style={{ transform: [{ translateX: shakeAnim }] }}>
-                <Animated.View
-                  style={[
-                    s.inputWrap,
-                    emailFocused && s.inputFocused,
-                    hasError && s.inputError,
-                    { transform: [{ scale: inputScale }] },
-                  ]}
-                >
-                  <View style={s.inputRow}>
-                    <MailIcon
-                      size={16}
-                      color={hasError ? "#F94498" : emailFocused ? "#A78BFA" : "rgba(255,255,255,0.35)"}
-                    />
-                    <TextInput
-                      style={s.input}
-                      placeholder="Email address"
-                      placeholderTextColor="rgba(255,255,255,0.3)"
-                      value={email}
-                      onChangeText={(v) => { setEmail(v); if (emailError) setEmailError(""); }}
-                      keyboardType="email-address"
-                      autoCapitalize="none"
-                      returnKeyType="go"
-                      onSubmitEditing={handleContinue}
-                      onFocus={handleFocus}
-                      onBlur={handleBlur}
-                    />
-                  </View>
+                      <IconSymbol
+                        name="envelope.fill"
+                        size={17}
+                        color={hasError ? "#F94498" : emailFocused ? DS.accent : DS.muted}
+                      />
+                      <TextInput
+                        style={s.input}
+                        placeholder="Email address"
+                        placeholderTextColor={DS.placeholder}
+                        value={email}
+                        onChangeText={(v) => {
+                          setEmail(v);
+                          if (emailError) setEmailError("");
+                        }}
+                        keyboardType="email-address"
+                        autoCapitalize="none"
+                        returnKeyType="go"
+                        onSubmitEditing={handleContinue}
+                        onFocus={handleFocus}
+                        onBlur={handleBlur}
+                      />
+                    </LinearGradient>
+                  </Animated.View>
+                  {hasError && <Text style={s.errorMsg}>{emailError}</Text>}
                 </Animated.View>
-                {hasError && <Text style={s.errorMsg}>{emailError}</Text>}
-              </Animated.View>
 
-              {/* Primary CTA */}
-              <TouchableOpacity onPress={handleContinue} activeOpacity={0.85} style={s.ctaShadow}>
-                <LinearGradient
-                  colors={["#6443F4", "#F94498"]}
-                  start={{ x: 0, y: 0 }}
-                  end={{ x: 1, y: 0 }}
-                  style={s.ctaInner}
-                >
-                  <Text style={s.ctaText}>Continue with Email</Text>
-                  <ArrowRight size={16} color="#FFF" />
-                </LinearGradient>
-              </TouchableOpacity>
-
-              {/* Divider */}
-              <View style={s.divider}>
-                <View style={s.divLine} />
-                <Text style={s.divText}>or continue with</Text>
-                <View style={s.divLine} />
-              </View>
-
-              {/* Social buttons */}
-              <View style={s.socialRow}>
-                <TouchableOpacity style={s.socialBtn} onPress={handleGoogle} activeOpacity={0.8}>
-                  <View style={s.socialInner}>
-                    <GoogleIcon size={18} />
-                    <Text style={s.socialLabel}>Google</Text>
-                  </View>
+                {/* Primary CTA */}
+                <TouchableOpacity onPress={handleContinue} activeOpacity={0.85} style={s.cta}>
+                  <LinearGradient
+                    colors={Gradients.cta}
+                    start={{ x: 0, y: 0 }}
+                    end={{ x: 1, y: 0 }}
+                    style={s.ctaInner}
+                  >
+                    <Text style={s.ctaText}>Continue with Email</Text>
+                    <IconSymbol name="arrow.right" size={17} color="#FFF" />
+                  </LinearGradient>
                 </TouchableOpacity>
-                <TouchableOpacity style={s.socialBtn} onPress={handleApple} activeOpacity={0.8}>
-                  <View style={s.socialInner}>
-                    <AppleIcon size={18} color="#FFF" />
-                    <Text style={s.socialLabel}>Apple</Text>
-                  </View>
-                </TouchableOpacity>
-              </View>
+
+                {/* Divider */}
+                <View style={s.divider}>
+                  <View style={s.divLine} />
+                  <Text style={s.divText}>or continue with</Text>
+                  <View style={s.divLine} />
+                </View>
+
+                {/* Social buttons */}
+                <View style={s.socialRow}>
+                  <TouchableOpacity style={s.socialBtn} onPress={handleGoogle} activeOpacity={0.8}>
+                    <View style={s.socialInner}>
+                      <GoogleIcon size={18} />
+                      <Text style={s.socialLabel}>Google</Text>
+                    </View>
+                  </TouchableOpacity>
+                  <TouchableOpacity style={s.socialBtn} onPress={handleApple} activeOpacity={0.8}>
+                    <View style={s.socialInner}>
+                      <AppleIcon size={18} color="#FFF" />
+                      <Text style={s.socialLabel}>Apple</Text>
+                    </View>
+                  </TouchableOpacity>
+                </View>
+              </LinearGradient>
             </View>
-
           </Animated.View>
         </KeyboardAvoidingView>
 
-        {/* ══ BOTTOM: Guest + Legal ══ */}
-        <Animated.View style={[s.btmZone, { opacity: btmOpacity, transform: [{ translateY: btmY }] }]}>
+        {/* ── ZONE 3: Guest + Legal (bottom, fixed height) ── */}
+        <Animated.View
+          style={[s.bottomZone, { opacity: btmOpacity, transform: [{ translateY: btmY }] }]}
+        >
           <TouchableOpacity style={s.guestBtn} onPress={handleGuest} activeOpacity={0.7}>
             <Text style={s.guestTitle}>Continue as Guest</Text>
             <Text style={s.guestSub}>Explore without an account</Text>
@@ -378,196 +423,213 @@ export default function SignUpScreen() {
 }
 
 /* ─── Styles ──────────────────────────────────────────────────────────────── */
-const CARD_RADIUS = 24;
-const ORB_SIZE    = Math.round(W * 0.58); // ~226px on 390px — smaller top orb
-
 const s = StyleSheet.create({
-  root: { flex: 1 },
+  /* Root */
+  root: { flex: 1, backgroundColor: Brand.deepPurple },
 
-  /* Symmetric orbs */
-  orbTL: {
-    position: "absolute",
-    width: ORB_SIZE, height: ORB_SIZE, borderRadius: ORB_SIZE / 2,
-    top: -(ORB_SIZE * 0.3), left: -(ORB_SIZE * 0.3),
-    backgroundColor: "rgba(100,67,244,0.18)",
+  /* Ambient orbs */
+  orbTR: {
+    position: "absolute", width: 300, height: 300, borderRadius: 150,
+    top: -80, right: -110, backgroundColor: "rgba(100,67,244,0.14)",
   },
-  orbBR: {
-    position: "absolute",
-    width: ORB_SIZE, height: ORB_SIZE, borderRadius: ORB_SIZE / 2,
-    bottom: -(ORB_SIZE * 0.3), right: -(ORB_SIZE * 0.3),
-    backgroundColor: "rgba(249,68,152,0.14)",
+  orbBL: {
+    position: "absolute", width: 240, height: 240, borderRadius: 120,
+    bottom: 50, left: -90, backgroundColor: "rgba(249,68,152,0.10)",
   },
 
-  /* SafeAreaView: flex:1, space-between → mid fills, bottom anchors */
+  /*
+   * SafeAreaView: flex:1 + justifyContent:space-between
+   * This is the key — 3 children fill top / middle / bottom correctly.
+   */
   safe: {
     flex: 1,
-    paddingHorizontal: 20,
+    paddingHorizontal: 22,
     justifyContent: "space-between",
   },
 
-  /* MIDDLE zone */
-  midZone: { flex: 1, justifyContent: "center", paddingTop: 8 },
-  midInner: { width: "100%", alignItems: "center" },
-
-  /* Mascot */
-  mascotWrap: {
-    width: MASCOT_SIZE,
-    height: MASCOT_SIZE,
-    marginBottom: -(MASCOT_SIZE * 0.5),
-    zIndex: 10,
+  /* Zone 1 — Logo */
+  logoZone: {
+    alignItems: "center",
+    paddingTop: 8,
+    gap: 6,
   },
-  mascot: { width: MASCOT_SIZE, height: MASCOT_SIZE },
-
-  /* Card */
-  card: {
-    width: "100%",
-    borderRadius: CARD_RADIUS,
-    overflow: "hidden",
-    backgroundColor: "rgba(255,255,255,0.07)",
-    borderWidth: 1,
-    borderColor: "rgba(255,255,255,0.1)",
-    paddingTop: MASCOT_SIZE * 0.5 + 16,
-    paddingHorizontal: 20,
-    paddingBottom: 20,
-    gap: 14,
-  },
-
-  /* Card header: logotype + tagline */
-  cardHeader: { alignItems: "center", gap: 5, marginBottom: 4 },
-  logotype: { width: 160, height: 52 },
+  logotype: { width: 150, height: 48 },
   tagline: {
     fontSize: 10,
-    letterSpacing: 2.8,
+    letterSpacing: 2.5,
     textTransform: "uppercase",
-    color: "rgba(255,255,255,0.55)",
-    fontWeight: "500",
+    color: "rgba(255,255,255,0.7)",
+    fontFamily: "Satoshi-Regular",
   },
 
-  /* Tabs */
+  /* Zone 2 — Card */
+  cardZone: { flex: 1, justifyContent: "center", paddingVertical: 20 },
+  cardWrap: { width: "100%" },
+  card: {
+    borderRadius: Radius.xxl,
+    overflow: "hidden",
+    borderWidth: 1,
+    borderColor: Border.subtle,
+  },
+  cardInner: { padding: 20, gap: 16 },
+
+  /* Tab toggle */
   tabRow: {
     flexDirection: "row",
-    backgroundColor: "rgba(0,0,0,0.35)",
-    borderRadius: 11,
+    backgroundColor: "rgba(0,0,0,0.4)",
+    borderRadius: 13,
     padding: 4,
     overflow: "hidden",
   },
   tab: {
     flex: 1,
-    paddingVertical: 9,
-    borderRadius: 8,
+    paddingVertical: 10,
+    borderRadius: 10,
     alignItems: "center",
     overflow: "hidden",
   },
-  tabText: { fontSize: 14, fontWeight: "600", color: "rgba(255,255,255,0.4)" },
+  tabText: {
+    fontSize: 14,
+    fontWeight: "600",
+    color: DS.disabled,
+    fontFamily: "Satoshi-Medium",
+  },
   tabActive: { color: "#FFFFFF" },
 
   /* Heading */
-  heading: { gap: 2 },
+  heading: { gap: 3 },
   headTitle: {
-    fontSize: 20,
+    fontSize: 22,
     fontWeight: "700",
     color: "#FFFFFF",
-    letterSpacing: -0.2,
+    fontFamily: "Chillax-Semibold",
+    letterSpacing: -0.3,
   },
   headSub: {
-    fontSize: 13,
-    color: "rgba(255,255,255,0.5)",
-    lineHeight: 19,
+    fontSize: 14,
+    color: DS.muted,
+    fontFamily: "Satoshi-Regular",
+    lineHeight: 20,
   },
 
-  /* Input */
+  /* Email input */
   inputWrap: {
-    borderRadius: 14,
+    borderRadius: Radius.lg,
     overflow: "hidden",
     borderWidth: 1.5,
-    borderColor: "rgba(255,255,255,0.12)",
-    backgroundColor: "rgba(255,255,255,0.06)",
+    borderColor: Border.idle,
   },
-  inputFocused: { borderColor: "rgba(164,139,250,0.7)" },
+  inputFocused: { borderColor: Border.focused },
   inputError:   { borderColor: "#F94498" },
   inputRow: {
     flexDirection: "row",
     alignItems: "center",
     gap: 11,
-    paddingHorizontal: 15,
-    paddingVertical: 13,
+    paddingHorizontal: 16,
+    paddingVertical: 14,
+    backgroundColor: "rgba(255,255,255,0.06)",
   },
-  input: { flex: 1, color: "#FFFFFF", fontSize: 15 },
+  input: {
+    flex: 1,
+    color: "#FFFFFF",
+    fontSize: 15,
+    fontFamily: "Satoshi-Medium",
+  },
   errorMsg: {
-    color: "#F94498", fontSize: 12, marginTop: 4, marginLeft: 3,
+    color: "#F94498",
+    fontSize: 12,
+    marginTop: 5,
+    marginLeft: 4,
+    fontFamily: "Satoshi-Regular",
   },
 
-  /* CTA */
-  ctaShadow: {
-    borderRadius: 14,
+  /* CTA button */
+  cta: {
+    borderRadius: Radius.lg,
     overflow: "hidden",
     shadowColor: "#F94498",
     shadowOffset: { width: 0, height: 6 },
-    shadowOpacity: 0.4,
+    shadowOpacity: 0.35,
     shadowRadius: 20,
-    elevation: 12,
+    elevation: 10,
   },
   ctaInner: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    paddingVertical: 15,
-    gap: 8,
+    paddingVertical: 16,
+    gap: 9,
   },
   ctaText: {
     fontSize: 16,
     fontWeight: "700",
     color: "#FFFFFF",
-    letterSpacing: 0.1,
+    fontFamily: "Chillax-Semibold",
+    letterSpacing: 0.2,
   },
 
   /* Divider */
   divider: { flexDirection: "row", alignItems: "center", gap: 10 },
-  divLine: { flex: 1, height: 1, backgroundColor: "rgba(255,255,255,0.1)" },
-  divText: { fontSize: 12, color: "rgba(255,255,255,0.4)" },
+  divLine: { flex: 1, height: 1, backgroundColor: Border.subtle },
+  divText: { fontSize: 12, color: DS.muted, fontFamily: "Satoshi-Regular" },
 
-  /* Social */
+  /* Social buttons */
   socialRow: { flexDirection: "row", gap: 12 },
   socialBtn: {
     flex: 1,
-    borderRadius: 14,
+    borderRadius: Radius.lg,
     overflow: "hidden",
     borderWidth: 1,
-    borderColor: "rgba(255,255,255,0.12)",
+    borderColor: Border.idle,
     backgroundColor: "rgba(255,255,255,0.06)",
   },
   socialInner: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    paddingVertical: 12,
+    paddingVertical: 13,
     gap: 8,
   },
-  socialLabel: { color: "#FFFFFF", fontSize: 14, fontWeight: "600" },
+  socialLabel: {
+    color: "#FFFFFF",
+    fontSize: 14,
+    fontWeight: "600",
+    fontFamily: "Satoshi-Medium",
+  },
 
-  /* BOTTOM zone */
-  btmZone: { alignItems: "center", gap: 10, paddingBottom: 4 },
+  /* Zone 3 — Bottom */
+  bottomZone: {
+    alignItems: "center",
+    gap: 10,
+    paddingBottom: 4,
+  },
   guestBtn: {
     width: "100%",
     alignItems: "center",
     gap: 2,
-    paddingVertical: 13,
-    borderRadius: 14,
+    paddingVertical: 14,
+    borderRadius: Radius.lg,
     borderWidth: 1,
-    borderColor: "rgba(255,255,255,0.1)",
+    borderColor: Border.subtle,
     backgroundColor: "rgba(255,255,255,0.05)",
   },
   guestTitle: {
     fontSize: 15,
     fontWeight: "600",
     color: "rgba(255,255,255,0.85)",
+    fontFamily: "Satoshi-Medium",
   },
-  guestSub: { fontSize: 12, color: "rgba(255,255,255,0.4)" },
+  guestSub: {
+    fontSize: 12,
+    color: DS.muted,
+    fontFamily: "Satoshi-Regular",
+  },
   legal: {
     fontSize: 11,
-    color: "rgba(255,255,255,0.35)",
+    color: DS.muted,
     textAlign: "center",
     lineHeight: 17,
+    fontFamily: "Satoshi-Regular",
   },
-  legalLink: { color: "#F94498", fontWeight: "600" },
+  legalLink: { color: Brand.pink, fontWeight: "600" },
 });
