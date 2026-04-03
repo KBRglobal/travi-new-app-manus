@@ -191,17 +191,19 @@ export default function ExploreScreen() {
             </TouchableOpacity>
           )}
 
-          {/* South America Hub Banner */}
-          <TouchableOpacity style={S.regionBanner} onPress={() => router.push("/(tabs)/south-america-hub" as never)} activeOpacity={0.88}>
-            <LinearGradient colors={["rgba(34,197,94,0.2)", "rgba(6,182,212,0.15)"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={S.regionBannerGradient}>
-              <Text style={S.regionBannerEmoji}>🌎</Text>
-              <View style={S.regionBannerInfo}>
-                <Text style={S.regionBannerTitle}>South America Hub</Text>
-                <Text style={S.regionBannerSub}>Brazil · Argentina · Colombia · Peru · Chile</Text>
-              </View>
-              <Text style={S.regionBannerArrow}>→</Text>
-            </LinearGradient>
-          </TouchableOpacity>
+          {/* South America Hub Banner — only in All view */}
+          {activeCategory === "all" && !searchQuery && (
+            <TouchableOpacity style={S.regionBanner} onPress={() => router.push("/(tabs)/south-america-hub" as never)} activeOpacity={0.88}>
+              <LinearGradient colors={["rgba(34,197,94,0.2)", "rgba(6,182,212,0.15)"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={S.regionBannerGradient}>
+                <Text style={S.regionBannerEmoji}>🌎</Text>
+                <View style={S.regionBannerInfo}>
+                  <Text style={S.regionBannerTitle}>South America Hub</Text>
+                  <Text style={S.regionBannerSub}>Brazil · Argentina · Colombia · Peru · Chile</Text>
+                </View>
+                <Text style={S.regionBannerArrow}>→</Text>
+              </LinearGradient>
+            </TouchableOpacity>
+          )}
           <View style={S.listHeader}>
             <Text style={S.listTitle}>
               {activeCategory === "all"
@@ -366,7 +368,7 @@ const S = StyleSheet.create({
   chipText: { color: "#9BA1A6", fontSize: 13, fontWeight: "600", fontFamily: "Chillax-Semibold" },
   chipTextActive: { color: "#C084FC", fontWeight: "700", fontFamily: "Chillax-Semibold" },
 
-  listContent: { paddingHorizontal: 20, paddingBottom: 110 },
+  listContent: { paddingHorizontal: 20, paddingBottom: 130 },
   listHeader: {
     flexDirection: "row",
     alignItems: "center",
@@ -378,10 +380,10 @@ const S = StyleSheet.create({
 
   card: {
     width: "100%",
-    height: 260,
+    height: 220,
     borderRadius: 22,
     overflow: "hidden",
-    marginBottom: 16,
+    marginBottom: 14,
   },
   cardBg: { flex: 1, justifyContent: "flex-end" },
   cardImg: { borderRadius: 22 },
@@ -465,7 +467,7 @@ const S = StyleSheet.create({
   emptyIcon: { fontSize: 48, marginBottom: 16 },
   emptyTitle: { color: "#FFFFFF", fontSize: 20, fontWeight: "800", textAlign: "center", fontFamily: "Chillax-Bold" },
   emptyText: { color: "rgba(255,255,255,0.4)", fontSize: 14, textAlign: "center", marginTop: 8, lineHeight: 20, fontFamily: "Satoshi-Regular" },
-  heroCard: { width: "100%", height: 320, borderRadius: 24, overflow: "hidden", marginBottom: 20 },
+  heroCard: { width: "100%", height: 280, borderRadius: 24, overflow: "hidden", marginBottom: 20 },
   heroCardBg: { flex: 1, justifyContent: "flex-end" },
   heroCardImg: { borderRadius: 24 },
   heroCardBadge: { position: "absolute", top: 16, left: 16, backgroundColor: "rgba(249,68,152,0.85)", borderRadius: 10, paddingHorizontal: 10, paddingVertical: 5 },
