@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { useState, useRef } from "react";
 import {
   View,
@@ -33,7 +32,7 @@ const CATEGORIES = [
   { id: "transport", label: "Transport", icon: "car.fill" as const, color: "#3B82F6" },
   { id: "accommodation", label: "Hotel", icon: "bed.double.fill" as const, color: "#9077EF" },
   { id: "activity", label: "Activity", icon: "figure.run" as const, color: "#02A65C" },
-  { id: "other", label: "Other", icon: "ellipsis.circle" as const, color: "#A79FB2" },
+  { id: "other", label: "Other", icon: "ellipsis.circle" as const, color: "#6B7280" },
 ] as const;
 
 const MOCK_EXPENSES: SplitBillExpense[] = [
@@ -329,7 +328,7 @@ export default function SplitBillScreen() {
         {/* Settled Expenses */}
         {settledExpenses.length > 0 && (
           <View style={styles.section}>
-            <Text style={[styles.sectionTitle, { color: "#A79FB2" }]}>Settled</Text>
+            <Text style={[styles.sectionTitle, { color: "#6B7280" }]}>Settled</Text>
             <FlatList
               data={settledExpenses}
               renderItem={renderExpense}
@@ -497,7 +496,7 @@ const styles = StyleSheet.create({
   backBtn: { padding: 4 },
   headerCenter: { flex: 1 },
   headerTitle: { fontSize: 22, fontFamily: "Chillax-Bold", fontWeight: "800", color: "#F9FAFB" },
-  headerSubtitle: { fontSize: 13, fontFamily: "Satoshi-Regular", color: "#A79FB2", marginTop: 2 },
+  headerSubtitle: { fontSize: 13, fontFamily: "Satoshi-Regular", color: "#9CA3AF", marginTop: 2 },
   addBtn: { borderRadius: 14, overflow: "hidden" },
   addBtnGradient: { width: 40, height: 40, alignItems: "center", justifyContent: "center" },
   summaryCard: { marginHorizontal: 20, borderRadius: 20, overflow: "hidden", marginBottom: 24 },
@@ -532,10 +531,10 @@ const styles = StyleSheet.create({
   catIcon: { width: 40, height: 40, borderRadius: 12, alignItems: "center", justifyContent: "center" },
   expenseInfo: { flex: 1 },
   expenseTitle: { fontSize: 15, fontFamily: "Chillax-Semibold", fontWeight: "700", color: "#F9FAFB" },
-  expenseMeta: { fontSize: 12, fontFamily: "Satoshi-Regular", color: "#A79FB2", marginTop: 2 },
+  expenseMeta: { fontSize: 12, fontFamily: "Satoshi-Regular", color: "#9CA3AF", marginTop: 2 },
   expenseAmountWrap: { alignItems: "flex-end" },
   expenseTotal: { fontSize: 18, fontFamily: "Chillax-Bold", fontWeight: "800", color: "#F9FAFB" },
-  expensePerPerson: { fontSize: 11, fontFamily: "Satoshi-Regular", color: "#A79FB2" },
+  expensePerPerson: { fontSize: 11, fontFamily: "Satoshi-Regular", color: "#9CA3AF" },
   expenseSplit: { flexDirection: "row", flexWrap: "wrap", gap: 6, marginBottom: 10 },
   memberChip: {
     flexDirection: "row",
@@ -570,7 +569,7 @@ const styles = StyleSheet.create({
     paddingVertical: 16,
   },
   settleBtnText: { fontSize: 16, fontFamily: "Chillax-Semibold", fontWeight: "700", color: "#fff" },
-  settleNote: { fontSize: 12, fontFamily: "Satoshi-Regular", color: "#A79FB2", textAlign: "center" },
+  settleNote: { fontSize: 12, fontFamily: "Satoshi-Regular", color: "#9CA3AF", textAlign: "center" },
   // Modal
   modalOverlay: { flex: 1, justifyContent: "flex-end", backgroundColor: "rgba(0,0,0,0.7)" },
   modalKAV: { justifyContent: "flex-end" },
@@ -585,7 +584,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   modalTitle: { fontSize: 22, fontFamily: "Chillax-Bold", fontWeight: "800", color: "#F9FAFB", marginBottom: 20 },
-  fieldLabel: { fontSize: 14, fontFamily: "Chillax-Semibold", fontWeight: "600", color: "#A79FB2", marginBottom: 8, marginTop: 16 },
+  fieldLabel: { fontSize: 14, fontFamily: "Chillax-Semibold", fontWeight: "600", color: "#9CA3AF", marginBottom: 8, marginTop: 16 },
   inputWrap: {
     flexDirection: "row",
     alignItems: "center",
@@ -611,7 +610,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#1E0A3C",
     marginRight: 8,
   },
-  catChipText: { fontSize: 13, fontFamily: "Chillax-Semibold", color: "#A79FB2", fontWeight: "600" },
+  catChipText: { fontSize: 13, fontFamily: "Chillax-Semibold", color: "#9CA3AF", fontWeight: "600" },
   membersRow: { flexDirection: "row", flexWrap: "wrap", gap: 8 },
   paidByChip: {
     flexDirection: "row",
@@ -625,7 +624,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#1E0A3C",
   },
   memberAvatar: { fontSize: 16, fontFamily: "Satoshi-Regular" },
-  memberName: { fontSize: 13, fontFamily: "Chillax-Semibold", color: "#A79FB2", fontWeight: "600" },
+  memberName: { fontSize: 13, fontFamily: "Chillax-Semibold", color: "#9CA3AF", fontWeight: "600" },
   perPersonPreview: {
     flexDirection: "row",
     alignItems: "center",

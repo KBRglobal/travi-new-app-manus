@@ -1,4 +1,3 @@
-// @ts-nocheck
 /**
  * TRAVI — Flight Detail Screen
  * Full flight details: route map, seat classes, amenities, baggage, cashback, booking.
@@ -150,8 +149,8 @@ export default function FlightDetailScreen() {
               }}
               activeOpacity={0.8}
             >
-              <Text style={[styles.className, selectedClass === i && { color: "#1A0B2E" }]}>{cls.name}</Text>
-              <Text style={[styles.classPrice, { color: selectedClass === i ? flight.color : "#1A0B2E" }]}>${cls.price}</Text>
+              <Text style={[styles.className, selectedClass === i && { color: "#FFFFFF" }]}>{cls.name}</Text>
+              <Text style={[styles.classPrice, { color: selectedClass === i ? flight.color : "#FFFFFF" }]}>${cls.price}</Text>
             </TouchableOpacity>
           ))}
         </View>
@@ -240,16 +239,16 @@ const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#0D0628" },
   hero: { paddingHorizontal: 20, paddingBottom: 130 },
   backBtn: { width: 36, height: 36, borderRadius: 18, backgroundColor: "rgba(0,0,0,0.3)", alignItems: "center", justifyContent: "center", marginBottom: 16 },
-  backText: { color: "#1A0B2E", fontSize: 18, fontWeight: "700", fontFamily: "Chillax-Semibold" },
+  backText: { color: "#FFFFFF", fontSize: 18, fontWeight: "700", fontFamily: "Chillax-Semibold" },
   heroContent: { alignItems: "center", gap: 4 },
   airlineLogo: { fontSize: 40 },
-  airlineName: { color: "#1A0B2E", fontSize: 22, fontWeight: "900", fontFamily: "Chillax-Bold" },
+  airlineName: { color: "#FFFFFF", fontSize: 22, fontWeight: "900", fontFamily: "Chillax-Bold" },
   aircraft: { color: "rgba(255,255,255,0.6)", fontSize: 13 },
   routeRow: { flexDirection: "row", alignItems: "center", width: "100%", marginTop: 20 },
   routeEnd: { flex: 1, gap: 2 },
-  routeCode: { color: "#1A0B2E", fontSize: 28, fontWeight: "900", fontFamily: "Chillax-Bold" },
+  routeCode: { color: "#FFFFFF", fontSize: 28, fontWeight: "900", fontFamily: "Chillax-Bold" },
   routeCity: { color: "rgba(255,255,255,0.6)", fontSize: 12 },
-  routeTime: { color: "#1A0B2E", fontSize: 16, fontWeight: "700", marginTop: 4, fontFamily: "Chillax-Semibold" },
+  routeTime: { color: "#FFFFFF", fontSize: 16, fontWeight: "700", marginTop: 4, fontFamily: "Chillax-Semibold" },
   routeMiddle: { flex: 1.5, alignItems: "center", gap: 4 },
   routeDuration: { color: "rgba(255,255,255,0.7)", fontSize: 12 },
   routeLine: { flexDirection: "row", alignItems: "center", gap: 2 },
@@ -263,7 +262,7 @@ const styles = StyleSheet.create({
   cashbackInfo: { flex: 1 },
   cashbackTitle: { color: "#22C55E", fontSize: 15, fontWeight: "800", fontFamily: "Chillax-Bold" },
   cashbackSub: { color: "rgba(255,255,255,0.5)", fontSize: 12, marginTop: 2 },
-  sectionTitle: { color: "#1A0B2E", fontSize: 16, fontWeight: "800", marginBottom: 12, marginTop: 4, fontFamily: "Chillax-Bold" },
+  sectionTitle: { color: "#FFFFFF", fontSize: 16, fontWeight: "800", marginBottom: 12, marginTop: 4, fontFamily: "Chillax-Bold" },
   classRow: { flexDirection: "row", gap: 10, marginBottom: 14 },
   classCard: { flex: 1, backgroundColor: "rgba(255,255,255,0.06)", borderRadius: 14, padding: 12, alignItems: "center", borderWidth: 1.5, borderColor: "rgba(255,255,255,0.12)" },
   className: { color: "rgba(255,255,255,0.7)", fontSize: 12, fontWeight: "700" },
@@ -280,22 +279,22 @@ const styles = StyleSheet.create({
   baggageRowBorder: { borderBottomWidth: 1, borderBottomColor: "rgba(255,255,255,0.12)" },
   baggageIcon: { fontSize: 20 },
   baggageLabel: { flex: 1, color: "rgba(255,255,255,0.6)", fontSize: 13 },
-  baggageValue: { color: "#1A0B2E", fontSize: 13, fontWeight: "700" },
+  baggageValue: { color: "#FFFFFF", fontSize: 13, fontWeight: "700" },
   reviewCard: { backgroundColor: "rgba(255,255,255,0.06)", borderRadius: 14, padding: 14, marginBottom: 10, borderWidth: 1, borderColor: "rgba(255,255,255,0.12)" },
   reviewHeader: { flexDirection: "row", alignItems: "center", gap: 10, marginBottom: 8 },
   reviewAvatar: { width: 32, height: 32, borderRadius: 16, backgroundColor: "rgba(100,67,244,0.3)", alignItems: "center", justifyContent: "center" },
-  reviewAvatarText: { color: "#1A0B2E", fontSize: 14, fontWeight: "800", fontFamily: "Chillax-Bold" },
-  reviewName: { flex: 1, color: "#1A0B2E", fontSize: 13, fontWeight: "700" },
+  reviewAvatarText: { color: "#FFFFFF", fontSize: 14, fontWeight: "800", fontFamily: "Chillax-Bold" },
+  reviewName: { flex: 1, color: "#FFFFFF", fontSize: 13, fontWeight: "700" },
   reviewRating: { fontSize: 12 },
   reviewComment: { color: "rgba(255,255,255,0.6)", fontSize: 13, lineHeight: 20 },
   bookingBar: { position: "absolute", bottom: 0, left: 0, right: 0, backgroundColor: "rgba(13,6,40,0.95)", paddingHorizontal: 20, paddingTop: 14, flexDirection: "row", alignItems: "center", gap: 14, borderTopWidth: 1, borderTopColor: "rgba(255,255,255,0.12)" },
   bookingPrice: { flex: 1 },
   bookingPriceLabel: { color: "rgba(255,255,255,0.5)", fontSize: 11 },
-  bookingPriceAmount: { color: "#1A0B2E", fontSize: 24, fontWeight: "900", fontFamily: "Chillax-Bold" },
+  bookingPriceAmount: { color: "#FFFFFF", fontSize: 24, fontWeight: "900", fontFamily: "Chillax-Bold" },
   bookingCashback: { color: "#22C55E", fontSize: 12, fontWeight: "700" },
   bookBtn: { flex: 1.5, borderRadius: 16, shadowColor: "#F94498", shadowOffset: { width: 0, height: 6 }, shadowOpacity: 0.4, shadowRadius: 24, elevation: 10,
     overflow: "hidden" },
   bookBtnDone: {},
   bookBtnGrad: { paddingVertical: 16, alignItems: "center" },
-  bookBtnText: { color: "#1A0B2E", fontSize: 16, fontWeight: "800", fontFamily: "Chillax-Bold" },
+  bookBtnText: { color: "#FFFFFF", fontSize: 16, fontWeight: "800", fontFamily: "Chillax-Bold" },
 });

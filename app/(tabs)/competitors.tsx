@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { useState } from "react";
 import {
   View, Text, TouchableOpacity, StyleSheet, ScrollView, Dimensions, StatusBar, Platform
@@ -67,7 +66,7 @@ export default function CompetitorsScreen() {
         {/* Header */}
         <View style={S.header}>
           <TouchableOpacity style={S.backBtn} onPress={() => router.back()} activeOpacity={0.7}>
-            <IconSymbol name="chevron.left" size={20} color="#1A0B2E" />
+            <IconSymbol name="chevron.left" size={20} color="#FFFFFF" />
           </TouchableOpacity>
           <View>
             <Text style={S.headerTitle}>Competitor Analysis</Text>
@@ -113,8 +112,8 @@ export default function CompetitorsScreen() {
               {viewMode === mode.key && (
                 <LinearGradient colors={["#6443F4", "#F94498"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={StyleSheet.absoluteFillObject} />
               )}
-              <IconSymbol name={mode.icon as never} size={14} color={viewMode === mode.key ? "#1A0B2E" : "rgba(255,255,255,0.5)"} />
-              <Text style={[S.modeBtnText, viewMode === mode.key && { color: "#1A0B2E" }]}>{mode.label}</Text>
+              <IconSymbol name={mode.icon as never} size={14} color={viewMode === mode.key ? "#FFFFFF" : "rgba(255,255,255,0.5)"} />
+              <Text style={[S.modeBtnText, viewMode === mode.key && { color: "#FFFFFF" }]}>{mode.label}</Text>
             </TouchableOpacity>
           ))}
         </View>
@@ -265,7 +264,7 @@ const S = StyleSheet.create({
   orb1: { position: "absolute", width: width * 1.5, height: width * 1.5, borderRadius: width * 0.75, top: -width * 0.6, left: -width * 0.4, backgroundColor: "rgba(123,47,190,0.12)" },
   header: { flexDirection: "row", alignItems: "center", gap: 14, paddingTop: 64, paddingHorizontal: 20, paddingBottom: 16 },
   backBtn: { width: 40, height: 40, borderRadius: 20, backgroundColor: "rgba(255,255,255,0.06)", alignItems: "center", justifyContent: "center" },
-  headerTitle: { color: "#1A0B2E", fontSize: 26, fontWeight: "800", fontFamily: "Chillax-Bold", letterSpacing: -0.3 },
+  headerTitle: { color: "#FFFFFF", fontSize: 26, fontWeight: "800", fontFamily: "Chillax-Bold", letterSpacing: -0.3 },
   headerSub: { color: "rgba(255,255,255,0.5)", fontSize: 13, marginTop: 2 },
   shareRow: { flexDirection: "row", flexWrap: "wrap", paddingHorizontal: 20, gap: 8, marginBottom: 16 },
   shareCard: { width: (width - 56) / 3, alignItems: "center", gap: 4, backgroundColor: "rgba(255,255,255,0.06)", borderRadius: 14, padding: 10, borderWidth: 1, borderColor: "rgba(255,255,255,0.12)" },
@@ -279,25 +278,25 @@ const S = StyleSheet.create({
   compHeader: { flexDirection: "row", alignItems: "center", gap: 14, paddingHorizontal: 20, marginBottom: 20 },
   compLogo: { width: 48, height: 48, borderRadius: 14, alignItems: "center", justifyContent: "center" },
   compLogoText: { fontSize: 22, fontWeight: "900", fontFamily: "Chillax-Bold" },
-  compName: { color: "#1A0B2E", fontSize: 20, fontWeight: "800", fontFamily: "Chillax-Bold" },
+  compName: { color: "#FFFFFF", fontSize: 20, fontWeight: "800", fontFamily: "Chillax-Bold" },
   compShare: { color: "rgba(255,255,255,0.5)", fontSize: 13, marginTop: 2 },
   section: { paddingHorizontal: 20, gap: 12 },
   swotCard: { borderRadius: 16, overflow: "hidden", padding: 16, gap: 10 },
   swotCardBorder: { position: "absolute", top: 0, left: 0, right: 0, bottom: 0, borderRadius: 16, borderWidth: 1, borderColor: "rgba(255,255,255,0.12)" },
   swotHeader: { flexDirection: "row", alignItems: "center", gap: 8 },
-  swotTitle: { color: "#1A0B2E", fontSize: 16, fontWeight: "700", fontFamily: "Chillax-Semibold" },
+  swotTitle: { color: "#FFFFFF", fontSize: 16, fontWeight: "700", fontFamily: "Chillax-Semibold" },
   swotItem: { flexDirection: "row", alignItems: "center", gap: 10, paddingLeft: 4 },
   swotDot: { width: 6, height: 6, borderRadius: 3 },
   swotText: { color: "rgba(255,255,255,0.6)", fontSize: 14, fontWeight: "500", fontFamily: "Satoshi-Medium" },
   advantageCard: { borderRadius: 16, overflow: "hidden", padding: 16, gap: 10 },
   advantageText: { color: "rgba(255,255,255,0.6)", fontSize: 14, lineHeight: 21 },
   /* Journey */
-  journeyTitle: { color: "#1A0B2E", fontSize: 18, fontWeight: "800", fontFamily: "Chillax-Bold", marginBottom: 4 },
+  journeyTitle: { color: "#FFFFFF", fontSize: 18, fontWeight: "800", fontFamily: "Chillax-Bold", marginBottom: 4 },
   frictionSub: { color: "rgba(255,255,255,0.5)", fontSize: 13, marginBottom: 8 },
   journeyStep: { flexDirection: "row", gap: 14 },
   journeyLine: { alignItems: "center", width: 32 },
   journeyDot: { width: 28, height: 28, borderRadius: 14, alignItems: "center", justifyContent: "center" },
-  journeyNum: { color: "#1A0B2E", fontSize: 12, fontWeight: "800",
+  journeyNum: { color: "#FFFFFF", fontSize: 12, fontWeight: "800",
       fontFamily: "Chillax-Bold" },
   journeyConnector: { width: 2, height: 24 },
   journeyContent: { flex: 1, paddingBottom: 130, justifyContent: "center" },
@@ -306,7 +305,7 @@ const S = StyleSheet.create({
   traviJourneyTitle: { color: "#C084FC", fontSize: 16, fontWeight: "700", fontFamily: "Chillax-Semibold", marginBottom: 4 },
   traviStep: { flexDirection: "row", alignItems: "center", gap: 10 },
   traviStepDot: { width: 24, height: 24, borderRadius: 12, overflow: "hidden", alignItems: "center", justifyContent: "center" },
-  traviStepNum: { color: "#1A0B2E", fontSize: 11, fontWeight: "800",
+  traviStepNum: { color: "#FFFFFF", fontSize: 11, fontWeight: "800",
       fontFamily: "Chillax-Bold" },
   traviStepText: { color: "rgba(255,255,255,0.7)", fontSize: 14, fontWeight: "500", fontFamily: "Satoshi-Medium" },
   /* Frictions */

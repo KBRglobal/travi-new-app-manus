@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from "react-native";
 import { router, useLocalSearchParams } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";

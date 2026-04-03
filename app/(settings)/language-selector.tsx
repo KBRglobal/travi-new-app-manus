@@ -1,4 +1,3 @@
-// @ts-nocheck
 /**
  * TRAVI — Language Selector Screen
  * Dark mode: #1A0B2E bg, #24103E surface, purple->pink gradients
@@ -15,7 +14,7 @@ import * as Haptics from "expo-haptics";
 const C = {
   bg: "#1A0B2E", surface: "#24103E", glassStroke: "rgba(123,68,230,0.3)",
   purple: "#6443F4", pink: "#F94498",
-  white: "#1A0B2E", textPrimary: "#1A0B2E", textSecondary: "#D3CFD8",
+  white: "#FFFFFF", textPrimary: "#FFFFFF", textSecondary: "#D3CFD8",
   textMuted: "#A79FB2",
 };
 

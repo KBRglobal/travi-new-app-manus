@@ -1,4 +1,3 @@
-// @ts-nocheck
 /**
  * TRAVI Post-Booking Assistant
  *
@@ -209,7 +208,7 @@ export default function PostBookingScreen() {
                   <Text style={S.cardSubtitle}>{upsell.subtitle}</Text>
                 </View>
                 <Animated.View style={[S.checkCircle, isAdded && { backgroundColor: upsell.accentColor }, { transform: [{ scale: checkScale }] }]}>
-                  <IconSymbol name="checkmark" size={14} color="#1A0B2E" />
+                  <IconSymbol name="checkmark" size={14} color="#FFFFFF" />
                 </Animated.View>
               </View>
 
@@ -291,7 +290,7 @@ const S = StyleSheet.create({
   header: { paddingHorizontal: 20, paddingBottom: 16, gap: 8 },
   headerBadge: { alignSelf: "flex-start", borderRadius: 12, overflow: "hidden", paddingHorizontal: 12, paddingVertical: 6, borderWidth: 1, borderColor: "rgba(34,197,94,0.4)" },
   headerBadgeText: { color: "#22C55E", fontSize: 13, fontFamily: "Chillax-Bold", fontWeight: "800" },
-  headerTitle: { color: "#1A0B2E", fontSize: 26, fontFamily: "Chillax-Bold", fontWeight: "900", lineHeight: 32 },
+  headerTitle: { color: "#FFFFFF", fontSize: 26, fontFamily: "Chillax-Bold", fontWeight: "900", lineHeight: 32 },
   headerSub: { color: "rgba(255,255,255,0.5)", fontSize: 14, fontFamily: "Satoshi-Regular", lineHeight: 20 },
 
   list: { paddingHorizontal: 16, gap: 12, paddingTop: 4 },
@@ -303,7 +302,7 @@ const S = StyleSheet.create({
   cardIconEmoji: { fontSize: 24, fontFamily: "Satoshi-Regular" },
   cardTitleWrap: { flex: 1, gap: 2 },
   cardTitleRow: { flexDirection: "row", alignItems: "center", gap: 8, flexWrap: "wrap" },
-  cardTitle: { color: "#1A0B2E", fontSize: 16, fontFamily: "Chillax-Bold", fontWeight: "800" },
+  cardTitle: { color: "#FFFFFF", fontSize: 16, fontFamily: "Chillax-Bold", fontWeight: "800" },
   cardTag: { borderRadius: 8, paddingHorizontal: 8, paddingVertical: 3, borderWidth: 1 },
   cardTagText: { fontSize: 10, fontFamily: "Chillax-Bold", fontWeight: "800" },
   cardSubtitle: { color: "rgba(255,255,255,0.45)", fontSize: 12, fontFamily: "Satoshi-Regular" },
@@ -317,23 +316,23 @@ const S = StyleSheet.create({
   featureText: { color: "rgba(255,255,255,0.5)", fontSize: 11, fontFamily: "Satoshi-Regular", flex: 1 },
 
   cardPriceRow: { flexDirection: "row", alignItems: "center", gap: 10 },
-  cardPrice: { color: "#1A0B2E", fontSize: 20, fontFamily: "Chillax-Bold", fontWeight: "900" },
+  cardPrice: { color: "#FFFFFF", fontSize: 20, fontFamily: "Chillax-Bold", fontWeight: "900" },
   cardPricePer: { color: "rgba(255,255,255,0.5)", fontSize: 13, fontFamily: "Satoshi-Regular", fontWeight: "500" },
   cashbackBadge: { flex: 1, backgroundColor: "rgba(255,215,0,0.12)", borderRadius: 10, paddingHorizontal: 8, paddingVertical: 4 },
   cashbackText: { color: "#FBBF24", fontSize: 11, fontFamily: "Chillax-Semibold", fontWeight: "700" },
   addBtn: { borderRadius: 12, paddingHorizontal: 16, paddingVertical: 8, backgroundColor: "rgba(255,255,255,0.06)", borderWidth: 1, borderColor: "rgba(255,255,255,0.12)" },
-  addBtnText: { color: "#1A0B2E", fontSize: 13, fontFamily: "Chillax-Bold", fontWeight: "800" },
+  addBtnText: { color: "#FFFFFF", fontSize: 13, fontFamily: "Chillax-Bold", fontWeight: "800" },
 
   bottomCta: { position: "absolute", bottom: 0, left: 0, right: 0, paddingHorizontal: 20, paddingTop: 24, gap: 10 },
   bottomGradient: { position: "absolute", top: 0, left: 0, right: 0, bottom: 0 },
   summaryRow: { backgroundColor: "rgba(255,255,255,0.06)", borderRadius: 14, padding: 12 },
   summaryLabel: { color: "rgba(255,255,255,0.5)", fontSize: 12, fontFamily: "Satoshi-Regular" },
-  summaryValue: { color: "#1A0B2E", fontSize: 16, fontFamily: "Chillax-Bold", fontWeight: "800" },
+  summaryValue: { color: "#FFFFFF", fontSize: 16, fontFamily: "Chillax-Bold", fontWeight: "800" },
   summaryCashback: { color: "#FBBF24" },
   ctaRow: { flexDirection: "row", gap: 10 },
   skipBtn: { paddingHorizontal: 20, paddingVertical: 16, borderRadius: 18, backgroundColor: "rgba(255,255,255,0.06)", borderWidth: 1, borderColor: "rgba(255,255,255,0.12)" },
   skipBtnText: { color: "rgba(255,255,255,0.5)", fontSize: 15, fontFamily: "Chillax-Semibold", fontWeight: "700" },
   confirmBtn: { flex: 1, borderRadius: 18, shadowColor: "#F94498", shadowOffset: { width: 0, height: 6 }, shadowOpacity: 0.4, shadowRadius: 24, elevation: 10,
     overflow: "hidden", paddingVertical: 16, alignItems: "center" },
-  confirmBtnText: { color: "#1A0B2E", fontSize: 15, fontFamily: "Chillax-Bold", fontWeight: "800" },
+  confirmBtnText: { color: "#FFFFFF", fontSize: 15, fontFamily: "Chillax-Bold", fontWeight: "800" },
 });

@@ -1,4 +1,3 @@
-// @ts-nocheck
 /**
  * Trip Chat — AI Concierge
  * Context-aware chat assistant during the trip.
@@ -159,7 +158,7 @@ export default function TripChatScreen() {
       {/* Header */}
       <View style={S.header}>
         <TouchableOpacity style={S.backBtn} onPress={() => router.back()} activeOpacity={0.7}>
-          <IconSymbol name="chevron.left" size={20} color="#1A0B2E" />
+          <IconSymbol name="chevron.left" size={20} color="#FFFFFF" />
         </TouchableOpacity>
         <View style={S.headerCenter}>
           <LinearGradient colors={["#6443F4", "#F94498"]} style={S.avatarGradient}>
@@ -278,7 +277,7 @@ export default function TripChatScreen() {
               colors={input.trim() ? ["#6443F4", "#F94498"] : ["#2A1F3D", "#2A1F3D"]}
               style={S.sendGradient}
             >
-              <IconSymbol name="arrow.up" size={18} color="#1A0B2E" />
+              <IconSymbol name="arrow.up" size={18} color="#FFFFFF" />
             </LinearGradient>
           </TouchableOpacity>
         </View>
@@ -320,7 +319,7 @@ const S = StyleSheet.create({
     justifyContent: "center",
   },
   avatarEmoji: { fontSize: 18, fontFamily: "Satoshi-Regular" },
-  headerTitle: { color: "#1A0B2E", fontSize: 15, fontFamily: "Chillax-Semibold", fontWeight: "700" },
+  headerTitle: { color: "#FFFFFF", fontSize: 15, fontFamily: "Chillax-Semibold", fontWeight: "700" },
   onlineRow: { flexDirection: "row", alignItems: "center", gap: 5, marginTop: 2 },
   onlineDot: { width: 7, height: 7, borderRadius: 3.5, backgroundColor: "#4ADE80" },
   onlineText: { color: "#9BA1A6", fontSize: 12, fontFamily: "Satoshi-Regular" },
@@ -364,7 +363,7 @@ const S = StyleSheet.create({
     fontSize: 14, fontFamily: "Satoshi-Regular",
     lineHeight: 20,
   },
-  bubbleTextUser: { color: "#1A0B2E" },
+  bubbleTextUser: { color: "#FFFFFF" },
   bubbleTime: {
     color: "rgba(196,181,217,0.5)",
     fontSize: 10, fontFamily: "Satoshi-Regular",
@@ -425,7 +424,7 @@ const S = StyleSheet.create({
     justifyContent: "center",
   },
   input: {
-    color: "#1A0B2E",
+    color: "#FFFFFF",
     fontSize: 15, fontFamily: "Satoshi-Regular",
     maxHeight: 100,
   },

@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { useRef, useEffect } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, ScrollView, Dimensions, Animated, Platform } from "react-native";
 import { router, useLocalSearchParams } from "expo-router";
@@ -64,7 +63,7 @@ export default function SummaryScreen() {
       <View style={styles.orb2} />
       <View style={styles.header}>
         <TouchableOpacity style={styles.backBtn} onPress={() => router.back()} activeOpacity={0.7}>
-          <IconSymbol name="chevron.left" size={22} color="#1A0B2E" />
+          <IconSymbol name="chevron.left" size={22} color="#FFFFFF" />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Trip Summary</Text>
         <View style={{ width: 40 }} />
@@ -123,7 +122,7 @@ export default function SummaryScreen() {
               <View style={styles.sectionHeader}>
                 <View style={styles.sectionIconWrap}>
                   <LinearGradient colors={["#6443F4", "#5B21B6"]} style={styles.sectionIconGradient}>
-                    <IconSymbol name="airplane" size={18} color="#1A0B2E" />
+                    <IconSymbol name="airplane" size={18} color="#FFFFFF" />
                   </LinearGradient>
                 </View>
                 <Text style={styles.sectionTitle}>Flight</Text>
@@ -165,7 +164,7 @@ export default function SummaryScreen() {
               <View style={styles.sectionHeader}>
                 <View style={styles.sectionIconWrap}>
                   <LinearGradient colors={["#F94498", "#C2185B"]} style={styles.sectionIconGradient}>
-                    <IconSymbol name="building.2.fill" size={18} color="#1A0B2E" />
+                    <IconSymbol name="building.2.fill" size={18} color="#FFFFFF" />
                   </LinearGradient>
                 </View>
                 <Text style={styles.sectionTitle}>Hotel</Text>
@@ -196,7 +195,7 @@ export default function SummaryScreen() {
               <View style={styles.sectionHeader}>
                 <View style={styles.sectionIconWrap}>
                   <LinearGradient colors={["#FF6B35", "#F94498"]} style={styles.sectionIconGradient}>
-                    <IconSymbol name="heart.fill" size={18} color="#1A0B2E" />
+                    <IconSymbol name="heart.fill" size={18} color="#FFFFFF" />
                   </LinearGradient>
                 </View>
                 <Text style={styles.sectionTitle}>Your Interests</Text>
@@ -234,7 +233,7 @@ export default function SummaryScreen() {
       <View style={styles.ctaWrap}>
         <TouchableOpacity style={styles.ctaBtn} onPress={handleConfirm} activeOpacity={0.88}>
           <LinearGradient colors={["#6443F4", "#F94498"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.ctaGradient}>
-            <IconSymbol name="checkmark.circle.fill" size={22} color="#1A0B2E" />
+            <IconSymbol name="checkmark.circle.fill" size={22} color="#FFFFFF" />
             <Text style={styles.ctaText}>Confirm Booking</Text>
           </LinearGradient>
         </TouchableOpacity>
@@ -252,42 +251,42 @@ const styles = StyleSheet.create({
   orb2: { position: "absolute", width: width, height: width, borderRadius: width / 2, bottom: 0, right: -width * 0.3, backgroundColor: "rgba(233,30,140,0.06)" },
   header: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 20, paddingTop: 60, paddingBottom: 16 },
   backBtn: { width: 40, height: 40, borderRadius: 14, backgroundColor: "rgba(255,255,255,0.06)", alignItems: "center", justifyContent: "center" },
-  headerTitle: { color: "#1A0B2E", fontSize: 18, fontWeight: "800", fontFamily: "Chillax-Bold" },
+  headerTitle: { color: "#FFFFFF", fontSize: 18, fontWeight: "800", fontFamily: "Chillax-Bold" },
   scroll: { paddingHorizontal: 20, paddingBottom: 130 },
   centerWrap: { flex: 1, alignItems: "center", justifyContent: "center", gap: 16 },
   errorText: { color: "rgba(255,255,255,0.6)", fontSize: 16, fontFamily: "Satoshi-Regular" },
   backBtnCenter: { paddingHorizontal: 24, paddingVertical: 12, backgroundColor: "rgba(255,255,255,0.06)", borderRadius: 14 },
-  backBtnText: { color: "#1A0B2E", fontSize: 15, fontWeight: "600", fontFamily: "Satoshi-Medium" },
+  backBtnText: { color: "#FFFFFF", fontSize: 15, fontWeight: "600", fontFamily: "Satoshi-Medium" },
   duckRow: { flexDirection: "row", alignItems: "flex-end", gap: 10 },
   duckAvatar: { width: 44, height: 44, borderRadius: 22, overflow: "hidden" },
   duckGradient: { flex: 1, alignItems: "center", justifyContent: "center" },
   duckImg: { width: 30, height: 30 },
   duckBubble: { flex: 1, borderRadius: 18, borderBottomLeftRadius: 4, overflow: "hidden" },
   duckBubbleGradient: { paddingHorizontal: 16, paddingVertical: 12, borderRadius: 18, borderBottomLeftRadius: 4, borderWidth: 1, borderColor: "rgba(123,47,190,0.4)" },
-  duckMessage: { color: "#1A0B2E", fontSize: 15, fontWeight: "700", fontFamily: "Satoshi-Medium", lineHeight: 20 },
+  duckMessage: { color: "#FFFFFF", fontSize: 15, fontWeight: "700", fontFamily: "Satoshi-Medium", lineHeight: 20 },
   duckSub: { color: "rgba(255,255,255,0.5)", fontSize: 12, marginTop: 2 },
   heroCard: { borderRadius: 24, overflow: "hidden", padding: 20, borderWidth: 1, borderColor: "rgba(123,47,190,0.4)", gap: 16 },
   heroTop: { flexDirection: "row", justifyContent: "space-between", alignItems: "flex-start" },
-  heroDestination: { color: "#1A0B2E", fontSize: 28, fontWeight: "900", fontFamily: "Chillax-Bold", lineHeight: 34 },
+  heroDestination: { color: "#FFFFFF", fontSize: 28, fontWeight: "900", fontFamily: "Chillax-Bold", lineHeight: 34 },
   heroCountry: { color: "rgba(255,255,255,0.5)", fontSize: 14, fontFamily: "Satoshi-Regular", marginTop: 2 },
   heroBadge: { borderRadius: 12, overflow: "hidden" },
   heroBadgeGradient: { paddingHorizontal: 14, paddingVertical: 8 },
-  heroBadgeText: { color: "#1A0B2E", fontSize: 13, fontWeight: "800", fontFamily: "Chillax-Bold" },
+  heroBadgeText: { color: "#FFFFFF", fontSize: 13, fontWeight: "800", fontFamily: "Chillax-Bold" },
   heroStats: { flexDirection: "row", alignItems: "center" },
   heroStat: { flex: 1, alignItems: "center", gap: 4 },
   heroStatLabel: { color: "rgba(255,255,255,0.5)", fontSize: 11, textAlign: "center" },
-  heroStatValue: { color: "#1A0B2E", fontSize: 13, fontWeight: "700", fontFamily: "Satoshi-Medium", textAlign: "center" },
+  heroStatValue: { color: "#FFFFFF", fontSize: 13, fontWeight: "700", fontFamily: "Satoshi-Medium", textAlign: "center" },
   heroDivider: { width: 1, height: 40, backgroundColor: "rgba(255,255,255,0.06)" },
   sectionCard: { borderRadius: 20, overflow: "hidden", padding: 16, borderWidth: 1, borderColor: "rgba(255,255,255,0.12)", gap: 12 },
   sectionHeader: { flexDirection: "row", alignItems: "center", gap: 10 },
   sectionIconWrap: { borderRadius: 10, overflow: "hidden" },
   sectionIconGradient: { width: 36, height: 36, alignItems: "center", justifyContent: "center" },
-  sectionTitle: { flex: 1, color: "#1A0B2E", fontSize: 16, fontWeight: "800", fontFamily: "Chillax-Bold" },
+  sectionTitle: { flex: 1, color: "#FFFFFF", fontSize: 16, fontWeight: "800", fontFamily: "Chillax-Bold" },
   confirmedBadge: { flexDirection: "row", alignItems: "center", gap: 4 },
   confirmedText: { color: "#4CAF50", fontSize: 12, fontWeight: "600" },
   flightRow: { flexDirection: "row", alignItems: "center" },
   flightEndpoint: { alignItems: "center", gap: 4 },
-  flightCode: { color: "#1A0B2E", fontSize: 22, fontWeight: "900", fontFamily: "Chillax-Bold" },
+  flightCode: { color: "#FFFFFF", fontSize: 22, fontWeight: "900", fontFamily: "Chillax-Bold" },
   flightTime: { color: "rgba(255,255,255,0.5)", fontSize: 12 },
   flightMiddle: { flex: 1, alignItems: "center", gap: 4 },
   flightDuration: { color: "rgba(255,255,255,0.6)", fontSize: 12 },
@@ -298,7 +297,7 @@ const styles = StyleSheet.create({
   cardFooter: { flexDirection: "row", justifyContent: "space-between", alignItems: "center", paddingTop: 8, borderTopWidth: 1, borderTopColor: "rgba(255,255,255,0.12)" },
   cardAirline: { color: "rgba(255,255,255,0.5)", fontSize: 13, fontFamily: "Satoshi-Regular" },
   cardPrice: { color: "#F94498", fontSize: 20, fontWeight: "900", fontFamily: "Satoshi-Bold" },
-  hotelName: { color: "#1A0B2E", fontSize: 18, fontWeight: "800", fontFamily: "Chillax-Bold" },
+  hotelName: { color: "#FFFFFF", fontSize: 18, fontWeight: "800", fontFamily: "Chillax-Bold" },
   hotelMeta: { flexDirection: "row", alignItems: "center", gap: 6 },
   hotelLocation: { color: "rgba(255,255,255,0.5)", fontSize: 12, flex: 1 },
   starsRow: { flexDirection: "row", gap: 2 },
@@ -308,18 +307,18 @@ const styles = StyleSheet.create({
   pointsBanner: { borderRadius: 20, overflow: "hidden", padding: 16, flexDirection: "row", alignItems: "center", justifyContent: "space-between", borderWidth: 1, borderColor: "rgba(123,47,190,0.4)" },
   pointsLeft: { flexDirection: "row", alignItems: "center", gap: 12 },
   pointsTitle: { color: "rgba(255,255,255,0.6)", fontSize: 12 },
-  pointsAmount: { color: "#1A0B2E", fontSize: 16, fontWeight: "800", fontFamily: "Satoshi-Bold" },
+  pointsAmount: { color: "#FFFFFF", fontSize: 16, fontWeight: "800", fontFamily: "Satoshi-Bold" },
   pointsValue: { color: "#FBBF24", fontSize: 14, fontWeight: "700", fontFamily: "Satoshi-Bold" },
   totalCard: { borderRadius: 20, overflow: "hidden", padding: 20, borderWidth: 1, borderColor: "rgba(123,47,190,0.3)", gap: 6 },
   totalRow: { flexDirection: "row", justifyContent: "space-between", alignItems: "center" },
   totalLabel: { color: "rgba(255,255,255,0.7)", fontSize: 16, fontWeight: "600", fontFamily: "Satoshi-Medium" },
-  totalAmount: { color: "#1A0B2E", fontSize: 28, fontWeight: "900", fontFamily: "Satoshi-Bold" },
+  totalAmount: { color: "#FFFFFF", fontSize: 28, fontWeight: "900", fontFamily: "Satoshi-Bold" },
   totalSub: { color: "rgba(255,255,255,0.55)", fontSize: 12 },
   ctaWrap: { paddingHorizontal: 20, paddingBottom: 130, paddingTop: 12, gap: 12 },
   ctaBtn: { borderRadius: 20, shadowColor: "#F94498", shadowOffset: { width: 0, height: 6 }, shadowOpacity: 0.4, shadowRadius: 24, elevation: 10,
     overflow: "hidden" },
   ctaGradient: { flexDirection: "row", alignItems: "center", justifyContent: "center", paddingVertical: 18, gap: 10, borderRadius: 20 },
-  ctaText: { color: "#1A0B2E", fontSize: 18, fontWeight: "800", fontFamily: "Chillax-Bold" },
+  ctaText: { color: "#FFFFFF", fontSize: 18, fontWeight: "800", fontFamily: "Chillax-Bold" },
   editBtn: { alignItems: "center", paddingVertical: 12 },
   editBtnText: { color: "rgba(255,255,255,0.5)", fontSize: 15, fontWeight: "600", fontFamily: "Satoshi-Medium" },
 });

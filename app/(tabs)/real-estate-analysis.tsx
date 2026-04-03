@@ -1,4 +1,3 @@
-// @ts-nocheck
 /**
  * TRAVI — Real Estate Market Analysis
  */
@@ -95,7 +94,7 @@ export default function RealEstateAnalysisScreen() {
           {MARKETS.map((m) => (
             <TouchableOpacity key={m.id} style={[S.marketChip, activeMarket === m.id && { borderColor: m.color, backgroundColor: m.color + "22" }]} onPress={() => setActiveMarket(m.id)} activeOpacity={0.8}>
               <Text style={S.marketEmoji}>{m.emoji}</Text>
-              <Text style={[S.marketLabel, activeMarket === m.id && { color: "#1A0B2E" }]}>{m.label}</Text>
+              <Text style={[S.marketLabel, activeMarket === m.id && { color: "#FFFFFF" }]}>{m.label}</Text>
             </TouchableOpacity>
           ))}
         </View>
@@ -183,9 +182,9 @@ const S = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#0A0A1A" },
   header: { flexDirection: "row", alignItems: "center", paddingHorizontal: 20, paddingBottom: 16, gap: 12 },
   backBtn: { width: 36, height: 36, borderRadius: 18, backgroundColor: "rgba(255,255,255,0.06)", alignItems: "center", justifyContent: "center" },
-  backText: { color: "#1A0B2E", fontSize: 18, fontWeight: "700", fontFamily: "Chillax-Semibold" },
+  backText: { color: "#FFFFFF", fontSize: 18, fontWeight: "700", fontFamily: "Chillax-Semibold" },
   headerCenter: { flex: 1 },
-  headerTitle: { color: "#1A0B2E", fontSize: 20, fontWeight: "900", fontFamily: "Chillax-Bold" },
+  headerTitle: { color: "#FFFFFF", fontSize: 20, fontWeight: "900", fontFamily: "Chillax-Bold" },
   headerSub: { color: "rgba(255,255,255,0.5)", fontSize: 12 },
   marketRow: { flexDirection: "row", paddingHorizontal: 20, gap: 10, marginBottom: 20 },
   marketChip: { flex: 1, flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 6, paddingVertical: 10, borderRadius: 12, backgroundColor: "rgba(255,255,255,0.06)", borderWidth: 1, borderColor: "rgba(255,255,255,0.12)" },
@@ -194,10 +193,10 @@ const S = StyleSheet.create({
   metricsGrid: { flexDirection: "row", flexWrap: "wrap", paddingHorizontal: 20, gap: 10, marginBottom: 24 },
   metricCard: { borderRadius: 14, overflow: "hidden", padding: 14, borderWidth: 1, borderColor: "rgba(255,255,255,0.12)" },
   metricValue: { fontSize: 18, fontWeight: "900", fontFamily: "Chillax-Bold" },
-  metricLabel: { color: "#1A0B2E", fontSize: 13, fontWeight: "700", marginTop: 4 },
+  metricLabel: { color: "#FFFFFF", fontSize: 13, fontWeight: "700", marginTop: 4 },
   metricSub: { color: "rgba(255,255,255,0.55)", fontSize: 11 },
   section: { paddingHorizontal: 20, marginBottom: 24 },
-  sectionTitle: { color: "#1A0B2E", fontSize: 18, fontWeight: "900", fontFamily: "Chillax-Bold", marginBottom: 4 },
+  sectionTitle: { color: "#FFFFFF", fontSize: 18, fontWeight: "900", fontFamily: "Chillax-Bold", marginBottom: 4 },
   sectionSub: { color: "rgba(255,255,255,0.5)", fontSize: 13, marginBottom: 12 },
   chartCard: { borderRadius: 16, overflow: "hidden", padding: 16, borderWidth: 1, borderColor: "rgba(255,255,255,0.12)" },
   chartBars: { flexDirection: "row", alignItems: "flex-end", height: 120, gap: 8 },
@@ -208,11 +207,11 @@ const S = StyleSheet.create({
       fontFamily: "Chillax-Bold" },
   areaRow: { flexDirection: "row", justifyContent: "space-between", alignItems: "center", paddingVertical: 12, borderBottomWidth: 1, borderBottomColor: "rgba(255,255,255,0.12)" },
   areaLeft: { gap: 4 },
-  areaName: { color: "#1A0B2E", fontSize: 14, fontWeight: "700" },
+  areaName: { color: "#FFFFFF", fontSize: 14, fontWeight: "700" },
   areaTypeBadge: { paddingHorizontal: 8, paddingVertical: 2, borderRadius: 6, alignSelf: "flex-start" },
   areaTypeText: { fontSize: 11, fontWeight: "700" },
   areaRight: { alignItems: "flex-end", gap: 2 },
-  areaPsm: { color: "#1A0B2E", fontSize: 14, fontWeight: "800", fontFamily: "Chillax-Bold" },
+  areaPsm: { color: "#FFFFFF", fontSize: 14, fontWeight: "800", fontFamily: "Chillax-Bold" },
   areaGrowth: { color: "#22C55E", fontSize: 12, fontWeight: "700" },
   roiCard: { borderRadius: 16, overflow: "hidden", padding: 16, marginBottom: 10, borderWidth: 1 },
   roiHeader: { flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: 10 },
@@ -222,5 +221,5 @@ const S = StyleSheet.create({
   roiDetail: { color: "rgba(255,255,255,0.6)", fontSize: 13 },
   ctaBtn: { borderRadius: 16, shadowColor: "#F94498", shadowOffset: { width: 0, height: 6 }, shadowOpacity: 0.4, shadowRadius: 24, elevation: 10,
     overflow: "hidden", paddingVertical: 16, alignItems: "center" },
-  ctaBtnText: { color: "#1A0B2E", fontSize: 15, fontWeight: "900", fontFamily: "Chillax-Bold" },
+  ctaBtnText: { color: "#FFFFFF", fontSize: 15, fontWeight: "900", fontFamily: "Chillax-Bold" },
 });

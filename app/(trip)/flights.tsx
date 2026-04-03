@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { useState, useRef, useEffect } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, FlatList, Dimensions, Animated, Platform } from "react-native";
 import { router, useLocalSearchParams } from "expo-router";
@@ -73,7 +72,7 @@ export default function FlightsScreen() {
         <LinearGradient colors={["#0D0628", "#1A0A3D", "#1A0A3D"]} style={StyleSheet.absoluteFillObject} />
         <View style={styles.header}>
           <TouchableOpacity style={styles.backBtn} onPress={() => router.back()} activeOpacity={0.7}>
-            <IconSymbol name="chevron.left" size={22} color="#1A0B2E" />
+            <IconSymbol name="chevron.left" size={22} color="#FFFFFF" />
           </TouchableOpacity>
           <View style={styles.progressWrap}>
             <View style={styles.progressTrack}><View style={[styles.progressFill, { width: "80%" }]} /></View>
@@ -106,7 +105,7 @@ export default function FlightsScreen() {
 
       <View style={styles.header}>
         <TouchableOpacity style={styles.backBtn} onPress={() => router.back()} activeOpacity={0.7}>
-          <IconSymbol name="chevron.left" size={22} color="#1A0B2E" />
+          <IconSymbol name="chevron.left" size={22} color="#FFFFFF" />
         </TouchableOpacity>
         <View style={styles.progressWrap}>
           <View style={styles.progressTrack}><View style={[styles.progressFill, { width: "80%" }]} /></View>
@@ -204,7 +203,7 @@ export default function FlightsScreen() {
                 {isSelected && (
                   <View style={styles.selectedBadge}>
                     <LinearGradient colors={["#6443F4", "#F94498"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.selectedBadgeGradient}>
-                      <IconSymbol name="checkmark" size={12} color="#1A0B2E" />
+                      <IconSymbol name="checkmark" size={12} color="#FFFFFF" />
                       <Text style={styles.selectedBadgeText}>Selected</Text>
                     </LinearGradient>
                   </View>
@@ -223,7 +222,7 @@ export default function FlightsScreen() {
             style={styles.ctaGradient}
           >
             <Text style={[styles.ctaText, !selectedFlight && styles.ctaTextDisabled]}>Choose Hotel</Text>
-            <IconSymbol name="bed.double.fill" size={20} color={selectedFlight ? "#1A0B2E" : "#3A2D4E"} />
+            <IconSymbol name="bed.double.fill" size={20} color={selectedFlight ? "#FFFFFF" : "#3A2D4E"} />
           </LinearGradient>
         </TouchableOpacity>
       </View>
@@ -243,7 +242,7 @@ const styles = StyleSheet.create({
   loadingWrap: { flex: 1, alignItems: "center", justifyContent: "center", gap: 16 },
   duckLarge: { width: 90, height: 90, borderRadius: 45, overflow: "hidden" },
   duckLargeGradient: { flex: 1, alignItems: "center", justifyContent: "center" },
-  loadingTitle: { color: "#1A0B2E", fontSize: 24, fontFamily: "Chillax-Bold", fontWeight: "800" },
+  loadingTitle: { color: "#FFFFFF", fontSize: 24, fontFamily: "Chillax-Bold", fontWeight: "800" },
   loadingSubtitle: { color: "rgba(255,255,255,0.5)", fontSize: 14, fontFamily: "Satoshi-Regular", textAlign: "center", paddingHorizontal: 40, lineHeight: 22 },
   dotsRow: { flexDirection: "row", gap: 8 },
   dot: { width: 8, height: 8, borderRadius: 4, backgroundColor: "#F94498" },
@@ -252,7 +251,7 @@ const styles = StyleSheet.create({
   duckGradient: { flex: 1, alignItems: "center", justifyContent: "center" },
   duckBubble: { flex: 1, borderRadius: 18, borderBottomLeftRadius: 4, overflow: "hidden" },
   duckBubbleGradient: { paddingHorizontal: 16, paddingVertical: 12, borderRadius: 18, borderBottomLeftRadius: 4, borderWidth: 1, borderColor: "rgba(123,47,190,0.4)" },
-  duckMessage: { color: "#1A0B2E", fontSize: 15, fontFamily: "Chillax-Semibold", fontWeight: "700", lineHeight: 20 },
+  duckMessage: { color: "#FFFFFF", fontSize: 15, fontFamily: "Chillax-Semibold", fontWeight: "700", lineHeight: 20 },
   duckSub: { color: "rgba(255,255,255,0.5)", fontSize: 12, fontFamily: "Satoshi-Regular", marginTop: 2 },
   filterList: { paddingHorizontal: 20, gap: 8, paddingBottom: 130 },
   filterChip: { borderRadius: 14, paddingHorizontal: 16, paddingVertical: 8, overflow: "hidden", borderWidth: 1.5, borderColor: "rgba(255,255,255,0.12)" },
@@ -265,10 +264,10 @@ const styles = StyleSheet.create({
   flightTop: { flexDirection: "row", alignItems: "center", justifyContent: "space-between" },
   airlineRow: { flexDirection: "row", alignItems: "center", gap: 8 },
   airlineDot: { width: 10, height: 10, borderRadius: 5 },
-  airlineName: { color: "#1A0B2E", fontSize: 15, fontFamily: "Chillax-Semibold", fontWeight: "700" },
+  airlineName: { color: "#FFFFFF", fontSize: 15, fontFamily: "Chillax-Semibold", fontWeight: "700" },
   bizBadge: { backgroundColor: "rgba(255,215,0,0.2)", borderRadius: 8, paddingHorizontal: 8, paddingVertical: 3, borderWidth: 1, borderColor: "rgba(255,215,0,0.4)" },
   bizText: { color: "#FBBF24", fontSize: 11, fontFamily: "Chillax-Semibold", fontWeight: "700" },
-  price: { color: "#1A0B2E", fontSize: 22, fontFamily: "Chillax-Bold", fontWeight: "900" },
+  price: { color: "#FFFFFF", fontSize: 22, fontFamily: "Chillax-Bold", fontWeight: "900" },
   perPerson: { color: "rgba(255,255,255,0.5)", fontSize: 11, fontFamily: "Satoshi-Regular" },
   routeRow: { flexDirection: "row", alignItems: "center" },
   routeMiddle: { flex: 1, alignItems: "center", gap: 4, paddingHorizontal: 12 },
@@ -277,16 +276,16 @@ const styles = StyleSheet.create({
   routeDot: { width: 6, height: 6, borderRadius: 3, backgroundColor: "rgba(255,255,255,0.06)" },
   routeLineBar: { flex: 1, height: 1, backgroundColor: "rgba(255,255,255,0.06)" },
   routeStops: { color: "rgba(255,255,255,0.5)", fontSize: 11, fontFamily: "Chillax-Semibold", fontWeight: "600" },
-  routeTime: { color: "#1A0B2E", fontSize: 18, fontFamily: "Chillax-Bold", fontWeight: "800" },
+  routeTime: { color: "#FFFFFF", fontSize: 18, fontFamily: "Chillax-Bold", fontWeight: "800" },
   routeCode: { color: "rgba(255,255,255,0.5)", fontSize: 13, fontFamily: "Chillax-Semibold", fontWeight: "600" },
   selectedBadge: { alignSelf: "flex-start", borderRadius: 10, overflow: "hidden" },
   selectedBadgeGradient: { flexDirection: "row", alignItems: "center", gap: 5, paddingHorizontal: 12, paddingVertical: 6 },
-  selectedBadgeText: { color: "#1A0B2E", fontSize: 12, fontFamily: "Chillax-Semibold", fontWeight: "700" },
+  selectedBadgeText: { color: "#FFFFFF", fontSize: 12, fontFamily: "Chillax-Semibold", fontWeight: "700" },
   ctaWrap: { paddingHorizontal: 20, paddingBottom: 130, paddingTop: 12 },
   ctaBtn: { borderRadius: 20, shadowColor: "#F94498", shadowOffset: { width: 0, height: 6 }, shadowOpacity: 0.4, shadowRadius: 24, elevation: 10,
     overflow: "hidden" },
   ctaBtnDisabled: { opacity: 0.5 },
   ctaGradient: { flexDirection: "row", alignItems: "center", justifyContent: "center", paddingVertical: 18, gap: 10, borderRadius: 20 },
-  ctaText: { color: "#1A0B2E", fontSize: 18, fontFamily: "Chillax-Bold", fontWeight: "800" },
+  ctaText: { color: "#FFFFFF", fontSize: 18, fontFamily: "Chillax-Bold", fontWeight: "800" },
   ctaTextDisabled: { color: "#3A2D4E" },
 });

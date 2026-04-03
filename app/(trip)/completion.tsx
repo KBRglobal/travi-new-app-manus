@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { useRef, useEffect, useState } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, Dimensions, Animated, Platform } from "react-native";
 import { router, useLocalSearchParams } from "expo-router";
@@ -76,7 +75,7 @@ export default function CompletionScreen() {
       <View style={styles.content}>
         <Animated.View style={[styles.successIconWrap, { transform: [{ scale: scaleAnim }] }]}>
           <LinearGradient colors={["#6443F4", "#F94498"]} style={styles.successIconGradient}>
-            <IconSymbol name="checkmark" size={52} color="#1A0B2E" />
+            <IconSymbol name="checkmark" size={52} color="#FFFFFF" />
           </LinearGradient>
           <View style={styles.successRing} />
         </Animated.View>
@@ -93,7 +92,7 @@ export default function CompletionScreen() {
           <View style={styles.pointsCardInner}>
             <View style={styles.pointsStarWrap}>
               <LinearGradient colors={["#FBBF24", "#FFA000"]} style={styles.pointsStarGradient}>
-                <IconSymbol name="star.fill" size={28} color="#1A0B2E" />
+                <IconSymbol name="star.fill" size={28} color="#FFFFFF" />
               </LinearGradient>
             </View>
             <View style={{ flex: 1 }}>
@@ -150,7 +149,7 @@ export default function CompletionScreen() {
         >
           <LinearGradient colors={["#6443F4", "#F94498"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.ctaGradient}>
             <Text style={styles.ctaText}>Go to My Trips</Text>
-            <IconSymbol name="arrow.right" size={20} color="#1A0B2E" />
+            <IconSymbol name="arrow.right" size={20} color="#FFFFFF" />
           </LinearGradient>
         </TouchableOpacity>
         <TouchableOpacity
@@ -180,7 +179,7 @@ const styles = StyleSheet.create({
   successIconGradient: { width: 100, height: 100, borderRadius: 50, alignItems: "center", justifyContent: "center" },
   successRing: { position: "absolute", width: 120, height: 120, borderRadius: 60, borderWidth: 2, borderColor: "rgba(233,30,140,0.3)" },
   textBlock: { alignItems: "center", gap: 8 },
-  title: { color: "#1A0B2E", fontSize: 36, fontWeight: "900", fontFamily: "Chillax-Bold", letterSpacing: -0.5 },
+  title: { color: "#FFFFFF", fontSize: 36, fontWeight: "900", fontFamily: "Chillax-Bold", letterSpacing: -0.5 },
   subtitle: { color: "rgba(255,255,255,0.6)", fontSize: 16, fontFamily: "Satoshi-Regular", textAlign: "center", lineHeight: 24 },
   subtitleAccent: { color: "#F94498", fontWeight: "700" },
   pointsCard: { width: "100%", borderRadius: 20, overflow: "hidden", borderWidth: 1, borderColor: "rgba(123,47,190,0.5)" },
@@ -188,7 +187,7 @@ const styles = StyleSheet.create({
   pointsStarWrap: { borderRadius: 14, overflow: "hidden" },
   pointsStarGradient: { width: 52, height: 52, alignItems: "center", justifyContent: "center" },
   pointsLabel: { color: "rgba(255,255,255,0.5)", fontSize: 12 },
-  pointsCount: { color: "#1A0B2E", fontSize: 24, fontWeight: "900", fontFamily: "Satoshi-Bold" },
+  pointsCount: { color: "#FFFFFF", fontSize: 24, fontWeight: "900", fontFamily: "Satoshi-Bold" },
   pointsValueBadge: { alignItems: "center" },
   pointsValueText: { color: "#FBBF24", fontSize: 20, fontWeight: "900", fontFamily: "Satoshi-Bold" },
   pointsValueSub: { color: "rgba(255,215,0,0.6)", fontSize: 11 },
@@ -196,7 +195,7 @@ const styles = StyleSheet.create({
   detailRow: { flexDirection: "row", alignItems: "center", paddingHorizontal: 16, paddingVertical: 12, gap: 12 },
   detailIconWrap: { width: 32, height: 32, borderRadius: 10, backgroundColor: "rgba(192,132,252,0.1)", alignItems: "center", justifyContent: "center" },
   detailLabel: { flex: 1, color: "rgba(255,255,255,0.5)", fontSize: 14, fontFamily: "Satoshi-Regular" },
-  detailValue: { color: "#1A0B2E", fontSize: 14, fontWeight: "700", fontFamily: "Satoshi-Medium" },
+  detailValue: { color: "#FFFFFF", fontSize: 14, fontWeight: "700", fontFamily: "Satoshi-Medium" },
   detailDivider: { height: 1, backgroundColor: "rgba(255,255,255,0.06)", marginHorizontal: 16 },
   duckRow: { flexDirection: "row", alignItems: "flex-end", gap: 10, width: "100%" },
   duckAvatar: { width: 40, height: 40, borderRadius: 20, overflow: "hidden" },
@@ -204,12 +203,12 @@ const styles = StyleSheet.create({
   duckImg: { width: 28, height: 28 },
   duckBubble: { flex: 1, borderRadius: 16, borderBottomLeftRadius: 4, overflow: "hidden" },
   duckBubbleGradient: { paddingHorizontal: 14, paddingVertical: 10, borderRadius: 16, borderBottomLeftRadius: 4, borderWidth: 1, borderColor: "rgba(123,47,190,0.4)" },
-  duckMessage: { color: "#1A0B2E", fontSize: 14, fontWeight: "600", fontFamily: "Satoshi-Medium", lineHeight: 20 },
+  duckMessage: { color: "#FFFFFF", fontSize: 14, fontWeight: "600", fontFamily: "Satoshi-Medium", lineHeight: 20 },
   ctaWrap: { paddingHorizontal: 24, paddingBottom: 130, gap: 12 },
   ctaBtn: { borderRadius: 20, shadowColor: "#F94498", shadowOffset: { width: 0, height: 6 }, shadowOpacity: 0.4, shadowRadius: 24, elevation: 10,
     overflow: "hidden" },
   ctaGradient: { flexDirection: "row", alignItems: "center", justifyContent: "center", paddingVertical: 18, gap: 10, borderRadius: 20 },
-  ctaText: { color: "#1A0B2E", fontSize: 18, fontWeight: "800", fontFamily: "Chillax-Bold" },
+  ctaText: { color: "#FFFFFF", fontSize: 18, fontWeight: "800", fontFamily: "Chillax-Bold" },
   liveBtn: { borderRadius: 16, overflow: "hidden" },
   liveBtnGradient: { flexDirection: "row", alignItems: "center", justifyContent: "center", paddingVertical: 14, gap: 8, borderRadius: 16, borderWidth: 1, borderColor: "rgba(255,255,255,0.12)" },
   liveDot: { width: 8, height: 8, borderRadius: 4, backgroundColor: "#4CAF50" },

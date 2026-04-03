@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { useState, useRef, useEffect } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, FlatList, Dimensions, Animated, Platform } from "react-native";
 import { router, useLocalSearchParams } from "expo-router";
@@ -99,7 +98,7 @@ export default function LandmarksScreen() {
 
       <View style={styles.header}>
         <TouchableOpacity style={styles.backBtn} onPress={() => router.back()} activeOpacity={0.7}>
-          <IconSymbol name="chevron.left" size={22} color="#1A0B2E" />
+          <IconSymbol name="chevron.left" size={22} color="#FFFFFF" />
         </TouchableOpacity>
         <View style={styles.progressWrap}>
           <View style={styles.progressTrack}>
@@ -147,7 +146,7 @@ export default function LandmarksScreen() {
                   <IconSymbol name={item.icon} size={26} color={color} />
                 </View>
                 <View style={styles.cardInfo}>
-                  <Text style={[styles.cardName, isSelected && { color: "#1A0B2E" }]}>{item.name}</Text>
+                  <Text style={[styles.cardName, isSelected && { color: "#FFFFFF" }]}>{item.name}</Text>
                   <Text style={styles.cardType}>{item.type}</Text>
                   <View style={styles.ratingRow}>
                     <IconSymbol name="star.fill" size={12} color="#FBBF24" />
@@ -156,7 +155,7 @@ export default function LandmarksScreen() {
                 </View>
                 {isSelected ? (
                   <View style={[styles.checkCircle, { backgroundColor: color }]}>
-                    <IconSymbol name="checkmark" size={16} color="#1A0B2E" />
+                    <IconSymbol name="checkmark" size={16} color="#FFFFFF" />
                   </View>
                 ) : (
                   <View style={styles.addCircle}>
@@ -184,7 +183,7 @@ export default function LandmarksScreen() {
             style={styles.ctaGradient}
           >
             <Text style={[styles.ctaText, selected.length === 0 && styles.ctaTextDisabled]}>Find Flights</Text>
-            <IconSymbol name="airplane" size={20} color={selected.length > 0 ? "#1A0B2E" : "#3A2D4E"} />
+            <IconSymbol name="airplane" size={20} color={selected.length > 0 ? "#FFFFFF" : "#3A2D4E"} />
           </LinearGradient>
         </TouchableOpacity>
       </View>
@@ -207,7 +206,7 @@ const styles = StyleSheet.create({
   duckImg: { width: 30, height: 30 },
   duckBubble: { flex: 1, borderRadius: 18, borderBottomLeftRadius: 4, overflow: "hidden" },
   duckBubbleGradient: { paddingHorizontal: 16, paddingVertical: 12, borderRadius: 18, borderBottomLeftRadius: 4, borderWidth: 1, borderColor: "rgba(123,47,190,0.4)" },
-  duckMessage: { color: "#1A0B2E", fontSize: 15, fontFamily: "Chillax-Semibold", fontWeight: "700", lineHeight: 20 },
+  duckMessage: { color: "#FFFFFF", fontSize: 15, fontFamily: "Chillax-Semibold", fontWeight: "700", lineHeight: 20 },
   duckSub: { color: "rgba(255,255,255,0.5)", fontSize: 12, fontFamily: "Satoshi-Regular", marginTop: 2 },
   list: { paddingHorizontal: 20, gap: 12, paddingBottom: 130 },
   card: { flexDirection: "row", alignItems: "center", borderRadius: 20, padding: 20, gap: 14, overflow: "hidden", borderWidth: 2, borderColor: "rgba(255,255,255,0.12)" },
@@ -225,6 +224,6 @@ const styles = StyleSheet.create({
     overflow: "hidden" },
   ctaBtnDisabled: { opacity: 0.5 },
   ctaGradient: { flexDirection: "row", alignItems: "center", justifyContent: "center", paddingVertical: 18, gap: 10, borderRadius: 20 },
-  ctaText: { color: "#1A0B2E", fontSize: 18, fontFamily: "Chillax-Bold", fontWeight: "800" },
+  ctaText: { color: "#FFFFFF", fontSize: 18, fontFamily: "Chillax-Bold", fontWeight: "800" },
   ctaTextDisabled: { color: "#3A2D4E" },
 });

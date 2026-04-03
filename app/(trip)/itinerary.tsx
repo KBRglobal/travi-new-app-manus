@@ -1,4 +1,3 @@
-// @ts-nocheck
 /**
  * TRAVI — Generated Itinerary Screen
  * Day-by-day timeline with walking/taxi times between stops.
@@ -529,7 +528,7 @@ export default function ItineraryScreen() {
             style={styles.bookBtnGradient}
           >
             <Text style={styles.bookBtnText}>Book This Trip</Text>
-            <IconSymbol name="arrow.right" size={20} color="#1A0B2E" />
+            <IconSymbol name="arrow.right" size={20} color="#FFFFFF" />
           </LinearGradient>
         </TouchableOpacity>
         <Text style={styles.bookNote}>Commission-free · Your cashback after travel</Text>
@@ -562,7 +561,7 @@ const styles = StyleSheet.create({
   buildingContainer: { alignItems: "center", justifyContent: "center" },
   buildingContent: { alignItems: "center", gap: 16, paddingHorizontal: 40 },
   buildingEmoji: { fontSize: 56, fontFamily: "Satoshi-Regular" },
-  buildingTitle: { color: "#1A0B2E", fontSize: 22, fontFamily: "Chillax-Bold", fontWeight: "800", textAlign: "center" },
+  buildingTitle: { color: "#FFFFFF", fontSize: 22, fontFamily: "Chillax-Bold", fontWeight: "800", textAlign: "center" },
   buildingSub: { color: "rgba(255,255,255,0.5)", fontSize: 14, fontFamily: "Satoshi-Regular", textAlign: "center", lineHeight: 20 },
   buildingDots: { flexDirection: "row", gap: 10, marginTop: 8 },
   dot: { width: 10, height: 10, borderRadius: 5, backgroundColor: "#F94498" },
@@ -570,7 +569,7 @@ const styles = StyleSheet.create({
   header: { flexDirection: "row", alignItems: "center", paddingHorizontal: 20, paddingVertical: 10, gap: 12 },
   backBtn: { width: 36, height: 36, borderRadius: 12, backgroundColor: "rgba(255,255,255,0.06)", alignItems: "center", justifyContent: "center" },
   headerCenter: { flex: 1, alignItems: "center" },
-  headerTitle: { color: "#1A0B2E", fontSize: 17, fontFamily: "Chillax-Bold", fontWeight: "800" },
+  headerTitle: { color: "#FFFFFF", fontSize: 17, fontFamily: "Chillax-Bold", fontWeight: "800" },
   headerSub: { color: "rgba(249,68,152,0.75)", fontSize: 11, fontFamily: "Chillax-Semibold", marginTop: 1, fontWeight: "600" },
   shareBtn: { width: 36, height: 36, borderRadius: 12, backgroundColor: "rgba(255,255,255,0.06)", alignItems: "center", justifyContent: "center" },
   // Day pill selector — compact horizontal
@@ -578,7 +577,7 @@ const styles = StyleSheet.create({
   dayPill: { flex: 1, borderRadius: 12, paddingVertical: 8, backgroundColor: "rgba(255,255,255,0.06)", borderWidth: 1, borderColor: "rgba(255,255,255,0.12)", overflow: "hidden", alignItems: "center", gap: 1 },
   dayPillActive: { borderColor: "transparent" },
   dayPillText: { color: "rgba(255,255,255,0.5)", fontSize: 13, fontFamily: "Chillax-Bold", fontWeight: "800" },
-  dayPillTextActive: { color: "#1A0B2E" },
+  dayPillTextActive: { color: "#FFFFFF" },
   dayPillDate: { color: "rgba(255,255,255,0.55)", fontSize: 10, fontFamily: "Satoshi-Regular" },
   dayPillDateActive: { color: "rgba(255,255,255,0.85)" },
   // Theme bar
@@ -586,7 +585,7 @@ const styles = StyleSheet.create({
   themeEmoji: { fontSize: 22, fontFamily: "Satoshi-Regular" },
   themeInfo: { flex: 1 },
   themeDate: { color: "rgba(255,255,255,0.5)", fontSize: 11, fontFamily: "Chillax-Semibold", fontWeight: "600" },
-  themeName: { color: "#1A0B2E", fontSize: 15, fontFamily: "Chillax-Bold", fontWeight: "800", marginTop: 1 },
+  themeName: { color: "#FFFFFF", fontSize: 15, fontFamily: "Chillax-Bold", fontWeight: "800", marginTop: 1 },
   stopCountBadge: { backgroundColor: "rgba(255,255,255,0.06)", borderRadius: 8, paddingHorizontal: 8, paddingVertical: 4 },
   stopCountText: { color: "rgba(255,255,255,0.5)", fontSize: 11, fontFamily: "Chillax-Semibold", fontWeight: "700" },
   // Timeline
@@ -604,9 +603,9 @@ const styles = StyleSheet.create({
   stopImage: { width: "100%", height: 140 },
   stopImageOverlay: { position: "absolute", left: 0, right: 0, bottom: 0, height: 140 },
   typePill: { position: "absolute", top: 10, left: 10, borderRadius: 8, paddingHorizontal: 8, paddingVertical: 3 },
-  typePillText: { color: "#1A0B2E", fontSize: 10, fontFamily: "Chillax-Bold", fontWeight: "800", letterSpacing: 0.5 },
+  typePillText: { color: "#FFFFFF", fontSize: 10, fontFamily: "Chillax-Bold", fontWeight: "800", letterSpacing: 0.5 },
   stopContent: { padding: 12, gap: 4 },
-  stopName: { color: "#1A0B2E", fontSize: 15, fontFamily: "Chillax-Bold", fontWeight: "800", lineHeight: 20 },
+  stopName: { color: "#FFFFFF", fontSize: 15, fontFamily: "Chillax-Bold", fontWeight: "800", lineHeight: 20 },
   stopMeta: { flexDirection: "row" },
   stopDuration: { color: "rgba(255,255,255,0.5)", fontSize: 12, fontFamily: "Satoshi-Regular" },
   stopNote: { backgroundColor: "rgba(255,255,255,0.06)", borderRadius: 8, padding: 8, marginTop: 2 },
@@ -623,6 +622,6 @@ const styles = StyleSheet.create({
   bookBtn: { borderRadius: 18, shadowColor: "#F94498", shadowOffset: { width: 0, height: 6 }, shadowOpacity: 0.4, shadowRadius: 24, elevation: 10,
     overflow: "hidden" },
   bookBtnGradient: { flexDirection: "row", alignItems: "center", justifyContent: "center", paddingVertical: 16, gap: 10 },
-  bookBtnText: { color: "#1A0B2E", fontSize: 17, fontFamily: "Chillax-Bold", fontWeight: "900" },
+  bookBtnText: { color: "#FFFFFF", fontSize: 17, fontFamily: "Chillax-Bold", fontWeight: "900" },
   bookNote: { color: "rgba(255,255,255,0.55)", fontSize: 12, fontFamily: "Satoshi-Regular", textAlign: "center" },
 });

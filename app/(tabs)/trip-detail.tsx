@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { useRef, useState } from "react";
 import {
   View, Text, TouchableOpacity, StyleSheet, ScrollView,
@@ -94,10 +93,10 @@ export default function TripDetailScreen() {
         <LinearGradient colors={["rgba(0,0,0,0.2)", "rgba(0,0,0,0.8)"]} style={StyleSheet.absoluteFillObject} />
 
         <TouchableOpacity style={styles.backBtn} onPress={() => router.back()} activeOpacity={0.7}>
-          <IconSymbol name="chevron.left.forwardslash.chevron.right" size={20} color="#1A0B2E" />
+          <IconSymbol name="chevron.left.forwardslash.chevron.right" size={20} color="#FFFFFF" />
         </TouchableOpacity>
         <TouchableOpacity style={styles.shareBtn} onPress={handleShare} activeOpacity={0.7}>
-          <IconSymbol name="paperplane.fill" size={18} color="#1A0B2E" />
+          <IconSymbol name="paperplane.fill" size={18} color="#FFFFFF" />
         </TouchableOpacity>
 
         <View style={styles.heroContent}>
@@ -189,18 +188,18 @@ const styles = StyleSheet.create({
   shareBtn: { position: "absolute", top: 56, right: 20, zIndex: 10, width: 40, height: 40, borderRadius: 20, backgroundColor: "rgba(0,0,0,0.4)", alignItems: "center", justifyContent: "center" },
   heroContent: { position: "absolute", bottom: 20, left: 20, gap: 2 },
   heroFlag: { fontSize: 28 },
-  heroTitle: { color: "#1A0B2E", fontSize: 22, fontWeight: "800", fontFamily: "Chillax-Bold" },
+  heroTitle: { color: "#FFFFFF", fontSize: 22, fontWeight: "800", fontFamily: "Chillax-Bold" },
   heroSub: { color: "rgba(255,255,255,0.6)", fontSize: 14 },
   dayTabs: { maxHeight: 72, flexGrow: 0 },
   dayTab: { borderRadius: 14, paddingHorizontal: 16, paddingVertical: 10, borderWidth: 1.5, borderColor: "rgba(255,255,255,0.12)", overflow: "hidden", minWidth: 100, alignItems: "center" },
   dayTabActive: { borderColor: "transparent" },
   dayTabText: { color: "rgba(255,255,255,0.5)", fontSize: 13, fontWeight: "700" },
-  dayTabTextActive: { color: "#1A0B2E" },
+  dayTabTextActive: { color: "#FFFFFF" },
   dayTabLabel: { color: "rgba(255,255,255,0.55)", fontSize: 10 },
   dayTabLabelActive: { color: "rgba(255,255,255,0.8)" },
   timeline: { flex: 1 },
   dayHeader: { flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: 16 },
-  dayHeaderTitle: { color: "#1A0B2E", fontSize: 16, fontWeight: "700", fontFamily: "Chillax-Semibold" },
+  dayHeaderTitle: { color: "#FFFFFF", fontSize: 16, fontWeight: "700", fontFamily: "Chillax-Semibold" },
   dayHeaderCost: { color: "#C084FC", fontSize: 14, fontWeight: "600" },
   stopWrap: { flexDirection: "row", gap: 12, minHeight: 80 },
   timelineLeft: { width: 56, alignItems: "center", gap: 0 },
@@ -210,7 +209,7 @@ const styles = StyleSheet.create({
   stopCard: { flex: 1, borderRadius: 16, padding: 14, gap: 8, borderWidth: 1.5, borderColor: "rgba(255,255,255,0.12)", overflow: "hidden", marginBottom: 12 },
   stopHeader: { flexDirection: "row", justifyContent: "space-between", alignItems: "flex-start" },
   stopInfo: { flex: 1, gap: 2 },
-  stopName: { color: "#1A0B2E", fontSize: 15, fontWeight: "700" },
+  stopName: { color: "#FFFFFF", fontSize: 15, fontWeight: "700" },
   stopType: { color: "rgba(255,255,255,0.5)", fontSize: 12 },
   stopCost: { color: "#22C55E", fontSize: 14, fontWeight: "700" },
   stopNotes: { color: "rgba(255,255,255,0.55)", fontSize: 12, lineHeight: 18 },
@@ -221,5 +220,5 @@ const styles = StyleSheet.create({
   bookBtn: { borderRadius: 18, shadowColor: "#F94498", shadowOffset: { width: 0, height: 6 }, shadowOpacity: 0.4, shadowRadius: 24, elevation: 10,
     overflow: "hidden" },
   bookGradient: { paddingVertical: 18, alignItems: "center", borderRadius: 18 },
-  bookText: { color: "#1A0B2E", fontSize: 16, fontWeight: "800", fontFamily: "Chillax-Bold" },
+  bookText: { color: "#FFFFFF", fontSize: 16, fontWeight: "800", fontFamily: "Chillax-Bold" },
 });

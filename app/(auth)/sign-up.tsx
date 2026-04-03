@@ -1,4 +1,3 @@
-// @ts-nocheck
 /**
  * SignUpScreen — TRAVI Auth Screen
  *
@@ -507,14 +506,14 @@ const s = StyleSheet.create({
     color: DS.disabled,
     fontFamily: "Satoshi-Medium",
   },
-  tabActive: { color: "#1A0B2E" },
+  tabActive: { color: "#FFFFFF" },
 
   /* Heading */
   heading: { gap: 3 },
   headTitle: {
     fontSize: 22,
     fontWeight: "700",
-    color: "#1A0B2E",
+    color: "#FFFFFF",
     fontFamily: "Chillax-Semibold",
     letterSpacing: -0.3,
   },
@@ -544,7 +543,7 @@ const s = StyleSheet.create({
   },
   input: {
     flex: 1,
-    color: "#1A0B2E",
+    color: "#FFFFFF",
     fontSize: 15,
     fontFamily: "Satoshi-Medium",
   },
@@ -576,7 +575,7 @@ const s = StyleSheet.create({
   ctaText: {
     fontSize: 16,
     fontWeight: "700",
-    color: "#1A0B2E",
+    color: "#FFFFFF",
     fontFamily: "Chillax-Semibold",
     letterSpacing: 0.2,
   },
@@ -604,7 +603,7 @@ const s = StyleSheet.create({
     gap: 8,
   },
   socialLabel: {
-    color: "#1A0B2E",
+    color: "#FFFFFF",
     fontSize: 14,
     fontWeight: "600",
     fontFamily: "Satoshi-Medium",

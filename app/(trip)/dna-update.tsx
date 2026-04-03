@@ -1,4 +1,3 @@
-// @ts-nocheck
 /**
  * TRAVI — DNA Personality Update
  * Shown after a swipe session.

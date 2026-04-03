@@ -1,4 +1,3 @@
-// @ts-nocheck
 "use client";
 import React, { useState, useRef } from "react";
 import {
@@ -133,7 +132,7 @@ export default function SubscriptionScreen() {
       <View style={[S.header, { paddingTop: insets.top + 12 }]}>
         <TouchableOpacity onPress={() => router.back()} style={S.backBtn} activeOpacity={0.7}>
           <View style={S.backBtnInner}>
-            <IconSymbol name="chevron.left" size={18} color="#1A0B2E" />
+            <IconSymbol name="chevron.left" size={18} color="#FFFFFF" />
           </View>
         </TouchableOpacity>
         <View style={S.headerCenter}>
@@ -295,25 +294,25 @@ const S = StyleSheet.create({
   backBtn: {},
   backBtnInner: { width: 40, height: 40, borderRadius: 14, backgroundColor: "rgba(255,255,255,0.06)", alignItems: "center", justifyContent: "center", borderWidth: 1, borderColor: "rgba(255,255,255,0.12)" },
   headerCenter: { alignItems: "center" },
-  headerTitle: { color: "#1A0B2E", fontSize: 18, fontWeight: "800", fontFamily: "Chillax-Bold" },
+  headerTitle: { color: "#FFFFFF", fontSize: 18, fontWeight: "800", fontFamily: "Chillax-Bold" },
   headerSub: { color: "rgba(255,255,255,0.5)", fontSize: 12, marginTop: 2 },
   hero: { alignItems: "center", paddingVertical: 24, paddingHorizontal: 24, gap: 10, overflow: "hidden" },
   heroIconWrap: { marginBottom: 4 },
   heroIconGrad: { width: 72, height: 72, borderRadius: 24, alignItems: "center", justifyContent: "center" },
-  heroTitle: { color: "#1A0B2E", fontSize: 26, fontWeight: "900", textAlign: "center", letterSpacing: -0.5, fontFamily: "Chillax-Bold" },
+  heroTitle: { color: "#FFFFFF", fontSize: 26, fontWeight: "900", textAlign: "center", letterSpacing: -0.5, fontFamily: "Chillax-Bold" },
   heroSub: { color: "rgba(255,255,255,0.5)", fontSize: 14, textAlign: "center", lineHeight: 20, fontFamily: "Satoshi-Regular" },
   perksRow: { gap: 10, paddingHorizontal: 20, paddingVertical: 4 },
   perkCard: { width: 100, borderRadius: 16, padding: 14, gap: 6, borderWidth: 1, borderColor: "rgba(255,255,255,0.12)", overflow: "hidden", alignItems: "center" },
   perkIconWrap: { width: 40, height: 40, borderRadius: 12, alignItems: "center", justifyContent: "center" },
-  perkLabel: { color: "#1A0B2E", fontSize: 12, fontWeight: "700", textAlign: "center", fontFamily: "Satoshi-Medium" },
+  perkLabel: { color: "#FFFFFF", fontSize: 12, fontWeight: "700", textAlign: "center", fontFamily: "Satoshi-Medium" },
   perkSub: { color: "rgba(255,255,255,0.5)", fontSize: 10, textAlign: "center" },
   billingToggle: { flexDirection: "row", marginHorizontal: 20, marginVertical: 16, backgroundColor: "rgba(255,255,255,0.06)", borderRadius: 14, padding: 4, borderWidth: 1, borderColor: "rgba(255,255,255,0.12)" },
   billingBtn: { flex: 1, paddingVertical: 10, borderRadius: 10, alignItems: "center", flexDirection: "row", justifyContent: "center", gap: 6 },
   billingBtnActive: { backgroundColor: "rgba(123,47,190,0.5)" },
   billingBtnText: { color: "rgba(255,255,255,0.5)", fontSize: 14, fontWeight: "600", fontFamily: "Satoshi-Medium" },
-  billingBtnTextActive: { color: "#1A0B2E" },
+  billingBtnTextActive: { color: "#FFFFFF" },
   saveBadge: { backgroundColor: "#02A65C", borderRadius: 6, paddingHorizontal: 6, paddingVertical: 2 },
-  saveBadgeText: { color: "#1A0B2E", fontSize: 10, fontWeight: "800", fontFamily: "Chillax-Bold" },
+  saveBadgeText: { color: "#FFFFFF", fontSize: 10, fontWeight: "800", fontFamily: "Chillax-Bold" },
   plansContainer: { paddingHorizontal: 20, gap: 16 },
   planCardWrap: {},
   planCard: { borderRadius: 24, borderWidth: 1.5, overflow: "hidden", padding: 20 },

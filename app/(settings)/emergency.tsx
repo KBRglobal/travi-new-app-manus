@@ -1,4 +1,3 @@
-// @ts-nocheck
 /**
  * TRAVI — Emergency Settings
  */
@@ -104,9 +103,9 @@ const S = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#0D0628" },
   header: { flexDirection: "row", alignItems: "center", paddingHorizontal: 20, paddingBottom: 16, gap: 12 },
   backBtn: { width: 36, height: 36, borderRadius: 18, backgroundColor: "rgba(255,255,255,0.06)", alignItems: "center", justifyContent: "center" },
-  backText: { color: "#1A0B2E", fontSize: 18, fontWeight: "700",
+  backText: { color: "#FFFFFF", fontSize: 18, fontWeight: "700",
       fontFamily: "Chillax-Semibold" },
-  headerTitle: { flex: 1, color: "#1A0B2E", fontSize: 20, fontWeight: "900", textAlign: "center", fontFamily: "Chillax-Bold" },
+  headerTitle: { flex: 1, color: "#FFFFFF", fontSize: 20, fontWeight: "900", textAlign: "center", fontFamily: "Chillax-Bold" },
   sosBanner: { marginHorizontal: 20, marginBottom: 24, borderRadius: 16, backgroundColor: "rgba(239,68,68,0.12)", borderWidth: 1, borderColor: "rgba(239,68,68,0.3)", padding: 16, flexDirection: "row", gap: 14, alignItems: "flex-start" },
   sosEmoji: { fontSize: 28 },
   sosBannerText: { flex: 1, gap: 4 },
@@ -126,7 +125,7 @@ const S = StyleSheet.create({
   contactAvatarText: { color: "#A78BFA", fontSize: 18, fontWeight: "900",
       fontFamily: "Chillax-Bold" },
   contactInfo: { flex: 1, gap: 2 },
-  contactName: { color: "#1A0B2E", fontSize: 14, fontWeight: "800",
+  contactName: { color: "#FFFFFF", fontSize: 14, fontWeight: "800",
       fontFamily: "Chillax-Bold" },
   contactPhone: { color: "rgba(255,255,255,0.5)", fontSize: 12 },
   contactRelation: { color: "#A78BFA", fontSize: 11, fontWeight: "700" },
@@ -134,8 +133,8 @@ const S = StyleSheet.create({
   contactEditText: { color: "rgba(255,255,255,0.5)", fontSize: 12 },
   fieldRow: { marginBottom: 12 },
   fieldLabel: { color: "rgba(255,255,255,0.5)", fontSize: 12, fontWeight: "700", marginBottom: 6 },
-  fieldInput: { backgroundColor: "rgba(255,255,255,0.06)", borderRadius: 10, borderWidth: 1, borderColor: "rgba(255,255,255,0.12)", paddingHorizontal: 14, paddingVertical: 10, color: "#1A0B2E", fontSize: 14 },
+  fieldInput: { backgroundColor: "rgba(255,255,255,0.06)", borderRadius: 10, borderWidth: 1, borderColor: "rgba(255,255,255,0.12)", paddingHorizontal: 14, paddingVertical: 10, color: "#FFFFFF", fontSize: 14 },
   saveBtn: { borderRadius: 14, backgroundColor: "#6443F4", paddingVertical: 16, alignItems: "center", shadowColor: "#F94498", shadowOffset: { width: 0, height: 6 }, shadowOpacity: 0.4, shadowRadius: 24, elevation: 10 },
-  saveBtnText: { color: "#1A0B2E", fontSize: 15, fontWeight: "900",
+  saveBtnText: { color: "#FFFFFF", fontSize: 15, fontWeight: "900",
       fontFamily: "Chillax-Bold" },
 });

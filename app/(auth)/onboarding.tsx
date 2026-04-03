@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { useRef, useState } from "react";
 import {
   View, Text, TouchableOpacity, StyleSheet, Dimensions,
@@ -144,13 +143,13 @@ const styles = StyleSheet.create({
   scrollView: { flex: 1 },
   slide: { width, flex: 1, justifyContent: "flex-end", paddingHorizontal: 32, paddingBottom: 180 },
   emoji: { fontSize: 56, marginBottom: 16 },
-  title: { color: "#1A0B2E", fontSize: 40, fontWeight: "900", lineHeight: 48, marginBottom: 16, fontFamily: "Chillax-Bold" },
+  title: { color: "#FFFFFF", fontSize: 40, fontWeight: "900", lineHeight: 48, marginBottom: 16, fontFamily: "Chillax-Bold" },
   subtitle: { color: "rgba(255,255,255,0.75)", fontSize: 17, lineHeight: 26, fontFamily: "Satoshi-Regular" },
   dots: { position: "absolute", bottom: 140, left: 0, right: 0, flexDirection: "row", justifyContent: "center", gap: 8 },
   dot: { width: 6, height: 6, borderRadius: 3, backgroundColor: "rgba(255,255,255,0.06)" },
-  dotActive: { width: 24, backgroundColor: "#1A0B2E" },
+  dotActive: { width: 24, backgroundColor: "#FFFFFF" },
   footer: { position: "absolute", bottom: 56, left: 24, right: 24 },
   nextBtn: { borderRadius: 18, overflow: "hidden" },
   nextGradient: { paddingVertical: 18, alignItems: "center", borderRadius: 18 },
-  nextText: { color: "#1A0B2E", fontSize: 18, fontWeight: "800", fontFamily: "Chillax-Bold" },
+  nextText: { color: "#FFFFFF", fontSize: 18, fontWeight: "800", fontFamily: "Chillax-Bold" },
 });

@@ -1,4 +1,3 @@
-// @ts-nocheck
 /**
  * TRAVI — Explore Screen
  * Dark mode: #1A0B2E bg, #24103E surface, purple→pink gradients
@@ -26,8 +25,8 @@ const C = {
   pink:         "#F94498",
   orange:       "#FF9327",
   green:        "#02A65C",
-  white:        "#1A0B2E",
-  textPrimary:  "#1A0B2E",
+  white:        "#FFFFFF",
+  textPrimary:  "#FFFFFF",
   textSecondary:"#D3CFD8",
   textMuted:    "#A79FB2",
 };
@@ -275,9 +274,9 @@ const S = StyleSheet.create({
     position: "absolute", top: 10, left: 10,
     backgroundColor: "rgba(100,67,244,0.75)", borderRadius: 12, paddingHorizontal: 8, paddingVertical: 3,
   },
-  gemBadgeText: { color: "#1A0B2E", fontSize: 10, fontWeight: "700", fontFamily: "Satoshi-Bold" },
+  gemBadgeText: { color: "#FFFFFF", fontSize: 10, fontWeight: "700", fontFamily: "Satoshi-Bold" },
   gemBottom: { position: "absolute", bottom: 10, left: 12 },
-  gemCity: { color: "#1A0B2E", fontSize: 14, fontWeight: "800", fontFamily: "Chillax-Bold" },
+  gemCity: { color: "#FFFFFF", fontSize: 14, fontWeight: "800", fontFamily: "Chillax-Bold" },
   gemCountry: { color: "rgba(255,255,255,0.65)", fontSize: 11, fontFamily: "Satoshi-Regular" },
   gemPrice: { color: "#F94498", fontSize: 11, fontWeight: "700", fontFamily: "Satoshi-Bold", marginTop: 2 },
   dnaCTA: {
@@ -287,6 +286,6 @@ const S = StyleSheet.create({
     borderWidth: 1, borderColor: "rgba(123,68,230,0.3)",
   },
   dnaCTAContent: { flex: 1, gap: 4 },
-  dnaCTATitle: { color: "#1A0B2E", fontSize: 18, fontWeight: "800", fontFamily: "Chillax-Bold" },
+  dnaCTATitle: { color: "#FFFFFF", fontSize: 18, fontWeight: "800", fontFamily: "Chillax-Bold" },
   dnaCTASub: { color: "rgba(255,255,255,0.75)", fontSize: 13, fontFamily: "Satoshi-Regular" },
 });

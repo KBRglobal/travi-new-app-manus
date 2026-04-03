@@ -1,4 +1,3 @@
-// @ts-nocheck
 /**
  * TRAVI — Interests Picker
  * Beautiful photo-grid for selecting travel interests.
@@ -140,7 +139,7 @@ export default function InterestsScreen() {
               <View style={styles.checkWrap}>
                 {isSelected ? (
                   <View style={[styles.checkFilled, { backgroundColor: item.color }]}>
-                    <IconSymbol name="checkmark" size={12} color="#1A0B2E" />
+                    <IconSymbol name="checkmark" size={12} color="#FFFFFF" />
                   </View>
                 ) : (
                   <View style={styles.checkEmpty} />
@@ -180,7 +179,7 @@ export default function InterestsScreen() {
               {saving ? "Learning your style..." : `Continue${selected.size > 0 ? ` · ${selected.size} selected` : ""}`}
             </Text>
             {selected.size > 0 && !saving && (
-              <IconSymbol name="arrow.right" size={20} color="#1A0B2E" />
+              <IconSymbol name="arrow.right" size={20} color="#FFFFFF" />
             )}
           </LinearGradient>
         </TouchableOpacity>
@@ -197,13 +196,13 @@ const styles = StyleSheet.create({
   backBtn: { width: 40, height: 40, borderRadius: 14, backgroundColor: "rgba(255,255,255,0.06)", alignItems: "center", justifyContent: "center" },
   headerCenter: { flex: 1, alignItems: "center" },
   logo: { width: 80, height: 28 },
-  logoText: { color: "#1A0B2E", fontSize: 20, fontFamily: "Chillax-Bold", fontWeight: "900", letterSpacing: 2 },
+  logoText: { color: "#FFFFFF", fontSize: 20, fontFamily: "Chillax-Bold", fontWeight: "900", letterSpacing: 2 },
   countBadge: { width: 40, height: 40, borderRadius: 20, backgroundColor: "rgba(255,255,255,0.06)", borderWidth: 1.5, borderColor: "rgba(255,255,255,0.12)", alignItems: "center", justifyContent: "center" },
   countBadgeActive: { backgroundColor: "rgba(249,68,152,0.2)", borderColor: "rgba(249,68,152,0.4)" },
   countText: { color: "rgba(255,255,255,0.5)", fontSize: 16, fontFamily: "Chillax-Bold", fontWeight: "800" },
   countTextActive: { color: "#F94498" },
   titleWrap: { paddingHorizontal: 20, paddingBottom: 130 },
-  title: { color: "#1A0B2E", fontSize: 26, fontFamily: "Chillax-Bold", fontWeight: "800", lineHeight: 32 },
+  title: { color: "#FFFFFF", fontSize: 26, fontFamily: "Chillax-Bold", fontWeight: "800", lineHeight: 32 },
   subtitle: { color: "rgba(255,255,255,0.5)", fontSize: 14, fontFamily: "Satoshi-Regular", marginTop: 4, lineHeight: 20 },
   scroll: { flex: 1 },
   grid: { paddingHorizontal: 16, flexDirection: "row", flexWrap: "wrap", gap: 12 },
@@ -214,12 +213,12 @@ const styles = StyleSheet.create({
   checkFilled: { width: 24, height: 24, borderRadius: 12, alignItems: "center", justifyContent: "center" },
   labelWrap: { position: "absolute", bottom: 12, left: 10, right: 10 },
   labelPill: { borderRadius: 20, paddingHorizontal: 12, paddingVertical: 6, alignSelf: "flex-start" },
-  labelText: { color: "#1A0B2E", fontSize: 13, fontFamily: "Chillax-Semibold", fontWeight: "700" },
+  labelText: { color: "#FFFFFF", fontSize: 13, fontFamily: "Chillax-Semibold", fontWeight: "700" },
   ctaWrap: { paddingHorizontal: 20, paddingTop: 12, backgroundColor: "rgba(13,6,40,0.95)" },
   ctaBtn: { borderRadius: 20, shadowColor: "#F94498", shadowOffset: { width: 0, height: 6 }, shadowOpacity: 0.4, shadowRadius: 24, elevation: 10,
     overflow: "hidden" },
   ctaBtnDisabled: { opacity: 0.4 },
   ctaGradient: { flexDirection: "row", alignItems: "center", justifyContent: "center", paddingVertical: 18, gap: 10 },
-  ctaText: { color: "#1A0B2E", fontSize: 17, fontFamily: "Chillax-Bold", fontWeight: "800" },
+  ctaText: { color: "#FFFFFF", fontSize: 17, fontFamily: "Chillax-Bold", fontWeight: "800" },
   ctaTextDisabled: { color: "rgba(255,255,255,0.55)" },
 });

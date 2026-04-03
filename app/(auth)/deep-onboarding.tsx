@@ -1,4 +1,3 @@
-// @ts-nocheck
 /**
  * TRAVI — Deep Onboarding (10 Steps)
  * Extended DNA collection: travel mode, planning style, budget mindset,
@@ -317,7 +316,7 @@ export default function DeepOnboardingScreen() {
                 activeOpacity={0.8}
               >
                 <Text style={styles.optionIcon}>{opt.icon}</Text>
-                <Text style={[styles.optionLabel, isSelected && { color: "#1A0B2E" }]}>{opt.label}</Text>
+                <Text style={[styles.optionLabel, isSelected && { color: "#FFFFFF" }]}>{opt.label}</Text>
                 <Text style={styles.optionSub}>{opt.sub}</Text>
                 {isSelected && (
                   <View style={[styles.checkBadge, { backgroundColor: step.color }]}>
@@ -345,7 +344,7 @@ export default function DeepOnboardingScreen() {
                 activeOpacity={0.8}
               >
                 <Text style={styles.optionIcon}>{opt.icon}</Text>
-                <Text style={[styles.optionLabel, isSelected && { color: "#1A0B2E" }]}>{opt.label}</Text>
+                <Text style={[styles.optionLabel, isSelected && { color: "#FFFFFF" }]}>{opt.label}</Text>
                 <Text style={styles.optionSub}>{opt.sub}</Text>
                 {isSelected && (
                   <View style={[styles.checkBadge, { backgroundColor: step.color }]}>
@@ -474,7 +473,7 @@ const styles = StyleSheet.create({
   orb: { position: "absolute", width: width * 0.9, height: width * 0.9, borderRadius: width * 0.45 },
   header: { flexDirection: "row", alignItems: "center", paddingHorizontal: 20, paddingVertical: 14, gap: 12 },
   backBtn: { width: 36, height: 36, borderRadius: 18, backgroundColor: "rgba(255,255,255,0.06)", alignItems: "center", justifyContent: "center" },
-  backText: { color: "#1A0B2E", fontSize: 18, fontWeight: "700", fontFamily: "Chillax-Semibold" },
+  backText: { color: "#FFFFFF", fontSize: 18, fontWeight: "700", fontFamily: "Chillax-Semibold" },
   headerCenter: { flex: 1, gap: 6 },
   stepCounter: { color: "rgba(255,255,255,0.5)", fontSize: 12, fontWeight: "700", textAlign: "center" },
   progressTrack: { height: 4, backgroundColor: "rgba(255,255,255,0.06)", borderRadius: 2 },
@@ -486,7 +485,7 @@ const styles = StyleSheet.create({
   stepHeader: { alignItems: "center", paddingTop: 16, paddingBottom: 16, gap: 10 },
   stepIconWrap: { width: 64, height: 64, borderRadius: 32, alignItems: "center", justifyContent: "center" },
   stepIcon: { fontSize: 32 },
-  stepTitle: { color: "#1A0B2E", fontSize: 24, fontWeight: "900", textAlign: "center", fontFamily: "Chillax-Bold" },
+  stepTitle: { color: "#FFFFFF", fontSize: 24, fontWeight: "900", textAlign: "center", fontFamily: "Chillax-Bold" },
   stepSubtitle: { color: "rgba(255,255,255,0.55)", fontSize: 15, textAlign: "center", lineHeight: 22, fontFamily: "Satoshi-Regular" },
   optionsGrid: { flexDirection: "row", flexWrap: "wrap", gap: 12 },
   optionCard: {
@@ -503,7 +502,7 @@ const styles = StyleSheet.create({
   optionLabel: { color: "rgba(255,255,255,0.9)", fontSize: 14, fontWeight: "800", fontFamily: "Chillax-Bold" },
   optionSub: { color: "rgba(255,255,255,0.45)", fontSize: 12, lineHeight: 16 },
   checkBadge: { position: "absolute", top: 8, right: 8, width: 20, height: 20, borderRadius: 10, alignItems: "center", justifyContent: "center" },
-  checkText: { color: "#1A0B2E", fontSize: 11, fontWeight: "900",
+  checkText: { color: "#FFFFFF", fontSize: 11, fontWeight: "900",
       fontFamily: "Chillax-Bold" },
   sliderWrap: { alignItems: "center", gap: 20, paddingVertical: 20 },
   sliderValue: { fontSize: 24, fontWeight: "900", fontFamily: "Chillax-Bold" },
@@ -517,5 +516,5 @@ const styles = StyleSheet.create({
   ctaBtn: { borderRadius: 18, shadowColor: "#F94498", shadowOffset: { width: 0, height: 6 }, shadowOpacity: 0.4, shadowRadius: 24, elevation: 10,
     overflow: "hidden" },
   ctaGrad: { paddingVertical: 18, alignItems: "center" },
-  ctaText: { color: "#1A0B2E", fontSize: 17, fontWeight: "800", fontFamily: "Chillax-Bold" },
+  ctaText: { color: "#FFFFFF", fontSize: 17, fontWeight: "800", fontFamily: "Chillax-Bold" },
 });

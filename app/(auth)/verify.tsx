@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { useState, useRef, useEffect } from "react";
 import {
   View, Text, TextInput, TouchableOpacity, StyleSheet,
@@ -223,7 +222,7 @@ const styles = StyleSheet.create({
   iconGradient: { width: 90, height: 90, borderRadius: 28, alignItems: "center", justifyContent: "center", borderWidth: 1, borderColor: "rgba(123,47,190,0.5)" },
   iconGlow: { position: "absolute", width: 90, height: 90, borderRadius: 45, backgroundColor: "rgba(123,47,190,0.15)", shadowColor: "#6443F4", shadowOffset: { width: 0, height: 0 }, shadowOpacity: 0.9, shadowRadius: 30 },
   iconEmoji: { fontSize: 38 },
-  title: { fontSize: 28, fontWeight: "800", color: "#1A0B2E", letterSpacing: -0.5, marginBottom: 10, textAlign: "center", fontFamily: "Chillax-Bold" },
+  title: { fontSize: 28, fontWeight: "800", color: "#FFFFFF", letterSpacing: -0.5, marginBottom: 10, textAlign: "center", fontFamily: "Chillax-Bold" },
   subtitle: { fontSize: 15, color: "#8B7AAA", textAlign: "center", lineHeight: 22, marginBottom: 36, fontFamily: "Satoshi-Regular" },
   emailHighlight: { color: "#F94498", fontWeight: "700", fontFamily: "Satoshi-Bold" },
   codeRow: { flexDirection: "row", gap: 10, marginBottom: 20 },
@@ -236,7 +235,7 @@ const styles = StyleSheet.create({
   codeBoxError: { borderColor: "rgba(239,68,68,0.8)" },
   codeBoxSuccess: { borderColor: "rgba(0,230,118,0.8)" },
   codeInput: { width: 46, height: 60, textAlign: "center", fontSize: 24, fontWeight: "700", color: "transparent", fontFamily: "Chillax-Semibold" },
-  codeInputFilled: { color: "#1A0B2E" },
+  codeInputFilled: { color: "#FFFFFF" },
   errorText: { color: "#EF4444", fontSize: 13, fontWeight: "500", marginBottom: 12, textAlign: "center", fontFamily: "Satoshi-Medium" },
   successBadge: { marginBottom: 16 },
   successGradient: { flexDirection: "row", alignItems: "center", gap: 8, paddingHorizontal: 20, paddingVertical: 12, borderRadius: 14, borderWidth: 1, borderColor: "rgba(0,230,118,0.4)" },
@@ -244,7 +243,7 @@ const styles = StyleSheet.create({
   successText: { color: "#00E676", fontSize: 15, fontWeight: "700", fontFamily: "Satoshi-Bold" },
   verifyBtn: { width: "100%", borderRadius: 16, overflow: "hidden", marginBottom: 20 },
   verifyGradient: { paddingVertical: 17, alignItems: "center" },
-  verifyText: { color: "#1A0B2E", fontSize: 16, fontWeight: "700", fontFamily: "Chillax-Semibold" },
+  verifyText: { color: "#FFFFFF", fontSize: 16, fontWeight: "700", fontFamily: "Chillax-Semibold" },
   verifyTextDim: { color: "#3D3050" },
   resendRow: { flexDirection: "row", alignItems: "center" },
   resendLabel: { color: "#5A4D72", fontSize: 14, fontFamily: "Satoshi-Regular" },

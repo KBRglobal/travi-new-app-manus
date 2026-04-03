@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { useRef, useState, useCallback, useMemo } from "react";
 import {
   View, Text, TouchableOpacity, StyleSheet, Animated,
@@ -391,7 +390,7 @@ export default function NotificationsScreen() {
       <View style={S.header}>
         <TouchableOpacity style={S.backBtn} onPress={() => router.back()} activeOpacity={0.7}>
           <View style={S.backBtnInner}>
-            <IconSymbol name="chevron.left" size={20} color="#1A0B2E" />
+            <IconSymbol name="chevron.left" size={20} color="#FFFFFF" />
           </View>
         </TouchableOpacity>
 
@@ -482,7 +481,7 @@ const S = StyleSheet.create({
   headerCenter: { flex: 1, flexDirection: "row", alignItems: "center", gap: 8 },
   headerTitle: { ...TYPE.h2, color: BRAND.textPrimary },
   unreadBadge: { backgroundColor: BRAND.pink, borderRadius: 10, paddingHorizontal: 7, paddingVertical: 2 },
-  unreadBadgeText: { ...TYPE.caption, color: "#1A0B2E", fontFamily: "Satoshi-Bold" },
+  unreadBadgeText: { ...TYPE.caption, color: "#FFFFFF", fontFamily: "Satoshi-Bold" },
   markAllBtn: { paddingHorizontal: 12, paddingVertical: 6, borderRadius: RADIUS.full, backgroundColor: "rgba(100,67,244,0.15)", borderWidth: 1, borderColor: "rgba(100,67,244,0.3)" },
   markAllText: { ...TYPE.caption, color: BRAND.purpleLight },
 
@@ -491,7 +490,7 @@ const S = StyleSheet.create({
   filterTab: { overflow: "hidden", borderRadius: RADIUS.full, paddingHorizontal: 16, paddingVertical: 8, borderWidth: 1, borderColor: "rgba(255,255,255,0.12)" },
   filterTabActive: { borderColor: "transparent" },
   filterTabText: { ...TYPE.label, color: BRAND.textSecondary },
-  filterTabTextActive: { color: "#1A0B2E" },
+  filterTabTextActive: { color: "#FFFFFF" },
 
   // Section
   sectionLabel: { ...TYPE.caption, color: BRAND.textMuted, textTransform: "uppercase", letterSpacing: 1, marginBottom: 10, marginTop: 4 },
@@ -520,7 +519,7 @@ const S = StyleSheet.create({
 
   notifCta: { marginTop: 8, overflow: "hidden", borderRadius: RADIUS.full, alignSelf: "flex-start" },
   notifCtaGradient: { paddingHorizontal: 14, paddingVertical: 6 },
-  notifCtaText: { ...TYPE.label, color: "#1A0B2E" },
+  notifCtaText: { ...TYPE.label, color: "#FFFFFF" },
 
   pointsBadge: { flexDirection: "row", alignItems: "center", gap: 4, marginTop: 6, backgroundColor: "rgba(255,209,18,0.12)", borderRadius: RADIUS.full, paddingHorizontal: 10, paddingVertical: 4, alignSelf: "flex-start" },
   pointsBadgeText: { ...TYPE.label, color: "#FFD112" },

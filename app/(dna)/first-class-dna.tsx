@@ -1,4 +1,3 @@
-// @ts-nocheck
 /**
  * TRAVI — First Class DNA Assessment
  * 9-module deep personality analysis.
@@ -581,7 +580,7 @@ function QuestionScreen({
                   <Text style={styles.optionCheckText}>✓</Text>
                 </View>
               )}
-              <Text style={[styles.optionLabel, isSelected && { color: "#1A0B2E" }]}>
+              <Text style={[styles.optionLabel, isSelected && { color: "#FFFFFF" }]}>
                 {opt.label}
               </Text>
             </TouchableOpacity>
@@ -987,9 +986,9 @@ const styles = StyleSheet.create({
   orb2: { position: "absolute", width: width * 0.7, height: width * 0.7, borderRadius: width * 0.35, bottom: 0, right: -width * 0.3, backgroundColor: "rgba(249,68,152,0.05)" },
   header: { flexDirection: "row", alignItems: "center", paddingHorizontal: 20, paddingVertical: 14 },
   backBtn: { width: 36, height: 36, borderRadius: 18, backgroundColor: "rgba(255,255,255,0.06)", alignItems: "center", justifyContent: "center" },
-  backText: { color: "#1A0B2E", fontSize: 18, fontWeight: "700", fontFamily: "Chillax-Semibold" },
+  backText: { color: "#FFFFFF", fontSize: 18, fontWeight: "700", fontFamily: "Chillax-Semibold" },
   headerCenter: { flex: 1, alignItems: "center" },
-  headerTitle: { color: "#1A0B2E", fontSize: 17, fontWeight: "800", fontFamily: "Chillax-Bold" },
+  headerTitle: { color: "#FFFFFF", fontSize: 17, fontWeight: "800", fontFamily: "Chillax-Bold" },
   headerSub: { color: "rgba(255,255,255,0.5)", fontSize: 12, marginTop: 2 },
   headerRight: { width: 36, alignItems: "flex-end" },
   headerProgress: { color: "rgba(255,255,255,0.5)", fontSize: 13, fontWeight: "700", fontFamily: "Satoshi-Bold" },
@@ -1000,23 +999,23 @@ const styles = StyleSheet.create({
   // Intro
   introHero: { margin: 20, borderRadius: 24, overflow: "hidden", padding: 28, alignItems: "center" },
   introEmoji: { fontSize: 56, marginBottom: 12 },
-  introTitle: { color: "#1A0B2E", fontSize: 28, fontWeight: "900", fontFamily: "Chillax-Bold", textAlign: "center", marginBottom: 8 },
+  introTitle: { color: "#FFFFFF", fontSize: 28, fontWeight: "900", fontFamily: "Chillax-Bold", textAlign: "center", marginBottom: 8 },
   introSub: { color: "rgba(255,255,255,0.6)", fontSize: 15, fontFamily: "Satoshi-Regular", textAlign: "center", lineHeight: 22 },
   introStats: { flexDirection: "row", flexWrap: "wrap", paddingHorizontal: 20, gap: 12, marginBottom: 24 },
   introStat: { width: (width - 52) / 2, backgroundColor: "rgba(255,255,255,0.06)", borderRadius: 16, padding: 14, alignItems: "center", borderWidth: 1, borderColor: "rgba(255,255,255,0.12)" },
   introStatIcon: { fontSize: 24, marginBottom: 6 },
-  introStatLabel: { color: "#1A0B2E", fontSize: 15, fontWeight: "800", fontFamily: "Chillax-Bold", marginBottom: 2 },
+  introStatLabel: { color: "#FFFFFF", fontSize: 15, fontWeight: "800", fontFamily: "Chillax-Bold", marginBottom: 2 },
   introStatSub: { color: "rgba(255,255,255,0.5)", fontSize: 11, textAlign: "center" },
   introModules: { marginHorizontal: 20, marginBottom: 24 },
-  introModulesTitle: { color: "#1A0B2E", fontSize: 18, fontWeight: "800", fontFamily: "Chillax-Bold", marginBottom: 14 },
+  introModulesTitle: { color: "#FFFFFF", fontSize: 18, fontWeight: "800", fontFamily: "Chillax-Bold", marginBottom: 14 },
   introModuleRow: { flexDirection: "row", alignItems: "center", gap: 10, marginBottom: 10 },
   introModuleDot: { width: 8, height: 8, borderRadius: 4 },
-  introModuleName: { color: "#1A0B2E", fontSize: 14, fontWeight: "700", fontFamily: "Satoshi-Medium", width: 80 },
+  introModuleName: { color: "#FFFFFF", fontSize: 14, fontWeight: "700", fontFamily: "Satoshi-Medium", width: 80 },
   introModuleDesc: { color: "rgba(255,255,255,0.5)", fontSize: 13, fontFamily: "Satoshi-Regular", flex: 1 },
 
   // Modules list
   modulesHeader: { paddingHorizontal: 20, paddingTop: 16, paddingBottom: 16 },
-  modulesTitle: { color: "#1A0B2E", fontSize: 22, fontWeight: "900", fontFamily: "Chillax-Bold" },
+  modulesTitle: { color: "#FFFFFF", fontSize: 22, fontWeight: "900", fontFamily: "Chillax-Bold" },
   modulesSub: { color: "rgba(255,255,255,0.5)", fontSize: 14, fontFamily: "Satoshi-Regular", marginTop: 4 },
   modulesList: { paddingHorizontal: 20, gap: 10, paddingBottom: 130 },
   moduleCard: { flexDirection: "row", alignItems: "center", gap: 14, backgroundColor: "rgba(255,255,255,0.06)", borderRadius: 16, padding: 14, borderWidth: 1, borderColor: "rgba(255,255,255,0.12)" },
@@ -1024,7 +1023,7 @@ const styles = StyleSheet.create({
   moduleCardDone: { borderColor: "rgba(255,255,255,0.12)", opacity: 0.85 },
   moduleIcon: { fontSize: 28 },
   moduleCardText: { flex: 1 },
-  moduleCardName: { color: "#1A0B2E", fontSize: 16, fontWeight: "800", fontFamily: "Chillax-Bold" },
+  moduleCardName: { color: "#FFFFFF", fontSize: 16, fontWeight: "800", fontFamily: "Chillax-Bold" },
   moduleCardSub: { color: "rgba(255,255,255,0.5)", fontSize: 13, fontFamily: "Satoshi-Regular", marginTop: 2 },
   moduleStatus: { width: 36, height: 36, borderRadius: 18, backgroundColor: "rgba(255,255,255,0.06)", alignItems: "center", justifyContent: "center" },
   moduleStatusText: { color: "rgba(255,255,255,0.6)", fontSize: 13, fontWeight: "800", fontFamily: "Chillax-Bold" },
@@ -1037,23 +1036,23 @@ const styles = StyleSheet.create({
 
   // Question
   questionWrap: { paddingHorizontal: 20, paddingTop: 8 },
-  questionText: { color: "#1A0B2E", fontSize: 20, fontWeight: "800", fontFamily: "Chillax-Bold", lineHeight: 28, marginBottom: 20 },
+  questionText: { color: "#FFFFFF", fontSize: 20, fontWeight: "800", fontFamily: "Chillax-Bold", lineHeight: 28, marginBottom: 20 },
   optionsWrap: { gap: 12 },
   optionCard: { backgroundColor: "rgba(255,255,255,0.06)", borderRadius: 16, padding: 16, borderWidth: 1.5, borderColor: "rgba(255,255,255,0.12)", flexDirection: "row", alignItems: "center", gap: 12 },
   optionCheck: { width: 24, height: 24, borderRadius: 12, alignItems: "center", justifyContent: "center" },
-  optionCheckText: { color: "#1A0B2E", fontSize: 12, fontWeight: "900", fontFamily: "Satoshi-Bold" },
+  optionCheckText: { color: "#FFFFFF", fontSize: 12, fontWeight: "900", fontFamily: "Satoshi-Bold" },
   optionLabel: { color: "rgba(255,255,255,0.85)", fontSize: 15, fontFamily: "Satoshi-Regular", lineHeight: 21, flex: 1 },
 
   // Result
   resultHero: { margin: 20, borderRadius: 24, overflow: "hidden", padding: 28, alignItems: "center" },
   resultEmoji: { fontSize: 56, marginBottom: 12 },
-  resultTitle: { color: "#1A0B2E", fontSize: 26, fontWeight: "900", fontFamily: "Chillax-Bold", textAlign: "center", marginBottom: 6 },
+  resultTitle: { color: "#FFFFFF", fontSize: 26, fontWeight: "900", fontFamily: "Chillax-Bold", textAlign: "center", marginBottom: 6 },
   resultSub: { color: "rgba(255,255,255,0.7)", fontSize: 16, fontFamily: "Satoshi-Regular", textAlign: "center", lineHeight: 22, marginBottom: 16 },
   discountBadge: { borderRadius: 14, overflow: "hidden" },
   discountGrad: { paddingHorizontal: 20, paddingVertical: 10 },
-  discountText: { color: "#1A0B2E", fontSize: 14, fontWeight: "800", fontFamily: "Chillax-Bold" },
+  discountText: { color: "#FFFFFF", fontSize: 14, fontWeight: "800", fontFamily: "Chillax-Bold" },
   resultSection: { marginHorizontal: 20, marginBottom: 24 },
-  resultSectionTitle: { color: "#1A0B2E", fontSize: 18, fontWeight: "800", fontFamily: "Chillax-Bold", marginBottom: 4 },
+  resultSectionTitle: { color: "#FFFFFF", fontSize: 18, fontWeight: "800", fontFamily: "Chillax-Bold", marginBottom: 4 },
   resultSectionSub: { color: "rgba(255,255,255,0.5)", fontSize: 13, fontFamily: "Satoshi-Regular", marginBottom: 14 },
   dimensionsCard: { backgroundColor: "rgba(255,255,255,0.06)", borderRadius: 20, padding: 16, gap: 14, borderWidth: 1, borderColor: "rgba(255,255,255,0.12)" },
   dimensionRow: { flexDirection: "row", alignItems: "center", gap: 8 },
@@ -1074,5 +1073,5 @@ const styles = StyleSheet.create({
   ctaBtn: { borderRadius: 18, shadowColor: "#F94498", shadowOffset: { width: 0, height: 6 }, shadowOpacity: 0.4, shadowRadius: 24, elevation: 10,
     overflow: "hidden" },
   ctaGrad: { paddingVertical: 18, alignItems: "center" },
-  ctaText: { color: "#1A0B2E", fontSize: 17, fontWeight: "800", fontFamily: "Chillax-Bold" },
+  ctaText: { color: "#FFFFFF", fontSize: 17, fontWeight: "800", fontFamily: "Chillax-Bold" },
 });

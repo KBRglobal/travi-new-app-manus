@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { useState, useRef, useEffect } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, FlatList, Dimensions, Animated, Platform } from "react-native";
 import { router, useLocalSearchParams } from "expo-router";
@@ -87,7 +86,7 @@ export default function HotelsScreen() {
         <LinearGradient colors={["#0D0628", "#1A0A3D", "#1A0A3D"]} style={StyleSheet.absoluteFillObject} />
         <View style={styles.header}>
           <TouchableOpacity style={styles.backBtn} onPress={() => router.back()} activeOpacity={0.7}>
-            <IconSymbol name="chevron.left" size={22} color="#1A0B2E" />
+            <IconSymbol name="chevron.left" size={22} color="#FFFFFF" />
           </TouchableOpacity>
           <View style={styles.progressWrap}>
             <View style={styles.progressTrack}><View style={[styles.progressFill, { width: "100%" }]} /></View>
@@ -117,7 +116,7 @@ export default function HotelsScreen() {
       <View style={styles.orb1} />
       <View style={styles.header}>
         <TouchableOpacity style={styles.backBtn} onPress={() => router.back()} activeOpacity={0.7}>
-          <IconSymbol name="chevron.left" size={22} color="#1A0B2E" />
+          <IconSymbol name="chevron.left" size={22} color="#FFFFFF" />
         </TouchableOpacity>
         <View style={styles.progressWrap}>
           <View style={styles.progressTrack}><View style={[styles.progressFill, { width: "100%" }]} /></View>
@@ -164,7 +163,7 @@ export default function HotelsScreen() {
                 <View style={styles.hotelInfo}>
                   <View style={styles.hotelTopRow}>
                     <View style={{ flex: 1 }}>
-                      <Text style={[styles.hotelName, isSelected && { color: "#1A0B2E" }]}>{item.name}</Text>
+                      <Text style={[styles.hotelName, isSelected && { color: "#FFFFFF" }]}>{item.name}</Text>
                       <View style={styles.hotelMeta}>
                         <IconSymbol name="location.fill" size={12} color="rgba(255,255,255,0.5)" />
                         <Text style={styles.hotelArea}>{item.area}</Text>
@@ -197,7 +196,7 @@ export default function HotelsScreen() {
                 {isSelected && (
                   <View style={styles.selectedBadge}>
                     <LinearGradient colors={["#6443F4", "#F94498"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.selectedBadgeGradient}>
-                      <IconSymbol name="checkmark" size={12} color="#1A0B2E" />
+                      <IconSymbol name="checkmark" size={12} color="#FFFFFF" />
                       <Text style={styles.selectedBadgeText}>Selected</Text>
                     </LinearGradient>
                   </View>
@@ -211,7 +210,7 @@ export default function HotelsScreen() {
         <TouchableOpacity style={[styles.ctaBtn, !selectedHotel && styles.ctaBtnDisabled]} onPress={handleNext} activeOpacity={0.88}>
           <LinearGradient colors={selectedHotel ? ["#6443F4", "#F94498"] : ["rgba(255,255,255,0.06)", "rgba(255,255,255,0.06)"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.ctaGradient}>
             <Text style={[styles.ctaText, !selectedHotel && styles.ctaTextDisabled]}>Review My Trip</Text>
-            <IconSymbol name="arrow.right" size={20} color={selectedHotel ? "#1A0B2E" : "#3A2D4E"} />
+            <IconSymbol name="arrow.right" size={20} color={selectedHotel ? "#FFFFFF" : "#3A2D4E"} />
           </LinearGradient>
         </TouchableOpacity>
       </View>
@@ -233,7 +232,7 @@ const styles = StyleSheet.create({
   duckLargeGradient: { flex: 1, alignItems: "center", justifyContent: "center" },
   duckImg: { width: 60, height: 60 },
   duckImgSm: { width: 30, height: 30 },
-  loadingTitle: { color: "#1A0B2E", fontSize: 24, fontFamily: "Chillax-Bold", fontWeight: "800" },
+  loadingTitle: { color: "#FFFFFF", fontSize: 24, fontFamily: "Chillax-Bold", fontWeight: "800" },
   loadingSubtitle: { color: "rgba(255,255,255,0.5)", fontSize: 14, fontFamily: "Satoshi-Regular", textAlign: "center", paddingHorizontal: 40, lineHeight: 22 },
   dotsRow: { flexDirection: "row", gap: 8 },
   dot: { width: 8, height: 8, borderRadius: 4, backgroundColor: "#F94498" },
@@ -242,7 +241,7 @@ const styles = StyleSheet.create({
   duckGradient: { flex: 1, alignItems: "center", justifyContent: "center" },
   duckBubble: { flex: 1, borderRadius: 18, borderBottomLeftRadius: 4, overflow: "hidden" },
   duckBubbleGradient: { paddingHorizontal: 16, paddingVertical: 12, borderRadius: 18, borderBottomLeftRadius: 4, borderWidth: 1, borderColor: "rgba(123,47,190,0.4)" },
-  duckMessage: { color: "#1A0B2E", fontSize: 15, fontFamily: "Chillax-Semibold", fontWeight: "700", lineHeight: 20 },
+  duckMessage: { color: "#FFFFFF", fontSize: 15, fontFamily: "Chillax-Semibold", fontWeight: "700", lineHeight: 20 },
   duckSub: { color: "rgba(255,255,255,0.5)", fontSize: 12, fontFamily: "Satoshi-Regular", marginTop: 2 },
   list: { paddingHorizontal: 20, gap: 14, paddingBottom: 130 },
   hotelCard: { borderRadius: 20, overflow: "hidden", borderWidth: 2, borderColor: "rgba(255,255,255,0.12)" },
@@ -251,30 +250,30 @@ const styles = StyleSheet.create({
   hotelImage: { height: 110, alignItems: "center", justifyContent: "center" },
   tagBadge: { position: "absolute", top: 10, left: 10, borderRadius: 10, overflow: "hidden" },
   tagGradient: { paddingHorizontal: 10, paddingVertical: 5 },
-  tagText: { color: "#1A0B2E", fontSize: 11, fontFamily: "Chillax-Semibold", fontWeight: "700" },
+  tagText: { color: "#FFFFFF", fontSize: 11, fontFamily: "Chillax-Semibold", fontWeight: "700" },
   hotelInfo: { padding: 14, gap: 10 },
   hotelTopRow: { flexDirection: "row", alignItems: "flex-start" },
   hotelName: { color: "rgba(255,255,255,0.9)", fontSize: 16, fontFamily: "Chillax-Bold", fontWeight: "800", lineHeight: 22 },
   hotelMeta: { flexDirection: "row", alignItems: "center", gap: 6, marginTop: 4 },
   hotelArea: { color: "rgba(255,255,255,0.5)", fontSize: 12, fontFamily: "Satoshi-Regular" },
   starsRow: { flexDirection: "row", gap: 2 },
-  hotelPrice: { color: "#1A0B2E", fontSize: 22, fontFamily: "Chillax-Bold", fontWeight: "900" },
+  hotelPrice: { color: "#FFFFFF", fontSize: 22, fontFamily: "Chillax-Bold", fontWeight: "900" },
   perNight: { color: "rgba(255,255,255,0.5)", fontSize: 11, fontFamily: "Satoshi-Regular" },
   ratingRow: { flexDirection: "row", alignItems: "center", gap: 8 },
   ratingBadge: { backgroundColor: "#4CAF50", borderRadius: 8, paddingHorizontal: 8, paddingVertical: 4 },
-  ratingScore: { color: "#1A0B2E", fontSize: 13, fontFamily: "Chillax-Bold", fontWeight: "800" },
+  ratingScore: { color: "#FFFFFF", fontSize: 13, fontFamily: "Chillax-Bold", fontWeight: "800" },
   ratingLabel: { color: "#4CAF50", fontSize: 13, fontFamily: "Chillax-Semibold", fontWeight: "600" },
   reviewCount: { color: "rgba(255,255,255,0.5)", fontSize: 12, fontFamily: "Satoshi-Regular" },
   amenitiesRow: { flexDirection: "row", gap: 8 },
   amenityChip: { width: 32, height: 32, borderRadius: 10, backgroundColor: "rgba(192,132,252,0.1)", alignItems: "center", justifyContent: "center", borderWidth: 1, borderColor: "rgba(192,132,252,0.2)" },
   selectedBadge: { margin: 14, marginTop: 0, alignSelf: "flex-start", borderRadius: 10, overflow: "hidden" },
   selectedBadgeGradient: { flexDirection: "row", alignItems: "center", gap: 5, paddingHorizontal: 12, paddingVertical: 6 },
-  selectedBadgeText: { color: "#1A0B2E", fontSize: 12, fontFamily: "Chillax-Semibold", fontWeight: "700" },
+  selectedBadgeText: { color: "#FFFFFF", fontSize: 12, fontFamily: "Chillax-Semibold", fontWeight: "700" },
   ctaWrap: { paddingHorizontal: 20, paddingBottom: 130, paddingTop: 12 },
   ctaBtn: { borderRadius: 20, shadowColor: "#F94498", shadowOffset: { width: 0, height: 6 }, shadowOpacity: 0.4, shadowRadius: 24, elevation: 10,
     overflow: "hidden" },
   ctaBtnDisabled: { opacity: 0.5 },
   ctaGradient: { flexDirection: "row", alignItems: "center", justifyContent: "center", paddingVertical: 18, gap: 10, borderRadius: 20 },
-  ctaText: { color: "#1A0B2E", fontSize: 18, fontFamily: "Chillax-Bold", fontWeight: "800" },
+  ctaText: { color: "#FFFFFF", fontSize: 18, fontFamily: "Chillax-Bold", fontWeight: "800" },
   ctaTextDisabled: { color: "#3A2D4E" },
 });

@@ -1,4 +1,3 @@
-// @ts-nocheck
 /**
  * TRAVI — South America Travel Hub
  */
@@ -147,7 +146,7 @@ export default function SouthAmericaHubScreen() {
           {COUNTRIES.map((c) => (
             <TouchableOpacity key={c.id} style={[S.countryChip, activeCountry === c.id && { borderColor: c.color, backgroundColor: c.color + "22" }]} onPress={() => setActiveCountry(c.id as CountryId)} activeOpacity={0.8}>
               <Text style={S.countryEmoji}>{c.emoji}</Text>
-              <Text style={[S.countryLabel, activeCountry === c.id && { color: "#1A0B2E" }]}>{c.label}</Text>
+              <Text style={[S.countryLabel, activeCountry === c.id && { color: "#FFFFFF" }]}>{c.label}</Text>
             </TouchableOpacity>
           ))}
         </ScrollView>
@@ -229,9 +228,9 @@ const S = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#0A1A0A" },
   header: { flexDirection: "row", alignItems: "center", paddingHorizontal: 20, paddingBottom: 16, gap: 12 },
   backBtn: { width: 36, height: 36, borderRadius: 18, backgroundColor: "rgba(255,255,255,0.06)", alignItems: "center", justifyContent: "center" },
-  backText: { color: "#1A0B2E", fontSize: 18, fontWeight: "700", fontFamily: "Chillax-Semibold" },
+  backText: { color: "#FFFFFF", fontSize: 18, fontWeight: "700", fontFamily: "Chillax-Semibold" },
   headerCenter: { flex: 1 },
-  headerTitle: { color: "#1A0B2E", fontSize: 20, fontWeight: "900", fontFamily: "Chillax-Bold" },
+  headerTitle: { color: "#FFFFFF", fontSize: 20, fontWeight: "900", fontFamily: "Chillax-Bold" },
   headerSub: { color: "rgba(255,255,255,0.5)", fontSize: 12 },
   countryRow: { paddingHorizontal: 20, gap: 10, paddingBottom: 130 },
   countryChip: { paddingHorizontal: 14, paddingVertical: 10, borderRadius: 14, backgroundColor: "rgba(255,255,255,0.06)", borderWidth: 1, borderColor: "rgba(255,255,255,0.12)", alignItems: "center", gap: 4 },
@@ -244,22 +243,22 @@ const S = StyleSheet.create({
   heroMeta: { flexDirection: "row", flexWrap: "wrap", gap: 12, marginTop: 16, justifyContent: "center" },
   heroMetaItem: { alignItems: "center" },
   heroMetaLabel: { color: "rgba(255,255,255,0.5)", fontSize: 10 },
-  heroMetaValue: { color: "#1A0B2E", fontSize: 13, fontWeight: "800", fontFamily: "Chillax-Bold" },
+  heroMetaValue: { color: "#FFFFFF", fontSize: 13, fontWeight: "800", fontFamily: "Chillax-Bold" },
   section: { paddingHorizontal: 20, marginBottom: 24 },
-  sectionTitle: { color: "#1A0B2E", fontSize: 18, fontWeight: "900", fontFamily: "Chillax-Bold", marginBottom: 12 },
+  sectionTitle: { color: "#FFFFFF", fontSize: 18, fontWeight: "900", fontFamily: "Chillax-Bold", marginBottom: 12 },
   highlightRow: { flexDirection: "row", gap: 14, paddingVertical: 10, borderBottomWidth: 1, borderBottomColor: "rgba(255,255,255,0.12)" },
   highlightEmoji: { fontSize: 28, marginTop: 2 },
   highlightContent: { flex: 1, gap: 2 },
-  highlightTitle: { color: "#1A0B2E", fontSize: 14, fontWeight: "800", fontFamily: "Chillax-Bold" },
+  highlightTitle: { color: "#FFFFFF", fontSize: 14, fontWeight: "800", fontFamily: "Chillax-Bold" },
   highlightDesc: { color: "rgba(255,255,255,0.5)", fontSize: 12, lineHeight: 18 },
   budgetRow: { flexDirection: "row", gap: 10 },
   budgetCard: { flex: 1, borderRadius: 14, overflow: "hidden", padding: 18, borderWidth: 1, alignItems: "center", gap: 2 },
   budgetLevel: { fontSize: 12, fontWeight: "800", fontFamily: "Chillax-Bold" },
-  budgetDaily: { color: "#1A0B2E", fontSize: 16, fontWeight: "900", fontFamily: "Chillax-Bold" },
+  budgetDaily: { color: "#FFFFFF", fontSize: 16, fontWeight: "900", fontFamily: "Chillax-Bold" },
   budgetPer: { color: "rgba(255,255,255,0.5)", fontSize: 10 },
   tipRow: { flexDirection: "row", gap: 12, paddingVertical: 8, alignItems: "flex-start" },
   tipDot: { width: 8, height: 8, borderRadius: 4, marginTop: 5 },
   tipText: { flex: 1, color: "rgba(255,255,255,0.7)", fontSize: 13, lineHeight: 20, fontFamily: "Satoshi-Regular" },
   planBtn: { borderRadius: 16, overflow: "hidden", paddingVertical: 16, alignItems: "center", shadowColor: "#F94498", shadowOffset: { width: 0, height: 6 }, shadowOpacity: 0.4, shadowRadius: 24, elevation: 10 },
-  planBtnText: { color: "#1A0B2E", fontSize: 15, fontWeight: "900", fontFamily: "Chillax-Bold" },
+  planBtnText: { color: "#FFFFFF", fontSize: 15, fontWeight: "900", fontFamily: "Chillax-Bold" },
 });

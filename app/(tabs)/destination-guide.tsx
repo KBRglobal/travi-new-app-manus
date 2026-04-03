@@ -1,4 +1,3 @@
-// @ts-nocheck
 import React, { useState, useRef } from "react";
 import {
   View, Text, TouchableOpacity, StyleSheet, Dimensions,
@@ -190,7 +189,7 @@ export default function DestinationGuideScreen() {
         <LinearGradient colors={["rgba(0,0,0,0.2)", "rgba(13,6,40,0.95)"]} style={StyleSheet.absoluteFillObject} />
         <TouchableOpacity style={S.backBtn} onPress={() => router.back()} activeOpacity={0.8}>
           <View style={S.backBtnInner}>
-            <IconSymbol name="chevron.left" size={20} color="#1A0B2E" />
+            <IconSymbol name="chevron.left" size={20} color="#FFFFFF" />
           </View>
         </TouchableOpacity>
         <View style={S.heroContent}>
@@ -397,13 +396,13 @@ function TipsTab({ dest }: { dest: DestinationData }) {
 
 const T = StyleSheet.create({
   wrap: { gap: 12 },
-  sectionTitle: { color: "#1A0B2E", fontSize: 18, fontWeight: "800", marginTop: 4, marginBottom: 4, fontFamily: "Chillax-Bold" },
+  sectionTitle: { color: "#FFFFFF", fontSize: 18, fontWeight: "800", marginTop: 4, marginBottom: 4, fontFamily: "Chillax-Bold" },
   bodyText: { color: "rgba(255,255,255,0.65)", fontSize: 14, lineHeight: 22, fontFamily: "Satoshi-Regular" },
 
   regionCard: { borderRadius: 16, overflow: "hidden", padding: 14, borderWidth: 1, borderColor: "rgba(255,255,255,0.12)", gap: 8 },
   regionTop: { flexDirection: "row", alignItems: "center", gap: 10 },
   regionIcon: { fontSize: 24 },
-  regionName: { color: "#1A0B2E", fontSize: 15, fontWeight: "700", fontFamily: "Chillax-Semibold" },
+  regionName: { color: "#FFFFFF", fontSize: 15, fontWeight: "700", fontFamily: "Chillax-Semibold" },
   regionTypeBadge: { backgroundColor: "rgba(255,255,255,0.06)", borderRadius: 8, paddingHorizontal: 8, paddingVertical: 2, alignSelf: "flex-start", marginTop: 2 },
   regionTypeText: { color: "rgba(255,255,255,0.6)", fontSize: 11, fontWeight: "600" },
   regionDesc: { color: "rgba(255,255,255,0.55)", fontSize: 13, lineHeight: 19, fontFamily: "Satoshi-Regular" },
@@ -413,7 +412,7 @@ const T = StyleSheet.create({
 
   cultureCard: { flexDirection: "row", gap: 12, backgroundColor: "rgba(255,255,255,0.06)", borderRadius: 14, padding: 14, borderWidth: 1, borderColor: "rgba(255,255,255,0.12)" },
   cultureIcon: { fontSize: 26 },
-  cultureName: { color: "#1A0B2E", fontSize: 14, fontWeight: "700", marginBottom: 3, fontFamily: "Chillax-Semibold" },
+  cultureName: { color: "#FFFFFF", fontSize: 14, fontWeight: "700", marginBottom: 3, fontFamily: "Chillax-Semibold" },
   cultureDesc: { color: "rgba(255,255,255,0.55)", fontSize: 13, lineHeight: 18, fontFamily: "Satoshi-Regular" },
   dietRow: { flexDirection: "row", gap: 10, flexWrap: "wrap" },
   dietBadge: { borderRadius: 10, borderWidth: 1, paddingHorizontal: 12, paddingVertical: 8 },
@@ -421,7 +420,7 @@ const T = StyleSheet.create({
 
   foodCard: { backgroundColor: "rgba(255,255,255,0.06)", borderRadius: 14, padding: 14, borderWidth: 1, borderColor: "rgba(255,255,255,0.12)", gap: 4 },
   foodTop: { flexDirection: "row", justifyContent: "space-between", alignItems: "center" },
-  foodName: { color: "#1A0B2E", fontSize: 15, fontWeight: "700", fontFamily: "Chillax-Semibold" },
+  foodName: { color: "#FFFFFF", fontSize: 15, fontWeight: "700", fontFamily: "Chillax-Semibold" },
   foodPrice: { color: "#FBBF24", fontSize: 14, fontWeight: "800", fontFamily: "Chillax-Bold" },
   foodMeta: { flexDirection: "row", gap: 10 },
   foodType: { color: "#C084FC", fontSize: 12, fontWeight: "600" },
@@ -440,7 +439,7 @@ const T = StyleSheet.create({
   tipsCard: { borderRadius: 16, overflow: "hidden", padding: 16, borderWidth: 1, borderColor: "rgba(100,67,244,0.2)", gap: 10 },
   tipRow: { flexDirection: "row", alignItems: "flex-start", gap: 10 },
   tipNum: { width: 22, height: 22, borderRadius: 11, backgroundColor: "rgba(100,67,244,0.4)", alignItems: "center", justifyContent: "center", flexShrink: 0, marginTop: 1 },
-  tipNumText: { color: "#1A0B2E", fontSize: 11, fontWeight: "800", fontFamily: "Chillax-Bold" },
+  tipNumText: { color: "#FFFFFF", fontSize: 11, fontWeight: "800", fontFamily: "Chillax-Bold" },
   tipText: { color: "rgba(255,255,255,0.7)", fontSize: 13, lineHeight: 19, flex: 1, fontFamily: "Satoshi-Regular" },
 });
 
@@ -452,7 +451,7 @@ const S = StyleSheet.create({
   backBtnInner: { width: 36, height: 36, borderRadius: 12, backgroundColor: "rgba(0,0,0,0.4)", alignItems: "center", justifyContent: "center" },
   heroContent: { padding: 16, gap: 4 },
   heroFlag: { fontSize: 28 },
-  heroName: { color: "#1A0B2E", fontSize: 34, fontWeight: "900", lineHeight: 38, fontFamily: "Chillax-Bold" },
+  heroName: { color: "#FFFFFF", fontSize: 34, fontWeight: "900", lineHeight: 38, fontFamily: "Chillax-Bold" },
   heroCountry: { color: "rgba(255,255,255,0.55)", fontSize: 14, fontWeight: "600", fontFamily: "Satoshi-Medium" },
   heroTagline: { color: "rgba(255,255,255,0.45)", fontSize: 13, fontStyle: "italic", marginBottom: 8, fontFamily: "Satoshi-Regular" },
   statsRow: { flexDirection: "row", flexWrap: "wrap", gap: 8 },
@@ -465,7 +464,7 @@ const S = StyleSheet.create({
   tab: { borderRadius: 20, overflow: "hidden", paddingHorizontal: 16, paddingVertical: 7, borderWidth: 1, borderColor: "rgba(255,255,255,0.12)" },
   tabActive: { borderColor: "transparent" },
   tabText: { color: "rgba(255,255,255,0.5)", fontSize: 13, fontWeight: "600" },
-  tabTextActive: { color: "#1A0B2E" },
+  tabTextActive: { color: "#FFFFFF" },
 
   content: { padding: 16, paddingBottom: 130, gap: 16 },
 
@@ -473,5 +472,5 @@ const S = StyleSheet.create({
   ctaBtn: { borderRadius: 18, shadowColor: "#F94498", shadowOffset: { width: 0, height: 6 }, shadowOpacity: 0.4, shadowRadius: 24, elevation: 10,
     overflow: "hidden" },
   ctaGradient: { alignItems: "center", justifyContent: "center", paddingVertical: 16 },
-  ctaText: { color: "#1A0B2E", fontSize: 16, fontWeight: "800", fontFamily: "Chillax-Bold" },
+  ctaText: { color: "#FFFFFF", fontSize: 16, fontWeight: "800", fontFamily: "Chillax-Bold" },
 });

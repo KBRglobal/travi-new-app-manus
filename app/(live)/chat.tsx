@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { useState, useRef, useCallback, useEffect } from "react";
 import {
   View, Text, TouchableOpacity, StyleSheet, Dimensions,
@@ -318,7 +317,7 @@ export default function ChatScreen() {
             >
               {input.trim() ? (
                 <LinearGradient colors={["#6443F4", "#F94498"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={S.sendBtnGrad}>
-                  <IconSymbol name="arrow.up" size={18} color="#1A0B2E" />
+                  <IconSymbol name="arrow.up" size={18} color="#FFFFFF" />
                 </LinearGradient>
               ) : (
                 <View style={[S.sendBtnGrad, { backgroundColor: "rgba(255,255,255,0.06)" }]}>
@@ -342,7 +341,7 @@ const S = StyleSheet.create({
   headerAvatarGrad: { flex: 1, alignItems: "center", justifyContent: "center" },
   headerAvatarEmoji: { fontSize: 22 },
   headerAvatarImg: { width: 30, height: 30 },
-  headerName: { color: "#1A0B2E", fontSize: 16, fontWeight: "800", fontFamily: "Chillax-Bold" },
+  headerName: { color: "#FFFFFF", fontSize: 16, fontWeight: "800", fontFamily: "Chillax-Bold" },
   headerStatus: { flexDirection: "row", alignItems: "center", gap: 5 },
   onlineDot: { width: 7, height: 7, borderRadius: 3.5, backgroundColor: "#02A65C" },
   headerStatusText: { color: "rgba(255,255,255,0.45)", fontSize: 12 },
@@ -363,12 +362,12 @@ const S = StyleSheet.create({
   bubbleUser: { borderBottomRightRadius: 4 },
   bubbleText: { fontSize: 15, fontFamily: "Satoshi-Regular", lineHeight: 22 },
   bubbleTextTravi: { color: "rgba(255,255,255,0.88)" },
-  bubbleTextUser: { color: "#1A0B2E" },
+  bubbleTextUser: { color: "#FFFFFF" },
   msgTime: { color: "rgba(255,255,255,0.55)", fontSize: 11, alignSelf: "flex-end" },
   cardsWrap: { gap: 8, marginTop: 4 },
   suggCard: { flexDirection: "row", alignItems: "center", gap: 10, borderRadius: 14, overflow: "hidden", padding: 10 },
   suggCardIcon: { width: 32, height: 32, borderRadius: 10, backgroundColor: "rgba(0,0,0,0.25)", alignItems: "center", justifyContent: "center" },
-  suggCardTitle: { color: "#1A0B2E", fontSize: 13, fontWeight: "700", fontFamily: "Satoshi-Bold" },
+  suggCardTitle: { color: "#FFFFFF", fontSize: 13, fontWeight: "700", fontFamily: "Satoshi-Bold" },
   suggCardSub: { color: "rgba(255,255,255,0.5)", fontSize: 11, marginTop: 1 },
   typingDots: { flexDirection: "row", gap: 5, alignItems: "center" },
   typingDot: { width: 8, height: 8, borderRadius: 4, backgroundColor: "#C084FC" },
@@ -378,7 +377,7 @@ const S = StyleSheet.create({
   chipText: { color: "rgba(255,255,255,0.65)", fontSize: 13, fontWeight: "600", fontFamily: "Satoshi-Medium" },
   inputBar: { paddingHorizontal: 12, paddingVertical: 10, paddingBottom: Platform.OS === "ios" ? 28 : 12 },
   inputWrap: { flexDirection: "row", alignItems: "flex-end", gap: 10, borderRadius: 24, overflow: "hidden", paddingHorizontal: 14, paddingVertical: 10, borderWidth: 1, borderColor: "rgba(123,47,190,0.35)" },
-  input: { flex: 1, color: "#1A0B2E", fontSize: 15, fontFamily: "Satoshi-Regular", maxHeight: 100, lineHeight: 22 },
+  input: { flex: 1, color: "#FFFFFF", fontSize: 15, fontFamily: "Satoshi-Regular", maxHeight: 100, lineHeight: 22 },
   sendBtn: { width: 36, height: 36, borderRadius: 18, overflow: "hidden", flexShrink: 0 },
   sendBtnGrad: { flex: 1, alignItems: "center", justifyContent: "center" },
 });

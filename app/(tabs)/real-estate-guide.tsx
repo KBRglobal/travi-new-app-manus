@@ -1,4 +1,3 @@
-// @ts-nocheck
 /**
  * TRAVI — Real Estate Guide for Israeli Investors
  */
@@ -129,12 +128,12 @@ const S = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#0A0A1A" },
   header: { flexDirection: "row", alignItems: "center", paddingHorizontal: 20, paddingBottom: 16, gap: 12 },
   backBtn: { width: 36, height: 36, borderRadius: 18, backgroundColor: "rgba(255,255,255,0.06)", alignItems: "center", justifyContent: "center" },
-  backText: { color: "#1A0B2E", fontSize: 18, fontWeight: "700", fontFamily: "Chillax-Semibold" },
+  backText: { color: "#FFFFFF", fontSize: 18, fontWeight: "700", fontFamily: "Chillax-Semibold" },
   headerCenter: { flex: 1 },
-  headerTitle: { color: "#1A0B2E", fontSize: 20, fontWeight: "900", fontFamily: "Chillax-Bold" },
+  headerTitle: { color: "#FFFFFF", fontSize: 20, fontWeight: "900", fontFamily: "Chillax-Bold" },
   headerSub: { color: "rgba(255,255,255,0.5)", fontSize: 12 },
   introBanner: { marginHorizontal: 20, borderRadius: 20, overflow: "hidden", padding: 20, gap: 10, marginBottom: 20, borderWidth: 1, borderColor: "rgba(100,67,244,0.25)" },
-  introTitle: { color: "#1A0B2E", fontSize: 20, fontWeight: "900", fontFamily: "Chillax-Bold" },
+  introTitle: { color: "#FFFFFF", fontSize: 20, fontWeight: "900", fontFamily: "Chillax-Bold" },
   introDesc: { color: "rgba(255,255,255,0.6)", fontSize: 13, lineHeight: 20 },
   introStats: { flexDirection: "row", flexWrap: "wrap", gap: 12, marginTop: 8 },
   introStat: { width: "45%" },
@@ -149,12 +148,12 @@ const S = StyleSheet.create({
   chapterContent: { borderTopWidth: 1, borderTopColor: "rgba(255,255,255,0.12)", padding: 16, gap: 8 },
   sectionItem: { borderRadius: 10, backgroundColor: "rgba(255,255,255,0.06)", padding: 12, borderWidth: 1, borderColor: "rgba(255,255,255,0.12)" },
   sectionItemHeader: { flexDirection: "row", justifyContent: "space-between", alignItems: "center" },
-  sectionItemTitle: { color: "#1A0B2E", fontSize: 14, fontWeight: "700", flex: 1 },
+  sectionItemTitle: { color: "#FFFFFF", fontSize: 14, fontWeight: "700", flex: 1 },
   sectionItemArrow: { color: "rgba(255,255,255,0.5)", fontSize: 16, fontWeight: "700", fontFamily: "Chillax-Semibold" },
   sectionItemContent: { color: "rgba(255,255,255,0.6)", fontSize: 13, lineHeight: 22, marginTop: 10 },
   ctaCard: { borderRadius: 20, overflow: "hidden", padding: 24, gap: 10, alignItems: "center" },
-  ctaTitle: { color: "#1A0B2E", fontSize: 20, fontWeight: "900", fontFamily: "Chillax-Bold" },
+  ctaTitle: { color: "#FFFFFF", fontSize: 20, fontWeight: "900", fontFamily: "Chillax-Bold" },
   ctaDesc: { color: "rgba(255,255,255,0.8)", fontSize: 14, textAlign: "center", lineHeight: 22 },
   ctaBtn: { backgroundColor: "rgba(255,255,255,0.06)", borderRadius: 12, paddingHorizontal: 24, paddingVertical: 12, marginTop: 4, shadowColor: "#F94498", shadowOffset: { width: 0, height: 6 }, shadowOpacity: 0.4, shadowRadius: 24, elevation: 10 },
-  ctaBtnText: { color: "#1A0B2E", fontSize: 14, fontWeight: "900", fontFamily: "Chillax-Bold" },
+  ctaBtnText: { color: "#FFFFFF", fontSize: 14, fontWeight: "900", fontFamily: "Chillax-Bold" },
 });

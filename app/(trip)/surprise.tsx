@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { useEffect, useRef, useState } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, Dimensions, Animated } from "react-native";
 import { router } from "expo-router";
@@ -228,23 +227,23 @@ const styles = StyleSheet.create({
   backText: { color: "rgba(255,255,255,0.8)", fontSize: 14, fontFamily: "Chillax-Semibold", fontWeight: "600" },
   loadingWrap: { flex: 1, alignItems: "center", justifyContent: "center", gap: 16 },
   dnaSpinner: { fontSize: 64, fontFamily: "Satoshi-Regular" },
-  loadingTitle: { color: "#1A0B2E", fontSize: 22, fontFamily: "Chillax-Bold", fontWeight: "800" },
+  loadingTitle: { color: "#FFFFFF", fontSize: 22, fontFamily: "Chillax-Bold", fontWeight: "800" },
   loadingSubtitle: { color: "rgba(255,255,255,0.5)", fontSize: 15, fontFamily: "Satoshi-Regular" },
   revealWrap: { flex: 1, justifyContent: "flex-end", paddingHorizontal: 28, paddingBottom: 130, gap: 12 },
   vibePill: { alignSelf: "flex-start", backgroundColor: "rgba(100,67,244,0.5)", borderRadius: 20, paddingHorizontal: 14, paddingVertical: 6, borderWidth: 1, borderColor: "rgba(100,67,244,0.8)" },
   vibeText: { color: "#C084FC", fontSize: 13, fontFamily: "Chillax-Semibold", fontWeight: "700" },
-  destName: { color: "#1A0B2E", fontSize: 52, fontFamily: "Chillax-Bold", fontWeight: "900", lineHeight: 58 },
+  destName: { color: "#FFFFFF", fontSize: 52, fontFamily: "Chillax-Bold", fontWeight: "900", lineHeight: 58 },
   destCountry: { color: "rgba(255,255,255,0.5)", fontSize: 18, fontFamily: "Chillax-Semibold", fontWeight: "600", marginTop: -8 },
   destTagline: { color: "rgba(255,255,255,0.7)", fontSize: 16, fontFamily: "Satoshi-Regular", fontStyle: "italic", lineHeight: 22 },
   statsRow: { flexDirection: "row", alignItems: "center", gap: 20, marginVertical: 4 },
   statItem: { flexDirection: "row", alignItems: "center", gap: 6 },
   statEmoji: { fontSize: 16, fontFamily: "Satoshi-Regular" },
-  statValue: { color: "#1A0B2E", fontSize: 15, fontFamily: "Chillax-Semibold", fontWeight: "600" },
+  statValue: { color: "#FFFFFF", fontSize: 15, fontFamily: "Chillax-Semibold", fontWeight: "600" },
   statDivider: { width: 1, height: 20, backgroundColor: "rgba(255,255,255,0.06)" },
   dnaMatch: { color: "#C084FC", fontSize: 13, fontFamily: "Chillax-Semibold", fontWeight: "600" },
   acceptBtn: { borderRadius: 18, overflow: "hidden", marginTop: 8 },
   acceptGradient: { paddingVertical: 18, alignItems: "center", borderRadius: 18 },
-  acceptText: { color: "#1A0B2E", fontSize: 16, fontFamily: "Chillax-Bold", fontWeight: "800" },
+  acceptText: { color: "#FFFFFF", fontSize: 16, fontFamily: "Chillax-Bold", fontWeight: "800" },
   rerollBtn: { alignItems: "center", paddingVertical: 12 },
   rerollText: { color: "rgba(255,255,255,0.5)", fontSize: 15, fontFamily: "Chillax-Semibold", fontWeight: "600" },
 });
