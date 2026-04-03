@@ -15,6 +15,8 @@ import { useStore } from "@/lib/store";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import * as Haptics from "expo-haptics";
 import { router } from "expo-router";
+import { trpc } from "@/lib/trpc";
+import { useAuth } from "@/hooks/use-auth";
 
 const { width } = Dimensions.get("window");
 
@@ -163,14 +165,70 @@ const pb = StyleSheet.create({
   fill: { height: "100%", borderRadius: 3, overflow: "hidden" },
 });
 
+// ── Helper: format DB transaction for display ────────────────────────────────
+type DbTx = { id: number; type: string; amount: number; currency: string; description: string | null; tripId: number | null; createdAt: Date };
+function formatDbTx(tx: DbTx) {
+  const amountDollars = tx.amount / 100;
+  const isCredit = tx.type === "credit" || tx.type === "cashback" || tx.type === "refund" || tx.type === "bonus";
+  const emoji = tx.type === "cashback" ? "✈️" : tx.type === "bonus" ? "🎁" : tx.type === "refund" ? "↩️" : tx.type === "debit" ? "💸" : "💰";
+  const color = isCredit ? "#22C55E" : "#F94498";
+  const date = new Date(tx.createdAt);
+  const timeStr = date.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", hour12: false });
+  const dateStr = date.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+  return {
+    id: `db-${tx.id}`,
+    emoji,
+    title: tx.description ?? (tx.type === "cashback" ? "Trip Cashback" : tx.type === "bonus" ? "Bonus" : "Transaction"),
+    subtitle: tx.tripId ? `Trip #${tx.tripId}` : tx.currency,
+    amount: `${isCredit ? "+" : "-"}$${amountDollars.toFixed(2)}`,
+    pts: `${isCredit ? "+" : "-"}${Math.round(amountDollars * 10).toLocaleString()} pts`,
+    color,
+    time: timeStr,
+    dateStr,
+  };
+}
+
 // ── Main screen ───────────────────────────────────────────────────────────────
 export default function WalletScreen() {
   const insets = useSafeAreaInsets();
   const { state } = useStore();
-  const points = state.profile?.points ?? 4250;
-  const lifetimeSavings = state.profile?.lifetimeSavings ?? 127;
-  const tripsRewarded = 3;
+  const { isAuthenticated } = useAuth();
+
+  // ── Real DB data via tRPC ────────────────────────────────────────────────────
+  const { data: walletData } = trpc.wallet.balance.useQuery(undefined, {
+    enabled: isAuthenticated,
+    staleTime: 30_000,
+  });
+
+  // Convert cents to dollars; fall back to store/mock if not authenticated
+  const balanceCents = walletData?.balance ?? 0;
+  const dbTxs: DbTx[] = (walletData?.transactions ?? []) as DbTx[];
+  const hasDbData = dbTxs.length > 0;
+
+  const points = hasDbData
+    ? Math.round(balanceCents / 10)
+    : (state.profile?.points ?? 4250);
+  const lifetimeSavings = hasDbData
+    ? Math.round(dbTxs.filter((t) => t.type === "credit" || t.type === "cashback" || t.type === "refund" || t.type === "bonus").reduce((s, t) => s + t.amount, 0) / 100)
+    : (state.profile?.lifetimeSavings ?? 127);
+  const tripsRewarded = hasDbData ? dbTxs.filter((t) => t.type === "cashback").length || 3 : 3;
   const cashbackRate = 8;
+
+  // Group DB transactions by date for history tab
+  const groupedDbTxs = hasDbData ? (() => {
+    const groups: Record<string, ReturnType<typeof formatDbTx>[]> = {};
+    dbTxs.forEach((tx) => {
+      const formatted = formatDbTx(tx);
+      const key = formatted.dateStr;
+      if (!groups[key]) groups[key] = [];
+      groups[key].push(formatted);
+    });
+    return Object.entries(groups).map(([date, items]) => ({
+      group: date,
+      total: items.filter((i) => i.amount.startsWith("+")).reduce((s, i) => s + parseFloat(i.amount.replace(/[^0-9.]/g, "")), 0).toFixed(2),
+      items,
+    }));
+  })() : null;
 
   const [activeTab, setActiveTab] = useState<"overview" | "redeem" | "history">("overview");
   const [selectedTx, setSelectedTx] = useState<typeof TRANSACTIONS[0]["items"][0] | null>(null);
@@ -406,15 +464,17 @@ export default function WalletScreen() {
         {/* ═══ HISTORY TAB ═══ */}
         {activeTab === "history" && (
           <View style={S.tabContent}>
-            {TRANSACTIONS.map((group, gi) => (
+            {(groupedDbTxs ?? TRANSACTIONS).map((group, gi) => (
               <View key={gi} style={{ marginBottom: 20 }}>
                 <View style={S.groupHeader}>
                   <Text style={S.groupDate}>{group.group}</Text>
-                  <Text style={S.groupTotal}>{group.total}</Text>
+                  <Text style={S.groupTotal}>
+                    {typeof group.total === "number" ? `+$${group.total} cashback` : group.total}
+                  </Text>
                 </View>
                 <View style={S.txGroup}>
-                  {group.items.map((tx, ti) => (
-                    <TouchableOpacity key={tx.id} style={S.txRow} onPress={() => handleTx(tx)} activeOpacity={0.8}>
+                  {group.items.map((tx) => (
+                    <TouchableOpacity key={tx.id} style={S.txRow} onPress={() => handleTx(tx as typeof TRANSACTIONS[0]["items"][0])} activeOpacity={0.8}>
                       <View style={[S.txIcon, { backgroundColor: tx.color + "22" }]}>
                         <Text style={{ fontSize: 20 }}>{tx.emoji}</Text>
                       </View>
@@ -431,6 +491,12 @@ export default function WalletScreen() {
                 </View>
               </View>
             ))}
+            {groupedDbTxs?.length === 0 && (
+              <View style={{ alignItems: "center", paddingVertical: 40 }}>
+                <Text style={{ fontSize: 36 }}>💳</Text>
+                <Text style={{ color: "rgba(255,255,255,0.5)", marginTop: 12, fontSize: 15 }}>No transactions yet</Text>
+              </View>
+            )}
           </View>
         )}
 

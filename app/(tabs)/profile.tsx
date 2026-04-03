@@ -8,6 +8,8 @@ import { useStore } from "@/lib/store";
 import { getDNA, type TravelerDNA } from "@/lib/dna-store";
 import { getTierForXP, XP_TIERS } from "@/lib/xp-tiers";
 import { AgentFAB } from "@/components/agent-fab";
+import { trpc } from "@/lib/trpc";
+import { useAuth } from "@/hooks/use-auth";
 
 const { width } = Dimensions.get("window");
 
@@ -101,10 +103,17 @@ const TRAIT_CONFIG = [
 export default function ProfileScreen() {
   const { state, dispatch } = useStore();
   const insets = useSafeAreaInsets();
+  const { isAuthenticated, user } = useAuth();
   const profile = state.profile;
   const [toggles, setToggles] = useState({ darkMode: false, notifications: true });
   const [liveDNA, setLiveDNA] = useState<TravelerDNA | null>(null);
   const traitAnims = useRef(TRAIT_CONFIG.map(() => new Animated.Value(0))).current;
+
+  // ── Real DB data via tRPC ────────────────────────────────────────────────────
+  const { data: dbProfile } = trpc.profile.get.useQuery(undefined, {
+    enabled: isAuthenticated,
+    staleTime: 60_000,
+  });
 
   useEffect(() => {
     getDNA().then((dna) => {
@@ -120,10 +129,11 @@ export default function ProfileScreen() {
     });
   }, []);
 
-  const displayName = profile?.name || "Alex Johnson";
-  const displayEmail = profile?.email || "alex@example.com";
-  const points = profile?.points || 4250;
-  const xp = profile?.xp ?? 0;
+  // Prefer DB data, fall back to store/mock
+  const displayName = user?.name ?? profile?.name ?? "Alex Johnson";
+  const displayEmail = user?.email ?? profile?.email ?? "alex@example.com";
+  const points = dbProfile?.points ?? profile?.points ?? 4250;
+  const xp = dbProfile?.xp ?? profile?.xp ?? 0;
   const currentTier = getTierForXP(xp);
   const nextTier = XP_TIERS[XP_TIERS.indexOf(currentTier) + 1];
   const xpProgress = nextTier ? (xp - currentTier.min) / (nextTier.min - currentTier.min) : 1;

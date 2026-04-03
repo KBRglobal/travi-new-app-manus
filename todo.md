@@ -152,6 +152,12 @@ Rules:
 - [x] Seed script for all 23 tables
 - [x] Server-side AI Agent chat (Hebrew, via invokeLLM)
 
+### tRPC UI→DB (Phase 40 — Session 4)
+- [x] Connect Wallet screen to real DB data (wallet.balance, wallet transactions)
+- [x] Connect Trips screen to real DB data (trips.list, trips.get)
+- [x] Connect Profile/DNA screen to real DB data (profile.get, dna.getResult)
+- [x] Push merged ui/fixes-round2 to GitHub
+
 ### Screens (112 total)
 - [x] Auth: splash, sign-up, verify, profile-setup, welcome, quiz, onboarding, deep-onboarding
 - [x] DNA: quick-swipe, first-class-dna (9 modules)
