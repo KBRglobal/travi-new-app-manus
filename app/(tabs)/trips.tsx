@@ -1,18 +1,24 @@
-import { useState, useMemo } from "react";
-import { View, Text, TouchableOpacity, StyleSheet, FlatList, Dimensions, Platform } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
+/**
+ * TRAVI — My Trips Screen (Redesigned)
+ * Apple Wallet–inspired layout: large hero next-trip card, clean stats, stacked trip cards
+ */
+
+import { useState } from "react";
+import {
+  View, Text, TouchableOpacity, StyleSheet, ScrollView,
+  Dimensions, Platform, ImageBackground,
+} from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { router } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
-import { Image } from "react-native";
 import { IconSymbol } from "@/components/ui/icon-symbol";
 import { useStore, Trip } from "@/lib/store";
 import * as Haptics from "expo-haptics";
 import { AgentFAB } from "@/components/agent-fab";
-import { trpc } from "@/lib/trpc";
-import { useAuth } from "@/hooks/use-auth";
 
 const { width } = Dimensions.get("window");
 
+// ── Mock Data ────────────────────────────────────────────────────────────────
 const MOCK_TRIPS: Trip[] = [
   {
     id: "mock1", destination: "Paris", destinationCode: "CDG", country: "France",
@@ -37,34 +43,33 @@ const MOCK_TRIPS: Trip[] = [
 ];
 
 const DEST_PHOTOS: Record<string, ReturnType<typeof require>> = {
-  Paris: require("@/assets/destinations/paris.jpg"),
-  Tokyo: require("@/assets/destinations/tokyo.jpg"),
-  Bali: require("@/assets/destinations/bali.jpg"),
-  "New York": require("@/assets/destinations/newyork.jpg"),
+  Paris:     require("@/assets/destinations/paris.jpg"),
+  Tokyo:     require("@/assets/destinations/tokyo.jpg"),
+  Bali:      require("@/assets/destinations/bali.jpg"),
+  "New York":require("@/assets/destinations/newyork.jpg"),
   Santorini: require("@/assets/destinations/santorini.jpg"),
-  Dubai: require("@/assets/destinations/dubai.jpg"),
-  Kyoto: require("@/assets/destinations/kyoto.jpg"),
+  Dubai:     require("@/assets/destinations/dubai.jpg"),
+  Kyoto:     require("@/assets/destinations/kyoto.jpg"),
   Barcelona: require("@/assets/destinations/barcelona.jpg"),
-  Maldives: require("@/assets/destinations/maldives.jpg"),
-  Iceland: require("@/assets/destinations/iceland.jpg"),
-  Rome: require("@/assets/destinations/rome.jpg"),
+  Maldives:  require("@/assets/destinations/maldives.jpg"),
+  Iceland:   require("@/assets/destinations/iceland.jpg"),
+  Rome:      require("@/assets/destinations/rome.jpg"),
   Amsterdam: require("@/assets/destinations/amsterdam.jpg"),
 };
 
-// ── Weather mock data per destination ───────────────────────────────────────
-const WEATHER_DATA: Record<string, { temp: number; condition: string; icon: string; humidity: number; wind: number }> = {
-  Paris:      { temp: 16, condition: "Partly Cloudy", icon: "⛅", humidity: 72, wind: 18 },
-  Tokyo:      { temp: 22, condition: "Sunny",         icon: "☀️", humidity: 60, wind: 12 },
-  Bali:       { temp: 30, condition: "Tropical",      icon: "🌤️", humidity: 80, wind: 8  },
-  Dubai:      { temp: 38, condition: "Hot & Sunny",   icon: "☀️", humidity: 35, wind: 15 },
-  "New York": { temp: 18, condition: "Cloudy",        icon: "🌥️", humidity: 65, wind: 22 },
-  Santorini:  { temp: 24, condition: "Clear",         icon: "☀️", humidity: 55, wind: 20 },
-  Kyoto:      { temp: 20, condition: "Partly Cloudy", icon: "⛅", humidity: 68, wind: 10 },
-  Barcelona:  { temp: 26, condition: "Sunny",         icon: "☀️", humidity: 50, wind: 14 },
-  Maldives:   { temp: 31, condition: "Tropical",      icon: "🌤️", humidity: 82, wind: 7  },
-  Iceland:    { temp: 4,  condition: "Overcast",      icon: "🌫️", humidity: 85, wind: 35 },
-  Rome:       { temp: 23, condition: "Sunny",         icon: "☀️", humidity: 48, wind: 11 },
-  Amsterdam:  { temp: 13, condition: "Rainy",         icon: "🌧️", humidity: 78, wind: 25 },
+const WEATHER: Record<string, { temp: number; condition: string; icon: string }> = {
+  Paris:     { temp: 16, condition: "Partly Cloudy", icon: "⛅" },
+  Tokyo:     { temp: 22, condition: "Sunny",         icon: "☀️" },
+  Bali:      { temp: 30, condition: "Tropical",      icon: "🌤️" },
+  Dubai:     { temp: 38, condition: "Hot & Sunny",   icon: "☀️" },
+  "New York":{ temp: 18, condition: "Cloudy",        icon: "🌥️" },
+  Santorini: { temp: 24, condition: "Clear",         icon: "☀️" },
+  Kyoto:     { temp: 20, condition: "Partly Cloudy", icon: "⛅" },
+  Barcelona: { temp: 26, condition: "Sunny",         icon: "☀️" },
+  Maldives:  { temp: 31, condition: "Tropical",      icon: "🌤️" },
+  Iceland:   { temp: 4,  condition: "Overcast",      icon: "🌫️" },
+  Rome:      { temp: 23, condition: "Sunny",         icon: "☀️" },
+  Amsterdam: { temp: 13, condition: "Rainy",         icon: "🌧️" },
 };
 
 function getDaysUntil(dateStr: string): number {
@@ -74,347 +79,622 @@ function getDaysUntil(dateStr: string): number {
   return Math.max(0, diff);
 }
 
-// ── Weather + Countdown Widget ────────────────────────────────────────────────
-function WeatherCountdownWidget({ trip }: { trip: Trip }) {
-  const weather = WEATHER_DATA[trip.destination] ?? { temp: 25, condition: "Sunny", icon: "☀️", humidity: 60, wind: 15 };
-  const daysUntil = getDaysUntil(trip.startDate);
-  const isVerySoon = daysUntil <= 7;
-
-  return (
-    <View style={wS.widget}>
-      <LinearGradient
-        colors={isVerySoon ? ["rgba(249,68,152,0.2)", "rgba(100,67,244,0.15)"] : ["rgba(100,67,244,0.15)", "rgba(14,165,233,0.1)"]}
-        start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}
-        style={StyleSheet.absoluteFillObject}
-      />
-      <View style={wS.widgetHeader}>
-        <Text style={wS.widgetTitle}>✈️ {trip.destination}</Text>
-        {isVerySoon && (
-          <View style={wS.soonBadge}>
-            <Text style={wS.soonBadgeText}>🔥 Very soon!</Text>
-          </View>
-        )}
-      </View>
-      <View style={wS.widgetBody}>
-        {/* Countdown */}
-        <View style={wS.countdownBlock}>
-          <Text style={[wS.countdownNumber, isVerySoon && { color: "#F94498" }]}>{daysUntil}</Text>
-          <Text style={wS.countdownLabel}>days to go</Text>
-          <Text style={wS.countdownDate}>{trip.startDate}</Text>
-        </View>
-        {/* Divider */}
-        <View style={wS.divider} />
-        {/* Weather */}
-        <View style={wS.weatherBlock}>
-          <Text style={wS.weatherIcon}>{weather.icon}</Text>
-          <Text style={wS.weatherTemp}>{weather.temp}°C</Text>
-          <Text style={wS.weatherCondition}>{weather.condition}</Text>
-          <View style={wS.weatherMeta}>
-            <Text style={wS.weatherMetaText}>💧 {weather.humidity}%</Text>
-            <Text style={wS.weatherMetaText}>💨 {weather.wind}km/h</Text>
-          </View>
-        </View>
-      </View>
-      <TouchableOpacity
-        style={wS.widgetCta}
-        onPress={() => router.push({ pathname: "/(trip)/trip-companions", params: { destination: trip.destination, totalCost: String(trip.totalCost) } } as never)}
-        activeOpacity={0.8}
-      >
-        <Text style={wS.widgetCtaText}>👥 Invite companions →</Text>
-      </TouchableOpacity>
-    </View>
-  );
-}
-
-const wS = StyleSheet.create({
-  widget: { borderRadius: 20, overflow: "hidden", padding: 16, gap: 12, borderWidth: 1.5, borderColor: "rgba(100,67,244,0.3)", marginBottom: 4 },
-  widgetHeader: { flexDirection: "row", alignItems: "center", justifyContent: "space-between" },
-  widgetTitle: { color: "#FFFFFF", fontSize: 16, fontWeight: "800", fontFamily: "Chillax-Bold" },
-  soonBadge: { backgroundColor: "rgba(249,68,152,0.25)", borderRadius: 10, paddingHorizontal: 10, paddingVertical: 4, borderWidth: 1, borderColor: "rgba(249,68,152,0.5)" },
-  soonBadgeText: { color: "#F94498", fontSize: 11, fontWeight: "800",
-      fontFamily: "Chillax-Bold" },
-  widgetBody: { flexDirection: "row", alignItems: "center", gap: 16 },
-  countdownBlock: { flex: 1, alignItems: "center", gap: 2 },
-  countdownNumber: { color: "#6443F4", fontSize: 48, fontWeight: "900", fontFamily: "Chillax-Bold", lineHeight: 52 },
-  countdownLabel: { color: "rgba(255,255,255,0.5)", fontSize: 12 },
-  countdownDate: { color: "rgba(255,255,255,0.55)", fontSize: 11, marginTop: 2 },
-  divider: { width: 1, height: 80, backgroundColor: "rgba(255,255,255,0.06)" },
-  weatherBlock: { flex: 1, alignItems: "center", gap: 2 },
-  weatherIcon: { fontSize: 32 },
-  weatherTemp: { color: "#FFFFFF", fontSize: 28, fontWeight: "900", fontFamily: "Chillax-Bold" },
-  weatherCondition: { color: "rgba(255,255,255,0.5)", fontSize: 11 },
-  weatherMeta: { flexDirection: "row", gap: 8, marginTop: 4 },
-  weatherMetaText: { color: "rgba(255,255,255,0.55)", fontSize: 10 },
-  widgetCta: { backgroundColor: "rgba(255,255,255,0.06)", borderRadius: 12, paddingVertical: 8, alignItems: "center", borderWidth: 1, borderColor: "rgba(255,255,255,0.12)" },
-  widgetCtaText: { color: "rgba(192,132,252,0.8)", fontSize: 13, fontWeight: "700", fontFamily: "Satoshi-Bold" },
-});
-
 const STATUS_CONFIG = {
-  upcoming: { label: "Upcoming", color: "#2196F3", bg: "rgba(33,150,243,0.15)" },
-  active: { label: "Live Now", color: "#4CAF50", bg: "rgba(76,175,80,0.15)" },
-  completed: { label: "Completed", color: "#8B7AAA", bg: "rgba(139,122,170,0.15)" },
-  draft: { label: "Draft", color: "#FF9800", bg: "rgba(255,152,0,0.15)" },
+  upcoming:  { label: "Upcoming",  color: "#60A5FA", bg: "rgba(96,165,250,0.15)"  },
+  active:    { label: "Live",      color: "#4ADE80", bg: "rgba(74,222,128,0.15)"  },
+  completed: { label: "Completed", color: "#A78BFA", bg: "rgba(167,139,250,0.15)" },
+  draft:     { label: "Draft",     color: "#FBBF24", bg: "rgba(251,191,36,0.15)"  },
 };
 
-function TripCard({ trip, onPress }: { trip: Trip; onPress: () => void }) {
-  const photoSource = DEST_PHOTOS[trip.destination] || require("@/assets/destinations/paris.jpg");
-  const status = STATUS_CONFIG[trip.status];
+// ── Next Trip Hero Card ───────────────────────────────────────────────────────
+function NextTripHero({ trip, onPress }: { trip: Trip; onPress: () => void }) {
+  const photo = DEST_PHOTOS[trip.destination] || require("@/assets/destinations/paris.jpg");
+  const weather = WEATHER[trip.destination] ?? { temp: 25, condition: "Sunny", icon: "☀️" };
+  const days = getDaysUntil(trip.startDate);
+  const isVerySoon = days <= 7;
 
   return (
-    <TouchableOpacity style={styles.tripCard} onPress={() => { if (Platform.OS !== "web") Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light); onPress(); }} activeOpacity={0.88}>
-      <View style={styles.tripCardInner}>
-        {/* Full photo background */}
-        <Image source={photoSource} style={StyleSheet.absoluteFillObject} resizeMode="cover" />
-        {/* Dark gradient overlay */}
-        <LinearGradient colors={["rgba(0,0,0,0.15)", "rgba(0,0,0,0.65)"]} style={StyleSheet.absoluteFillObject} />
+    <TouchableOpacity style={S.heroCard} onPress={onPress} activeOpacity={0.92}>
+      <ImageBackground source={photo} style={S.heroCardBg} imageStyle={S.heroCardImg} resizeMode="cover">
+        {/* Gradient overlays */}
+        <LinearGradient
+          colors={["rgba(0,0,0,0.0)", "rgba(0,0,0,0.0)", "rgba(0,0,0,0.82)"]}
+          locations={[0, 0.35, 1]}
+          style={StyleSheet.absoluteFillObject}
+        />
+        <LinearGradient
+          colors={isVerySoon ? ["rgba(249,68,152,0.25)", "transparent"] : ["rgba(100,67,244,0.2)", "transparent"]}
+          locations={[0, 0.5]}
+          style={StyleSheet.absoluteFillObject}
+        />
 
-        {/* Main info */}
-        <View style={styles.tripInfo}>
-          <View style={styles.tripTopRow}>
-            <View>
-              <Text style={styles.tripDest}>{trip.destination}</Text>
-              <Text style={styles.tripCountry}>{trip.country}</Text>
-            </View>
-            <View style={[styles.statusBadge, { backgroundColor: status.bg, borderColor: status.color + "66" }]}>
-              {trip.status === "active" && <View style={[styles.statusDot, { backgroundColor: status.color }]} />}
-              <Text style={[styles.statusText, { color: status.color }]}>{trip.status === "active" ? "Live Now" : status.label}</Text>
-            </View>
+        {/* Top row: label + weather */}
+        <View style={S.heroTop}>
+          <View style={S.nextTripLabel}>
+            <View style={[S.nextTripDot, { backgroundColor: isVerySoon ? "#F94498" : "#6443F4" }]} />
+            <Text style={S.nextTripLabelText}>NEXT TRIP</Text>
           </View>
-
-          <View style={styles.tripMetaRow}>
-            <View style={styles.tripMetaItem}>
-              <IconSymbol name="calendar" size={11} color="#5A4D72" />
-              <Text style={styles.tripMetaText}>{trip.startDate}</Text>
-            </View>
-            <Text style={styles.tripMetaDot}>·</Text>
-            <View style={styles.tripMetaItem}>
-              <IconSymbol name="person.2.fill" size={11} color="#5A4D72" />
-              <Text style={styles.tripMetaText}>{trip.travelers} travelers</Text>
-            </View>
-          </View>
-
-          <View style={styles.tripFooter}>
-            <Text style={styles.tripCost}>${trip.totalCost.toLocaleString()}</Text>
-            <View style={styles.tripPointsBadge}>
-              <IconSymbol name="sparkles" size={12} color="#FBBF24" />
-              <Text style={styles.tripPointsText}>{trip.pointsEarned.toLocaleString()} pts</Text>
-            </View>
+          <View style={S.weatherPill}>
+            <Text style={S.weatherIcon}>{weather.icon}</Text>
+            <Text style={S.weatherTemp}>{weather.temp}°C</Text>
           </View>
         </View>
 
-        {/* Action button */}
-        {(trip.status === "upcoming" || trip.status === "active") ? (
-          <TouchableOpacity
-            style={styles.liveBtn}
-            onPress={() => router.push({ pathname: "/(live)/home" as never, params: { tripId: trip.id } })}
-            activeOpacity={0.85}
-          >
-            <LinearGradient colors={["#6443F4", "#F94498"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.liveBtnGradient}>
-              <View style={styles.liveDot} />
-              <Text style={styles.liveBtnText}>Live</Text>
-            </LinearGradient>
-          </TouchableOpacity>
-        ) : (
-          <TouchableOpacity style={styles.viewBtn} activeOpacity={0.7}>
-            <IconSymbol name="chevron.right" size={18} color="#5A4D72" />
-          </TouchableOpacity>
-        )}
-      </View>
+        {/* Bottom: destination + countdown */}
+        <View style={S.heroBottom}>
+          <View style={S.heroBottomLeft}>
+            <Text style={S.heroCity}>{trip.destination}</Text>
+            <View style={S.heroMeta}>
+              <IconSymbol name="location.fill" size={12} color="rgba(255,255,255,0.6)" />
+              <Text style={S.heroCountry}>{trip.country}</Text>
+              <Text style={S.heroMetaDot}>·</Text>
+              <IconSymbol name="person.2.fill" size={12} color="rgba(255,255,255,0.6)" />
+              <Text style={S.heroCountry}>{trip.travelers} travelers</Text>
+            </View>
+            <Text style={S.heroDate}>{trip.startDate} → {trip.endDate}</Text>
+          </View>
+          <View style={S.heroCountdown}>
+            <Text style={[S.heroCountdownNum, isVerySoon && { color: "#F94498" }]}>{days}</Text>
+            <Text style={S.heroCountdownLabel}>days</Text>
+          </View>
+        </View>
+      </ImageBackground>
     </TouchableOpacity>
   );
 }
 
-// Convert a DB trip row to the local Trip type used by TripCard
-type DbTrip = { id: number; destination: string; country: string | null; startDate: string | null; endDate: string | null; status: string; budget: number | null; currency: string | null };
-function dbTripToLocal(t: DbTrip): Trip {
-  const statusMap: Record<string, Trip["status"]> = { planning: "draft", booked: "upcoming", active: "active", completed: "completed" };
-  return {
-    id: String(t.id),
-    destination: t.destination,
-    country: t.country ?? "",
-    startDate: t.startDate ?? "",
-    endDate: t.endDate ?? "",
-    travelers: 1,
-    budget: "mid-range",
-    status: statusMap[t.status] ?? "draft",
-    interests: [],
-    landmarks: [],
-    itinerary: [],
-    totalCost: t.budget ?? 0,
-    pointsEarned: Math.round((t.budget ?? 0) * 0.05),
-  };
-}
-
-export default function TripsScreen() {
-  const { state } = useStore();
-  const insets = useSafeAreaInsets();
-  const { isAuthenticated } = useAuth();
-  const [filter, setFilter] = useState<"all" | "upcoming" | "completed">("all");
-
-  // ── Real DB data via tRPC ────────────────────────────────────────────────────
-  const { data: dbTripsRaw } = trpc.trips.list.useQuery(undefined, {
-    enabled: isAuthenticated,
-    staleTime: 60_000,
-  });
-  const dbTrips = useMemo(() => (dbTripsRaw ?? []).map((t: DbTrip) => dbTripToLocal(t)), [dbTripsRaw]);
-
-  // Use DB trips if available, fall back to store trips, then mock trips
-  const allTrips = dbTrips.length > 0 ? dbTrips : state.trips.length > 0 ? state.trips : MOCK_TRIPS;
-  const filtered = filter === "all" ? allTrips : allTrips.filter((t: Trip) => {
-    if (filter === "upcoming") return t.status === "upcoming" || t.status === "active" || t.status === "draft";
-    return t.status === "completed";
-  });
-  const upcomingCount = allTrips.filter((t: Trip) => t.status === "upcoming" || t.status === "active").length;
-  const completedCount = allTrips.filter((t: Trip) => t.status === "completed").length;
-  const totalPoints = allTrips.reduce((sum: number, t: Trip) => sum + (t.pointsEarned || 0), 0);
+// ── Trip Card ─────────────────────────────────────────────────────────────────
+function TripCard({ trip, onPress }: { trip: Trip; onPress: () => void }) {
+  const photo = DEST_PHOTOS[trip.destination] || require("@/assets/destinations/paris.jpg");
+  const status = STATUS_CONFIG[trip.status];
 
   return (
-    <View style={styles.container}>
-      <LinearGradient colors={["#0D0628", "#1A0A3D", "#1A0A3D"]} locations={[0, 0.4, 1]} style={StyleSheet.absoluteFillObject} />
-      <View style={styles.orb1} />
-      <View style={styles.orb2} />
+    <TouchableOpacity
+      style={S.tripCard}
+      onPress={() => {
+        if (Platform.OS !== "web") Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+        onPress();
+      }}
+      activeOpacity={0.88}
+    >
+      <ImageBackground source={photo} style={S.tripCardBg} imageStyle={S.tripCardImg} resizeMode="cover">
+        <LinearGradient
+          colors={["rgba(0,0,0,0.08)", "rgba(0,0,0,0.72)"]}
+          style={StyleSheet.absoluteFillObject}
+        />
 
-      <FlatList
-        data={filtered}
-        keyExtractor={(item) => item.id}
-        contentContainerStyle={[styles.listContent, { paddingTop: insets.top + 20 }]}
-        showsVerticalScrollIndicator={false}
-        ListHeaderComponent={
-          <>
-            {/* Header */}
-            <View style={styles.header}>
-              <View>
-                <Text style={styles.headerTitle}>My Trips</Text>
-                <Text style={styles.headerSub}>Your travel collection</Text>
+        {/* Status badge */}
+        <View style={[S.statusBadge, { backgroundColor: status.bg, borderColor: status.color + "55" }]}>
+          {trip.status === "active" && <View style={[S.statusDot, { backgroundColor: status.color }]} />}
+          <Text style={[S.statusText, { color: status.color }]}>{status.label}</Text>
+        </View>
+
+        {/* Info */}
+        <View style={S.tripCardInfo}>
+          <View style={S.tripCardTop}>
+            <View>
+              <Text style={S.tripCardCity}>{trip.destination}</Text>
+              <Text style={S.tripCardCountry}>{trip.country}</Text>
+            </View>
+            <View style={S.tripCardRight}>
+              <Text style={S.tripCardCost}>${trip.totalCost.toLocaleString()}</Text>
+              <View style={S.pointsBadge}>
+                <Text style={S.pointsText}>{trip.pointsEarned.toLocaleString()} pts</Text>
               </View>
-              <TouchableOpacity style={styles.newTripBtn} onPress={() => router.push("/(trip)/plan" as never)} activeOpacity={0.85}>
-                <LinearGradient colors={["#6443F4", "#F94498"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.newTripGradient}>
-                  <IconSymbol name="plus" size={16} color="#FFFFFF" />
-                  <Text style={styles.newTripText}>New Trip</Text>
-                </LinearGradient>
-              </TouchableOpacity>
             </View>
+          </View>
+          <View style={S.tripCardMeta}>
+            <IconSymbol name="calendar" size={11} color="rgba(255,255,255,0.45)" />
+            <Text style={S.tripCardMetaText}>{trip.startDate}</Text>
+            <Text style={S.tripCardMetaDot}>·</Text>
+            <IconSymbol name="person.2.fill" size={11} color="rgba(255,255,255,0.45)" />
+            <Text style={S.tripCardMetaText}>{trip.travelers} travelers</Text>
+          </View>
+        </View>
+      </ImageBackground>
+    </TouchableOpacity>
+  );
+}
 
-            {/* Stats */}
-            <View style={styles.statsCard}>
-              <LinearGradient colors={["rgba(123,47,190,0.3)", "rgba(233,30,140,0.2)"]} style={styles.statsGradient}>
-                {[
-                  { value: String(upcomingCount), label: "Upcoming", color: "#2196F3" },
-                  { value: String(completedCount), label: "Completed", color: "#8B7AAA" },
-                  { value: totalPoints.toLocaleString(), label: "Points Earned", color: "#FBBF24" },
-                ].map((stat, i) => (
-                  <View key={i} style={styles.statItem}>
-                    {i > 0 && <View style={styles.statDivider} />}
-                    <Text style={[styles.statValue, { color: stat.color }]}>{stat.value}</Text>
-                    <Text style={styles.statLabel}>{stat.label}</Text>
-                  </View>
-                ))}
-              </LinearGradient>
+// ── Main Screen ───────────────────────────────────────────────────────────────
+export default function TripsScreen() {
+  const { state } = useStore();
+  const [activeFilter, setActiveFilter] = useState<"all" | "upcoming" | "past">("all");
+
+  const allTrips = state.trips.length > 0 ? state.trips : MOCK_TRIPS;
+  const upcoming = allTrips.filter((t) => t.status === "upcoming" || t.status === "active");
+  const past = allTrips.filter((t) => t.status === "completed");
+  const nextTrip = upcoming[0];
+
+  const filtered = activeFilter === "all" ? allTrips
+    : activeFilter === "upcoming" ? upcoming
+    : past;
+
+  const stats = {
+    upcoming: upcoming.length,
+    completed: past.length,
+    points: allTrips.reduce((s, t) => s + (t.pointsEarned ?? 0), 0),
+  };
+
+  const goToTrip = (trip: Trip) => {
+    if (Platform.OS !== "web") Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+    router.push({ pathname: "/(trip)/trip-detail", params: { id: trip.id } } as never);
+  };
+
+  return (
+    <View style={S.container}>
+      <LinearGradient
+        colors={["#0D0820", "#1A0D3D", "#0D0820"]}
+        locations={[0, 0.5, 1]}
+        style={StyleSheet.absoluteFillObject}
+      />
+
+      <SafeAreaView style={S.safeArea} edges={["top", "left", "right"]}>
+        <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={S.scrollContent}>
+
+          {/* ── Header ── */}
+          <View style={S.header}>
+            <View>
+              <Text style={S.headerTitle}>My Trips</Text>
+              <Text style={S.headerSub}>Your travel collection</Text>
             </View>
-
-            {/* Weather + Countdown for next upcoming trip */}
-            {(() => {
-              const nextTrip = allTrips.find((t: Trip) => t.status === "upcoming" || t.status === "active");
-              return nextTrip ? <WeatherCountdownWidget trip={nextTrip} /> : null;
-            })()}
-
-            {/* Filter Tabs */}
-            <View style={styles.filterRow}>
-              {(["all", "upcoming", "completed"] as const).map((f) => (
-                <TouchableOpacity key={f} style={[styles.filterTab, filter === f && styles.filterTabActive]} onPress={() => setFilter(f)} activeOpacity={0.8}>
-                  {filter === f && <LinearGradient colors={["rgba(123,47,190,0.4)", "rgba(233,30,140,0.3)"]} style={StyleSheet.absoluteFillObject} />}
-                  <Text style={[styles.filterTabText, filter === f && styles.filterTabTextActive]}>
-                    {f === "all" ? "All" : f === "upcoming" ? "Upcoming" : "Past"}
-                  </Text>
-                </TouchableOpacity>
-              ))}
-            </View>
-          </>
-        }
-        renderItem={({ item }) => (
-          <TripCard
-            trip={item}
-            onPress={() => {
-              if (item.status === "active") {
-                router.push({ pathname: "/(live)/home" as never, params: { tripId: item.id } });
-              } else {
-                router.push({ pathname: "/(tabs)/trip-detail" as never, params: { destination: item.destination?.toLowerCase() ?? "dubai", tripName: `My ${item.destination} Trip` } });
-              }
-            }}
-          />
-        )}
-        ListEmptyComponent={
-          <View style={styles.emptyState}>
-            <View style={styles.emptyIconWrap}><IconSymbol name="airplane" size={40} color="#6443F4" /></View>
-            <Text style={styles.emptyTitle}>No trips yet</Text>
-            <Text style={styles.emptySub}>Plan your first adventure with TRAVI</Text>
-            <TouchableOpacity style={styles.emptyBtn} onPress={() => router.push("/(trip)/plan" as never)} activeOpacity={0.85}>
-              <LinearGradient colors={["#6443F4", "#F94498"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.emptyBtnGradient}>
-                <Text style={styles.emptyBtnText}>Plan a Trip</Text>
-              </LinearGradient>
+            <TouchableOpacity
+              style={S.newTripBtn}
+              onPress={() => {
+                if (Platform.OS !== "web") Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+                router.push("/(trip)/new-trip" as never);
+              }}
+              activeOpacity={0.85}
+            >
+              <LinearGradient
+                colors={["#6443F4", "#F94498"]}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 0 }}
+                style={StyleSheet.absoluteFillObject}
+              />
+              <IconSymbol name="plus" size={16} color="#FFFFFF" />
+              <Text style={S.newTripBtnText}>New Trip</Text>
             </TouchableOpacity>
           </View>
-        }
-      />
+
+          {/* ── Stats Row ── */}
+          <View style={S.statsRow}>
+            <View style={S.statItem}>
+              <Text style={S.statNum}>{stats.upcoming}</Text>
+              <Text style={S.statLabel}>Upcoming</Text>
+            </View>
+            <View style={S.statDivider} />
+            <View style={S.statItem}>
+              <Text style={S.statNum}>{stats.completed}</Text>
+              <Text style={S.statLabel}>Completed</Text>
+            </View>
+            <View style={S.statDivider} />
+            <View style={S.statItem}>
+              <Text style={[S.statNum, { color: "#FBBF24" }]}>{stats.points.toLocaleString()}</Text>
+              <Text style={S.statLabel}>Points</Text>
+            </View>
+          </View>
+
+          {/* ── Next Trip Hero ── */}
+          {nextTrip && (
+            <>
+              <Text style={S.sectionLabel}>NEXT ADVENTURE</Text>
+              <NextTripHero trip={nextTrip} onPress={() => goToTrip(nextTrip)} />
+            </>
+          )}
+
+          {/* ── Filter Tabs ── */}
+          <View style={S.filterRow}>
+            {(["all", "upcoming", "past"] as const).map((f) => (
+              <TouchableOpacity
+                key={f}
+                style={[S.filterTab, activeFilter === f && S.filterTabActive]}
+                onPress={() => {
+                  if (Platform.OS !== "web") Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                  setActiveFilter(f);
+                }}
+                activeOpacity={0.75}
+              >
+                {activeFilter === f && (
+                  <LinearGradient
+                    colors={["#6443F4", "#F94498"]}
+                    start={{ x: 0, y: 0 }}
+                    end={{ x: 1, y: 0 }}
+                    style={StyleSheet.absoluteFillObject}
+                  />
+                )}
+                <Text style={[S.filterTabText, activeFilter === f && S.filterTabTextActive]}>
+                  {f === "all" ? "All" : f === "upcoming" ? "Upcoming" : "Past"}
+                </Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+
+          {/* ── Trip Cards ── */}
+          {filtered.map((trip) => (
+            <TripCard key={trip.id} trip={trip} onPress={() => goToTrip(trip)} />
+          ))}
+
+          {/* Empty state */}
+          {filtered.length === 0 && (
+            <View style={S.emptyState}>
+              <Text style={S.emptyIcon}>✈️</Text>
+              <Text style={S.emptyTitle}>No trips yet</Text>
+              <Text style={S.emptyText}>Start planning your next adventure</Text>
+              <TouchableOpacity
+                style={S.emptyBtn}
+                onPress={() => router.push("/(trip)/new-trip" as never)}
+                activeOpacity={0.85}
+              >
+                <LinearGradient
+                  colors={["#6443F4", "#F94498"]}
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 1, y: 0 }}
+                  style={StyleSheet.absoluteFillObject}
+                />
+                <Text style={S.emptyBtnText}>Plan a Trip</Text>
+              </TouchableOpacity>
+            </View>
+          )}
+
+          <View style={{ height: 120 }} />
+        </ScrollView>
+      </SafeAreaView>
       <AgentFAB />
     </View>
   );
 }
 
-const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#0D0628" },
-  orb1: { position: "absolute", width: width, height: width, borderRadius: width / 2, top: -width * 0.4, left: -width * 0.3, backgroundColor: "rgba(123,47,190,0.09)" },
-  orb2: { position: "absolute", width: width * 0.7, height: width * 0.7, borderRadius: width * 0.35, bottom: 0, right: -width * 0.3, backgroundColor: "rgba(233,30,140,0.06)" },
-  listContent: { paddingHorizontal: 20, paddingTop: 0, paddingBottom: 130, gap: 16 },
-  header: { flexDirection: "row", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 6 },
-  headerTitle: { color: "#FFFFFF", fontSize: 28, fontWeight: "800", fontFamily: "Chillax-Bold" },
-  headerSub: { color: "#5A4D72", fontSize: 13, marginTop: 2 },
-  newTripBtn: { borderRadius: 14, overflow: "hidden" },
-  newTripGradient: { flexDirection: "row", alignItems: "center", paddingHorizontal: 14, paddingVertical: 10, gap: 6 },
-  newTripText: { color: "#FFFFFF", fontSize: 14, fontWeight: "700", fontFamily: "Satoshi-Bold" },
-  statsCard: { borderRadius: 20, overflow: "hidden", borderWidth: 1.5, borderColor: "rgba(123,47,190,0.4)" },
-  statsGradient: { flexDirection: "row", padding: 18 },
+const S = StyleSheet.create({
+  container: { flex: 1, backgroundColor: "#0D0820" },
+  safeArea: { flex: 1 },
+  scrollContent: { paddingBottom: 20 },
+
+  // Header
+  header: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingHorizontal: 20,
+    paddingTop: 20,
+    paddingBottom: 20,
+  },
+  headerTitle: {
+    color: "#FFFFFF",
+    fontSize: 34,
+    fontWeight: "900",
+    letterSpacing: -1,
+    fontFamily: "Chillax-Bold",
+  },
+  headerSub: {
+    color: "rgba(255,255,255,0.4)",
+    fontSize: 13,
+    fontFamily: "Satoshi-Regular",
+    marginTop: 2,
+  },
+  newTripBtn: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 6,
+    paddingHorizontal: 18,
+    paddingVertical: 11,
+    borderRadius: 24,
+    overflow: "hidden",
+  },
+  newTripBtnText: {
+    color: "#FFFFFF",
+    fontSize: 14,
+    fontWeight: "800",
+    fontFamily: "Chillax-Bold",
+  },
+
+  // Stats
+  statsRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginHorizontal: 20,
+    backgroundColor: "rgba(255,255,255,0.05)",
+    borderRadius: 20,
+    paddingVertical: 18,
+    paddingHorizontal: 10,
+    marginBottom: 28,
+    borderWidth: 1,
+    borderColor: "rgba(255,255,255,0.08)",
+  },
   statItem: { flex: 1, alignItems: "center", gap: 4 },
-  statDivider: { position: "absolute", width: 1, height: 40, backgroundColor: "rgba(255,255,255,0.06)" },
-  statValue: { fontSize: 18, fontWeight: "800", fontFamily: "Chillax-Bold" },
-  statLabel: { color: "#5A4D72", fontSize: 11 },
-  filterRow: { flexDirection: "row", borderRadius: 16, overflow: "hidden", borderWidth: 1, borderColor: "rgba(255,255,255,0.12)", backgroundColor: "rgba(255,255,255,0.06)" },
-  filterTab: { flex: 1, paddingVertical: 13, alignItems: "center", overflow: "hidden" },
+  statNum: {
+    color: "#FFFFFF",
+    fontSize: 28,
+    fontWeight: "900",
+    letterSpacing: -0.5,
+    fontFamily: "Chillax-Bold",
+  },
+  statLabel: {
+    color: "rgba(255,255,255,0.4)",
+    fontSize: 11,
+    fontWeight: "600",
+    fontFamily: "Satoshi-Medium",
+    textTransform: "uppercase",
+    letterSpacing: 0.5,
+  },
+  statDivider: {
+    width: 1,
+    height: 40,
+    backgroundColor: "rgba(255,255,255,0.08)",
+  },
+
+  // Section label
+  sectionLabel: {
+    color: "rgba(255,255,255,0.35)",
+    fontSize: 11,
+    fontWeight: "800",
+    letterSpacing: 2,
+    fontFamily: "Chillax-Bold",
+    paddingHorizontal: 20,
+    marginBottom: 12,
+  },
+
+  // Hero card
+  heroCard: {
+    marginHorizontal: 20,
+    height: 240,
+    borderRadius: 28,
+    overflow: "hidden",
+    marginBottom: 28,
+  },
+  heroCardBg: { flex: 1, justifyContent: "space-between", padding: 20 },
+  heroCardImg: { borderRadius: 28 },
+
+  heroTop: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+  nextTripLabel: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 6,
+    backgroundColor: "rgba(0,0,0,0.35)",
+    borderRadius: 10,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderWidth: 1,
+    borderColor: "rgba(255,255,255,0.15)",
+  },
+  nextTripDot: { width: 7, height: 7, borderRadius: 4 },
+  nextTripLabelText: {
+    color: "#FFFFFF",
+    fontSize: 10,
+    fontWeight: "900",
+    letterSpacing: 1.5,
+    fontFamily: "Chillax-Bold",
+  },
+  weatherPill: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 5,
+    backgroundColor: "rgba(0,0,0,0.35)",
+    borderRadius: 10,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderWidth: 1,
+    borderColor: "rgba(255,255,255,0.15)",
+  },
+  weatherIcon: { fontSize: 16 },
+  weatherTemp: {
+    color: "#FFFFFF",
+    fontSize: 14,
+    fontWeight: "800",
+    fontFamily: "Chillax-Bold",
+  },
+
+  heroBottom: {
+    flexDirection: "row",
+    alignItems: "flex-end",
+    justifyContent: "space-between",
+  },
+  heroBottomLeft: { gap: 4 },
+  heroCity: {
+    color: "#FFFFFF",
+    fontSize: 38,
+    fontWeight: "900",
+    letterSpacing: -1.5,
+    lineHeight: 42,
+    fontFamily: "Chillax-Bold",
+  },
+  heroMeta: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 5,
+  },
+  heroCountry: {
+    color: "rgba(255,255,255,0.65)",
+    fontSize: 13,
+    fontWeight: "600",
+    fontFamily: "Satoshi-Medium",
+  },
+  heroMetaDot: {
+    color: "rgba(255,255,255,0.3)",
+    fontSize: 12,
+  },
+  heroDate: {
+    color: "rgba(255,255,255,0.45)",
+    fontSize: 12,
+    fontFamily: "Satoshi-Regular",
+    marginTop: 2,
+  },
+  heroCountdown: {
+    alignItems: "center",
+    backgroundColor: "rgba(0,0,0,0.4)",
+    borderRadius: 16,
+    paddingHorizontal: 16,
+    paddingVertical: 10,
+    borderWidth: 1,
+    borderColor: "rgba(255,255,255,0.15)",
+  },
+  heroCountdownNum: {
+    color: "#6443F4",
+    fontSize: 36,
+    fontWeight: "900",
+    fontFamily: "Chillax-Bold",
+    lineHeight: 38,
+  },
+  heroCountdownLabel: {
+    color: "rgba(255,255,255,0.5)",
+    fontSize: 11,
+    fontWeight: "600",
+    fontFamily: "Satoshi-Medium",
+    textTransform: "uppercase",
+    letterSpacing: 0.5,
+  },
+
+  // Filter tabs
+  filterRow: {
+    flexDirection: "row",
+    marginHorizontal: 20,
+    marginBottom: 16,
+    backgroundColor: "rgba(255,255,255,0.05)",
+    borderRadius: 16,
+    padding: 4,
+    gap: 4,
+    borderWidth: 1,
+    borderColor: "rgba(255,255,255,0.08)",
+  },
+  filterTab: {
+    flex: 1,
+    paddingVertical: 10,
+    borderRadius: 12,
+    alignItems: "center",
+    overflow: "hidden",
+  },
   filterTabActive: {},
-  filterTabText: { color: "#5A4D72", fontSize: 14, fontWeight: "600", fontFamily: "Satoshi-Medium" },
-  filterTabTextActive: { color: "#FFFFFF" },
-  tripCard: { borderRadius: 20, overflow: "hidden", borderWidth: 1, borderColor: "rgba(255,255,255,0.12)" },
-  tripCardInner: { flexDirection: "row", alignItems: "center", padding: 16, gap: 14, overflow: "hidden", minHeight: 110 },
-  accentBar: { position: "absolute", left: 0, top: 0, bottom: 0, width: 3, borderRadius: 2 },
-  tripEmojiWrap: { width: 52, height: 52, borderRadius: 16, backgroundColor: "rgba(255,255,255,0.06)", alignItems: "center", justifyContent: "center" },
-  tripEmoji: { fontSize: 28 },
-  tripInfo: { flex: 1, gap: 6, minWidth: 0 },
-  tripTopRow: { flexDirection: "row", justifyContent: "space-between", alignItems: "center", gap: 8 },
-  tripDest: { color: "#FFFFFF", fontSize: 17, fontWeight: "800", fontFamily: "Chillax-Bold", textShadowColor: "rgba(0,0,0,0.5)", textShadowOffset: { width: 0, height: 1 }, textShadowRadius: 4, flexShrink: 1 },
-  tripCountry: { color: "rgba(255,255,255,0.65)", fontSize: 12, marginTop: 1 },
-  statusBadge: { flexDirection: "row", alignItems: "center", gap: 5, borderRadius: 8, borderWidth: 1, paddingHorizontal: 8, paddingVertical: 3, backgroundColor: "rgba(0,0,0,0.4)" },
+  filterTabText: {
+    color: "rgba(255,255,255,0.4)",
+    fontSize: 13,
+    fontWeight: "700",
+    fontFamily: "Chillax-Semibold",
+  },
+  filterTabTextActive: {
+    color: "#FFFFFF",
+    fontWeight: "800",
+  },
+
+  // Trip card
+  tripCard: {
+    marginHorizontal: 20,
+    height: 160,
+    borderRadius: 22,
+    overflow: "hidden",
+    marginBottom: 14,
+  },
+  tripCardBg: { flex: 1, justifyContent: "space-between", padding: 16 },
+  tripCardImg: { borderRadius: 22 },
+
+  statusBadge: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 5,
+    alignSelf: "flex-start",
+    borderRadius: 10,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderWidth: 1,
+  },
   statusDot: { width: 6, height: 6, borderRadius: 3 },
-  statusText: { fontSize: 11, fontWeight: "700" },
-  tripMetaRow: { flexDirection: "row", alignItems: "center", gap: 6 },
-  tripMetaItem: { flexDirection: "row", alignItems: "center", gap: 4 },
-  tripMetaText: { color: "rgba(255,255,255,0.6)", fontSize: 12 },
-  tripMetaDot: { color: "rgba(255,255,255,0.5)", fontSize: 12 },
-  tripFooter: { flexDirection: "row", alignItems: "center", justifyContent: "space-between" },
-  tripCost: { color: "#FFFFFF", fontSize: 15, fontWeight: "700", fontFamily: "Satoshi-Bold", textShadowColor: "rgba(0,0,0,0.5)", textShadowOffset: { width: 0, height: 1 }, textShadowRadius: 4 },
-  tripPointsBadge: { flexDirection: "row", alignItems: "center", gap: 4, backgroundColor: "rgba(255,215,0,0.15)", borderRadius: 8, paddingHorizontal: 8, paddingVertical: 3 },
-  tripPointsStar: { color: "#FBBF24", fontSize: 10 },
-  tripPointsText: { color: "#FBBF24", fontSize: 11, fontWeight: "700" },
-  liveBtn: { borderRadius: 12, overflow: "hidden" },
-  liveBtnGradient: { flexDirection: "row", alignItems: "center", paddingHorizontal: 12, paddingVertical: 8, gap: 5 },
-  liveDot: { width: 6, height: 6, borderRadius: 3, backgroundColor: "#FFFFFF" },
-  liveBtnText: { color: "#FFFFFF", fontSize: 12, fontWeight: "700" },
-  viewBtn: { padding: 8 },
-  emptyState: { alignItems: "center", paddingVertical: 80, gap: 12 },
-  emptyIconWrap: { width: 80, height: 80, borderRadius: 24, backgroundColor: "rgba(123,47,190,0.2)", alignItems: "center", justifyContent: "center", borderWidth: 1.5, borderColor: "rgba(123,47,190,0.4)" },
-  emptyEmoji: { fontSize: 64 },
-  emptyTitle: { color: "#FFFFFF", fontSize: 22, fontWeight: "700", fontFamily: "Chillax-Semibold" },
-  emptySub: { color: "#5A4D72", fontSize: 14, textAlign: "center", fontFamily: "Satoshi-Regular" },
-  emptyBtn: { borderRadius: 16, overflow: "hidden", marginTop: 8 },
-  emptyBtnGradient: { paddingHorizontal: 32, paddingVertical: 14 },
-  emptyBtnText: { color: "#FFFFFF", fontSize: 16, fontWeight: "700", fontFamily: "Chillax-Semibold" },
+  statusText: {
+    fontSize: 11,
+    fontWeight: "800",
+    fontFamily: "Chillax-Bold",
+    letterSpacing: 0.5,
+  },
+
+  tripCardInfo: { gap: 6 },
+  tripCardTop: {
+    flexDirection: "row",
+    alignItems: "flex-end",
+    justifyContent: "space-between",
+  },
+  tripCardCity: {
+    color: "#FFFFFF",
+    fontSize: 24,
+    fontWeight: "900",
+    letterSpacing: -0.5,
+    fontFamily: "Chillax-Bold",
+    lineHeight: 28,
+  },
+  tripCardCountry: {
+    color: "rgba(255,255,255,0.55)",
+    fontSize: 12,
+    fontFamily: "Satoshi-Regular",
+  },
+  tripCardRight: { alignItems: "flex-end", gap: 4 },
+  tripCardCost: {
+    color: "#FFFFFF",
+    fontSize: 18,
+    fontWeight: "900",
+    fontFamily: "Chillax-Bold",
+  },
+  pointsBadge: {
+    backgroundColor: "rgba(251,191,36,0.15)",
+    borderRadius: 8,
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    borderWidth: 1,
+    borderColor: "rgba(251,191,36,0.3)",
+  },
+  pointsText: {
+    color: "#FBBF24",
+    fontSize: 10,
+    fontWeight: "800",
+    fontFamily: "Chillax-Bold",
+  },
+  tripCardMeta: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 5,
+  },
+  tripCardMetaText: {
+    color: "rgba(255,255,255,0.5)",
+    fontSize: 11,
+    fontFamily: "Satoshi-Regular",
+  },
+  tripCardMetaDot: {
+    color: "rgba(255,255,255,0.25)",
+    fontSize: 11,
+  },
+
+  // Empty state
+  emptyState: {
+    alignItems: "center",
+    paddingTop: 48,
+    paddingHorizontal: 40,
+    gap: 12,
+  },
+  emptyIcon: { fontSize: 48 },
+  emptyTitle: {
+    color: "rgba(255,255,255,0.7)",
+    fontSize: 20,
+    fontWeight: "900",
+    fontFamily: "Chillax-Bold",
+  },
+  emptyText: {
+    color: "rgba(255,255,255,0.4)",
+    fontSize: 14,
+    textAlign: "center",
+    fontFamily: "Satoshi-Regular",
+    lineHeight: 20,
+  },
+  emptyBtn: {
+    marginTop: 8,
+    paddingHorizontal: 28,
+    paddingVertical: 14,
+    borderRadius: 24,
+    overflow: "hidden",
+  },
+  emptyBtnText: {
+    color: "#FFFFFF",
+    fontSize: 15,
+    fontWeight: "800",
+    fontFamily: "Chillax-Bold",
+  },
 });
