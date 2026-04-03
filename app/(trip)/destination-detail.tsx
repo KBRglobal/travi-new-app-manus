@@ -947,19 +947,19 @@ const S = StyleSheet.create({
   tabSectionLabel: { color: "rgba(255,255,255,0.5)", fontSize: 12, fontWeight: "700", textTransform: "uppercase", letterSpacing: 1 },
 
   // Pace tip
-  paceTipCard: { borderRadius: 16, overflow: "hidden", padding: 14, flexDirection: "row", alignItems: "center", gap: 12, borderWidth: 1, borderColor: "rgba(100,67,244,0.3)" },
+  paceTipCard: { borderRadius: 16, overflow: "hidden", padding: 18, flexDirection: "row", alignItems: "center", gap: 12, borderWidth: 1, borderColor: "rgba(100,67,244,0.3)" },
   paceTipEmoji: { fontSize: 24 },
   paceTipText: { flex: 1, color: "rgba(255,255,255,0.7)", fontSize: 13, lineHeight: 19 },
 
   // DNA match banner
-  dnaMatchBanner: { borderRadius: 16, overflow: "hidden", padding: 14, flexDirection: "row", alignItems: "center", gap: 12, borderWidth: 1, borderColor: "rgba(100,67,244,0.3)" },
+  dnaMatchBanner: { borderRadius: 16, overflow: "hidden", padding: 18, flexDirection: "row", alignItems: "center", gap: 12, borderWidth: 1, borderColor: "rgba(100,67,244,0.3)" },
   dnaMatchLeft: { flex: 1 },
   dnaMatchTitle: { color: "#FFFFFF", fontSize: 14, fontWeight: "800", fontFamily: "Chillax-Bold" },
   dnaMatchSub: { color: "rgba(255,255,255,0.5)", fontSize: 12, marginTop: 3, lineHeight: 17 },
   dnaMatchCount: { color: "#C084FC", fontSize: 28, fontWeight: "900", fontFamily: "Chillax-Bold" },
-  noProfileBanner: { borderRadius: 16, padding: 14, backgroundColor: "rgba(255,255,255,0.06)", borderWidth: 1, borderColor: "rgba(255,255,255,0.12)" },
+  noProfileBanner: { borderRadius: 16, padding: 18, backgroundColor: "rgba(255,255,255,0.06)", borderWidth: 1, borderColor: "rgba(255,255,255,0.12)" },
   noProfileText: { color: "rgba(255,255,255,0.5)", fontSize: 13, lineHeight: 19 },
-  moreActivitiesNote: { borderRadius: 14, padding: 14, backgroundColor: "rgba(100,67,244,0.1)", borderWidth: 1, borderColor: "rgba(100,67,244,0.25)", alignItems: "center" },
+  moreActivitiesNote: { borderRadius: 14, padding: 18, backgroundColor: "rgba(100,67,244,0.1)", borderWidth: 1, borderColor: "rgba(100,67,244,0.25)", alignItems: "center" },
   moreActivitiesText: { color: "rgba(192,132,252,0.8)", fontSize: 13, fontWeight: "600", textAlign: "center" },
 
   // Category filter
@@ -1012,6 +1012,6 @@ const S = StyleSheet.create({
   // Floating CTA
   floatingCta: { position: "absolute", bottom: 0, left: 0, right: 0, paddingHorizontal: 20, paddingTop: 20 },
   floatingCtaGradient: { position: "absolute", top: 0, left: 0, right: 0, bottom: 0 },
-  planBtn: { borderRadius: 20, overflow: "hidden", paddingVertical: 18, alignItems: "center", justifyContent: "center" },
+  planBtn: { borderRadius: 20, overflow: "hidden", paddingVertical: 18, alignItems: "center", justifyContent: "center", shadowColor: "#F94498", shadowOffset: { width: 0, height: 6 }, shadowOpacity: 0.4, shadowRadius: 24, elevation: 10 },
   planBtnText: { color: "#FFFFFF", fontSize: 18, fontWeight: "800", fontFamily: "Chillax-Bold" },
 });

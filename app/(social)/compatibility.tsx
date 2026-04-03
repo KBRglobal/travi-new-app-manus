@@ -205,7 +205,7 @@ const styles = StyleSheet.create({
   destScore: { ...TYPE.h4, color: BRAND.green },
 
   actions: { gap: 12, marginTop: 8 },
-  messageBtn: { flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 8, paddingVertical: 14, borderRadius: RADIUS.md, backgroundColor: BRAND.purple },
+  messageBtn: { flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 8, paddingVertical: 14, borderRadius: RADIUS.md, backgroundColor: BRAND.purple, shadowColor: "#F94498", shadowOffset: { width: 0, height: 6 }, shadowOpacity: 0.4, shadowRadius: 24, elevation: 10 },
   messageBtnText: { ...TYPE.button, color: "#fff" },
   planBtn: { flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 8, paddingVertical: 14, borderRadius: RADIUS.md, backgroundColor: "transparent", borderWidth: 1, borderColor: BRAND.purple },
   planBtnText: { ...TYPE.button, color: BRAND.purple },

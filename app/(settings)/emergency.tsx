@@ -134,7 +134,7 @@ const S = StyleSheet.create({
   fieldRow: { marginBottom: 12 },
   fieldLabel: { color: "rgba(255,255,255,0.5)", fontSize: 12, fontWeight: "700", marginBottom: 6 },
   fieldInput: { backgroundColor: "rgba(255,255,255,0.06)", borderRadius: 10, borderWidth: 1, borderColor: "rgba(255,255,255,0.12)", paddingHorizontal: 14, paddingVertical: 10, color: "#FFFFFF", fontSize: 14 },
-  saveBtn: { borderRadius: 14, backgroundColor: "#6443F4", paddingVertical: 16, alignItems: "center" },
+  saveBtn: { borderRadius: 14, backgroundColor: "#6443F4", paddingVertical: 16, alignItems: "center", shadowColor: "#F94498", shadowOffset: { width: 0, height: 6 }, shadowOpacity: 0.4, shadowRadius: 24, elevation: 10 },
   saveBtnText: { color: "#FFFFFF", fontSize: 15, fontWeight: "900",
       fontFamily: "Chillax-Bold" },
 });

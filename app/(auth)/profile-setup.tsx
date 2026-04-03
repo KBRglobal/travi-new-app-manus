@@ -234,7 +234,7 @@ const s = StyleSheet.create({
   newBadge: { paddingHorizontal: 10, paddingVertical: 4, borderRadius: 8 },
   newBadgeText: { fontSize: 11, fontWeight: "800", color: "#000000", letterSpacing: 0.5, fontFamily: "Chillax-Bold" },
 
-  cta: { borderRadius: Radius.lg, overflow: "hidden" },
+  cta: { borderRadius: Radius.lg, overflow: "hidden", shadowColor: "#F94498", shadowOffset: { width: 0, height: 6 }, shadowOpacity: 0.4, shadowRadius: 24, elevation: 10 },
   ctaGradient: { flexDirection: "row", alignItems: "center", justifyContent: "center", paddingVertical: 17, gap: 10 },
   ctaText: { ...Typography.cta, fontFamily: "Chillax-Semibold" },
   ctaDim: { color: DS.disabled },

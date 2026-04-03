@@ -124,7 +124,7 @@ const S = StyleSheet.create({
   backText: { color: "#FFFFFF", fontSize: 18, fontWeight: "700",
       fontFamily: "Chillax-Semibold" },
   headerTitle: { flex: 1, color: "#FFFFFF", fontSize: 20, fontWeight: "900", textAlign: "center", fontFamily: "Chillax-Bold" },
-  infoBox: { marginHorizontal: 20, marginBottom: 20, borderRadius: 12, backgroundColor: "rgba(100,67,244,0.1)", borderWidth: 1, borderColor: "rgba(100,67,244,0.2)", padding: 14 },
+  infoBox: { marginHorizontal: 20, marginBottom: 20, borderRadius: 12, backgroundColor: "rgba(100,67,244,0.1)", borderWidth: 1, borderColor: "rgba(100,67,244,0.2)", padding: 18 },
   infoText: { color: "rgba(255,255,255,0.6)", fontSize: 13, lineHeight: 20 },
   section: { paddingHorizontal: 20, marginBottom: 24 },
   sectionTitle: { color: "rgba(255,255,255,0.5)", fontSize: 11, fontWeight: "800",
@@ -146,7 +146,7 @@ const S = StyleSheet.create({
   chipEmoji: { fontSize: 14 },
   chipLabel: { color: "rgba(255,255,255,0.5)", fontSize: 12, fontWeight: "700" },
   chipLabelActive: { color: "#FFFFFF" },
-  saveBtn: { borderRadius: 14, backgroundColor: "#6443F4", paddingVertical: 16, alignItems: "center" },
+  saveBtn: { borderRadius: 14, backgroundColor: "#6443F4", paddingVertical: 16, alignItems: "center", shadowColor: "#F94498", shadowOffset: { width: 0, height: 6 }, shadowOpacity: 0.4, shadowRadius: 24, elevation: 10 },
   saveBtnText: { color: "#FFFFFF", fontSize: 15, fontWeight: "900",
       fontFamily: "Chillax-Bold" },
 });

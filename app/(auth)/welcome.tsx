@@ -207,7 +207,7 @@ const s = StyleSheet.create({
 
   // CTA
   cta: { gap: 12, alignItems: "center" },
-  btn: { width: "100%", borderRadius: 16, overflow: "hidden" },
+  btn: { width: "100%", borderRadius: 16, overflow: "hidden", shadowColor: "#F94498", shadowOffset: { width: 0, height: 6 }, shadowOpacity: 0.4, shadowRadius: 24, elevation: 10 },
   btnGrad: {
     flexDirection: "row", alignItems: "center", justifyContent: "center",
     paddingVertical: 17, gap: 10,

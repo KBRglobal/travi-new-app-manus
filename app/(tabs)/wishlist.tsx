@@ -118,7 +118,7 @@ const S = StyleSheet.create({
   cardBottom: { flexDirection: "row", alignItems: "flex-end", justifyContent: "space-between" },
   cardPrice: { color: "#FFFFFF", fontSize: 14, fontWeight: "800", fontFamily: "Chillax-Bold" },
   cardCashback: { color: "#22C55E", fontSize: 11, fontWeight: "700" },
-  planBtn: { backgroundColor: "rgba(100,67,244,0.85)", borderRadius: 10, paddingHorizontal: 14, paddingVertical: 8 },
+  planBtn: { backgroundColor: "rgba(100,67,244,0.85)", borderRadius: 10, paddingHorizontal: 14, paddingVertical: 8, shadowColor: "#F94498", shadowOffset: { width: 0, height: 6 }, shadowOpacity: 0.4, shadowRadius: 24, elevation: 10 },
   planBtnText: { color: "#FFFFFF", fontSize: 12, fontWeight: "900", fontFamily: "Chillax-Bold" },
   empty: { paddingTop: 60, alignItems: "center", gap: 12 },
   emptyEmoji: { fontSize: 48 },

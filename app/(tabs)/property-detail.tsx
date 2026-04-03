@@ -261,7 +261,7 @@ const S = StyleSheet.create({
   ctaRow: { flexDirection: "row", gap: 12, paddingHorizontal: 20, marginTop: 8 },
   ctaSecondary: { flex: 1, borderRadius: 14, borderWidth: 1, borderColor: "rgba(255,255,255,0.12)", paddingVertical: 16, alignItems: "center" },
   ctaSecondaryText: { color: "#FFFFFF", fontSize: 14, fontWeight: "800", fontFamily: "Chillax-Bold" },
-  ctaPrimary: { flex: 1, borderRadius: 14, overflow: "hidden" },
+  ctaPrimary: { flex: 1, borderRadius: 14, overflow: "hidden", shadowColor: "#F94498", shadowOffset: { width: 0, height: 6 }, shadowOpacity: 0.4, shadowRadius: 24, elevation: 10 },
   ctaGradient: { paddingVertical: 16, alignItems: "center" },
   ctaPrimaryText: { color: "#FFFFFF", fontSize: 14, fontWeight: "900", fontFamily: "Chillax-Bold" },
 });

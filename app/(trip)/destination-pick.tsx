@@ -264,7 +264,7 @@ const styles = StyleSheet.create({
   vibePill: { alignSelf: "flex-start", backgroundColor: "rgba(255,255,255,0.06)", borderRadius: 20, paddingHorizontal: 8, paddingVertical: 3 },
   vibeText: { color: "rgba(255,255,255,0.85)", fontSize: 11, fontFamily: "Chillax-Semibold", fontWeight: "600" },
   ctaWrap: { paddingHorizontal: 20, paddingTop: 12, backgroundColor: "#0D0B1E" },
-  cta: { borderRadius: 18, overflow: "hidden" },
+  cta: { borderRadius: 18, overflow: "hidden", shadowColor: "#F94498", shadowOffset: { width: 0, height: 6 }, shadowOpacity: 0.4, shadowRadius: 24, elevation: 10 },
   ctaDisabled: { opacity: 0.5 },
   ctaGradient: { paddingVertical: 18, alignItems: "center" },
   ctaText: { color: "#FFFFFF", fontSize: 17, fontFamily: "Chillax-Bold", fontWeight: "800", letterSpacing: 0.3 },

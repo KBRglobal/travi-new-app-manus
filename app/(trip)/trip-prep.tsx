@@ -469,7 +469,7 @@ const styles = StyleSheet.create({
   // Services
   sectionTitle: { color: "#FFFFFF", fontSize: 16, fontWeight: "800", marginBottom: 6, fontFamily: "Chillax-Bold" },
   sectionSub: { color: "rgba(255,255,255,0.45)", fontSize: 13, marginBottom: 16, lineHeight: 18 },
-  serviceCard: { flexDirection: "row", alignItems: "center", gap: 12, backgroundColor: "rgba(255,255,255,0.06)", borderRadius: 16, padding: 14, marginBottom: 10, borderWidth: 1, borderColor: "rgba(255,255,255,0.12)" },
+  serviceCard: { flexDirection: "row", alignItems: "center", gap: 12, backgroundColor: "rgba(255,255,255,0.06)", borderRadius: 16, padding: 18, marginBottom: 10, borderWidth: 1, borderColor: "rgba(255,255,255,0.12)" },
   serviceIconWrap: { width: 48, height: 48, borderRadius: 14, alignItems: "center", justifyContent: "center" },
   serviceIcon: { fontSize: 24 },
   serviceInfo: { flex: 1, gap: 3 },
@@ -479,7 +479,7 @@ const styles = StyleSheet.create({
   servicePrice: { color: "rgba(255,255,255,0.6)", fontSize: 12, fontWeight: "700" },
   cashbackBadge: { backgroundColor: "rgba(34,197,94,0.15)", paddingHorizontal: 8, paddingVertical: 3, borderRadius: 8 },
   cashbackText: { color: "#22C55E", fontSize: 11, fontWeight: "700" },
-  bookBtn: { backgroundColor: "rgba(100,67,244,0.3)", paddingHorizontal: 14, paddingVertical: 8, borderRadius: 10, borderWidth: 1, borderColor: "#6443F4" },
+  bookBtn: { backgroundColor: "rgba(100,67,244,0.3)", paddingHorizontal: 14, paddingVertical: 8, borderRadius: 10, borderWidth: 1, borderColor: "#6443F4", shadowColor: "#F94498", shadowOffset: { width: 0, height: 6 }, shadowOpacity: 0.4, shadowRadius: 24, elevation: 10 },
   bookBtnDone: { backgroundColor: "rgba(34,197,94,0.2)", borderColor: "#22C55E" },
   bookBtnText: { color: "#FFFFFF", fontSize: 13, fontWeight: "800", fontFamily: "Chillax-Bold" },
   totalCashbackCard: { borderRadius: 18, overflow: "hidden", padding: 20, alignItems: "center", marginTop: 8, borderWidth: 1, borderColor: "rgba(100,67,244,0.3)" },

@@ -214,7 +214,7 @@ const s = StyleSheet.create({
   input: { flex: 1, color: DS.primary, fontSize: 16, fontWeight: "500", fontFamily: "Satoshi-Medium" },
 
   // CTA
-  cta: { borderRadius: Radius.lg, overflow: "hidden" },
+  cta: { borderRadius: Radius.lg, overflow: "hidden", shadowColor: "#F94498", shadowOffset: { width: 0, height: 6 }, shadowOpacity: 0.4, shadowRadius: 24, elevation: 10 },
   ctaGradient: { flexDirection: "row", alignItems: "center", justifyContent: "center", paddingVertical: 17, gap: 10 },
   ctaText: { ...Typography.cta, fontFamily: "Chillax-Semibold" },
 

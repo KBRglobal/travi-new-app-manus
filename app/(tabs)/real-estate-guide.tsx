@@ -154,6 +154,6 @@ const S = StyleSheet.create({
   ctaCard: { borderRadius: 20, overflow: "hidden", padding: 24, gap: 10, alignItems: "center" },
   ctaTitle: { color: "#FFFFFF", fontSize: 20, fontWeight: "900", fontFamily: "Chillax-Bold" },
   ctaDesc: { color: "rgba(255,255,255,0.8)", fontSize: 14, textAlign: "center", lineHeight: 22 },
-  ctaBtn: { backgroundColor: "rgba(255,255,255,0.06)", borderRadius: 12, paddingHorizontal: 24, paddingVertical: 12, marginTop: 4 },
+  ctaBtn: { backgroundColor: "rgba(255,255,255,0.06)", borderRadius: 12, paddingHorizontal: 24, paddingVertical: 12, marginTop: 4, shadowColor: "#F94498", shadowOffset: { width: 0, height: 6 }, shadowOpacity: 0.4, shadowRadius: 24, elevation: 10 },
   ctaBtnText: { color: "#FFFFFF", fontSize: 14, fontWeight: "900", fontFamily: "Chillax-Bold" },
 });

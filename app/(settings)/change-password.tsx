@@ -94,7 +94,7 @@ const S = StyleSheet.create({
   input: { flex: 1, fontSize: 16, fontFamily: "Satoshi-Regular" },
   eyeBtn: { padding: 4 },
   error: { color: "#F94498", fontSize: 14, fontFamily: "Satoshi-Regular", marginTop: 12 },
-  saveBtn: { marginTop: 32, backgroundColor: "#6443F4", borderRadius: 14, paddingVertical: 16, alignItems: "center" },
+  saveBtn: { marginTop: 32, backgroundColor: "#6443F4", borderRadius: 14, paddingVertical: 16, alignItems: "center", shadowColor: "#F94498", shadowOffset: { width: 0, height: 6 }, shadowOpacity: 0.4, shadowRadius: 24, elevation: 10 },
   saveBtnText: { color: "#fff", fontSize: 16, fontFamily: "Chillax-Semibold", fontWeight: "700" },
   forgotBtn: { marginTop: 16, alignItems: "center" },
   forgotText: { fontSize: 14, fontFamily: "Satoshi-Regular", fontWeight: "500" },
