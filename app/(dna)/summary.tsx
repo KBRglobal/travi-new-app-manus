@@ -1,216 +1,128 @@
-/**
- * Quick DNA — Summary Screen — Neutral Wireframe
- * Spec: Step 4/4 (Complete). Shows top 3 DNA dimensions,
- *       "See My Recommendations" CTA → Home,
- *       "View Full DNA Profile" link → /profile/dna.
- */
-import { useRef, useEffect } from "react";
-import {
-  View, Text, TouchableOpacity, StyleSheet, ScrollView, Animated,
-} from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { router } from "expo-router";
-import { IconSymbol } from "@/components/ui/icon-symbol";
-import { useStore } from "@/lib/store";
+// Screen 10 — Quick DNA: Summary — STATIC WIREFRAME
+// Route: /dna/summary | Mode: Onboarding
+// Spec: Top 3 DNA dimensions with bars, Share card, See Recommendations CTA
 
-const N = {
-  bg:       "#111111",
-  surface:  "#1A1A1A",
-  white:    "#FFFFFF",
-  textSec:  "#ABABAB",
-  textTer:  "#777777",
-  accent:   "#007AFF",
-  border:   "#333333",
-  success:  "#4ADE80",
-};
+import { View, Text, StyleSheet, Pressable, ScrollView } from "react-native";
 
-type Dimension = {
-  id: string;
-  name: string;
-  score: number;
-  description: string;
-  icon: "safari.fill" | "fork.knife" | "figure.climbing";
-  color: string;
-};
-
-// Demo top 3 dimensions
-const TOP_DIMENSIONS: Dimension[] = [
-  {
-    id: "explorer", name: "Explorer", score: 8,
-    description: "You seek new experiences and uncharted paths",
-    icon: "safari.fill", color: "#007AFF",
-  },
-  {
-    id: "foodie", name: "Foodie", score: 7,
-    description: "Local cuisine is a highlight of every trip",
-    icon: "fork.knife", color: "#FF9500",
-  },
-  {
-    id: "adventurer", name: "Adventurer", score: 9,
-    description: "Thrill-seeking and outdoor activities drive your travels",
-    icon: "figure.climbing", color: "#4ADE80",
-  },
+const DNA_RESULTS = [
+  { label: "Adventurer", score: 87, color: "#EF4444" },
+  { label: "Explorer", score: 74, color: "#3B82F6" },
+  { label: "Foodie", score: 68, color: "#F59E0B" },
+  { label: "Culturalist", score: 55, color: "#8B5CF6" },
+  { label: "Photographer", score: 48, color: "#EC4899" },
+  { label: "Naturalist", score: 42, color: "#22C55E" },
+  { label: "Relaxer", score: 35, color: "#06B6D4" },
+  { label: "Historian", score: 28, color: "#78350F" },
 ];
 
 export default function SummaryScreen() {
-  const { dispatch } = useStore();
-
-  const mascotScale = useRef(new Animated.Value(0)).current;
-  const cardAnims = useRef(TOP_DIMENSIONS.map(() => new Animated.Value(0))).current;
-  const ctaOpacity = useRef(new Animated.Value(0)).current;
-
-  useEffect(() => {
-    // Save DNA scores
-    dispatch({
-      type: "SET_DNA_SCORES",
-      payload: {
-        explorer: 8, relaxer: 4, adventurer: 9, culturalist: 5,
-        foodie: 7, photographer: 3, historian: 4, naturalist: 6,
-      },
-    });
-    dispatch({ type: "UPDATE_PROFILE", payload: { quizCompleted: true } });
-    dispatch({ type: "SET_ONBOARDING_COMPLETED" });
-
-    // Animations
-    Animated.spring(mascotScale, { toValue: 1, friction: 5, tension: 50, useNativeDriver: true }).start(() => {
-      Animated.stagger(200, cardAnims.map((anim) =>
-        Animated.timing(anim, { toValue: 1, duration: 400, useNativeDriver: true })
-      )).start(() => {
-        Animated.timing(ctaOpacity, { toValue: 1, duration: 300, useNativeDriver: true }).start();
-      });
-    });
-  }, []);
-
-  const handleSeeRecommendations = () => {
-    router.replace("/(tabs)" as never);
-  };
-
-  const handleViewDNA = () => {
-    // Navigate to DNA profile (if screen exists)
-    router.replace("/(tabs)/profile" as never);
-  };
-
   return (
     <View style={s.root}>
-      <SafeAreaView edges={["top", "bottom"]} style={s.safe}>
-        {/* Header */}
-        <View style={s.header}>
-          <View style={{ width: 40 }} />
-          <Text style={s.headerTitle}>Step 4 of 4</Text>
-          <TouchableOpacity onPress={handleSeeRecommendations} activeOpacity={0.7}>
-            <IconSymbol name="xmark" size={22} color={N.textSec} />
-          </TouchableOpacity>
+      <View style={s.header}>
+        <View style={{ width: 44 }} />
+        <Text style={s.headerTitle}>Your Travel DNA</Text>
+        <View style={{ width: 44 }} />
+      </View>
+
+      <ScrollView style={s.body} contentContainerStyle={s.bodyContent}>
+        <View style={s.titleBadge}>
+          <Text style={s.titleEmoji}>🧬</Text>
+          <Text style={s.titleText}>DNA Analysis Complete!</Text>
         </View>
 
-        {/* Progress bar — 100% */}
-        <View style={s.progressBg}>
-          <View style={[s.progressFill, { width: "100%", backgroundColor: N.success }]} />
-        </View>
+        <Text style={s.subtitle}>Based on your preferences, here's your travel personality</Text>
 
-        <ScrollView contentContainerStyle={s.scroll} showsVerticalScrollIndicator={false}>
-          {/* Mascot celebration */}
-          <Animated.View style={[s.mascotWrap, { transform: [{ scale: mascotScale }] }]}>
-            <View style={s.mascotCircle}>
-              <Text style={s.mascotEmoji}>🏆</Text>
+        {/* Top 3 */}
+        <View style={s.topSection}>
+          <Text style={s.sectionLabel}>YOUR TOP TRAITS</Text>
+          {DNA_RESULTS.slice(0, 3).map((dim, i) => (
+            <View key={dim.label} style={s.topTrait}>
+              <View style={s.traitHeader}>
+                <Text style={s.traitRank}>#{i + 1}</Text>
+                <Text style={s.traitLabel}>{dim.label}</Text>
+                <Text style={[s.traitScore, { color: dim.color }]}>{dim.score}%</Text>
+              </View>
+              <View style={s.barTrack}>
+                <View style={[s.barFill, { width: `${dim.score}%`, backgroundColor: dim.color }]} />
+              </View>
             </View>
-          </Animated.View>
+          ))}
+        </View>
 
-          <Text style={s.headline}>Your DNA is ready!</Text>
-          <Text style={s.subtext}>Here's what makes you unique</Text>
+        {/* All dimensions */}
+        <View style={s.allSection}>
+          <Text style={s.sectionLabel}>ALL DIMENSIONS</Text>
+          {DNA_RESULTS.map((dim) => (
+            <View key={dim.label} style={s.dimRow}>
+              <Text style={s.dimLabel}>{dim.label}</Text>
+              <View style={s.dimBarTrack}>
+                <View style={[s.dimBarFill, { width: `${dim.score}%`, backgroundColor: dim.color }]} />
+              </View>
+              <Text style={s.dimScore}>{dim.score}</Text>
+            </View>
+          ))}
+        </View>
 
-          {/* Top 3 dimension cards */}
-          <View style={s.dimensionsList}>
-            {TOP_DIMENSIONS.map((dim, i) => (
-              <Animated.View key={dim.id} style={[s.dimCard, { opacity: cardAnims[i] }]}>
-                <View style={s.dimHeader}>
-                  <View style={s.dimLeft}>
-                    <View style={[s.dimIconWrap, { backgroundColor: dim.color + "20" }]}>
-                      <IconSymbol name={dim.icon} size={24} color={dim.color} />
-                    </View>
-                    <Text style={s.dimName}>{dim.name}</Text>
-                  </View>
-                  <Text style={s.dimScore}>{dim.score}/10</Text>
-                </View>
-                {/* Progress bar */}
-                <View style={s.dimProgressBg}>
-                  <View style={[s.dimProgressFill, { width: `${dim.score * 10}%`, backgroundColor: dim.color }]} />
-                </View>
-                <Text style={s.dimDesc}>{dim.description}</Text>
-              </Animated.View>
-            ))}
-          </View>
+        <Pressable style={s.shareBtn}>
+          <Text style={s.shareText}>Share My DNA Card</Text>
+        </Pressable>
+      </ScrollView>
 
-          {/* CTAs */}
-          <Animated.View style={[s.ctaSection, { opacity: ctaOpacity }]}>
-            <TouchableOpacity style={s.primaryBtn} onPress={handleSeeRecommendations} activeOpacity={0.8}>
-              <Text style={s.primaryBtnText}>See My Recommendations</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity onPress={handleViewDNA} activeOpacity={0.6}>
-              <Text style={s.linkText}>View Full DNA Profile</Text>
-            </TouchableOpacity>
-          </Animated.View>
-        </ScrollView>
-      </SafeAreaView>
+      <View style={s.bottomBar}>
+        <Pressable style={s.primaryBtn}>
+          <Text style={s.primaryText}>See My Recommendations</Text>
+        </Pressable>
+      </View>
     </View>
   );
 }
 
 const s = StyleSheet.create({
-  root: { flex: 1, backgroundColor: N.bg },
-  safe: { flex: 1 },
-
+  root: { flex: 1, backgroundColor: "#111" },
   header: {
-    flexDirection: "row", alignItems: "center", justifyContent: "space-between",
-    paddingHorizontal: 20, paddingVertical: 12,
+    height: 60, flexDirection: "row", alignItems: "center",
+    paddingHorizontal: 16, borderBottomWidth: 1, borderBottomColor: "#222", marginTop: 48,
   },
-  headerTitle: { fontSize: 15, fontWeight: "600", color: N.textSec },
-
-  progressBg: { height: 4, backgroundColor: N.surface, marginHorizontal: 20 },
-  progressFill: { height: 4, borderRadius: 2 },
-
-  scroll: { paddingHorizontal: 24, paddingTop: 40, paddingBottom: 60, alignItems: "center" },
-
-  mascotWrap: { marginBottom: 24 },
-  mascotCircle: {
-    width: 100, height: 100, borderRadius: 50,
-    backgroundColor: N.surface, borderWidth: 1, borderColor: N.border,
-    alignItems: "center", justifyContent: "center",
+  headerTitle: { flex: 1, color: "#FFF", fontSize: 18, fontWeight: "600", textAlign: "center" },
+  body: { flex: 1 },
+  bodyContent: { padding: 24, paddingBottom: 100 },
+  titleBadge: {
+    flexDirection: "row", alignItems: "center", gap: 8,
+    alignSelf: "center", marginBottom: 8,
   },
-  mascotEmoji: { fontSize: 48 },
-
-  headline: {
-    fontSize: 30, fontWeight: "800", color: N.white,
-    textAlign: "center", letterSpacing: -0.5, marginBottom: 8,
+  titleEmoji: { fontSize: 28 },
+  titleText: { fontSize: 22, fontWeight: "700", color: "#FFF" },
+  subtitle: { color: "#999", fontSize: 14, textAlign: "center", marginBottom: 28 },
+  topSection: { marginBottom: 28 },
+  sectionLabel: { color: "#888", fontSize: 12, fontWeight: "600", marginBottom: 16, letterSpacing: 1 },
+  topTrait: { marginBottom: 16 },
+  traitHeader: { flexDirection: "row", alignItems: "center", gap: 8, marginBottom: 6 },
+  traitRank: { color: "#666", fontSize: 14, fontWeight: "700", width: 28 },
+  traitLabel: { flex: 1, color: "#FFF", fontSize: 16, fontWeight: "600" },
+  traitScore: { fontSize: 16, fontWeight: "700" },
+  barTrack: { height: 8, borderRadius: 4, backgroundColor: "#222" },
+  barFill: { height: 8, borderRadius: 4 },
+  allSection: { marginBottom: 24 },
+  dimRow: { flexDirection: "row", alignItems: "center", gap: 8, marginBottom: 12 },
+  dimLabel: { color: "#CCC", fontSize: 13, width: 90 },
+  dimBarTrack: { flex: 1, height: 4, borderRadius: 2, backgroundColor: "#222" },
+  dimBarFill: { height: 4, borderRadius: 2 },
+  dimScore: { color: "#888", fontSize: 13, width: 28, textAlign: "right" },
+  shareBtn: {
+    alignSelf: "center", paddingHorizontal: 20, paddingVertical: 12,
+    borderRadius: 20, backgroundColor: "#1A1A1A",
+    borderWidth: 1, borderColor: "#333",
   },
-  subtext: { fontSize: 16, color: N.textSec, textAlign: "center", marginBottom: 36 },
-
-  dimensionsList: { width: "100%", gap: 14, marginBottom: 36 },
-  dimCard: {
-    backgroundColor: N.surface, borderWidth: 1, borderColor: N.border,
-    borderRadius: 18, padding: 18,
+  shareText: { color: "#CCC", fontSize: 14 },
+  bottomBar: {
+    position: "absolute", bottom: 0, left: 0, right: 0,
+    padding: 20, paddingBottom: 36, backgroundColor: "#111",
+    borderTopWidth: 1, borderTopColor: "#222",
   },
-  dimHeader: {
-    flexDirection: "row", alignItems: "center", justifyContent: "space-between",
-    marginBottom: 12,
-  },
-  dimLeft: { flexDirection: "row", alignItems: "center", gap: 12 },
-  dimIconWrap: {
-    width: 40, height: 40, borderRadius: 12,
-    alignItems: "center", justifyContent: "center",
-  },
-  dimName: { fontSize: 18, fontWeight: "700", color: N.white },
-  dimScore: { fontSize: 22, fontWeight: "800", color: N.white },
-  dimProgressBg: { height: 6, backgroundColor: N.border, borderRadius: 3, marginBottom: 10 },
-  dimProgressFill: { height: 6, borderRadius: 3 },
-  dimDesc: { fontSize: 14, color: N.textSec, lineHeight: 20 },
-
-  ctaSection: { width: "100%", alignItems: "center", gap: 16 },
   primaryBtn: {
-    width: "100%", height: 56, borderRadius: 28,
-    backgroundColor: N.accent,
+    height: 56, borderRadius: 28, backgroundColor: "#333",
+    borderWidth: 1, borderColor: "#555",
     justifyContent: "center", alignItems: "center",
   },
-  primaryBtnText: { fontSize: 16, fontWeight: "700", color: N.white },
-  linkText: { fontSize: 14, color: N.textTer, fontWeight: "500" },
+  primaryText: { color: "#FFF", fontSize: 16, fontWeight: "600" },
 });

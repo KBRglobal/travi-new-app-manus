@@ -1,228 +1,95 @@
-/**
- * Quick DNA — Categories Screen — Neutral Wireframe
- * Spec: Step 1/4. 8 category cards (2 columns), multi-select,
- *       Continue button shows count, Skip option.
- */
-import { useState } from "react";
-import {
-  View, Text, TouchableOpacity, StyleSheet, ScrollView, Modal,
-} from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { router } from "expo-router";
-import { IconSymbol } from "@/components/ui/icon-symbol";
-import { useStore } from "@/lib/store";
+// Screen 7 — Quick DNA: Categories — STATIC WIREFRAME
+// Route: /dna/categories | Mode: Onboarding Step 3/3
+// Spec: 8 category cards, 2-col grid, multi-select (min 3), Continue with count
 
-const N = {
-  bg:       "#111111",
-  surface:  "#1A1A1A",
-  white:    "#FFFFFF",
-  textSec:  "#ABABAB",
-  textTer:  "#777777",
-  accent:   "#007AFF",
-  border:   "#333333",
-  disabled: "#444444",
-  selected: "rgba(0,122,255,0.12)",
-};
+import { View, Text, StyleSheet, Pressable, ScrollView } from "react-native";
 
-type Category = {
-  id: string;
-  label: string;
-  icon: "safari.fill" | "fork.knife" | "building.columns.fill" | "figure.climbing" | "crown.fill" | "person.3.fill" | "leaf.fill" | "bolt.fill";
-};
-
-const CATEGORIES: Category[] = [
-  { id: "explorer",    label: "Explorer",    icon: "safari.fill" },
-  { id: "foodie",      label: "Foodie",      icon: "fork.knife" },
-  { id: "culture",     label: "Culture",     icon: "building.columns.fill" },
-  { id: "adventure",   label: "Adventure",   icon: "figure.climbing" },
-  { id: "luxury",      label: "Luxury",      icon: "crown.fill" },
-  { id: "social",      label: "Social",      icon: "person.3.fill" },
-  { id: "nature",      label: "Nature",      icon: "leaf.fill" },
-  { id: "spontaneous", label: "Spontaneous", icon: "bolt.fill" },
+const CATEGORIES = [
+  { id: "adventure", emoji: "🏔️", label: "Adventure" },
+  { id: "culture", emoji: "🏛️", label: "Culture" },
+  { id: "food", emoji: "🍜", label: "Food & Dining" },
+  { id: "nightlife", emoji: "🌃", label: "Nightlife" },
+  { id: "nature", emoji: "🌿", label: "Nature" },
+  { id: "wellness", emoji: "🧘", label: "Wellness" },
+  { id: "shopping", emoji: "🛍️", label: "Shopping" },
+  { id: "family", emoji: "👨‍👩‍👧", label: "Family" },
 ];
 
+const SELECTED = ["adventure", "food"];
+
 export default function CategoriesScreen() {
-  const { dispatch } = useStore();
-  const [selected, setSelected] = useState<string[]>([]);
-  const [showExitModal, setShowExitModal] = useState(false);
-
-  const toggleCategory = (id: string) => {
-    setSelected((prev) =>
-      prev.includes(id) ? prev.filter((c) => c !== id) : [...prev, id]
-    );
-  };
-
-  const handleContinue = () => {
-    dispatch({
-      type: "UPDATE_PROFILE",
-      payload: { activityCategories: selected as any },
-    });
-    router.push({
-      pathname: "/(dna)/quick-swipe" as never,
-      params: { categories: selected.join(",") },
-    } as never);
-  };
-
-  const handleSkip = () => {
-    dispatch({ type: "SET_ONBOARDING_COMPLETED" });
-    router.replace("/(tabs)" as never);
-  };
-
   return (
     <View style={s.root}>
-      <SafeAreaView edges={["top", "bottom"]} style={s.safe}>
-        {/* Header */}
-        <View style={s.header}>
-          <TouchableOpacity style={s.backBtn} onPress={() => setShowExitModal(true)} activeOpacity={0.7}>
-            <IconSymbol name="chevron.left" size={20} color={N.textSec} />
-          </TouchableOpacity>
-          <Text style={s.headerTitle}>Step 1 of 4</Text>
-          <TouchableOpacity onPress={handleSkip} activeOpacity={0.7}>
-            <Text style={s.skipText}>Skip</Text>
-          </TouchableOpacity>
+      <View style={s.header}>
+        <Pressable style={s.backBtn}><Text style={s.backIcon}>←</Text></Pressable>
+        <Text style={s.headerTitle}>Your Interests</Text>
+        <Text style={s.stepLabel}>Step 3/3</Text>
+      </View>
+
+      <ScrollView style={s.body} contentContainerStyle={s.bodyContent}>
+        <Text style={s.instruction}>Select at least 3 categories that interest you</Text>
+
+        <View style={s.grid}>
+          {CATEGORIES.map((cat) => {
+            const sel = SELECTED.includes(cat.id);
+            return (
+              <Pressable key={cat.id} style={[s.card, sel && s.cardSelected]}>
+                <Text style={s.cardEmoji}>{cat.emoji}</Text>
+                <Text style={[s.cardLabel, sel && s.cardLabelSel]}>{cat.label}</Text>
+                {sel && <View style={s.checkBadge}><Text style={s.checkIcon}>✓</Text></View>}
+              </Pressable>
+            );
+          })}
         </View>
+      </ScrollView>
 
-        {/* Progress bar */}
-        <View style={s.progressBg}>
-          <View style={[s.progressFill, { width: "25%" }]} />
-        </View>
-
-        <ScrollView contentContainerStyle={s.scroll} showsVerticalScrollIndicator={false}>
-          <Text style={s.title}>What drives your travels?</Text>
-          <Text style={s.subtitle}>Select all that apply</Text>
-          <Text style={s.hint}>Select 3-5 for best results</Text>
-
-          {/* Category grid */}
-          <View style={s.grid}>
-            {CATEGORIES.map((cat) => {
-              const isSelected = selected.includes(cat.id);
-              return (
-                <TouchableOpacity
-                  key={cat.id}
-                  style={[s.card, isSelected && s.cardSelected]}
-                  onPress={() => toggleCategory(cat.id)}
-                  activeOpacity={0.7}
-                >
-                  <View style={s.cardHeader}>
-                    <IconSymbol name={cat.icon} size={28} color={isSelected ? N.accent : N.textSec} />
-                    {isSelected && (
-                      <IconSymbol name="checkmark.circle.fill" size={20} color={N.accent} />
-                    )}
-                  </View>
-                  <Text style={[s.cardLabel, isSelected && s.cardLabelSelected]}>
-                    {cat.label}
-                  </Text>
-                </TouchableOpacity>
-              );
-            })}
-          </View>
-        </ScrollView>
-
-        {/* Fixed bottom */}
-        <View style={s.bottomBar}>
-          <TouchableOpacity
-            style={[s.continueBtn, selected.length === 0 && s.continueBtnDisabled]}
-            onPress={handleContinue}
-            activeOpacity={0.8}
-            disabled={selected.length === 0}
-          >
-            <Text style={[s.continueText, selected.length === 0 && s.continueTextDim]}>
-              {selected.length > 0 ? `Continue (${selected.length} selected)` : "Select at least 1"}
-            </Text>
-          </TouchableOpacity>
-        </View>
-
-        {/* Exit modal */}
-        <Modal visible={showExitModal} transparent animationType="fade">
-          <View style={s.modalOverlay}>
-            <View style={s.modalContent}>
-              <Text style={s.modalTitle}>Exit DNA Setup?</Text>
-              <Text style={s.modalMessage}>Your progress will be lost.</Text>
-              <View style={s.modalActions}>
-                <TouchableOpacity style={s.modalCancel} onPress={() => setShowExitModal(false)} activeOpacity={0.7}>
-                  <Text style={s.modalCancelText}>Continue</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={s.modalConfirm} onPress={() => { setShowExitModal(false); router.back(); }} activeOpacity={0.8}>
-                  <Text style={s.modalConfirmText}>Exit</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-          </View>
-        </Modal>
-      </SafeAreaView>
+      <View style={s.bottomBar}>
+        <Pressable style={[s.primaryBtn, { opacity: 0.4 }]}>
+          <Text style={s.primaryText}>Continue (2/3 min)</Text>
+        </Pressable>
+      </View>
     </View>
   );
 }
 
 const s = StyleSheet.create({
-  root: { flex: 1, backgroundColor: N.bg },
-  safe: { flex: 1 },
-
+  root: { flex: 1, backgroundColor: "#111" },
   header: {
-    flexDirection: "row", alignItems: "center", justifyContent: "space-between",
-    paddingHorizontal: 20, paddingVertical: 12,
+    height: 60, flexDirection: "row", alignItems: "center",
+    paddingHorizontal: 16, borderBottomWidth: 1, borderBottomColor: "#222", marginTop: 48,
   },
-  backBtn: {
-    width: 40, height: 40, borderRadius: 12,
-    backgroundColor: N.surface, borderWidth: 1, borderColor: N.border,
-    alignItems: "center", justifyContent: "center",
-  },
-  headerTitle: { fontSize: 15, fontWeight: "600", color: N.textSec },
-  skipText: { fontSize: 14, fontWeight: "500", color: N.textTer },
-
-  progressBg: { height: 4, backgroundColor: N.surface, marginHorizontal: 20 },
-  progressFill: { height: 4, backgroundColor: N.accent, borderRadius: 2 },
-
-  scroll: { paddingHorizontal: 24, paddingTop: 28, paddingBottom: 120 },
-
-  title: { fontSize: 28, fontWeight: "800", color: N.white, letterSpacing: -0.5, marginBottom: 8 },
-  subtitle: { fontSize: 16, color: N.textSec, marginBottom: 4 },
-  hint: { fontSize: 13, color: N.textTer, marginBottom: 28 },
-
+  backBtn: { width: 44, height: 44, justifyContent: "center" },
+  backIcon: { color: "#FFF", fontSize: 20 },
+  headerTitle: { flex: 1, color: "#FFF", fontSize: 18, fontWeight: "600", textAlign: "center" },
+  stepLabel: { color: "#888", fontSize: 13 },
+  body: { flex: 1 },
+  bodyContent: { padding: 20, paddingBottom: 100 },
+  instruction: { color: "#999", fontSize: 14, textAlign: "center", marginBottom: 20 },
   grid: { flexDirection: "row", flexWrap: "wrap", gap: 12 },
   card: {
-    width: "47%",
-    aspectRatio: 1.1,
-    backgroundColor: N.surface,
-    borderWidth: 1, borderColor: N.border,
-    borderRadius: 16, padding: 16,
-    justifyContent: "space-between",
+    width: "47%", aspectRatio: 1.2, borderRadius: 16,
+    backgroundColor: "#1A1A1A", borderWidth: 1, borderColor: "#333",
+    justifyContent: "center", alignItems: "center", gap: 8,
   },
-  cardSelected: { borderColor: N.accent, borderWidth: 2, backgroundColor: N.selected },
-  cardHeader: { flexDirection: "row", justifyContent: "space-between", alignItems: "flex-start" },
-  cardLabel: { fontSize: 16, fontWeight: "700", color: N.white },
-  cardLabelSelected: { color: N.accent },
-
+  cardSelected: { borderColor: "#666", backgroundColor: "#222" },
+  cardEmoji: { fontSize: 36 },
+  cardLabel: { color: "#CCC", fontSize: 14, fontWeight: "500" },
+  cardLabelSel: { color: "#FFF", fontWeight: "600" },
+  checkBadge: {
+    position: "absolute", top: 10, right: 10,
+    width: 24, height: 24, borderRadius: 12,
+    backgroundColor: "#555", justifyContent: "center", alignItems: "center",
+  },
+  checkIcon: { color: "#FFF", fontSize: 14, fontWeight: "700" },
   bottomBar: {
-    paddingHorizontal: 20, paddingTop: 12, paddingBottom: 20,
-    borderTopWidth: 1, borderTopColor: N.border, backgroundColor: N.bg,
+    position: "absolute", bottom: 0, left: 0, right: 0,
+    padding: 20, paddingBottom: 36, backgroundColor: "#111",
+    borderTopWidth: 1, borderTopColor: "#222",
   },
-  continueBtn: {
-    height: 56, borderRadius: 28, backgroundColor: N.accent,
+  primaryBtn: {
+    height: 56, borderRadius: 28, backgroundColor: "#333",
+    borderWidth: 1, borderColor: "#555",
     justifyContent: "center", alignItems: "center",
   },
-  continueBtnDisabled: { backgroundColor: N.disabled },
-  continueText: { fontSize: 16, fontWeight: "700", color: N.white },
-  continueTextDim: { color: N.textTer },
-
-  // Modal
-  modalOverlay: {
-    flex: 1, backgroundColor: "rgba(0,0,0,0.7)",
-    justifyContent: "center", alignItems: "center", padding: 32,
-  },
-  modalContent: { width: "100%", backgroundColor: N.surface, borderRadius: 20, padding: 24 },
-  modalTitle: { fontSize: 20, fontWeight: "700", color: N.white, textAlign: "center", marginBottom: 8 },
-  modalMessage: { fontSize: 15, color: N.textSec, textAlign: "center", marginBottom: 24 },
-  modalActions: { flexDirection: "row", gap: 12 },
-  modalCancel: {
-    flex: 1, height: 48, borderRadius: 24,
-    backgroundColor: N.bg, borderWidth: 1, borderColor: N.border,
-    justifyContent: "center", alignItems: "center",
-  },
-  modalCancelText: { color: N.textSec, fontSize: 15, fontWeight: "600" },
-  modalConfirm: {
-    flex: 1, height: 48, borderRadius: 24, backgroundColor: "#FF6B6B",
-    justifyContent: "center", alignItems: "center",
-  },
-  modalConfirmText: { color: N.white, fontSize: 15, fontWeight: "700" },
+  primaryText: { color: "#FFF", fontSize: 16, fontWeight: "600" },
 });

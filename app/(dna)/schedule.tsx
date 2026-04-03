@@ -1,178 +1,98 @@
-/**
- * Quick DNA — Schedule Screen — Neutral Wireframe
- * Spec: Step 3/4. Single-select radio: travel timeline.
- *       4 options, Continue when selected.
- */
-import { useState } from "react";
-import {
-  View, Text, TouchableOpacity, StyleSheet,
-} from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { router } from "expo-router";
-import { IconSymbol } from "@/components/ui/icon-symbol";
-import { useStore } from "@/lib/store";
+// Screen 9 — Quick DNA: Schedule — STATIC WIREFRAME
+// Route: /dna/schedule | Mode: Onboarding
+// Spec: 4 radio options for travel timeline, Continue CTA
 
-const N = {
-  bg:       "#111111",
-  surface:  "#1A1A1A",
-  white:    "#FFFFFF",
-  textSec:  "#ABABAB",
-  textTer:  "#777777",
-  accent:   "#007AFF",
-  border:   "#333333",
-  disabled: "#444444",
-  selected: "rgba(0,122,255,0.12)",
-};
+import { View, Text, StyleSheet, Pressable, ScrollView } from "react-native";
 
-type ScheduleOption = {
-  id: string;
-  label: string;
-  icon: "calendar" | "clock.fill" | "clock" | "safari.fill";
-};
-
-const OPTIONS: ScheduleOption[] = [
-  { id: "now",       label: "I'm planning now",  icon: "calendar" },
-  { id: "1-3months", label: "In 1-3 months",     icon: "clock.fill" },
-  { id: "3-6months", label: "In 3-6 months",     icon: "clock" },
-  { id: "browsing",  label: "Just browsing",      icon: "safari.fill" },
+const OPTIONS = [
+  { id: "soon", label: "Within 2 weeks", desc: "I'm ready to go!" },
+  { id: "month", label: "Within a month", desc: "Planning ahead" },
+  { id: "quarter", label: "In 2-3 months", desc: "Taking my time" },
+  { id: "exploring", label: "Just exploring", desc: "No specific plans yet" },
 ];
 
+const SELECTED = "month";
+
 export default function ScheduleScreen() {
-  const { dispatch } = useStore();
-  const [selected, setSelected] = useState<string | null>(null);
-
-  const handleContinue = () => {
-    if (!selected) return;
-    // Save timeline preference
-    dispatch({
-      type: "UPDATE_PROFILE",
-      payload: { tripPace: selected === "now" ? "full" : selected === "browsing" ? "slow" : "balanced" },
-    });
-    router.push("/(dna)/summary" as never);
-  };
-
-  const handleSkip = () => {
-    dispatch({ type: "SET_ONBOARDING_COMPLETED" });
-    router.replace("/(tabs)" as never);
-  };
-
   return (
     <View style={s.root}>
-      <SafeAreaView edges={["top", "bottom"]} style={s.safe}>
-        {/* Header */}
-        <View style={s.header}>
-          <TouchableOpacity style={s.backBtn} onPress={() => router.back()} activeOpacity={0.7}>
-            <IconSymbol name="chevron.left" size={20} color={N.textSec} />
-          </TouchableOpacity>
-          <Text style={s.headerTitle}>Step 3 of 4</Text>
-          <TouchableOpacity onPress={handleSkip} activeOpacity={0.7}>
-            <Text style={s.skipText}>Skip</Text>
-          </TouchableOpacity>
-        </View>
+      <View style={s.header}>
+        <Pressable style={s.backBtn}><Text style={s.backIcon}>←</Text></Pressable>
+        <Text style={s.headerTitle}>Travel Timeline</Text>
+        <View style={{ width: 44 }} />
+      </View>
 
-        {/* Progress bar */}
-        <View style={s.progressBg}>
-          <View style={[s.progressFill, { width: "75%" }]} />
-        </View>
+      <ScrollView style={s.body} contentContainerStyle={s.bodyContent}>
+        <Text style={s.title}>When are you planning to travel?</Text>
+        <Text style={s.subtitle}>This helps us prioritize your recommendations</Text>
 
-        <View style={s.content}>
-          <Text style={s.title}>When do you usually travel?</Text>
-          <Text style={s.subtitle}>This helps us time recommendations</Text>
-
-          <View style={s.optionsList}>
-            {OPTIONS.map((opt) => {
-              const isSelected = selected === opt.id;
-              return (
-                <TouchableOpacity
-                  key={opt.id}
-                  style={[s.optionCard, isSelected && s.optionCardSelected]}
-                  onPress={() => setSelected(opt.id)}
-                  activeOpacity={0.7}
-                >
-                  <View style={s.optionLeft}>
-                    <IconSymbol name={opt.icon} size={22} color={isSelected ? N.accent : N.textSec} />
-                    <Text style={[s.optionLabel, isSelected && s.optionLabelSelected]}>
-                      {opt.label}
-                    </Text>
-                  </View>
-                  <View style={[s.radio, isSelected && s.radioSelected]}>
-                    {isSelected && <View style={s.radioDot} />}
-                  </View>
-                </TouchableOpacity>
-              );
-            })}
-          </View>
+        <View style={s.optionsList}>
+          {OPTIONS.map((opt) => {
+            const sel = opt.id === SELECTED;
+            return (
+              <Pressable key={opt.id} style={[s.option, sel && s.optionSelected]}>
+                <View style={[s.radio, sel && s.radioSel]}>
+                  {sel && <View style={s.radioDot} />}
+                </View>
+                <View style={s.optionContent}>
+                  <Text style={[s.optionLabel, sel && s.optionLabelSel]}>{opt.label}</Text>
+                  <Text style={s.optionDesc}>{opt.desc}</Text>
+                </View>
+              </Pressable>
+            );
+          })}
         </View>
+      </ScrollView>
 
-        {/* Fixed bottom */}
-        <View style={s.bottomBar}>
-          <TouchableOpacity
-            style={[s.continueBtn, !selected && s.continueBtnDisabled]}
-            onPress={handleContinue}
-            activeOpacity={0.8}
-            disabled={!selected}
-          >
-            <Text style={[s.continueText, !selected && s.continueTextDim]}>Continue</Text>
-          </TouchableOpacity>
-        </View>
-      </SafeAreaView>
+      <View style={s.bottomBar}>
+        <Pressable style={s.primaryBtn}>
+          <Text style={s.primaryText}>Continue</Text>
+        </Pressable>
+      </View>
     </View>
   );
 }
 
 const s = StyleSheet.create({
-  root: { flex: 1, backgroundColor: N.bg },
-  safe: { flex: 1 },
-
+  root: { flex: 1, backgroundColor: "#111" },
   header: {
-    flexDirection: "row", alignItems: "center", justifyContent: "space-between",
-    paddingHorizontal: 20, paddingVertical: 12,
+    height: 60, flexDirection: "row", alignItems: "center",
+    paddingHorizontal: 16, borderBottomWidth: 1, borderBottomColor: "#222", marginTop: 48,
   },
-  backBtn: {
-    width: 40, height: 40, borderRadius: 12,
-    backgroundColor: N.surface, borderWidth: 1, borderColor: N.border,
-    alignItems: "center", justifyContent: "center",
-  },
-  headerTitle: { fontSize: 15, fontWeight: "600", color: N.textSec },
-  skipText: { fontSize: 14, fontWeight: "500", color: N.textTer },
-
-  progressBg: { height: 4, backgroundColor: N.surface, marginHorizontal: 20 },
-  progressFill: { height: 4, backgroundColor: N.accent, borderRadius: 2 },
-
-  content: { flex: 1, paddingHorizontal: 24, paddingTop: 32 },
-
-  title: { fontSize: 28, fontWeight: "800", color: N.white, letterSpacing: -0.5, marginBottom: 8 },
-  subtitle: { fontSize: 16, color: N.textSec, marginBottom: 32 },
-
+  backBtn: { width: 44, height: 44, justifyContent: "center" },
+  backIcon: { color: "#FFF", fontSize: 20 },
+  headerTitle: { flex: 1, color: "#FFF", fontSize: 18, fontWeight: "600", textAlign: "center" },
+  body: { flex: 1 },
+  bodyContent: { padding: 24, paddingBottom: 100 },
+  title: { fontSize: 24, fontWeight: "700", color: "#FFF", marginBottom: 8 },
+  subtitle: { fontSize: 15, color: "#999", marginBottom: 28 },
   optionsList: { gap: 12 },
-  optionCard: {
-    flexDirection: "row", alignItems: "center", justifyContent: "space-between",
-    height: 64, borderRadius: 16,
-    backgroundColor: N.surface, borderWidth: 1, borderColor: N.border,
-    paddingHorizontal: 20,
+  option: {
+    flexDirection: "row", alignItems: "center", gap: 16,
+    padding: 16, borderRadius: 16, backgroundColor: "#1A1A1A",
+    borderWidth: 1, borderColor: "#333",
   },
-  optionCardSelected: { borderColor: N.accent, borderWidth: 2, backgroundColor: N.selected },
-  optionLeft: { flexDirection: "row", alignItems: "center", gap: 16 },
-  optionLabel: { fontSize: 16, fontWeight: "600", color: N.white },
-  optionLabelSelected: { color: N.accent },
-
+  optionSelected: { borderColor: "#666", backgroundColor: "#222" },
   radio: {
     width: 24, height: 24, borderRadius: 12,
-    borderWidth: 2, borderColor: N.textTer,
-    alignItems: "center", justifyContent: "center",
-  },
-  radioSelected: { borderColor: N.accent },
-  radioDot: { width: 12, height: 12, borderRadius: 6, backgroundColor: N.accent },
-
-  bottomBar: {
-    paddingHorizontal: 20, paddingTop: 12, paddingBottom: 20,
-    borderTopWidth: 1, borderTopColor: N.border, backgroundColor: N.bg,
-  },
-  continueBtn: {
-    height: 56, borderRadius: 28, backgroundColor: N.accent,
+    borderWidth: 2, borderColor: "#555",
     justifyContent: "center", alignItems: "center",
   },
-  continueBtnDisabled: { backgroundColor: N.disabled },
-  continueText: { fontSize: 16, fontWeight: "700", color: N.white },
-  continueTextDim: { color: N.textTer },
+  radioSel: { borderColor: "#888" },
+  radioDot: { width: 12, height: 12, borderRadius: 6, backgroundColor: "#888" },
+  optionContent: { flex: 1 },
+  optionLabel: { color: "#CCC", fontSize: 16, fontWeight: "600" },
+  optionLabelSel: { color: "#FFF" },
+  optionDesc: { color: "#777", fontSize: 13, marginTop: 2 },
+  bottomBar: {
+    position: "absolute", bottom: 0, left: 0, right: 0,
+    padding: 20, paddingBottom: 36, backgroundColor: "#111",
+    borderTopWidth: 1, borderTopColor: "#222",
+  },
+  primaryBtn: {
+    height: 56, borderRadius: 28, backgroundColor: "#333",
+    borderWidth: 1, borderColor: "#555",
+    justifyContent: "center", alignItems: "center",
+  },
+  primaryText: { color: "#FFF", fontSize: 16, fontWeight: "600" },
 });

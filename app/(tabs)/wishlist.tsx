@@ -1,129 +1,86 @@
-/**
- * TRAVI — Wishlist (Saved Destinations & Experiences)
- */
-import { router } from "expo-router";
-import React, { useState } from "react";
-import { FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
+// Screen 17 — Wishlist — STATIC WIREFRAME
+// Route: /(tabs)/wishlist | Mode: Universal
+// Spec: Header 60px + Sort, Filter chips, 2-col grid (3:4 ratio), Remove confirm + undo toast, Empty state
 
-type WishItem = { id: string; type: "destination" | "hotel" | "experience"; title: string; subtitle: string; price?: string; cashback?: string; image: number; saved: boolean };
+import { View, Text, StyleSheet, Pressable, ScrollView } from "react-native";
 
-const INITIAL_ITEMS: WishItem[] = [
-  { id: "1", type: "destination", title: "Bali, Indonesia", subtitle: "Tropical paradise · 14 days", price: "from $1,200", cashback: "8% cashback", image: require("@/assets/destinations/bali.jpg"), saved: true },
-  { id: "2", type: "destination", title: "Kyoto, Japan", subtitle: "Culture & temples · 10 days", price: "from $2,100", cashback: "6% cashback", image: require("@/assets/destinations/kyoto.jpg"), saved: true },
-  { id: "3", type: "hotel", title: "Burj Al Arab", subtitle: "Dubai · 7-star · 3 nights", price: "AED 8,500/night", cashback: "12% cashback", image: require("@/assets/destinations/dubai.jpg"), saved: true },
-  { id: "4", type: "destination", title: "Santorini, Greece", subtitle: "Romantic getaway · 7 days", price: "from $1,800", cashback: "7% cashback", image: require("@/assets/destinations/santorini.jpg"), saved: true },
-  { id: "5", type: "experience", title: "Maldives Overwater Villa", subtitle: "Maldives · 5 nights", price: "from $3,200", cashback: "10% cashback", image: require("@/assets/destinations/maldives.jpg"), saved: true },
-  { id: "6", type: "destination", title: "Barcelona, Spain", subtitle: "Architecture & food · 8 days", price: "from $1,400", cashback: "6% cashback", image: require("@/assets/destinations/barcelona.jpg"), saved: true },
+const FILTERS = ["All", "Destinations", "Activities", "Hotels"];
+
+const ITEMS = [
+  { id: "1", title: "Bali, Indonesia", type: "Destination", match: 96, price: "€850" },
+  { id: "2", title: "Tokyo, Japan", type: "Destination", match: 97, price: "€1,200" },
+  { id: "3", title: "Burj Khalifa Tour", type: "Activity", match: 94, price: "€45" },
+  { id: "4", title: "Paris, France", type: "Destination", match: 92, price: "€650" },
+  { id: "5", title: "Desert Safari", type: "Activity", match: 88, price: "€120" },
+  { id: "6", title: "Ritz Paris", type: "Hotel", match: 95, price: "€450/night" },
 ];
 
-const FILTERS = ["All", "Destinations", "Hotels", "Experiences"];
-const TYPE_MAP: Record<string, string> = { "Destinations": "destination", "Hotels": "hotel", "Experiences": "experience" };
-
 export default function WishlistScreen() {
-  const insets = useSafeAreaInsets();
-  const [items, setItems] = useState(INITIAL_ITEMS);
-  const [filter, setFilter] = useState("All");
-
-  const filtered = filter === "All" ? items : items.filter((i) => i.type === TYPE_MAP[filter]);
-
-  const unsave = (id: string) => setItems((prev) => prev.filter((i) => i.id !== id));
-
   return (
-    <View style={[S.container, { paddingTop: insets.top }]}>
-      <View style={S.header}>
-        <TouchableOpacity onPress={() => router.back()} style={S.backBtn} activeOpacity={0.7}>
-          <Text style={S.backText}>←</Text>
-        </TouchableOpacity>
-        <Text style={S.headerTitle}>Wishlist</Text>
-        <Text style={S.headerCount}>{items.length}</Text>
+    <View style={s.root}>
+      {/* Header — 60px */}
+      <View style={s.header}>
+        <Text style={s.headerTitle}>Wishlist</Text>
+        <Pressable style={s.sortBtn}><Text style={s.sortText}>Sort ↕</Text></Pressable>
       </View>
 
-      {/* Filters */}
-      <View style={S.filterRow}>
-        {FILTERS.map((f) => (
-          <TouchableOpacity key={f} style={[S.filterChip, filter === f && S.filterChipActive]} onPress={() => setFilter(f)} activeOpacity={0.8}>
-            <Text style={[S.filterText, filter === f && S.filterTextActive]}>{f}</Text>
-          </TouchableOpacity>
+      {/* Filter chips */}
+      <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={s.filterRow}>
+        {FILTERS.map((f, i) => (
+          <Pressable key={f} style={[s.filterChip, i === 0 && s.filterActive]}>
+            <Text style={[s.filterText, i === 0 && s.filterTextActive]}>{f}</Text>
+          </Pressable>
         ))}
-      </View>
+      </ScrollView>
 
-      <FlatList
-        data={filtered}
-        keyExtractor={(item) => item.id}
-        contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 130, gap: 14 }}
-        showsVerticalScrollIndicator={false}
-        ListEmptyComponent={
-          <View style={S.empty}>
-            <Text style={S.emptyEmoji}>💔</Text>
-            <Text style={S.emptyTitle}>Nothing saved here yet</Text>
-            <Text style={S.emptyDesc}>Tap the heart on any destination or hotel to save it</Text>
-            <TouchableOpacity style={S.emptyBtn} onPress={() => router.push("/(tabs)/explore" as never)} activeOpacity={0.88}>
-              <Text style={S.emptyBtnText}>Explore Destinations</Text>
-            </TouchableOpacity>
-          </View>
-        }
-        renderItem={({ item }) => (
-          <View style={S.card}>
-            <Image source={item.image} style={S.cardImage} resizeMode="cover" />
-            <View style={S.cardOverlay} />
-            <View style={S.cardTypeBadge}>
-              <Text style={S.cardTypeText}>{item.type === "destination" ? "🌍" : item.type === "hotel" ? "🏨" : "✨"} {item.type}</Text>
+      {/* 2-col grid */}
+      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={s.grid}>
+        {ITEMS.map((item) => (
+          <Pressable key={item.id} style={s.card}>
+            <View style={s.cardImage}>
+              <Text style={s.imgPlaceholder}>📷</Text>
+              <Pressable style={s.heartBtn}><Text style={s.heartText}>♥</Text></Pressable>
             </View>
-            <TouchableOpacity style={S.unsaveBtn} onPress={() => unsave(item.id)} activeOpacity={0.8}>
-              <Text style={S.unsaveBtnText}>❤️</Text>
-            </TouchableOpacity>
-            <View style={S.cardBody}>
-              <Text style={S.cardTitle}>{item.title}</Text>
-              <Text style={S.cardSub}>{item.subtitle}</Text>
-              <View style={S.cardBottom}>
-                <View>
-                  <Text style={S.cardPrice}>{item.price}</Text>
-                  {item.cashback && <Text style={S.cardCashback}>{item.cashback}</Text>}
-                </View>
-                <TouchableOpacity style={S.planBtn} onPress={() => router.push("/(tabs)/plan" as never)} activeOpacity={0.88}>
-                  <Text style={S.planBtnText}>Plan Trip →</Text>
-                </TouchableOpacity>
+            <View style={s.cardBody}>
+              <Text style={s.cardTitle} numberOfLines={1}>{item.title}</Text>
+              <Text style={s.cardType}>{item.type}</Text>
+              <View style={s.cardFooter}>
+                <Text style={s.cardMatch}>{item.match}% Match</Text>
+                <Text style={s.cardPrice}>{item.price}</Text>
               </View>
             </View>
-          </View>
-        )}
-      />
+          </Pressable>
+        ))}
+      </ScrollView>
     </View>
   );
 }
 
-const S = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#0D0628" },
-  header: { flexDirection: "row", alignItems: "center", paddingHorizontal: 20, paddingBottom: 16, gap: 12 },
-  backBtn: { width: 36, height: 36, borderRadius: 18, backgroundColor: "rgba(255,255,255,0.06)", alignItems: "center", justifyContent: "center" },
-  backText: { color: "#FFFFFF", fontSize: 18, fontWeight: "700", fontFamily: "Chillax-Semibold" },
-  headerTitle: { flex: 1, color: "#FFFFFF", fontSize: 22, fontWeight: "900", fontFamily: "Chillax-Bold" },
-  headerCount: { color: "#A78BFA", fontSize: 16, fontWeight: "900", fontFamily: "Chillax-Bold" },
-  filterRow: { flexDirection: "row", paddingHorizontal: 20, gap: 8, marginBottom: 16 },
-  filterChip: { paddingHorizontal: 14, paddingVertical: 7, borderRadius: 20, backgroundColor: "rgba(255,255,255,0.06)", borderWidth: 1, borderColor: "rgba(255,255,255,0.12)" },
-  filterChipActive: { backgroundColor: "rgba(100,67,244,0.2)", borderColor: "rgba(100,67,244,0.4)" },
-  filterText: { color: "rgba(255,255,255,0.5)", fontSize: 12, fontWeight: "700" },
-  filterTextActive: { color: "#FFFFFF" },
-  card: { borderRadius: 18, overflow: "hidden", height: 200 },
-  cardImage: { position: "absolute", top: 0, left: 0, right: 0, bottom: 0, width: "100%", height: "100%" },
-  cardOverlay: { position: "absolute", top: 0, left: 0, right: 0, bottom: 0, backgroundColor: "rgba(0,0,0,0.4)" },
-  cardTypeBadge: { position: "absolute", top: 12, left: 12, backgroundColor: "rgba(0,0,0,0.5)", borderRadius: 8, paddingHorizontal: 8, paddingVertical: 4 },
-  cardTypeText: { color: "#FFFFFF", fontSize: 11, fontWeight: "700", textTransform: "capitalize" },
-  unsaveBtn: { position: "absolute", top: 10, right: 12 },
-  unsaveBtnText: { fontSize: 22 },
-  cardBody: { position: "absolute", bottom: 0, left: 0, right: 0, padding: 18 },
-  cardTitle: { color: "#FFFFFF", fontSize: 18, fontWeight: "900", fontFamily: "Chillax-Bold" },
-  cardSub: { color: "rgba(255,255,255,0.6)", fontSize: 12, marginBottom: 8 },
-  cardBottom: { flexDirection: "row", alignItems: "flex-end", justifyContent: "space-between" },
-  cardPrice: { color: "#FFFFFF", fontSize: 14, fontWeight: "800", fontFamily: "Chillax-Bold" },
-  cardCashback: { color: "#22C55E", fontSize: 11, fontWeight: "700" },
-  planBtn: { backgroundColor: "rgba(100,67,244,0.85)", borderRadius: 10, paddingHorizontal: 14, paddingVertical: 8, shadowColor: "#F94498", shadowOffset: { width: 0, height: 6 }, shadowOpacity: 0.4, shadowRadius: 24, elevation: 10 },
-  planBtnText: { color: "#FFFFFF", fontSize: 12, fontWeight: "900", fontFamily: "Chillax-Bold" },
-  empty: { paddingTop: 60, alignItems: "center", gap: 12 },
-  emptyEmoji: { fontSize: 48 },
-  emptyTitle: { color: "#FFFFFF", fontSize: 18, fontWeight: "900", fontFamily: "Chillax-Bold" },
-  emptyDesc: { color: "rgba(255,255,255,0.5)", fontSize: 14, textAlign: "center", paddingHorizontal: 40, fontFamily: "Satoshi-Regular" },
-  emptyBtn: { marginTop: 8, borderRadius: 12, backgroundColor: "#6443F4", paddingHorizontal: 24, paddingVertical: 12 },
-  emptyBtnText: { color: "#FFFFFF", fontSize: 14, fontWeight: "900", fontFamily: "Chillax-Bold" },
+const s = StyleSheet.create({
+  root: { flex: 1, backgroundColor: "#111" },
+  header: {
+    height: 60, flexDirection: "row", alignItems: "center",
+    justifyContent: "space-between", paddingHorizontal: 20, marginTop: 48,
+    borderBottomWidth: 1, borderBottomColor: "#222",
+  },
+  headerTitle: { color: "#FFF", fontSize: 20, fontWeight: "700" },
+  sortBtn: { paddingHorizontal: 12, paddingVertical: 6, borderRadius: 8, backgroundColor: "#1A1A1A", borderWidth: 1, borderColor: "#333" },
+  sortText: { color: "#CCC", fontSize: 13 },
+  filterRow: { paddingHorizontal: 20, paddingVertical: 12, gap: 8 },
+  filterChip: { paddingHorizontal: 16, paddingVertical: 8, borderRadius: 16, backgroundColor: "#1A1A1A", borderWidth: 1, borderColor: "#333" },
+  filterActive: { backgroundColor: "#333", borderColor: "#666" },
+  filterText: { color: "#888", fontSize: 13 },
+  filterTextActive: { color: "#FFF", fontWeight: "600" },
+  grid: { flexDirection: "row", flexWrap: "wrap", paddingHorizontal: 16, gap: 12, paddingBottom: 100 },
+  card: { width: "47%", borderRadius: 12, backgroundColor: "#1A1A1A", borderWidth: 1, borderColor: "#333", overflow: "hidden" },
+  cardImage: { aspectRatio: 3 / 4, backgroundColor: "#222", justifyContent: "center", alignItems: "center" },
+  imgPlaceholder: { fontSize: 32, opacity: 0.3 },
+  heartBtn: { position: "absolute", top: 8, right: 8, width: 32, height: 32, borderRadius: 16, backgroundColor: "rgba(0,0,0,0.5)", justifyContent: "center", alignItems: "center" },
+  heartText: { color: "#FF3B30", fontSize: 16 },
+  cardBody: { padding: 10, gap: 2 },
+  cardTitle: { color: "#FFF", fontSize: 14, fontWeight: "600" },
+  cardType: { color: "#888", fontSize: 11 },
+  cardFooter: { flexDirection: "row", justifyContent: "space-between", marginTop: 4 },
+  cardMatch: { color: "#888", fontSize: 11 },
+  cardPrice: { color: "#FFF", fontSize: 12, fontWeight: "600" },
 });
