@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, FlatList, Dimensions, Platform } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { router } from "expo-router";
@@ -8,6 +8,8 @@ import { IconSymbol } from "@/components/ui/icon-symbol";
 import { useStore, Trip } from "@/lib/store";
 import * as Haptics from "expo-haptics";
 import { AgentFAB } from "@/components/agent-fab";
+import { trpc } from "@/lib/trpc";
+import { useAuth } from "@/hooks/use-auth";
 
 const { width } = Dimensions.get("window");
 
@@ -221,20 +223,49 @@ function TripCard({ trip, onPress }: { trip: Trip; onPress: () => void }) {
   );
 }
 
+// Convert a DB trip row to the local Trip type used by TripCard
+type DbTrip = { id: number; destination: string; country: string | null; startDate: string | null; endDate: string | null; status: string; budget: number | null; currency: string | null };
+function dbTripToLocal(t: DbTrip): Trip {
+  const statusMap: Record<string, Trip["status"]> = { planning: "draft", booked: "upcoming", active: "active", completed: "completed" };
+  return {
+    id: String(t.id),
+    destination: t.destination,
+    country: t.country ?? "",
+    startDate: t.startDate ?? "",
+    endDate: t.endDate ?? "",
+    travelers: 1,
+    budget: "mid-range",
+    status: statusMap[t.status] ?? "draft",
+    interests: [],
+    landmarks: [],
+    itinerary: [],
+    totalCost: t.budget ?? 0,
+    pointsEarned: Math.round((t.budget ?? 0) * 0.05),
+  };
+}
+
 export default function TripsScreen() {
   const { state } = useStore();
   const insets = useSafeAreaInsets();
+  const { isAuthenticated } = useAuth();
   const [filter, setFilter] = useState<"all" | "upcoming" | "completed">("all");
 
-  const allTrips = state.trips.length > 0 ? state.trips : MOCK_TRIPS;
-  const filtered = filter === "all" ? allTrips : allTrips.filter((t) => {
+  // ── Real DB data via tRPC ────────────────────────────────────────────────────
+  const { data: dbTripsRaw } = trpc.trips.list.useQuery(undefined, {
+    enabled: isAuthenticated,
+    staleTime: 60_000,
+  });
+  const dbTrips = useMemo(() => (dbTripsRaw ?? []).map((t: DbTrip) => dbTripToLocal(t)), [dbTripsRaw]);
+
+  // Use DB trips if available, fall back to store trips, then mock trips
+  const allTrips = dbTrips.length > 0 ? dbTrips : state.trips.length > 0 ? state.trips : MOCK_TRIPS;
+  const filtered = filter === "all" ? allTrips : allTrips.filter((t: Trip) => {
     if (filter === "upcoming") return t.status === "upcoming" || t.status === "active" || t.status === "draft";
     return t.status === "completed";
   });
-
-  const upcomingCount = allTrips.filter((t) => t.status === "upcoming" || t.status === "active").length;
-  const completedCount = allTrips.filter((t) => t.status === "completed").length;
-  const totalPoints = allTrips.reduce((sum, t) => sum + (t.pointsEarned || 0), 0);
+  const upcomingCount = allTrips.filter((t: Trip) => t.status === "upcoming" || t.status === "active").length;
+  const completedCount = allTrips.filter((t: Trip) => t.status === "completed").length;
+  const totalPoints = allTrips.reduce((sum: number, t: Trip) => sum + (t.pointsEarned || 0), 0);
 
   return (
     <View style={styles.container}>
@@ -282,7 +313,7 @@ export default function TripsScreen() {
 
             {/* Weather + Countdown for next upcoming trip */}
             {(() => {
-              const nextTrip = allTrips.find((t) => t.status === "upcoming" || t.status === "active");
+              const nextTrip = allTrips.find((t: Trip) => t.status === "upcoming" || t.status === "active");
               return nextTrip ? <WeatherCountdownWidget trip={nextTrip} /> : null;
             })()}
 
