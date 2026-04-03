@@ -669,3 +669,14 @@
 - [x] Add tRPC hooks to trips.tsx (replace MOCK_TRIPS with real data)
 - [x] Add tRPC hooks to profile.tsx (sync XP/points from DB)
 - [x] Push merged ui/fixes-round2 to GitHub
+
+## Phase 41 — Auth Flow + Font Polish + tRPC Expansion (Session 5 — Apr 3 2026)
+
+- [ ] Push latest code (tRPC connections) to GitHub above commit 658936f
+- [ ] Auth Flow — connect login/signup screens to server OAuth endpoints
+- [ ] Auth Flow — persist session token with SecureStore
+- [ ] Auth Flow — redirect to home after successful login
+- [ ] Font audit — add Chillax/Satoshi fontFamily to all screens missing them
+- [ ] tRPC — connect Explore screen to destinations data
+- [ ] tRPC — connect Social screen to messages/conversations
+- [ ] tRPC — connect Support screen to support_tickets
