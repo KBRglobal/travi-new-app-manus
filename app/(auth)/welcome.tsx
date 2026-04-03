@@ -74,7 +74,7 @@ export default function WelcomeScreen() {
         style={[
           s.content,
           {
-            paddingTop: insets.top + 16,
+            paddingTop: insets.top + 44,
             paddingBottom: insets.bottom + 12,
             opacity: fade,
             transform: [{ translateY: slideY }],
