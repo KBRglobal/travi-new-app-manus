@@ -18,22 +18,21 @@ const FEATURES = [
   { icon: "suitcase.fill" as const,           color: "#FBBF24", label: "All-in-One Trips" },
 ];
 
-const CARD_HEIGHT = height * 0.40;
-const MASCOT_SIZE = width * 0.46;
-const LOGO_WIDTH  = width * 0.36;
-const LOGO_HEIGHT = LOGO_WIDTH * 0.28;
+const MASCOT_SIZE = width * 0.48;
+const LOGO_WIDTH  = width * 0.38;
+const LOGO_HEIGHT = LOGO_WIDTH * 0.30;
 
 export default function WelcomeScreen() {
   const { state, dispatch } = useStore();
   const insets = useSafeAreaInsets();
 
   const fade    = useRef(new Animated.Value(0)).current;
-  const mascotY = useRef(new Animated.Value(30)).current;
+  const mascotY = useRef(new Animated.Value(24)).current;
 
   useEffect(() => {
     Animated.parallel([
-      Animated.timing(fade,    { toValue: 1, duration: 700, useNativeDriver: true }),
-      Animated.spring(mascotY, { toValue: 0, tension: 60, friction: 10, useNativeDriver: true }),
+      Animated.timing(fade,    { toValue: 1, duration: 600, useNativeDriver: true }),
+      Animated.spring(mascotY, { toValue: 0, tension: 55, friction: 9, useNativeDriver: true }),
     ]).start();
   }, []);
 
@@ -49,38 +48,36 @@ export default function WelcomeScreen() {
         colors={["#0C0720", "#160B35", "#1A0D3A"]}
         style={StyleSheet.absoluteFillObject}
       />
-      <View style={[s.orb, { width: 280, height: 280, top: -60, right: -70, backgroundColor: "rgba(100,67,244,0.22)" }]} />
-      <View style={[s.orb, { width: 180, height: 180, top: height * 0.35, left: -50, backgroundColor: "rgba(249,68,152,0.14)" }]} />
+      {/* Orbs — positioned to not block text */}
+      <View style={s.orb1} />
+      <View style={s.orb2} />
 
-      {/* ── TOP SECTION ── */}
-      <Animated.View style={[s.top, { paddingTop: insets.top + 20, opacity: fade }]}>
-        {/* TRAVI logotype */}
-        <Image
-          source={require("@/assets/logos/logotype-white.webp")}
-          style={{ width: LOGO_WIDTH, height: LOGO_HEIGHT }}
-          resizeMode="contain"
-        />
+      {/* ── FULL SCREEN LAYOUT ── */}
+      <View style={[s.layout, { paddingTop: insets.top + 16, paddingBottom: insets.bottom + 20 }]}>
 
-        <View style={s.textBlock}>
-          <Text style={s.greeting}>{greeting}</Text>
-          <Text style={s.headline}>{"Travel like\nnever before"}</Text>
-          <Text style={s.sub}>Smart planning, real bookings, zero hassle</Text>
-        </View>
+        {/* TOP: logo + text + chips */}
+        <Animated.View style={[s.topSection, { opacity: fade }]}>
+          <Image
+            source={require("@/assets/logos/logotype-white.webp")}
+            style={{ width: LOGO_WIDTH, height: LOGO_HEIGHT }}
+            resizeMode="contain"
+          />
+          <View style={s.textBlock}>
+            <Text style={s.greeting}>{greeting}</Text>
+            <Text style={s.headline}>{"Travel like\nnever before"}</Text>
+            <Text style={s.sub}>Smart planning, real bookings, zero hassle</Text>
+          </View>
+          <View style={s.chips}>
+            {FEATURES.map((f, i) => (
+              <View key={i} style={[s.chip, { borderColor: f.color + "55" }]}>
+                <IconSymbol name={f.icon} size={13} color={f.color} />
+                <Text style={[s.chipText, { color: f.color }]}>{f.label}</Text>
+              </View>
+            ))}
+          </View>
+        </Animated.View>
 
-        {/* Feature chips */}
-        <View style={s.chips}>
-          {FEATURES.map((f, i) => (
-            <View key={i} style={[s.chip, { borderColor: f.color + "55" }]}>
-              <IconSymbol name={f.icon} size={13} color={f.color} />
-              <Text style={[s.chipText, { color: f.color }]}>{f.label}</Text>
-            </View>
-          ))}
-        </View>
-      </Animated.View>
-
-      {/* ── BOTTOM CARD ── */}
-      <View style={[s.card, { paddingBottom: insets.bottom + 20 }]}>
-        {/* Mascot floats above card */}
+        {/* MIDDLE: mascot — in flow, fills remaining space */}
         <Animated.View style={[s.mascotWrap, { transform: [{ translateY: mascotY }], opacity: fade }]}>
           <Image
             source={require("@/assets/logos/mascot-centered.png")}
@@ -89,8 +86,8 @@ export default function WelcomeScreen() {
           />
         </Animated.View>
 
-        {/* CTA */}
-        <Animated.View style={[s.cardContent, { opacity: fade }]}>
+        {/* BOTTOM: CTA + skip */}
+        <Animated.View style={[s.bottomSection, { opacity: fade }]}>
           <TouchableOpacity
             style={s.btn}
             onPress={() => router.push("/(auth)/quiz" as never)}
@@ -116,6 +113,7 @@ export default function WelcomeScreen() {
             <Text style={s.skipText}>Skip for now</Text>
           </TouchableOpacity>
         </Animated.View>
+
       </View>
     </View>
   );
@@ -123,18 +121,44 @@ export default function WelcomeScreen() {
 
 const s = StyleSheet.create({
   root: { flex: 1, backgroundColor: "#0C0720" },
-  orb:  { position: "absolute", borderRadius: 999 },
 
-  top: {
+  // Orbs — symmetric, not blocking content
+  orb1: {
+    position: "absolute",
+    width: 240,
+    height: 240,
+    borderRadius: 120,
+    top: -40,
+    right: -80,
+    backgroundColor: "rgba(100,67,244,0.18)",
+  },
+  orb2: {
+    position: "absolute",
+    width: 200,
+    height: 200,
+    borderRadius: 100,
+    bottom: 60,
+    left: -80,
+    backgroundColor: "rgba(249,68,152,0.12)",
+  },
+
+  // Main layout — flex column, space-between
+  layout: {
     flex: 1,
-    paddingHorizontal: 28,
+    paddingHorizontal: 24,
+    flexDirection: "column",
+    justifyContent: "space-between",
     alignItems: "center",
-    justifyContent: "center",
-    gap: 18,
+  },
+
+  // Top section
+  topSection: {
+    alignItems: "center",
+    gap: 14,
   },
   textBlock: {
     alignItems: "center",
-    gap: 8,
+    gap: 6,
   },
   greeting: {
     fontSize: 15,
@@ -143,16 +167,16 @@ const s = StyleSheet.create({
     textAlign: "center",
   },
   headline: {
-    fontSize: 38,
+    fontSize: 36,
     fontWeight: "800",
     color: "#FFFFFF",
     textAlign: "center",
-    lineHeight: 44,
+    lineHeight: 42,
     letterSpacing: -0.8,
   },
   sub: {
     fontSize: 14,
-    color: "rgba(196,181,217,0.72)",
+    color: "rgba(196,181,217,0.68)",
     textAlign: "center",
     lineHeight: 20,
   },
@@ -177,23 +201,14 @@ const s = StyleSheet.create({
     fontWeight: "600",
   },
 
-  card: {
-    height: CARD_HEIGHT,
-    backgroundColor: "rgba(255,255,255,0.05)",
-    borderTopLeftRadius: 32,
-    borderTopRightRadius: 32,
-    borderTopWidth: 1,
-    borderColor: "rgba(255,255,255,0.10)",
-    alignItems: "center",
-    justifyContent: "flex-end",
-    paddingHorizontal: 24,
-  },
+  // Mascot — in flow, centered
   mascotWrap: {
-    position: "absolute",
-    top: -(MASCOT_SIZE * 0.52),
-    alignSelf: "center",
+    alignItems: "center",
+    justifyContent: "center",
   },
-  cardContent: {
+
+  // Bottom section
+  bottomSection: {
     width: "100%",
     gap: 12,
     alignItems: "center",
