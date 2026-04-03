@@ -379,7 +379,7 @@ export default function SignUpScreen() {
 
 /* ─── Styles ──────────────────────────────────────────────────────────────── */
 const CARD_RADIUS = 24;
-const ORB_SIZE    = Math.round(W * 0.72); // ~280px on 390px
+const ORB_SIZE    = Math.round(W * 0.58); // ~226px on 390px — smaller top orb
 
 const s = StyleSheet.create({
   root: { flex: 1 },
@@ -406,7 +406,7 @@ const s = StyleSheet.create({
   },
 
   /* MIDDLE zone */
-  midZone: { flex: 1, justifyContent: "center" },
+  midZone: { flex: 1, justifyContent: "center", paddingTop: 8 },
   midInner: { width: "100%", alignItems: "center" },
 
   /* Mascot */
@@ -433,13 +433,14 @@ const s = StyleSheet.create({
   },
 
   /* Card header: logotype + tagline */
-  cardHeader: { alignItems: "center", gap: 3, marginBottom: 2 },
-  logotype: { width: 120, height: 38 },
+  cardHeader: { alignItems: "center", gap: 5, marginBottom: 4 },
+  logotype: { width: 160, height: 52 },
   tagline: {
-    fontSize: 9,
-    letterSpacing: 2.2,
+    fontSize: 10,
+    letterSpacing: 2.8,
     textTransform: "uppercase",
-    color: "rgba(255,255,255,0.45)",
+    color: "rgba(255,255,255,0.55)",
+    fontWeight: "500",
   },
 
   /* Tabs */
