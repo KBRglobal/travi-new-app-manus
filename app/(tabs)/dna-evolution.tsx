@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import {
   View, Text, TouchableOpacity, StyleSheet, ScrollView,
   Dimensions, Platform
@@ -9,6 +9,9 @@ import { IconSymbol } from "@/components/ui/icon-symbol";
 import { BRAND, TYPE, RADIUS } from "@/constants/brand";
 import * as Haptics from "expo-haptics";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { trpc } from "@/lib/trpc";
+import { useAuth } from "@/hooks/use-auth";
+import { SkeletonBlock } from "@/components/skeleton-loader";
 
 const { width: W } = Dimensions.get("window");
 
@@ -158,9 +161,59 @@ function SnapshotCard({ snapshot, isLatest }: { snapshot: DNASnapshot; isLatest:
   );
 }
 
+// ─── Snapshot Skeleton ────────────────────────────────────────────────────────
+function SnapshotSkeleton() {
+  return (
+    <View style={S.snapshotCard}>
+      <View style={{ flexDirection: "row", alignItems: "center", gap: 12, marginBottom: 8 }}>
+        <SkeletonBlock width={40} height={40} borderRadius={20} />
+        <View style={{ gap: 6, flex: 1 }}>
+          <SkeletonBlock width="50%" height={16} />
+          <SkeletonBlock width="30%" height={12} />
+        </View>
+      </View>
+      <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 8 }}>
+        {Array.from({ length: 6 }).map((_, i) => (
+          <SkeletonBlock key={i} width={60} height={28} borderRadius={12} />
+        ))}
+      </View>
+      <SkeletonBlock width="40%" height={14} style={{ marginTop: 8 }} />
+    </View>
+  );
+}
+
 // ─── Main Screen ──────────────────────────────────────────────────────────────
 export default function DNAEvolutionScreen() {
   const insets = useSafeAreaInsets();
+  const { isAuthenticated } = useAuth({ autoFetch: false });
+
+  // Fetch real DNA scores from backend
+  const { data: dnaResult, isLoading } = trpc.dna.getResult.useQuery(undefined, {
+    enabled: isAuthenticated,
+  });
+
+  // Build snapshots: replace "Current DNA" traits with real data when available
+  const snapshots = useMemo(() => {
+    if (!dnaResult) return SNAPSHOTS;
+
+    // Map backend DNA scores to the trait keys used in the UI
+    const realTraits: Record<string, number> = {
+      adventureLevel:   dnaResult.explorerScore ?? dnaResult.adventurerScore ?? 0,
+      culturalDepth:    dnaResult.culturalistScore ?? 0,
+      foodieness:       dnaResult.foodieScore ?? 0,
+      socialEnergy:     dnaResult.photographerScore ?? 0,
+      luxuryAffinity:   dnaResult.relaxerScore ?? 0,
+      natureConnection: dnaResult.naturalistScore ?? 0,
+    };
+
+    // Only replace the first snapshot (Current DNA) with real data
+    return SNAPSHOTS.map((snapshot, i) => {
+      if (i !== 0) return snapshot;
+      return { ...snapshot, traits: realTraits };
+    });
+  }, [dnaResult]);
+
+  const showSkeleton = isAuthenticated && isLoading;
 
   return (
     <View style={[S.container, { paddingTop: insets.top }]}>
@@ -197,9 +250,11 @@ export default function DNAEvolutionScreen() {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 130, gap: 12 }}
       >
-        {SNAPSHOTS.map((snapshot, i) => (
-          <SnapshotCard key={snapshot.id} snapshot={snapshot} isLatest={i === 0} />
-        ))}
+        {showSkeleton
+          ? Array.from({ length: 3 }).map((_, i) => <SnapshotSkeleton key={i} />)
+          : snapshots.map((snapshot, i) => (
+              <SnapshotCard key={snapshot.id} snapshot={snapshot} isLatest={i === 0} />
+            ))}
       </ScrollView>
     </View>
   );

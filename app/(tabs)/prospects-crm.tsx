@@ -6,7 +6,7 @@
 import * as Haptics from "expo-haptics";
 import { LinearGradient } from "expo-linear-gradient";
 import { router } from "expo-router";
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import {
   Dimensions,
   FlatList,
@@ -19,6 +19,8 @@ import {
   View,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { SkeletonBlock } from "@/components/skeleton-loader";
+import { trpc } from "@/lib/trpc";
 
 const { width } = Dimensions.get("window");
 
@@ -49,7 +51,7 @@ const STAGE_COLORS: Record<DealStage, string> = {
   Closed: "#22C55E",
 };
 
-const PROSPECTS: Prospect[] = [
+const MOCK_PROSPECTS: Prospect[] = [
   {
     id: "p1", name: "Sarah Cohen", company: "Elite Travel Agency", role: "CEO",
     email: "sarah@elitetravel.co.il", phone: "+972-52-1234567",
@@ -104,12 +106,56 @@ const PIPELINE_STAGES: DealStage[] = ["Lead", "Contacted", "Proposal", "Negotiat
 
 const TABS = ["Pipeline", "Contacts", "Analytics"];
 
+// ── Map DB status → local DealStage ──
+const STATUS_TO_STAGE: Record<string, DealStage> = {
+  lead: "Lead",
+  qualified: "Contacted",
+  proposal: "Proposal",
+  negotiation: "Negotiation",
+  closed_won: "Closed",
+  closed_lost: "Closed",
+};
+
+const COUNTRY_FLAGS: Record<string, string> = {
+  Israel: "🇮🇱", UAE: "🇦🇪", Portugal: "🇵🇹", Japan: "🇯🇵", UK: "🇬🇧",
+  US: "🇺🇸", Germany: "🇩🇪", France: "🇫🇷", Spain: "🇪🇸", Italy: "🇮🇹",
+  Brazil: "🇧🇷", India: "🇮🇳", China: "🇨🇳", Australia: "🇦🇺", Canada: "🇨🇦",
+};
+
 export default function ProspectsCRMScreen() {
   const insets = useSafeAreaInsets();
   const [activeTab, setActiveTab] = useState(0);
   const [selectedStage, setSelectedStage] = useState<DealStage | "All">("All");
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedProspect, setSelectedProspect] = useState<Prospect | null>(null);
+
+  const { data: dbProspects, isLoading } = trpc.enterprise.prospects.useQuery();
+
+  // Convert DB prospects to local shape, fall back to mock data
+  const PROSPECTS: Prospect[] = useMemo(() => {
+    if (!dbProspects || dbProspects.length === 0) return MOCK_PROSPECTS;
+    return dbProspects.map((p) => {
+      const name = p.contactName ?? p.companyName;
+      const initials = name.split(" ").map((w) => w[0]).join("").slice(0, 2).toUpperCase();
+      const country = p.country ?? "";
+      return {
+        id: String(p.id),
+        name,
+        company: p.companyName,
+        role: p.industry ?? "Contact",
+        email: p.email ?? "",
+        phone: p.phone ?? "",
+        stage: STATUS_TO_STAGE[p.status] ?? "Lead",
+        value: p.dealValue ?? 0,
+        lastContact: p.updatedAt ? new Date(p.updatedAt).toLocaleDateString() : "—",
+        notes: p.notes ?? "",
+        tags: [country, p.industry].filter(Boolean) as string[],
+        avatar: initials,
+        flag: COUNTRY_FLAGS[country] ?? "🌍",
+        country,
+      };
+    });
+  }, [dbProspects]);
 
   const filteredProspects = PROSPECTS.filter((p) => {
     const matchesStage = selectedStage === "All" || p.stage === selectedStage;
@@ -128,6 +174,37 @@ export default function ProspectsCRMScreen() {
 
   if (selectedProspect) {
     return <ProspectDetail prospect={selectedProspect} onBack={() => setSelectedProspect(null)} />;
+  }
+
+  if (isLoading) {
+    return (
+      <View style={[styles.container, { paddingTop: insets.top }]}>
+        <LinearGradient colors={["#0D0628", "#1A0A3D"]} style={StyleSheet.absoluteFillObject} />
+        <View style={styles.header}>
+          <TouchableOpacity onPress={() => router.back()} style={styles.backBtn} activeOpacity={0.7}>
+            <Text style={styles.backText}>←</Text>
+          </TouchableOpacity>
+          <View style={styles.headerCenter}>
+            <Text style={styles.headerTitle}>Prospects CRM</Text>
+            <SkeletonBlock width="60%" height={12} />
+          </View>
+          <View style={{ width: 60 }} />
+        </View>
+        <View style={styles.kpiRow}>
+          {Array.from({ length: 4 }).map((_, i) => (
+            <View key={i} style={styles.kpiCard}>
+              <SkeletonBlock width="70%" height={18} />
+              <SkeletonBlock width="50%" height={10} />
+            </View>
+          ))}
+        </View>
+        <View style={{ paddingHorizontal: 20, gap: 12, marginTop: 12 }}>
+          {Array.from({ length: 4 }).map((_, i) => (
+            <SkeletonBlock key={i} width="100%" height={72} borderRadius={14} />
+          ))}
+        </View>
+      </View>
+    );
   }
 
   return (

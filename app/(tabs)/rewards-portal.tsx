@@ -19,6 +19,9 @@ import {
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
+import { trpc } from "@/lib/trpc";
+import { useAuth } from "@/hooks/use-auth";
+
 const { width } = Dimensions.get("window");
 
 const TIERS = [
@@ -53,14 +56,27 @@ const TABS = ["Overview", "Redeem", "History"];
 
 export default function RewardsPortalScreen() {
   const insets = useSafeAreaInsets();
+  const { isAuthenticated } = useAuth();
   const [activeTab, setActiveTab] = useState(0);
   const [redeeming, setRedeeming] = useState<string | null>(null);
 
-  const currentXP = 7850;
+  // ── Real DB data via tRPC ────────────────────────────────────────────────────
+  const { data: profile } = trpc.profile.get.useQuery(undefined, {
+    enabled: isAuthenticated,
+    staleTime: 60_000,
+  });
+  const { data: walletData } = trpc.wallet.balance.useQuery(undefined, {
+    enabled: isAuthenticated,
+    staleTime: 30_000,
+  });
+
+  // Use real XP from profile, fall back to mock
+  const currentXP = profile?.xp ?? 7850;
   const currentTier = TIERS.find((t) => currentXP >= t.minXP && currentXP < t.maxXP) || TIERS[2];
   const nextTier = TIERS[TIERS.indexOf(currentTier) + 1];
-  const cashbackBalance = 2240;
-  const pointsBalance = 4850;
+  // Use real wallet balance (cents → dollars), fall back to mock
+  const cashbackBalance = walletData?.balance != null ? Math.round(walletData.balance / 100) : 2240;
+  const pointsBalance = walletData?.balance != null ? Math.round(walletData.balance / 10) : 4850;
 
   const handleRedeem = (rewardId: string) => {
     if (Platform.OS !== "web") Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);

@@ -7,7 +7,7 @@ import * as Haptics from "expo-haptics";
 import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
 import { router } from "expo-router";
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import {
   Dimensions,
   FlatList,
@@ -19,6 +19,9 @@ import {
   View,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+
+import { trpc } from "@/lib/trpc";
+import { useAuth } from "@/hooks/use-auth";
 
 const { width } = Dimensions.get("window");
 
@@ -101,17 +104,75 @@ const MEMORIES: Memory[] = [
   },
 ];
 
+// Country code → flag emoji + name lookup for common destinations
+const COUNTRY_FLAGS: Record<string, string> = {
+  UAE: "🇦🇪", France: "🇫🇷", Japan: "🇯🇵", Maldives: "🇲🇻", Thailand: "🇹🇭",
+  Italy: "🇮🇹", Spain: "🇪🇸", USA: "🇺🇸", UK: "🇬🇧", Germany: "🇩🇪",
+  Greece: "🇬🇷", Israel: "🇮🇱", Turkey: "🇹🇷", Portugal: "🇵🇹", Mexico: "🇲🇽",
+};
+
+type DbTrip = {
+  id: number;
+  destination: string;
+  country: string | null;
+  startDate: string | null;
+  endDate: string | null;
+  status: string;
+  budget: number | null;
+  currency: string | null;
+};
+
+function dbTripsToMemories(trips: DbTrip[]): Memory[] {
+  return trips
+    .filter((t) => t.status === "completed")
+    .map((t, i) => {
+      const flag = COUNTRY_FLAGS[t.country ?? ""] ?? "🌍";
+      const date = t.startDate
+        ? new Date(t.startDate).toLocaleDateString("en-US", { month: "short", year: "numeric" })
+        : "Unknown";
+      return {
+        id: `db-${t.id}`,
+        tripTitle: t.destination,
+        destination: t.country ? `${t.destination}, ${t.country}` : t.destination,
+        flag,
+        date,
+        coverImage: `https://source.unsplash.com/800x600/?${encodeURIComponent(t.destination)},travel`,
+        photos: 0,
+        highlights: [],
+        mood: "✈️",
+        rating: 0,
+        notes: "",
+        tags: [],
+        cashbackEarned: t.budget ? Math.round(t.budget * 0.05) : 0,
+      };
+    });
+}
+
 const TABS = ["Timeline", "Stats", "Map"];
 
 export default function MemoryHubScreen() {
   const insets = useSafeAreaInsets();
+  const { isAuthenticated } = useAuth();
   const [activeTab, setActiveTab] = useState(0);
   const [selectedMemory, setSelectedMemory] = useState<Memory | null>(null);
 
-  const totalTrips = MEMORIES.length;
-  const totalPhotos = MEMORIES.reduce((s, m) => s + m.photos, 0);
-  const totalCashback = MEMORIES.reduce((s, m) => s + m.cashbackEarned, 0);
-  const destinations = new Set(MEMORIES.map((m) => m.destination)).size;
+  // ── Real DB data via tRPC ────────────────────────────────────────────────────
+  const { data: trips } = trpc.trips.list.useQuery(undefined, {
+    enabled: isAuthenticated,
+    staleTime: 60_000,
+  });
+
+  // Use real trip data if available, fall back to mock memories
+  const dbMemories = useMemo(
+    () => (trips?.length ? dbTripsToMemories(trips as DbTrip[]) : []),
+    [trips],
+  );
+  const memories = dbMemories.length > 0 ? dbMemories : MEMORIES;
+
+  const totalTrips = memories.length;
+  const totalPhotos = memories.reduce((s, m) => s + m.photos, 0);
+  const totalCashback = memories.reduce((s, m) => s + m.cashbackEarned, 0);
+  const destinations = new Set(memories.map((m) => m.destination)).size;
 
   if (selectedMemory) {
     return <MemoryDetail memory={selectedMemory} onBack={() => setSelectedMemory(null)} />;
@@ -171,7 +232,7 @@ export default function MemoryHubScreen() {
       {/* ── TIMELINE TAB ── */}
       {activeTab === 0 && (
         <FlatList
-          data={MEMORIES}
+          data={memories}
           keyExtractor={(item) => item.id}
           contentContainerStyle={styles.timelineList}
           showsVerticalScrollIndicator={false}
@@ -218,7 +279,7 @@ export default function MemoryHubScreen() {
           <Text style={styles.statsTitle}>Your Travel DNA in Numbers</Text>
           {[
             { label: "Total Distance Flown", value: "47,200 km", icon: "✈️", sub: "Equivalent to circling Earth 1.2x" },
-            { label: "Countries Visited", value: "4", icon: "🌍", sub: "UAE, France, Japan, Maldives" },
+            { label: "Countries Visited", value: String(destinations), icon: "🌍", sub: memories.map((m) => m.flag).filter((v, i, a) => a.indexOf(v) === i).join(" ") || "Start traveling!" },
             { label: "Hotels Stayed", value: "12", icon: "🏨", sub: "Average 4.8 ⭐ rating" },
             { label: "Restaurants Tried", value: "38", icon: "🍽️", sub: "From street food to Michelin stars" },
             { label: "Total Cashback Earned", value: `$${totalCashback}`, icon: "💰", sub: "10% of all bookings returned" },
@@ -261,7 +322,7 @@ export default function MemoryHubScreen() {
           <Text style={styles.mapTitle}>Travel Map</Text>
           <Text style={styles.mapSub}>Your visited destinations will appear here as pins on an interactive world map.</Text>
           <View style={styles.mapPins}>
-            {MEMORIES.map((m) => (
+            {memories.map((m) => (
               <View key={m.id} style={styles.mapPin}>
                 <Text style={styles.mapPinFlag}>{m.flag}</Text>
                 <Text style={styles.mapPinDest}>{m.destination}</Text>

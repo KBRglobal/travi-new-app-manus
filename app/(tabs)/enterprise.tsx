@@ -6,6 +6,8 @@ import {
 import { router } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
 import { IconSymbol } from "@/components/ui/icon-symbol";
+import { SkeletonBlock } from "@/components/skeleton-loader";
+import { trpc } from "@/lib/trpc";
 import * as Haptics from "expo-haptics";
 
 const { width } = Dimensions.get("window");
@@ -130,6 +132,64 @@ const BC = StyleSheet.create({
 
 export default function EnterpriseScreen() {
   const [activeTab, setActiveTab] = useState(0);
+  const { data: metrics, isLoading } = trpc.enterprise.metrics.useQuery();
+
+  // Derive KPIs from latest metric row if available
+  const latest = metrics?.[0];
+  const prev = metrics?.[1];
+
+  const displayKpis = latest
+    ? [
+        {
+          label: "Monthly Revenue",
+          value: `AED ${(latest.mrr / 1000).toFixed(0)}K`,
+          trend: prev ? `${latest.mrr >= prev.mrr ? "+" : ""}${Math.round(((latest.mrr - prev.mrr) / (prev.mrr || 1)) * 100)}%` : "—",
+          up: prev ? latest.mrr >= prev.mrr : true,
+          icon: "💰",
+        },
+        {
+          label: "Active Users",
+          value: latest.activeUsers.toLocaleString(),
+          trend: prev ? `${latest.activeUsers >= prev.activeUsers ? "+" : ""}${Math.round(((latest.activeUsers - prev.activeUsers) / (prev.activeUsers || 1)) * 100)}%` : "—",
+          up: prev ? latest.activeUsers >= prev.activeUsers : true,
+          icon: "👥",
+        },
+        {
+          label: "Bookings",
+          value: latest.bookingsCount.toLocaleString(),
+          trend: prev ? `${latest.bookingsCount >= prev.bookingsCount ? "+" : ""}${Math.round(((latest.bookingsCount - prev.bookingsCount) / (prev.bookingsCount || 1)) * 100)}%` : "—",
+          up: prev ? latest.bookingsCount >= prev.bookingsCount : true,
+          icon: "✈️",
+        },
+        {
+          label: "Avg. Booking Value",
+          value: latest.bookingsCount > 0 ? `AED ${Math.round(latest.bookingsRevenue / latest.bookingsCount).toLocaleString()}` : "—",
+          trend: prev && prev.bookingsCount > 0
+            ? `${(latest.bookingsRevenue / latest.bookingsCount) >= (prev.bookingsRevenue / prev.bookingsCount) ? "+" : ""}${Math.round((((latest.bookingsRevenue / latest.bookingsCount) - (prev.bookingsRevenue / prev.bookingsCount)) / ((prev.bookingsRevenue / prev.bookingsCount) || 1)) * 100)}%`
+            : "—",
+          up: prev && prev.bookingsCount > 0 ? (latest.bookingsRevenue / latest.bookingsCount) >= (prev.bookingsRevenue / prev.bookingsCount) : true,
+          icon: "📊",
+        },
+        {
+          label: "New Users",
+          value: latest.newUsers.toLocaleString(),
+          trend: prev ? `${latest.newUsers >= prev.newUsers ? "+" : ""}${Math.round(((latest.newUsers - prev.newUsers) / (prev.newUsers || 1)) * 100)}%` : "—",
+          up: prev ? latest.newUsers >= prev.newUsers : true,
+          icon: "⭐",
+        },
+        {
+          label: "Churn Rate",
+          value: `${(latest.churnRate ?? 0) / 100}%`,
+          trend: prev ? `${(latest.churnRate ?? 0) <= (prev.churnRate ?? 0) ? "-" : "+"}${Math.abs((latest.churnRate ?? 0) - (prev.churnRate ?? 0)) / 100}%` : "—",
+          up: prev ? (latest.churnRate ?? 0) <= (prev.churnRate ?? 0) : true,
+          icon: "❤️",
+        },
+      ]
+    : KPIS;
+
+  const displayRevenue = metrics && metrics.length >= 2
+    ? metrics.slice(0, 6).reverse().map((m) => ({ month: m.period.slice(-2) === "01" ? "Jan" : m.period.slice(-2) === "02" ? "Feb" : m.period.slice(-2) === "03" ? "Mar" : m.period.slice(-2) === "04" ? "Apr" : m.period.slice(-2) === "05" ? "May" : m.period.slice(-2) === "06" ? "Jun" : m.period.slice(-2) === "07" ? "Jul" : m.period.slice(-2) === "08" ? "Aug" : m.period.slice(-2) === "09" ? "Sep" : m.period.slice(-2) === "10" ? "Oct" : m.period.slice(-2) === "11" ? "Nov" : "Dec", value: m.mrr }))
+    : MONTHLY_REVENUE;
 
   const handleTab = (i: number) => {
     if (Platform.OS !== "web") Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
@@ -175,7 +235,7 @@ export default function EnterpriseScreen() {
       </View>
 
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={S.content}>
-        {activeTab === 0 && <OverviewTab />}
+        {activeTab === 0 && <OverviewTab kpis={displayKpis} revenue={displayRevenue} isLoading={isLoading} latestMrr={latest?.mrr} />}
         {activeTab === 1 && <RevenueTab />}
         {activeTab === 2 && <CompetitorsTab />}
         {activeTab === 3 && <RegulationsTab />}
@@ -184,7 +244,14 @@ export default function EnterpriseScreen() {
   );
 }
 
-function OverviewTab() {
+function OverviewTab({ kpis, revenue, isLoading, latestMrr }: {
+  kpis: typeof KPIS;
+  revenue: typeof MONTHLY_REVENUE;
+  isLoading: boolean;
+  latestMrr?: number;
+}) {
+  const chartValue = latestMrr != null ? `AED ${(latestMrr / 1000).toFixed(0)}K` : "AED 312K";
+
   return (
     <View style={T.wrap}>
       <TouchableOpacity
@@ -227,28 +294,51 @@ function OverviewTab() {
         <Text style={T.crmBannerArrow}>→</Text>
       </TouchableOpacity>
       <Text style={T.sectionTitle}>Key Performance Indicators</Text>
-      <View style={T.kpiGrid}>
-        {KPIS.map((kpi, i) => (
-          <View key={i} style={T.kpiCard}>
-            <LinearGradient colors={["rgba(100,67,244,0.18)", "rgba(249,68,152,0.08)"]} style={StyleSheet.absoluteFillObject} />
-            <Text style={T.kpiIcon}>{kpi.icon}</Text>
-            <Text style={T.kpiValue}>{kpi.value}</Text>
-            <Text style={T.kpiLabel}>{kpi.label}</Text>
-            <Text style={[T.kpiTrend, { color: kpi.up ? "#22C55E" : "#EF4444" }]}>
-              {kpi.up ? "↑" : "↓"} {kpi.trend}
-            </Text>
-          </View>
-        ))}
-      </View>
+      {isLoading ? (
+        <View style={T.kpiGrid}>
+          {Array.from({ length: 6 }).map((_, i) => (
+            <View key={i} style={T.kpiCard}>
+              <LinearGradient colors={["rgba(100,67,244,0.18)", "rgba(249,68,152,0.08)"]} style={StyleSheet.absoluteFillObject} />
+              <SkeletonBlock width={28} height={28} borderRadius={8} />
+              <SkeletonBlock width="70%" height={20} />
+              <SkeletonBlock width="50%" height={11} />
+              <SkeletonBlock width={48} height={12} />
+            </View>
+          ))}
+        </View>
+      ) : (
+        <View style={T.kpiGrid}>
+          {kpis.map((kpi, i) => (
+            <View key={i} style={T.kpiCard}>
+              <LinearGradient colors={["rgba(100,67,244,0.18)", "rgba(249,68,152,0.08)"]} style={StyleSheet.absoluteFillObject} />
+              <Text style={T.kpiIcon}>{kpi.icon}</Text>
+              <Text style={T.kpiValue}>{kpi.value}</Text>
+              <Text style={T.kpiLabel}>{kpi.label}</Text>
+              <Text style={[T.kpiTrend, { color: kpi.up ? "#22C55E" : "#EF4444" }]}>
+                {kpi.up ? "↑" : "↓"} {kpi.trend}
+              </Text>
+            </View>
+          ))}
+        </View>
+      )}
 
       <Text style={T.sectionTitle}>Revenue Trend (6M)</Text>
       <View style={T.chartCard}>
         <LinearGradient colors={["rgba(100,67,244,0.1)", "rgba(249,68,152,0.05)"]} style={StyleSheet.absoluteFillObject} />
-        <View style={T.chartHeader}>
-          <Text style={T.chartValue}>AED 312K</Text>
-          <Text style={T.chartTrend}>↑ +26% MoM</Text>
-        </View>
-        <MiniBarChart data={MONTHLY_REVENUE} />
+        {isLoading ? (
+          <View style={{ gap: 12 }}>
+            <SkeletonBlock width="40%" height={22} />
+            <SkeletonBlock width="100%" height={100} />
+          </View>
+        ) : (
+          <>
+            <View style={T.chartHeader}>
+              <Text style={T.chartValue}>{chartValue}</Text>
+              <Text style={T.chartTrend}>↑ +26% MoM</Text>
+            </View>
+            <MiniBarChart data={revenue} />
+          </>
+        )}
       </View>
     </View>
   );

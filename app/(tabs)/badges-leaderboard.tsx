@@ -19,6 +19,9 @@ import {
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
+import { trpc } from "@/lib/trpc";
+import { useAuth } from "@/hooks/use-auth";
+
 const { width } = Dimensions.get("window");
 
 interface Badge {
@@ -79,13 +82,40 @@ const TABS = ["Badges", "Leaderboard"];
 
 export default function BadgesLeaderboardScreen() {
   const insets = useSafeAreaInsets();
+  const { isAuthenticated } = useAuth();
   const [activeTab, setActiveTab] = useState(0);
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [selectedBadge, setSelectedBadge] = useState<Badge | null>(null);
 
+  // ── Real DB data via tRPC ────────────────────────────────────────────────────
+  const { data: profile } = trpc.profile.get.useQuery(undefined, {
+    enabled: isAuthenticated,
+    staleTime: 60_000,
+  });
+
   const earnedBadges = BADGES.filter((b) => b.earned);
   const inProgressBadges = BADGES.filter((b) => !b.earned);
-  const totalXP = earnedBadges.reduce((sum, b) => sum + b.xp, 0);
+  // Use real XP from profile if available, fall back to badge-sum
+  const badgeXP = earnedBadges.reduce((sum, b) => sum + b.xp, 0);
+  const totalXP = profile?.xp ?? badgeXP;
+
+  // Tier calculation based on real XP
+  const currentTierName =
+    totalXP >= 10000 ? "Platinum" :
+    totalXP >= 5000 ? "Gold" :
+    totalXP >= 2000 ? "Silver" : "Bronze";
+  const tierEmoji =
+    currentTierName === "Platinum" ? "💎" :
+    currentTierName === "Gold" ? "🥇" :
+    currentTierName === "Silver" ? "🥈" : "🥉";
+  const nextTierXP =
+    currentTierName === "Platinum" ? Infinity :
+    currentTierName === "Gold" ? 10000 :
+    currentTierName === "Silver" ? 5000 : 2000;
+  const nextTierName =
+    currentTierName === "Gold" ? "Platinum" :
+    currentTierName === "Silver" ? "Gold" :
+    currentTierName === "Bronze" ? "Silver" : null;
 
   const filteredBadges = BADGES.filter((b) =>
     selectedCategory === "All" || b.category === selectedCategory
@@ -114,17 +144,19 @@ export default function BadgesLeaderboardScreen() {
         <LinearGradient colors={["rgba(100,67,244,0.2)", "rgba(249,68,152,0.1)"]} style={StyleSheet.absoluteFillObject} />
         <View style={styles.xpCardRow}>
           <View>
-            <Text style={styles.xpTier}>🥇 Gold Tier</Text>
-            <Text style={styles.xpProgress}>{totalXP.toLocaleString()} / 10,000 XP to Platinum</Text>
+            <Text style={styles.xpTier}>{tierEmoji} {currentTierName} Tier</Text>
+            <Text style={styles.xpProgress}>
+              {totalXP.toLocaleString()} / {nextTierXP === Infinity ? "MAX" : nextTierXP.toLocaleString()} XP{nextTierName ? ` to ${nextTierName}` : ""}
+            </Text>
           </View>
-          <Text style={styles.xpPct}>{Math.round((totalXP / 10000) * 100)}%</Text>
+          <Text style={styles.xpPct}>{nextTierXP === Infinity ? "MAX" : `${Math.round((totalXP / nextTierXP) * 100)}%`}</Text>
         </View>
         <View style={styles.xpBarTrack}>
           <LinearGradient
             colors={["#6443F4", "#F94498"]}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 0 }}
-            style={[styles.xpBarFill, { width: `${Math.min((totalXP / 10000) * 100, 100)}%` as any }]}
+            style={[styles.xpBarFill, { width: `${nextTierXP === Infinity ? 100 : Math.min((totalXP / nextTierXP) * 100, 100)}%` as any }]}
           />
         </View>
       </View>

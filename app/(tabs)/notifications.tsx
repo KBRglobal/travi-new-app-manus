@@ -1,4 +1,4 @@
-import { useRef, useState, useCallback } from "react";
+import { useRef, useState, useCallback, useMemo } from "react";
 import {
   View, Text, TouchableOpacity, StyleSheet, Animated,
   FlatList, StatusBar, Platform
@@ -11,6 +11,9 @@ import { useStore } from "@/lib/store";
 import { BRAND, TYPE, LOGOS, RADIUS, SPACING } from "@/constants/brand";
 import * as Haptics from "expo-haptics";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { trpc } from "@/lib/trpc";
+import { useAuth } from "@/hooks/use-auth";
+import { SkeletonBlock } from "@/components/skeleton-loader";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 type NotifType = "price_drop" | "trip_reminder" | "friend_joined" | "points" | "tip" | "booking";
@@ -182,11 +185,158 @@ function NotifCard({ item, onPress, onDismiss }: { item: Notif; onPress: () => v
   );
 }
 
+// ─── Notification Skeleton ────────────────────────────────────────────────────
+function NotifSkeleton() {
+  return (
+    <View style={S.notifWrap}>
+      <View style={[S.notifCard, { borderColor: "rgba(255,255,255,0.12)" }]}>
+        <View style={S.notifRow}>
+          <SkeletonBlock width={52} height={52} borderRadius={14} />
+          <View style={{ flex: 1, gap: 6 }}>
+            <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+              <SkeletonBlock width="60%" height={15} />
+              <SkeletonBlock width={40} height={12} />
+            </View>
+            <SkeletonBlock width="80%" height={12} />
+          </View>
+        </View>
+      </View>
+    </View>
+  );
+}
+
+// ─── Helpers: derive notifications from real data ─────────────────────────────
+function timeAgo(dateStr: string | Date | null | undefined): string {
+  if (!dateStr) return "Recently";
+  const date = typeof dateStr === "string" ? new Date(dateStr) : dateStr;
+  const now = new Date();
+  const diffMs = now.getTime() - date.getTime();
+  const diffMins = Math.floor(diffMs / 60000);
+  if (diffMins < 1) return "Just now";
+  if (diffMins < 60) return `${diffMins}m ago`;
+  const diffHours = Math.floor(diffMins / 60);
+  if (diffHours < 24) return `${diffHours}h ago`;
+  const diffDays = Math.floor(diffHours / 24);
+  if (diffDays === 1) return "Yesterday";
+  return `${diffDays} days ago`;
+}
+
 // ─── Main Screen ──────────────────────────────────────────────────────────────
 export default function NotificationsScreen() {
   const insets = useSafeAreaInsets();
   const { state, dispatch } = useStore();
+  const { isAuthenticated } = useAuth({ autoFetch: false });
+
+  // Fetch real data from backend
+  const { data: priceAlerts, isLoading: loadingAlerts } = trpc.priceAlerts.list.useQuery(undefined, {
+    enabled: isAuthenticated,
+  });
+  const { data: tripsList, isLoading: loadingTrips } = trpc.trips.list.useQuery(undefined, {
+    enabled: isAuthenticated,
+  });
+  const { data: connections, isLoading: loadingConnections } = trpc.social.connections.useQuery(undefined, {
+    enabled: isAuthenticated,
+  });
+
+  const isLoading = isAuthenticated && (loadingAlerts || loadingTrips || loadingConnections);
+  const hasRealData = isAuthenticated && (priceAlerts || tripsList || connections);
+
+  // Derive notifications from real data
+  const realNotifs = useMemo<Notif[]>(() => {
+    if (!hasRealData) return [];
+
+    const derived: Notif[] = [];
+
+    // Price alert notifications
+    type DbPriceAlert = NonNullable<typeof priceAlerts>[number];
+    (priceAlerts ?? []).forEach((alert: DbPriceAlert) => {
+      derived.push({
+        id: `pa-${alert.id}`,
+        type: "price_drop",
+        read: false,
+        time: timeAgo(alert.createdAt),
+        title: `Price Alert: ${alert.destination}`,
+        body: `${alert.type === "flight" ? "Flights" : alert.type === "hotel" ? "Hotels" : "Packages"} to ${alert.destination} — target $${alert.targetPrice}${alert.currentPrice ? `, now $${alert.currentPrice}` : ""}`,
+        meta: {
+          destination: alert.destination,
+          drop: alert.currentPrice && alert.targetPrice
+            ? `-${Math.round(((alert.targetPrice - (alert.currentPrice ?? alert.targetPrice)) / alert.targetPrice) * 100)}%`
+            : undefined,
+        },
+      });
+    });
+
+    // Trip reminder notifications
+    type DbTrip = NonNullable<typeof tripsList>[number];
+    (tripsList ?? []).forEach((trip: DbTrip) => {
+      if (!trip.startDate) return;
+      const start = new Date(trip.startDate);
+      const now = new Date();
+      const daysUntil = Math.ceil((start.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
+
+      if (daysUntil > 0 && daysUntil <= 14) {
+        derived.push({
+          id: `trip-${trip.id}`,
+          type: "trip_reminder",
+          read: daysUntil > 7,
+          time: timeAgo(trip.createdAt),
+          title: `${trip.destination} in ${daysUntil} day${daysUntil !== 1 ? "s" : ""}!`,
+          body: `Your ${trip.destination}${trip.country ? `, ${trip.country}` : ""} trip starts soon. Check your itinerary and pack your bags.`,
+          meta: { destination: trip.destination, daysLeft: daysUntil },
+        });
+      } else if (trip.status === "completed") {
+        derived.push({
+          id: `trip-done-${trip.id}`,
+          type: "booking",
+          read: true,
+          time: timeAgo(trip.updatedAt ?? trip.createdAt),
+          title: `${trip.destination} Trip Completed`,
+          body: `Your trip to ${trip.destination} is complete. Don't forget to leave a reflection!`,
+          meta: { destination: trip.destination },
+        });
+      }
+    });
+
+    // Social connection notifications
+    type DbConnection = NonNullable<typeof connections>[number];
+    (connections ?? []).forEach((conn: DbConnection) => {
+      if (conn.status === "pending") {
+        derived.push({
+          id: `conn-${conn.id}`,
+          type: "friend_joined",
+          read: false,
+          time: timeAgo(conn.createdAt),
+          title: "New Travel Connection",
+          body: `You have a pending travel buddy connection request${conn.compatibilityScore ? ` (${conn.compatibilityScore}% match)` : ""}.`,
+          meta: { name: "Traveler", avatar: "T" },
+        });
+      } else if (conn.status === "accepted") {
+        derived.push({
+          id: `conn-${conn.id}`,
+          type: "friend_joined",
+          read: true,
+          time: timeAgo(conn.updatedAt ?? conn.createdAt),
+          title: "Connection Accepted!",
+          body: "A travel buddy accepted your connection. Start planning together!",
+          meta: { name: "Traveler", avatar: "T" },
+        });
+      }
+    });
+
+    return derived;
+  }, [priceAlerts, tripsList, connections, hasRealData]);
+
+  // Local state for dismiss/read operations, seeded with mock data
   const [notifs, setNotifs] = useState<Notif[]>(MOCK_NOTIFS);
+
+  // Sync real data into local state when it arrives (for dismiss/read operations)
+  const [syncKey, setSyncKey] = useState("");
+  const currentKey = realNotifs.map((n) => n.id).join(",");
+  if (hasRealData && realNotifs.length > 0 && currentKey !== syncKey) {
+    setNotifs(realNotifs);
+    setSyncKey(currentKey);
+  }
+
   const [filter, setFilter] = useState<"all" | "unread">("all");
 
   const unreadCount = notifs.filter((n) => !n.read).length;
@@ -283,29 +433,37 @@ export default function NotificationsScreen() {
       </View>
 
       {/* Notifications list */}
-      <FlatList
-        data={[1]}
-        keyExtractor={() => "list"}
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingBottom: 130, paddingHorizontal: 16 }}
-        renderItem={() => (
-          <View>
-            {renderSection("Today", today)}
-            {renderSection("Yesterday", yesterday)}
-            {renderSection("Earlier", earlier)}
-            {filtered.length === 0 && (
-              <View style={S.emptyState}>
-                <View style={S.emptyIconWrap}>
-                  <LinearGradient colors={["rgba(100,67,244,0.2)", "rgba(249,68,152,0.1)"]} style={StyleSheet.absoluteFillObject} />
-                  <Image source={LOGOS.mascotDark} style={S.emptyMascot} resizeMode="contain" />
+      {isLoading ? (
+        <View style={{ paddingHorizontal: 16, paddingTop: 8, gap: 4 }}>
+          {Array.from({ length: 5 }).map((_, i) => (
+            <NotifSkeleton key={i} />
+          ))}
+        </View>
+      ) : (
+        <FlatList
+          data={[1]}
+          keyExtractor={() => "list"}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{ paddingBottom: 130, paddingHorizontal: 16 }}
+          renderItem={() => (
+            <View>
+              {renderSection("Today", today)}
+              {renderSection("Yesterday", yesterday)}
+              {renderSection("Earlier", earlier)}
+              {filtered.length === 0 && (
+                <View style={S.emptyState}>
+                  <View style={S.emptyIconWrap}>
+                    <LinearGradient colors={["rgba(100,67,244,0.2)", "rgba(249,68,152,0.1)"]} style={StyleSheet.absoluteFillObject} />
+                    <Image source={LOGOS.mascotDark} style={S.emptyMascot} resizeMode="contain" />
+                  </View>
+                  <Text style={S.emptyTitle}>All caught up!</Text>
+                  <Text style={S.emptyBody}>No {filter === "unread" ? "unread " : ""}notifications right now. We'll let you know when something exciting happens.</Text>
                 </View>
-                <Text style={S.emptyTitle}>All caught up!</Text>
-                <Text style={S.emptyBody}>No {filter === "unread" ? "unread " : ""}notifications right now. We'll let you know when something exciting happens.</Text>
-              </View>
-            )}
-          </View>
-        )}
-      />
+              )}
+            </View>
+          )}
+        />
+      )}
     </View>
   );
 }
