@@ -1,29 +1,52 @@
+/**
+ * Verify Email Screen — Neutral Wireframe
+ * Spec: 6-digit code, auto-submit on 6th digit, shake on error,
+ *       resend timer (30s), max 3 resends, paste detection, back link.
+ */
 import { useState, useRef, useEffect } from "react";
 import {
   View, Text, TextInput, TouchableOpacity, StyleSheet,
-  Dimensions, Animated, KeyboardAvoidingView, Platform
+  Animated, KeyboardAvoidingView, Platform, Alert,
 } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { router, useLocalSearchParams } from "expo-router";
-import { LinearGradient } from "expo-linear-gradient";
 import { IconSymbol } from "@/components/ui/icon-symbol";
 import { useStore } from "@/lib/store";
 
-const { width } = Dimensions.get("window");
 const CODE_LENGTH = 6;
+const MAX_RESENDS = 3;
+
+const N = {
+  bg:       "#111111",
+  surface:  "#1A1A1A",
+  white:    "#FFFFFF",
+  textSec:  "#ABABAB",
+  textTer:  "#777777",
+  accent:   "#007AFF",
+  border:   "#333333",
+  error:    "#FF6B6B",
+  success:  "#4ADE80",
+  disabled: "#444444",
+};
 
 export default function VerifyScreen() {
   const { email } = useLocalSearchParams<{ email: string }>();
   const { dispatch } = useStore();
-  const [code, setCode] = useState<string[]>(Array(CODE_LENGTH).fill(""));
-  const [timer, setTimer] = useState(30);
+
+  const [code, setCode]           = useState<string[]>(Array(CODE_LENGTH).fill(""));
+  const [timer, setTimer]         = useState(30);
   const [canResend, setCanResend] = useState(false);
-  const [verified, setVerified] = useState(false);
-  const [error, setError] = useState(false);
+  const [resendCount, setResendCount] = useState(0);
+  const [verified, setVerified]   = useState(false);
+  const [error, setError]         = useState(false);
+  const [loading, setLoading]     = useState(false);
+
   const inputs = useRef<(TextInput | null)[]>([]);
-  const shakeAnim = useRef(new Animated.Value(0)).current;
-  const successScale = useRef(new Animated.Value(0)).current;
+  const shakeAnim     = useRef(new Animated.Value(0)).current;
+  const successScale  = useRef(new Animated.Value(0)).current;
   const successOpacity = useRef(new Animated.Value(0)).current;
 
+  // Countdown timer
   useEffect(() => {
     if (timer > 0) {
       const t = setTimeout(() => setTimer((v) => v - 1), 1000);
@@ -33,31 +56,75 @@ export default function VerifyScreen() {
     }
   }, [timer]);
 
+  // Auto-focus first input on mount
+  useEffect(() => {
+    setTimeout(() => inputs.current[0]?.focus(), 300);
+  }, []);
+
+  const shake = () => {
+    shakeAnim.setValue(0);
+    Animated.sequence([
+      Animated.timing(shakeAnim, { toValue: 8, duration: 50, useNativeDriver: true }),
+      Animated.timing(shakeAnim, { toValue: -8, duration: 50, useNativeDriver: true }),
+      Animated.timing(shakeAnim, { toValue: 8, duration: 50, useNativeDriver: true }),
+      Animated.timing(shakeAnim, { toValue: -8, duration: 50, useNativeDriver: true }),
+      Animated.timing(shakeAnim, { toValue: 0, duration: 50, useNativeDriver: true }),
+    ]).start();
+  };
+
   const handleChange = (val: string, idx: number) => {
+    // Paste detection: if user pastes a 6-digit code
+    if (val.length >= CODE_LENGTH) {
+      const digits = val.replace(/[^0-9]/g, "").slice(0, CODE_LENGTH);
+      if (digits.length === CODE_LENGTH) {
+        const newCode = digits.split("");
+        setCode(newCode);
+        setError(false);
+        setTimeout(() => handleVerify(newCode.join("")), 300);
+        return;
+      }
+    }
+
+    const digit = val.replace(/[^0-9]/g, "").slice(-1);
     const newCode = [...code];
-    newCode[idx] = val.replace(/[^0-9]/g, "").slice(-1);
+    newCode[idx] = digit;
     setCode(newCode);
     setError(false);
-    if (val && idx < CODE_LENGTH - 1) inputs.current[idx + 1]?.focus();
-    if (newCode.every((c) => c !== "") && newCode.join("").length === CODE_LENGTH) {
-      handleVerify(newCode.join(""));
+
+    if (digit && idx < CODE_LENGTH - 1) {
+      inputs.current[idx + 1]?.focus();
+    }
+
+    // Auto-submit on 6th digit
+    if (idx === CODE_LENGTH - 1 && digit && newCode.every((c) => c !== "")) {
+      setTimeout(() => handleVerify(newCode.join("")), 300);
     }
   };
 
   const handleKeyPress = (e: any, idx: number) => {
     if (e.nativeEvent.key === "Backspace" && !code[idx] && idx > 0) {
+      const newCode = [...code];
+      newCode[idx - 1] = "";
+      setCode(newCode);
       inputs.current[idx - 1]?.focus();
     }
   };
 
   const handleVerify = (fullCode?: string) => {
     const entered = fullCode || code.join("");
-    if (entered.length === 6) {
+    if (entered.length < CODE_LENGTH) return;
+
+    setLoading(true);
+
+    // Demo: any 6 digits = success
+    setTimeout(() => {
+      setLoading(false);
       setVerified(true);
       Animated.parallel([
         Animated.spring(successScale, { toValue: 1, friction: 5, tension: 60, useNativeDriver: true }),
         Animated.timing(successOpacity, { toValue: 1, duration: 300, useNativeDriver: true }),
       ]).start();
+
       setTimeout(() => {
         dispatch({ type: "SET_AUTH", payload: { isAuthenticated: true, isGuest: false } });
         dispatch({
@@ -72,181 +139,222 @@ export default function VerifyScreen() {
         });
         router.push("/(auth)/profile-setup" as never);
       }, 1200);
-    } else {
-      setError(true);
-      Animated.sequence([
-        Animated.timing(shakeAnim, { toValue: 12, duration: 60, useNativeDriver: true }),
-        Animated.timing(shakeAnim, { toValue: -12, duration: 60, useNativeDriver: true }),
-        Animated.timing(shakeAnim, { toValue: 8, duration: 60, useNativeDriver: true }),
-        Animated.timing(shakeAnim, { toValue: -8, duration: 60, useNativeDriver: true }),
-        Animated.timing(shakeAnim, { toValue: 0, duration: 60, useNativeDriver: true }),
-      ]).start();
-    }
+    }, 800);
   };
 
   const handleResend = () => {
+    if (resendCount >= MAX_RESENDS) {
+      Alert.alert("Too many attempts", "Please contact support for help.");
+      return;
+    }
     setTimer(30);
     setCanResend(false);
+    setResendCount((c) => c + 1);
     setCode(Array(CODE_LENGTH).fill(""));
     setError(false);
     inputs.current[0]?.focus();
+    // Toast would show "Code resent to {email}"
   };
 
+  const allFilled = code.every(Boolean);
+
   return (
-    <View style={styles.container}>
-      <LinearGradient
-        colors={["#0D0628", "#1A0A3D", "#1A0A3D", "#1A0A3D"]}
-        locations={[0, 0.3, 0.6, 1]}
-        style={StyleSheet.absoluteFillObject}
-      />
-      <View style={styles.orb1} />
-      <View style={styles.orb2} />
-
-      <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={{ flex: 1 }}>
-        <View style={styles.inner}>
-          {/* Back */}
-          <TouchableOpacity style={styles.backBtn} onPress={() => router.back()} activeOpacity={0.7}>
-            <LinearGradient colors={["rgba(255,255,255,0.06)", "rgba(255,255,255,0.06)"]} style={styles.backGradient}>
-              <IconSymbol name="chevron.left" size={20} color="#C4B5D9" />
-            </LinearGradient>
-          </TouchableOpacity>
-
-          {/* Icon */}
-          <View style={styles.iconWrap}>
-            <LinearGradient colors={["rgba(123,47,190,0.45)", "rgba(233,30,140,0.25)"]} style={styles.iconGradient}>
-              <IconSymbol name="envelope.fill" size={48} color="#6443F4" />
-            </LinearGradient>
-            <View style={styles.iconGlow} />
-          </View>
-
-          <Text style={styles.title}>Check your email</Text>
-          <Text style={styles.subtitle}>
-            We sent a 6-digit code to{"\n"}
-            <Text style={styles.emailHighlight}>{email || "your email"}</Text>
-          </Text>
-
-          {/* Code inputs */}
-          <Animated.View style={[styles.codeRow, { transform: [{ translateX: shakeAnim }] }]}>
-            {code.map((digit, idx) => (
-              <View key={idx} style={[
-                styles.codeBox,
-                digit ? styles.codeBoxFilled : null,
-                error ? styles.codeBoxError : null,
-                verified ? styles.codeBoxSuccess : null,
-              ]}>
-                {digit ? (
-                  <LinearGradient
-                    colors={verified
-                      ? ["rgba(0,230,118,0.25)", "rgba(0,188,212,0.12)"]
-                      : ["rgba(123,47,190,0.35)", "rgba(233,30,140,0.18)"]}
-                    style={StyleSheet.absoluteFillObject}
-                  />
-                ) : null}
-                <TextInput
-                  ref={(r) => { inputs.current[idx] = r; }}
-                  style={[styles.codeInput, digit ? styles.codeInputFilled : null]}
-                  value={digit}
-                  onChangeText={(v) => handleChange(v, idx)}
-                  onKeyPress={(e) => handleKeyPress(e, idx)}
-                  keyboardType="number-pad"
-                  maxLength={1}
-                  selectTextOnFocus
-                  caretHidden
-                />
-              </View>
-            ))}
-          </Animated.View>
-
-          {error && <Text style={styles.errorText}>Incorrect code — any 6 digits work in demo</Text>}
-
-          {/* Success */}
-          {verified && (
-            <Animated.View style={[styles.successBadge, { opacity: successOpacity, transform: [{ scale: successScale }] }]}>
-              <LinearGradient colors={["rgba(0,230,118,0.25)", "rgba(0,188,212,0.15)"]} style={styles.successGradient}>
-                <IconSymbol name="checkmark" size={28} color="#02A65C" />
-                <Text style={styles.successText}>Verified! Redirecting...</Text>
-              </LinearGradient>
-            </Animated.View>
-          )}
-
-          {/* Verify button */}
-          {!verified && (
-            <TouchableOpacity
-              style={styles.verifyBtn}
-              onPress={() => handleVerify()}
-              activeOpacity={0.85}
-            >
-              <LinearGradient
-                colors={code.every(Boolean) ? ["#6443F4", "#F94498"] : ["rgba(255,255,255,0.06)", "rgba(255,255,255,0.06)"]}
-                start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
-                style={styles.verifyGradient}
-              >
-                <Text style={[styles.verifyText, !code.every(Boolean) && styles.verifyTextDim]}>
-                  Verify Email
-                </Text>
-              </LinearGradient>
+    <View style={s.root}>
+      <SafeAreaView edges={["top", "bottom"]} style={s.safe}>
+        <KeyboardAvoidingView
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+          style={{ flex: 1 }}
+        >
+          <View style={s.inner}>
+            {/* Back button */}
+            <TouchableOpacity style={s.backBtn} onPress={() => router.back()} activeOpacity={0.7}>
+              <IconSymbol name="chevron.left" size={20} color={N.textSec} />
             </TouchableOpacity>
-          )}
 
-          {/* Resend */}
-          <View style={styles.resendRow}>
-            <Text style={styles.resendLabel}>Didn't receive it? </Text>
-            {canResend ? (
-              <TouchableOpacity onPress={handleResend} activeOpacity={0.7}>
-                <Text style={styles.resendLink}>Resend code</Text>
-              </TouchableOpacity>
-            ) : (
-              <Text style={styles.resendTimer}>Resend in {timer}s</Text>
+            {/* Icon */}
+            <View style={s.iconWrap}>
+              <IconSymbol name="envelope.fill" size={40} color={N.accent} />
+            </View>
+
+            {/* Title */}
+            <Text style={s.title}>Check your email</Text>
+            <Text style={s.subtitle}>
+              We sent a verification code to{"\n"}
+              <Text style={s.emailHighlight}>{email || "your email"}</Text>
+            </Text>
+
+            {/* Code inputs */}
+            <Animated.View style={[s.codeRow, { transform: [{ translateX: shakeAnim }] }]}>
+              {code.map((digit, idx) => (
+                <View
+                  key={idx}
+                  style={[
+                    s.codeBox,
+                    digit ? s.codeBoxFilled : null,
+                    error ? s.codeBoxError : null,
+                    verified ? s.codeBoxSuccess : null,
+                  ]}
+                >
+                  <TextInput
+                    ref={(r) => { inputs.current[idx] = r; }}
+                    style={[s.codeInput, digit ? s.codeInputFilled : null]}
+                    value={digit}
+                    onChangeText={(v) => handleChange(v, idx)}
+                    onKeyPress={(e) => handleKeyPress(e, idx)}
+                    keyboardType="number-pad"
+                    maxLength={1}
+                    selectTextOnFocus
+                    caretHidden
+                    editable={!verified && !loading}
+                  />
+                </View>
+              ))}
+            </Animated.View>
+
+            {/* Error message */}
+            {error && (
+              <Text style={s.errorText}>Invalid code. Please try again.</Text>
             )}
+
+            {/* Success badge */}
+            {verified && (
+              <Animated.View style={[s.successBadge, {
+                opacity: successOpacity,
+                transform: [{ scale: successScale }],
+              }]}>
+                <IconSymbol name="checkmark.circle.fill" size={22} color={N.success} />
+                <Text style={s.successText}>Verified! Redirecting...</Text>
+              </Animated.View>
+            )}
+
+            {/* Verify button */}
+            {!verified && (
+              <TouchableOpacity
+                style={[s.verifyBtn, !allFilled && s.verifyBtnDisabled]}
+                onPress={() => handleVerify()}
+                activeOpacity={0.8}
+                disabled={!allFilled || loading}
+              >
+                <Text style={[s.verifyText, !allFilled && s.verifyTextDim]}>
+                  {loading ? "Verifying..." : "Verify Email"}
+                </Text>
+              </TouchableOpacity>
+            )}
+
+            {/* Resend */}
+            <View style={s.resendRow}>
+              <Text style={s.resendLabel}>Didn't receive the code? </Text>
+              {resendCount >= MAX_RESENDS ? (
+                <Text style={s.resendDisabled}>Contact support</Text>
+              ) : canResend ? (
+                <TouchableOpacity onPress={handleResend} activeOpacity={0.7}>
+                  <Text style={s.resendLink}>Resend</Text>
+                </TouchableOpacity>
+              ) : (
+                <Text style={s.resendTimer}>Resend ({timer}s)</Text>
+              )}
+            </View>
+
+            {/* Back link */}
+            <TouchableOpacity
+              style={s.backLink}
+              onPress={() => router.push("/(auth)/sign-up" as never)}
+              activeOpacity={0.7}
+            >
+              <Text style={s.backLinkText}>{"< Back"}</Text>
+            </TouchableOpacity>
           </View>
-        </View>
-      </KeyboardAvoidingView>
+        </KeyboardAvoidingView>
+      </SafeAreaView>
     </View>
   );
 }
 
-const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#0D0628" },
-  orb1: {
-    position: "absolute", width: width, height: width, borderRadius: width / 2,
-    top: -width * 0.4, left: -width * 0.2, backgroundColor: "rgba(123,47,190,0.10)",
+const s = StyleSheet.create({
+  root: { flex: 1, backgroundColor: N.bg },
+  safe: { flex: 1 },
+  inner: { flex: 1, paddingHorizontal: 28, paddingTop: 20, alignItems: "center" },
+
+  backBtn: {
+    alignSelf: "flex-start",
+    width: 44, height: 44,
+    borderRadius: 12,
+    backgroundColor: N.surface,
+    borderWidth: 1,
+    borderColor: N.border,
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: 40,
   },
-  orb2: {
-    position: "absolute", width: width * 0.8, height: width * 0.8, borderRadius: width * 0.4,
-    bottom: 0, right: -width * 0.3, backgroundColor: "rgba(233,30,140,0.07)",
+
+  iconWrap: {
+    width: 80, height: 80,
+    borderRadius: 24,
+    backgroundColor: N.surface,
+    borderWidth: 1,
+    borderColor: N.border,
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: 24,
   },
-  inner: { flex: 1, paddingHorizontal: 28, paddingTop: 60, alignItems: "center" },
-  backBtn: { alignSelf: "flex-start", marginBottom: 40 },
-  backGradient: { width: 44, height: 44, borderRadius: 14, alignItems: "center", justifyContent: "center", borderWidth: 1, borderColor: "rgba(255,255,255,0.12)" },
-  iconWrap: { width: 90, height: 90, alignItems: "center", justifyContent: "center", marginBottom: 28 },
-  iconGradient: { width: 90, height: 90, borderRadius: 28, alignItems: "center", justifyContent: "center", borderWidth: 1, borderColor: "rgba(123,47,190,0.5)" },
-  iconGlow: { position: "absolute", width: 90, height: 90, borderRadius: 45, backgroundColor: "rgba(123,47,190,0.15)", shadowColor: "#6443F4", shadowOffset: { width: 0, height: 0 }, shadowOpacity: 0.9, shadowRadius: 30 },
-  iconEmoji: { fontSize: 38 },
-  title: { fontSize: 28, fontWeight: "800", color: "#FFFFFF", letterSpacing: -0.5, marginBottom: 10, textAlign: "center", fontFamily: "Chillax-Bold" },
-  subtitle: { fontSize: 15, color: "#8B7AAA", textAlign: "center", lineHeight: 22, marginBottom: 36, fontFamily: "Satoshi-Regular" },
-  emailHighlight: { color: "#F94498", fontWeight: "700", fontFamily: "Satoshi-Bold" },
+
+  title: {
+    fontSize: 28, fontWeight: "800", color: N.white,
+    letterSpacing: -0.5, marginBottom: 10, textAlign: "center",
+  },
+  subtitle: {
+    fontSize: 15, color: N.textSec, textAlign: "center",
+    lineHeight: 22, marginBottom: 36,
+  },
+  emailHighlight: { color: N.accent, fontWeight: "700" },
+
   codeRow: { flexDirection: "row", gap: 10, marginBottom: 20 },
   codeBox: {
-    width: 46, height: 60, borderRadius: 14, overflow: "hidden",
-    borderWidth: 1.5, borderColor: "rgba(255,255,255,0.12)",
-    backgroundColor: "rgba(255,255,255,0.06)", alignItems: "center", justifyContent: "center",
+    width: 48, height: 56, borderRadius: 12, overflow: "hidden",
+    borderWidth: 1.5, borderColor: N.border,
+    backgroundColor: N.surface,
+    alignItems: "center", justifyContent: "center",
   },
-  codeBoxFilled: { borderColor: "rgba(123,47,190,0.8)" },
-  codeBoxError: { borderColor: "rgba(239,68,68,0.8)" },
-  codeBoxSuccess: { borderColor: "rgba(0,230,118,0.8)" },
-  codeInput: { width: 46, height: 60, textAlign: "center", fontSize: 24, fontWeight: "700", color: "transparent", fontFamily: "Chillax-Semibold" },
-  codeInputFilled: { color: "#FFFFFF" },
-  errorText: { color: "#EF4444", fontSize: 13, fontWeight: "500", marginBottom: 12, textAlign: "center", fontFamily: "Satoshi-Medium" },
-  successBadge: { marginBottom: 16 },
-  successGradient: { flexDirection: "row", alignItems: "center", gap: 8, paddingHorizontal: 20, paddingVertical: 12, borderRadius: 14, borderWidth: 1, borderColor: "rgba(0,230,118,0.4)" },
-  successIcon: { fontSize: 18, color: "#00E676" },
-  successText: { color: "#00E676", fontSize: 15, fontWeight: "700", fontFamily: "Satoshi-Bold" },
-  verifyBtn: { width: "100%", borderRadius: 16, overflow: "hidden", marginBottom: 20 },
-  verifyGradient: { paddingVertical: 17, alignItems: "center" },
-  verifyText: { color: "#FFFFFF", fontSize: 16, fontWeight: "700", fontFamily: "Chillax-Semibold" },
-  verifyTextDim: { color: "#3D3050" },
-  resendRow: { flexDirection: "row", alignItems: "center" },
-  resendLabel: { color: "#5A4D72", fontSize: 14, fontFamily: "Satoshi-Regular" },
-  resendLink: { color: "#6443F4", fontSize: 14, fontWeight: "600", fontFamily: "Satoshi-Medium" },
-  resendTimer: { color: "#5A4D72", fontSize: 14, fontFamily: "Satoshi-Regular" },
+  codeBoxFilled: { borderColor: N.accent },
+  codeBoxError: { borderColor: N.error },
+  codeBoxSuccess: { borderColor: N.success },
+  codeInput: {
+    width: 48, height: 56, textAlign: "center",
+    fontSize: 24, fontWeight: "700", color: "transparent",
+  },
+  codeInputFilled: { color: N.white },
+
+  errorText: {
+    color: N.error, fontSize: 13, fontWeight: "500",
+    marginBottom: 12, textAlign: "center",
+  },
+
+  successBadge: {
+    flexDirection: "row", alignItems: "center", gap: 8,
+    paddingHorizontal: 20, paddingVertical: 12,
+    borderRadius: 14, borderWidth: 1,
+    borderColor: N.success,
+    backgroundColor: "rgba(74,222,128,0.1)",
+    marginBottom: 16,
+  },
+  successText: { color: N.success, fontSize: 15, fontWeight: "700" },
+
+  verifyBtn: {
+    width: "100%", height: 56, borderRadius: 28,
+    backgroundColor: N.accent,
+    justifyContent: "center", alignItems: "center",
+    marginBottom: 20,
+  },
+  verifyBtnDisabled: { backgroundColor: N.disabled },
+  verifyText: { color: N.white, fontSize: 16, fontWeight: "700" },
+  verifyTextDim: { color: N.textTer },
+
+  resendRow: { flexDirection: "row", alignItems: "center", marginBottom: 24 },
+  resendLabel: { color: N.textTer, fontSize: 14 },
+  resendLink: { color: N.accent, fontSize: 14, fontWeight: "600" },
+  resendTimer: { color: N.textTer, fontSize: 14 },
+  resendDisabled: { color: N.error, fontSize: 14, fontWeight: "500" },
+
+  backLink: { paddingVertical: 8, paddingHorizontal: 16 },
+  backLinkText: { color: N.textTer, fontSize: 14, fontWeight: "500" },
 });

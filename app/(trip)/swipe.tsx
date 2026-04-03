@@ -900,8 +900,7 @@ const styles = StyleSheet.create<any>({
   stampText: { color: "#FFFFFF", fontSize: 22, fontWeight: "900", letterSpacing: 3, fontFamily: "Chillax-Bold" },
   stampTextNope: { color: "#FFFFFF" },
   // Category badge
-  // @ts-ignore - gap is valid in RN 0.71+
-  categoryBadge: { position: "absolute", top: 20, left: 20, flexDirection: "row", alignItems: "center", gap: 6, paddingHorizontal: 12, paddingVertical: 6, borderRadius: 20, borderWidth: 1 },
+  categoryBadge: { position: "absolute", top: 20, left: 20, flexDirection: "row", alignItems: "center", gap: 6, paddingHorizontal: 12, paddingVertical: 6, borderRadius: 20, borderWidth: 1 } as any,
   categoryDot: { width: 7, height: 7, borderRadius: 3.5 },
   categoryText: { fontSize: 12, fontWeight: "700", letterSpacing: 0.3 },
   // Card info

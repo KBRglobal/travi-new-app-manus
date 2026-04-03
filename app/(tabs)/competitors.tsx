@@ -19,7 +19,7 @@ const COMPETITORS = [
     frictions: ["Too many ads", "Redirects to external sites", "No booking completion", "Review trust issues"],
   },
   {
-    id: "viator", name: "Viator", color: "#3D5A80", share: "15%",
+    id: "viator", name: "Viator", color: "#93C5FD", share: "15%",
     strengths: ["Activity marketplace", "Easy booking", "Good mobile UX"],
     weaknesses: ["Limited to activities", "No flights/hotels", "Commission-heavy"],
     journey: ["Browse activities", "Filter by date/price", "Read reviews", "Book in-app", "Get confirmation"],

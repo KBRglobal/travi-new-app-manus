@@ -1,34 +1,31 @@
 /**
- * TRAVI — Explore Screen
- * Dark mode: #1A0B2E bg, #24103E surface, purple→pink gradients
- * NO circles — bare icons, pill badges, glassmorphism cards
+ * TRAVI — Explore Screen (Neutral Mockup)
+ * Clean, minimal dark theme. Focus on UX and information.
  */
 import React, { useState } from "react";
 import {
   View, Text, TouchableOpacity, StyleSheet, Dimensions,
-  ScrollView, TextInput, ImageBackground, FlatList,
-  Platform,
+  ScrollView, TextInput, ImageBackground, FlatList, Platform,
 } from "react-native";
 import { router } from "expo-router";
-import { LinearGradient } from "expo-linear-gradient";
 import { IconSymbol } from "@/components/ui/icon-symbol";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import * as Haptics from "expo-haptics";
 
 const { width } = Dimensions.get("window");
 
-const C = {
-  bg:           "#1A0B2E",
-  surface:      "#24103E",
-  glassStroke:  "rgba(123,68,230,0.3)",
-  purple:       "#6443F4",
-  pink:         "#F94498",
-  orange:       "#FF9327",
-  green:        "#02A65C",
-  white:        "#FFFFFF",
-  textPrimary:  "#FFFFFF",
-  textSecondary:"#D3CFD8",
-  textMuted:    "#A79FB2",
+const N = {
+  bg:         "#111111",
+  surface:    "#1C1C1E",
+  surfaceAlt: "#2C2C2E",
+  border:     "rgba(255,255,255,0.10)",
+  white:      "#FFFFFF",
+  textPri:    "#FFFFFF",
+  textSec:    "#ABABAB",
+  textMuted:  "#777777",
+  accent:     "#007AFF",
+  green:      "#34C759",
+  orange:     "#FF9500",
 };
 
 const FILTERS = ["All", "Beach", "Adventure", "Culture", "Food", "Wellness", "City", "Nature", "Luxury"];
@@ -53,15 +50,10 @@ function DestCard({ item }: { item: typeof DESTINATIONS[0] }) {
   const [saved, setSaved] = useState(false);
   return (
     <View style={S.destCard}>
-      <ImageBackground
-        source={item.image}
-        style={S.destImage}
-        imageStyle={{ borderTopLeftRadius: 20, borderTopRightRadius: 20 }}
-        resizeMode="cover"
-      >
-        <LinearGradient colors={["transparent", "rgba(26,11,46,0.92)"]} style={StyleSheet.absoluteFillObject} />
-        <View style={S.dnaBadge}>
-          <Text style={S.dnaBadgeText}>{item.match}% Match</Text>
+      <ImageBackground source={item.image} style={S.destImage} imageStyle={{ borderTopLeftRadius: 14, borderTopRightRadius: 14 }} resizeMode="cover">
+        <View style={S.destOverlay} />
+        <View style={S.matchBadge}>
+          <Text style={S.matchBadgeText}>{item.match}% Match</Text>
         </View>
         {item.trending && (
           <View style={S.trendingBadge}>
@@ -78,16 +70,15 @@ function DestCard({ item }: { item: typeof DESTINATIONS[0] }) {
         </View>
         <Text style={S.destPrice}>From {item.price} · {item.days} days</Text>
         <View style={S.destCTA}>
-          <TouchableOpacity style={S.planBtn} onPress={() => router.push("/(trip)/plan" as never)} activeOpacity={0.85}>
-            <LinearGradient colors={[C.purple, C.pink]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={StyleSheet.absoluteFillObject} />
+          <TouchableOpacity style={S.planBtn} onPress={() => router.push("/(trip)/plan" as never)} activeOpacity={0.7}>
             <Text style={S.planBtnText}>Plan Trip</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={[S.saveBtn, saved && S.saveBtnActive]}
             onPress={() => { setSaved(s => !s); if (Platform.OS !== "web") Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light); }}
-            activeOpacity={0.85}
+            activeOpacity={0.7}
           >
-            <Text style={[S.saveBtnText, saved && { color: C.white }]}>{saved ? "Saved" : "Save"}</Text>
+            <Text style={[S.saveBtnText, saved && { color: N.white }]}>{saved ? "Saved" : "Save"}</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -99,7 +90,7 @@ export default function ExploreScreen() {
   const insets = useSafeAreaInsets();
   const [search, setSearch] = useState("");
   const [activeFilter, setActiveFilter] = useState("All");
-  const tabBarOffset = 60 + Math.max(insets.bottom, 8) + 16;
+  const tabBarOffset = 56 + Math.max(insets.bottom, 8) + 16;
 
   const filtered = DESTINATIONS.filter(d => {
     const matchSearch = search.length === 0 ||
@@ -111,43 +102,38 @@ export default function ExploreScreen() {
 
   return (
     <View style={S.root}>
-      <LinearGradient
-        colors={[C.purple, "#9B3FD4", C.pink]}
-        start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}
-        style={[S.header, { paddingTop: insets.top + 12 }]}
-      >
+      {/* ── Header ── */}
+      <View style={[S.header, { paddingTop: insets.top + 8 }]}>
         <Text style={S.headerTitle}>Explore</Text>
         <Text style={S.headerSub}>Discover your next adventure</Text>
         <View style={S.searchBar}>
-          <IconSymbol name="magnifyingglass" size={18} color={C.textMuted} />
+          <IconSymbol name="magnifyingglass" size={18} color={N.textMuted} />
           <TextInput
             style={S.searchInput}
             placeholder="Search destinations..."
-            placeholderTextColor={C.textMuted}
+            placeholderTextColor={N.textMuted}
             value={search}
             onChangeText={setSearch}
             returnKeyType="search"
           />
           {search.length > 0 && (
             <TouchableOpacity onPress={() => setSearch("")}>
-              <IconSymbol name="xmark.circle.fill" size={18} color={C.textMuted} />
+              <IconSymbol name="xmark.circle.fill" size={18} color={N.textMuted} />
             </TouchableOpacity>
           )}
         </View>
-      </LinearGradient>
+      </View>
 
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: tabBarOffset + 32 }}>
-        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={S.filtersScroll} style={S.filtersContainer}>
+        {/* ── Filters ── */}
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={S.filtersScroll}>
           {FILTERS.map(f => (
             <TouchableOpacity
               key={f}
               style={[S.filterChip, activeFilter === f && S.filterChipActive]}
               onPress={() => { setActiveFilter(f); if (Platform.OS !== "web") Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light); }}
-              activeOpacity={0.8}
+              activeOpacity={0.7}
             >
-              {activeFilter === f && (
-                <LinearGradient colors={[C.purple, C.pink]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={StyleSheet.absoluteFillObject} />
-              )}
               <Text style={[S.filterChipText, activeFilter === f && S.filterChipTextActive]}>{f}</Text>
             </TouchableOpacity>
           ))}
@@ -157,6 +143,7 @@ export default function ExploreScreen() {
           <Text style={S.resultsText}>{filtered.length} destinations found</Text>
         </View>
 
+        {/* ── Destination Cards ── */}
         <FlatList
           data={filtered}
           horizontal
@@ -167,14 +154,15 @@ export default function ExploreScreen() {
           scrollEnabled
         />
 
+        {/* ── Hidden Gems ── */}
         <View style={S.section}>
           <Text style={S.sectionTitle}>Hidden Gems</Text>
           <Text style={S.sectionSub}>Off the beaten path</Text>
           <View style={S.gemsGrid}>
             {HIDDEN_GEMS.map(g => (
-              <TouchableOpacity key={g.id} style={S.gemCard} onPress={() => router.push("/(trip)/plan" as never)} activeOpacity={0.88}>
-                <ImageBackground source={g.image} style={StyleSheet.absoluteFillObject} imageStyle={{ borderRadius: 16 }} resizeMode="cover">
-                  <LinearGradient colors={["transparent", "rgba(26,11,46,0.88)"]} style={StyleSheet.absoluteFillObject} />
+              <TouchableOpacity key={g.id} style={S.gemCard} onPress={() => router.push("/(trip)/plan" as never)} activeOpacity={0.7}>
+                <ImageBackground source={g.image} style={StyleSheet.absoluteFillObject} imageStyle={{ borderRadius: 12 }} resizeMode="cover">
+                  <View style={[S.destOverlay, { borderRadius: 12 }]} />
                   <View style={S.gemBadge}>
                     <Text style={S.gemBadgeText}>Hidden Gem</Text>
                   </View>
@@ -189,14 +177,14 @@ export default function ExploreScreen() {
           </View>
         </View>
 
+        {/* ── DNA CTA ── */}
         <View style={S.sectionPad}>
-          <TouchableOpacity style={S.dnaCTA} onPress={() => router.push("/(trip)/swipe" as never)} activeOpacity={0.88}>
-            <LinearGradient colors={[C.purple, "#9B3FD4", C.pink]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={StyleSheet.absoluteFillObject} />
+          <TouchableOpacity style={S.dnaCTA} onPress={() => router.push("/(trip)/swipe" as never)} activeOpacity={0.7}>
             <View style={S.dnaCTAContent}>
               <Text style={S.dnaCTATitle}>Discover your Travel DNA</Text>
               <Text style={S.dnaCTASub}>Get AI-matched destinations in 2 minutes</Text>
             </View>
-            <IconSymbol name="chevron.right" size={20} color={C.white} />
+            <IconSymbol name="chevron.right" size={20} color={N.textMuted} />
           </TouchableOpacity>
         </View>
       </ScrollView>
@@ -205,87 +193,106 @@ export default function ExploreScreen() {
 }
 
 const S = StyleSheet.create({
-  root: { flex: 1, backgroundColor: C.bg },
-  header: { paddingHorizontal: 20, paddingBottom: 20, gap: 12 },
-  headerTitle: { color: C.white, fontSize: 28, fontWeight: "800", fontFamily: "Chillax-Bold" },
-  headerSub: { color: "rgba(255,255,255,0.75)", fontSize: 14, fontFamily: "Satoshi-Regular", marginTop: -6 },
+  root: { flex: 1, backgroundColor: N.bg },
+
+  // Header
+  header: { paddingHorizontal: 20, paddingBottom: 16, gap: 8, backgroundColor: N.bg },
+  headerTitle: { color: N.white, fontSize: 28, fontWeight: "700" },
+  headerSub: { color: N.textSec, fontSize: 14, marginTop: -4 },
   searchBar: {
     flexDirection: "row", alignItems: "center", gap: 10,
-    backgroundColor: "rgba(255,255,255,0.12)",
-    borderRadius: 14, paddingHorizontal: 14, paddingVertical: 12,
-    borderWidth: 1, borderColor: "rgba(255,255,255,0.15)",
+    backgroundColor: N.surface, borderRadius: 12,
+    paddingHorizontal: 14, paddingVertical: 12,
+    borderWidth: StyleSheet.hairlineWidth, borderColor: N.border,
   },
-  searchInput: { flex: 1, color: C.white, fontSize: 15, fontFamily: "Satoshi-Regular" },
-  filtersContainer: { backgroundColor: C.bg },
-  filtersScroll: { paddingHorizontal: 20, paddingVertical: 16, gap: 8 },
+  searchInput: { flex: 1, color: N.white, fontSize: 15 },
+
+  // Filters
+  filtersScroll: { paddingHorizontal: 20, paddingVertical: 12, gap: 8 },
   filterChip: {
     paddingHorizontal: 16, paddingVertical: 8, borderRadius: 20,
-    backgroundColor: "rgba(36,16,62,0.95)", borderWidth: 1.5, borderColor: "rgba(123,68,230,0.55)", overflow: "hidden",
+    backgroundColor: N.surface,
+    borderWidth: 1, borderColor: N.border,
   },
-  filterChipActive: { borderColor: "transparent" },
-  filterChipText: { color: "#C8C0D8", fontSize: 13, fontFamily: "Satoshi-Medium", fontWeight: "600" },
-  filterChipTextActive: { color: C.white, fontFamily: "Satoshi-Bold" },
+  filterChipActive: { backgroundColor: N.accent, borderColor: N.accent },
+  filterChipText: { color: N.textSec, fontSize: 13, fontWeight: "500" },
+  filterChipTextActive: { color: N.white, fontWeight: "600" },
+
   resultsRow: { paddingHorizontal: 20, marginBottom: 12 },
-  resultsText: { color: C.textMuted, fontSize: 13, fontFamily: "Satoshi-Regular" },
+  resultsText: { color: N.textMuted, fontSize: 13 },
+
+  // Destination Card
   destCard: {
-    width: 280, borderRadius: 20,
-    backgroundColor: C.surface, borderWidth: 1, borderColor: C.glassStroke, overflow: "hidden",
+    width: 260, borderRadius: 14,
+    backgroundColor: N.surface,
+    borderWidth: StyleSheet.hairlineWidth, borderColor: N.border,
+    overflow: "hidden",
   },
-  destImage: { width: 280, height: 185, justifyContent: "flex-end", padding: 12 },
-  dnaBadge: {
-    flexDirection: "row", alignItems: "center", gap: 4, alignSelf: "flex-start",
-    backgroundColor: C.green, borderRadius: 20, paddingHorizontal: 12, paddingVertical: 5,
+  destImage: { width: 260, height: 160, justifyContent: "flex-end", padding: 12 },
+  destOverlay: { ...StyleSheet.absoluteFillObject, backgroundColor: "rgba(0,0,0,0.35)" },
+  matchBadge: {
+    alignSelf: "flex-start",
+    backgroundColor: N.green, borderRadius: 6,
+    paddingHorizontal: 8, paddingVertical: 3,
   },
-  dnaBadgeText: { color: C.white, fontSize: 11, fontWeight: "700", fontFamily: "Satoshi-Bold" },
+  matchBadgeText: { color: N.white, fontSize: 11, fontWeight: "700" },
   trendingBadge: {
     position: "absolute", top: 12, right: 12,
-    backgroundColor: "rgba(255,147,39,0.85)", borderRadius: 12, paddingHorizontal: 8, paddingVertical: 3,
+    backgroundColor: N.orange, borderRadius: 6,
+    paddingHorizontal: 8, paddingVertical: 3,
   },
-  trendingBadgeText: { color: C.white, fontSize: 10, fontWeight: "700", fontFamily: "Satoshi-Bold" },
+  trendingBadgeText: { color: N.white, fontSize: 10, fontWeight: "700" },
   destCityOverlay: {
     position: "absolute", bottom: 12, left: 14,
-    color: C.white, fontSize: 17, fontWeight: "800", fontFamily: "Chillax-Bold",
+    color: N.white, fontSize: 16, fontWeight: "700",
   },
   destContent: { padding: 14, gap: 8 },
   tagsRow: { flexDirection: "row", flexWrap: "wrap", gap: 6 },
-  tag: { backgroundColor: "rgba(249,68,152,0.18)", borderRadius: 12, paddingHorizontal: 10, paddingVertical: 3 },
-  tagText: { color: C.pink, fontSize: 11, fontFamily: "Satoshi-Medium" },
-  destPrice: { color: C.textSecondary, fontSize: 14, fontWeight: "700", fontFamily: "Satoshi-Bold" },
+  tag: { backgroundColor: "rgba(255,255,255,0.08)", borderRadius: 6, paddingHorizontal: 8, paddingVertical: 3 },
+  tagText: { color: N.textSec, fontSize: 11 },
+  destPrice: { color: N.textSec, fontSize: 14, fontWeight: "600" },
   destCTA: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginTop: 4 },
-  planBtn: { borderRadius: 24, paddingHorizontal: 18, paddingVertical: 10, overflow: "hidden" },
-  planBtnText: { color: C.white, fontSize: 13, fontWeight: "700", fontFamily: "Satoshi-Bold" },
+  planBtn: { backgroundColor: N.accent, borderRadius: 8, paddingHorizontal: 20, paddingVertical: 10 },
+  planBtnText: { color: N.white, fontSize: 14, fontWeight: "600" },
   saveBtn: {
-    flexDirection: "row", alignItems: "center", gap: 5,
-    borderRadius: 24, paddingHorizontal: 14, paddingVertical: 10,
-    borderWidth: 1.5, borderColor: C.pink,
+    borderRadius: 8, paddingHorizontal: 14, paddingVertical: 10,
+    borderWidth: 1, borderColor: N.border,
   },
-  saveBtnActive: { backgroundColor: C.pink, borderColor: C.pink },
-  saveBtnText: { color: C.pink, fontSize: 13, fontWeight: "700", fontFamily: "Satoshi-Bold" },
+  saveBtnActive: { backgroundColor: N.accent, borderColor: N.accent },
+  saveBtnText: { color: N.textSec, fontSize: 13, fontWeight: "600" },
+
+  // Sections
   section: { paddingTop: 28, gap: 12 },
   sectionPad: { paddingTop: 24, paddingHorizontal: 20 },
-  sectionTitle: { color: C.white, fontSize: 20, fontWeight: "700", fontFamily: "Chillax-Bold", paddingHorizontal: 20 },
-  sectionSub: { color: C.textMuted, fontSize: 13, fontFamily: "Satoshi-Regular", paddingHorizontal: 20, marginTop: -6 },
+  sectionTitle: { color: N.white, fontSize: 18, fontWeight: "700", paddingHorizontal: 20 },
+  sectionSub: { color: N.textMuted, fontSize: 13, paddingHorizontal: 20, marginTop: -6 },
+
+  // Hidden Gems
   gemsGrid: { flexDirection: "row", flexWrap: "wrap", gap: 12, paddingHorizontal: 20, marginTop: 4 },
   gemCard: {
-    width: (width - 52) / 2, height: 140, borderRadius: 16, overflow: "hidden",
-    borderWidth: 1, borderColor: "rgba(123,68,230,0.3)",
+    width: (width - 52) / 2, height: 130, borderRadius: 12, overflow: "hidden",
+    borderWidth: StyleSheet.hairlineWidth, borderColor: N.border,
   },
   gemBadge: {
     position: "absolute", top: 10, left: 10,
-    backgroundColor: "rgba(100,67,244,0.75)", borderRadius: 12, paddingHorizontal: 8, paddingVertical: 3,
+    backgroundColor: "rgba(255,255,255,0.15)", borderRadius: 6,
+    paddingHorizontal: 8, paddingVertical: 3,
   },
-  gemBadgeText: { color: "#FFFFFF", fontSize: 10, fontWeight: "700", fontFamily: "Satoshi-Bold" },
+  gemBadgeText: { color: N.white, fontSize: 10, fontWeight: "600" },
   gemBottom: { position: "absolute", bottom: 10, left: 12 },
-  gemCity: { color: "#FFFFFF", fontSize: 14, fontWeight: "800", fontFamily: "Chillax-Bold" },
-  gemCountry: { color: "rgba(255,255,255,0.65)", fontSize: 11, fontFamily: "Satoshi-Regular" },
-  gemPrice: { color: "#F94498", fontSize: 11, fontWeight: "700", fontFamily: "Satoshi-Bold", marginTop: 2 },
+  gemCity: { color: N.white, fontSize: 14, fontWeight: "700" },
+  gemCountry: { color: "rgba(255,255,255,0.65)", fontSize: 11 },
+  gemPrice: { color: N.accent, fontSize: 11, fontWeight: "600", marginTop: 2 },
+
+  // DNA CTA
   dnaCTA: {
-    borderRadius: 20, overflow: "hidden",
+    borderRadius: 14, overflow: "hidden",
     flexDirection: "row", alignItems: "center",
-    paddingHorizontal: 20, paddingVertical: 20,
-    borderWidth: 1, borderColor: "rgba(123,68,230,0.3)",
+    paddingHorizontal: 20, paddingVertical: 18,
+    backgroundColor: N.surface,
+    borderWidth: StyleSheet.hairlineWidth, borderColor: N.border,
   },
   dnaCTAContent: { flex: 1, gap: 4 },
-  dnaCTATitle: { color: "#FFFFFF", fontSize: 18, fontWeight: "800", fontFamily: "Chillax-Bold" },
-  dnaCTASub: { color: "rgba(255,255,255,0.75)", fontSize: 13, fontFamily: "Satoshi-Regular" },
+  dnaCTATitle: { color: N.white, fontSize: 16, fontWeight: "700" },
+  dnaCTASub: { color: N.textSec, fontSize: 13 },
 });

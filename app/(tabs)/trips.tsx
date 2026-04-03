@@ -1,7 +1,6 @@
 /**
- * TRAVI — My Trips Screen
- * Dark mode: #1A0B2E bg, #24103E surface, purple→pink gradients
- * NO circles — bare icons, pill badges, glassmorphism cards
+ * TRAVI — My Trips Screen (Neutral Mockup)
+ * Clean, minimal dark theme. Focus on UX and information.
  */
 import React, { useState } from "react";
 import {
@@ -9,24 +8,22 @@ import {
   ImageBackground, Platform,
 } from "react-native";
 import { router } from "expo-router";
-import { LinearGradient } from "expo-linear-gradient";
 import { IconSymbol } from "@/components/ui/icon-symbol";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import * as Haptics from "expo-haptics";
 
-const C = {
-  bg:           "#1A0B2E",
-  surface:      "#24103E",
-  glassStroke:  "rgba(123,68,230,0.3)",
-  purple:       "#6443F4",
-  pink:         "#F94498",
-  orange:       "#FF9327",
-  green:        "#02A65C",
-  white:        "#FFFFFF",
-  textPrimary:  "#FFFFFF",
-  textSecondary:"#D3CFD8",
-  textMuted:    "#A79FB2",
-  textDisabled: "#504065",
+const N = {
+  bg:         "#111111",
+  surface:    "#1C1C1E",
+  surfaceAlt: "#2C2C2E",
+  border:     "rgba(255,255,255,0.10)",
+  white:      "#FFFFFF",
+  textPri:    "#FFFFFF",
+  textSec:    "#ABABAB",
+  textMuted:  "#777777",
+  accent:     "#007AFF",
+  green:      "#34C759",
+  orange:     "#FF9500",
 };
 
 const FILTER_TABS = ["All", "Upcoming", "Active", "Completed"];
@@ -60,15 +57,19 @@ function TripCard({ trip, onPress }: { trip: typeof MOCK_TRIPS[0]; onPress: () =
   const daysLeft   = isUpcoming ? Math.ceil((new Date(trip.startDate).getTime() - Date.now()) / 86400000) : null;
 
   return (
-    <TouchableOpacity style={S.tripCard} onPress={onPress} activeOpacity={0.88}>
+    <TouchableOpacity style={S.tripCard} onPress={onPress} activeOpacity={0.7}>
       <ImageBackground
         source={trip.image}
         style={S.tripCardImage}
-        imageStyle={{ borderTopLeftRadius: 20, borderTopRightRadius: 20 }}
+        imageStyle={{ borderTopLeftRadius: 14, borderTopRightRadius: 14 }}
         resizeMode="cover"
       >
-        <LinearGradient colors={["transparent", "rgba(26,11,46,0.9)"]} style={StyleSheet.absoluteFillObject} />
-        <View style={[S.statusBadge, isActive && S.statusBadgeActive, !isUpcoming && !isActive && S.statusBadgeCompleted]}>
+        <View style={S.tripImageOverlay} />
+        <View style={[
+          S.statusBadge,
+          isActive && S.statusBadgeActive,
+          !isUpcoming && !isActive && S.statusBadgeCompleted,
+        ]}>
           <Text style={S.statusBadgeText}>
             {isActive ? "Live" : isUpcoming ? "Upcoming" : "Completed"}
           </Text>
@@ -87,7 +88,7 @@ function TripCard({ trip, onPress }: { trip: typeof MOCK_TRIPS[0]; onPress: () =
           <View style={S.tripCardInfo}>
             <Text style={S.tripCardDates}>{trip.startDate} – {trip.endDate}</Text>
             <View style={S.tripCardMeta}>
-              <IconSymbol name="person.2.fill" size={13} color={C.textMuted} />
+              <IconSymbol name="person.2.fill" size={13} color={N.textMuted} />
               <Text style={S.tripCardMetaText}>{trip.travelers} travelers</Text>
               <Text style={S.tripCardMetaDot}>·</Text>
               <Text style={S.tripCardMetaText}>€{trip.budget}</Text>
@@ -101,14 +102,13 @@ function TripCard({ trip, onPress }: { trip: typeof MOCK_TRIPS[0]; onPress: () =
         </View>
 
         <View style={S.tripCardActions}>
-          <TouchableOpacity style={S.viewBtn} onPress={onPress} activeOpacity={0.85}>
-            <LinearGradient colors={[C.purple, C.pink]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={StyleSheet.absoluteFillObject} />
+          <TouchableOpacity style={S.viewBtn} onPress={onPress} activeOpacity={0.7}>
             <Text style={S.viewBtnText}>View Details</Text>
-            <IconSymbol name="chevron.right" size={14} color={C.white} />
+            <IconSymbol name="chevron.right" size={14} color={N.white} />
           </TouchableOpacity>
           {isUpcoming && (
-            <TouchableOpacity style={S.editBtn} activeOpacity={0.85}>
-              <IconSymbol name="pencil" size={16} color={C.purple} />
+            <TouchableOpacity style={S.editBtn} activeOpacity={0.7}>
+              <IconSymbol name="pencil" size={16} color={N.accent} />
               <Text style={S.editBtnText}>Edit</Text>
             </TouchableOpacity>
           )}
@@ -121,7 +121,7 @@ function TripCard({ trip, onPress }: { trip: typeof MOCK_TRIPS[0]; onPress: () =
 export default function TripsScreen() {
   const insets = useSafeAreaInsets();
   const [activeFilter, setActiveFilter] = useState("All");
-  const tabBarOffset = 60 + Math.max(insets.bottom, 8) + 16;
+  const tabBarOffset = 56 + Math.max(insets.bottom, 8) + 16;
 
   const filtered = activeFilter === "All" ? MOCK_TRIPS : MOCK_TRIPS.filter(t => t.status === activeFilter.toLowerCase());
   const upcoming  = MOCK_TRIPS.filter(t => t.status === "upcoming").length;
@@ -130,11 +130,8 @@ export default function TripsScreen() {
 
   return (
     <View style={S.root}>
-      <LinearGradient
-        colors={[C.purple, "#9B3FD4", C.pink]}
-        start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}
-        style={[S.header, { paddingTop: insets.top + 12 }]}
-      >
+      {/* ── Header ── */}
+      <View style={[S.header, { paddingTop: insets.top + 8 }]}>
         <Text style={S.headerTitle}>My Trips</Text>
         <Text style={S.headerSub}>Your travel history & plans</Text>
         <View style={S.statsRow}>
@@ -153,33 +150,31 @@ export default function TripsScreen() {
             <Text style={S.statLabel}>Total Spent</Text>
           </View>
         </View>
-      </LinearGradient>
+      </View>
 
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: tabBarOffset + 32 }}>
-        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={S.filtersScroll} style={S.filtersContainer}>
+        {/* ── Filters ── */}
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={S.filtersScroll}>
           {FILTER_TABS.map(f => (
             <TouchableOpacity
               key={f}
               style={[S.filterChip, activeFilter === f && S.filterChipActive]}
               onPress={() => { setActiveFilter(f); if (Platform.OS !== "web") Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light); }}
-              activeOpacity={0.8}
+              activeOpacity={0.7}
             >
-              {activeFilter === f && (
-                <LinearGradient colors={[C.purple, C.pink]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={StyleSheet.absoluteFillObject} />
-              )}
               <Text style={[S.filterChipText, activeFilter === f && S.filterChipTextActive]}>{f}</Text>
             </TouchableOpacity>
           ))}
         </ScrollView>
 
+        {/* ── Trip Cards ── */}
         <View style={S.cardsContainer}>
           {filtered.length === 0 ? (
             <View style={S.emptyState}>
-              <IconSymbol name="airplane" size={48} color={C.textDisabled} />
+              <IconSymbol name="airplane" size={48} color={N.textMuted} />
               <Text style={S.emptyTitle}>No trips yet</Text>
               <Text style={S.emptySub}>Start planning your next adventure</Text>
-              <TouchableOpacity style={S.emptyBtn} onPress={() => router.push("/(trip)/plan" as never)} activeOpacity={0.85}>
-                <LinearGradient colors={[C.purple, C.pink]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={StyleSheet.absoluteFillObject} />
+              <TouchableOpacity style={S.emptyBtn} onPress={() => router.push("/(trip)/plan" as never)} activeOpacity={0.7}>
                 <Text style={S.emptyBtnText}>Plan a Trip</Text>
               </TouchableOpacity>
             </View>
@@ -194,10 +189,10 @@ export default function TripsScreen() {
           )}
         </View>
 
+        {/* ── New Trip Button ── */}
         <View style={S.sectionPad}>
-          <TouchableOpacity style={S.newTripBtn} onPress={() => router.push("/(trip)/plan" as never)} activeOpacity={0.88}>
-            <LinearGradient colors={[C.purple, "#9B3FD4", C.pink]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={StyleSheet.absoluteFillObject} />
-            <IconSymbol name="plus" size={20} color={C.white} />
+          <TouchableOpacity style={S.newTripBtn} onPress={() => router.push("/(trip)/plan" as never)} activeOpacity={0.7}>
+            <IconSymbol name="plus" size={20} color={N.white} />
             <Text style={S.newTripBtnText}>Plan a New Trip</Text>
           </TouchableOpacity>
         </View>
@@ -207,82 +202,94 @@ export default function TripsScreen() {
 }
 
 const S = StyleSheet.create({
-  root: { flex: 1, backgroundColor: C.bg },
-  header: { paddingHorizontal: 20, paddingBottom: 20, gap: 8 },
-  headerTitle: { color: C.white, fontSize: 28, fontWeight: "800", fontFamily: "Chillax-Bold" },
-  headerSub: { color: "rgba(255,255,255,0.75)", fontSize: 14, fontFamily: "Satoshi-Regular" },
+  root: { flex: 1, backgroundColor: N.bg },
+
+  // Header
+  header: { paddingHorizontal: 20, paddingBottom: 16, gap: 8, backgroundColor: N.bg },
+  headerTitle: { color: N.white, fontSize: 28, fontWeight: "700" },
+  headerSub: { color: N.textSec, fontSize: 14 },
   statsRow: {
     flexDirection: "row", alignItems: "center",
-    backgroundColor: "rgba(255,255,255,0.1)", borderRadius: 16,
-    paddingVertical: 14, paddingHorizontal: 20, marginTop: 8,
+    backgroundColor: N.surface, borderRadius: 12,
+    paddingVertical: 14, paddingHorizontal: 16, marginTop: 8,
+    borderWidth: StyleSheet.hairlineWidth, borderColor: N.border,
   },
   statItem: { flex: 1, alignItems: "center", gap: 2 },
-  statNum: { color: C.white, fontSize: 20, fontWeight: "800", fontFamily: "Chillax-Bold" },
-  statLabel: { color: "rgba(255,255,255,0.7)", fontSize: 11, fontFamily: "Satoshi-Regular" },
-  statDivider: { width: 1, height: 32, backgroundColor: "rgba(255,255,255,0.2)" },
-  filtersContainer: { backgroundColor: C.bg },
-  filtersScroll: { paddingHorizontal: 20, paddingVertical: 16, gap: 8 },
+  statNum: { color: N.white, fontSize: 18, fontWeight: "700" },
+  statLabel: { color: N.textMuted, fontSize: 11 },
+  statDivider: { width: StyleSheet.hairlineWidth, height: 28, backgroundColor: N.border },
+
+  // Filters
+  filtersScroll: { paddingHorizontal: 20, paddingVertical: 12, gap: 8 },
   filterChip: {
     paddingHorizontal: 16, paddingVertical: 8, borderRadius: 20,
-    backgroundColor: "rgba(36,16,62,0.95)", borderWidth: 1.5, borderColor: "rgba(123,68,230,0.55)", overflow: "hidden",
+    backgroundColor: N.surface, borderWidth: 1, borderColor: N.border,
   },
-  filterChipActive: { borderColor: "transparent" },
-  filterChipText: { color: "#C8C0D8", fontSize: 13, fontFamily: "Satoshi-Medium", fontWeight: "600" },
-  filterChipTextActive: { color: C.white, fontFamily: "Satoshi-Bold" },
+  filterChipActive: { backgroundColor: N.accent, borderColor: N.accent },
+  filterChipText: { color: N.textSec, fontSize: 13, fontWeight: "500" },
+  filterChipTextActive: { color: N.white, fontWeight: "600" },
+
+  // Cards
   cardsContainer: { paddingHorizontal: 20, gap: 16 },
   tripCard: {
-    borderRadius: 20, backgroundColor: C.surface,
-    borderWidth: 1, borderColor: C.glassStroke, overflow: "hidden",
+    borderRadius: 14, backgroundColor: N.surface,
+    borderWidth: StyleSheet.hairlineWidth, borderColor: N.border, overflow: "hidden",
   },
-  tripCardImage: { height: 180, justifyContent: "flex-end", padding: 14 },
+  tripCardImage: { height: 160, justifyContent: "flex-end", padding: 14 },
+  tripImageOverlay: { ...StyleSheet.absoluteFillObject, backgroundColor: "rgba(0,0,0,0.35)" },
   statusBadge: {
     position: "absolute", top: 14, left: 14,
-    backgroundColor: "rgba(100,67,244,0.8)", borderRadius: 20,
-    paddingHorizontal: 12, paddingVertical: 5,
+    backgroundColor: N.accent, borderRadius: 6,
+    paddingHorizontal: 10, paddingVertical: 4,
   },
-  statusBadgeActive: { backgroundColor: "rgba(2,166,92,0.85)" },
-  statusBadgeCompleted: { backgroundColor: "rgba(80,64,101,0.85)" },
-  statusBadgeText: { color: C.white, fontSize: 11, fontWeight: "700", fontFamily: "Satoshi-Bold" },
+  statusBadgeActive: { backgroundColor: N.green },
+  statusBadgeCompleted: { backgroundColor: N.textMuted },
+  statusBadgeText: { color: N.white, fontSize: 11, fontWeight: "700" },
   countdownBadge: {
     position: "absolute", top: 14, right: 14,
-    backgroundColor: "rgba(249,68,152,0.85)", borderRadius: 12,
+    backgroundColor: "rgba(0,0,0,0.6)", borderRadius: 8,
     paddingHorizontal: 10, paddingVertical: 6, alignItems: "center",
   },
-  countdownNum: { color: C.white, fontSize: 18, fontWeight: "800", fontFamily: "Chillax-Bold", lineHeight: 20 },
-  countdownLabel: { color: "rgba(255,255,255,0.8)", fontSize: 9, fontFamily: "Satoshi-Medium" },
-  tripCardCity: { color: C.white, fontSize: 18, fontWeight: "800", fontFamily: "Chillax-Bold" },
+  countdownNum: { color: N.white, fontSize: 18, fontWeight: "700", lineHeight: 20 },
+  countdownLabel: { color: "rgba(255,255,255,0.7)", fontSize: 9 },
+  tripCardCity: { color: N.white, fontSize: 18, fontWeight: "700" },
   tripCardContent: { padding: 16, gap: 12 },
   tripCardRow: { flexDirection: "row", alignItems: "flex-start", justifyContent: "space-between" },
   tripCardInfo: { flex: 1, gap: 4 },
-  tripCardDates: { color: C.textSecondary, fontSize: 13, fontFamily: "Satoshi-Regular" },
+  tripCardDates: { color: N.textSec, fontSize: 13 },
   tripCardMeta: { flexDirection: "row", alignItems: "center", gap: 4 },
-  tripCardMetaText: { color: C.textMuted, fontSize: 12, fontFamily: "Satoshi-Regular" },
-  tripCardMetaDot: { color: C.textDisabled, fontSize: 12 },
+  tripCardMetaText: { color: N.textMuted, fontSize: 12 },
+  tripCardMetaDot: { color: N.textMuted, fontSize: 12 },
   tagsCol: { gap: 4, alignItems: "flex-end" },
-  tag: { backgroundColor: "rgba(249,68,152,0.18)", borderRadius: 12, paddingHorizontal: 10, paddingVertical: 3 },
-  tagText: { color: C.pink, fontSize: 10, fontFamily: "Satoshi-Medium" },
+  tag: { backgroundColor: "rgba(255,255,255,0.08)", borderRadius: 6, paddingHorizontal: 8, paddingVertical: 3 },
+  tagText: { color: N.textSec, fontSize: 10 },
   tripCardActions: { flexDirection: "row", gap: 10 },
   viewBtn: {
     flex: 1, flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 6,
-    borderRadius: 24, paddingVertical: 11, overflow: "hidden",
+    backgroundColor: N.accent, borderRadius: 10, paddingVertical: 11,
   },
-  viewBtnText: { color: C.white, fontSize: 14, fontWeight: "700", fontFamily: "Satoshi-Bold" },
+  viewBtnText: { color: N.white, fontSize: 14, fontWeight: "600" },
   editBtn: {
     flexDirection: "row", alignItems: "center", gap: 5,
-    borderRadius: 24, paddingHorizontal: 16, paddingVertical: 11,
-    borderWidth: 1.5, borderColor: C.purple,
+    borderRadius: 10, paddingHorizontal: 16, paddingVertical: 11,
+    borderWidth: 1, borderColor: N.accent,
   },
-  editBtnText: { color: C.purple, fontSize: 14, fontWeight: "700", fontFamily: "Satoshi-Bold" },
+  editBtnText: { color: N.accent, fontSize: 14, fontWeight: "600" },
+
+  // Empty State
   emptyState: { alignItems: "center", paddingVertical: 60, gap: 12 },
-  emptyTitle: { color: C.white, fontSize: 20, fontWeight: "700", fontFamily: "Chillax-Bold" },
-  emptySub: { color: C.textMuted, fontSize: 14, fontFamily: "Satoshi-Regular" },
-  emptyBtn: { borderRadius: 24, paddingHorizontal: 28, paddingVertical: 14, overflow: "hidden", marginTop: 8 },
-  emptyBtnText: { color: C.white, fontSize: 15, fontWeight: "700", fontFamily: "Satoshi-Bold" },
+  emptyTitle: { color: N.white, fontSize: 20, fontWeight: "700" },
+  emptySub: { color: N.textMuted, fontSize: 14 },
+  emptyBtn: { backgroundColor: N.accent, borderRadius: 10, paddingHorizontal: 28, paddingVertical: 14, marginTop: 8 },
+  emptyBtnText: { color: N.white, fontSize: 15, fontWeight: "600" },
+
+  // New Trip
   sectionPad: { paddingTop: 24, paddingHorizontal: 20 },
   newTripBtn: {
-    borderRadius: 20, overflow: "hidden",
+    borderRadius: 12,
     flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 10,
-    paddingVertical: 18,
+    paddingVertical: 16,
+    backgroundColor: N.accent,
   },
-  newTripBtnText: { color: C.white, fontSize: 16, fontWeight: "700", fontFamily: "Satoshi-Bold" },
+  newTripBtnText: { color: N.white, fontSize: 16, fontWeight: "600" },
 });

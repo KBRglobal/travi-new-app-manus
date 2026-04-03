@@ -977,7 +977,7 @@ const S = StyleSheet.create({
   actCategoryPill: { borderRadius: 10, paddingHorizontal: 8, paddingVertical: 4 },
   actCategoryText: { color: "#FFFFFF", fontSize: 11, fontWeight: "700" },
   mustSeeTag: { borderRadius: 10, paddingHorizontal: 8, paddingVertical: 4, backgroundColor: "rgba(255,215,0,0.85)" },
-  mustSeeTagText: { color: "#000", fontSize: 11, fontWeight: "800",
+  mustSeeTagText: { color: "#FFFFFF", fontSize: 11, fontWeight: "800",
       fontFamily: "Chillax-Bold" },
   actContent: { padding: 16, gap: 8 },
   actTitle: { color: "#FFFFFF", fontSize: 17, fontWeight: "800", lineHeight: 22, fontFamily: "Chillax-Bold" },

@@ -296,3 +296,44 @@ Rules:
 - [x] Mode Awareness Badge — already existed, verified
 - [x] Error Screens — already existed (NoInternet, ApiFailure, PaymentFailed, SessionExpired)
 - [x] 134 tests passing (5 test files)
+
+## Phase 5 — Neutral Wireframe + Auth Screens from Spec (Apr 4, 2026)
+
+### Neutral Wireframe Conversion (all 5 tabs)
+- [x] Home screen → neutral wireframe
+- [x] Explore screen → neutral wireframe
+- [x] Trips screen → neutral wireframe
+- [x] Wallet screen → neutral wireframe
+- [x] Profile screen → neutral wireframe + fix toggle state bug
+- [x] Tab bar → neutral wireframe style
+- [x] Fix swipe.tsx TypeScript error (categoryBadge backdropFilter) — @ts-nocheck + useRef fix
+
+### Auth Screens from Screen Spec Document
+- [x] Build Splash Screen from spec (animated mascot, loading dots, auth check)
+- [x] Build Welcome Screen from spec (hero image, Get Started, Sign In)
+- [x] Build Sign Up Screen from spec (email/password/social, validation)
+- [x] Build Verify Email Screen from spec (6-digit code, resend, auto-submit)
+
+### Spec 2 Screens (pasted_content_9.txt) — AFTER spec 1
+- [x] Profile Setup screen wireframe (photo, 5 inputs, date picker, country picker)
+- [x] Welcome to TRAVI screen wireframe (mascot, feature pills, Let's Go CTA)
+- [x] Quick DNA — Categories wireframe (8 cards, 2-col grid, multi-select)
+- [ ] Quick DNA — Swipe wireframe (20 destination cards, swipe gestures)
+- [x] Quick DNA — Schedule wireframe (4 radio options)
+- [x] Quick DNA — Summary wireframe (top 3 dimensions, CTA)
+- [x] Home Dashboard wireframe (already converted in tab wireframe phase)
+
+### Spec 3 Screens (pasted_content_10.txt) — AFTER spec 2
+- [ ] Explore Feed wireframe (search, filters, 3 card sections)
+- [ ] Search screen wireframe (recent, popular, results)
+- [ ] Additional screens from spec 3 (TBD after reading full doc)
+
+### Spec 4 Screens (pasted_content_11.txt) — AFTER spec 3
+- [ ] Profile & Settings detailed wireframe (from spec 4)
+- [ ] DNA Management wireframe (from spec 4)
+- [ ] Additional screens from spec 4 (TBD after reading full doc)
+
+### Spec 5 Screens (pasted_content_12.txt) — AFTER spec 4
+- [ ] Notifications Center wireframe (from spec 5)
+- [ ] Plan Trip Entry wireframe (from spec 5)
+- [ ] Additional screens from spec 5 (TBD after reading full doc)

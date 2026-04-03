@@ -415,7 +415,7 @@ const styles = StyleSheet.create({
   ctaBtnDisabled: { opacity: 0.5 },
   ctaGradient: { flexDirection: "row", alignItems: "center", justifyContent: "center", paddingVertical: 18, gap: 10, borderRadius: 20 },
   ctaText: { color: "#FFFFFF", fontSize: 18, fontWeight: "800", fontFamily: "Chillax-Bold" },
-  ctaTextDisabled: { color: "#3A2D4E" },
+  ctaTextDisabled: { color: "#D3CFD8" },
   // Custom budget slider styles
   budgetWrap: { gap: 12, paddingBottom: 130 },
   customBudgetCard: { marginHorizontal: 20, borderRadius: 20, padding: 20, overflow: "hidden", borderWidth: 2, borderColor: "rgba(255,255,255,0.12)" },

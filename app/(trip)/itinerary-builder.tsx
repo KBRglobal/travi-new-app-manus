@@ -419,7 +419,7 @@ const S = StyleSheet.create({
   stopCard: { borderRadius: 20, overflow: "hidden", marginBottom: 8, height: 200 },
   stopImage: { width: "100%", height: 200 },
   mustSeeBadge: { position: "absolute", top: 12, left: 12, backgroundColor: "rgba(255,215,0,0.9)", borderRadius: 10, paddingHorizontal: 8, paddingVertical: 4 },
-  mustSeeBadgeText: { color: "#000", fontSize: 11, fontWeight: "800",
+  mustSeeBadgeText: { color: "#FFFFFF", fontSize: 11, fontWeight: "800",
       fontFamily: "Chillax-Bold" },
   reorderControls: { position: "absolute", top: 12, right: 44, flexDirection: "column", gap: 4 },
   reorderBtn: { width: 28, height: 28, borderRadius: 8, backgroundColor: "rgba(0,0,0,0.5)", alignItems: "center", justifyContent: "center", borderWidth: 1, borderColor: "rgba(255,255,255,0.12)" },

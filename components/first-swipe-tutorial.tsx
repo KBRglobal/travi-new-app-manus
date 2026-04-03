@@ -64,7 +64,7 @@ export function FirstSwipeTutorial({ onDismiss }: FirstSwipeTutorialProps) {
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const handAnim = useRef(new Animated.Value(0)).current;
   const scaleAnim = useRef(new Animated.Value(0.9)).current;
-  const autoTimer = useRef<ReturnType<typeof setTimeout>>();
+  const autoTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     checkIfShouldShow();

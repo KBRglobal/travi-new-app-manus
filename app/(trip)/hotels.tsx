@@ -275,5 +275,5 @@ const styles = StyleSheet.create({
   ctaBtnDisabled: { opacity: 0.5 },
   ctaGradient: { flexDirection: "row", alignItems: "center", justifyContent: "center", paddingVertical: 18, gap: 10, borderRadius: 20 },
   ctaText: { color: "#FFFFFF", fontSize: 18, fontFamily: "Chillax-Bold", fontWeight: "800" },
-  ctaTextDisabled: { color: "#3A2D4E" },
+  ctaTextDisabled: { color: "#D3CFD8" },
 });

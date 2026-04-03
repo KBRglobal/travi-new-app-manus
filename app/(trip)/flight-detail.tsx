@@ -48,7 +48,7 @@ const FLIGHT_DATA: Record<string, {
   "f2": {
     airline: "Air France", logo: "🇫🇷", from: "TLV", fromCity: "Tel Aviv", to: "CDG", toCity: "Paris",
     departure: "09:15", arrival: "12:40", duration: "4h 25m", stops: "Non-stop", aircraft: "Airbus A320",
-    price: 380, businessPrice: 1400, cashback: 38, color: "#002157", color2: "#001A45",
+    price: 380, businessPrice: 1400, cashback: 38, color: "#FFFFFF", color2: "#001A45",
     amenities: ["🥐 French cuisine", "📺 Entertainment system", "🔌 Power outlets", "🍷 Wine selection"],
     baggage: { cabin: "12kg carry-on", checked: "23kg included", extra: "+$55 per extra bag" },
     classes: [

@@ -4,15 +4,12 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { HapticTab } from "@/components/haptic-tab";
 import { IconSymbol } from "@/components/ui/icon-symbol";
 
-// TRAVI Brand Colors — dark theme
-const BRAND = {
-  purple:      "#6443F4",
-  pink:        "#F94498",
-  white:       "#FFFFFF",
-  tabBg:       "#1A0D3D",
-  tabInactive: "rgba(255,255,255,0.40)",
-  tabActive:   "#F94498",
-  tabBorder:   "rgba(255,255,255,0.08)",
+// Neutral wireframe colors
+const N = {
+  bg:       "#111111",
+  border:   "rgba(255,255,255,0.10)",
+  inactive: "rgba(255,255,255,0.40)",
+  active:   "#007AFF",
 };
 
 interface TabIconProps {
@@ -25,10 +22,8 @@ interface TabIconProps {
 function TabIcon({ icon, label, color, focused }: TabIconProps) {
   return (
     <View style={styles.tabItem}>
-      <View style={[styles.iconWrap, focused && styles.iconWrapActive]}>
-        <IconSymbol size={22} name={icon} color={focused ? BRAND.pink : BRAND.tabInactive} />
-      </View>
-      <Text style={[styles.tabLabel, { color: focused ? BRAND.pink : BRAND.tabInactive }]} numberOfLines={1}>
+      <IconSymbol size={22} name={icon} color={focused ? N.active : N.inactive} />
+      <Text style={[styles.tabLabel, { color: focused ? N.active : N.inactive }]} numberOfLines={1}>
         {label}
       </Text>
     </View>
@@ -38,13 +33,13 @@ function TabIcon({ icon, label, color, focused }: TabIconProps) {
 export default function TabLayout() {
   const insets = useSafeAreaInsets();
   const bottomPadding = Platform.OS === "web" ? 12 : Math.max(insets.bottom, 8);
-  const tabBarHeight = 60 + bottomPadding;
+  const tabBarHeight = 56 + bottomPadding;
 
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: BRAND.pink,
-        tabBarInactiveTintColor: BRAND.tabInactive,
+        tabBarActiveTintColor: N.active,
+        tabBarInactiveTintColor: N.inactive,
         headerShown: false,
         tabBarButton: HapticTab,
         tabBarShowLabel: false,
@@ -53,14 +48,13 @@ export default function TabLayout() {
           paddingTop: 0,
           paddingBottom: bottomPadding,
           height: tabBarHeight,
-          backgroundColor: BRAND.tabBg,
-          borderTopWidth: 0.5,
-          borderTopColor: BRAND.tabBorder,
+          backgroundColor: N.bg,
+          borderTopWidth: StyleSheet.hairlineWidth,
+          borderTopColor: N.border,
           elevation: 0,
         },
       }}
     >
-      {/* ── 1. Home ── */}
       <Tabs.Screen
         name="index"
         options={{
@@ -70,8 +64,6 @@ export default function TabLayout() {
           ),
         }}
       />
-
-      {/* ── 2. Trips ── */}
       <Tabs.Screen
         name="trips"
         options={{
@@ -81,8 +73,6 @@ export default function TabLayout() {
           ),
         }}
       />
-
-      {/* ── 3. Wallet ── */}
       <Tabs.Screen
         name="wallet"
         options={{
@@ -92,8 +82,6 @@ export default function TabLayout() {
           ),
         }}
       />
-
-      {/* ── 4. Explore ── */}
       <Tabs.Screen
         name="explore"
         options={{
@@ -103,8 +91,6 @@ export default function TabLayout() {
           ),
         }}
       />
-
-      {/* ── 5. Profile ── */}
       <Tabs.Screen
         name="profile"
         options={{
@@ -115,7 +101,7 @@ export default function TabLayout() {
         }}
       />
 
-      {/* ── All other screens — hidden from tab bar ── */}
+      {/* Hidden screens */}
       <Tabs.Screen name="alerts" options={{ href: null }} />
       <Tabs.Screen name="notifications" options={{ href: null }} />
       <Tabs.Screen name="subscription" options={{ href: null }} />
@@ -157,23 +143,11 @@ const styles = StyleSheet.create({
   tabItem: {
     alignItems: "center",
     justifyContent: "center",
-    gap: 2,
+    gap: 3,
     paddingTop: 8,
-  },
-  iconWrap: {
-    width: 40,
-    height: 32,
-    alignItems: "center",
-    justifyContent: "center",
-    borderRadius: 10,
-  },
-  iconWrapActive: {
-    backgroundColor: "rgba(249,68,152,0.15)",
   },
   tabLabel: {
     fontSize: 10,
-    fontWeight: "600",
-    letterSpacing: 0.1,
-    fontFamily: "Satoshi-Medium",
+    fontWeight: "500",
   },
 });

@@ -23,7 +23,7 @@ const { width } = Dimensions.get("window");
 
 const METHODS = [
   { id: "bank", emoji: "🏦", title: "Bank Transfer", desc: "3–5 business days", fee: "Free", color: "#6443F4" },
-  { id: "paypal", emoji: "🅿️", title: "PayPal", desc: "Instant", fee: "1.5%", color: "#0070BA" },
+  { id: "paypal", emoji: "🅿️", title: "PayPal", desc: "Instant", fee: "1.5%", color: "#60A5FA" },
   { id: "crypto", emoji: "₿", title: "Crypto Wallet", desc: "10–30 minutes", fee: "Network fee", color: "#F7931A" },
   { id: "card", emoji: "💳", title: "Debit Card", desc: "1–2 business days", fee: "Free", color: "#22C55E" },
 ];

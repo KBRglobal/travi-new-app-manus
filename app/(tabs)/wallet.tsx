@@ -1,7 +1,6 @@
 /**
- * TRAVI — Wallet Screen
- * Dark mode: #1A0B2E bg, #24103E surface, purple→pink gradients
- * NO circles — bare icons, pill badges, glassmorphism cards
+ * TRAVI — Wallet Screen (Neutral Mockup)
+ * Clean, minimal dark theme. Focus on UX and information.
  */
 import React, { useState } from "react";
 import {
@@ -9,24 +8,23 @@ import {
   Platform, FlatList, Image,
 } from "react-native";
 import { router } from "expo-router";
-import { LinearGradient } from "expo-linear-gradient";
 import { IconSymbol } from "@/components/ui/icon-symbol";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import * as Haptics from "expo-haptics";
 
-const C = {
-  bg:           "#1A0B2E",
-  surface:      "#24103E",
-  glassStroke:  "rgba(123,68,230,0.3)",
-  purple:       "#6443F4",
-  pink:         "#F94498",
-  orange:       "#FF9327",
-  green:        "#02A65C",
-  white:        "#FFFFFF",
-  textPrimary:  "#FFFFFF",
-  textSecondary:"#D3CFD8",
-  textMuted:    "#A79FB2",
-  textDisabled: "#504065",
+const N = {
+  bg:         "#111111",
+  surface:    "#1C1C1E",
+  surfaceAlt: "#2C2C2E",
+  border:     "rgba(255,255,255,0.10)",
+  white:      "#FFFFFF",
+  textPri:    "#FFFFFF",
+  textSec:    "#ABABAB",
+  textMuted:  "#777777",
+  accent:     "#007AFF",
+  green:      "#34C759",
+  orange:     "#FF9500",
+  red:        "#FF3B30",
 };
 
 const FEATURED_REWARDS = [
@@ -45,23 +43,23 @@ const TRANSACTIONS = [
 ];
 
 const REDEEM_WAYS = [
-  { id: "r1", emoji: "✈️", title: "Airline Miles",   color: C.purple },
-  { id: "r2", emoji: "🎁", title: "Gift Cards",      color: C.pink },
-  { id: "r3", emoji: "🏨", title: "Hotel Stays",     color: "#06B6D4" },
-  { id: "r4", emoji: "📱", title: "eSIM Data",       color: C.green },
-  { id: "r5", emoji: "🎭", title: "Experiences",     color: C.orange },
-  { id: "r6", emoji: "🛋️", title: "Lounges",        color: "#8B5CF6" },
+  { id: "r1", icon: "airplane" as const,         title: "Airline Miles" },
+  { id: "r2", icon: "gift.fill" as const,        title: "Gift Cards" },
+  { id: "r3", icon: "bed.double.fill" as const,  title: "Hotel Stays" },
+  { id: "r4", icon: "wifi" as const,             title: "eSIM Data" },
+  { id: "r5", icon: "theatermasks.fill" as const, title: "Experiences" },
+  { id: "r6", icon: "sofa.fill" as const,        title: "Lounges" },
 ];
 
 const CARDS = [
-  { id: "c1", type: "Visa",       last4: "4242", name: "TRAVI GOLD",   colors: [C.purple, "#9B3FD4", C.pink] as [string, string, string], balance: 3420 },
-  { id: "c2", type: "Mastercard", last4: "8888", name: "TRAVI TRAVEL", colors: ["#1A0B2E", "#24103E", "#3D1F6B"] as [string, string, string], balance: 1850 },
+  { id: "c1", type: "Visa",       last4: "4242", name: "TRAVI GOLD",   balance: 3420 },
+  { id: "c2", type: "Mastercard", last4: "8888", name: "TRAVI TRAVEL", balance: 1850 },
 ];
 
 export default function WalletScreen() {
   const insets = useSafeAreaInsets();
   const [activeCard, setActiveCard] = useState(0);
-  const tabBarOffset = 60 + Math.max(insets.bottom, 8) + 16;
+  const tabBarOffset = 56 + Math.max(insets.bottom, 8) + 16;
 
   const totalBalance = CARDS.reduce((s, c) => s + c.balance, 0);
   const totalPoints  = 8_450;
@@ -69,19 +67,19 @@ export default function WalletScreen() {
 
   return (
     <View style={S.root}>
-      {/* ══ HEADER ══ */}
-      <LinearGradient
-        colors={[C.purple, "#9B3FD4", C.pink]}
-        start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}
-        style={[S.header, { paddingTop: insets.top + 12 }]}
-      >
+      {/* ── Header ── */}
+      <View style={[S.header, { paddingTop: insets.top + 8 }]}>
         <View style={S.headerRow}>
           <View>
             <Text style={S.headerTitle}>Wallet</Text>
             <Text style={S.headerSub}>Manage your travel funds</Text>
           </View>
-          <TouchableOpacity style={S.addBtn} onPress={() => { if (Platform.OS !== "web") Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light); }} activeOpacity={0.85}>
-            <IconSymbol name="plus" size={18} color={C.white} />
+          <TouchableOpacity
+            style={S.addBtn}
+            onPress={() => { if (Platform.OS !== "web") Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light); }}
+            activeOpacity={0.7}
+          >
+            <IconSymbol name="plus" size={16} color={N.white} />
             <Text style={S.addBtnText}>Add Card</Text>
           </TouchableOpacity>
         </View>
@@ -101,17 +99,16 @@ export default function WalletScreen() {
             <Text style={S.balanceLabel}>Cashback</Text>
           </View>
         </View>
-      </LinearGradient>
+      </View>
 
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: tabBarOffset + 32 }}>
-        {/* ══ CARDS ══ */}
+        {/* ── Cards ── */}
         <View style={S.section}>
           <Text style={S.sectionTitle}>My Cards</Text>
           <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ paddingHorizontal: 20, gap: 14 }}>
             {CARDS.map((card, i) => (
-              <TouchableOpacity key={card.id} onPress={() => setActiveCard(i)} activeOpacity={0.9}>
-                <View style={[S.payCard, i !== activeCard && { opacity: 0.6 }]}>
-                  <LinearGradient colors={card.colors} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={StyleSheet.absoluteFillObject} />
+              <TouchableOpacity key={card.id} onPress={() => setActiveCard(i)} activeOpacity={0.8}>
+                <View style={[S.payCard, i !== activeCard && { opacity: 0.5 }]}>
                   <View style={S.payCardTop}>
                     <Text style={S.payCardName}>{card.name}</Text>
                     <Text style={S.payCardType}>{card.type}</Text>
@@ -127,39 +124,38 @@ export default function WalletScreen() {
           </ScrollView>
         </View>
 
-        {/* ══ QUICK ACTIONS ══ */}
+        {/* ── Quick Actions ── */}
         <View style={S.quickActions}>
           {[
-            { label: "Top Up",   icon: "arrow.up.circle.fill" as const,   color: C.purple },
-            { label: "Transfer", icon: "arrow.left.arrow.right" as const, color: C.pink },
-            { label: "Redeem",   icon: "star.fill" as const,              color: C.orange },
-            { label: "History",  icon: "clock.fill" as const,             color: C.green },
+            { label: "Top Up",   icon: "arrow.up.circle.fill" as const },
+            { label: "Transfer", icon: "arrow.left.arrow.right" as const },
+            { label: "Redeem",   icon: "star.fill" as const },
+            { label: "History",  icon: "clock.fill" as const },
           ].map(a => (
             <TouchableOpacity
               key={a.label}
               style={S.quickAction}
               onPress={() => { if (Platform.OS !== "web") Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light); }}
-              activeOpacity={0.85}
+              activeOpacity={0.7}
             >
-              <View style={[S.quickActionIcon, { borderColor: a.color + "55" }]}>
-                <IconSymbol name={a.icon} size={22} color={a.color} />
+              <View style={S.quickActionIcon}>
+                <IconSymbol name={a.icon} size={22} color={N.white} />
               </View>
               <Text style={S.quickActionLabel}>{a.label}</Text>
             </TouchableOpacity>
           ))}
         </View>
 
-        {/* ══ POINTS CARD ══ */}
+        {/* ── Points Card ── */}
         <View style={S.sectionPad}>
           <View style={S.pointsCard}>
-            <LinearGradient colors={[C.purple, "#9B3FD4", C.pink]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={StyleSheet.absoluteFillObject} />
             <View style={S.pointsCardContent}>
               <View>
                 <Text style={S.pointsCardLabel}>Travel Points</Text>
                 <Text style={S.pointsCardNum}>{totalPoints.toLocaleString()} pts</Text>
                 <Text style={S.pointsCardSub}>≈ €{(totalPoints * 0.01).toFixed(0)} travel credit</Text>
               </View>
-              <TouchableOpacity style={S.redeemBtn} activeOpacity={0.85}>
+              <TouchableOpacity style={S.redeemBtn} activeOpacity={0.7}>
                 <Text style={S.redeemBtnText}>Redeem</Text>
               </TouchableOpacity>
             </View>
@@ -172,11 +168,11 @@ export default function WalletScreen() {
           </View>
         </View>
 
-        {/* ══ FEATURED REWARDS ══ */}
+        {/* ── Featured Rewards ── */}
         <View style={S.section}>
           <View style={S.sectionHeader}>
             <Text style={S.sectionTitle}>Redeem Points</Text>
-            <TouchableOpacity activeOpacity={0.85}><Text style={S.seeAll}>See All</Text></TouchableOpacity>
+            <TouchableOpacity activeOpacity={0.7}><Text style={S.seeAll}>See All</Text></TouchableOpacity>
           </View>
           <FlatList
             data={FEATURED_REWARDS}
@@ -185,9 +181,9 @@ export default function WalletScreen() {
             keyExtractor={i => i.id}
             contentContainerStyle={{ paddingHorizontal: 20, gap: 12 }}
             renderItem={({ item }) => (
-              <TouchableOpacity style={S.rewardCard} activeOpacity={0.88}>
+              <TouchableOpacity style={S.rewardCard} activeOpacity={0.7}>
                 <Image source={item.image} style={StyleSheet.absoluteFillObject as any} resizeMode="cover" />
-                <LinearGradient colors={["transparent", "rgba(26,11,46,0.85)"]} style={StyleSheet.absoluteFillObject} />
+                <View style={S.rewardOverlay} />
                 <View style={S.rewardBottom}>
                   <Text style={S.rewardTitle}>{item.title}</Text>
                   <Text style={S.rewardSub}>{item.subtitle}</Text>
@@ -197,14 +193,14 @@ export default function WalletScreen() {
           />
         </View>
 
-        {/* ══ WAYS TO REDEEM ══ */}
+        {/* ── Ways to Redeem ── */}
         <View style={S.sectionPad}>
-          <Text style={S.sectionTitle}>Ways to Redeem</Text>
+          <Text style={S.sectionTitleInline}>Ways to Redeem</Text>
           <View style={S.redeemGrid}>
             {REDEEM_WAYS.map(r => (
-              <TouchableOpacity key={r.id} style={S.redeemItem} activeOpacity={0.85}>
-                <View style={[S.redeemIcon, { borderColor: r.color + "55" }]}>
-                  <Text style={S.redeemEmoji}>{r.emoji}</Text>
+              <TouchableOpacity key={r.id} style={S.redeemItem} activeOpacity={0.7}>
+                <View style={S.redeemIcon}>
+                  <IconSymbol name={r.icon} size={22} color={N.white} />
                 </View>
                 <Text style={S.redeemLabel}>{r.title}</Text>
               </TouchableOpacity>
@@ -212,17 +208,17 @@ export default function WalletScreen() {
           </View>
         </View>
 
-        {/* ══ TRANSACTIONS ══ */}
+        {/* ── Transactions ── */}
         <View style={S.sectionPad}>
           <View style={S.sectionHeader}>
-            <Text style={S.sectionTitle}>Recent Activity</Text>
-            <TouchableOpacity activeOpacity={0.85}><Text style={S.seeAll}>See All</Text></TouchableOpacity>
+            <Text style={S.sectionTitleInline}>Recent Activity</Text>
+            <TouchableOpacity activeOpacity={0.7}><Text style={S.seeAll}>See All</Text></TouchableOpacity>
           </View>
           <View style={S.txList}>
             {TRANSACTIONS.map((tx, i) => (
               <View key={tx.id} style={[S.txRow, i === TRANSACTIONS.length - 1 && { borderBottomWidth: 0 }]}>
-                <View style={[S.txIconWrap, { borderColor: (tx.positive ? C.green : C.pink) + "44" }]}>
-                  <IconSymbol name={tx.positive ? "arrow.down.circle.fill" : "arrow.up.circle.fill"} size={20} color={tx.positive ? C.green : C.pink} />
+                <View style={S.txIconWrap}>
+                  <IconSymbol name={tx.positive ? "arrow.down.circle.fill" : "arrow.up.circle.fill"} size={20} color={tx.positive ? N.green : N.red} />
                 </View>
                 <View style={S.txInfo}>
                   <Text style={S.txTitle}>{tx.title}</Text>
@@ -242,107 +238,126 @@ export default function WalletScreen() {
 }
 
 const S = StyleSheet.create({
-  root: { flex: 1, backgroundColor: C.bg },
-  header: { paddingHorizontal: 20, paddingBottom: 20, gap: 12 },
+  root: { flex: 1, backgroundColor: N.bg },
+
+  // Header
+  header: { paddingHorizontal: 20, paddingBottom: 16, gap: 12, backgroundColor: N.bg },
   headerRow: { flexDirection: "row", alignItems: "flex-start", justifyContent: "space-between" },
-  headerTitle: { color: C.white, fontSize: 28, fontWeight: "800", fontFamily: "Chillax-Bold" },
-  headerSub: { color: "rgba(255,255,255,0.75)", fontSize: 14, fontFamily: "Satoshi-Regular" },
+  headerTitle: { color: N.white, fontSize: 28, fontWeight: "700" },
+  headerSub: { color: N.textSec, fontSize: 14 },
   addBtn: {
     flexDirection: "row", alignItems: "center", gap: 6,
-    backgroundColor: "rgba(255,255,255,0.15)", borderRadius: 20,
+    backgroundColor: N.accent, borderRadius: 8,
     paddingHorizontal: 14, paddingVertical: 8,
-    borderWidth: 1, borderColor: "rgba(255,255,255,0.25)",
   },
-  addBtnText: { color: C.white, fontSize: 13, fontWeight: "700", fontFamily: "Satoshi-Bold" },
+  addBtnText: { color: N.white, fontSize: 13, fontWeight: "600" },
   balanceRow: {
     flexDirection: "row", alignItems: "center",
-    backgroundColor: "rgba(255,255,255,0.1)", borderRadius: 16,
-    paddingVertical: 14, paddingHorizontal: 20,
+    backgroundColor: N.surface, borderRadius: 12,
+    paddingVertical: 14, paddingHorizontal: 16,
+    borderWidth: StyleSheet.hairlineWidth, borderColor: N.border,
   },
   balanceItem: { flex: 1, alignItems: "center", gap: 2 },
-  balanceNum: { color: C.white, fontSize: 18, fontWeight: "800", fontFamily: "Chillax-Bold" },
-  balanceLabel: { color: "rgba(255,255,255,0.7)", fontSize: 11, fontFamily: "Satoshi-Regular" },
-  balanceDivider: { width: 1, height: 32, backgroundColor: "rgba(255,255,255,0.2)" },
+  balanceNum: { color: N.white, fontSize: 18, fontWeight: "700" },
+  balanceLabel: { color: N.textMuted, fontSize: 11 },
+  balanceDivider: { width: StyleSheet.hairlineWidth, height: 28, backgroundColor: N.border },
+
+  // Sections
   section: { paddingTop: 24, gap: 12 },
   sectionPad: { paddingTop: 24, paddingHorizontal: 20 },
   sectionHeader: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginBottom: 12 },
-  sectionTitle: { color: C.white, fontSize: 18, fontWeight: "700", fontFamily: "Chillax-Bold", paddingHorizontal: 20 },
-  seeAll: { color: C.pink, fontSize: 13, fontFamily: "Satoshi-Medium", paddingHorizontal: 20 },
+  sectionTitle: { color: N.white, fontSize: 18, fontWeight: "700", paddingHorizontal: 20 },
+  sectionTitleInline: { color: N.white, fontSize: 18, fontWeight: "700", marginBottom: 12 },
+  seeAll: { color: N.accent, fontSize: 13, fontWeight: "500", paddingHorizontal: 20 },
+
+  // Pay Cards
   payCard: {
-    width: 300, height: 170, borderRadius: 20, overflow: "hidden",
+    width: 280, height: 160, borderRadius: 14, overflow: "hidden",
     padding: 20, justifyContent: "space-between",
-    borderWidth: 1, borderColor: "rgba(255,255,255,0.12)",
+    backgroundColor: N.surfaceAlt,
+    borderWidth: StyleSheet.hairlineWidth, borderColor: N.border,
   },
   payCardTop: { flexDirection: "row", justifyContent: "space-between", alignItems: "flex-start" },
-  payCardName: { color: C.white, fontSize: 13, fontWeight: "700", fontFamily: "Satoshi-Bold", letterSpacing: 1 },
-  payCardType: { color: "rgba(255,255,255,0.7)", fontSize: 12, fontFamily: "Satoshi-Regular" },
-  payCardBalance: { color: C.white, fontSize: 28, fontWeight: "800", fontFamily: "Chillax-Bold" },
+  payCardName: { color: N.white, fontSize: 13, fontWeight: "700", letterSpacing: 1 },
+  payCardType: { color: N.textMuted, fontSize: 12 },
+  payCardBalance: { color: N.white, fontSize: 28, fontWeight: "700" },
   payCardBottom: { flexDirection: "row", alignItems: "center", justifyContent: "space-between" },
-  payCardNumber: { color: "rgba(255,255,255,0.7)", fontSize: 13, fontFamily: "Satoshi-Regular", letterSpacing: 2 },
-  activeChip: { backgroundColor: "rgba(255,255,255,0.2)", borderRadius: 12, paddingHorizontal: 10, paddingVertical: 3 },
-  activeChipText: { color: C.white, fontSize: 11, fontWeight: "700", fontFamily: "Satoshi-Bold" },
+  payCardNumber: { color: N.textMuted, fontSize: 13, letterSpacing: 2 },
+  activeChip: { backgroundColor: N.accent, borderRadius: 6, paddingHorizontal: 10, paddingVertical: 3 },
+  activeChipText: { color: N.white, fontSize: 11, fontWeight: "700" },
+
+  // Quick Actions
   quickActions: { flexDirection: "row", justifyContent: "space-around", paddingHorizontal: 20, paddingTop: 24 },
   quickAction: { alignItems: "center", gap: 8 },
   quickActionIcon: {
-    width: 52, height: 52, borderRadius: 14,
-    backgroundColor: C.surface, borderWidth: 1,
+    width: 48, height: 48, borderRadius: 12,
+    backgroundColor: N.surface,
+    borderWidth: StyleSheet.hairlineWidth, borderColor: N.border,
     alignItems: "center", justifyContent: "center",
   },
-  quickActionLabel: { color: C.textSecondary, fontSize: 12, fontFamily: "Satoshi-Medium" },
+  quickActionLabel: { color: N.textSec, fontSize: 12 },
+
+  // Points Card
   pointsCard: {
-    borderRadius: 20, overflow: "hidden",
-    padding: 20, gap: 16,
-    borderWidth: 1, borderColor: "rgba(255,255,255,0.12)",
+    borderRadius: 14, padding: 20, gap: 16,
+    backgroundColor: N.surface,
+    borderWidth: StyleSheet.hairlineWidth, borderColor: N.border,
   },
   pointsCardContent: { flexDirection: "row", alignItems: "center", justifyContent: "space-between" },
-  pointsCardLabel: { color: "rgba(255,255,255,0.8)", fontSize: 13, fontFamily: "Satoshi-Regular" },
-  pointsCardNum: { color: C.white, fontSize: 28, fontWeight: "800", fontFamily: "Chillax-Bold" },
-  pointsCardSub: { color: "rgba(255,255,255,0.7)", fontSize: 12, fontFamily: "Satoshi-Regular" },
+  pointsCardLabel: { color: N.textSec, fontSize: 13 },
+  pointsCardNum: { color: N.white, fontSize: 28, fontWeight: "700" },
+  pointsCardSub: { color: N.textMuted, fontSize: 12 },
   redeemBtn: {
-    backgroundColor: "rgba(255,255,255,0.2)", borderRadius: 20,
+    backgroundColor: N.accent, borderRadius: 8,
     paddingHorizontal: 18, paddingVertical: 10,
-    borderWidth: 1, borderColor: "rgba(255,255,255,0.3)",
   },
-  redeemBtnText: { color: C.white, fontSize: 14, fontWeight: "700", fontFamily: "Satoshi-Bold" },
+  redeemBtnText: { color: N.white, fontSize: 14, fontWeight: "600" },
   pointsProgress: { gap: 6 },
-  pointsProgressBar: { height: 6, backgroundColor: "rgba(255,255,255,0.2)", borderRadius: 3, overflow: "hidden" },
-  pointsProgressFill: { height: "100%", backgroundColor: C.white, borderRadius: 3 },
-  pointsProgressLabel: { color: "rgba(255,255,255,0.7)", fontSize: 12, fontFamily: "Satoshi-Regular" },
+  pointsProgressBar: { height: 6, backgroundColor: "rgba(255,255,255,0.1)", borderRadius: 3, overflow: "hidden" },
+  pointsProgressFill: { height: "100%", backgroundColor: N.accent, borderRadius: 3 },
+  pointsProgressLabel: { color: N.textMuted, fontSize: 12 },
+
+  // Reward Cards
   rewardCard: {
-    width: 160, height: 120, borderRadius: 16, overflow: "hidden",
-    borderWidth: 1, borderColor: C.glassStroke, justifyContent: "flex-end",
+    width: 150, height: 110, borderRadius: 12, overflow: "hidden",
+    borderWidth: StyleSheet.hairlineWidth, borderColor: N.border, justifyContent: "flex-end",
   },
-  rewardBottom: { padding: 10 },
-  rewardTitle: { color: C.white, fontSize: 13, fontWeight: "700", fontFamily: "Satoshi-Bold" },
-  rewardSub: { color: "rgba(255,255,255,0.7)", fontSize: 11, fontFamily: "Satoshi-Regular" },
-  redeemGrid: { flexDirection: "row", flexWrap: "wrap", gap: 12, marginTop: 12 },
+  rewardOverlay: { ...StyleSheet.absoluteFillObject, backgroundColor: "rgba(0,0,0,0.4)" },
+  rewardBottom: { padding: 10, zIndex: 1 },
+  rewardTitle: { color: N.white, fontSize: 13, fontWeight: "700" },
+  rewardSub: { color: "rgba(255,255,255,0.7)", fontSize: 11 },
+
+  // Redeem Grid
+  redeemGrid: { flexDirection: "row", flexWrap: "wrap", gap: 12 },
   redeemItem: { width: "30%", alignItems: "center", gap: 6 },
   redeemIcon: {
-    width: 52, height: 52, borderRadius: 14,
-    backgroundColor: C.surface, borderWidth: 1,
+    width: 48, height: 48, borderRadius: 12,
+    backgroundColor: N.surface,
+    borderWidth: StyleSheet.hairlineWidth, borderColor: N.border,
     alignItems: "center", justifyContent: "center",
   },
-  redeemEmoji: { fontSize: 22 },
-  redeemLabel: { color: C.textSecondary, fontSize: 11, fontFamily: "Satoshi-Medium", textAlign: "center" },
+  redeemLabel: { color: N.textSec, fontSize: 11, textAlign: "center" },
+
+  // Transactions
   txList: {
-    backgroundColor: C.surface, borderRadius: 20,
-    borderWidth: 1, borderColor: C.glassStroke, overflow: "hidden",
+    backgroundColor: N.surface, borderRadius: 14,
+    borderWidth: StyleSheet.hairlineWidth, borderColor: N.border, overflow: "hidden",
   },
   txRow: {
     flexDirection: "row", alignItems: "center", gap: 12,
     paddingHorizontal: 16, paddingVertical: 14,
-    borderBottomWidth: 1, borderBottomColor: "rgba(123,68,230,0.15)",
+    borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: N.border,
   },
   txIconWrap: {
-    width: 40, height: 40, borderRadius: 12,
-    backgroundColor: "rgba(100,67,244,0.12)", borderWidth: 1,
+    width: 36, height: 36, borderRadius: 10,
+    backgroundColor: "rgba(255,255,255,0.05)",
     alignItems: "center", justifyContent: "center",
   },
   txInfo: { flex: 1, gap: 2 },
-  txTitle: { color: C.textPrimary, fontSize: 14, fontWeight: "600", fontFamily: "Satoshi-Medium" },
-  txMeta: { color: C.textMuted, fontSize: 12, fontFamily: "Satoshi-Regular" },
+  txTitle: { color: N.textPri, fontSize: 14, fontWeight: "500" },
+  txMeta: { color: N.textMuted, fontSize: 12 },
   txRight: { alignItems: "flex-end", gap: 2 },
-  txAmount: { color: C.pink, fontSize: 14, fontWeight: "700", fontFamily: "Satoshi-Bold" },
-  txAmountPos: { color: C.green },
-  txPts: { color: C.textMuted, fontSize: 11, fontFamily: "Satoshi-Regular" },
+  txAmount: { color: N.red, fontSize: 14, fontWeight: "600" },
+  txAmountPos: { color: N.green },
+  txPts: { color: N.textMuted, fontSize: 11 },
 });

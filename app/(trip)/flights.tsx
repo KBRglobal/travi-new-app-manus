@@ -11,10 +11,10 @@ const { width } = Dimensions.get("window");
 
 const MOCK_FLIGHTS = [
   { id: "f1", airline: "Emirates", from: "TLV", to: "DXB", departure: "06:45", arrival: "10:20", duration: "3h 35m", stops: "Direct", price: 420, class: "Economy", color: "#E31837" },
-  { id: "f2", airline: "Air France", from: "TLV", to: "CDG", departure: "09:15", arrival: "12:40", duration: "4h 25m", stops: "Direct", price: 380, class: "Economy", color: "#002157" },
-  { id: "f3", airline: "Lufthansa", from: "TLV", to: "FRA", departure: "11:30", arrival: "14:55", duration: "4h 25m", stops: "Direct", price: 355, class: "Economy", color: "#05164D" },
+  { id: "f2", airline: "Air France", from: "TLV", to: "CDG", departure: "09:15", arrival: "12:40", duration: "4h 25m", stops: "Direct", price: 380, class: "Economy", color: "#FFFFFF" },
+  { id: "f3", airline: "Lufthansa", from: "TLV", to: "FRA", departure: "11:30", arrival: "14:55", duration: "4h 25m", stops: "Direct", price: 355, class: "Economy", color: "#FFFFFF" },
   { id: "f4", airline: "Turkish Airlines", from: "TLV", to: "IST", departure: "14:00", arrival: "16:10", duration: "2h 10m", stops: "1 Stop", price: 290, class: "Economy", color: "#E81932" },
-  { id: "f5", airline: "El Al", from: "TLV", to: "LHR", departure: "16:20", arrival: "19:45", duration: "5h 25m", stops: "Direct", price: 445, class: "Economy", color: "#003087" },
+  { id: "f5", airline: "El Al", from: "TLV", to: "LHR", departure: "16:20", arrival: "19:45", duration: "5h 25m", stops: "Direct", price: 445, class: "Economy", color: "#FFFFFF" },
   { id: "f6", airline: "Emirates", from: "TLV", to: "DXB", departure: "22:10", arrival: "01:55+1", duration: "3h 45m", stops: "Direct", price: 820, class: "Business", color: "#E31837" },
 ];
 
@@ -287,5 +287,5 @@ const styles = StyleSheet.create({
   ctaBtnDisabled: { opacity: 0.5 },
   ctaGradient: { flexDirection: "row", alignItems: "center", justifyContent: "center", paddingVertical: 18, gap: 10, borderRadius: 20 },
   ctaText: { color: "#FFFFFF", fontSize: 18, fontFamily: "Chillax-Bold", fontWeight: "800" },
-  ctaTextDisabled: { color: "#3A2D4E" },
+  ctaTextDisabled: { color: "#D3CFD8" },
 });

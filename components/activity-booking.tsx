@@ -31,7 +31,7 @@ export type BookableActivity = {
 type BookingStep = "detail" | "travelers" | "payment" | "confirmation";
 
 const PAYMENT_METHODS = [
-  { id: "apple", label: "Apple Pay", icon: "apple.logo", color: "#000000" },
+  { id: "apple", label: "Apple Pay", icon: "apple.logo", color: "#FFFFFF" },
   { id: "card", label: "Credit Card", icon: "creditcard.fill", color: "#6443F4" },
   { id: "points", label: "TRAVI Points", icon: "star.fill", color: "#FBBF24" },
 ];

@@ -317,7 +317,7 @@ const S = StyleSheet.create({
   planCardWrap: {},
   planCard: { borderRadius: 24, borderWidth: 1.5, overflow: "hidden", padding: 20 },
   planBadge: { position: "absolute", top: 16, right: 16, borderRadius: 8, paddingHorizontal: 10, paddingVertical: 4 },
-  planBadgeText: { color: "#000", fontSize: 10, fontWeight: "900", letterSpacing: 0.5, fontFamily: "Chillax-Bold" },
+  planBadgeText: { color: "#FFFFFF", fontSize: 10, fontWeight: "900", letterSpacing: 0.5, fontFamily: "Chillax-Bold" },
   planHeader: { gap: 6, marginBottom: 16 },
   planNameRow: { flexDirection: "row", alignItems: "center", gap: 8 },
   planDot: { width: 8, height: 8, borderRadius: 4 },
