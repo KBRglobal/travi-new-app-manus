@@ -3,16 +3,16 @@ import {
   View, Text, StyleSheet, Animated,
   TouchableOpacity, Image, Dimensions,
 } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { router } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
 import { IconSymbol } from "@/components/ui/icon-symbol";
 import { useStore } from "@/lib/store";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const { width, height } = Dimensions.get("window");
 
-// Mascot sized relative to screen height so it never overflows
-const MASCOT_SIZE = Math.min(width * 0.36, height * 0.18);
+// Mascot: 20% of screen height — always fits regardless of device
+const MASCOT_SIZE = height * 0.20;
 
 const FEATURES = [
   {
@@ -43,7 +43,6 @@ const FEATURES = [
 
 export default function WelcomeScreen() {
   const { state, dispatch } = useStore();
-  const insets = useSafeAreaInsets();
 
   const fade   = useRef(new Animated.Value(0)).current;
   const duckY  = useRef(new Animated.Value(-16)).current;
@@ -67,13 +66,8 @@ export default function WelcomeScreen() {
 
   const firstName = state.profile?.name?.split(" ")[0];
 
-  // Top section: mascot + headline — pushed down 24px below safe area
-  const topPad = insets.top + 24;
-  const botPad = insets.bottom + 16;
-
   return (
-    <View style={[s.root, { paddingTop: topPad, paddingBottom: botPad }]}>
-      {/* Background */}
+    <View style={s.bg}>
       <LinearGradient
         colors={["#0C0720", "#160B35", "#1A0D3A"]}
         locations={[0, 0.5, 1]}
@@ -82,8 +76,10 @@ export default function WelcomeScreen() {
       <View style={s.glowTR} />
       <View style={s.glowBL} />
 
-      {/* ─── TOP: mascot + headline ─── */}
-      <View style={s.top}>
+      {/* SafeAreaView handles top notch/island + bottom home indicator */}
+      <SafeAreaView style={s.safe} edges={["top", "bottom"]}>
+
+        {/* ─── Mascot ─── */}
         <Animated.View style={[s.duckWrap, { opacity: fade, transform: [{ translateY: duckY }] }]}>
           <Image
             source={require("@/assets/logos/mascot-centered.png")}
@@ -92,6 +88,7 @@ export default function WelcomeScreen() {
           />
         </Animated.View>
 
+        {/* ─── Headline ─── */}
         <Animated.View style={[s.headlineWrap, { opacity: fade, transform: [{ translateY: textY }] }]}>
           <Text style={s.greeting}>
             {firstName && firstName !== "Traveler" ? `Hey ${firstName}! 👋` : "Hey there! 👋"}
@@ -99,60 +96,69 @@ export default function WelcomeScreen() {
           <Text style={s.headline}>Travel like{"\n"}never before</Text>
           <Text style={s.sub}>Smart planning, real bookings, zero hassle</Text>
         </Animated.View>
-      </View>
 
-      {/* ─── MIDDLE: feature list — flex:1 fills remaining space ─── */}
-      <Animated.View style={[s.list, { opacity: fade, transform: [{ translateY: listY }] }]}>
-        {FEATURES.map((f, i) => (
-          <View key={i} style={s.row}>
-            <View style={[s.iconCircle, { backgroundColor: f.color + "20" }]}>
-              <IconSymbol name={f.icon} size={20} color={f.color} />
+        {/* ─── Features — flex:1 fills middle ─── */}
+        <Animated.View style={[s.list, { opacity: fade, transform: [{ translateY: listY }] }]}>
+          {FEATURES.map((f, i) => (
+            <View key={i} style={s.row}>
+              <View style={[s.iconCircle, { backgroundColor: f.color + "20" }]}>
+                <IconSymbol name={f.icon} size={20} color={f.color} />
+              </View>
+              <View style={s.rowText}>
+                <Text style={s.rowTitle}>{f.title}</Text>
+                <Text style={s.rowDesc}>{f.desc}</Text>
+              </View>
             </View>
-            <View style={s.rowText}>
-              <Text style={s.rowTitle}>{f.title}</Text>
-              <Text style={s.rowDesc}>{f.desc}</Text>
-            </View>
-          </View>
-        ))}
-      </Animated.View>
+          ))}
+        </Animated.View>
 
-      {/* ─── BOTTOM: CTA ─── */}
-      <Animated.View style={[s.cta, { opacity: fade, transform: [{ translateY: ctaY }] }]}>
-        <TouchableOpacity
-          style={s.btn}
-          onPress={() => router.push("/(auth)/quiz" as never)}
-          activeOpacity={0.88}
-        >
-          <LinearGradient
-            colors={["#6443F4", "#B91C7C", "#F94498"]}
-            start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
-            style={s.btnGrad}
+        {/* ─── CTA ─── */}
+        <Animated.View style={[s.cta, { opacity: fade, transform: [{ translateY: ctaY }] }]}>
+          <TouchableOpacity
+            style={s.btn}
+            onPress={() => router.push("/(auth)/quiz" as never)}
+            activeOpacity={0.88}
           >
-            <Text style={s.btnText}>Build My Traveler Profile</Text>
-            <IconSymbol name="arrow.right" size={17} color="#fff" />
-          </LinearGradient>
-        </TouchableOpacity>
+            <LinearGradient
+              colors={["#6443F4", "#B91C7C", "#F94498"]}
+              start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
+              style={s.btnGrad}
+            >
+              <Text style={s.btnText}>Build My Traveler Profile</Text>
+              <IconSymbol name="arrow.right" size={17} color="#fff" />
+            </LinearGradient>
+          </TouchableOpacity>
 
-        <TouchableOpacity
-          onPress={() => {
-            dispatch({ type: "SET_ONBOARDING_COMPLETED" });
-            router.replace("/(tabs)" as never);
-          }}
-          activeOpacity={0.6}
-          style={s.skip}
-        >
-          <Text style={s.skipText}>Skip for now</Text>
-        </TouchableOpacity>
-      </Animated.View>
+          <TouchableOpacity
+            onPress={() => {
+              dispatch({ type: "SET_ONBOARDING_COMPLETED" });
+              router.replace("/(tabs)" as never);
+            }}
+            activeOpacity={0.6}
+            style={s.skip}
+          >
+            <Text style={s.skipText}>Skip for now</Text>
+          </TouchableOpacity>
+        </Animated.View>
+
+      </SafeAreaView>
     </View>
   );
 }
 
 const s = StyleSheet.create({
-  root: {
+  bg: {
     flex: 1,
     backgroundColor: "#0C0720",
+  },
+
+  // SafeAreaView fills the whole screen, column layout
+  safe: {
+    flex: 1,
     paddingHorizontal: 28,
+    paddingTop: 8,
+    paddingBottom: 8,
+    flexDirection: "column",
   },
 
   glowTR: {
@@ -168,13 +174,12 @@ const s = StyleSheet.create({
     backgroundColor: "rgba(249,68,152,0.11)",
   },
 
-  // Top section — mascot + headline, no flex growth
-  top: { alignItems: "center", gap: 10 },
-
-  duckWrap: { alignItems: "center" },
+  // Mascot — fixed height, centered
+  duckWrap: { alignItems: "center", marginBottom: 4 },
   duck: { width: MASCOT_SIZE, height: MASCOT_SIZE },
 
-  headlineWrap: { gap: 6, alignItems: "center" },
+  // Headline block
+  headlineWrap: { gap: 6, alignItems: "center", marginBottom: 4 },
   greeting: {
     fontSize: 14,
     color: "rgba(196,181,217,0.80)",
@@ -199,8 +204,12 @@ const s = StyleSheet.create({
     fontFamily: "Satoshi-Regular",
   },
 
-  // Feature list — flex:1 fills the middle space, vertically centered
-  list: { flex: 1, gap: 0, justifyContent: "space-evenly", paddingVertical: 16 },
+  // Feature list — flex:1 fills remaining space, items evenly distributed
+  list: {
+    flex: 1,
+    justifyContent: "space-evenly",
+    paddingVertical: 8,
+  },
   row: { flexDirection: "row", alignItems: "center", gap: 14 },
   iconCircle: {
     width: 44, height: 44, borderRadius: 13,
