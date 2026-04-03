@@ -1,14 +1,15 @@
 import { useRef, useEffect } from "react";
 import {
   View, Text, StyleSheet, Animated,
-  TouchableOpacity, Image, Dimensions,
+  TouchableOpacity, Image, Dimensions, ScrollView,
 } from "react-native";
 import { router } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
 import { IconSymbol } from "@/components/ui/icon-symbol";
 import { useStore } from "@/lib/store";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-const { width, height } = Dimensions.get("window");
+const { width } = Dimensions.get("window");
 
 const FEATURES = [
   {
@@ -39,23 +40,24 @@ const FEATURES = [
 
 export default function WelcomeScreen() {
   const { state, dispatch } = useStore();
+  const insets = useSafeAreaInsets();
 
   const fade   = useRef(new Animated.Value(0)).current;
-  const duckY  = useRef(new Animated.Value(-20)).current;
-  const textY  = useRef(new Animated.Value(20)).current;
-  const listY  = useRef(new Animated.Value(30)).current;
-  const ctaY   = useRef(new Animated.Value(20)).current;
+  const duckY  = useRef(new Animated.Value(-24)).current;
+  const textY  = useRef(new Animated.Value(16)).current;
+  const listY  = useRef(new Animated.Value(24)).current;
+  const ctaY   = useRef(new Animated.Value(16)).current;
 
   useEffect(() => {
     Animated.sequence([
       Animated.parallel([
-        Animated.timing(fade,  { toValue: 1, duration: 400, useNativeDriver: true }),
-        Animated.spring(duckY, { toValue: 0, friction: 7, tension: 60, useNativeDriver: true }),
-        Animated.timing(textY, { toValue: 0, duration: 400, useNativeDriver: true }),
+        Animated.timing(fade,  { toValue: 1, duration: 380, useNativeDriver: true }),
+        Animated.spring(duckY, { toValue: 0, friction: 7, tension: 55, useNativeDriver: true }),
+        Animated.timing(textY, { toValue: 0, duration: 380, useNativeDriver: true }),
       ]),
       Animated.parallel([
-        Animated.timing(listY, { toValue: 0, duration: 350, useNativeDriver: true }),
-        Animated.timing(ctaY,  { toValue: 0, duration: 350, delay: 60, useNativeDriver: true }),
+        Animated.timing(listY, { toValue: 0, duration: 320, useNativeDriver: true }),
+        Animated.timing(ctaY,  { toValue: 0, duration: 320, delay: 60, useNativeDriver: true }),
       ]),
     ]).start();
   }, []);
@@ -75,82 +77,95 @@ export default function WelcomeScreen() {
       {/* Glow bottom-left */}
       <View style={s.glowBL} />
 
-      {/* ─── Duck hero ─── */}
-      <Animated.View style={[s.duckWrap, { opacity: fade, transform: [{ translateY: duckY }] }]}>
-        <Image
-          source={require("@/assets/logos/mascot-centered.png")}
-          style={s.duck}
-          resizeMode="contain"
-        />
-      </Animated.View>
+      <ScrollView
+        contentContainerStyle={[
+          s.scroll,
+          { paddingTop: insets.top + 20, paddingBottom: insets.bottom + 24 },
+        ]}
+        showsVerticalScrollIndicator={false}
+        bounces={false}
+      >
+        {/* ─── Mascot ─── */}
+        <Animated.View style={[s.duckWrap, { opacity: fade, transform: [{ translateY: duckY }] }]}>
+          <Image
+            source={require("@/assets/logos/mascot-centered.png")}
+            style={s.duck}
+            resizeMode="contain"
+          />
+        </Animated.View>
 
-      {/* ─── Headline ─── */}
-      <Animated.View style={[s.headlineWrap, { opacity: fade, transform: [{ translateY: textY }] }]}>
-        <Text style={s.greeting}>
-          {firstName && firstName !== "Traveler" ? `Hey ${firstName}! 👋` : "Hey there! 👋"}
-        </Text>
-        <Text style={s.headline}>Travel like{"\n"}never before</Text>
-        <Text style={s.sub}>Smart planning, real bookings, zero hassle</Text>
-      </Animated.View>
+        {/* ─── Headline ─── */}
+        <Animated.View style={[s.headlineWrap, { opacity: fade, transform: [{ translateY: textY }] }]}>
+          <Text style={s.greeting}>
+            {firstName && firstName !== "Traveler" ? `Hey ${firstName}! 👋` : "Hey there! 👋"}
+          </Text>
+          <Text style={s.headline}>Travel like{"\n"}never before</Text>
+          <Text style={s.sub}>Smart planning, real bookings, zero hassle</Text>
+        </Animated.View>
 
-      {/* ─── Feature list ─── */}
-      <Animated.View style={[s.list, { opacity: fade, transform: [{ translateY: listY }] }]}>
-        {FEATURES.map((f, i) => (
-          <View key={i} style={s.row}>
-            <View style={[s.iconCircle, { backgroundColor: f.color + "20" }]}>
-              <IconSymbol name={f.icon} size={18} color={f.color} />
+        {/* ─── Feature list ─── */}
+        <Animated.View style={[s.list, { opacity: fade, transform: [{ translateY: listY }] }]}>
+          {FEATURES.map((f, i) => (
+            <View key={i} style={s.row}>
+              <View style={[s.iconCircle, { backgroundColor: f.color + "20" }]}>
+                <IconSymbol name={f.icon} size={20} color={f.color} />
+              </View>
+              <View style={s.rowText}>
+                <Text style={s.rowTitle}>{f.title}</Text>
+                <Text style={s.rowDesc}>{f.desc}</Text>
+              </View>
             </View>
-            <View style={s.rowText}>
-              <Text style={s.rowTitle}>{f.title}</Text>
-              <Text style={s.rowDesc}>{f.desc}</Text>
-            </View>
-          </View>
-        ))}
-      </Animated.View>
+          ))}
+        </Animated.View>
 
-      {/* ─── CTA ─── */}
-      <Animated.View style={[s.cta, { opacity: fade, transform: [{ translateY: ctaY }] }]}>
-        <TouchableOpacity
-          style={s.btn}
-          onPress={() => router.push("/(auth)/quiz" as never)}
-          activeOpacity={0.88}
-        >
-          <LinearGradient
-            colors={["#6443F4", "#B91C7C", "#F94498"]}
-            start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
-            style={s.btnGrad}
+        {/* ─── CTA ─── */}
+        <Animated.View style={[s.cta, { opacity: fade, transform: [{ translateY: ctaY }] }]}>
+          <TouchableOpacity
+            style={s.btn}
+            onPress={() => router.push("/(auth)/quiz" as never)}
+            activeOpacity={0.88}
           >
-            <Text style={s.btnText}>Build My Traveler Profile</Text>
-            <IconSymbol name="arrow.right" size={17} color="#fff" />
-          </LinearGradient>
-        </TouchableOpacity>
+            <LinearGradient
+              colors={["#6443F4", "#B91C7C", "#F94498"]}
+              start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
+              style={s.btnGrad}
+            >
+              <Text style={s.btnText}>Build My Traveler Profile</Text>
+              <IconSymbol name="arrow.right" size={17} color="#fff" />
+            </LinearGradient>
+          </TouchableOpacity>
 
-        <TouchableOpacity
-          onPress={() => {
-            dispatch({ type: "SET_ONBOARDING_COMPLETED" });
-            router.replace("/(tabs)" as never);
-          }}
-          activeOpacity={0.6}
-          style={s.skip}
-        >
-          <Text style={s.skipText}>Skip for now</Text>
-        </TouchableOpacity>
-      </Animated.View>
+          <TouchableOpacity
+            onPress={() => {
+              dispatch({ type: "SET_ONBOARDING_COMPLETED" });
+              router.replace("/(tabs)" as never);
+            }}
+            activeOpacity={0.6}
+            style={s.skip}
+          >
+            <Text style={s.skipText}>Skip for now</Text>
+          </TouchableOpacity>
+        </Animated.View>
+      </ScrollView>
     </View>
   );
 }
+
+const MASCOT_SIZE = width * 0.44;
 
 const s = StyleSheet.create({
   root: {
     flex: 1,
     backgroundColor: "#0C0720",
-    paddingHorizontal: 28,
-    paddingTop: height * 0.06,
-    paddingBottom: 130,
-    justifyContent: "space-between",
   },
 
-  // Ambient glows — pushed to corners
+  scroll: {
+    paddingHorizontal: 28,
+    gap: 28,
+    alignItems: "stretch",
+  },
+
+  // Ambient glows
   glowTR: {
     position: "absolute",
     width: 300, height: 300, borderRadius: 150,
@@ -164,57 +179,60 @@ const s = StyleSheet.create({
     backgroundColor: "rgba(249,68,152,0.11)",
   },
 
-  // Duck
-  duckWrap: { alignItems: "center" },
-  duck: { width: width * 0.52, height: width * 0.52 },
+  // Mascot
+  duckWrap: { alignItems: "center", marginBottom: -8 },
+  duck: { width: MASCOT_SIZE, height: MASCOT_SIZE },
 
   // Headline block
-  headlineWrap: { gap: 6 },
+  headlineWrap: { gap: 8, alignItems: "center" },
   greeting: {
-    fontSize: 14,
+    fontSize: 15,
     color: "rgba(196,181,217,0.80)",
     fontWeight: "500",
     fontFamily: "Satoshi-Medium",
     textAlign: "center",
   },
   headline: {
-    fontSize: 36,
+    fontSize: 38,
     fontWeight: "800",
     color: "#FFFFFF",
     textAlign: "center",
-    lineHeight: 42,
+    lineHeight: 44,
     letterSpacing: -0.8,
     fontFamily: "Chillax-Bold",
   },
   sub: {
-    fontSize: 14,
+    fontSize: 15,
     color: "rgba(196,181,217,0.80)",
     textAlign: "center",
-    lineHeight: 20,
+    lineHeight: 22,
+    fontFamily: "Satoshi-Regular",
   },
 
-  // Feature list — horizontal rows, no cards
-  list: { gap: 14 },
+  // Feature list
+  list: { gap: 16 },
   row: { flexDirection: "row", alignItems: "center", gap: 14 },
   iconCircle: {
-    width: 42, height: 42, borderRadius: 13,
+    width: 46, height: 46, borderRadius: 14,
     alignItems: "center", justifyContent: "center",
     flexShrink: 0,
   },
-  rowText: { flex: 1, gap: 2 },
-  rowTitle: { fontSize: 14, fontWeight: "700", color: "#FFFFFF", fontFamily: "Satoshi-Bold" },
+  rowText: { flex: 1, gap: 3 },
+  rowTitle: { fontSize: 15, fontWeight: "700", color: "#FFFFFF", fontFamily: "Satoshi-Bold" },
   rowDesc:  { fontSize: 13, color: "rgba(196,181,217,0.75)", lineHeight: 18, fontFamily: "Satoshi-Regular" },
 
   // CTA
-  cta: { gap: 12, alignItems: "center" },
-  btn: { width: "100%", borderRadius: 16, overflow: "hidden", shadowColor: "#F94498", shadowOffset: { width: 0, height: 6 }, shadowOpacity: 0.4, shadowRadius: 24, elevation: 10 },
+  cta: { gap: 14, alignItems: "center" },
+  btn: {
+    width: "100%", borderRadius: 16, overflow: "hidden",
+    shadowColor: "#F94498", shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.4, shadowRadius: 24, elevation: 10,
+  },
   btnGrad: {
     flexDirection: "row", alignItems: "center", justifyContent: "center",
-    paddingVertical: 17, gap: 10,
+    paddingVertical: 18, gap: 10,
   },
-  btnText: { fontSize: 16, fontWeight: "700",
-    fontFamily: "Chillax-Semibold", color: "#FFFFFF" },
+  btnText: { fontSize: 16, fontWeight: "700", fontFamily: "Chillax-Semibold", color: "#FFFFFF" },
   skip: { paddingVertical: 6 },
-  skipText: { fontSize: 14, color: "rgba(196,181,217,0.75)", fontWeight: "500",
-    fontFamily: "Satoshi-Medium" },
+  skipText: { fontSize: 14, color: "rgba(196,181,217,0.75)", fontWeight: "500", fontFamily: "Satoshi-Medium" },
 });
