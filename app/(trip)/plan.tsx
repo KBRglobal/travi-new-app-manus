@@ -45,26 +45,16 @@ const CUSTOM_STEP = 250;
 
 const TRAVI_MESSAGES = [
   "Where does your heart want to go?",
-  "What's your travel vibe?",
-  "How do you like to travel?",
-  "How many people are going?",
-  "What's your budget range?",
   "When are you traveling?",
 ];
 
-type Step = "destination" | "style" | "pace" | "travelers" | "budget" | "dates";
-const STEPS: Step[] = ["destination", "style", "pace", "travelers", "budget", "dates"];
+type Step = "destination" | "dates";
+const STEPS: Step[] = ["destination", "dates"];
 
 export default function PlanScreen() {
   const { dispatch } = useStore();
   const [stepIndex, setStepIndex] = useState(0);
   const [selectedDest, setSelectedDest] = useState<typeof DESTINATIONS[0] | null>(null);
-  const [selectedStyle, setSelectedStyle] = useState<string | null>(null);
-  const [selectedPace, setSelectedPace] = useState<"slow" | "balanced" | "full" | null>(null);
-  const [travelers, setTravelers] = useState(2);
-  const [selectedBudget, setSelectedBudget] = useState<string | null>(null);
-  const [customAmount, setCustomAmount] = useState(4000);
-  const sliderWidth = width - 80;
   const [startDate, setStartDate] = useState("Apr 15, 2026");
   const [endDate, setEndDate] = useState("Apr 22, 2026");
   const [editingDate, setEditingDate] = useState<"start" | "end" | null>(null);
@@ -90,10 +80,6 @@ export default function PlanScreen() {
 
   const canProceed = () => {
     if (currentStep === "destination") return !!selectedDest;
-    if (currentStep === "style") return !!selectedStyle;
-    if (currentStep === "pace") return !!selectedPace;
-    if (currentStep === "travelers") return travelers > 0;
-    if (currentStep === "budget") return !!selectedBudget;
     if (currentStep === "dates") return !!startDate && !!endDate;
     return false;
   };
@@ -111,8 +97,8 @@ export default function PlanScreen() {
         country: selectedDest!.country,
         startDate,
         endDate,
-        travelers,
-        budget: selectedBudget || "mid",
+        travelers: 2,
+        budget: "mid",
         status: "draft" as const,
         interests: [],
         landmarks: [],
@@ -212,271 +198,9 @@ export default function PlanScreen() {
           </ScrollView>
         )}
 
-        {/* ── STEP 2: Travel Style ── */}
-        {currentStep === "style" && (
-          <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.styleGrid}>
-            {TRAVEL_STYLES.map((style) => {
-              const selected = selectedStyle === style.id;
-              return (
-                <TouchableOpacity
-                  key={style.id}
-                  style={[styles.styleCard, selected && { borderColor: style.color + "AA" }]}
-                  onPress={() => {
-                    if (Platform.OS !== "web") Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-                    setSelectedStyle(style.id);
-                  }}
-                  activeOpacity={0.88}
-                >
-                  <LinearGradient
-                    colors={selected ? style.gradient : ["rgba(255,255,255,0.06)", "rgba(255,255,255,0.06)"]}
-                    style={StyleSheet.absoluteFillObject}
-                  />
-                  <View style={[styles.styleIconWrap, { backgroundColor: style.color + "33" }]}>
-                    <IconSymbol name={style.icon} size={28} color={style.color} />
-                  </View>
-                  <View style={styles.styleText}>
-                    <Text style={[styles.styleLabel, selected && { color: style.color }]}>{style.label}</Text>
-                    <Text style={styles.styleDesc}>{style.desc}</Text>
-                  </View>
-                  {selected && (
-                    <View style={[styles.styleCheck, { backgroundColor: style.color }]}>
-                      <IconSymbol name="checkmark" size={14} color="#FFFFFF" />
-                    </View>
-                  )}
-                </TouchableOpacity>
-              );
-            })}
-          </ScrollView>
-        )}
 
-        {/* ── STEP 3: Pace ── */}
-        {currentStep === "pace" && (
-          <View style={styles.paceWrap}>
-            {[
-              { id: "slow", label: "Slow & Deep", desc: "2-3 things a day, really feel each place", emoji: "🌿", color: "#4CAF50" },
-              { id: "balanced", label: "Balanced", desc: "Mix of must-sees and free time", emoji: "⚡", color: "#2196F3" },
-              { id: "full", label: "Full Send", desc: "Every hour counts, I'll sleep at home", emoji: "🔥", color: "#F94498" },
-            ].map((pace) => {
-              const selected = selectedPace === pace.id;
-              return (
-                <TouchableOpacity
-                  key={pace.id}
-                  style={[styles.paceCard, selected && { borderColor: pace.color, backgroundColor: pace.color + "22" }]}
-                  onPress={() => {
-                    if (Platform.OS !== "web") Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-                    setSelectedPace(pace.id as "slow" | "balanced" | "full");
-                  }}
-                  activeOpacity={0.88}
-                >
-                  <Text style={styles.paceEmoji}>{pace.emoji}</Text>
-                  <Text style={[styles.paceLabel, selected && { color: pace.color }]}>{pace.label}</Text>
-                  <Text style={styles.paceDesc}>{pace.desc}</Text>
-                  {selected && (
-                    <View style={[styles.paceCheck, { backgroundColor: pace.color }]}>
-                      <IconSymbol name="checkmark" size={12} color="#FFFFFF" />
-                    </View>
-                  )}
-                </TouchableOpacity>
-              );
-            })}
-          </View>
-        )}
 
-        {/* ── STEP 4: Travelers ── */}
-        {currentStep === "travelers" && (
-          <View style={styles.travelersWrap}>
-            <View style={styles.travelersCard}>
-              <LinearGradient colors={["rgba(123,47,190,0.3)", "rgba(233,30,140,0.2)"]} style={StyleSheet.absoluteFillObject} />
-              <View style={styles.travelersIconRow}>
-                {Array.from({ length: Math.min(travelers, 6) }).map((_, i) => (
-                  <View key={i} style={[styles.travelerAvatar, { marginLeft: i > 0 ? -10 : 0, zIndex: 6 - i }]}>
-                    <LinearGradient colors={["#6443F4", "#F94498"]} style={styles.travelerAvatarGradient}>
-                      <IconSymbol name="person.fill" size={18} color="#FFFFFF" />
-                    </LinearGradient>
-                  </View>
-                ))}
-                {travelers > 6 && (
-                  <View style={[styles.travelerAvatar, styles.travelerAvatarMore, { marginLeft: -10 }]}>
-                    <Text style={styles.travelerMoreText}>+{travelers - 6}</Text>
-                  </View>
-                )}
-              </View>
-              <Text style={styles.travelersCount}>{travelers}</Text>
-              <Text style={styles.travelersLabel}>{travelers === 1 ? "Traveler" : "Travelers"}</Text>
-            </View>
-
-            <View style={styles.travelersControls}>
-              <TouchableOpacity
-                style={[styles.travelerBtn, travelers <= 1 && styles.travelerBtnDisabled]}
-                onPress={() => {
-                  if (travelers > 1) {
-                    if (Platform.OS !== "web") Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-                    setTravelers((n) => n - 1);
-                  }
-                }}
-                activeOpacity={0.8}
-              >
-                <LinearGradient
-                  colors={travelers > 1 ? ["#6443F4", "#5A1E9E"] : ["rgba(255,255,255,0.06)", "rgba(255,255,255,0.06)"]}
-                  style={styles.travelerBtnGradient}
-                >
-                  <IconSymbol name="minus" size={24} color={travelers > 1 ? "#FFFFFF" : "#3A2D4E"} />
-                </LinearGradient>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                style={styles.travelerBtn}
-                onPress={() => {
-                  if (Platform.OS !== "web") Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-                  setTravelers((n) => n + 1);
-                }}
-                activeOpacity={0.8}
-              >
-                <LinearGradient colors={["#F94498", "#C2185B"]} style={styles.travelerBtnGradient}>
-                  <IconSymbol name="plus" size={24} color="#FFFFFF" />
-                </LinearGradient>
-              </TouchableOpacity>
-            </View>
-
-            <View style={styles.travelersPresets}>
-              {([["Solo", 1], ["Couple", 2], ["Family", 4], ["Group", 8]] as [string, number][]).map(([label, count]) => (
-                <TouchableOpacity
-                  key={label}
-                  style={[styles.presetChip, travelers === count && styles.presetChipActive]}
-                  onPress={() => {
-                    if (Platform.OS !== "web") Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-                    setTravelers(count);
-                  }}
-                  activeOpacity={0.8}
-                >
-                  {travelers === count && (
-                    <LinearGradient colors={["rgba(123,47,190,0.5)", "rgba(233,30,140,0.3)"]} style={StyleSheet.absoluteFillObject} />
-                  )}
-                  <Text style={[styles.presetLabel, travelers === count && styles.presetLabelActive]}>{label}</Text>
-                </TouchableOpacity>
-              ))}
-            </View>
-          </View>
-        )}
-
-        {/* ── STEP 4: Budget ── */}
-        {currentStep === "budget" && (
-          <View style={styles.budgetWrap}>
-            <View style={styles.budgetGrid}>
-              {BUDGETS.map((budget) => {
-                const selected = selectedBudget === budget.id;
-                return (
-                  <TouchableOpacity
-                    key={budget.id}
-                    style={[styles.budgetCard, selected && { borderColor: budget.color + "AA" }]}
-                    onPress={() => {
-                      if (Platform.OS !== "web") Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-                      setSelectedBudget(budget.id);
-                    }}
-                    activeOpacity={0.88}
-                  >
-                    <LinearGradient
-                      colors={selected ? [budget.color + "33", budget.color + "18"] : ["rgba(255,255,255,0.06)", "rgba(255,255,255,0.06)"]}
-                      style={StyleSheet.absoluteFillObject}
-                    />
-                    <View style={[styles.budgetIconWrap, { backgroundColor: budget.color + "22" }]}>
-                      <IconSymbol name={budget.icon} size={28} color={budget.color} />
-                    </View>
-                    <Text style={[styles.budgetLabel, selected && { color: budget.color }]}>{budget.label}</Text>
-                    <Text style={styles.budgetRange}>{budget.range}</Text>
-                    {selected && (
-                      <View style={[styles.budgetCheck, { backgroundColor: budget.color }]}>
-                        <IconSymbol name="checkmark" size={12} color="#FFFFFF" />
-                      </View>
-                    )}
-                  </TouchableOpacity>
-                );
-              })}
-            </View>
-
-            {/* Custom Budget Card — full width */}
-            <TouchableOpacity
-              style={[styles.customBudgetCard, selectedBudget === "custom" && styles.customBudgetCardActive]}
-              onPress={() => {
-                if (Platform.OS !== "web") Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-                setSelectedBudget("custom");
-              }}
-              activeOpacity={0.88}
-            >
-              <LinearGradient
-                colors={selectedBudget === "custom" ? ["rgba(249,68,152,0.25)", "rgba(100,67,244,0.2)"] : ["rgba(255,255,255,0.06)", "rgba(255,255,255,0.06)"]}
-                style={StyleSheet.absoluteFillObject}
-              />
-              <View style={styles.customBudgetTop}>
-                <View style={[styles.budgetIconWrap, { backgroundColor: "rgba(249,68,152,0.2)" }]}>
-                  <IconSymbol name="slider.horizontal.3" size={26} color="#F94498" />
-                </View>
-                <View style={{ flex: 1 }}>
-                  <Text style={[styles.budgetLabel, selectedBudget === "custom" && { color: "#F94498" }]}>Custom Budget</Text>
-                  <Text style={styles.budgetRange}>Set your exact amount</Text>
-                </View>
-                <Text style={styles.customAmount}>${customAmount.toLocaleString()}</Text>
-                {selectedBudget === "custom" && (
-                  <View style={[styles.budgetCheck, { backgroundColor: "#F94498" }]}>
-                    <IconSymbol name="checkmark" size={12} color="#FFFFFF" />
-                  </View>
-                )}
-              </View>
-
-              {/* Slider — only visible when selected */}
-              {selectedBudget === "custom" && (
-                <View style={styles.sliderWrap}>
-                  <View style={styles.sliderTrack}>
-                    <LinearGradient
-                      colors={["#6443F4", "#F94498"]}
-                      start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
-                      style={[styles.sliderFill, { width: `${((customAmount - CUSTOM_MIN) / (CUSTOM_MAX - CUSTOM_MIN)) * 100}%` as unknown as number }]}
-                    />
-                    {/* Draggable thumb */}
-                    <View
-                      style={[
-                        styles.sliderThumb,
-                        { left: `${((customAmount - CUSTOM_MIN) / (CUSTOM_MAX - CUSTOM_MIN)) * 100}%` as unknown as number },
-                      ]}
-                      {...PanResponder.create({
-                        onStartShouldSetPanResponder: () => true,
-                        onMoveShouldSetPanResponder: () => true,
-                        onPanResponderMove: (_, gs) => {
-                          const ratio = Math.max(0, Math.min(1, gs.moveX / sliderWidth));
-                          const raw = CUSTOM_MIN + ratio * (CUSTOM_MAX - CUSTOM_MIN);
-                          const stepped = Math.round(raw / CUSTOM_STEP) * CUSTOM_STEP;
-                          setCustomAmount(stepped);
-                        },
-                      }).panHandlers}
-                    />
-                  </View>
-                  <View style={styles.sliderLabels}>
-                    <Text style={styles.sliderLabel}>${CUSTOM_MIN.toLocaleString()}</Text>
-                    <Text style={styles.sliderLabel}>${CUSTOM_MAX.toLocaleString()}</Text>
-                  </View>
-                  {/* Quick preset chips */}
-                  <View style={styles.sliderPresets}>
-                    {[1500, 3000, 5000, 8000, 12000].map((v) => (
-                      <TouchableOpacity
-                        key={v}
-                        style={[styles.presetChip, customAmount === v && styles.presetChipActive]}
-                        onPress={() => {
-                          if (Platform.OS !== "web") Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-                          setCustomAmount(v);
-                        }}
-                        activeOpacity={0.8}
-                      >
-                        <Text style={[styles.presetChipText, customAmount === v && styles.presetChipTextActive]}>${(v / 1000).toFixed(v % 1000 === 0 ? 0 : 1)}k</Text>
-                      </TouchableOpacity>
-                    ))}
-                  </View>
-                </View>
-              )}
-            </TouchableOpacity>
-          </View>
-        )}
-
-        {/* ── STEP 5: Dates ── */}
+        {/* ── STEP 2: Dates ── */}
         {currentStep === "dates" && (
           <View style={styles.datesWrap}>
             <TouchableOpacity

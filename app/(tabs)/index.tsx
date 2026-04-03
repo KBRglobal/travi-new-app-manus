@@ -240,155 +240,113 @@ export default function HomeScreen() {
             );
           })()}
 
-          {/* ── Big pink CTA ── */}
+          {/* ── Plan a Trip card (premium, mascot, no badge) ── */}
           <TouchableOpacity
-            style={S.planBtn}
+            style={S.planCard}
             onPress={() => router.push("/(trip)/plan" as never)}
             activeOpacity={0.88}
           >
             <LinearGradient
-              colors={[B.pink, B.pinkDark]}
-              start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
+              colors={["#2D1B69", "#3D1A5C", "#1A0A3D"]}
+              start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}
               style={StyleSheet.absoluteFillObject}
             />
-            <View style={S.planBtnLeft}>
-              <View style={S.planBtnIcon}>
-                <IconSymbol name="airplane" size={20} color={B.pink} />
-              </View>
-              <View>
-                <Text style={S.planBtnTitle}>Plan a Trip</Text>
-                <Text style={S.planBtnSub}>Free to plan · Pay when you book</Text>
-              </View>
-            </View>
-            <View style={S.planBtnArrow}>
-              <IconSymbol name="arrow.right" size={18} color={B.white} />
+            {/* Pink shimmer top-left */}
+            <LinearGradient
+              colors={["rgba(249,68,152,0.18)", "transparent"]}
+              start={{ x: 0, y: 0 }} end={{ x: 0.6, y: 1 }}
+              style={StyleSheet.absoluteFillObject}
+            />
+            {/* Mascot duck */}
+            <Image
+              source={require("@/assets/images/mascot-dark.png")}
+              style={S.planCardMascot}
+              resizeMode="contain"
+            />
+            <View style={S.planCardContent}>
+              <Text style={S.planCardTitle}>Plan Your Trip</Text>
+              <Text style={S.planCardSub}>Tell us where, we handle the rest →</Text>
             </View>
           </TouchableOpacity>
 
 
 
-          {/* ── Where's your head at ── */}
-          <View style={S.section}>
-            <Text style={S.sectionTitle}>Where's your head at?</Text>
-            <Text style={S.sectionSub}>Tell us your vibe, we'll handle the rest.</Text>
-            <View style={S.startGrid}>
-              {START_OPTIONS.map((opt) => (
-                <TouchableOpacity
-                  key={opt.id}
-                  style={S.startCard}
-                  onPress={() => handleStart(opt.id)}
-                  activeOpacity={0.85}
-                >
-                  <View style={[S.startIconWrap, { backgroundColor: opt.bg }]}>
-                    <IconSymbol name={opt.icon} size={22} color={opt.color} />
+          {/* ── How TRAVI works — only for new users who haven’t done DNA ── */}
+          {!hasQuiz && (
+            <>
+              <View style={S.section}>
+                <Text style={S.sectionTitle}>How it works</Text>
+                <Text style={S.sectionSub}>The travel friend you never had.</Text>
+                {[
+                  { icon: "sparkles"               as const, color: B.purple, title: "Your Travel DNA",      desc: "Answer a few quick questions. TRAVI learns your travel personality forever." },
+                  { icon: "airplane"               as const, color: B.pink,   title: "AI plans everything",  desc: "Flights, hotels, experiences — curated for you, not the masses." },
+                  { icon: "dollarsign.circle.fill" as const, color: B.orange, title: "Cashback, not fees",   desc: "The 10–15% that used to go to agents? It comes back to you." },
+                ].map((step, i) => (
+                  <View key={i} style={S.howRow}>
+                    <View style={[S.howIcon, { backgroundColor: step.color + "18" }]}>
+                      <IconSymbol name={step.icon} size={20} color={step.color} />
+                    </View>
+                    <View style={{ flex: 1 }}>
+                      <Text style={S.howTitle}>{step.title}</Text>
+                      <Text style={S.howDesc}>{step.desc}</Text>
+                    </View>
                   </View>
-                  <Text style={S.startCardLabel}>{opt.label}</Text>
-                  <Text style={S.startCardSub}>{opt.sub}</Text>
+                ))}
+              </View>
+
+              {/* Cashback manifesto */}
+              <View style={S.manifestoCard}>
+                <LinearGradient
+                  colors={[B.purpleMid, B.purple]}
+                  start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}
+                  style={StyleSheet.absoluteFillObject}
+                />
+                <Text style={S.manifestoTitle}>You are your own agent.</Text>
+                <Text style={S.manifestoBody}>
+                  Traditional agents pocket 10–15% of every booking. TRAVI removes the middleman — that commission comes back to you as cashback.
+                </Text>
+                <View style={S.manifestoRow}>
+                  <View style={S.manifestoCol}>
+                    <Text style={S.manifestoColLabel}>Old way</Text>
+                    <View style={[S.manifestoPill, { backgroundColor: "rgba(255,255,255,0.12)" }]}>
+                      <Text style={S.manifestoPillText}>Agent keeps 15%</Text>
+                    </View>
+                  </View>
+                  <Text style={S.manifestoVs}>vs</Text>
+                  <View style={S.manifestoCol}>
+                    <Text style={S.manifestoColLabel}>TRAVI</Text>
+                    <View style={[S.manifestoPill, { backgroundColor: "rgba(2,166,92,0.25)" }]}>
+                      <Text style={[S.manifestoPillText, { color: "#7FFFB8" }]}>You keep it all</Text>
+                    </View>
+                  </View>
+                </View>
+              </View>
+            </>
+          )}
+
+          {/* ── Post-DNA: personalized quick-actions ── */}
+          {hasQuiz && (
+            <View style={S.section}>
+              <Text style={S.sectionTitle}>Made for {firstName}</Text>
+              <Text style={S.sectionSub}>Based on your {dnaType} profile</Text>
+              {[
+                { icon: "airplane"               as const, color: B.purple, title: "Plan a new trip",       desc: "Tell us where — we handle flights, hotels & experiences.",  onPress: () => router.push("/(trip)/plan" as never) },
+                { icon: "dollarsign.circle.fill" as const, color: B.orange, title: "Your cashback",         desc: "Every booking earns you back 10–15%. No fees, ever.",         onPress: () => router.push("/(tabs)/profile" as never) },
+                { icon: "person.2.fill"          as const, color: B.pink,   title: "Travel with friends",   desc: "Invite companions and split costs automatically.",            onPress: () => router.push("/(tabs)/trips" as never) },
+              ].map((item, i) => (
+                <TouchableOpacity key={i} style={S.howRow} onPress={item.onPress} activeOpacity={0.8}>
+                  <View style={[S.howIcon, { backgroundColor: item.color + "18" }]}>
+                    <IconSymbol name={item.icon} size={20} color={item.color} />
+                  </View>
+                  <View style={{ flex: 1 }}>
+                    <Text style={S.howTitle}>{item.title}</Text>
+                    <Text style={S.howDesc}>{item.desc}</Text>
+                  </View>
+                  <IconSymbol name="chevron.right" size={16} color={B.dimmer} />
                 </TouchableOpacity>
               ))}
             </View>
-          </View>
-
-          {/* ── Travel DNA ── */}
-          <TouchableOpacity
-            style={S.dnaCard}
-            onPress={() => router.push("/(dna)/quick-swipe" as never)}
-            activeOpacity={0.88}
-          >
-            <LinearGradient
-              colors={[B.purpleMid, B.purple]}
-              start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}
-              style={StyleSheet.absoluteFillObject}
-            />
-            {/* Duck mascot — appears here because it's playful & relevant */}
-            <Image
-              source={require("@/assets/images/mascot-dark.png")}
-              style={S.dnaMascot}
-              resizeMode="contain"
-            />
-            <View style={S.dnaContent}>
-              <View style={S.dnaBadge}>
-                <Text style={S.dnaBadgeText}>2 MIN · FREE</Text>
-              </View>
-              <Text style={S.dnaTitle}>
-                {hasQuiz ? `Your DNA: ${dnaType}` : "Discover Your\nTravel DNA"}
-              </Text>
-              <Text style={S.dnaSub}>
-                {hasQuiz ? "View your full traveler profile →" : "Swipe to reveal your traveler type →"}
-              </Text>
-            </View>
-          </TouchableOpacity>
-
-          {/* ── DNA tips (if quiz done) ── */}
-          {hasQuiz && (
-            <View style={S.section}>
-              <Text style={S.sectionTitle}>Made for you today</Text>
-              <Text style={S.sectionSub}>Based on your {dnaType} profile</Text>
-              <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: 12, paddingRight: 4 }}>
-                {[
-                  { icon: "sun.max.fill" as const, tip: "Book beach activities early — best spots sell out 3 days ahead", color: B.orange },
-                  { icon: "fork.knife"   as const, tip: "Try the local market for lunch — 3× better value",              color: B.green },
-                  { icon: "map.fill"     as const, tip: "Your pace = 4–5 stops/day. Don't over-schedule Day 1",          color: B.purple },
-                ].map((tip, i) => (
-                  <View key={i} style={[S.tipCard, { borderColor: tip.color + "40" }]}>
-                    <View style={[S.tipIcon, { backgroundColor: tip.color + "18" }]}>
-                      <IconSymbol name={tip.icon} size={18} color={tip.color} />
-                    </View>
-                    <Text style={S.tipText} numberOfLines={4}>{tip.tip}</Text>
-                  </View>
-                ))}
-              </ScrollView>
-            </View>
           )}
-
-          {/* ── How TRAVI works ── */}
-          <View style={S.section}>
-            <Text style={S.sectionTitle}>How it works</Text>
-            <Text style={S.sectionSub}>The travel friend you never had.</Text>
-            {[
-              { icon: "sparkles"             as const, color: B.purple, title: "Your Travel DNA",      desc: "Answer 7 questions. TRAVI learns your travel personality forever." },
-              { icon: "airplane"             as const, color: B.pink,   title: "AI plans everything",  desc: "Flights, hotels, experiences — curated for you, not the masses." },
-              { icon: "dollarsign.circle.fill" as const, color: B.orange, title: "Cashback, not fees", desc: "The 10–15% that used to go to agents? It comes back to you." },
-            ].map((step, i) => (
-              <View key={i} style={S.howRow}>
-                <View style={[S.howIcon, { backgroundColor: step.color + "18" }]}>
-                  <IconSymbol name={step.icon} size={20} color={step.color} />
-                </View>
-                <View style={{ flex: 1 }}>
-                  <Text style={S.howTitle}>{step.title}</Text>
-                  <Text style={S.howDesc}>{step.desc}</Text>
-                </View>
-              </View>
-            ))}
-          </View>
-
-          {/* ── Cashback manifesto ── */}
-          <View style={S.manifestoCard}>
-            <LinearGradient
-              colors={[B.purpleMid, B.purple]}
-              start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}
-              style={StyleSheet.absoluteFillObject}
-            />
-            <Text style={S.manifestoTitle}>You are your own agent.</Text>
-            <Text style={S.manifestoBody}>
-              Traditional agents pocket 10–15% of every booking. TRAVI removes the middleman — that commission comes back to you as cashback.
-            </Text>
-            <View style={S.manifestoRow}>
-              <View style={S.manifestoCol}>
-                <Text style={S.manifestoColLabel}>Old way</Text>
-                <View style={[S.manifestoPill, { backgroundColor: "rgba(255,255,255,0.12)" }]}>
-                  <Text style={S.manifestoPillText}>Agent keeps 15%</Text>
-                </View>
-              </View>
-              <Text style={S.manifestoVs}>vs</Text>
-              <View style={S.manifestoCol}>
-                <Text style={S.manifestoColLabel}>TRAVI</Text>
-                <View style={[S.manifestoPill, { backgroundColor: "rgba(2,166,92,0.25)" }]}>
-                  <Text style={[S.manifestoPillText, { color: "#7FFFB8" }]}>You keep it all</Text>
-                </View>
-              </View>
-            </View>
-          </View>
 
         </View>
       </ScrollView>
@@ -625,48 +583,38 @@ const S = StyleSheet.create({
     marginTop: 2,
   },
 
-  // ── Plan a Trip CTA ──
-  planBtn: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    borderRadius: 18,
-    paddingHorizontal: 18,
-    paddingVertical: 18,
+  // ── Plan a Trip card (premium, mascot, no badge) ──
+  planCard: {
+    borderRadius: 20,
     overflow: "hidden",
-  },
-  planBtnLeft: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 14,
-  },
-  planBtnIcon: {
-    width: 42,
-    height: 42,
-    borderRadius: 12,
-    backgroundColor: B.white,
-    alignItems: "center",
+    paddingLeft: 20,
+    paddingRight: 130,
+    paddingVertical: 22,
+    minHeight: 130,
     justifyContent: "center",
   },
-  planBtnTitle: {
+  planCardMascot: {
+    position: "absolute",
+    right: -10,
+    bottom: -5,
+    width: 130,
+    height: 130,
+  },
+  planCardContent: {
+    gap: 8,
+  },
+  planCardTitle: {
     color: B.white,
-    fontSize: 17,
+    fontSize: 22,
     fontWeight: "800",
     fontFamily: "Chillax-Bold",
+    letterSpacing: -0.3,
+    lineHeight: 26,
   },
-  planBtnSub: {
-    color: "rgba(255,255,255,0.75)",
-    fontSize: 12,
-    fontFamily: "Satoshi-Regular",
-    marginTop: 2,
-  },
-  planBtnArrow: {
-    width: 36,
-    height: 36,
-    borderRadius: 18,
-    backgroundColor: "rgba(255,255,255,0.20)",
-    alignItems: "center",
-    justifyContent: "center",
+  planCardSub: {
+    color: B.dim,
+    fontSize: 13,
+    fontFamily: "Satoshi-Medium",
   },
 
   // ── Join card ──
