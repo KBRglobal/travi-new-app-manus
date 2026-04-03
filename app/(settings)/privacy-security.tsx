@@ -71,7 +71,7 @@ export default function PrivacySecurityScreen() {
 const S = StyleSheet.create({
   header: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 20, paddingVertical: 16, borderBottomWidth: 0.5 },
   headerTitle: { fontSize: 18, fontFamily: "Chillax-Semibold", fontWeight: "600" },
-  scroll: { padding: 20, paddingBottom: 100 },
+  scroll: { padding: 20, paddingBottom: 130 },
   section: { fontSize: 12, fontFamily: "Chillax-Semibold", fontWeight: "600", letterSpacing: 1, marginBottom: 8, marginTop: 20 },
   card: { borderRadius: 16, overflow: "hidden" },
   row: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 16, paddingVertical: 14, borderBottomWidth: 0.5 },

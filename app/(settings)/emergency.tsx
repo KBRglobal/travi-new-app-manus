@@ -29,7 +29,7 @@ export default function EmergencySettingsScreen() {
         <Text style={S.headerTitle}>Emergency Info</Text>
         <View style={{ width: 36 }} />
       </View>
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 40 }}>
+      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 130 }}>
         {/* SOS Banner */}
         <View style={S.sosBanner}>
           <Text style={S.sosEmoji}>🆘</Text>
@@ -82,7 +82,7 @@ export default function EmergencySettingsScreen() {
                 value={medInfo[field.key as keyof typeof medInfo]}
                 onChangeText={(v) => setMedInfo((m) => ({ ...m, [field.key]: v }))}
                 placeholder={field.placeholder}
-                placeholderTextColor="rgba(255,255,255,0.2)"
+                placeholderTextColor="rgba(255,255,255,0.55)"
               />
             </View>
           ))}
@@ -101,33 +101,40 @@ export default function EmergencySettingsScreen() {
 
 const S = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#0D0628" },
-  header: { flexDirection: "row", alignItems: "center", paddingHorizontal: 20, paddingBottom: 16, gap: 12 },
-  backBtn: { width: 36, height: 36, borderRadius: 18, backgroundColor: "rgba(255,255,255,0.08)", alignItems: "center", justifyContent: "center" },
-  backText: { color: "#FFFFFF", fontSize: 18, fontWeight: "700" },
+  header: { flexDirection: "row", alignItems: "center", paddingHorizontal: 20, paddingBottom: 130, gap: 12 },
+  backBtn: { width: 36, height: 36, borderRadius: 18, backgroundColor: "rgba(255,255,255,0.55)", alignItems: "center", justifyContent: "center" },
+  backText: { color: "#FFFFFF", fontSize: 18, fontWeight: "700",
+      fontFamily: "Chillax-Semibold" },
   headerTitle: { flex: 1, color: "#FFFFFF", fontSize: 20, fontWeight: "900", textAlign: "center", fontFamily: "Chillax-Bold" },
   sosBanner: { marginHorizontal: 20, marginBottom: 24, borderRadius: 16, backgroundColor: "rgba(239,68,68,0.12)", borderWidth: 1, borderColor: "rgba(239,68,68,0.3)", padding: 16, flexDirection: "row", gap: 14, alignItems: "flex-start" },
   sosEmoji: { fontSize: 28 },
   sosBannerText: { flex: 1, gap: 4 },
-  sosBannerTitle: { color: "#EF4444", fontSize: 15, fontWeight: "900" },
+  sosBannerTitle: { color: "#EF4444", fontSize: 15, fontWeight: "900",
+      fontFamily: "Chillax-Bold" },
   sosBannerDesc: { color: "rgba(255,255,255,0.6)", fontSize: 12, lineHeight: 18 },
   section: { paddingHorizontal: 20, marginBottom: 24 },
   sectionHeader: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginBottom: 12 },
-  sectionTitle: { color: "rgba(255,255,255,0.4)", fontSize: 11, fontWeight: "800", textTransform: "uppercase", letterSpacing: 1.5 },
-  sectionDesc: { color: "rgba(255,255,255,0.3)", fontSize: 12, marginBottom: 12, marginTop: -8 },
+  sectionTitle: { color: "rgba(255,255,255,0.5)", fontSize: 11, fontWeight: "800",
+      fontFamily: "Chillax-Bold", textTransform: "uppercase", letterSpacing: 1.5 },
+  sectionDesc: { color: "rgba(255,255,255,0.55)", fontSize: 12, marginBottom: 12, marginTop: -8 },
   addBtn: { paddingHorizontal: 12, paddingVertical: 6, borderRadius: 8, backgroundColor: "rgba(100,67,244,0.2)", borderWidth: 1, borderColor: "rgba(100,67,244,0.4)" },
-  addBtnText: { color: "#A78BFA", fontSize: 12, fontWeight: "800" },
-  contactCard: { flexDirection: "row", alignItems: "center", gap: 12, paddingVertical: 12, borderBottomWidth: 1, borderBottomColor: "rgba(255,255,255,0.04)" },
+  addBtnText: { color: "#A78BFA", fontSize: 12, fontWeight: "800",
+      fontFamily: "Chillax-Bold" },
+  contactCard: { flexDirection: "row", alignItems: "center", gap: 12, paddingVertical: 12, borderBottomWidth: 1, borderBottomColor: "rgba(255,255,255,0.55)" },
   contactAvatar: { width: 44, height: 44, borderRadius: 22, backgroundColor: "rgba(100,67,244,0.25)", alignItems: "center", justifyContent: "center" },
-  contactAvatarText: { color: "#A78BFA", fontSize: 18, fontWeight: "900" },
+  contactAvatarText: { color: "#A78BFA", fontSize: 18, fontWeight: "900",
+      fontFamily: "Chillax-Bold" },
   contactInfo: { flex: 1, gap: 2 },
-  contactName: { color: "#FFFFFF", fontSize: 14, fontWeight: "800" },
+  contactName: { color: "#FFFFFF", fontSize: 14, fontWeight: "800",
+      fontFamily: "Chillax-Bold" },
   contactPhone: { color: "rgba(255,255,255,0.5)", fontSize: 12 },
   contactRelation: { color: "#A78BFA", fontSize: 11, fontWeight: "700" },
-  contactEdit: { paddingHorizontal: 10, paddingVertical: 5, borderRadius: 8, backgroundColor: "rgba(255,255,255,0.06)" },
+  contactEdit: { paddingHorizontal: 10, paddingVertical: 5, borderRadius: 8, backgroundColor: "rgba(255,255,255,0.55)" },
   contactEditText: { color: "rgba(255,255,255,0.5)", fontSize: 12 },
   fieldRow: { marginBottom: 12 },
   fieldLabel: { color: "rgba(255,255,255,0.5)", fontSize: 12, fontWeight: "700", marginBottom: 6 },
-  fieldInput: { backgroundColor: "rgba(255,255,255,0.05)", borderRadius: 10, borderWidth: 1, borderColor: "rgba(255,255,255,0.08)", paddingHorizontal: 14, paddingVertical: 10, color: "#FFFFFF", fontSize: 14 },
+  fieldInput: { backgroundColor: "rgba(255,255,255,0.55)", borderRadius: 10, borderWidth: 1, borderColor: "rgba(255,255,255,0.55)", paddingHorizontal: 14, paddingVertical: 10, color: "#FFFFFF", fontSize: 14 },
   saveBtn: { borderRadius: 14, backgroundColor: "#6443F4", paddingVertical: 16, alignItems: "center" },
-  saveBtnText: { color: "#FFFFFF", fontSize: 15, fontWeight: "900" },
+  saveBtnText: { color: "#FFFFFF", fontSize: 15, fontWeight: "900",
+      fontFamily: "Chillax-Bold" },
 });

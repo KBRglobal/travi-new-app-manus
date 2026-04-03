@@ -479,14 +479,14 @@ export default function AlertsScreen() {
 
 const styles = StyleSheet.create({
   scroll: { flex: 1 },
-  scrollContent: { paddingBottom: 120 },
+  scrollContent: { paddingBottom: 130 },
   header: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
     paddingHorizontal: 20,
     paddingTop: 16,
-    paddingBottom: 20,
+    paddingBottom: 130,
   },
   headerTitle: { fontSize: 28, fontWeight: "800", color: "#F9FAFB", letterSpacing: -0.5, fontFamily: "Chillax-Bold" },
   headerSubtitle: { fontSize: 13, color: "#9CA3AF", marginTop: 2, fontFamily: "Satoshi-Regular" },
@@ -598,7 +598,7 @@ const styles = StyleSheet.create({
   modalOverlay: { flex: 1, justifyContent: "flex-end", backgroundColor: "rgba(0,0,0,0.7)" },
   modalKAV: { justifyContent: "flex-end" },
   modalSheet: { borderTopLeftRadius: 28, borderTopRightRadius: 28, overflow: "hidden", maxHeight: "90%" },
-  modalGradient: { padding: 24, paddingBottom: 40 },
+  modalGradient: { padding: 24, paddingBottom: 130 },
   modalHandle: {
     width: 40,
     height: 4,

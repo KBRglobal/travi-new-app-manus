@@ -67,7 +67,7 @@ export default function LanguageSelectorScreen() {
 const S = StyleSheet.create({
   header: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 20, paddingVertical: 16, borderBottomWidth: 0.5 },
   headerTitle: { fontSize: 18, fontFamily: "Chillax-Semibold", fontWeight: "600" },
-  list: { paddingBottom: 100 },
+  list: { paddingBottom: 130 },
   row: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 20, paddingVertical: 16, borderBottomWidth: 0.5 },
   rowLeft: { flex: 1, marginRight: 12 },
   name: { fontSize: 16, fontFamily: "Satoshi-Regular", fontWeight: "500" },

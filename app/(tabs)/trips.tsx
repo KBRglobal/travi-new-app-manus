@@ -131,20 +131,21 @@ const wS = StyleSheet.create({
   widgetHeader: { flexDirection: "row", alignItems: "center", justifyContent: "space-between" },
   widgetTitle: { color: "#FFFFFF", fontSize: 16, fontWeight: "800", fontFamily: "Chillax-Bold" },
   soonBadge: { backgroundColor: "rgba(249,68,152,0.25)", borderRadius: 10, paddingHorizontal: 10, paddingVertical: 4, borderWidth: 1, borderColor: "rgba(249,68,152,0.5)" },
-  soonBadgeText: { color: "#F94498", fontSize: 11, fontWeight: "800" },
+  soonBadgeText: { color: "#F94498", fontSize: 11, fontWeight: "800",
+      fontFamily: "Chillax-Bold" },
   widgetBody: { flexDirection: "row", alignItems: "center", gap: 16 },
   countdownBlock: { flex: 1, alignItems: "center", gap: 2 },
   countdownNumber: { color: "#6443F4", fontSize: 48, fontWeight: "900", fontFamily: "Chillax-Bold", lineHeight: 52 },
   countdownLabel: { color: "rgba(255,255,255,0.5)", fontSize: 12 },
-  countdownDate: { color: "rgba(255,255,255,0.35)", fontSize: 11, marginTop: 2 },
-  divider: { width: 1, height: 80, backgroundColor: "rgba(255,255,255,0.1)" },
+  countdownDate: { color: "rgba(255,255,255,0.55)", fontSize: 11, marginTop: 2 },
+  divider: { width: 1, height: 80, backgroundColor: "rgba(255,255,255,0.55)" },
   weatherBlock: { flex: 1, alignItems: "center", gap: 2 },
   weatherIcon: { fontSize: 32 },
   weatherTemp: { color: "#FFFFFF", fontSize: 28, fontWeight: "900", fontFamily: "Chillax-Bold" },
   weatherCondition: { color: "rgba(255,255,255,0.5)", fontSize: 11 },
   weatherMeta: { flexDirection: "row", gap: 8, marginTop: 4 },
-  weatherMetaText: { color: "rgba(255,255,255,0.35)", fontSize: 10 },
-  widgetCta: { backgroundColor: "rgba(255,255,255,0.07)", borderRadius: 12, paddingVertical: 8, alignItems: "center", borderWidth: 1, borderColor: "rgba(255,255,255,0.1)" },
+  weatherMetaText: { color: "rgba(255,255,255,0.55)", fontSize: 10 },
+  widgetCta: { backgroundColor: "rgba(255,255,255,0.55)", borderRadius: 12, paddingVertical: 8, alignItems: "center", borderWidth: 1, borderColor: "rgba(255,255,255,0.55)" },
   widgetCtaText: { color: "rgba(192,132,252,0.8)", fontSize: 13, fontWeight: "700", fontFamily: "Satoshi-Bold" },
 });
 
@@ -195,7 +196,7 @@ function TripCard({ trip, onPress }: { trip: Trip; onPress: () => void }) {
           <View style={styles.tripFooter}>
             <Text style={styles.tripCost}>${trip.totalCost.toLocaleString()}</Text>
             <View style={styles.tripPointsBadge}>
-              <IconSymbol name="sparkles" size={12} color="#FFD700" />
+              <IconSymbol name="sparkles" size={12} color="#FBBF24" />
               <Text style={styles.tripPointsText}>{trip.pointsEarned.toLocaleString()} pts</Text>
             </View>
           </View>
@@ -300,7 +301,7 @@ export default function TripsScreen() {
                 {[
                   { value: String(upcomingCount), label: "Upcoming", color: "#2196F3" },
                   { value: String(completedCount), label: "Completed", color: "#8B7AAA" },
-                  { value: totalPoints.toLocaleString(), label: "Points Earned", color: "#FFD700" },
+                  { value: totalPoints.toLocaleString(), label: "Points Earned", color: "#FBBF24" },
                 ].map((stat, i) => (
                   <View key={i} style={styles.statItem}>
                     {i > 0 && <View style={styles.statDivider} />}
@@ -374,18 +375,18 @@ const styles = StyleSheet.create({
   statsCard: { borderRadius: 20, overflow: "hidden", borderWidth: 1.5, borderColor: "rgba(123,47,190,0.4)" },
   statsGradient: { flexDirection: "row", padding: 18 },
   statItem: { flex: 1, alignItems: "center", gap: 4 },
-  statDivider: { position: "absolute", width: 1, height: 40, backgroundColor: "rgba(255,255,255,0.08)" },
+  statDivider: { position: "absolute", width: 1, height: 40, backgroundColor: "rgba(255,255,255,0.55)" },
   statValue: { fontSize: 18, fontWeight: "800", fontFamily: "Chillax-Bold" },
   statLabel: { color: "#5A4D72", fontSize: 11 },
-  filterRow: { flexDirection: "row", borderRadius: 16, overflow: "hidden", borderWidth: 1, borderColor: "rgba(255,255,255,0.08)", backgroundColor: "rgba(255,255,255,0.04)" },
+  filterRow: { flexDirection: "row", borderRadius: 16, overflow: "hidden", borderWidth: 1, borderColor: "rgba(255,255,255,0.55)", backgroundColor: "rgba(255,255,255,0.55)" },
   filterTab: { flex: 1, paddingVertical: 13, alignItems: "center", overflow: "hidden" },
   filterTabActive: {},
   filterTabText: { color: "#5A4D72", fontSize: 14, fontWeight: "600", fontFamily: "Satoshi-Medium" },
   filterTabTextActive: { color: "#FFFFFF" },
-  tripCard: { borderRadius: 20, overflow: "hidden", borderWidth: 1, borderColor: "rgba(255,255,255,0.12)" },
+  tripCard: { borderRadius: 20, overflow: "hidden", borderWidth: 1, borderColor: "rgba(255,255,255,0.55)" },
   tripCardInner: { flexDirection: "row", alignItems: "center", padding: 16, gap: 14, overflow: "hidden", minHeight: 100 },
   accentBar: { position: "absolute", left: 0, top: 0, bottom: 0, width: 3, borderRadius: 2 },
-  tripEmojiWrap: { width: 52, height: 52, borderRadius: 16, backgroundColor: "rgba(255,255,255,0.08)", alignItems: "center", justifyContent: "center" },
+  tripEmojiWrap: { width: 52, height: 52, borderRadius: 16, backgroundColor: "rgba(255,255,255,0.55)", alignItems: "center", justifyContent: "center" },
   tripEmoji: { fontSize: 28 },
   tripInfo: { flex: 1, gap: 6 },
   tripTopRow: { flexDirection: "row", justifyContent: "space-between", alignItems: "flex-start" },
@@ -397,12 +398,12 @@ const styles = StyleSheet.create({
   tripMetaRow: { flexDirection: "row", alignItems: "center", gap: 6 },
   tripMetaItem: { flexDirection: "row", alignItems: "center", gap: 4 },
   tripMetaText: { color: "rgba(255,255,255,0.6)", fontSize: 12 },
-  tripMetaDot: { color: "rgba(255,255,255,0.4)", fontSize: 12 },
+  tripMetaDot: { color: "rgba(255,255,255,0.5)", fontSize: 12 },
   tripFooter: { flexDirection: "row", alignItems: "center", justifyContent: "space-between" },
   tripCost: { color: "#FFFFFF", fontSize: 15, fontWeight: "700", fontFamily: "Satoshi-Bold", textShadowColor: "rgba(0,0,0,0.5)", textShadowOffset: { width: 0, height: 1 }, textShadowRadius: 4 },
   tripPointsBadge: { flexDirection: "row", alignItems: "center", gap: 4, backgroundColor: "rgba(255,215,0,0.15)", borderRadius: 8, paddingHorizontal: 8, paddingVertical: 3 },
-  tripPointsStar: { color: "#FFD700", fontSize: 10 },
-  tripPointsText: { color: "#FFD700", fontSize: 11, fontWeight: "700" },
+  tripPointsStar: { color: "#FBBF24", fontSize: 10 },
+  tripPointsText: { color: "#FBBF24", fontSize: 11, fontWeight: "700" },
   liveBtn: { borderRadius: 12, overflow: "hidden" },
   liveBtnGradient: { flexDirection: "row", alignItems: "center", paddingHorizontal: 12, paddingVertical: 8, gap: 5 },
   liveDot: { width: 6, height: 6, borderRadius: 3, backgroundColor: "#FFFFFF" },

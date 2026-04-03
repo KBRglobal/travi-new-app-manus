@@ -180,7 +180,7 @@ const styles = StyleSheet.create({
   headerTitle: { ...TYPE.h2, color: BRAND.textPrimary },
   headerSub: { ...TYPE.small, color: BRAND.textSecondary, marginTop: 1 },
   newBtn: { marginLeft: "auto", width: 40, height: 40, borderRadius: 20, backgroundColor: BRAND.purple + "20", alignItems: "center", justifyContent: "center" },
-  searchContainer: { flexDirection: "row", alignItems: "center", gap: 10, marginHorizontal: 20, marginBottom: 16, backgroundColor: "rgba(255,255,255,0.07)", borderRadius: RADIUS.md, paddingHorizontal: 14, paddingVertical: 10, borderWidth: 1, borderColor: BRAND.border },
+  searchContainer: { flexDirection: "row", alignItems: "center", gap: 10, marginHorizontal: 20, marginBottom: 16, backgroundColor: "rgba(255,255,255,0.55)", borderRadius: RADIUS.md, paddingHorizontal: 14, paddingVertical: 10, borderWidth: 1, borderColor: BRAND.border },
   searchInput: { flex: 1, ...TYPE.body, color: BRAND.textPrimary },
 
   onlineSection: { paddingHorizontal: 20, marginBottom: 16 },
@@ -191,7 +191,7 @@ const styles = StyleSheet.create({
   onlineDotSmall: { position: "absolute", top: 34, right: 0, width: 12, height: 12, borderRadius: 6, backgroundColor: BRAND.green, borderWidth: 2, borderColor: BRAND.bgDeep },
   onlineName: { ...TYPE.caption, color: BRAND.textSecondary, maxWidth: 48 },
 
-  listContent: { paddingHorizontal: 20, paddingBottom: 100 },
+  listContent: { paddingHorizontal: 20, paddingBottom: 130 },
   separator: { height: 1, backgroundColor: BRAND.border, marginLeft: 74 },
 
   row: { flexDirection: "row", alignItems: "flex-start", gap: 12, paddingVertical: 12 },

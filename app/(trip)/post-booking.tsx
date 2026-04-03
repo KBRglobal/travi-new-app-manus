@@ -93,7 +93,7 @@ const UPSELLS: Upsell[] = [
     price: 0,
     cashback: 1,
     gradient: ["#3d2a00", "#6b4800"],
-    accentColor: "#FFD700",
+    accentColor: "#FBBF24",
     features: ["Zero conversion fees", "Best live exchange rate", "Freeze card instantly", "Works in 150+ currencies"],
   },
   {
@@ -287,7 +287,7 @@ const S = StyleSheet.create({
   orb1: { position: "absolute", width: 350, height: 350, borderRadius: 175, top: -100, right: -80, backgroundColor: "rgba(100,67,244,0.07)" },
   orb2: { position: "absolute", width: 250, height: 250, borderRadius: 125, bottom: 100, left: -60, backgroundColor: "rgba(249,68,152,0.05)" },
 
-  header: { paddingHorizontal: 20, paddingBottom: 16, gap: 8 },
+  header: { paddingHorizontal: 20, paddingBottom: 130, gap: 8 },
   headerBadge: { alignSelf: "flex-start", borderRadius: 12, overflow: "hidden", paddingHorizontal: 12, paddingVertical: 6, borderWidth: 1, borderColor: "rgba(34,197,94,0.4)" },
   headerBadgeText: { color: "#22C55E", fontSize: 13, fontFamily: "Chillax-Bold", fontWeight: "800" },
   headerTitle: { color: "#FFFFFF", fontSize: 26, fontFamily: "Chillax-Bold", fontWeight: "900", lineHeight: 32 },
@@ -295,8 +295,8 @@ const S = StyleSheet.create({
 
   list: { paddingHorizontal: 16, gap: 12, paddingTop: 4 },
 
-  card: { borderRadius: 20, overflow: "hidden", padding: 18, gap: 12, borderWidth: 1.5, borderColor: "rgba(255,255,255,0.08)" },
-  cardAdded: { borderColor: "rgba(255,255,255,0.25)" },
+  card: { borderRadius: 20, overflow: "hidden", padding: 18, gap: 12, borderWidth: 1.5, borderColor: "rgba(255,255,255,0.55)" },
+  cardAdded: { borderColor: "rgba(255,255,255,0.55)" },
   cardTop: { flexDirection: "row", alignItems: "center", gap: 12 },
   cardIcon: { width: 48, height: 48, borderRadius: 14, alignItems: "center", justifyContent: "center" },
   cardIconEmoji: { fontSize: 24, fontFamily: "Satoshi-Regular" },
@@ -306,7 +306,7 @@ const S = StyleSheet.create({
   cardTag: { borderRadius: 8, paddingHorizontal: 8, paddingVertical: 3, borderWidth: 1 },
   cardTagText: { fontSize: 10, fontFamily: "Chillax-Bold", fontWeight: "800" },
   cardSubtitle: { color: "rgba(255,255,255,0.45)", fontSize: 12, fontFamily: "Satoshi-Regular" },
-  checkCircle: { width: 32, height: 32, borderRadius: 16, backgroundColor: "rgba(255,255,255,0.12)", alignItems: "center", justifyContent: "center", borderWidth: 1.5, borderColor: "rgba(255,255,255,0.2)" },
+  checkCircle: { width: 32, height: 32, borderRadius: 16, backgroundColor: "rgba(255,255,255,0.55)", alignItems: "center", justifyContent: "center", borderWidth: 1.5, borderColor: "rgba(255,255,255,0.55)" },
 
   cardDesc: { color: "rgba(255,255,255,0.55)", fontSize: 13, fontFamily: "Satoshi-Regular", lineHeight: 19 },
 
@@ -317,21 +317,22 @@ const S = StyleSheet.create({
 
   cardPriceRow: { flexDirection: "row", alignItems: "center", gap: 10 },
   cardPrice: { color: "#FFFFFF", fontSize: 20, fontFamily: "Chillax-Bold", fontWeight: "900" },
-  cardPricePer: { color: "rgba(255,255,255,0.4)", fontSize: 13, fontFamily: "Satoshi-Regular", fontWeight: "500" },
+  cardPricePer: { color: "rgba(255,255,255,0.5)", fontSize: 13, fontFamily: "Satoshi-Regular", fontWeight: "500" },
   cashbackBadge: { flex: 1, backgroundColor: "rgba(255,215,0,0.12)", borderRadius: 10, paddingHorizontal: 8, paddingVertical: 4 },
-  cashbackText: { color: "#FFD700", fontSize: 11, fontFamily: "Chillax-Semibold", fontWeight: "700" },
-  addBtn: { borderRadius: 12, paddingHorizontal: 16, paddingVertical: 8, backgroundColor: "rgba(255,255,255,0.12)", borderWidth: 1, borderColor: "rgba(255,255,255,0.2)" },
+  cashbackText: { color: "#FBBF24", fontSize: 11, fontFamily: "Chillax-Semibold", fontWeight: "700" },
+  addBtn: { borderRadius: 12, paddingHorizontal: 16, paddingVertical: 8, backgroundColor: "rgba(255,255,255,0.55)", borderWidth: 1, borderColor: "rgba(255,255,255,0.55)" },
   addBtnText: { color: "#FFFFFF", fontSize: 13, fontFamily: "Chillax-Bold", fontWeight: "800" },
 
   bottomCta: { position: "absolute", bottom: 0, left: 0, right: 0, paddingHorizontal: 20, paddingTop: 24, gap: 10 },
   bottomGradient: { position: "absolute", top: 0, left: 0, right: 0, bottom: 0 },
-  summaryRow: { backgroundColor: "rgba(255,255,255,0.06)", borderRadius: 14, padding: 12 },
-  summaryLabel: { color: "rgba(255,255,255,0.4)", fontSize: 12, fontFamily: "Satoshi-Regular" },
+  summaryRow: { backgroundColor: "rgba(255,255,255,0.55)", borderRadius: 14, padding: 12 },
+  summaryLabel: { color: "rgba(255,255,255,0.5)", fontSize: 12, fontFamily: "Satoshi-Regular" },
   summaryValue: { color: "#FFFFFF", fontSize: 16, fontFamily: "Chillax-Bold", fontWeight: "800" },
-  summaryCashback: { color: "#FFD700" },
+  summaryCashback: { color: "#FBBF24" },
   ctaRow: { flexDirection: "row", gap: 10 },
-  skipBtn: { paddingHorizontal: 20, paddingVertical: 16, borderRadius: 18, backgroundColor: "rgba(255,255,255,0.08)", borderWidth: 1, borderColor: "rgba(255,255,255,0.12)" },
+  skipBtn: { paddingHorizontal: 20, paddingVertical: 16, borderRadius: 18, backgroundColor: "rgba(255,255,255,0.55)", borderWidth: 1, borderColor: "rgba(255,255,255,0.55)" },
   skipBtnText: { color: "rgba(255,255,255,0.5)", fontSize: 15, fontFamily: "Chillax-Semibold", fontWeight: "700" },
-  confirmBtn: { flex: 1, borderRadius: 18, overflow: "hidden", paddingVertical: 16, alignItems: "center" },
+  confirmBtn: { flex: 1, borderRadius: 18, shadowColor: "#F94498", shadowOffset: { width: 0, height: 6 }, shadowOpacity: 0.4, shadowRadius: 24, elevation: 10,
+    overflow: "hidden", paddingVertical: 16, alignItems: "center" },
   confirmBtnText: { color: "#FFFFFF", fontSize: 15, fontFamily: "Chillax-Bold", fontWeight: "800" },
 });

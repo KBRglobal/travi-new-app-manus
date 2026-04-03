@@ -66,7 +66,7 @@ export default function RevenueDashboardScreen() {
 
   return (
     <ScreenContainer containerClassName="bg-background">
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 100 }}>
+      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 130 }}>
 
         {/* ── Header ── */}
         <LinearGradient
@@ -301,12 +301,12 @@ export default function RevenueDashboardScreen() {
 
 const styles = StyleSheet.create({
   header: {
-    paddingTop: 16, paddingBottom: 24, paddingHorizontal: 20,
+    paddingTop: 16, paddingBottom: 130, paddingHorizontal: 20,
     flexDirection: "row", alignItems: "flex-start", gap: 12,
   },
   backBtn: {
     width: 36, height: 36, borderRadius: 18,
-    backgroundColor: "rgba(255,255,255,0.15)",
+    backgroundColor: "rgba(255,255,255,0.55)",
     alignItems: "center", justifyContent: "center", marginTop: 4,
   },
   headerContent: { flex: 1 },
@@ -350,7 +350,7 @@ const styles = StyleSheet.create({
   kpiCard: {
     width: (width - 42) / 2,
     backgroundColor: "#1e2022", borderRadius: 16, padding: 14,
-    borderWidth: 1, borderColor: "rgba(255,255,255,0.06)",
+    borderWidth: 1, borderColor: "rgba(255,255,255,0.55)",
   },
   kpiIconBox: {
     width: 36, height: 36, borderRadius: 10,
@@ -362,7 +362,7 @@ const styles = StyleSheet.create({
 
   chartCard: {
     backgroundColor: "#1e2022", borderRadius: 16, padding: 16,
-    borderWidth: 1, borderColor: "rgba(255,255,255,0.06)",
+    borderWidth: 1, borderColor: "rgba(255,255,255,0.55)",
   },
   chartTitle: { fontSize: 16, fontFamily: "Chillax-Semibold", fontWeight: "700", color: "#ECEDEE" },
   chartSub: { fontSize: 12, fontFamily: "Satoshi-Regular", color: "#9BA1A6", marginTop: 2, marginBottom: 16 },
@@ -392,7 +392,7 @@ const styles = StyleSheet.create({
 
   legendRow: {
     flexDirection: "row", alignItems: "center", justifyContent: "space-between",
-    paddingVertical: 10, borderBottomWidth: 1, borderBottomColor: "rgba(255,255,255,0.04)",
+    paddingVertical: 10, borderBottomWidth: 1, borderBottomColor: "rgba(255,255,255,0.55)",
   },
   legendLeft: { flexDirection: "row", alignItems: "center", gap: 8, flex: 1 },
   legendDot: { width: 8, height: 8, borderRadius: 4 },
@@ -412,7 +412,7 @@ const styles = StyleSheet.create({
 
   destRow: {
     flexDirection: "row", alignItems: "center", paddingVertical: 12,
-    borderBottomWidth: 1, borderBottomColor: "rgba(255,255,255,0.04)", gap: 8,
+    borderBottomWidth: 1, borderBottomColor: "rgba(255,255,255,0.55)", gap: 8,
   },
   destRank: {
     width: 24, height: 24, borderRadius: 12,
@@ -428,13 +428,13 @@ const styles = StyleSheet.create({
   destGrowth: { fontSize: 11, fontFamily: "Chillax-Semibold", fontWeight: "600" },
   destBarTrack: {
     position: "absolute", bottom: 0, left: 56, right: 0, height: 2,
-    backgroundColor: "rgba(255,255,255,0.05)", borderRadius: 1,
+    backgroundColor: "rgba(255,255,255,0.55)", borderRadius: 1,
   },
   destBar: { height: 2, borderRadius: 1 },
 
   geoCard: {
     backgroundColor: "#1e2022", borderRadius: 16, padding: 16,
-    borderWidth: 1, borderColor: "rgba(255,255,255,0.06)",
+    borderWidth: 1, borderColor: "rgba(255,255,255,0.55)",
   },
   geoRow: { flexDirection: "row", justifyContent: "space-around", marginTop: 16 },
   geoItem: { alignItems: "center", gap: 8 },

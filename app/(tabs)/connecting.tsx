@@ -87,7 +87,7 @@ const REQUESTS = [
 function TravelerCard({ traveler, onConnect }: { traveler: Traveler; onConnect: (id: string) => void }) {
   return (
     <View style={S.travelerCard}>
-      <LinearGradient colors={["rgba(255,255,255,0.06)", "rgba(255,255,255,0.02)"]} style={StyleSheet.absoluteFillObject} />
+      <LinearGradient colors={["rgba(255,255,255,0.55)", "rgba(255,255,255,0.55)"]} style={StyleSheet.absoluteFillObject} />
 
       {/* Top row */}
       <View style={S.cardTop}>
@@ -181,7 +181,7 @@ function RequestCard({ req }: { req: typeof REQUESTS[0] }) {
   const [status, setStatus] = useState<"pending" | "accepted" | "declined">("pending");
   return (
     <View style={S.requestCard}>
-      <LinearGradient colors={["rgba(255,255,255,0.05)", "rgba(255,255,255,0.02)"]} style={StyleSheet.absoluteFillObject} />
+      <LinearGradient colors={["rgba(255,255,255,0.55)", "rgba(255,255,255,0.55)"]} style={StyleSheet.absoluteFillObject} />
       <View style={S.requestTop}>
         <View style={[S.requestAvatar, { backgroundColor: req.color + "25", borderColor: req.color + "50" }]}>
           <Text style={[S.requestAvatarText, { color: req.color }]}>{req.avatar}</Text>
@@ -328,7 +328,7 @@ export default function ConnectingScreen() {
         data={(tab === "discover" ? filtered : tab === "requests" ? REQUESTS : []) as any[]}
         keyExtractor={(item) => item.id}
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 110, gap: 12, paddingTop: 8 }}
+        contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 130, gap: 12, paddingTop: 8 }}
         renderItem={({ item }) => {
           if (tab === "discover") return <TravelerCard traveler={item as unknown as Traveler} onConnect={handleConnect} />;
           return <RequestCard req={item as unknown as typeof REQUESTS[0]} />;
@@ -357,7 +357,7 @@ const S = StyleSheet.create({
   orb1: { position: "absolute", top: -60, right: -60, width: 200, height: 200, borderRadius: 100, backgroundColor: "rgba(100,67,244,0.1)" },
   orb2: { position: "absolute", bottom: 200, left: -80, width: 160, height: 160, borderRadius: 80, backgroundColor: "rgba(249,68,152,0.07)" },
 
-  header: { flexDirection: "row", alignItems: "center", paddingHorizontal: 16, paddingBottom: 12, paddingTop: 4 },
+  header: { flexDirection: "row", alignItems: "center", paddingHorizontal: 16, paddingBottom: 130, paddingTop: 4 },
   headerLeft: { marginRight: 8 },
   headerLogo: { width: 60, height: 24 },
   headerTitle: { ...TYPE.h2, color: BRAND.textPrimary, flex: 1 },
@@ -370,17 +370,17 @@ const S = StyleSheet.create({
   heroSub: { ...TYPE.small, color: BRAND.textSecondary },
   heroMascot: { width: 64, height: 64 },
 
-  searchWrap: { flexDirection: "row", alignItems: "center", gap: 10, marginHorizontal: 16, marginBottom: 12, backgroundColor: "rgba(255,255,255,0.07)", borderRadius: RADIUS.xl, paddingHorizontal: 14, paddingVertical: 12, borderWidth: 1, borderColor: "rgba(255,255,255,0.1)" },
+  searchWrap: { flexDirection: "row", alignItems: "center", gap: 10, marginHorizontal: 16, marginBottom: 12, backgroundColor: "rgba(255,255,255,0.55)", borderRadius: RADIUS.xl, paddingHorizontal: 14, paddingVertical: 12, borderWidth: 1, borderColor: "rgba(255,255,255,0.55)" },
   searchInput: { flex: 1, ...TYPE.body, color: BRAND.textPrimary },
 
   tabRow: { flexDirection: "row", paddingHorizontal: 16, gap: 8, marginBottom: 8 },
-  tabBtn: { overflow: "hidden", flex: 1, borderRadius: RADIUS.full, paddingVertical: 9, alignItems: "center", borderWidth: 1, borderColor: "rgba(255,255,255,0.1)" },
+  tabBtn: { overflow: "hidden", flex: 1, borderRadius: RADIUS.full, paddingVertical: 9, alignItems: "center", borderWidth: 1, borderColor: "rgba(255,255,255,0.55)" },
   tabBtnActive: { borderColor: "transparent" },
   tabBtnText: { ...TYPE.caption, color: BRAND.textSecondary },
   tabBtnTextActive: { color: "#FFF" },
 
   // Traveler card
-  travelerCard: { overflow: "hidden", borderRadius: RADIUS.xl, borderWidth: 1, borderColor: "rgba(255,255,255,0.07)", padding: 14, gap: 10 },
+  travelerCard: { overflow: "hidden", borderRadius: RADIUS.xl, borderWidth: 1, borderColor: "rgba(255,255,255,0.55)", padding: 14, gap: 10 },
   cardTop: { flexDirection: "row", alignItems: "flex-start", gap: 12 },
   avatarWrap: { position: "relative" },
   avatar: { width: 52, height: 52, borderRadius: 26, borderWidth: 2, borderColor: "rgba(100,67,244,0.4)" },
@@ -399,15 +399,15 @@ const S = StyleSheet.create({
   connectedBtnText: { color: BRAND.green },
   bio: { ...TYPE.small, color: BRAND.textSecondary, lineHeight: 18 },
   destRow: { flexDirection: "row", alignItems: "center", gap: 6 },
-  destChip: { backgroundColor: "rgba(255,255,255,0.07)", borderRadius: RADIUS.full, paddingHorizontal: 10, paddingVertical: 4 },
+  destChip: { backgroundColor: "rgba(255,255,255,0.55)", borderRadius: RADIUS.full, paddingHorizontal: 10, paddingVertical: 4 },
   destChipText: { ...TYPE.caption, color: BRAND.textSecondary },
   cardFooter: { flexDirection: "row", alignItems: "center", gap: 12 },
   footerItem: { flexDirection: "row", alignItems: "center", gap: 4 },
   footerText: { ...TYPE.caption, color: BRAND.textMuted },
-  msgBtn: { marginLeft: "auto" as any, width: 32, height: 32, borderRadius: 16, backgroundColor: "rgba(255,255,255,0.07)", alignItems: "center", justifyContent: "center" },
+  msgBtn: { marginLeft: "auto" as any, width: 32, height: 32, borderRadius: 16, backgroundColor: "rgba(255,255,255,0.55)", alignItems: "center", justifyContent: "center" },
 
   // Request card
-  requestCard: { overflow: "hidden", borderRadius: RADIUS.xl, borderWidth: 1, borderColor: "rgba(255,255,255,0.07)", padding: 14, gap: 12 },
+  requestCard: { overflow: "hidden", borderRadius: RADIUS.xl, borderWidth: 1, borderColor: "rgba(255,255,255,0.55)", padding: 14, gap: 12 },
   requestTop: { flexDirection: "row", gap: 12 },
   requestAvatar: { width: 44, height: 44, borderRadius: 22, alignItems: "center", justifyContent: "center", borderWidth: 1.5 },
   requestAvatarText: { ...TYPE.h3, fontFamily: "Chillax-Bold" },
@@ -417,7 +417,7 @@ const S = StyleSheet.create({
   requestTime: { ...TYPE.caption, color: BRAND.textMuted },
   requestMessage: { ...TYPE.small, color: BRAND.textSecondary, lineHeight: 18 },
   requestActions: { flexDirection: "row", gap: 10 },
-  declineBtn: { flex: 1, borderRadius: RADIUS.xl, paddingVertical: 10, alignItems: "center", borderWidth: 1, borderColor: "rgba(255,255,255,0.15)" },
+  declineBtn: { flex: 1, borderRadius: RADIUS.xl, paddingVertical: 10, alignItems: "center", borderWidth: 1, borderColor: "rgba(255,255,255,0.55)" },
   declineBtnText: { ...TYPE.label, color: BRAND.textSecondary },
   acceptBtn: { overflow: "hidden", flex: 2, borderRadius: RADIUS.xl, paddingVertical: 10, alignItems: "center" },
   acceptBtnText: { ...TYPE.label, color: "#FFF" },
@@ -433,10 +433,10 @@ const S = StyleSheet.create({
   emptyBtnText: { ...TYPE.button, color: "#FFF" },
 
   dnaMatchRow: { flexDirection: "row", alignItems: "center", gap: 8 },
-  dnaMatchBarWrap: { flex: 1, height: 4, borderRadius: 2, backgroundColor: "rgba(255,255,255,0.08)", overflow: "hidden" },
+  dnaMatchBarWrap: { flex: 1, height: 4, borderRadius: 2, backgroundColor: "rgba(255,255,255,0.55)", overflow: "hidden" },
   dnaMatchFill: { height: "100%", borderRadius: 2 },
   dnaMatchScore: { fontSize: 11, fontWeight: "800", minWidth: 90, textAlign: "right", fontFamily: "Chillax-Bold" },
   activitiesRow: { flexDirection: "row", flexWrap: "wrap", gap: 6 },
-  activityPill: { backgroundColor: "rgba(255,255,255,0.07)", borderRadius: 8, paddingHorizontal: 8, paddingVertical: 3, borderWidth: 1, borderColor: "rgba(255,255,255,0.1)" },
+  activityPill: { backgroundColor: "rgba(255,255,255,0.55)", borderRadius: 8, paddingHorizontal: 8, paddingVertical: 3, borderWidth: 1, borderColor: "rgba(255,255,255,0.55)" },
   activityPillText: { color: "rgba(255,255,255,0.5)", fontSize: 11 },
 });

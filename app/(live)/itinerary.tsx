@@ -141,7 +141,7 @@ export default function ItineraryScreen() {
                 </View>
                 <TouchableOpacity style={styles.stopCard} activeOpacity={0.85}>
                   <LinearGradient
-                    colors={["rgba(255,255,255,0.06)", "rgba(255,255,255,0.02)"]}
+                    colors={["rgba(255,255,255,0.55)", "rgba(255,255,255,0.55)"]}
                     style={StyleSheet.absoluteFillObject}
                   />
                   <View style={styles.stopCardHeader}>
@@ -232,7 +232,7 @@ const styles = StyleSheet.create({
   daySummaryItem: { flex: 1, flexDirection: "row", alignItems: "center", gap: 5, justifyContent: "center" },
   daySummaryText: { ...TYPE.caption, color: BRAND.textSecondary },
   daySummaryDivider: { width: 1, height: 16, backgroundColor: BRAND.border },
-  listContent: { paddingHorizontal: 16, paddingTop: 16, paddingBottom: 100 },
+  listContent: { paddingHorizontal: 16, paddingTop: 16, paddingBottom: 130 },
   timelineRow: { flexDirection: "row", gap: 12, marginBottom: 4 },
   timelineCol: { width: 24, alignItems: "center", paddingTop: 14 },
   timelineDot: { width: 24, height: 24, borderRadius: 12, alignItems: "center", justifyContent: "center", zIndex: 1 },

@@ -75,7 +75,7 @@ const SWIPE_ITEMS: SwipeItem[] = [
 
   // ── 3. Food & Dining (11) ──
   { id: "f1",  label: "Street food market at night",    icon: "fork.knife",             category: "Food & Dining",      gradient: ["#F97316","#EA580C"], dimensions: { foodie: 5, explorer: 2, culturalist: 2 } },
-  { id: "f2",  label: "Michelin-star tasting menu",     icon: "star.fill",              category: "Food & Dining",      gradient: ["#FFD700","#F59E0B"], dimensions: { foodie: 5, relaxer: 2 } },
+  { id: "f2",  label: "Michelin-star tasting menu",     icon: "star.fill",              category: "Food & Dining",      gradient: ["#FBBF24","#F59E0B"], dimensions: { foodie: 5, relaxer: 2 } },
   { id: "f3",  label: "Cooking class with a local chef",icon: "flame.fill",             category: "Food & Dining",      gradient: ["#DC2626","#B91C1C"], dimensions: { foodie: 4, culturalist: 3, explorer: 2 } },
   { id: "f4",  label: "Wine tasting in a vineyard",     icon: "wineglass",              category: "Food & Dining",      gradient: ["#7C2D12","#9A3412"], dimensions: { foodie: 4, relaxer: 3, photographer: 2 } },
   { id: "f5",  label: "Breakfast at a local bakery",    icon: "cup.and.saucer.fill",    category: "Food & Dining",      gradient: ["#D97706","#B45309"], dimensions: { foodie: 3, relaxer: 3, culturalist: 2 } },
@@ -365,7 +365,7 @@ export default function QuickSwipeScreen() {
     return (
       <View style={[styles.container, { paddingTop: insets.top }]}>
         <LinearGradient colors={["#0D0520","#1A0A3B","#0D0520"]} style={StyleSheet.absoluteFillObject} />
-        <ScrollView contentContainerStyle={{ paddingBottom: 120, paddingHorizontal: 20 }}>
+        <ScrollView contentContainerStyle={{ paddingBottom: 130, paddingHorizontal: 20 }}>
           {/* Header */}
           <View style={styles.resultHeader}>
             <View style={styles.resultIconWrap}>
@@ -493,10 +493,10 @@ export default function QuickSwipeScreen() {
 const styles = StyleSheet.create({
   container: { flex: 1 },
   header: { flexDirection: "row", alignItems: "center", paddingHorizontal: 16, paddingVertical: 12 },
-  backBtn: { width: 40, height: 40, borderRadius: 20, backgroundColor: "rgba(255,255,255,0.1)", alignItems: "center", justifyContent: "center" },
+  backBtn: { width: 40, height: 40, borderRadius: 20, backgroundColor: "rgba(255,255,255,0.55)", alignItems: "center", justifyContent: "center" },
   headerTitle: { color: "#FFFFFF", fontSize: 16, fontWeight: "700", fontFamily: "Chillax-Semibold" },
   headerSub: { color: "rgba(255,255,255,0.5)", fontSize: 12, marginTop: 2 },
-  progressWrap: { height: 3, backgroundColor: "rgba(255,255,255,0.1)", marginHorizontal: 20, borderRadius: 2, overflow: "hidden" },
+  progressWrap: { height: 3, backgroundColor: "rgba(255,255,255,0.55)", marginHorizontal: 20, borderRadius: 2, overflow: "hidden" },
   progressFill: { height: 3, backgroundColor: "#6443F4", borderRadius: 2 },
   cardsArea: { flex: 1, alignItems: "center", justifyContent: "center", marginTop: 16 },
   card: {
@@ -519,9 +519,9 @@ const styles = StyleSheet.create({
   nopeBtn: { backgroundColor: "rgba(239,68,68,0.15)", borderWidth: 2, borderColor: "rgba(239,68,68,0.4)" },
   likeBtn: { backgroundColor: "rgba(34,197,94,0.15)", borderWidth: 2, borderColor: "rgba(34,197,94,0.4)" },
   swipeHint: { flex: 1, alignItems: "center" },
-  swipeHintText: { color: "rgba(255,255,255,0.35)", fontSize: 11 },
+  swipeHintText: { color: "rgba(255,255,255,0.55)", fontSize: 11 },
   // Results
-  resultHeader: { alignItems: "center", paddingTop: 24, paddingBottom: 20 },
+  resultHeader: { alignItems: "center", paddingTop: 24, paddingBottom: 130 },
   resultIconWrap: { width: 72, height: 72, borderRadius: 36, overflow: "hidden", alignItems: "center", justifyContent: "center", marginBottom: 16 },
   resultTitle: { color: "#FFFFFF", fontSize: 28, fontWeight: "900", fontFamily: "Chillax-Bold" },
   resultSub: { color: "rgba(255,255,255,0.5)", fontSize: 14, fontFamily: "Satoshi-Regular", marginTop: 6, textAlign: "center" },
@@ -534,13 +534,14 @@ const styles = StyleSheet.create({
   dimLeft: { flexDirection: "row", alignItems: "center", gap: 8, width: 120 },
   dimIcon: { width: 28, height: 28, borderRadius: 8, alignItems: "center", justifyContent: "center" },
   dimLabel: { color: "rgba(255,255,255,0.8)", fontSize: 13, fontWeight: "600", fontFamily: "Satoshi-Medium" },
-  dimBarWrap: { flex: 1, height: 6, backgroundColor: "rgba(255,255,255,0.1)", borderRadius: 3, overflow: "hidden" },
+  dimBarWrap: { flex: 1, height: 6, backgroundColor: "rgba(255,255,255,0.55)", borderRadius: 3, overflow: "hidden" },
   dimBarFill: { height: 6, borderRadius: 3 },
   dimScore: { color: "rgba(255,255,255,0.6)", fontSize: 12, fontWeight: "700", fontFamily: "Satoshi-Bold", width: 28, textAlign: "right" },
   xpCard: { flexDirection: "row", alignItems: "center", gap: 14, borderRadius: 16, overflow: "hidden", padding: 18, marginTop: 24, marginBottom: 16 },
   xpTitle: { color: "#FFFFFF", fontSize: 16, fontWeight: "800", fontFamily: "Chillax-Bold" },
   xpSub: { color: "rgba(255,255,255,0.7)", fontSize: 12, marginTop: 2 },
-  ctaBtn: { borderRadius: 16, overflow: "hidden", flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 8, paddingVertical: 18, marginBottom: 12 },
+  ctaBtn: { borderRadius: 16, shadowColor: "#F94498", shadowOffset: { width: 0, height: 6 }, shadowOpacity: 0.4, shadowRadius: 24, elevation: 10,
+    overflow: "hidden", flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 8, paddingVertical: 18, marginBottom: 12 },
   ctaText: { color: "#FFFFFF", fontSize: 16, fontWeight: "800", fontFamily: "Chillax-Bold" },
   secondaryCta: { alignItems: "center", paddingVertical: 12 },
   secondaryCtaText: { color: "rgba(255,255,255,0.5)", fontSize: 13, fontFamily: "Satoshi-Regular", textDecorationLine: "underline" },

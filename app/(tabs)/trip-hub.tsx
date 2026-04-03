@@ -639,14 +639,14 @@ export default function TripHubScreen() {
 const styles = StyleSheet.create({
   root: { flex: 1, backgroundColor: "#0d0118" },
 
-  hero: { paddingBottom: 20 },
+  hero: { paddingBottom: 130 },
   backBtn: {
     marginHorizontal: 20,
     marginTop: 12,
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: "rgba(255,255,255,0.1)",
+    backgroundColor: "rgba(255,255,255,0.55)",
     alignItems: "center",
     justifyContent: "center",
   },
@@ -656,12 +656,12 @@ const styles = StyleSheet.create({
   heroTitle: { color: "#fff", fontSize: 26, fontWeight: "800", marginBottom: 20, fontFamily: "Chillax-Bold" },
 
   countdownCard: {
-    backgroundColor: "rgba(255,255,255,0.07)",
+    backgroundColor: "rgba(255,255,255,0.55)",
     borderRadius: 16,
     padding: 16,
     marginBottom: 16,
     borderWidth: 1,
-    borderColor: "rgba(255,255,255,0.1)",
+    borderColor: "rgba(255,255,255,0.55)",
   },
   countdownTitle: { color: "#9BA1A6", fontSize: 12, fontWeight: "600", marginBottom: 12, textAlign: "center" },
   countdownRow: { flexDirection: "row", justifyContent: "center", gap: 24 },
@@ -671,23 +671,23 @@ const styles = StyleSheet.create({
 
   statsRow: {
     flexDirection: "row",
-    backgroundColor: "rgba(255,255,255,0.07)",
+    backgroundColor: "rgba(255,255,255,0.55)",
     borderRadius: 16,
     padding: 16,
     borderWidth: 1,
-    borderColor: "rgba(255,255,255,0.1)",
+    borderColor: "rgba(255,255,255,0.55)",
   },
   statCard: { flex: 1, alignItems: "center" },
   statIcon: { fontSize: 22, marginBottom: 4 },
   statValue: { color: "#fff", fontSize: 18, fontWeight: "700", fontFamily: "Chillax-Semibold" },
   statLabel: { color: "#9BA1A6", fontSize: 10, marginTop: 2 },
-  statDivider: { width: 1, backgroundColor: "rgba(255,255,255,0.1)", marginHorizontal: 8 },
+  statDivider: { width: 1, backgroundColor: "rgba(255,255,255,0.55)", marginHorizontal: 8 },
 
   tabBar: {
     flexDirection: "row",
     backgroundColor: "#0d0118",
     borderBottomWidth: 1,
-    borderBottomColor: "rgba(255,255,255,0.08)",
+    borderBottomColor: "rgba(255,255,255,0.55)",
   },
   tab: { flex: 1, paddingVertical: 14, alignItems: "center" },
   tabActive: { borderBottomWidth: 2, borderBottomColor: "#F94498" },
@@ -695,7 +695,7 @@ const styles = StyleSheet.create({
   tabTextActive: { color: "#fff" },
 
   scroll: { flex: 1 },
-  scrollContent: { padding: 20, paddingBottom: 48 },
+  scrollContent: { padding: 20, paddingBottom: 130 },
 
   conciergeCard: {
     flexDirection: "row",
@@ -726,12 +726,12 @@ const styles = StyleSheet.create({
 
   upsellCard: {
     flexDirection: "row",
-    backgroundColor: "rgba(255,255,255,0.05)",
+    backgroundColor: "rgba(255,255,255,0.55)",
     borderRadius: 14,
     padding: 14,
     marginBottom: 12,
     borderWidth: 1,
-    borderColor: "rgba(255,255,255,0.08)",
+    borderColor: "rgba(255,255,255,0.55)",
     alignItems: "center",
     gap: 12,
   },
@@ -791,12 +791,12 @@ const styles = StyleSheet.create({
 
   travelerCard: {
     flexDirection: "row",
-    backgroundColor: "rgba(255,255,255,0.05)",
+    backgroundColor: "rgba(255,255,255,0.55)",
     borderRadius: 14,
     padding: 14,
     marginBottom: 12,
     borderWidth: 1,
-    borderColor: "rgba(255,255,255,0.08)",
+    borderColor: "rgba(255,255,255,0.55)",
     alignItems: "center",
     gap: 12,
   },
@@ -839,7 +839,7 @@ const styles = StyleSheet.create({
   },
   splitTitle: { color: "#9BA1A6", fontSize: 13, fontWeight: "600", marginBottom: 8 },
   splitAmount: { color: "#fff", fontSize: 42, fontWeight: "800", marginBottom: 12, fontFamily: "Chillax-Bold" },
-  splitDivider: { width: "80%", height: 1, backgroundColor: "rgba(255,255,255,0.1)", marginBottom: 12 },
+  splitDivider: { width: "80%", height: 1, backgroundColor: "rgba(255,255,255,0.55)", marginBottom: 12 },
   splitPerPerson: { color: "#F94498", fontSize: 22, fontWeight: "700", fontFamily: "Chillax-Semibold" },
   splitTravelers: { color: "#9BA1A6", fontSize: 13, marginTop: 4, fontFamily: "Satoshi-Regular" },
 
@@ -861,7 +861,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     paddingVertical: 12,
     borderBottomWidth: 1,
-    borderBottomColor: "rgba(255,255,255,0.06)",
+    borderBottomColor: "rgba(255,255,255,0.55)",
   },
   payLabel: { color: "#9BA1A6", fontSize: 14, fontFamily: "Satoshi-Regular" },
   payAmount: { color: "#fff", fontSize: 14, fontWeight: "600", fontFamily: "Satoshi-Medium" },

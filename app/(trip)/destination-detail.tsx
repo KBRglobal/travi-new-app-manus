@@ -617,7 +617,7 @@ export default function DestinationDetailScreen() {
           </View>
           {item.cashback > 0 && (
             <View style={S.actCashback}>
-              <IconSymbol name="star.fill" size={14} color="#FFD700" />
+              <IconSymbol name="star.fill" size={14} color="#FBBF24" />
               <Text style={S.actCashbackText}>${item.cashback} back</Text>
             </View>
           )}
@@ -783,7 +783,7 @@ export default function DestinationDetailScreen() {
 
       <Animated.ScrollView
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingBottom: 120 }}
+        contentContainerStyle={{ paddingBottom: 130 }}
         onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], { useNativeDriver: false })}
         scrollEventThrottle={16}
       >
@@ -905,21 +905,21 @@ const S = StyleSheet.create({
   heroImage: { width, height: height * 0.5 },
   heroGradient: { position: "absolute", bottom: 0, left: 0, right: 0, height: 200 },
   heroDots: { position: "absolute", bottom: 20, left: 0, right: 0, flexDirection: "row", justifyContent: "center", gap: 6 },
-  heroDot: { width: 6, height: 6, borderRadius: 3, backgroundColor: "rgba(255,255,255,0.3)" },
+  heroDot: { width: 6, height: 6, borderRadius: 3, backgroundColor: "rgba(255,255,255,0.55)" },
   heroDotActive: { width: 20, backgroundColor: "#FFFFFF" },
 
-  header: { position: "absolute", top: 0, left: 0, right: 0, flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 16, paddingBottom: 12 },
+  header: { position: "absolute", top: 0, left: 0, right: 0, flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 16, paddingBottom: 130 },
   backBtn: { width: 40, height: 40, borderRadius: 20, alignItems: "center", justifyContent: "center" },
   headerTitle: { color: "#FFFFFF", fontSize: 16, fontWeight: "800", fontFamily: "Chillax-Bold" },
   floatingBack: { position: "absolute", left: 16, width: 40, height: 40, borderRadius: 20, overflow: "hidden", alignItems: "center", justifyContent: "center" },
 
-  titleCard: { marginTop: -40, marginHorizontal: 20, backgroundColor: "rgba(255,255,255,0.05)", borderRadius: 24, padding: 20, borderWidth: 1, borderColor: "rgba(255,255,255,0.1)" },
+  titleCard: { marginTop: -40, marginHorizontal: 20, backgroundColor: "rgba(255,255,255,0.55)", borderRadius: 24, padding: 20, borderWidth: 1, borderColor: "rgba(255,255,255,0.55)" },
   destName: { color: "#FFFFFF", fontSize: 32, fontWeight: "900", letterSpacing: -1, fontFamily: "Chillax-Bold" },
   destCountry: { color: "rgba(255,255,255,0.5)", fontSize: 14, marginTop: 2 },
   destTagline: { color: "rgba(255,255,255,0.7)", fontSize: 15, fontStyle: "italic", marginTop: 8 },
   matchCard: { marginTop: 16, borderRadius: 18, overflow: "hidden", padding: 18, alignItems: "center" },
-  matchOrb1: { position: "absolute", width: 100, height: 100, borderRadius: 50, backgroundColor: "rgba(255,255,255,0.08)", top: -30, right: -20 },
-  matchOrb2: { position: "absolute", width: 60, height: 60, borderRadius: 30, backgroundColor: "rgba(255,255,255,0.05)", bottom: -10, left: 10 },
+  matchOrb1: { position: "absolute", width: 100, height: 100, borderRadius: 50, backgroundColor: "rgba(255,255,255,0.55)", top: -30, right: -20 },
+  matchOrb2: { position: "absolute", width: 60, height: 60, borderRadius: 30, backgroundColor: "rgba(255,255,255,0.55)", bottom: -10, left: 10 },
   matchPercent: { color: "#FFFFFF", fontSize: 48, fontWeight: "900", letterSpacing: -2, fontFamily: "Chillax-Bold" },
   matchLabel: { color: "rgba(255,255,255,0.6)", fontSize: 12, marginTop: 4 },
   matchDna: { color: "#FFFFFF", fontSize: 16, fontWeight: "800", marginTop: 2, fontFamily: "Chillax-Bold" },
@@ -929,13 +929,14 @@ const S = StyleSheet.create({
 
   neighborhoodCard: { width: width * 0.42, height: 180, borderRadius: 18, overflow: "hidden", marginRight: 10, marginTop: 0 },
   neighborhoodBadge: { position: "absolute", top: 10, right: 10, backgroundColor: "rgba(100,67,244,0.9)", borderRadius: 10, paddingHorizontal: 8, paddingVertical: 4 },
-  neighborhoodMatch: { color: "#FFFFFF", fontSize: 11, fontWeight: "800" },
+  neighborhoodMatch: { color: "#FFFFFF", fontSize: 11, fontWeight: "800",
+      fontFamily: "Chillax-Bold" },
   neighborhoodBottom: { position: "absolute", bottom: 12, left: 12, right: 12 },
   neighborhoodName: { color: "#FFFFFF", fontSize: 15, fontWeight: "800", fontFamily: "Chillax-Bold" },
   neighborhoodDesc: { color: "rgba(255,255,255,0.7)", fontSize: 12, marginTop: 2 },
 
   // Tab bar
-  tabBar: { flexDirection: "row", marginHorizontal: 20, marginBottom: 16, backgroundColor: "rgba(255,255,255,0.06)", borderRadius: 16, padding: 4, gap: 2 },
+  tabBar: { flexDirection: "row", marginHorizontal: 20, marginBottom: 16, backgroundColor: "rgba(255,255,255,0.55)", borderRadius: 16, padding: 4, gap: 2 },
   tabBtn: { flex: 1, borderRadius: 12, paddingVertical: 10, alignItems: "center", overflow: "hidden" },
   tabBtnActive: {},
   tabBtnText: { color: "rgba(255,255,255,0.45)", fontSize: 12, fontWeight: "700" },
@@ -943,7 +944,7 @@ const S = StyleSheet.create({
 
   // Tab content
   tabContent: { paddingHorizontal: 20, gap: 16 },
-  tabSectionLabel: { color: "rgba(255,255,255,0.4)", fontSize: 12, fontWeight: "700", textTransform: "uppercase", letterSpacing: 1 },
+  tabSectionLabel: { color: "rgba(255,255,255,0.5)", fontSize: 12, fontWeight: "700", textTransform: "uppercase", letterSpacing: 1 },
 
   // Pace tip
   paceTipCard: { borderRadius: 16, overflow: "hidden", padding: 14, flexDirection: "row", alignItems: "center", gap: 12, borderWidth: 1, borderColor: "rgba(100,67,244,0.3)" },
@@ -956,40 +957,41 @@ const S = StyleSheet.create({
   dnaMatchTitle: { color: "#FFFFFF", fontSize: 14, fontWeight: "800", fontFamily: "Chillax-Bold" },
   dnaMatchSub: { color: "rgba(255,255,255,0.5)", fontSize: 12, marginTop: 3, lineHeight: 17 },
   dnaMatchCount: { color: "#C084FC", fontSize: 28, fontWeight: "900", fontFamily: "Chillax-Bold" },
-  noProfileBanner: { borderRadius: 16, padding: 14, backgroundColor: "rgba(255,255,255,0.05)", borderWidth: 1, borderColor: "rgba(255,255,255,0.1)" },
+  noProfileBanner: { borderRadius: 16, padding: 14, backgroundColor: "rgba(255,255,255,0.55)", borderWidth: 1, borderColor: "rgba(255,255,255,0.55)" },
   noProfileText: { color: "rgba(255,255,255,0.5)", fontSize: 13, lineHeight: 19 },
   moreActivitiesNote: { borderRadius: 14, padding: 14, backgroundColor: "rgba(100,67,244,0.1)", borderWidth: 1, borderColor: "rgba(100,67,244,0.25)", alignItems: "center" },
   moreActivitiesText: { color: "rgba(192,132,252,0.8)", fontSize: 13, fontWeight: "600", textAlign: "center" },
 
   // Category filter
-  categoryFilterRow: { paddingHorizontal: 20, paddingBottom: 12, gap: 8 },
-  categoryChip: { borderRadius: 20, paddingHorizontal: 14, paddingVertical: 8, borderWidth: 1, borderColor: "rgba(255,255,255,0.15)", backgroundColor: "rgba(255,255,255,0.05)" },
+  categoryFilterRow: { paddingHorizontal: 20, paddingBottom: 130, gap: 8 },
+  categoryChip: { borderRadius: 20, paddingHorizontal: 14, paddingVertical: 8, borderWidth: 1, borderColor: "rgba(255,255,255,0.55)", backgroundColor: "rgba(255,255,255,0.55)" },
   categoryChipActive: { borderColor: "#6443F4", backgroundColor: "rgba(100,67,244,0.2)" },
   categoryChipText: { color: "rgba(255,255,255,0.6)", fontSize: 13, fontWeight: "700" },
   categoryChipTextActive: { color: "#FFFFFF" },
 
   // Activity card
-  actCard: { borderRadius: 20, overflow: "hidden", backgroundColor: "rgba(255,255,255,0.04)", borderWidth: 1, borderColor: "rgba(255,255,255,0.08)" },
+  actCard: { borderRadius: 20, overflow: "hidden", backgroundColor: "rgba(255,255,255,0.55)", borderWidth: 1, borderColor: "rgba(255,255,255,0.55)" },
   actImage: { width: "100%", height: 180 },
   actImageGradient: { position: "absolute", top: 0, left: 0, right: 0, height: 180 },
   actCategoryRow: { position: "absolute", top: 12, left: 12, flexDirection: "row", gap: 6, flexWrap: "wrap" },
   actCategoryPill: { borderRadius: 10, paddingHorizontal: 8, paddingVertical: 4 },
   actCategoryText: { color: "#FFFFFF", fontSize: 11, fontWeight: "700" },
   mustSeeTag: { borderRadius: 10, paddingHorizontal: 8, paddingVertical: 4, backgroundColor: "rgba(255,215,0,0.85)" },
-  mustSeeTagText: { color: "#000", fontSize: 11, fontWeight: "800" },
+  mustSeeTagText: { color: "#000", fontSize: 11, fontWeight: "800",
+      fontFamily: "Chillax-Bold" },
   actContent: { padding: 16, gap: 8 },
   actTitle: { color: "#FFFFFF", fontSize: 17, fontWeight: "800", lineHeight: 22, fontFamily: "Chillax-Bold" },
   actMeta: { flexDirection: "row", alignItems: "center", gap: 6 },
-  actRating: { color: "#FFD700", fontSize: 13, fontWeight: "700" },
-  actReviews: { color: "rgba(255,255,255,0.4)", fontSize: 12 },
-  actDuration: { color: "rgba(255,255,255,0.4)", fontSize: 12 },
+  actRating: { color: "#FBBF24", fontSize: 13, fontWeight: "700" },
+  actReviews: { color: "rgba(255,255,255,0.5)", fontSize: 12 },
+  actDuration: { color: "rgba(255,255,255,0.5)", fontSize: 12 },
   mustSeeReason: { backgroundColor: "rgba(255,215,0,0.1)", borderRadius: 10, padding: 10, borderWidth: 1, borderColor: "rgba(255,215,0,0.2)" },
   mustSeeReasonText: { color: "rgba(255,215,0,0.9)", fontSize: 12, lineHeight: 17 },
   actPricing: { flexDirection: "row", alignItems: "center", justifyContent: "space-between" },
-  actPriceLabel: { color: "rgba(255,255,255,0.4)", fontSize: 11, fontWeight: "600" },
+  actPriceLabel: { color: "rgba(255,255,255,0.5)", fontSize: 11, fontWeight: "600" },
   actPrice: { color: "#FFFFFF", fontSize: 20, fontWeight: "900", fontFamily: "Chillax-Bold" },
   actCashback: { flexDirection: "row", alignItems: "center", gap: 5, backgroundColor: "rgba(255,215,0,0.12)", borderRadius: 10, paddingHorizontal: 10, paddingVertical: 6 },
-  actCashbackText: { color: "#FFD700", fontSize: 13, fontWeight: "800", fontFamily: "Chillax-Bold" },
+  actCashbackText: { color: "#FBBF24", fontSize: 13, fontWeight: "800", fontFamily: "Chillax-Bold" },
   actDesc: { color: "rgba(255,255,255,0.5)", fontSize: 13, lineHeight: 19 },
   actActions: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingTop: 4 },
   actMoreBtn: { flexDirection: "row", alignItems: "center", gap: 4 },

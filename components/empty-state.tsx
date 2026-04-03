@@ -43,8 +43,10 @@ export function EmptyState({ icon, emoji, title, message, actionLabel, onAction 
 const S = StyleSheet.create({
   container: { flex: 1, alignItems: "center", justifyContent: "center", paddingHorizontal: 32, gap: 12 },
   iconWrap: { width: 96, height: 96, borderRadius: 48, alignItems: "center", justifyContent: "center", overflow: "hidden", borderWidth: 1, borderColor: "rgba(167,139,250,0.2)", marginBottom: 8 },
-  title: { color: "#ECEDEE", fontSize: 20, fontWeight: "800", textAlign: "center" },
+  title: { color: "#ECEDEE", fontSize: 20, fontWeight: "800",
+      fontFamily: "Chillax-Bold", textAlign: "center" },
   message: { color: "#9BA1A6", fontSize: 14, textAlign: "center", lineHeight: 20 },
-  actionBtn: { borderRadius: 14, overflow: "hidden", paddingHorizontal: 24, paddingVertical: 12, marginTop: 8 },
+  actionBtn: { borderRadius: 14, shadowColor: "#F94498", shadowOffset: { width: 0, height: 6 }, shadowOpacity: 0.4, shadowRadius: 24, elevation: 10,
+    overflow: "hidden", paddingHorizontal: 24, paddingVertical: 12, marginTop: 8 },
   actionBtnText: { color: "#FFF", fontSize: 15, fontWeight: "700" },
 });

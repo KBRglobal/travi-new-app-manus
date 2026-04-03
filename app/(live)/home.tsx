@@ -46,7 +46,7 @@ const WEATHER_ITEMS = [
   { label: "Temperature", value: WEATHER.temp, iconName: "thermometer" as const, color: "#FF9800" },
   { label: "Humidity", value: WEATHER.humidity, iconName: "cloud.rain.fill" as const, color: "#2196F3" },
   { label: "Wind", value: WEATHER.wind, iconName: "wind" as const, color: "#4CAF50" },
-  { label: "UV Index", value: WEATHER.uv, iconName: "sun.max.fill" as const, color: "#FFD700" },
+  { label: "UV Index", value: WEATHER.uv, iconName: "sun.max.fill" as const, color: "#FBBF24" },
 ];
 
 export default function LiveHomeScreen() {
@@ -143,7 +143,7 @@ export default function LiveHomeScreen() {
                 <Text style={styles.heroCountry}>{activeTrip?.country}</Text>
               </View>
               <View style={styles.weatherCard}>
-                <IconSymbol name="sun.max.fill" size={22} color="#FFD700" />
+                <IconSymbol name="sun.max.fill" size={22} color="#FBBF24" />
                 <Text style={styles.weatherTemp}>{WEATHER.temp}</Text>
                 <Text style={styles.weatherCond}>{WEATHER.condition}</Text>
               </View>
@@ -216,7 +216,7 @@ export default function LiveHomeScreen() {
         {/* Next Activity */}
         {nextActivity && (
           <TouchableOpacity style={styles.nextCard} onPress={() => router.push("/(live)/itinerary" as never)} activeOpacity={0.85}>
-            <LinearGradient colors={["rgba(255,255,255,0.07)", "rgba(255,255,255,0.03)"]} style={StyleSheet.absoluteFillObject} />
+            <LinearGradient colors={["rgba(255,255,255,0.55)", "rgba(255,255,255,0.55)"]} style={StyleSheet.absoluteFillObject} />
             <View style={styles.nextLeft}>
               <Text style={styles.nextLabel}>Up Next</Text>
               <View style={styles.nextTimeBadge}>
@@ -286,9 +286,9 @@ export default function LiveHomeScreen() {
 
         {/* Weather Details */}
         <View style={styles.weatherDetails}>
-          <LinearGradient colors={["rgba(255,255,255,0.06)", "rgba(255,255,255,0.03)"]} style={StyleSheet.absoluteFillObject} />
+          <LinearGradient colors={["rgba(255,255,255,0.55)", "rgba(255,255,255,0.55)"]} style={StyleSheet.absoluteFillObject} />
           <View style={styles.weatherTitleRow}>
-            <IconSymbol name="sun.max.fill" size={16} color="#FFD700" />
+            <IconSymbol name="sun.max.fill" size={16} color="#FBBF24" />
             <Text style={styles.weatherTitle}> Weather in {activeTrip?.destination}</Text>
           </View>
           <View style={styles.weatherGrid}>
@@ -309,7 +309,7 @@ export default function LiveHomeScreen() {
           <LinearGradient colors={["rgba(255,215,0,0.2)", "rgba(255,152,0,0.1)"]} style={StyleSheet.absoluteFillObject} />
           <View style={styles.pointsLeft}>
             <View style={styles.pointsIconWrap}>
-              <IconSymbol name="sparkles" size={22} color="#FFD700" />
+              <IconSymbol name="sparkles" size={22} color="#FBBF24" />
             </View>
             <View>
               <Text style={styles.pointsTitle}>Trip Points</Text>
@@ -366,25 +366,25 @@ const styles = StyleSheet.create({
   orb1: { position: "absolute", width: width * 1.2, height: width * 1.2, borderRadius: width * 0.6, top: -width * 0.5, left: -width * 0.3, backgroundColor: "rgba(123,47,190,0.12)" },
   orb2: { position: "absolute", width: width * 0.8, height: width * 0.8, borderRadius: width * 0.4, bottom: 100, right: -width * 0.3, backgroundColor: "rgba(76,175,80,0.08)" },
   orb3: { position: "absolute", width: width * 0.6, height: width * 0.6, borderRadius: width * 0.3, top: width * 0.3, right: -width * 0.2, backgroundColor: "rgba(233,30,140,0.07)" },
-  header: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 22, paddingTop: 60, paddingBottom: 16 },
+  header: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 22, paddingTop: 60, paddingBottom: 130 },
   backBtn: {},
-  backBtnInner: { width: 40, height: 40, borderRadius: 14, backgroundColor: "rgba(255,255,255,0.08)", alignItems: "center", justifyContent: "center", borderWidth: 1, borderColor: "rgba(255,255,255,0.1)" },
+  backBtnInner: { width: 40, height: 40, borderRadius: 14, backgroundColor: "rgba(255,255,255,0.55)", alignItems: "center", justifyContent: "center", borderWidth: 1, borderColor: "rgba(255,255,255,0.55)" },
   liveBadgeWrap: { borderRadius: 12, overflow: "hidden" },
   liveBadge: { flexDirection: "row", alignItems: "center", paddingHorizontal: 14, paddingVertical: 8, gap: 6, borderRadius: 12, borderWidth: 1, borderColor: "rgba(76,175,80,0.4)" },
   livePulse: { position: "absolute", width: 10, height: 10, borderRadius: 5, backgroundColor: "rgba(76,175,80,0.3)", left: 14 },
   liveDot: { width: 8, height: 8, borderRadius: 4, backgroundColor: "#4CAF50" },
   liveText: { color: "#4CAF50", fontSize: 13, fontWeight: "800", fontFamily: "Chillax-Bold", letterSpacing: 1 },
   moreBtn: {},
-  moreBtnInner: { width: 40, height: 40, borderRadius: 14, backgroundColor: "rgba(255,255,255,0.08)", alignItems: "center", justifyContent: "center", borderWidth: 1, borderColor: "rgba(255,255,255,0.1)" },
-  scroll: { paddingHorizontal: 22, paddingBottom: 100, gap: 20 },
+  moreBtnInner: { width: 40, height: 40, borderRadius: 14, backgroundColor: "rgba(255,255,255,0.55)", alignItems: "center", justifyContent: "center", borderWidth: 1, borderColor: "rgba(255,255,255,0.55)" },
+  scroll: { paddingHorizontal: 22, paddingBottom: 130, gap: 20 },
   heroCard: { borderRadius: 24, overflow: "hidden", borderWidth: 1.5, borderColor: "rgba(123,47,190,0.5)" },
   heroGradient: { padding: 22, gap: 14 },
-  heroCircle1: { position: "absolute", width: 200, height: 200, borderRadius: 100, top: -60, right: -40, backgroundColor: "rgba(255,255,255,0.04)" },
-  heroCircle2: { position: "absolute", width: 120, height: 120, borderRadius: 60, bottom: -20, left: 20, backgroundColor: "rgba(255,255,255,0.03)" },
+  heroCircle1: { position: "absolute", width: 200, height: 200, borderRadius: 100, top: -60, right: -40, backgroundColor: "rgba(255,255,255,0.55)" },
+  heroCircle2: { position: "absolute", width: 120, height: 120, borderRadius: 60, bottom: -20, left: 20, backgroundColor: "rgba(255,255,255,0.55)" },
   heroTop: { flexDirection: "row", justifyContent: "space-between", alignItems: "flex-start" },
   heroDestination: { color: "#FFFFFF", fontSize: 32, fontWeight: "900", fontFamily: "Chillax-Bold", letterSpacing: -0.5 },
   heroCountry: { color: "rgba(255,255,255,0.6)", fontSize: 16, fontFamily: "Satoshi-Regular", marginTop: 2 },
-  weatherCard: { backgroundColor: "rgba(255,255,255,0.1)", borderRadius: 16, padding: 12, alignItems: "center", gap: 4, borderWidth: 1, borderColor: "rgba(255,255,255,0.15)" },
+  weatherCard: { backgroundColor: "rgba(255,255,255,0.55)", borderRadius: 16, padding: 12, alignItems: "center", gap: 4, borderWidth: 1, borderColor: "rgba(255,255,255,0.55)" },
   weatherTemp: { color: "#FFFFFF", fontSize: 18, fontWeight: "800", fontFamily: "Chillax-Bold" },
   weatherCond: { color: "rgba(255,255,255,0.6)", fontSize: 10 },
   heroMeta: { flexDirection: "row", gap: 16 },
@@ -394,7 +394,7 @@ const styles = StyleSheet.create({
   progressHeader: { flexDirection: "row", justifyContent: "space-between" },
   progressLabel: { color: "rgba(255,255,255,0.7)", fontSize: 13, fontFamily: "Satoshi-Regular" },
   progressPct: { color: "rgba(255,255,255,0.5)", fontSize: 12 },
-  progressBar: { height: 6, borderRadius: 3, backgroundColor: "rgba(255,255,255,0.1)", overflow: "hidden" },
+  progressBar: { height: 6, borderRadius: 3, backgroundColor: "rgba(255,255,255,0.55)", overflow: "hidden" },
   progressFill: { height: "100%", borderRadius: 3 },
   section: { gap: 12 },
   sectionTitleRow: { flexDirection: "row", alignItems: "center" },
@@ -417,17 +417,17 @@ const styles = StyleSheet.create({
   dirBtnText: { color: "#FFFFFF", fontSize: 14, fontWeight: "700", fontFamily: "Satoshi-Bold" },
   askBtn: { flex: 1, flexDirection: "row", alignItems: "center", justifyContent: "center", borderRadius: 14, borderWidth: 1.5, borderColor: "rgba(123,47,190,0.5)", paddingVertical: 12, gap: 6 },
   askBtnText: { color: "#C4B5D9", fontSize: 14, fontWeight: "600", fontFamily: "Satoshi-Medium" },
-  nextCard: { flexDirection: "row", alignItems: "center", borderRadius: 18, padding: 16, gap: 14, overflow: "hidden", borderWidth: 1.5, borderColor: "rgba(255,255,255,0.08)" },
+  nextCard: { flexDirection: "row", alignItems: "center", borderRadius: 18, padding: 16, gap: 14, overflow: "hidden", borderWidth: 1.5, borderColor: "rgba(255,255,255,0.55)" },
   nextLeft: { gap: 4 },
   nextLabel: { color: "#5A4D72", fontSize: 11, fontWeight: "600", textTransform: "uppercase", letterSpacing: 0.5 },
-  nextTimeBadge: { backgroundColor: "rgba(255,255,255,0.08)", borderRadius: 8, paddingHorizontal: 8, paddingVertical: 4 },
+  nextTimeBadge: { backgroundColor: "rgba(255,255,255,0.55)", borderRadius: 8, paddingHorizontal: 8, paddingVertical: 4 },
   nextTimeText: { color: "#FFFFFF", fontSize: 13, fontWeight: "700", fontFamily: "Satoshi-Bold" },
   nextInfo: { flex: 1 },
   nextTitle: { color: "#FFFFFF", fontSize: 15, fontWeight: "700", fontFamily: "Satoshi-Bold" },
   nextLocationRow: { flexDirection: "row", alignItems: "center", gap: 4, marginTop: 2 },
   nextLocation: { color: "#5A4D72", fontSize: 12 },
   actionsGrid: { flexDirection: "row", flexWrap: "wrap", gap: 12 },
-  actionCard: { width: (width - 44 - 12) / 2, borderRadius: 20, overflow: "hidden", borderWidth: 1.5, borderColor: "rgba(255,255,255,0.1)" },
+  actionCard: { width: (width - 44 - 12) / 2, borderRadius: 20, overflow: "hidden", borderWidth: 1.5, borderColor: "rgba(255,255,255,0.55)" },
   actionGradient: { padding: 18, gap: 6, minHeight: 100 },
   actionLabel: { color: "#FFFFFF", fontSize: 15, fontWeight: "700", fontFamily: "Satoshi-Bold" },
   actionSub: { color: "rgba(255,255,255,0.6)", fontSize: 12 },
@@ -438,9 +438,9 @@ const styles = StyleSheet.create({
   tipTitle: { color: "#FFFFFF", fontSize: 15, fontWeight: "700", fontFamily: "Satoshi-Bold" },
   tipText: { color: "#C4B5D9", fontSize: 14, fontFamily: "Satoshi-Regular", lineHeight: 22 },
   tipDots: { flexDirection: "row", gap: 5 },
-  tipDot: { width: 5, height: 5, borderRadius: 2.5, backgroundColor: "rgba(255,255,255,0.2)" },
+  tipDot: { width: 5, height: 5, borderRadius: 2.5, backgroundColor: "rgba(255,255,255,0.55)" },
   tipDotActive: { width: 14, backgroundColor: "#6443F4" },
-  weatherDetails: { borderRadius: 20, padding: 18, gap: 14, overflow: "hidden", borderWidth: 1.5, borderColor: "rgba(255,255,255,0.08)" },
+  weatherDetails: { borderRadius: 20, padding: 18, gap: 14, overflow: "hidden", borderWidth: 1.5, borderColor: "rgba(255,255,255,0.55)" },
   weatherTitleRow: { flexDirection: "row", alignItems: "center" },
   weatherTitle: { color: "#FFFFFF", fontSize: 15, fontWeight: "700", fontFamily: "Satoshi-Bold" },
   weatherGrid: { flexDirection: "row", justifyContent: "space-between" },
@@ -454,7 +454,7 @@ const styles = StyleSheet.create({
   pointsTitle: { color: "#FFFFFF", fontSize: 15, fontWeight: "700", fontFamily: "Satoshi-Bold" },
   pointsSub: { color: "#5A4D72", fontSize: 12 },
   pointsRight: { alignItems: "flex-end" },
-  pointsValue: { color: "#FFD700", fontSize: 22, fontWeight: "800", fontFamily: "Chillax-Bold" },
+  pointsValue: { color: "#FBBF24", fontSize: 22, fontWeight: "800", fontFamily: "Chillax-Bold" },
   pointsLabel: { color: "#5A4D72", fontSize: 12 },
   modalOverlay: { flex: 1, backgroundColor: "rgba(0,0,0,0.8)", justifyContent: "flex-end" },
   modalContent: { borderTopLeftRadius: 28, borderTopRightRadius: 28, padding: 24, gap: 16, overflow: "hidden", borderTopWidth: 1.5, borderColor: "rgba(244,67,54,0.3)" },

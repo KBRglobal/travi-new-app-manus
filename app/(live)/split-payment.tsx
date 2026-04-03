@@ -154,7 +154,7 @@ export default function SplitPaymentScreen() {
         <View style={{ width: 36 }} />
       </View>
 
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 120, paddingHorizontal: 16 }}>
+      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 130, paddingHorizontal: 16 }}>
         {/* Bill summary card */}
         <View style={S.billCard}>
           <LinearGradient colors={["rgba(100,67,244,0.2)", "rgba(249,68,152,0.1)"]} style={StyleSheet.absoluteFillObject} />
@@ -189,7 +189,7 @@ export default function SplitPaymentScreen() {
         {/* Participants */}
         <Text style={S.sectionTitle}>Participants</Text>
         <View style={S.participantsCard}>
-          <LinearGradient colors={["rgba(255,255,255,0.05)", "rgba(255,255,255,0.02)"]} style={StyleSheet.absoluteFillObject} />
+          <LinearGradient colors={["rgba(255,255,255,0.55)", "rgba(255,255,255,0.55)"]} style={StyleSheet.absoluteFillObject} />
           {participants.map((p, i) => (
             <View key={p.id}>
               <ParticipantRow p={p} mode={mode} onAmountChange={handleAmountChange} totalAmount={TOTAL_AMOUNT} />
@@ -295,8 +295,8 @@ const S = StyleSheet.create({
   orb1: { position: "absolute", top: -60, right: -60, width: 200, height: 200, borderRadius: 100, backgroundColor: "rgba(100,67,244,0.1)" },
   orb2: { position: "absolute", bottom: 200, left: -80, width: 160, height: 160, borderRadius: 80, backgroundColor: "rgba(249,68,152,0.07)" },
 
-  header: { flexDirection: "row", alignItems: "center", paddingHorizontal: 16, paddingBottom: 12, paddingTop: 4 },
-  backBtnInner: { width: 36, height: 36, borderRadius: 18, backgroundColor: "rgba(255,255,255,0.08)", alignItems: "center", justifyContent: "center", marginRight: 8 },
+  header: { flexDirection: "row", alignItems: "center", paddingHorizontal: 16, paddingBottom: 130, paddingTop: 4 },
+  backBtnInner: { width: 36, height: 36, borderRadius: 18, backgroundColor: "rgba(255,255,255,0.55)", alignItems: "center", justifyContent: "center", marginRight: 8 },
   headerTitle: { ...TYPE.h2, color: BRAND.textPrimary, flex: 1 },
 
   sectionTitle: { ...TYPE.h4, color: BRAND.textPrimary, marginBottom: 12, marginTop: 20 },
@@ -309,12 +309,12 @@ const S = StyleSheet.create({
   billTotal: { ...TYPE.h2, color: "#FFF", fontFamily: "Chillax-Bold" },
 
   modeRow: { flexDirection: "row", gap: 8 },
-  modeBtn: { overflow: "hidden", flex: 1, borderRadius: RADIUS.xl, paddingVertical: 10, alignItems: "center", gap: 4, borderWidth: 1, borderColor: "rgba(255,255,255,0.1)" },
+  modeBtn: { overflow: "hidden", flex: 1, borderRadius: RADIUS.xl, paddingVertical: 10, alignItems: "center", gap: 4, borderWidth: 1, borderColor: "rgba(255,255,255,0.55)" },
   modeBtnActive: { borderColor: "transparent" },
   modeBtnText: { ...TYPE.caption, color: BRAND.textMuted },
   modeBtnTextActive: { color: "#FFF" },
 
-  participantsCard: { overflow: "hidden", borderRadius: RADIUS.xl, borderWidth: 1, borderColor: "rgba(255,255,255,0.07)" },
+  participantsCard: { overflow: "hidden", borderRadius: RADIUS.xl, borderWidth: 1, borderColor: "rgba(255,255,255,0.55)" },
   participantRow: { flexDirection: "row", alignItems: "center", padding: 14, gap: 12 },
   participantAvatar: { width: 40, height: 40, borderRadius: 20, alignItems: "center", justifyContent: "center", borderWidth: 1.5 },
   participantInitial: { ...TYPE.bodyMed, fontFamily: "Chillax-Bold" },
@@ -326,10 +326,10 @@ const S = StyleSheet.create({
   amountDisplay: { alignItems: "flex-end" },
   participantAmount: { ...TYPE.bodyMed, color: BRAND.textPrimary, fontFamily: "Chillax-Semibold" },
   participantPct: { ...TYPE.caption, color: BRAND.textMuted },
-  customInput: { flexDirection: "row", alignItems: "center", backgroundColor: "rgba(255,255,255,0.08)", borderRadius: RADIUS.md, paddingHorizontal: 10, paddingVertical: 6, borderWidth: 1, borderColor: "rgba(100,67,244,0.3)" },
+  customInput: { flexDirection: "row", alignItems: "center", backgroundColor: "rgba(255,255,255,0.55)", borderRadius: RADIUS.md, paddingHorizontal: 10, paddingVertical: 6, borderWidth: 1, borderColor: "rgba(100,67,244,0.3)" },
   dollarSign: { ...TYPE.bodyMed, color: BRAND.textSecondary, marginRight: 2 },
   customInputField: { ...TYPE.bodyMed, color: BRAND.textPrimary, width: 60, textAlign: "right" },
-  divider: { height: 1, backgroundColor: "rgba(255,255,255,0.06)", marginHorizontal: 14 },
+  divider: { height: 1, backgroundColor: "rgba(255,255,255,0.55)", marginHorizontal: 14 },
 
   balanceIndicator: { overflow: "hidden", flexDirection: "row", alignItems: "center", gap: 8, borderRadius: RADIUS.xl, borderWidth: 1, padding: 12, marginTop: 12 },
   balanceText: { ...TYPE.small, fontFamily: "Satoshi-Medium" },
@@ -340,7 +340,7 @@ const S = StyleSheet.create({
   splitBarLabel: { ...TYPE.caption, textAlign: "center" },
 
   paymentMethods: { gap: 10 },
-  paymentMethod: { overflow: "hidden", flexDirection: "row", alignItems: "center", gap: 12, borderRadius: RADIUS.xl, borderWidth: 1, borderColor: "rgba(255,255,255,0.1)", padding: 14 },
+  paymentMethod: { overflow: "hidden", flexDirection: "row", alignItems: "center", gap: 12, borderRadius: RADIUS.xl, borderWidth: 1, borderColor: "rgba(255,255,255,0.55)", padding: 14 },
   paymentMethodActive: { borderColor: "rgba(100,67,244,0.4)" },
   paymentIconWrap: { width: 40, height: 40, borderRadius: RADIUS.md, alignItems: "center", justifyContent: "center" },
   paymentLabel: { ...TYPE.bodyMed, color: BRAND.textPrimary, flex: 1 },
@@ -349,12 +349,13 @@ const S = StyleSheet.create({
   summaryRow: { flexDirection: "row", justifyContent: "space-between" },
   summaryLabel: { ...TYPE.body, color: BRAND.textSecondary },
   summaryValue: { ...TYPE.bodyMed, color: BRAND.textPrimary },
-  summaryTotal: { borderTopWidth: 1, borderTopColor: "rgba(255,255,255,0.08)", paddingTop: 12, marginTop: 4 },
+  summaryTotal: { borderTopWidth: 1, borderTopColor: "rgba(255,255,255,0.55)", paddingTop: 12, marginTop: 4 },
   summaryTotalLabel: { ...TYPE.h4, color: BRAND.textPrimary },
   summaryTotalValue: { ...TYPE.h3, color: "#FFF", fontFamily: "Chillax-Bold" },
 
   payBtnWrap: { position: "absolute", bottom: 0, left: 0, right: 0, paddingHorizontal: 16, paddingTop: 16, alignItems: "center" },
-  payBtn: { overflow: "hidden", width: "100%", borderRadius: RADIUS.xl, flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 8, paddingVertical: 18 },
+  payBtn: { shadowColor: "#F94498", shadowOffset: { width: 0, height: 6 }, shadowOpacity: 0.4, shadowRadius: 24, elevation: 10,
+    overflow: "hidden", width: "100%", borderRadius: RADIUS.xl, flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 8, paddingVertical: 18 },
   payBtnText: { ...TYPE.button, color: "#FFF" },
   payDisclaimer: { ...TYPE.caption, color: BRAND.textMuted, marginTop: 8 },
 

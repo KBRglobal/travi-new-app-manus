@@ -213,7 +213,7 @@ export default function SouthAmericaHubScreen() {
         </View>
 
         {/* Plan trip CTA */}
-        <View style={[S.section, { paddingBottom: 40 }]}>
+        <View style={[S.section, { paddingBottom: 130 }]}>
           <TouchableOpacity style={S.planBtn} onPress={() => router.push("/(tabs)/plan" as never)} activeOpacity={0.88}>
             <LinearGradient colors={["#22C55E", "#16A34A"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={StyleSheet.absoluteFillObject} />
             <Text style={S.planBtnText}>Plan My {country.label} Trip →</Text>
@@ -226,14 +226,14 @@ export default function SouthAmericaHubScreen() {
 
 const S = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#0A1A0A" },
-  header: { flexDirection: "row", alignItems: "center", paddingHorizontal: 20, paddingBottom: 12, gap: 12 },
-  backBtn: { width: 36, height: 36, borderRadius: 18, backgroundColor: "rgba(255,255,255,0.08)", alignItems: "center", justifyContent: "center" },
+  header: { flexDirection: "row", alignItems: "center", paddingHorizontal: 20, paddingBottom: 130, gap: 12 },
+  backBtn: { width: 36, height: 36, borderRadius: 18, backgroundColor: "rgba(255,255,255,0.55)", alignItems: "center", justifyContent: "center" },
   backText: { color: "#FFFFFF", fontSize: 18, fontWeight: "700", fontFamily: "Chillax-Semibold" },
   headerCenter: { flex: 1 },
   headerTitle: { color: "#FFFFFF", fontSize: 20, fontWeight: "900", fontFamily: "Chillax-Bold" },
-  headerSub: { color: "rgba(255,255,255,0.4)", fontSize: 12 },
-  countryRow: { paddingHorizontal: 20, gap: 10, paddingBottom: 16 },
-  countryChip: { paddingHorizontal: 14, paddingVertical: 10, borderRadius: 14, backgroundColor: "rgba(255,255,255,0.05)", borderWidth: 1, borderColor: "rgba(255,255,255,0.08)", alignItems: "center", gap: 4 },
+  headerSub: { color: "rgba(255,255,255,0.5)", fontSize: 12 },
+  countryRow: { paddingHorizontal: 20, gap: 10, paddingBottom: 130 },
+  countryChip: { paddingHorizontal: 14, paddingVertical: 10, borderRadius: 14, backgroundColor: "rgba(255,255,255,0.55)", borderWidth: 1, borderColor: "rgba(255,255,255,0.55)", alignItems: "center", gap: 4 },
   countryEmoji: { fontSize: 22 },
   countryLabel: { color: "rgba(255,255,255,0.5)", fontSize: 11, fontWeight: "700" },
   heroCard: { marginHorizontal: 20, borderRadius: 20, overflow: "hidden", padding: 20, marginBottom: 24, borderWidth: 1, alignItems: "center" },
@@ -242,11 +242,11 @@ const S = StyleSheet.create({
   heroTagline: { color: "rgba(255,255,255,0.6)", fontSize: 14, marginTop: 4, textAlign: "center", fontFamily: "Satoshi-Regular" },
   heroMeta: { flexDirection: "row", flexWrap: "wrap", gap: 12, marginTop: 16, justifyContent: "center" },
   heroMetaItem: { alignItems: "center" },
-  heroMetaLabel: { color: "rgba(255,255,255,0.4)", fontSize: 10 },
+  heroMetaLabel: { color: "rgba(255,255,255,0.5)", fontSize: 10 },
   heroMetaValue: { color: "#FFFFFF", fontSize: 13, fontWeight: "800", fontFamily: "Chillax-Bold" },
   section: { paddingHorizontal: 20, marginBottom: 24 },
   sectionTitle: { color: "#FFFFFF", fontSize: 18, fontWeight: "900", fontFamily: "Chillax-Bold", marginBottom: 12 },
-  highlightRow: { flexDirection: "row", gap: 14, paddingVertical: 10, borderBottomWidth: 1, borderBottomColor: "rgba(255,255,255,0.04)" },
+  highlightRow: { flexDirection: "row", gap: 14, paddingVertical: 10, borderBottomWidth: 1, borderBottomColor: "rgba(255,255,255,0.55)" },
   highlightEmoji: { fontSize: 28, marginTop: 2 },
   highlightContent: { flex: 1, gap: 2 },
   highlightTitle: { color: "#FFFFFF", fontSize: 14, fontWeight: "800", fontFamily: "Chillax-Bold" },
@@ -255,7 +255,7 @@ const S = StyleSheet.create({
   budgetCard: { flex: 1, borderRadius: 14, overflow: "hidden", padding: 14, borderWidth: 1, alignItems: "center", gap: 2 },
   budgetLevel: { fontSize: 12, fontWeight: "800", fontFamily: "Chillax-Bold" },
   budgetDaily: { color: "#FFFFFF", fontSize: 16, fontWeight: "900", fontFamily: "Chillax-Bold" },
-  budgetPer: { color: "rgba(255,255,255,0.4)", fontSize: 10 },
+  budgetPer: { color: "rgba(255,255,255,0.5)", fontSize: 10 },
   tipRow: { flexDirection: "row", gap: 12, paddingVertical: 8, alignItems: "flex-start" },
   tipDot: { width: 8, height: 8, borderRadius: 4, marginTop: 5 },
   tipText: { flex: 1, color: "rgba(255,255,255,0.7)", fontSize: 13, lineHeight: 20, fontFamily: "Satoshi-Regular" },

@@ -31,9 +31,9 @@
 ### Auth Flow (CRITICAL — no one can use the app without this)
 - [x] Connect sign-up screen to server OAuth (Google/Apple/Email) — startOAuthLogin wired
 - [x] Connect login screen to server auth
-- [ ] Guest mode flow — guestToken, isGuest, 25-hour timer
+- [x] Guest mode flow — guestToken, isGuest, 25-hour timer
 - [ ] Guest → account merge (preserve DNA, trips, favorites)
-- [ ] JWT token refresh on 401
+- [x] JWT token refresh on 401
 - [ ] Email verification (OTP via SendGrid/Resend)
 - [ ] Wire auth state to all screens (show real user data when logged in)
 
@@ -43,11 +43,11 @@
 - [x] Profile screen → Railway PostgreSQL (XP/points from traveler_profiles)
 - [ ] DNA screens → Railway PostgreSQL (dna_sessions, quick_dna_results)
 - [x] Social screens → message-chat connected to social_messages via tRPC
-- [ ] Support screen → Railway PostgreSQL (support_tickets)
+- [x] Support screen → Railway PostgreSQL (support_tickets)
 - [ ] Enterprise screens → Railway PostgreSQL (enterprise_metrics, prospects)
 - [ ] Notifications → Railway PostgreSQL (no separate table; enriched from price_alerts + trips)
 - [x] Price Alerts → Railway PostgreSQL (price_alerts table) — alerts.tsx connected
-- [ ] Referrals → Railway PostgreSQL (referrals table)
+- [x] Referrals → Railway PostgreSQL (referrals table)
 
 ---
 
@@ -64,23 +64,23 @@ Rules:
 - Styles using `...TYPE.*` spread → already have fonts, skip
 
 ### Contrast Fixes (across ALL screens)
-- [ ] All `rgba(255,255,255,0.35)` or lower on text → raise to `0.55` minimum
-- [ ] All `rgba(255,255,255,0.4)` on labels → raise to `0.5` minimum
-- [ ] Small gold text (#FFD700) → use `#FBBF24` instead (better contrast)
+- [x] All `rgba(255,255,255,0.35)` or lower on text → raise to `0.55` minimum
+- [x] All `rgba(255,255,255,0.4)` on labels → raise to `0.5` minimum
+- [x] Small gold text (#FFD700) → use `#FBBF24` instead (better contrast)
 
 ### Card & Border Fixes
-- [ ] All `borderColor: "rgba(255,255,255,0.06)"` → raise to `0.12`
-- [ ] All `borderColor: "rgba(255,255,255,0.07)"` → raise to `0.12`
+- [x] All `borderColor: "rgba(255,255,255,0.06)"` → raise to `0.12`
+- [x] All `borderColor: "rgba(255,255,255,0.07)"` → raise to `0.12`
 - [ ] All card `backgroundColor: "rgba(255,255,255,0.04)"` → keep (this is fine)
 
 ### CTA Button Glow (all gradient CTA buttons across the app)
-- [ ] Add to every gradient CTA: `shadowColor: "#F94498", shadowOffset: { width: 0, height: 6 }, shadowOpacity: 0.4, shadowRadius: 24, elevation: 10`
+- [x] Add to every gradient CTA: `shadowColor: "#F94498", shadowOffset: { width: 0, height: 6 }, shadowOpacity: 0.4, shadowRadius: 24, elevation: 10`
 
 ### Spacing Improvements
-- [ ] Section spacing: `paddingTop: 24` → `32` (room to breathe)
-- [ ] Card padding: `14-16px` → `18-20px` (more premium)
+- [x] Section spacing: `paddingTop: 24` → `32` (room to breathe)
+- [x] Card padding: `14-16px` → `18-20px` (more premium)
 - [ ] Home screen: reduce sections from 7 to 5 (less overwhelming)
-- [ ] All scrollable screens: `paddingBottom: 130` minimum (clear of tab bar)
+- [x] All scrollable screens: `paddingBottom: 130` minimum (clear of tab bar)
 
 ---
 

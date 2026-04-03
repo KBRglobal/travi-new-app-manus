@@ -51,7 +51,7 @@ export default function WishlistScreen() {
       <FlatList
         data={filtered}
         keyExtractor={(item) => item.id}
-        contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 40, gap: 14 }}
+        contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 130, gap: 14 }}
         showsVerticalScrollIndicator={false}
         ListEmptyComponent={
           <View style={S.empty}>
@@ -95,15 +95,15 @@ export default function WishlistScreen() {
 
 const S = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#0D0628" },
-  header: { flexDirection: "row", alignItems: "center", paddingHorizontal: 20, paddingBottom: 12, gap: 12 },
-  backBtn: { width: 36, height: 36, borderRadius: 18, backgroundColor: "rgba(255,255,255,0.08)", alignItems: "center", justifyContent: "center" },
+  header: { flexDirection: "row", alignItems: "center", paddingHorizontal: 20, paddingBottom: 130, gap: 12 },
+  backBtn: { width: 36, height: 36, borderRadius: 18, backgroundColor: "rgba(255,255,255,0.55)", alignItems: "center", justifyContent: "center" },
   backText: { color: "#FFFFFF", fontSize: 18, fontWeight: "700", fontFamily: "Chillax-Semibold" },
   headerTitle: { flex: 1, color: "#FFFFFF", fontSize: 22, fontWeight: "900", fontFamily: "Chillax-Bold" },
   headerCount: { color: "#A78BFA", fontSize: 16, fontWeight: "900", fontFamily: "Chillax-Bold" },
   filterRow: { flexDirection: "row", paddingHorizontal: 20, gap: 8, marginBottom: 16 },
-  filterChip: { paddingHorizontal: 14, paddingVertical: 7, borderRadius: 20, backgroundColor: "rgba(255,255,255,0.05)", borderWidth: 1, borderColor: "rgba(255,255,255,0.08)" },
+  filterChip: { paddingHorizontal: 14, paddingVertical: 7, borderRadius: 20, backgroundColor: "rgba(255,255,255,0.55)", borderWidth: 1, borderColor: "rgba(255,255,255,0.55)" },
   filterChipActive: { backgroundColor: "rgba(100,67,244,0.2)", borderColor: "rgba(100,67,244,0.4)" },
-  filterText: { color: "rgba(255,255,255,0.4)", fontSize: 12, fontWeight: "700" },
+  filterText: { color: "rgba(255,255,255,0.5)", fontSize: 12, fontWeight: "700" },
   filterTextActive: { color: "#FFFFFF" },
   card: { borderRadius: 18, overflow: "hidden", height: 200 },
   cardImage: { position: "absolute", top: 0, left: 0, right: 0, bottom: 0, width: "100%", height: "100%" },
@@ -112,7 +112,7 @@ const S = StyleSheet.create({
   cardTypeText: { color: "#FFFFFF", fontSize: 11, fontWeight: "700", textTransform: "capitalize" },
   unsaveBtn: { position: "absolute", top: 10, right: 12 },
   unsaveBtnText: { fontSize: 22 },
-  cardBody: { position: "absolute", bottom: 0, left: 0, right: 0, padding: 14 },
+  cardBody: { position: "absolute", bottom: 0, left: 0, right: 0, padding: 18 },
   cardTitle: { color: "#FFFFFF", fontSize: 18, fontWeight: "900", fontFamily: "Chillax-Bold" },
   cardSub: { color: "rgba(255,255,255,0.6)", fontSize: 12, marginBottom: 8 },
   cardBottom: { flexDirection: "row", alignItems: "flex-end", justifyContent: "space-between" },
@@ -123,7 +123,7 @@ const S = StyleSheet.create({
   empty: { paddingTop: 60, alignItems: "center", gap: 12 },
   emptyEmoji: { fontSize: 48 },
   emptyTitle: { color: "#FFFFFF", fontSize: 18, fontWeight: "900", fontFamily: "Chillax-Bold" },
-  emptyDesc: { color: "rgba(255,255,255,0.4)", fontSize: 14, textAlign: "center", paddingHorizontal: 40, fontFamily: "Satoshi-Regular" },
+  emptyDesc: { color: "rgba(255,255,255,0.5)", fontSize: 14, textAlign: "center", paddingHorizontal: 40, fontFamily: "Satoshi-Regular" },
   emptyBtn: { marginTop: 8, borderRadius: 12, backgroundColor: "#6443F4", paddingHorizontal: 24, paddingVertical: 12 },
   emptyBtnText: { color: "#FFFFFF", fontSize: 14, fontWeight: "900", fontFamily: "Chillax-Bold" },
 });

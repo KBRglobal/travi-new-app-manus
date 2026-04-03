@@ -146,7 +146,7 @@ const s = StyleSheet.create({
     backgroundColor: "#0C0720",
     paddingHorizontal: 28,
     paddingTop: height * 0.06,
-    paddingBottom: 32,
+    paddingBottom: 130,
     justifyContent: "space-between",
   },
 
@@ -174,6 +174,7 @@ const s = StyleSheet.create({
     fontSize: 14,
     color: "rgba(196,181,217,0.65)",
     fontWeight: "500",
+      fontFamily: "Satoshi-Medium",
     textAlign: "center",
   },
   headline: {
@@ -211,7 +212,9 @@ const s = StyleSheet.create({
     flexDirection: "row", alignItems: "center", justifyContent: "center",
     paddingVertical: 17, gap: 10,
   },
-  btnText: { fontSize: 16, fontWeight: "700", color: "#FFFFFF" },
+  btnText: { fontSize: 16, fontWeight: "700",
+      fontFamily: "Chillax-Semibold", color: "#FFFFFF" },
   skip: { paddingVertical: 6 },
-  skipText: { fontSize: 14, color: "rgba(196,181,217,0.60)", fontWeight: "500" },
+  skipText: { fontSize: 14, color: "rgba(196,181,217,0.60)", fontWeight: "500",
+      fontFamily: "Satoshi-Medium" },
 });

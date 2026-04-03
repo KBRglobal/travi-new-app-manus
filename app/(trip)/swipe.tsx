@@ -652,7 +652,7 @@ export default function SwipeScreen() {
               </View>
             ))}
             {liked.length > 6 && (
-              <View style={[styles.likedChip, { borderColor: "rgba(255,255,255,0.15)" }]}>
+              <View style={[styles.likedChip, { borderColor: "rgba(255,255,255,0.55)" }]}>
                 <Text style={styles.likedMore}>+{liked.length - 6} more</Text>
               </View>
             )}
@@ -860,20 +860,20 @@ const styles = StyleSheet.create({
   // Glow orb
   glowOrb: { position: "absolute", width: 200, height: 200, borderRadius: 100 },
   // Header
-  header: { flexDirection: "row", alignItems: "center", paddingHorizontal: 20, paddingBottom: 10, gap: 12 },
-  backBtn: { width: 40, height: 40, borderRadius: 14, backgroundColor: "rgba(255,255,255,0.08)", alignItems: "center", justifyContent: "center" },
+  header: { flexDirection: "row", alignItems: "center", paddingHorizontal: 20, paddingBottom: 130, gap: 12 },
+  backBtn: { width: 40, height: 40, borderRadius: 14, backgroundColor: "rgba(255,255,255,0.55)", alignItems: "center", justifyContent: "center" },
   headerCenter: { flex: 1, alignItems: "center" },
   headerTitle: { color: "#FFFFFF", fontSize: 17, fontWeight: "700", letterSpacing: 0.3, fontFamily: "Chillax-Semibold" },
-  likedBadge: { flexDirection: "row", alignItems: "center", gap: 5, paddingHorizontal: 13, paddingVertical: 8, borderRadius: 20, backgroundColor: "rgba(255,255,255,0.06)", borderWidth: 1.5, borderColor: "rgba(255,255,255,0.08)" },
+  likedBadge: { flexDirection: "row", alignItems: "center", gap: 5, paddingHorizontal: 13, paddingVertical: 8, borderRadius: 20, backgroundColor: "rgba(255,255,255,0.55)", borderWidth: 1.5, borderColor: "rgba(255,255,255,0.55)" },
   likedBadgeActive: { backgroundColor: "rgba(249,68,152,0.12)", borderColor: "rgba(249,68,152,0.35)" },
   likedBadgeHeart: { fontSize: 13 },
-  likedCount: { color: "rgba(255,255,255,0.35)", fontSize: 14, fontWeight: "800", fontFamily: "Chillax-Bold" },
+  likedCount: { color: "rgba(255,255,255,0.55)", fontSize: 14, fontWeight: "800", fontFamily: "Chillax-Bold" },
   likedCountActive: { color: "#F94498" },
   // Progress
-  progressWrap: { flexDirection: "row", alignItems: "center", paddingHorizontal: 20, paddingBottom: 14, gap: 10 },
-  progressTrack: { flex: 1, height: 4, backgroundColor: "rgba(255,255,255,0.08)", borderRadius: 2, overflow: "hidden" },
+  progressWrap: { flexDirection: "row", alignItems: "center", paddingHorizontal: 20, paddingBottom: 130, gap: 10 },
+  progressTrack: { flex: 1, height: 4, backgroundColor: "rgba(255,255,255,0.55)", borderRadius: 2, overflow: "hidden" },
   progressFill: { height: "100%" as unknown as number, borderRadius: 2 },
-  progressLabel: { color: "rgba(255,255,255,0.3)", fontSize: 12, fontWeight: "700", minWidth: 36, textAlign: "right" },
+  progressLabel: { color: "rgba(255,255,255,0.55)", fontSize: 12, fontWeight: "700", minWidth: 36, textAlign: "right" },
   // Cards
   cardsArea: { flex: 1, alignItems: "center", justifyContent: "center", paddingHorizontal: 12 },
   card: {
@@ -907,8 +907,8 @@ const styles = StyleSheet.create({
   cardMeta: { flexDirection: "row", alignItems: "center", backgroundColor: "rgba(0,0,0,0.45)", borderRadius: 16, padding: 14, gap: 8 },
   metaItem: { flex: 1, alignItems: "center", gap: 3 },
   metaValue: { color: "#FFFFFF", fontSize: 13, fontWeight: "800", fontFamily: "Chillax-Bold" },
-  metaLabel: { color: "rgba(255,255,255,0.4)", fontSize: 10, fontWeight: "500" },
-  metaDivider: { width: 1, height: 28, backgroundColor: "rgba(255,255,255,0.1)" },
+  metaLabel: { color: "rgba(255,255,255,0.5)", fontSize: 10, fontWeight: "500" },
+  metaDivider: { width: 1, height: 28, backgroundColor: "rgba(255,255,255,0.55)" },
   tags: { flexDirection: "row", gap: 7, flexWrap: "wrap" },
   tag: { borderRadius: 10, paddingHorizontal: 11, paddingVertical: 5, borderWidth: 1 },
   tagText: { fontSize: 11, fontWeight: "700" },
@@ -920,21 +920,22 @@ const styles = StyleSheet.create({
   actionBtnLike: {},
   actionBtnSkipIcon: { fontSize: 26, color: "#EF4444" },
   actionBtnLikeIcon: { fontSize: 26, color: "#FFFFFF" },
-  actionBtnLabel: { color: "rgba(255,255,255,0.4)", fontSize: 11, fontWeight: "700", letterSpacing: 0.5 },
+  actionBtnLabel: { color: "rgba(255,255,255,0.5)", fontSize: 11, fontWeight: "700", letterSpacing: 0.5 },
   actionCenter: { flex: 1, alignItems: "center", gap: 4 },
   swipeHintEmoji: { fontSize: 18 },
-  swipeHint: { color: "rgba(255,255,255,0.25)", fontSize: 11, fontWeight: "600" },
+  swipeHint: { color: "rgba(255,255,255,0.55)", fontSize: 11, fontWeight: "600" },
   // Done screen
   doneWrap: { flex: 1, alignItems: "center", justifyContent: "center", paddingHorizontal: 28, gap: 18 },
   doneEmoji: { fontSize: 60 },
   doneTitle: { color: "#FFFFFF", fontSize: 28, fontWeight: "900", textAlign: "center", letterSpacing: -0.5, fontFamily: "Chillax-Bold" },
   doneSub: { color: "rgba(255,255,255,0.6)", fontSize: 15, textAlign: "center", lineHeight: 23 },
   likedGrid: { width: "100%", flexDirection: "row", flexWrap: "wrap", gap: 8, marginTop: 4 },
-  likedChip: { flexDirection: "row", alignItems: "center", gap: 8, backgroundColor: "rgba(255,255,255,0.06)", borderRadius: 14, paddingHorizontal: 14, paddingVertical: 10, borderWidth: 1, maxWidth: (width - 56 - 8) / 2, shadowOpacity: 0.2, shadowRadius: 8, shadowOffset: { width: 0, height: 2 } },
+  likedChip: { flexDirection: "row", alignItems: "center", gap: 8, backgroundColor: "rgba(255,255,255,0.55)", borderRadius: 14, paddingHorizontal: 14, paddingVertical: 10, borderWidth: 1, maxWidth: (width - 56 - 8) / 2, shadowOpacity: 0.2, shadowRadius: 8, shadowOffset: { width: 0, height: 2 } },
   likedDot: { width: 8, height: 8, borderRadius: 4, flexShrink: 0 },
   likedChipText: { color: "rgba(255,255,255,0.85)", fontSize: 13, fontWeight: "600", flex: 1 },
-  likedMore: { color: "rgba(255,255,255,0.4)", fontSize: 13, fontWeight: "600" },
-  ctaBtn: { width: "100%", borderRadius: 22, overflow: "hidden", marginTop: 6 },
+  likedMore: { color: "rgba(255,255,255,0.5)", fontSize: 13, fontWeight: "600" },
+  ctaBtn: { width: "100%", borderRadius: 22, shadowColor: "#F94498", shadowOffset: { width: 0, height: 6 }, shadowOpacity: 0.4, shadowRadius: 24, elevation: 10,
+    overflow: "hidden", marginTop: 6 },
   ctaGradient: { flexDirection: "row", alignItems: "center", justifyContent: "center", paddingVertical: 18, gap: 10 },
   ctaText: { color: "#FFFFFF", fontSize: 17, fontWeight: "900", letterSpacing: 0.3, fontFamily: "Chillax-Bold" },
 });

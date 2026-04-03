@@ -645,7 +645,8 @@ function ResultScreen({ scores }: { scores: DNAScores }) {
         <Text style={styles.resultTitle}>First Class DNA Complete</Text>
         <Text style={styles.resultSub}>
           You are primarily a{" "}
-          <Text style={{ color: topMeta.color, fontWeight: "900" }}>
+          <Text style={{ color: topMeta.color, fontWeight: "900",
+      fontFamily: "Chillax-Bold" }}>
             {topMeta.label}
           </Text>
         </Text>
@@ -842,7 +843,7 @@ export default function FirstClassDNAScreen() {
       >
         {/* Intro Phase */}
         {phase === "intro" && (
-          <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 120 }}>
+          <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 130 }}>
             <View style={styles.introHero}>
               <LinearGradient
                 colors={["rgba(100,67,244,0.2)", "rgba(249,68,152,0.1)"]}
@@ -885,7 +886,7 @@ export default function FirstClassDNAScreen() {
 
         {/* Modules Overview Phase */}
         {phase === "modules" && (
-          <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 120 }}>
+          <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 130 }}>
             <View style={styles.modulesHeader}>
               <Text style={styles.modulesTitle}>
                 {completedModules.size === 0
@@ -912,7 +913,7 @@ export default function FirstClassDNAScreen() {
 
         {/* Question Phase */}
         {phase === "question" && currentQuestion && (
-          <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 120 }}>
+          <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 130 }}>
             {/* Module header */}
             <View style={[styles.moduleHeader, { borderColor: currentModule.color + "44" }]}>
               <Text style={styles.moduleHeaderIcon}>{currentModule.icon}</Text>
@@ -984,14 +985,14 @@ const styles = StyleSheet.create({
   orb1: { position: "absolute", width: width * 0.8, height: width * 0.8, borderRadius: width * 0.4, top: -width * 0.2, left: -width * 0.3, backgroundColor: "rgba(100,67,244,0.07)" },
   orb2: { position: "absolute", width: width * 0.7, height: width * 0.7, borderRadius: width * 0.35, bottom: 0, right: -width * 0.3, backgroundColor: "rgba(249,68,152,0.05)" },
   header: { flexDirection: "row", alignItems: "center", paddingHorizontal: 20, paddingVertical: 14 },
-  backBtn: { width: 36, height: 36, borderRadius: 18, backgroundColor: "rgba(255,255,255,0.08)", alignItems: "center", justifyContent: "center" },
+  backBtn: { width: 36, height: 36, borderRadius: 18, backgroundColor: "rgba(255,255,255,0.55)", alignItems: "center", justifyContent: "center" },
   backText: { color: "#FFFFFF", fontSize: 18, fontWeight: "700", fontFamily: "Chillax-Semibold" },
   headerCenter: { flex: 1, alignItems: "center" },
   headerTitle: { color: "#FFFFFF", fontSize: 17, fontWeight: "800", fontFamily: "Chillax-Bold" },
   headerSub: { color: "rgba(255,255,255,0.5)", fontSize: 12, marginTop: 2 },
   headerRight: { width: 36, alignItems: "flex-end" },
-  headerProgress: { color: "rgba(255,255,255,0.4)", fontSize: 13, fontWeight: "700", fontFamily: "Satoshi-Bold" },
-  progressTrack: { height: 3, backgroundColor: "rgba(255,255,255,0.08)", marginHorizontal: 20, borderRadius: 2 },
+  headerProgress: { color: "rgba(255,255,255,0.5)", fontSize: 13, fontWeight: "700", fontFamily: "Satoshi-Bold" },
+  progressTrack: { height: 3, backgroundColor: "rgba(255,255,255,0.55)", marginHorizontal: 20, borderRadius: 2 },
   progressFill: { height: "100%", backgroundColor: "#F94498", borderRadius: 2 },
   content: { flex: 1 },
 
@@ -1001,7 +1002,7 @@ const styles = StyleSheet.create({
   introTitle: { color: "#FFFFFF", fontSize: 28, fontWeight: "900", fontFamily: "Chillax-Bold", textAlign: "center", marginBottom: 8 },
   introSub: { color: "rgba(255,255,255,0.6)", fontSize: 15, fontFamily: "Satoshi-Regular", textAlign: "center", lineHeight: 22 },
   introStats: { flexDirection: "row", flexWrap: "wrap", paddingHorizontal: 20, gap: 12, marginBottom: 24 },
-  introStat: { width: (width - 52) / 2, backgroundColor: "rgba(255,255,255,0.05)", borderRadius: 16, padding: 14, alignItems: "center", borderWidth: 1, borderColor: "rgba(255,255,255,0.07)" },
+  introStat: { width: (width - 52) / 2, backgroundColor: "rgba(255,255,255,0.55)", borderRadius: 16, padding: 14, alignItems: "center", borderWidth: 1, borderColor: "rgba(255,255,255,0.55)" },
   introStatIcon: { fontSize: 24, marginBottom: 6 },
   introStatLabel: { color: "#FFFFFF", fontSize: 15, fontWeight: "800", fontFamily: "Chillax-Bold", marginBottom: 2 },
   introStatSub: { color: "rgba(255,255,255,0.5)", fontSize: 11, textAlign: "center" },
@@ -1013,22 +1014,22 @@ const styles = StyleSheet.create({
   introModuleDesc: { color: "rgba(255,255,255,0.5)", fontSize: 13, fontFamily: "Satoshi-Regular", flex: 1 },
 
   // Modules list
-  modulesHeader: { paddingHorizontal: 20, paddingTop: 16, paddingBottom: 12 },
+  modulesHeader: { paddingHorizontal: 20, paddingTop: 16, paddingBottom: 130 },
   modulesTitle: { color: "#FFFFFF", fontSize: 22, fontWeight: "900", fontFamily: "Chillax-Bold" },
   modulesSub: { color: "rgba(255,255,255,0.5)", fontSize: 14, fontFamily: "Satoshi-Regular", marginTop: 4 },
-  modulesList: { paddingHorizontal: 20, gap: 10, paddingBottom: 20 },
-  moduleCard: { flexDirection: "row", alignItems: "center", gap: 14, backgroundColor: "rgba(255,255,255,0.05)", borderRadius: 16, padding: 14, borderWidth: 1, borderColor: "rgba(255,255,255,0.07)" },
+  modulesList: { paddingHorizontal: 20, gap: 10, paddingBottom: 130 },
+  moduleCard: { flexDirection: "row", alignItems: "center", gap: 14, backgroundColor: "rgba(255,255,255,0.55)", borderRadius: 16, padding: 14, borderWidth: 1, borderColor: "rgba(255,255,255,0.55)" },
   moduleCardActive: { borderColor: "#6443F4", backgroundColor: "rgba(100,67,244,0.1)" },
-  moduleCardDone: { borderColor: "rgba(255,255,255,0.15)", opacity: 0.85 },
+  moduleCardDone: { borderColor: "rgba(255,255,255,0.55)", opacity: 0.85 },
   moduleIcon: { fontSize: 28 },
   moduleCardText: { flex: 1 },
   moduleCardName: { color: "#FFFFFF", fontSize: 16, fontWeight: "800", fontFamily: "Chillax-Bold" },
   moduleCardSub: { color: "rgba(255,255,255,0.5)", fontSize: 13, fontFamily: "Satoshi-Regular", marginTop: 2 },
-  moduleStatus: { width: 36, height: 36, borderRadius: 18, backgroundColor: "rgba(255,255,255,0.06)", alignItems: "center", justifyContent: "center" },
+  moduleStatus: { width: 36, height: 36, borderRadius: 18, backgroundColor: "rgba(255,255,255,0.55)", alignItems: "center", justifyContent: "center" },
   moduleStatusText: { color: "rgba(255,255,255,0.6)", fontSize: 13, fontWeight: "800", fontFamily: "Chillax-Bold" },
 
   // Module header in question phase
-  moduleHeader: { flexDirection: "row", alignItems: "center", gap: 12, marginHorizontal: 20, marginTop: 16, marginBottom: 8, padding: 14, borderRadius: 14, borderWidth: 1, backgroundColor: "rgba(255,255,255,0.03)" },
+  moduleHeader: { flexDirection: "row", alignItems: "center", gap: 12, marginHorizontal: 20, marginTop: 16, marginBottom: 8, padding: 14, borderRadius: 14, borderWidth: 1, backgroundColor: "rgba(255,255,255,0.55)" },
   moduleHeaderIcon: { fontSize: 24 },
   moduleHeaderName: { fontSize: 16, fontWeight: "800", fontFamily: "Chillax-Bold" },
   moduleHeaderSub: { color: "rgba(255,255,255,0.5)", fontSize: 13, fontFamily: "Satoshi-Regular" },
@@ -1037,7 +1038,7 @@ const styles = StyleSheet.create({
   questionWrap: { paddingHorizontal: 20, paddingTop: 8 },
   questionText: { color: "#FFFFFF", fontSize: 20, fontWeight: "800", fontFamily: "Chillax-Bold", lineHeight: 28, marginBottom: 20 },
   optionsWrap: { gap: 12 },
-  optionCard: { backgroundColor: "rgba(255,255,255,0.05)", borderRadius: 16, padding: 16, borderWidth: 1.5, borderColor: "rgba(255,255,255,0.08)", flexDirection: "row", alignItems: "center", gap: 12 },
+  optionCard: { backgroundColor: "rgba(255,255,255,0.55)", borderRadius: 16, padding: 16, borderWidth: 1.5, borderColor: "rgba(255,255,255,0.55)", flexDirection: "row", alignItems: "center", gap: 12 },
   optionCheck: { width: 24, height: 24, borderRadius: 12, alignItems: "center", justifyContent: "center" },
   optionCheckText: { color: "#FFFFFF", fontSize: 12, fontWeight: "900", fontFamily: "Satoshi-Bold" },
   optionLabel: { color: "rgba(255,255,255,0.85)", fontSize: 15, fontFamily: "Satoshi-Regular", lineHeight: 21, flex: 1 },
@@ -1052,24 +1053,25 @@ const styles = StyleSheet.create({
   discountText: { color: "#FFFFFF", fontSize: 14, fontWeight: "800", fontFamily: "Chillax-Bold" },
   resultSection: { marginHorizontal: 20, marginBottom: 24 },
   resultSectionTitle: { color: "#FFFFFF", fontSize: 18, fontWeight: "800", fontFamily: "Chillax-Bold", marginBottom: 4 },
-  resultSectionSub: { color: "rgba(255,255,255,0.4)", fontSize: 13, fontFamily: "Satoshi-Regular", marginBottom: 14 },
-  dimensionsCard: { backgroundColor: "rgba(255,255,255,0.04)", borderRadius: 20, padding: 16, gap: 14, borderWidth: 1, borderColor: "rgba(255,255,255,0.07)" },
+  resultSectionSub: { color: "rgba(255,255,255,0.5)", fontSize: 13, fontFamily: "Satoshi-Regular", marginBottom: 14 },
+  dimensionsCard: { backgroundColor: "rgba(255,255,255,0.55)", borderRadius: 20, padding: 16, gap: 14, borderWidth: 1, borderColor: "rgba(255,255,255,0.55)" },
   dimensionRow: { flexDirection: "row", alignItems: "center", gap: 8 },
   dimensionLeft: { flexDirection: "row", alignItems: "center", gap: 8, width: 145 },
   dimensionIcon: { fontSize: 18 },
   dimensionLabel: { color: "rgba(255,255,255,0.85)", fontSize: 13, fontWeight: "700", fontFamily: "Satoshi-Medium" },
   dimensionRight: { flex: 1, flexDirection: "row", alignItems: "center", gap: 8 },
-  dimensionTrack: { flex: 1, height: 7, backgroundColor: "rgba(255,255,255,0.08)", borderRadius: 4, overflow: "hidden" },
+  dimensionTrack: { flex: 1, height: 7, backgroundColor: "rgba(255,255,255,0.55)", borderRadius: 4, overflow: "hidden" },
   dimensionFill: { height: "100%", borderRadius: 4 },
   dimensionScore: { fontSize: 14, fontWeight: "900", fontFamily: "Satoshi-Bold", width: 32, textAlign: "right" },
   insightCards: { gap: 10 },
-  insightCard: { backgroundColor: "rgba(255,255,255,0.04)", borderRadius: 14, padding: 14, flexDirection: "row", alignItems: "flex-start", gap: 10, borderLeftWidth: 3 },
+  insightCard: { backgroundColor: "rgba(255,255,255,0.55)", borderRadius: 14, padding: 14, flexDirection: "row", alignItems: "flex-start", gap: 10, borderLeftWidth: 3 },
   insightIcon: { fontSize: 20, marginTop: 1 },
   insightText: { flex: 1, color: "rgba(255,255,255,0.7)", fontSize: 14, fontFamily: "Satoshi-Regular", lineHeight: 20 },
 
   // CTA
   cta: { position: "absolute", bottom: 0, left: 0, right: 0, paddingHorizontal: 20, paddingTop: 12, backgroundColor: "#0D0628" },
-  ctaBtn: { borderRadius: 18, overflow: "hidden" },
+  ctaBtn: { borderRadius: 18, shadowColor: "#F94498", shadowOffset: { width: 0, height: 6 }, shadowOpacity: 0.4, shadowRadius: 24, elevation: 10,
+    overflow: "hidden" },
   ctaGrad: { paddingVertical: 18, alignItems: "center" },
   ctaText: { color: "#FFFFFF", fontSize: 17, fontWeight: "800", fontFamily: "Chillax-Bold" },
 });

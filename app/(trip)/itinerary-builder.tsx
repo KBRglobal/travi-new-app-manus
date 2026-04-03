@@ -292,10 +292,10 @@ export default function ItineraryBuilderScreen() {
               {/* Reorder controls */}
               <View style={S.reorderControls}>
                 <TouchableOpacity style={[S.reorderBtn, idx === 0 && S.reorderBtnDisabled]} onPress={() => handleMoveUp(idx)} activeOpacity={0.8}>
-                  <IconSymbol name="chevron.up" size={14} color={idx === 0 ? "rgba(255,255,255,0.2)" : "#FFFFFF"} />
+                  <IconSymbol name="chevron.up" size={14} color={idx === 0 ? "rgba(255,255,255,0.55)" : "#FFFFFF"} />
                 </TouchableOpacity>
                 <TouchableOpacity style={[S.reorderBtn, idx === (currentDay?.stops.length ?? 0) - 1 && S.reorderBtnDisabled]} onPress={() => handleMoveDown(idx)} activeOpacity={0.8}>
-                  <IconSymbol name="chevron.down" size={14} color={idx === (currentDay?.stops.length ?? 0) - 1 ? "rgba(255,255,255,0.2)" : "#FFFFFF"} />
+                  <IconSymbol name="chevron.down" size={14} color={idx === (currentDay?.stops.length ?? 0) - 1 ? "rgba(255,255,255,0.55)" : "#FFFFFF"} />
                 </TouchableOpacity>
               </View>
 
@@ -383,29 +383,29 @@ const S = StyleSheet.create({
   orb1: { position: "absolute", width: 400, height: 400, borderRadius: 200, top: -150, right: -100, backgroundColor: "rgba(100,67,244,0.07)" },
   orb2: { position: "absolute", width: 250, height: 250, borderRadius: 125, bottom: 100, left: -80, backgroundColor: "rgba(249,68,152,0.05)" },
 
-  header: { flexDirection: "row", alignItems: "center", paddingHorizontal: 16, paddingBottom: 12, gap: 12 },
-  backBtn: { width: 40, height: 40, borderRadius: 20, backgroundColor: "rgba(255,255,255,0.08)", alignItems: "center", justifyContent: "center" },
+  header: { flexDirection: "row", alignItems: "center", paddingHorizontal: 16, paddingBottom: 130, gap: 12 },
+  backBtn: { width: 40, height: 40, borderRadius: 20, backgroundColor: "rgba(255,255,255,0.55)", alignItems: "center", justifyContent: "center" },
   headerCenter: { flex: 1 },
   headerTitle: { color: "#FFFFFF", fontSize: 18, fontWeight: "900", fontFamily: "Chillax-Bold" },
-  headerSub: { color: "rgba(255,255,255,0.4)", fontSize: 12, marginTop: 1 },
+  headerSub: { color: "rgba(255,255,255,0.5)", fontSize: 12, marginTop: 1 },
   optimizeBtn: { borderRadius: 14, overflow: "hidden", flexDirection: "row", alignItems: "center", gap: 6, paddingHorizontal: 12, paddingVertical: 8, borderWidth: 1, borderColor: "rgba(100,67,244,0.4)" },
   optimizeBtnText: { color: "#FFFFFF", fontSize: 12, fontWeight: "700" },
 
   daySelectorWrap: { marginBottom: 0 },
   daySelector: { paddingHorizontal: 16, paddingVertical: 8, gap: 8 },
-  dayTab: { borderRadius: 16, overflow: "hidden", paddingHorizontal: 16, paddingVertical: 10, alignItems: "center", minWidth: 80, borderWidth: 1, borderColor: "rgba(255,255,255,0.1)", backgroundColor: "rgba(255,255,255,0.04)" },
+  dayTab: { borderRadius: 16, overflow: "hidden", paddingHorizontal: 16, paddingVertical: 10, alignItems: "center", minWidth: 80, borderWidth: 1, borderColor: "rgba(255,255,255,0.55)", backgroundColor: "rgba(255,255,255,0.55)" },
   dayTabActive: { borderColor: "transparent" },
   dayTabEmoji: { fontSize: 18, marginBottom: 2 },
   dayTabLabel: { color: "rgba(255,255,255,0.5)", fontSize: 12, fontWeight: "700" },
   dayTabLabelActive: { color: "#FFFFFF" },
-  dayTabDate: { color: "rgba(255,255,255,0.3)", fontSize: 10, marginTop: 1 },
+  dayTabDate: { color: "rgba(255,255,255,0.55)", fontSize: 10, marginTop: 1 },
   dayTabDateActive: { color: "rgba(255,255,255,0.7)" },
 
   daySummary: { marginHorizontal: 16, marginBottom: 12, borderRadius: 16, overflow: "hidden", padding: 12, borderWidth: 1, borderColor: "rgba(100,67,244,0.25)" },
   daySummaryTheme: { color: "#FFFFFF", fontSize: 15, fontWeight: "800", marginBottom: 6, fontFamily: "Chillax-Bold" },
   daySummaryMeta: { flexDirection: "row", flexWrap: "wrap", gap: 10 },
   daySummaryItem: { color: "rgba(255,255,255,0.5)", fontSize: 12 },
-  daySummaryCashback: { color: "#FFD700", fontSize: 12, fontWeight: "700" },
+  daySummaryCashback: { color: "#FBBF24", fontSize: 12, fontWeight: "700" },
 
   stopsList: { paddingHorizontal: 16 },
   stopWrapper: { marginBottom: 4 },
@@ -419,24 +419,26 @@ const S = StyleSheet.create({
   stopCard: { borderRadius: 20, overflow: "hidden", marginBottom: 8, height: 200 },
   stopImage: { width: "100%", height: 200 },
   mustSeeBadge: { position: "absolute", top: 12, left: 12, backgroundColor: "rgba(255,215,0,0.9)", borderRadius: 10, paddingHorizontal: 8, paddingVertical: 4 },
-  mustSeeBadgeText: { color: "#000", fontSize: 11, fontWeight: "800" },
+  mustSeeBadgeText: { color: "#000", fontSize: 11, fontWeight: "800",
+      fontFamily: "Chillax-Bold" },
   reorderControls: { position: "absolute", top: 12, right: 44, flexDirection: "column", gap: 4 },
-  reorderBtn: { width: 28, height: 28, borderRadius: 8, backgroundColor: "rgba(0,0,0,0.5)", alignItems: "center", justifyContent: "center", borderWidth: 1, borderColor: "rgba(255,255,255,0.2)" },
+  reorderBtn: { width: 28, height: 28, borderRadius: 8, backgroundColor: "rgba(0,0,0,0.5)", alignItems: "center", justifyContent: "center", borderWidth: 1, borderColor: "rgba(255,255,255,0.55)" },
   reorderBtnDisabled: { opacity: 0.3 },
-  removeBtn: { position: "absolute", top: 12, right: 12, width: 28, height: 28, borderRadius: 8, backgroundColor: "rgba(0,0,0,0.5)", alignItems: "center", justifyContent: "center", borderWidth: 1, borderColor: "rgba(255,255,255,0.2)" },
+  removeBtn: { position: "absolute", top: 12, right: 12, width: 28, height: 28, borderRadius: 8, backgroundColor: "rgba(0,0,0,0.5)", alignItems: "center", justifyContent: "center", borderWidth: 1, borderColor: "rgba(255,255,255,0.55)" },
   stopContent: { position: "absolute", bottom: 0, left: 0, right: 0, padding: 14, gap: 4 },
   stopTimeRow: { flexDirection: "row", alignItems: "center", gap: 6 },
   stopTime: { color: "#FFFFFF", fontSize: 13, fontWeight: "800", fontFamily: "Chillax-Bold" },
   stopEndTime: { color: "rgba(255,255,255,0.5)", fontSize: 12 },
-  stopDuration: { color: "rgba(255,255,255,0.4)", fontSize: 11, marginLeft: "auto" },
+  stopDuration: { color: "rgba(255,255,255,0.5)", fontSize: 11, marginLeft: "auto" },
   stopTitle: { color: "#FFFFFF", fontSize: 16, fontWeight: "800", lineHeight: 20, fontFamily: "Chillax-Bold" },
-  stopArea: { color: "rgba(255,255,255,0.4)", fontSize: 11 },
+  stopArea: { color: "rgba(255,255,255,0.5)", fontSize: 11 },
   stopFooter: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginTop: 4 },
   stopPriceRow: { flexDirection: "row", alignItems: "center", gap: 8 },
   stopPrice: { color: "#FFFFFF", fontSize: 16, fontWeight: "900", fontFamily: "Chillax-Bold" },
-  stopCashback: { color: "#FFD700", fontSize: 11, fontWeight: "700" },
+  stopCashback: { color: "#FBBF24", fontSize: 11, fontWeight: "700" },
   stopFree: { color: "#22C55E", fontSize: 14, fontWeight: "700" },
-  bookBtn: { borderRadius: 12, overflow: "hidden", paddingHorizontal: 14, paddingVertical: 8 },
+  bookBtn: { borderRadius: 12, shadowColor: "#F94498", shadowOffset: { width: 0, height: 6 }, shadowOpacity: 0.4, shadowRadius: 24, elevation: 10,
+    overflow: "hidden", paddingHorizontal: 14, paddingVertical: 8 },
   bookBtnText: { color: "#FFFFFF", fontSize: 13, fontWeight: "800", fontFamily: "Chillax-Bold" },
 
   addActivityBtn: { borderRadius: 18, overflow: "hidden", padding: 16, flexDirection: "row", alignItems: "center", gap: 10, borderWidth: 1.5, borderColor: "rgba(100,67,244,0.3)", borderStyle: "dashed", marginTop: 8 },
@@ -446,9 +448,9 @@ const S = StyleSheet.create({
   bottomCtaGradient: { position: "absolute", top: 0, left: 0, right: 0, bottom: 0 },
   bottomCtaRow: { flexDirection: "row", alignItems: "center", gap: 12 },
   totalSummary: { flex: 1 },
-  totalLabel: { color: "rgba(255,255,255,0.4)", fontSize: 12 },
+  totalLabel: { color: "rgba(255,255,255,0.5)", fontSize: 12 },
   totalValue: { color: "#FFFFFF", fontSize: 22, fontWeight: "900", fontFamily: "Chillax-Bold" },
-  totalCashback: { color: "#FFD700", fontSize: 12, fontWeight: "700" },
+  totalCashback: { color: "#FBBF24", fontSize: 12, fontWeight: "700" },
   confirmTripBtn: { borderRadius: 18, overflow: "hidden", paddingHorizontal: 20, paddingVertical: 16 },
   confirmTripBtnText: { color: "#FFFFFF", fontSize: 15, fontWeight: "800", fontFamily: "Chillax-Bold" },
 });

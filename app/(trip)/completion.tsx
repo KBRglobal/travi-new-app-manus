@@ -8,7 +8,7 @@ import { useStore } from "@/lib/store";
 import * as Haptics from "expo-haptics";
 
 const { width, height } = Dimensions.get("window");
-const CONFETTI_COLORS = ["#6443F4", "#F94498", "#FFD700", "#4CAF50", "#00BCD4", "#FF6B35", "#C084FC"];
+const CONFETTI_COLORS = ["#6443F4", "#F94498", "#FBBF24", "#4CAF50", "#00BCD4", "#FF6B35", "#C084FC"];
 
 function ConfettiPiece({ color, delay }: { color: string; delay: number }) {
   const anim = useRef(new Animated.Value(0)).current;
@@ -91,7 +91,7 @@ export default function CompletionScreen() {
           <LinearGradient colors={["rgba(123,47,190,0.4)", "rgba(233,30,140,0.25)"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={StyleSheet.absoluteFillObject} />
           <View style={styles.pointsCardInner}>
             <View style={styles.pointsStarWrap}>
-              <LinearGradient colors={["#FFD700", "#FFA000"]} style={styles.pointsStarGradient}>
+              <LinearGradient colors={["#FBBF24", "#FFA000"]} style={styles.pointsStarGradient}>
                 <IconSymbol name="star.fill" size={28} color="#FFFFFF" />
               </LinearGradient>
             </View>
@@ -106,7 +106,7 @@ export default function CompletionScreen() {
           </View>
         </Animated.View>
         <Animated.View style={[styles.detailsCard, { opacity: fadeAnim }]}>
-          <LinearGradient colors={["rgba(255,255,255,0.06)", "rgba(255,255,255,0.02)"]} style={StyleSheet.absoluteFillObject} />
+          <LinearGradient colors={["rgba(255,255,255,0.55)", "rgba(255,255,255,0.55)"]} style={StyleSheet.absoluteFillObject} />
           <View style={styles.detailRow}>
             <View style={styles.detailIconWrap}><IconSymbol name="location.fill" size={16} color="#C084FC" /></View>
             <Text style={styles.detailLabel}>Destination</Text>
@@ -160,7 +160,7 @@ export default function CompletionScreen() {
           }}
           activeOpacity={0.88}
         >
-          <LinearGradient colors={["rgba(255,255,255,0.08)", "rgba(255,255,255,0.04)"]} style={styles.liveBtnGradient}>
+          <LinearGradient colors={["rgba(255,255,255,0.55)", "rgba(255,255,255,0.55)"]} style={styles.liveBtnGradient}>
             <View style={styles.liveDot} />
             <Text style={styles.liveBtnText}>Open Live Trip Mode</Text>
           </LinearGradient>
@@ -189,14 +189,14 @@ const styles = StyleSheet.create({
   pointsLabel: { color: "rgba(255,255,255,0.5)", fontSize: 12 },
   pointsCount: { color: "#FFFFFF", fontSize: 24, fontWeight: "900", fontFamily: "Satoshi-Bold" },
   pointsValueBadge: { alignItems: "center" },
-  pointsValueText: { color: "#FFD700", fontSize: 20, fontWeight: "900", fontFamily: "Satoshi-Bold" },
+  pointsValueText: { color: "#FBBF24", fontSize: 20, fontWeight: "900", fontFamily: "Satoshi-Bold" },
   pointsValueSub: { color: "rgba(255,215,0,0.6)", fontSize: 11 },
-  detailsCard: { width: "100%", borderRadius: 20, overflow: "hidden", borderWidth: 1, borderColor: "rgba(255,255,255,0.08)", padding: 4 },
+  detailsCard: { width: "100%", borderRadius: 20, overflow: "hidden", borderWidth: 1, borderColor: "rgba(255,255,255,0.55)", padding: 4 },
   detailRow: { flexDirection: "row", alignItems: "center", paddingHorizontal: 16, paddingVertical: 12, gap: 12 },
   detailIconWrap: { width: 32, height: 32, borderRadius: 10, backgroundColor: "rgba(192,132,252,0.1)", alignItems: "center", justifyContent: "center" },
   detailLabel: { flex: 1, color: "rgba(255,255,255,0.5)", fontSize: 14, fontFamily: "Satoshi-Regular" },
   detailValue: { color: "#FFFFFF", fontSize: 14, fontWeight: "700", fontFamily: "Satoshi-Medium" },
-  detailDivider: { height: 1, backgroundColor: "rgba(255,255,255,0.05)", marginHorizontal: 16 },
+  detailDivider: { height: 1, backgroundColor: "rgba(255,255,255,0.55)", marginHorizontal: 16 },
   duckRow: { flexDirection: "row", alignItems: "flex-end", gap: 10, width: "100%" },
   duckAvatar: { width: 40, height: 40, borderRadius: 20, overflow: "hidden" },
   duckGradient: { flex: 1, alignItems: "center", justifyContent: "center" },
@@ -204,12 +204,13 @@ const styles = StyleSheet.create({
   duckBubble: { flex: 1, borderRadius: 16, borderBottomLeftRadius: 4, overflow: "hidden" },
   duckBubbleGradient: { paddingHorizontal: 14, paddingVertical: 10, borderRadius: 16, borderBottomLeftRadius: 4, borderWidth: 1, borderColor: "rgba(123,47,190,0.4)" },
   duckMessage: { color: "#FFFFFF", fontSize: 14, fontWeight: "600", fontFamily: "Satoshi-Medium", lineHeight: 20 },
-  ctaWrap: { paddingHorizontal: 24, paddingBottom: 48, gap: 12 },
-  ctaBtn: { borderRadius: 20, overflow: "hidden" },
+  ctaWrap: { paddingHorizontal: 24, paddingBottom: 130, gap: 12 },
+  ctaBtn: { borderRadius: 20, shadowColor: "#F94498", shadowOffset: { width: 0, height: 6 }, shadowOpacity: 0.4, shadowRadius: 24, elevation: 10,
+    overflow: "hidden" },
   ctaGradient: { flexDirection: "row", alignItems: "center", justifyContent: "center", paddingVertical: 18, gap: 10, borderRadius: 20 },
   ctaText: { color: "#FFFFFF", fontSize: 18, fontWeight: "800", fontFamily: "Chillax-Bold" },
   liveBtn: { borderRadius: 16, overflow: "hidden" },
-  liveBtnGradient: { flexDirection: "row", alignItems: "center", justifyContent: "center", paddingVertical: 14, gap: 8, borderRadius: 16, borderWidth: 1, borderColor: "rgba(255,255,255,0.1)" },
+  liveBtnGradient: { flexDirection: "row", alignItems: "center", justifyContent: "center", paddingVertical: 14, gap: 8, borderRadius: 16, borderWidth: 1, borderColor: "rgba(255,255,255,0.55)" },
   liveDot: { width: 8, height: 8, borderRadius: 4, backgroundColor: "#4CAF50" },
   liveBtnText: { color: "rgba(255,255,255,0.8)", fontSize: 15, fontWeight: "600", fontFamily: "Satoshi-Medium" },
 });

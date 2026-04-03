@@ -74,7 +74,7 @@ const EVENTS: EventItem[] = [
   {
     id: "e8", title: "Santorini Wine Festival", venue: "Pyrgos Village", city: "Santorini",
     date: "May 20–22, 2026", time: "5:00 PM", price: "€35–120", category: "Food & Wine",
-    image: require("@/assets/destinations/santorini.jpg"), badge: "Exclusive", badgeColor: "#FFD700",
+    image: require("@/assets/destinations/santorini.jpg"), badge: "Exclusive", badgeColor: "#FBBF24",
     attending: 1200,
   },
 ];
@@ -221,13 +221,13 @@ export default function EventsScreen() {
 
 const S = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#0D0628" },
-  header: { flexDirection: "row", alignItems: "center", gap: 12, paddingTop: 56, paddingHorizontal: 16, paddingBottom: 16 },
-  backBtn: { width: 36, height: 36, borderRadius: 12, backgroundColor: "rgba(255,255,255,0.08)", alignItems: "center", justifyContent: "center" },
+  header: { flexDirection: "row", alignItems: "center", gap: 12, paddingTop: 56, paddingHorizontal: 16, paddingBottom: 130 },
+  backBtn: { width: 36, height: 36, borderRadius: 12, backgroundColor: "rgba(255,255,255,0.55)", alignItems: "center", justifyContent: "center" },
   headerTitle: { color: "#FFFFFF", fontSize: 22, fontWeight: "900", fontFamily: "Chillax-Bold" },
-  headerSub: { color: "rgba(255,255,255,0.4)", fontSize: 12, marginTop: 1 },
+  headerSub: { color: "rgba(255,255,255,0.5)", fontSize: 12, marginTop: 1 },
   savedBadge: { backgroundColor: "rgba(100,67,244,0.2)", borderRadius: 10, paddingHorizontal: 10, paddingVertical: 5, borderWidth: 1, borderColor: "rgba(100,67,244,0.3)" },
   savedBadgeText: { color: "#C084FC", fontSize: 12, fontWeight: "800", fontFamily: "Chillax-Bold" },
-  content: { paddingBottom: 48, gap: 20 },
+  content: { paddingBottom: 130, gap: 20 },
 
   sectionTitle: { color: "#FFFFFF", fontSize: 18, fontWeight: "800", fontFamily: "Chillax-Bold" },
 
@@ -240,19 +240,19 @@ const S = StyleSheet.create({
   featuredVenue: { color: "rgba(255,255,255,0.6)", fontSize: 12 },
   featuredMeta: { flexDirection: "row", justifyContent: "space-between", alignItems: "center" },
   featuredDate: { color: "rgba(255,255,255,0.55)", fontSize: 12 },
-  featuredPrice: { color: "#FFD700", fontSize: 13, fontWeight: "800", fontFamily: "Chillax-Bold" },
+  featuredPrice: { color: "#FBBF24", fontSize: 13, fontWeight: "800", fontFamily: "Chillax-Bold" },
 
   categoriesRow: { paddingHorizontal: 16, gap: 8 },
-  catChip: { borderRadius: 20, overflow: "hidden", paddingHorizontal: 14, paddingVertical: 8, borderWidth: 1, borderColor: "rgba(255,255,255,0.12)" },
+  catChip: { borderRadius: 20, overflow: "hidden", paddingHorizontal: 14, paddingVertical: 8, borderWidth: 1, borderColor: "rgba(255,255,255,0.55)" },
   catChipActive: { borderColor: "transparent" },
   catText: { color: "rgba(255,255,255,0.5)", fontSize: 13, fontWeight: "600", fontFamily: "Satoshi-Medium" },
   catTextActive: { color: "#FFFFFF" },
 
   listSection: { paddingHorizontal: 16, gap: 12 },
   listHeader: { flexDirection: "row", justifyContent: "space-between", alignItems: "center" },
-  listCount: { color: "rgba(255,255,255,0.35)", fontSize: 13, fontFamily: "Satoshi-Regular" },
+  listCount: { color: "rgba(255,255,255,0.55)", fontSize: 13, fontFamily: "Satoshi-Regular" },
 
-  eventCard: { backgroundColor: "rgba(255,255,255,0.05)", borderRadius: 18, overflow: "hidden", borderWidth: 1, borderColor: "rgba(255,255,255,0.07)" },
+  eventCard: { backgroundColor: "rgba(255,255,255,0.55)", borderRadius: 18, overflow: "hidden", borderWidth: 1, borderColor: "rgba(255,255,255,0.55)" },
   eventImageWrap: { height: 140, position: "relative" },
   eventImg: { width: "100%", height: "100%" },
   eventBadge: { position: "absolute", top: 10, left: 10, borderRadius: 8, paddingHorizontal: 8, paddingVertical: 4 },
@@ -260,8 +260,8 @@ const S = StyleSheet.create({
   eventBody: { padding: 14, gap: 8 },
   eventTop: { flexDirection: "row", alignItems: "flex-start", gap: 8 },
   eventTitle: { color: "#FFFFFF", fontSize: 15, fontWeight: "800", lineHeight: 20, fontFamily: "Chillax-Bold" },
-  eventVenue: { color: "rgba(255,255,255,0.4)", fontSize: 12, marginTop: 2 },
-  saveBtn: { width: 34, height: 34, borderRadius: 10, backgroundColor: "rgba(255,255,255,0.07)", alignItems: "center", justifyContent: "center" },
+  eventVenue: { color: "rgba(255,255,255,0.5)", fontSize: 12, marginTop: 2 },
+  saveBtn: { width: 34, height: 34, borderRadius: 10, backgroundColor: "rgba(255,255,255,0.55)", alignItems: "center", justifyContent: "center" },
   saveBtnActive: { backgroundColor: "rgba(249,68,152,0.15)" },
   eventMeta: { flexDirection: "row", gap: 14 },
   eventMetaItem: { flexDirection: "row", alignItems: "center", gap: 4 },
@@ -269,8 +269,9 @@ const S = StyleSheet.create({
   eventMetaText: { color: "rgba(255,255,255,0.5)", fontSize: 12 },
   eventBottom: { flexDirection: "row", justifyContent: "space-between", alignItems: "center" },
   attendingRow: {},
-  attendingText: { color: "rgba(255,255,255,0.4)", fontSize: 12 },
-  eventPrice: { color: "#FFD700", fontSize: 14, fontWeight: "800", fontFamily: "Chillax-Bold" },
-  bookBtn: { borderRadius: 12, overflow: "hidden", paddingVertical: 11, alignItems: "center" },
+  attendingText: { color: "rgba(255,255,255,0.5)", fontSize: 12 },
+  eventPrice: { color: "#FBBF24", fontSize: 14, fontWeight: "800", fontFamily: "Chillax-Bold" },
+  bookBtn: { borderRadius: 12, shadowColor: "#F94498", shadowOffset: { width: 0, height: 6 }, shadowOpacity: 0.4, shadowRadius: 24, elevation: 10,
+    overflow: "hidden", paddingVertical: 11, alignItems: "center" },
   bookBtnText: { color: "#FFFFFF", fontSize: 14, fontWeight: "800", fontFamily: "Chillax-Bold" },
 });

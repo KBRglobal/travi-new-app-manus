@@ -13,8 +13,8 @@ interface GlassCardProps {
 export function GlassCard({
   children,
   style,
-  gradient = ["rgba(255,255,255,0.07)", "rgba(255,255,255,0.03)"],
-  borderColor = "rgba(255,255,255,0.1)",
+  gradient = ["rgba(255,255,255,0.55)", "rgba(255,255,255,0.55)"],
+  borderColor = "rgba(255,255,255,0.55)",
   padding = 18,
 }: GlassCardProps) {
   return (

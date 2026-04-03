@@ -5,7 +5,7 @@ import { useStore } from "@/lib/store";
 import { useAuth } from "@/hooks/use-auth";
 
 export default function Index() {
-  const { state } = useStore();
+  const { state, dispatch } = useStore();
   const { isAuthenticated: oauthAuthenticated, loading: authLoading } = useAuth();
 
   useEffect(() => {
@@ -13,6 +13,18 @@ export default function Index() {
     if (authLoading) return;
 
     const timer = setTimeout(() => {
+      // Check if guest session has expired (25-hour timer)
+      const guestExpired = state.isGuest && state.guestExpiresAt
+        ? new Date(state.guestExpiresAt).getTime() < Date.now()
+        : false;
+
+      if (guestExpired) {
+        // Guest session expired — clear state and send to sign-up
+        dispatch({ type: "LOGOUT" });
+        router.replace("/(auth)/sign-up" as never);
+        return;
+      }
+
       // Real OAuth session takes priority over local store auth
       if (oauthAuthenticated) {
         router.replace("/(tabs)" as never);
@@ -27,7 +39,7 @@ export default function Index() {
       }
     }, 100);
     return () => clearTimeout(timer);
-  }, [oauthAuthenticated, authLoading, state.isAuthenticated, state.isGuest, state.onboardingCompleted]);
+  }, [oauthAuthenticated, authLoading, state.isAuthenticated, state.isGuest, state.onboardingCompleted, state.guestExpiresAt, dispatch]);
 
   return (
     <View style={{ flex: 1, backgroundColor: "#1A0533", justifyContent: "center", alignItems: "center" }}>

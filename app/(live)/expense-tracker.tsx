@@ -193,7 +193,7 @@ export default function ExpenseTrackerScreen() {
       <FlatList
         data={expenses}
         keyExtractor={(item) => item.id}
-        contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 100, gap: 10 }}
+        contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 130, gap: 10 }}
         showsVerticalScrollIndicator={false}
         renderItem={({ item }) => <ExpenseCard item={item} />}
       />
@@ -224,7 +224,7 @@ export default function ExpenseTrackerScreen() {
 
           {/* Category */}
           <Text style={S.sheetLabel}>Category</Text>
-          <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: 8, paddingBottom: 4 }}>
+          <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: 8, paddingBottom: 130 }}>
             {CATEGORIES.map((cat) => (
               <TouchableOpacity
                 key={cat.id}
@@ -282,23 +282,23 @@ export default function ExpenseTrackerScreen() {
 // ─── Styles ───────────────────────────────────────────────────────────────────
 const S = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#0D1B2A" },
-  header: { flexDirection: "row", alignItems: "center", paddingHorizontal: 16, paddingBottom: 12, paddingTop: 4 },
+  header: { flexDirection: "row", alignItems: "center", paddingHorizontal: 16, paddingBottom: 130, paddingTop: 4 },
   backBtn: { width: 40, height: 40, alignItems: "center", justifyContent: "center" },
   headerTitle: { color: "#FFF", fontSize: 18, fontFamily: "Chillax-Bold", fontWeight: "800", flex: 1, textAlign: "center" },
   addBtn: { width: 40, height: 40, borderRadius: 12, overflow: "hidden" },
   addBtnGrad: { flex: 1, alignItems: "center", justifyContent: "center" },
 
-  summaryRow: { paddingHorizontal: 16, gap: 10, paddingBottom: 12 },
+  summaryRow: { paddingHorizontal: 16, gap: 10, paddingBottom: 130 },
   summaryCard: { width: 140, borderRadius: 16, padding: 14, gap: 4, overflow: "hidden", borderWidth: 1, borderColor: "rgba(100,67,244,0.3)" },
   summaryLabel: { color: "#9BA1A6", fontSize: 11, fontFamily: "Chillax-Semibold", fontWeight: "600", textTransform: "uppercase" },
   summaryValue: { color: "#FFF", fontSize: 24, fontFamily: "Chillax-Bold", fontWeight: "800" },
   summaryMeta: { color: "#5A4D72", fontSize: 11, fontFamily: "Satoshi-Regular" },
 
-  breakdownRow: { flexDirection: "row", flexWrap: "wrap", gap: 8, paddingHorizontal: 16, paddingBottom: 12 },
-  breakdownPill: { flexDirection: "row", alignItems: "center", gap: 6, backgroundColor: "rgba(255,255,255,0.05)", borderRadius: 10, paddingHorizontal: 10, paddingVertical: 6, borderWidth: 1, borderColor: "rgba(255,255,255,0.08)" },
+  breakdownRow: { flexDirection: "row", flexWrap: "wrap", gap: 8, paddingHorizontal: 16, paddingBottom: 130 },
+  breakdownPill: { flexDirection: "row", alignItems: "center", gap: 6, backgroundColor: "rgba(255,255,255,0.55)", borderRadius: 10, paddingHorizontal: 10, paddingVertical: 6, borderWidth: 1, borderColor: "rgba(255,255,255,0.55)" },
   breakdownAmt: { fontSize: 13, fontFamily: "Chillax-Semibold", fontWeight: "700" },
 
-  expenseCard: { flexDirection: "row", alignItems: "center", gap: 12, backgroundColor: "rgba(255,255,255,0.04)", borderRadius: 16, padding: 14, borderWidth: 1, borderColor: "rgba(255,255,255,0.07)" },
+  expenseCard: { flexDirection: "row", alignItems: "center", gap: 12, backgroundColor: "rgba(255,255,255,0.55)", borderRadius: 16, padding: 14, borderWidth: 1, borderColor: "rgba(255,255,255,0.55)" },
   expenseCatDot: { width: 44, height: 44, borderRadius: 12, alignItems: "center", justifyContent: "center", borderWidth: 1 },
   expenseInfo: { flex: 1, gap: 3 },
   expenseTitle: { color: "#FFF", fontSize: 14, fontFamily: "Chillax-Semibold", fontWeight: "700" },
@@ -310,15 +310,15 @@ const S = StyleSheet.create({
   expenseTheyOwe: { color: "#22C55E", fontSize: 11, fontFamily: "Chillax-Semibold", fontWeight: "600" },
 
   overlay: { ...StyleSheet.absoluteFillObject, backgroundColor: "rgba(0,0,0,0.6)" },
-  sheet: { position: "absolute", bottom: 0, left: 0, right: 0, borderTopLeftRadius: 28, borderTopRightRadius: 28, overflow: "hidden", padding: 20, paddingBottom: 40, gap: 14 },
-  sheetHandle: { width: 36, height: 4, borderRadius: 2, backgroundColor: "rgba(255,255,255,0.2)", alignSelf: "center", marginBottom: 4 },
+  sheet: { position: "absolute", bottom: 0, left: 0, right: 0, borderTopLeftRadius: 28, borderTopRightRadius: 28, overflow: "hidden", padding: 20, paddingBottom: 130, gap: 14 },
+  sheetHandle: { width: 36, height: 4, borderRadius: 2, backgroundColor: "rgba(255,255,255,0.55)", alignSelf: "center", marginBottom: 4 },
   sheetTitle: { color: "#FFF", fontSize: 18, fontFamily: "Chillax-Bold", fontWeight: "800" },
   sheetLabel: { color: "#9BA1A6", fontSize: 12, fontFamily: "Chillax-Semibold", fontWeight: "700", textTransform: "uppercase", marginTop: 4 },
-  input: { backgroundColor: "rgba(255,255,255,0.06)", borderRadius: 14, padding: 14, color: "#FFF", fontSize: 15, fontFamily: "Satoshi-Regular", borderWidth: 1, borderColor: "rgba(255,255,255,0.1)" },
-  catChip: { flexDirection: "row", alignItems: "center", gap: 6, borderRadius: 12, paddingHorizontal: 12, paddingVertical: 8, borderWidth: 1, borderColor: "rgba(255,255,255,0.1)", backgroundColor: "rgba(255,255,255,0.04)" },
+  input: { backgroundColor: "rgba(255,255,255,0.55)", borderRadius: 14, padding: 14, color: "#FFF", fontSize: 15, fontFamily: "Satoshi-Regular", borderWidth: 1, borderColor: "rgba(255,255,255,0.55)" },
+  catChip: { flexDirection: "row", alignItems: "center", gap: 6, borderRadius: 12, paddingHorizontal: 12, paddingVertical: 8, borderWidth: 1, borderColor: "rgba(255,255,255,0.55)", backgroundColor: "rgba(255,255,255,0.55)" },
   catChipText: { color: "#9BA1A6", fontSize: 13, fontFamily: "Chillax-Semibold", fontWeight: "600" },
   paidByRow: { flexDirection: "row", gap: 8, flexWrap: "wrap" },
-  paidByChip: { borderRadius: 12, paddingHorizontal: 14, paddingVertical: 8, borderWidth: 1, borderColor: "rgba(255,255,255,0.1)", backgroundColor: "rgba(255,255,255,0.04)" },
+  paidByChip: { borderRadius: 12, paddingHorizontal: 14, paddingVertical: 8, borderWidth: 1, borderColor: "rgba(255,255,255,0.55)", backgroundColor: "rgba(255,255,255,0.55)" },
   paidByChipActive: { borderColor: "#6443F4", backgroundColor: "rgba(100,67,244,0.2)" },
   paidByText: { color: "#9BA1A6", fontSize: 13, fontFamily: "Chillax-Semibold", fontWeight: "600" },
   paidByTextActive: { color: "#A78BFA" },

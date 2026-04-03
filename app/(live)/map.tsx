@@ -226,7 +226,7 @@ export default function MapScreen() {
       <FlatList
         data={filtered}
         keyExtractor={(item) => item.id}
-        contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 100, gap: 10 }}
+        contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 130, gap: 10 }}
         showsVerticalScrollIndicator={false}
         renderItem={({ item }) => {
           const iconColor = CATEGORY_COLORS[item.category] || "#6443F4";
@@ -257,7 +257,7 @@ export default function MapScreen() {
                         <Text style={styles.placeDistance}> {item.distance}</Text>
                       </View>
                       <View style={styles.placeMetaItem}>
-                        <IconSymbol name="star.fill" size={11} color="#FFD700" />
+                        <IconSymbol name="star.fill" size={11} color="#FBBF24" />
                         <Text style={styles.placeRating}> {item.rating}</Text>
                       </View>
                       <Text style={styles.placePrice}>{item.price}</Text>
@@ -313,7 +313,7 @@ export default function MapScreen() {
 const styles = StyleSheet.create({
   header: {
     flexDirection: "row", alignItems: "center",
-    paddingHorizontal: 16, paddingTop: 12, paddingBottom: 14, gap: 12,
+    paddingHorizontal: 16, paddingTop: 12, paddingBottom: 130, gap: 12,
   },
   backBtn: { width: 36, height: 36, alignItems: "center", justifyContent: "center" },
   headerInfo: { flex: 1 },
@@ -323,10 +323,10 @@ const styles = StyleSheet.create({
   searchBtn: { padding: 8 },
   mapContainer: { height: 200, overflow: "hidden" },
   mapBg: { flex: 1, position: "relative" },
-  gridLine: { position: "absolute", backgroundColor: "rgba(255,255,255,0.04)" },
+  gridLine: { position: "absolute", backgroundColor: "rgba(255,255,255,0.55)" },
   gridLineH: { left: 0, right: 0, height: 1 },
   gridLineV: { top: 0, bottom: 0, width: 1 },
-  street: { position: "absolute", backgroundColor: "rgba(255,255,255,0.12)" },
+  street: { position: "absolute", backgroundColor: "rgba(255,255,255,0.55)" },
   parkArea: {
     position: "absolute", top: "10%", left: "5%", width: "25%", height: "25%",
     backgroundColor: "rgba(76,175,80,0.15)", borderRadius: 8,
@@ -346,7 +346,7 @@ const styles = StyleSheet.create({
     width: 26, height: 26, borderRadius: 8,
     backgroundColor: "rgba(45,27,105,0.9)",
     alignItems: "center", justifyContent: "center",
-    borderWidth: 1, borderColor: "rgba(255,255,255,0.2)",
+    borderWidth: 1, borderColor: "rgba(255,255,255,0.55)",
   },
   markerLabel: {
     backgroundColor: "#6443F4", borderRadius: 6,
@@ -402,7 +402,7 @@ const styles = StyleSheet.create({
   placeMeta: { flexDirection: "row", gap: 10, alignItems: "center" },
   placeMetaItem: { flexDirection: "row", alignItems: "center" },
   placeDistance: { color: "#A78BCA", fontSize: 12, fontFamily: "Satoshi-Regular" },
-  placeRating: { color: "#FFD700", fontSize: 12, fontFamily: "Satoshi-Regular" },
+  placeRating: { color: "#FBBF24", fontSize: 12, fontFamily: "Satoshi-Regular" },
   placePrice: { color: "#4CAF50", fontSize: 12, fontFamily: "Chillax-Semibold", fontWeight: "600" },
   placeDetails: { marginTop: 12, paddingTop: 12, borderTopWidth: 1, borderTopColor: "#4A3080", gap: 8 },
   placeDetailRow: { flexDirection: "row", alignItems: "flex-start", gap: 8 },

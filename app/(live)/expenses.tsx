@@ -95,7 +95,7 @@ function ExpenseCard({ item }: { item: Expense }) {
 
   return (
     <TouchableOpacity style={S.expCard} activeOpacity={0.85}>
-      <LinearGradient colors={["rgba(255,255,255,0.05)", "rgba(255,255,255,0.02)"]} style={StyleSheet.absoluteFillObject} />
+      <LinearGradient colors={["rgba(255,255,255,0.55)", "rgba(255,255,255,0.55)"]} style={StyleSheet.absoluteFillObject} />
       <View style={[S.expIconWrap, { backgroundColor: catColor + "20" }]}>
         <IconSymbol name={item.icon as any} size={18} color={catColor} />
       </View>
@@ -288,7 +288,7 @@ export default function ExpensesScreen() {
       )}
 
       {/* Content */}
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 100, paddingHorizontal: 16 }}>
+      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 130, paddingHorizontal: 16 }}>
         {tab === "expenses" && (
           <View style={{ gap: 10, marginTop: 8 }}>
             {filtered.map((item) => <ExpenseCard key={item.id} item={item} />)}
@@ -301,7 +301,7 @@ export default function ExpensesScreen() {
               const owes = i === 0 ? 47 : -23;
               return (
                 <View key={i} style={S.personCard}>
-                  <LinearGradient colors={["rgba(255,255,255,0.05)", "rgba(255,255,255,0.02)"]} style={StyleSheet.absoluteFillObject} />
+                  <LinearGradient colors={["rgba(255,255,255,0.55)", "rgba(255,255,255,0.55)"]} style={StyleSheet.absoluteFillObject} />
                   <View style={S.personAvatar}>
                     <LinearGradient colors={["#6443F4", "#F94498"]} style={StyleSheet.absoluteFillObject} />
                     <Text style={S.personAvatarText}>{person[0]}</Text>
@@ -359,8 +359,8 @@ const S = StyleSheet.create({
   orb1: { position: "absolute", top: -60, right: -60, width: 200, height: 200, borderRadius: 100, backgroundColor: "rgba(100,67,244,0.1)" },
   orb2: { position: "absolute", bottom: 200, left: -80, width: 160, height: 160, borderRadius: 80, backgroundColor: "rgba(249,68,152,0.07)" },
 
-  header: { flexDirection: "row", alignItems: "center", paddingHorizontal: 16, paddingBottom: 12, paddingTop: 4 },
-  backBtnInner: { width: 36, height: 36, borderRadius: 18, backgroundColor: "rgba(255,255,255,0.08)", alignItems: "center", justifyContent: "center", marginRight: 8 },
+  header: { flexDirection: "row", alignItems: "center", paddingHorizontal: 16, paddingBottom: 130, paddingTop: 4 },
+  backBtnInner: { width: 36, height: 36, borderRadius: 18, backgroundColor: "rgba(255,255,255,0.55)", alignItems: "center", justifyContent: "center", marginRight: 8 },
   headerTitle: { ...TYPE.h2, color: BRAND.textPrimary, flex: 1 },
   addIconBtn: { overflow: "hidden", width: 36, height: 36, borderRadius: 18, alignItems: "center", justifyContent: "center" },
 
@@ -370,16 +370,16 @@ const S = StyleSheet.create({
   balanceCardAmount: { ...TYPE.h3, fontFamily: "Chillax-Bold" },
 
   tabRow: { flexDirection: "row", paddingHorizontal: 16, gap: 8, marginBottom: 12 },
-  tabBtn: { overflow: "hidden", flex: 1, borderRadius: RADIUS.full, paddingVertical: 9, alignItems: "center", borderWidth: 1, borderColor: "rgba(255,255,255,0.1)" },
+  tabBtn: { overflow: "hidden", flex: 1, borderRadius: RADIUS.full, paddingVertical: 9, alignItems: "center", borderWidth: 1, borderColor: "rgba(255,255,255,0.55)" },
   tabBtnActive: { borderColor: "transparent" },
   tabBtnText: { ...TYPE.label, color: BRAND.textSecondary },
   tabBtnTextActive: { color: "#FFF" },
 
-  catFilterRow: { paddingHorizontal: 16, gap: 8, marginBottom: 12, paddingBottom: 4 },
-  catFilter: { overflow: "hidden", flexDirection: "row", alignItems: "center", gap: 5, borderRadius: RADIUS.full, paddingHorizontal: 12, paddingVertical: 7, borderWidth: 1, borderColor: "rgba(255,255,255,0.1)" },
+  catFilterRow: { paddingHorizontal: 16, gap: 8, marginBottom: 12, paddingBottom: 130 },
+  catFilter: { overflow: "hidden", flexDirection: "row", alignItems: "center", gap: 5, borderRadius: RADIUS.full, paddingHorizontal: 12, paddingVertical: 7, borderWidth: 1, borderColor: "rgba(255,255,255,0.55)" },
   catFilterText: { ...TYPE.caption, color: BRAND.textMuted },
 
-  expCard: { overflow: "hidden", borderRadius: RADIUS.xl, borderWidth: 1, borderColor: "rgba(255,255,255,0.07)", flexDirection: "row", alignItems: "flex-start", padding: 14, gap: 12 },
+  expCard: { overflow: "hidden", borderRadius: RADIUS.xl, borderWidth: 1, borderColor: "rgba(255,255,255,0.55)", flexDirection: "row", alignItems: "flex-start", padding: 14, gap: 12 },
   expIconWrap: { width: 40, height: 40, borderRadius: RADIUS.md, alignItems: "center", justifyContent: "center" },
   expContent: { flex: 1 },
   expTitleRow: { flexDirection: "row", justifyContent: "space-between", marginBottom: 4 },
@@ -393,7 +393,7 @@ const S = StyleSheet.create({
   balancePill: { marginTop: 6, alignSelf: "flex-start", borderRadius: RADIUS.full, paddingHorizontal: 10, paddingVertical: 3 },
   balancePillText: { ...TYPE.caption, fontFamily: "Satoshi-Bold" },
 
-  personCard: { overflow: "hidden", borderRadius: RADIUS.xl, borderWidth: 1, borderColor: "rgba(255,255,255,0.07)", flexDirection: "row", alignItems: "center", padding: 14, gap: 12 },
+  personCard: { overflow: "hidden", borderRadius: RADIUS.xl, borderWidth: 1, borderColor: "rgba(255,255,255,0.55)", flexDirection: "row", alignItems: "center", padding: 14, gap: 12 },
   personAvatar: { overflow: "hidden", width: 44, height: 44, borderRadius: 22, alignItems: "center", justifyContent: "center" },
   personAvatarText: { ...TYPE.h3, color: "#FFF", fontFamily: "Chillax-Bold" },
   personInfo: { flex: 1 },
@@ -417,22 +417,22 @@ const S = StyleSheet.create({
   catBreakdownRow: { flexDirection: "row", alignItems: "center", gap: 10 },
   catBreakdownIcon: { width: 32, height: 32, borderRadius: RADIUS.sm, alignItems: "center", justifyContent: "center" },
   catBreakdownLabel: { ...TYPE.small, color: BRAND.textPrimary, width: 70 },
-  catBreakdownBar: { flex: 1, height: 6, backgroundColor: "rgba(255,255,255,0.08)", borderRadius: 3, overflow: "hidden" },
+  catBreakdownBar: { flex: 1, height: 6, backgroundColor: "rgba(255,255,255,0.55)", borderRadius: 3, overflow: "hidden" },
   catBreakdownFill: { height: "100%", borderRadius: 3 },
   catBreakdownAmt: { ...TYPE.small, fontFamily: "Satoshi-Bold", width: 40, textAlign: "right" },
 
   // Modal
   modalOverlay: { flex: 1, justifyContent: "flex-end", backgroundColor: "rgba(0,0,0,0.6)" },
-  modalSheet: { overflow: "hidden", borderTopLeftRadius: 28, borderTopRightRadius: 28, padding: 24, paddingBottom: 40 },
-  modalHandle: { width: 40, height: 4, borderRadius: 2, backgroundColor: "rgba(255,255,255,0.2)", alignSelf: "center", marginBottom: 20 },
+  modalSheet: { overflow: "hidden", borderTopLeftRadius: 28, borderTopRightRadius: 28, padding: 24, paddingBottom: 130 },
+  modalHandle: { width: 40, height: 4, borderRadius: 2, backgroundColor: "rgba(255,255,255,0.55)", alignSelf: "center", marginBottom: 20 },
   modalTitle: { ...TYPE.h2, color: BRAND.textPrimary, marginBottom: 20 },
-  input: { backgroundColor: "rgba(255,255,255,0.07)", borderRadius: RADIUS.xl, paddingHorizontal: 16, paddingVertical: 14, ...TYPE.body, color: BRAND.textPrimary, borderWidth: 1, borderColor: "rgba(255,255,255,0.1)", marginBottom: 12 },
+  input: { backgroundColor: "rgba(255,255,255,0.55)", borderRadius: RADIUS.xl, paddingHorizontal: 16, paddingVertical: 14, ...TYPE.body, color: BRAND.textPrimary, borderWidth: 1, borderColor: "rgba(255,255,255,0.55)", marginBottom: 12 },
   amountRow: { flexDirection: "row", alignItems: "center", gap: 8, marginBottom: 12 },
   currencySymbol: { ...TYPE.h2, color: BRAND.textSecondary },
   amountInput: { flex: 1, marginBottom: 0 },
   inputLabel: { ...TYPE.label, color: BRAND.textSecondary, marginBottom: 8 },
   catRow: { gap: 8, marginBottom: 20 },
-  catChip: { overflow: "hidden", flexDirection: "row", alignItems: "center", gap: 6, borderRadius: RADIUS.full, paddingHorizontal: 12, paddingVertical: 8, borderWidth: 1, borderColor: "rgba(255,255,255,0.15)" },
+  catChip: { overflow: "hidden", flexDirection: "row", alignItems: "center", gap: 6, borderRadius: RADIUS.full, paddingHorizontal: 12, paddingVertical: 8, borderWidth: 1, borderColor: "rgba(255,255,255,0.55)" },
   catChipText: { ...TYPE.label, color: BRAND.textMuted },
   addBtn: { overflow: "hidden", borderRadius: RADIUS.xl, paddingVertical: 16, alignItems: "center" },
   addBtnText: { ...TYPE.button, color: "#FFF" },

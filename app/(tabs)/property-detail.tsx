@@ -62,7 +62,7 @@ export default function PropertyDetailScreen() {
         </TouchableOpacity>
       </View>
 
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 40 }}>
+      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 130 }}>
         {/* Hero image */}
         <View style={S.gallery}>
           <Image source={require("@/assets/destinations/dubai.jpg")} style={S.galleryMain} resizeMode="cover" />
@@ -133,7 +133,7 @@ export default function PropertyDetailScreen() {
                   value={investAmount}
                   onChangeText={setInvestAmount}
                   keyboardType="numeric"
-                  placeholderTextColor="rgba(255,255,255,0.2)"
+                  placeholderTextColor="rgba(255,255,255,0.55)"
                 />
               </View>
               <View style={S.roiField}>
@@ -201,11 +201,11 @@ export default function PropertyDetailScreen() {
 
 const S = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#0D0628" },
-  header: { flexDirection: "row", alignItems: "center", paddingHorizontal: 20, paddingBottom: 12, gap: 12 },
-  backBtn: { width: 36, height: 36, borderRadius: 18, backgroundColor: "rgba(255,255,255,0.08)", alignItems: "center", justifyContent: "center" },
+  header: { flexDirection: "row", alignItems: "center", paddingHorizontal: 20, paddingBottom: 130, gap: 12 },
+  backBtn: { width: 36, height: 36, borderRadius: 18, backgroundColor: "rgba(255,255,255,0.55)", alignItems: "center", justifyContent: "center" },
   backText: { color: "#FFFFFF", fontSize: 18, fontWeight: "700", fontFamily: "Chillax-Semibold" },
   headerTitle: { flex: 1, color: "#FFFFFF", fontSize: 16, fontWeight: "900", fontFamily: "Chillax-Bold" },
-  saveBtn: { width: 36, height: 36, borderRadius: 18, backgroundColor: "rgba(255,255,255,0.08)", alignItems: "center", justifyContent: "center" },
+  saveBtn: { width: 36, height: 36, borderRadius: 18, backgroundColor: "rgba(255,255,255,0.55)", alignItems: "center", justifyContent: "center" },
   saveBtnText: { color: "#FFFFFF", fontSize: 18 },
   gallery: { height: 260, position: "relative" },
   galleryMain: { width: "100%", height: "100%" },
@@ -216,21 +216,22 @@ const S = StyleSheet.create({
   badgeText: { color: "#FFFFFF", fontSize: 11, fontWeight: "800", fontFamily: "Chillax-Bold" },
   priceRow: { flexDirection: "row", justifyContent: "space-between", alignItems: "center", paddingHorizontal: 20, paddingVertical: 16 },
   price: { color: "#FFFFFF", fontSize: 22, fontWeight: "900", fontFamily: "Chillax-Bold" },
-  pricePerSqft: { color: "rgba(255,255,255,0.4)", fontSize: 12, marginTop: 2 },
+  pricePerSqft: { color: "rgba(255,255,255,0.5)", fontSize: 12, marginTop: 2 },
   statsRow: { flexDirection: "row", alignItems: "center", gap: 12 },
   stat: { alignItems: "center", gap: 2 },
   statVal: { color: "#FFFFFF", fontSize: 16, fontWeight: "900", fontFamily: "Chillax-Bold" },
-  statLbl: { color: "rgba(255,255,255,0.4)", fontSize: 10 },
-  statDiv: { width: 1, height: 24, backgroundColor: "rgba(255,255,255,0.1)" },
+  statLbl: { color: "rgba(255,255,255,0.5)", fontSize: 10 },
+  statDiv: { width: 1, height: 24, backgroundColor: "rgba(255,255,255,0.55)" },
   addressRow: { flexDirection: "row", alignItems: "center", gap: 8, paddingHorizontal: 20, marginBottom: 20 },
   addressEmoji: { fontSize: 14 },
   addressText: { color: "rgba(255,255,255,0.5)", fontSize: 13, fontFamily: "Satoshi-Regular" },
   section: { paddingHorizontal: 20, marginBottom: 24 },
-  sectionTitle: { color: "rgba(255,255,255,0.4)", fontSize: 11, fontWeight: "800", textTransform: "uppercase", letterSpacing: 1.5, marginBottom: 12 },
+  sectionTitle: { color: "rgba(255,255,255,0.5)", fontSize: 11, fontWeight: "800",
+      fontFamily: "Chillax-Bold", textTransform: "uppercase", letterSpacing: 1.5, marginBottom: 12 },
   highlightGrid: { flexDirection: "row", flexWrap: "wrap", gap: 10 },
-  highlightCard: { width: (width - 50) / 2, borderRadius: 12, backgroundColor: "rgba(255,255,255,0.04)", borderWidth: 1, borderColor: "rgba(255,255,255,0.06)", padding: 12, gap: 4 },
+  highlightCard: { width: (width - 50) / 2, borderRadius: 12, backgroundColor: "rgba(255,255,255,0.55)", borderWidth: 1, borderColor: "rgba(255,255,255,0.55)", padding: 12, gap: 4 },
   highlightIcon: { fontSize: 18 },
-  highlightLabel: { color: "rgba(255,255,255,0.4)", fontSize: 11, fontWeight: "700" },
+  highlightLabel: { color: "rgba(255,255,255,0.5)", fontSize: 11, fontWeight: "700" },
   highlightValue: { color: "#FFFFFF", fontSize: 13, fontWeight: "700" },
   amenityWrap: { flexDirection: "row", flexWrap: "wrap", gap: 8 },
   amenityChip: { paddingHorizontal: 12, paddingVertical: 7, borderRadius: 20, backgroundColor: "rgba(100,67,244,0.12)", borderWidth: 1, borderColor: "rgba(100,67,244,0.25)" },
@@ -238,27 +239,27 @@ const S = StyleSheet.create({
   roiCard: { borderRadius: 16, overflow: "hidden", borderWidth: 1, borderColor: "rgba(100,67,244,0.2)", padding: 16, gap: 16 },
   roiInputRow: { flexDirection: "row", gap: 12 },
   roiField: { flex: 1, gap: 8 },
-  roiFieldLabel: { color: "rgba(255,255,255,0.4)", fontSize: 11, fontWeight: "700" },
-  roiInput: { backgroundColor: "rgba(255,255,255,0.05)", borderRadius: 10, borderWidth: 1, borderColor: "rgba(255,255,255,0.08)", paddingHorizontal: 12, paddingVertical: 10, color: "#FFFFFF", fontSize: 14, fontWeight: "700" },
+  roiFieldLabel: { color: "rgba(255,255,255,0.5)", fontSize: 11, fontWeight: "700" },
+  roiInput: { backgroundColor: "rgba(255,255,255,0.55)", borderRadius: 10, borderWidth: 1, borderColor: "rgba(255,255,255,0.55)", paddingHorizontal: 12, paddingVertical: 10, color: "#FFFFFF", fontSize: 14, fontWeight: "700" },
   roiYearsRow: { flexDirection: "row", gap: 6 },
-  roiYearBtn: { flex: 1, paddingVertical: 10, borderRadius: 8, backgroundColor: "rgba(255,255,255,0.05)", alignItems: "center" },
+  roiYearBtn: { flex: 1, paddingVertical: 10, borderRadius: 8, backgroundColor: "rgba(255,255,255,0.55)", alignItems: "center" },
   roiYearBtnActive: { backgroundColor: "rgba(100,67,244,0.3)", borderWidth: 1, borderColor: "rgba(100,67,244,0.5)" },
-  roiYearText: { color: "rgba(255,255,255,0.4)", fontSize: 12, fontWeight: "800", fontFamily: "Chillax-Bold" },
+  roiYearText: { color: "rgba(255,255,255,0.5)", fontSize: 12, fontWeight: "800", fontFamily: "Chillax-Bold" },
   roiYearTextActive: { color: "#FFFFFF" },
   roiResults: { flexDirection: "row", alignItems: "center" },
   roiResult: { flex: 1, alignItems: "center", gap: 4 },
   roiResultVal: { color: "#FFFFFF", fontSize: 15, fontWeight: "900", fontFamily: "Chillax-Bold" },
-  roiResultLbl: { color: "rgba(255,255,255,0.4)", fontSize: 10, textAlign: "center" },
-  roiResultDiv: { width: 1, height: 40, backgroundColor: "rgba(255,255,255,0.08)" },
+  roiResultLbl: { color: "rgba(255,255,255,0.5)", fontSize: 10, textAlign: "center" },
+  roiResultDiv: { width: 1, height: 40, backgroundColor: "rgba(255,255,255,0.55)" },
   similarRow: { flexDirection: "row", gap: 12 },
-  similarCard: { flex: 1, borderRadius: 14, overflow: "hidden", backgroundColor: "rgba(255,255,255,0.04)", borderWidth: 1, borderColor: "rgba(255,255,255,0.06)" },
+  similarCard: { flex: 1, borderRadius: 14, overflow: "hidden", backgroundColor: "rgba(255,255,255,0.55)", borderWidth: 1, borderColor: "rgba(255,255,255,0.55)" },
   similarImg: { width: "100%", height: 90 },
   similarInfo: { padding: 10, gap: 2 },
   similarTitle: { color: "#FFFFFF", fontSize: 12, fontWeight: "800", fontFamily: "Chillax-Bold" },
   similarPrice: { color: "rgba(255,255,255,0.5)", fontSize: 11 },
   similarRoi: { color: "#22C55E", fontSize: 11, fontWeight: "700" },
   ctaRow: { flexDirection: "row", gap: 12, paddingHorizontal: 20, marginTop: 8 },
-  ctaSecondary: { flex: 1, borderRadius: 14, borderWidth: 1, borderColor: "rgba(255,255,255,0.15)", paddingVertical: 16, alignItems: "center" },
+  ctaSecondary: { flex: 1, borderRadius: 14, borderWidth: 1, borderColor: "rgba(255,255,255,0.55)", paddingVertical: 16, alignItems: "center" },
   ctaSecondaryText: { color: "#FFFFFF", fontSize: 14, fontWeight: "800", fontFamily: "Chillax-Bold" },
   ctaPrimary: { flex: 1, borderRadius: 14, overflow: "hidden" },
   ctaGradient: { paddingVertical: 16, alignItems: "center" },

@@ -62,7 +62,7 @@ export default function CompetitorsScreen() {
       <LinearGradient colors={["#0D0628", "#1A0A3D", "#1A0A3D"]} style={StyleSheet.absoluteFillObject} />
       <View style={S.orb1} />
 
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 120 }}>
+      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 130 }}>
         {/* Header */}
         <View style={S.header}>
           <TouchableOpacity style={S.backBtn} onPress={() => router.back()} activeOpacity={0.7}>
@@ -233,7 +233,7 @@ export default function CompetitorsScreen() {
                 </View>
                 <View style={S.frictionSeverity}>
                   {[1, 2, 3].map((dot) => (
-                    <View key={dot} style={[S.severityDot, { backgroundColor: dot <= (i < 2 ? 3 : 2) ? "#EF4444" : "rgba(255,255,255,0.1)" }]} />
+                    <View key={dot} style={[S.severityDot, { backgroundColor: dot <= (i < 2 ? 3 : 2) ? "#EF4444" : "rgba(255,255,255,0.55)" }]} />
                   ))}
                 </View>
               </View>
@@ -262,27 +262,27 @@ export default function CompetitorsScreen() {
 const S = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#0D0628" },
   orb1: { position: "absolute", width: width * 1.5, height: width * 1.5, borderRadius: width * 0.75, top: -width * 0.6, left: -width * 0.4, backgroundColor: "rgba(123,47,190,0.12)" },
-  header: { flexDirection: "row", alignItems: "center", gap: 14, paddingTop: 64, paddingHorizontal: 20, paddingBottom: 16 },
-  backBtn: { width: 40, height: 40, borderRadius: 20, backgroundColor: "rgba(255,255,255,0.08)", alignItems: "center", justifyContent: "center" },
+  header: { flexDirection: "row", alignItems: "center", gap: 14, paddingTop: 64, paddingHorizontal: 20, paddingBottom: 130 },
+  backBtn: { width: 40, height: 40, borderRadius: 20, backgroundColor: "rgba(255,255,255,0.55)", alignItems: "center", justifyContent: "center" },
   headerTitle: { color: "#FFFFFF", fontSize: 26, fontWeight: "800", fontFamily: "Chillax-Bold", letterSpacing: -0.3 },
-  headerSub: { color: "rgba(255,255,255,0.4)", fontSize: 13, marginTop: 2 },
+  headerSub: { color: "rgba(255,255,255,0.5)", fontSize: 13, marginTop: 2 },
   shareRow: { flexDirection: "row", flexWrap: "wrap", paddingHorizontal: 20, gap: 8, marginBottom: 16 },
-  shareCard: { width: (width - 56) / 3, alignItems: "center", gap: 4, backgroundColor: "rgba(255,255,255,0.04)", borderRadius: 14, padding: 10, borderWidth: 1, borderColor: "rgba(255,255,255,0.07)" },
+  shareCard: { width: (width - 56) / 3, alignItems: "center", gap: 4, backgroundColor: "rgba(255,255,255,0.55)", borderRadius: 14, padding: 10, borderWidth: 1, borderColor: "rgba(255,255,255,0.55)" },
   shareDot: { width: 10, height: 10, borderRadius: 5 },
   shareName: { color: "rgba(255,255,255,0.6)", fontSize: 11, fontWeight: "600" },
   sharePercent: { fontSize: 16, fontWeight: "800", fontFamily: "Chillax-Bold" },
   modeRow: { flexDirection: "row", paddingHorizontal: 20, gap: 8, marginBottom: 20 },
-  modeBtn: { flex: 1, flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 6, paddingVertical: 11, borderRadius: 12, overflow: "hidden", backgroundColor: "rgba(255,255,255,0.06)", borderWidth: 1, borderColor: "rgba(255,255,255,0.08)" },
+  modeBtn: { flex: 1, flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 6, paddingVertical: 11, borderRadius: 12, overflow: "hidden", backgroundColor: "rgba(255,255,255,0.55)", borderWidth: 1, borderColor: "rgba(255,255,255,0.55)" },
   modeBtnActive: { borderColor: "transparent" },
   modeBtnText: { color: "rgba(255,255,255,0.5)", fontSize: 12, fontWeight: "700" },
   compHeader: { flexDirection: "row", alignItems: "center", gap: 14, paddingHorizontal: 20, marginBottom: 20 },
   compLogo: { width: 48, height: 48, borderRadius: 14, alignItems: "center", justifyContent: "center" },
   compLogoText: { fontSize: 22, fontWeight: "900", fontFamily: "Chillax-Bold" },
   compName: { color: "#FFFFFF", fontSize: 20, fontWeight: "800", fontFamily: "Chillax-Bold" },
-  compShare: { color: "rgba(255,255,255,0.4)", fontSize: 13, marginTop: 2 },
+  compShare: { color: "rgba(255,255,255,0.5)", fontSize: 13, marginTop: 2 },
   section: { paddingHorizontal: 20, gap: 12 },
   swotCard: { borderRadius: 16, overflow: "hidden", padding: 16, gap: 10 },
-  swotCardBorder: { position: "absolute", top: 0, left: 0, right: 0, bottom: 0, borderRadius: 16, borderWidth: 1, borderColor: "rgba(255,255,255,0.07)" },
+  swotCardBorder: { position: "absolute", top: 0, left: 0, right: 0, bottom: 0, borderRadius: 16, borderWidth: 1, borderColor: "rgba(255,255,255,0.55)" },
   swotHeader: { flexDirection: "row", alignItems: "center", gap: 8 },
   swotTitle: { color: "#FFFFFF", fontSize: 16, fontWeight: "700", fontFamily: "Chillax-Semibold" },
   swotItem: { flexDirection: "row", alignItems: "center", gap: 10, paddingLeft: 4 },
@@ -292,19 +292,21 @@ const S = StyleSheet.create({
   advantageText: { color: "rgba(255,255,255,0.6)", fontSize: 14, lineHeight: 21 },
   /* Journey */
   journeyTitle: { color: "#FFFFFF", fontSize: 18, fontWeight: "800", fontFamily: "Chillax-Bold", marginBottom: 4 },
-  frictionSub: { color: "rgba(255,255,255,0.4)", fontSize: 13, marginBottom: 8 },
+  frictionSub: { color: "rgba(255,255,255,0.5)", fontSize: 13, marginBottom: 8 },
   journeyStep: { flexDirection: "row", gap: 14 },
   journeyLine: { alignItems: "center", width: 32 },
   journeyDot: { width: 28, height: 28, borderRadius: 14, alignItems: "center", justifyContent: "center" },
-  journeyNum: { color: "#FFFFFF", fontSize: 12, fontWeight: "800" },
+  journeyNum: { color: "#FFFFFF", fontSize: 12, fontWeight: "800",
+      fontFamily: "Chillax-Bold" },
   journeyConnector: { width: 2, height: 24 },
-  journeyContent: { flex: 1, paddingBottom: 20, justifyContent: "center" },
+  journeyContent: { flex: 1, paddingBottom: 130, justifyContent: "center" },
   journeyStepText: { color: "rgba(255,255,255,0.7)", fontSize: 15, fontWeight: "500", fontFamily: "Satoshi-Medium" },
   traviJourneyCard: { borderRadius: 16, overflow: "hidden", padding: 16, gap: 10, marginTop: 16 },
   traviJourneyTitle: { color: "#C084FC", fontSize: 16, fontWeight: "700", fontFamily: "Chillax-Semibold", marginBottom: 4 },
   traviStep: { flexDirection: "row", alignItems: "center", gap: 10 },
   traviStepDot: { width: 24, height: 24, borderRadius: 12, overflow: "hidden", alignItems: "center", justifyContent: "center" },
-  traviStepNum: { color: "#FFFFFF", fontSize: 11, fontWeight: "800" },
+  traviStepNum: { color: "#FFFFFF", fontSize: 11, fontWeight: "800",
+      fontFamily: "Chillax-Bold" },
   traviStepText: { color: "rgba(255,255,255,0.7)", fontSize: 14, fontWeight: "500", fontFamily: "Satoshi-Medium" },
   /* Frictions */
   frictionCard: { flexDirection: "row", alignItems: "center", gap: 12, borderRadius: 14, overflow: "hidden", padding: 14 },

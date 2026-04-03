@@ -218,7 +218,7 @@ const styles = StyleSheet.create({
   bubbleAvatar: { width: 28, height: 28, borderRadius: 14, backgroundColor: BRAND.bgCard },
   bubble: { maxWidth: "75%", borderRadius: RADIUS.md, padding: 12, overflow: "hidden" },
   bubbleMe: { borderBottomRightRadius: 4 },
-  bubbleThem: { backgroundColor: "rgba(255,255,255,0.09)", borderBottomLeftRadius: 4, borderWidth: 1, borderColor: BRAND.border },
+  bubbleThem: { backgroundColor: "rgba(255,255,255,0.55)", borderBottomLeftRadius: 4, borderWidth: 1, borderColor: BRAND.border },
   bubbleText: { ...TYPE.body, color: BRAND.textSecondary },
   bubbleTextMe: { color: "#fff" },
   bubbleMeta: { flexDirection: "row", alignItems: "center", gap: 4, marginTop: 4, justifyContent: "flex-end" },
@@ -226,7 +226,7 @@ const styles = StyleSheet.create({
   bubbleTimeMe: { color: "rgba(255,255,255,0.6)" },
   inputContainer: { paddingHorizontal: 16, paddingTop: 10, borderTopWidth: 1, borderTopColor: BRAND.border, backgroundColor: BRAND.bgDeep },
   inputRow: { flexDirection: "row", alignItems: "flex-end", gap: 10 },
-  input: { flex: 1, minHeight: 44, maxHeight: 120, backgroundColor: "rgba(255,255,255,0.07)", borderRadius: RADIUS.md, paddingHorizontal: 14, paddingVertical: 10, ...TYPE.body, color: BRAND.textPrimary, borderWidth: 1, borderColor: BRAND.border },
+  input: { flex: 1, minHeight: 44, maxHeight: 120, backgroundColor: "rgba(255,255,255,0.55)", borderRadius: RADIUS.md, paddingHorizontal: 14, paddingVertical: 10, ...TYPE.body, color: BRAND.textPrimary, borderWidth: 1, borderColor: BRAND.border },
   sendBtn: { width: 44, height: 44, borderRadius: 22, alignItems: "center", justifyContent: "center", overflow: "hidden" },
   sendBtnDisabled: { opacity: 0.4 },
 });

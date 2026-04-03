@@ -306,7 +306,7 @@ export default function AgentChatScreen() {
               value={inputText}
               onChangeText={setInputText}
               placeholder="שאל אותי כל דבר על הטיול שלך..."
-              placeholderTextColor="rgba(255,255,255,0.3)"
+              placeholderTextColor="rgba(255,255,255,0.55)"
               multiline
               maxLength={500}
               returnKeyType="send"
@@ -383,6 +383,7 @@ const styles = StyleSheet.create({
   headerAvatarText: {
     fontSize: 18,
     fontWeight: "800",
+      fontFamily: "Chillax-Bold",
     color: "#fff",
   },
   onlineDot: {
@@ -462,13 +463,14 @@ const styles = StyleSheet.create({
   agentAvatarText: {
     fontSize: 14,
     fontWeight: "800",
+      fontFamily: "Chillax-Bold",
     color: "#fff",
   },
   agentBubble: {
     maxWidth: "78%",
-    backgroundColor: "rgba(255,255,255,0.07)",
+    backgroundColor: "rgba(255,255,255,0.55)",
     borderWidth: 0.5,
-    borderColor: "rgba(255,255,255,0.1)",
+    borderColor: "rgba(255,255,255,0.55)",
     paddingHorizontal: 16,
     paddingVertical: 12,
     borderRadius: 20,
@@ -491,9 +493,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     gap: 4,
-    backgroundColor: "rgba(255,255,255,0.07)",
+    backgroundColor: "rgba(255,255,255,0.55)",
     borderWidth: 0.5,
-    borderColor: "rgba(255,255,255,0.1)",
+    borderColor: "rgba(255,255,255,0.55)",
     paddingHorizontal: 14,
     paddingVertical: 12,
     borderRadius: 20,
@@ -508,11 +510,11 @@ const styles = StyleSheet.create({
   // Quick actions
   quickActionsWrap: {
     paddingHorizontal: 16,
-    paddingBottom: 8,
+    paddingBottom: 130,
   },
   quickActionsLabel: {
     fontSize: 11,
-    color: "rgba(255,255,255,0.35)",
+    color: "rgba(255,255,255,0.55)",
     marginBottom: 8,
     fontWeight: "600",
     letterSpacing: 0.5,
@@ -535,6 +537,7 @@ const styles = StyleSheet.create({
     fontSize: 13,
     color: "#C084FC",
     fontWeight: "500",
+      fontFamily: "Satoshi-Medium",
   },
   // Input bar
   inputBar: {
@@ -548,7 +551,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "flex-end",
     gap: 10,
-    backgroundColor: "rgba(255,255,255,0.06)",
+    backgroundColor: "rgba(255,255,255,0.55)",
     borderRadius: 24,
     borderWidth: 0.5,
     borderColor: "rgba(147,51,234,0.3)",
@@ -579,5 +582,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: "#fff",
     fontWeight: "700",
+      fontFamily: "Chillax-Semibold",
   },
 });

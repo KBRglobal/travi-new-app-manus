@@ -484,13 +484,13 @@ export default function SplitBillScreen() {
 
 const styles = StyleSheet.create({
   scroll: { flex: 1 },
-  scrollContent: { paddingBottom: 40 },
+  scrollContent: { paddingBottom: 130 },
   header: {
     flexDirection: "row",
     alignItems: "center",
     paddingHorizontal: 20,
     paddingTop: 16,
-    paddingBottom: 16,
+    paddingBottom: 130,
     gap: 12,
   },
   backBtn: { padding: 4 },
@@ -505,7 +505,7 @@ const styles = StyleSheet.create({
   summaryBlock: { flex: 1, alignItems: "center" },
   summaryLabel: { fontSize: 12, fontFamily: "Satoshi-Regular", color: "rgba(255,255,255,0.7)", marginBottom: 4 },
   summaryValue: { fontSize: 24, fontFamily: "Chillax-Bold", fontWeight: "800", color: "#fff" },
-  summaryDivider: { width: 1, height: 40, backgroundColor: "rgba(255,255,255,0.2)" },
+  summaryDivider: { width: 1, height: 40, backgroundColor: "rgba(255,255,255,0.55)" },
   section: { paddingHorizontal: 20, marginBottom: 24 },
   sectionTitle: { fontSize: 17, fontFamily: "Chillax-Semibold", fontWeight: "700", color: "#F9FAFB", marginBottom: 14 },
   balancesGrid: { flexDirection: "row", gap: 10 },
@@ -574,7 +574,7 @@ const styles = StyleSheet.create({
   modalOverlay: { flex: 1, justifyContent: "flex-end", backgroundColor: "rgba(0,0,0,0.7)" },
   modalKAV: { justifyContent: "flex-end" },
   modalSheet: { borderTopLeftRadius: 28, borderTopRightRadius: 28, overflow: "hidden" },
-  modalContent: { padding: 24, paddingBottom: 40 },
+  modalContent: { padding: 24, paddingBottom: 130 },
   modalHandle: {
     width: 40,
     height: 4,

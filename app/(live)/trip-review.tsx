@@ -37,7 +37,7 @@ function StarRating({ rating, onRate, size = 28 }: { rating: number; onRate: (r:
     <View style={{ flexDirection: "row", gap: 6 }}>
       {[1, 2, 3, 4, 5].map((star) => (
         <TouchableOpacity key={star} onPress={() => onRate(star)} activeOpacity={0.7}>
-          <Text style={{ fontSize: size, color: star <= rating ? "#FFD700" : "rgba(255,255,255,0.2)" }}>★</Text>
+          <Text style={{ fontSize: size, color: star <= rating ? "#FBBF24" : "rgba(255,255,255,0.55)" }}>★</Text>
         </TouchableOpacity>
       ))}
     </View>
@@ -78,7 +78,7 @@ function ReviewCard({
             <Text style={S.reviewTitle}>{item.title}</Text>
             <View style={{ flexDirection: "row", gap: 4, marginTop: 2 }}>
               {[1, 2, 3, 4, 5].map((s) => (
-                <Text key={s} style={{ fontSize: 14, color: s <= item.rating ? "#FFD700" : "rgba(255,255,255,0.15)" }}>★</Text>
+                <Text key={s} style={{ fontSize: 14, color: s <= item.rating ? "#FBBF24" : "rgba(255,255,255,0.55)" }}>★</Text>
               ))}
             </View>
           </View>
@@ -221,7 +221,7 @@ export default function TripReviewScreen() {
       <FlatList
         data={activities}
         keyExtractor={(item) => item.id}
-        contentContainerStyle={{ padding: 16, gap: 12, paddingBottom: 100 }}
+        contentContainerStyle={{ padding: 16, gap: 12, paddingBottom: 130 }}
         showsVerticalScrollIndicator={false}
         renderItem={({ item }) => (
           <ReviewCard item={item} onRate={handleRate} onNote={handleNote} onSubmit={handleSubmit} />
@@ -234,31 +234,33 @@ export default function TripReviewScreen() {
 // ─── Styles ───────────────────────────────────────────────────────────────────
 const S = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#0D1B2A" },
-  header: { flexDirection: "row", alignItems: "center", paddingHorizontal: 16, paddingBottom: 12, paddingTop: 4, gap: 8 },
+  header: { flexDirection: "row", alignItems: "center", paddingHorizontal: 16, paddingBottom: 130, paddingTop: 4, gap: 8 },
   backBtn: { width: 40, height: 40, alignItems: "center", justifyContent: "center" },
   headerTitle: { color: "#FFF", fontSize: 18, fontWeight: "800", fontFamily: "Chillax-Bold" },
   headerSub: { color: "#5A4D72", fontSize: 12 },
   ptsCounter: { backgroundColor: "rgba(100,67,244,0.2)", borderRadius: 10, paddingHorizontal: 10, paddingVertical: 5, borderWidth: 1, borderColor: "rgba(100,67,244,0.4)" },
   ptsCounterText: { color: "#A78BFA", fontSize: 13, fontWeight: "800", fontFamily: "Chillax-Bold" },
 
-  progressWrap: { paddingHorizontal: 16, paddingBottom: 12 },
-  progressTrack: { height: 4, backgroundColor: "rgba(255,255,255,0.08)", borderRadius: 2, overflow: "hidden" },
+  progressWrap: { paddingHorizontal: 16, paddingBottom: 130 },
+  progressTrack: { height: 4, backgroundColor: "rgba(255,255,255,0.55)", borderRadius: 2, overflow: "hidden" },
   progressFill: { height: "100%", borderRadius: 2 },
 
-  reviewCard: { borderRadius: 20, padding: 16, gap: 12, overflow: "hidden", borderWidth: 1, borderColor: "rgba(255,255,255,0.08)" },
+  reviewCard: { borderRadius: 20, padding: 16, gap: 12, overflow: "hidden", borderWidth: 1, borderColor: "rgba(255,255,255,0.55)" },
   reviewCardDone: { borderColor: "rgba(34,197,94,0.3)" },
   reviewHeader: { flexDirection: "row", alignItems: "center", gap: 12 },
   reviewTitle: { color: "#FFF", fontSize: 16, fontWeight: "700", fontFamily: "Chillax-Semibold" },
   reviewCategory: { color: "#5A4D72", fontSize: 12, marginTop: 2 },
-  noteInput: { backgroundColor: "rgba(255,255,255,0.05)", borderRadius: 12, padding: 12, color: "#FFF", fontSize: 14, fontFamily: "Satoshi-Regular", borderWidth: 1, borderColor: "rgba(255,255,255,0.08)", minHeight: 60, textAlignVertical: "top" },
-  submitBtn: { borderRadius: 14, overflow: "hidden" },
-  submitBtnDisabled: { backgroundColor: "rgba(255,255,255,0.04)" },
+  noteInput: { backgroundColor: "rgba(255,255,255,0.55)", borderRadius: 12, padding: 12, color: "#FFF", fontSize: 14, fontFamily: "Satoshi-Regular", borderWidth: 1, borderColor: "rgba(255,255,255,0.55)", minHeight: 60, textAlignVertical: "top" },
+  submitBtn: { borderRadius: 14, shadowColor: "#F94498", shadowOffset: { width: 0, height: 6 }, shadowOpacity: 0.4, shadowRadius: 24, elevation: 10,
+    overflow: "hidden" },
+  submitBtnDisabled: { backgroundColor: "rgba(255,255,255,0.55)" },
   submitBtnGrad: { padding: 14, alignItems: "center" },
   submitBtnText: { color: "#FFF", fontSize: 15, fontWeight: "700", fontFamily: "Satoshi-Bold" },
 
   doneRow: { flexDirection: "row", alignItems: "center", gap: 12 },
   doneBadge: { backgroundColor: "rgba(34,197,94,0.2)", borderRadius: 10, paddingHorizontal: 10, paddingVertical: 5, borderWidth: 1, borderColor: "rgba(34,197,94,0.4)" },
-  doneBadgeText: { color: "#22C55E", fontSize: 12, fontWeight: "800" },
+  doneBadgeText: { color: "#22C55E", fontSize: 12, fontWeight: "800",
+      fontFamily: "Chillax-Bold" },
   doneNote: { color: "#9BA1A6", fontSize: 13, fontFamily: "Satoshi-Regular", fontStyle: "italic" },
 
   completeWrap: { flex: 1, alignItems: "center", justifyContent: "center", gap: 16, paddingHorizontal: 32 },
@@ -268,7 +270,8 @@ const S = StyleSheet.create({
   pointsBadgeGrad: { paddingHorizontal: 24, paddingVertical: 12 },
   pointsBadgeText: { color: "#FFF", fontSize: 15, fontWeight: "800", fontFamily: "Chillax-Bold" },
   completeTip: { color: "#5A4D72", fontSize: 13, fontFamily: "Satoshi-Regular", textAlign: "center", lineHeight: 20 },
-  doneBtn: { borderRadius: 16, overflow: "hidden", marginTop: 8, width: "100%" },
+  doneBtn: { borderRadius: 16, shadowColor: "#F94498", shadowOffset: { width: 0, height: 6 }, shadowOpacity: 0.4, shadowRadius: 24, elevation: 10,
+    overflow: "hidden", marginTop: 8, width: "100%" },
   doneBtnGrad: { padding: 16, alignItems: "center" },
   doneBtnText: { color: "#FFF", fontSize: 16, fontWeight: "800", fontFamily: "Chillax-Bold" },
 });

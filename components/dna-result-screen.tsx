@@ -58,7 +58,7 @@ interface Particle {
   size: number;
 }
 
-const CONFETTI_COLORS = ["#6443F4", "#F94498", "#FFD700", "#00D4FF", "#FF6B6B", "#4ADE80", "#FB923C"];
+const CONFETTI_COLORS = ["#6443F4", "#F94498", "#FBBF24", "#00D4FF", "#FF6B6B", "#4ADE80", "#FB923C"];
 
 function useConfetti(count = 35) {
   const particles = useRef<Particle[]>(
@@ -117,7 +117,7 @@ function DNACircle({ tagCounts, colors }: { tagCounts: Record<string, number>; c
     { key: "culture", label: "Culture", color: "#6443F4" },
     { key: "adventure", label: "Adventure", color: "#22C55E" },
     { key: "food", label: "Food", color: "#EA580C" },
-    { key: "luxury", label: "Luxury", color: "#FFD700" },
+    { key: "luxury", label: "Luxury", color: "#FBBF24" },
     { key: "social", label: "Social", color: "#F94498" },
     { key: "relax", label: "Relax", color: "#06B6D4" },
   ];
@@ -139,7 +139,7 @@ function DNACircle({ tagCounts, colors }: { tagCounts: Record<string, number>; c
     <View style={{ width: SIZE, height: SIZE, alignItems: "center", justifyContent: "center" }}>
       <Svg width={SIZE} height={SIZE}>
         {/* Background circle */}
-        <Circle cx={cx} cy={cy} r={R} fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth={strokeW} />
+        <Circle cx={cx} cy={cy} r={R} fill="none" stroke="rgba(255,255,255,0.55)" strokeWidth={strokeW} />
         {/* Colored segments */}
         {segments.map((seg, i) => (
           <Circle
@@ -201,7 +201,7 @@ function TraitBar({ label, value, max, color }: { label: string; value: number; 
 const TB = StyleSheet.create({
   row: { flexDirection: "row", alignItems: "center", gap: 10, marginBottom: 8 },
   label: { color: "rgba(255,255,255,0.6)", fontSize: 12, fontWeight: "600", width: 72 },
-  track: { flex: 1, height: 6, borderRadius: 3, backgroundColor: "rgba(255,255,255,0.08)", overflow: "hidden" },
+  track: { flex: 1, height: 6, borderRadius: 3, backgroundColor: "rgba(255,255,255,0.55)", overflow: "hidden" },
   fill: { height: "100%", borderRadius: 3 },
   pct: { fontSize: 11, fontWeight: "700", width: 34, textAlign: "right" },
 });
@@ -210,7 +210,7 @@ const TRAIT_CONFIG = [
   { key: "culture", label: "Culture", color: "#6443F4" },
   { key: "adventure", label: "Adventure", color: "#22C55E" },
   { key: "food", label: "Food", color: "#EA580C" },
-  { key: "luxury", label: "Luxury", color: "#FFD700" },
+  { key: "luxury", label: "Luxury", color: "#FBBF24" },
   { key: "social", label: "Social", color: "#F94498" },
   { key: "relax", label: "Relax", color: "#06B6D4" },
 ];
@@ -323,7 +323,7 @@ export function DNAResultScreen({ dnaProfile, tagCounts, resultAnim, onFinish, o
     culture: ["#6443F4", "#9077EF"],
     adventure: ["#02A65C", "#22C55E"],
     food: ["#C2410C", "#EA580C"],
-    luxury: ["#B8860B", "#FFD700"],
+    luxury: ["#B8860B", "#FBBF24"],
     social: ["#6B21A8", "#F94498"],
     nature: ["#14532D", "#22C55E"],
     relax: ["#0E7490", "#06B6D4"],
@@ -530,7 +530,7 @@ export function DNAResultScreen({ dnaProfile, tagCounts, resultAnim, onFinish, o
             />
             <View style={RS.pointsLeft}>
               <LinearGradient
-                colors={["#FFD700", "#FF8C00"]}
+                colors={["#FBBF24", "#FF8C00"]}
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 1 }}
                 style={RS.pointsIconBox}
@@ -545,12 +545,13 @@ export function DNAResultScreen({ dnaProfile, tagCounts, resultAnim, onFinish, o
             <View style={RS.pointsRight}>
               <Text style={RS.pointsRightLabel}>Quiz{"\n"}Complete</Text>
               <LinearGradient
-                colors={["#FFD700", "#FF8C00"]}
+                colors={["#FBBF24", "#FF8C00"]}
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 1 }}
                 style={RS.completeBadge}
               >
-                <Text style={{ fontSize: 16, color: "#1A0D00", fontWeight: "900" }}>✓</Text>
+                <Text style={{ fontSize: 16, color: "#1A0D00", fontWeight: "900",
+      fontFamily: "Chillax-Bold" }}>✓</Text>
               </LinearGradient>
             </View>
           </LinearGradient>
@@ -600,9 +601,9 @@ export function DNAResultScreen({ dnaProfile, tagCounts, resultAnim, onFinish, o
 const RS = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#0D0628" },
   particle: { position: "absolute", top: 0, left: 0 },
-  scroll: { paddingTop: 52, paddingBottom: 48, alignItems: "center", gap: 20 },
+  scroll: { paddingTop: 52, paddingBottom: 130, alignItems: "center", gap: 20 },
 
-  headerLabel: { color: "rgba(255,255,255,0.35)", fontSize: 11, fontWeight: "700", letterSpacing: 2.5, textAlign: "center" },
+  headerLabel: { color: "rgba(255,255,255,0.55)", fontSize: 11, fontWeight: "700", letterSpacing: 2.5, textAlign: "center" },
 
   // DNA Row
   dnaRow: { flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 16, paddingHorizontal: 16 },
@@ -615,7 +616,8 @@ const RS = StyleSheet.create({
   sparkleDot: { position: "absolute", width: 6, height: 6, borderRadius: 3 },
 
   // Text
-  title: { color: "#FFFFFF", fontSize: 30, fontWeight: "900", textAlign: "center", letterSpacing: -0.5, lineHeight: 36 },
+  title: { color: "#FFFFFF", fontSize: 30, fontWeight: "900",
+      fontFamily: "Chillax-Bold", textAlign: "center", letterSpacing: -0.5, lineHeight: 36 },
   desc: { color: "rgba(255,255,255,0.55)", fontSize: 14, lineHeight: 21, textAlign: "center", paddingHorizontal: 28, marginTop: 8 },
 
   // Tags
@@ -626,16 +628,17 @@ const RS = StyleSheet.create({
   // Card
   card: {
     width: width - 32,
-    backgroundColor: "rgba(255,255,255,0.05)",
+    backgroundColor: "rgba(255,255,255,0.55)",
     borderRadius: 20,
     borderWidth: 1,
-    borderColor: "rgba(255,255,255,0.08)",
+    borderColor: "rgba(255,255,255,0.55)",
     padding: 18,
     gap: 4,
   },
   cardHeader: { marginBottom: 12 },
-  cardTitle: { color: "#FFFFFF", fontSize: 16, fontWeight: "800" },
-  cardSubtitle: { color: "rgba(255,255,255,0.35)", fontSize: 12, marginTop: 2 },
+  cardTitle: { color: "#FFFFFF", fontSize: 16, fontWeight: "800",
+      fontFamily: "Chillax-Bold" },
+  cardSubtitle: { color: "rgba(255,255,255,0.55)", fontSize: 12, marginTop: 2 },
 
   // Fun facts
   factRow: { flexDirection: "row", alignItems: "flex-start", gap: 10, marginBottom: 8 },
@@ -643,12 +646,13 @@ const RS = StyleSheet.create({
   factText: { color: "rgba(255,255,255,0.65)", fontSize: 13, lineHeight: 19, flex: 1 },
 
   // Destinations
-  sectionLabel: { color: "rgba(255,255,255,0.35)", fontSize: 11, fontWeight: "700", letterSpacing: 1.5, textTransform: "uppercase", marginBottom: 12, paddingHorizontal: 16, alignSelf: "flex-start" },
+  sectionLabel: { color: "rgba(255,255,255,0.55)", fontSize: 11, fontWeight: "700", letterSpacing: 1.5, textTransform: "uppercase", marginBottom: 12, paddingHorizontal: 16, alignSelf: "flex-start" },
   destRow: { paddingHorizontal: 16, gap: 10 },
   destCard: { width: 160, height: 120, borderRadius: 16, overflow: "hidden", justifyContent: "flex-end", padding: 10 },
   destImg: { position: "absolute", top: 0, left: 0, right: 0, bottom: 0, width: "100%", height: "100%" },
   destNumBadge: { position: "absolute", top: 8, left: 8, width: 22, height: 22, borderRadius: 11, backgroundColor: "rgba(100,67,244,0.9)", alignItems: "center", justifyContent: "center" },
-  destNumText: { color: "#FFFFFF", fontSize: 11, fontWeight: "800" },
+  destNumText: { color: "#FFFFFF", fontSize: 11, fontWeight: "800",
+      fontFamily: "Chillax-Bold" },
   destName: { color: "#FFFFFF", fontSize: 12, fontWeight: "800", textShadowColor: "rgba(0,0,0,0.6)", textShadowOffset: { width: 0, height: 1 }, textShadowRadius: 4 },
 
   // Bottom block
@@ -665,7 +669,7 @@ const RS = StyleSheet.create({
     padding: 18,
     borderWidth: 1.5,
     borderColor: "rgba(255,200,0,0.45)",
-    shadowColor: "#FFD700",
+    shadowColor: "#FBBF24",
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.35,
     shadowRadius: 16,
@@ -673,19 +677,21 @@ const RS = StyleSheet.create({
   },
   pointsLeft: { flexDirection: "row", alignItems: "center", gap: 14 },
   pointsIconBox: { width: 52, height: 52, borderRadius: 16, alignItems: "center", justifyContent: "center" },
-  pointsValue: { color: "#FFD700", fontSize: 36, fontWeight: "900", lineHeight: 40, textShadowColor: "rgba(255,215,0,0.5)", textShadowOffset: { width: 0, height: 0 }, textShadowRadius: 8 },
+  pointsValue: { color: "#FBBF24", fontSize: 36, fontWeight: "900", lineHeight: 40, textShadowColor: "rgba(255,215,0,0.5)", textShadowOffset: { width: 0, height: 0 }, textShadowRadius: 8 },
   pointsPillLabel: { color: "rgba(255,200,80,0.85)", fontSize: 12, fontWeight: "700", marginTop: 2, letterSpacing: 0.3 },
   pointsRight: { alignItems: "center", gap: 8 },
   pointsRightLabel: { color: "rgba(255,200,80,0.75)", fontSize: 10, fontWeight: "700", textAlign: "center", letterSpacing: 0.5, textTransform: "uppercase" },
   completeBadge: { width: 38, height: 38, borderRadius: 12, alignItems: "center", justifyContent: "center" },
 
   // CTA
-  ctaBtn: { width: "100%", borderRadius: 18, overflow: "hidden" },
+  ctaBtn: { width: "100%", borderRadius: 18, shadowColor: "#F94498", shadowOffset: { width: 0, height: 6 }, shadowOpacity: 0.4, shadowRadius: 24, elevation: 10,
+    overflow: "hidden" },
   ctaGradient: { alignItems: "center", justifyContent: "center", paddingVertical: 17 },
-  ctaText: { color: "#FFFFFF", fontSize: 17, fontWeight: "800", letterSpacing: 0.3 },
+  ctaText: { color: "#FFFFFF", fontSize: 17, fontWeight: "800",
+      fontFamily: "Chillax-Bold", letterSpacing: 0.3 },
 
   // Secondary row
   secondaryRow: { flexDirection: "row", gap: 20, justifyContent: "center" },
   secondaryBtn: { flexDirection: "row", alignItems: "center", gap: 6, paddingVertical: 8, paddingHorizontal: 12 },
-  secondaryBtnText: { color: "rgba(255,255,255,0.4)", fontSize: 12, fontWeight: "600" },
+  secondaryBtnText: { color: "rgba(255,255,255,0.5)", fontSize: 12, fontWeight: "600" },
 });

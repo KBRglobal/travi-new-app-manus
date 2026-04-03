@@ -31,7 +31,7 @@ function buildCardData(destination: string, dnaType: string): ShareCardData {
     Tokyo: { days: 7, dates: "Apr 12–19", activities: ["TeamLab Planets", "Shibuya Crossing", "Tsukiji Market"], highlights: ["Sunrise at Mt. Fuji", "Ramen at 2am in Shinjuku", "Cherry blossoms in Ueno"], cashback: 124, coverEmoji: "🗼", accentColor: "#F94498", country: "Japan" },
     Bali: { days: 10, dates: "May 3–13", activities: ["Ubud Rice Terraces", "Seminyak Beach", "Tanah Lot"], highlights: ["Sunrise yoga at Campuhan Ridge", "Sunset at Uluwatu Temple", "Cooking class in Ubud"], cashback: 98, coverEmoji: "🌴", accentColor: "#02A65C", country: "Indonesia" },
     Barcelona: { days: 5, dates: "Jun 8–13", activities: ["Sagrada Família", "Park Güell", "La Boqueria"], highlights: ["Tapas crawl in El Born", "Sunrise at Bunkers del Carmel", "Beach day at Barceloneta"], cashback: 76, coverEmoji: "🏛️", accentColor: "#F59E0B", country: "Spain" },
-    Dubai: { days: 6, dates: "Mar 20–26", activities: ["Burj Khalifa", "Dubai Mall", "Desert Safari"], highlights: ["Sunrise over the desert", "Dubai Fountain show", "Gold Souk at night"], cashback: 210, coverEmoji: "🏙️", accentColor: "#FFD700", country: "UAE" },
+    Dubai: { days: 6, dates: "Mar 20–26", activities: ["Burj Khalifa", "Dubai Mall", "Desert Safari"], highlights: ["Sunrise over the desert", "Dubai Fountain show", "Gold Souk at night"], cashback: 210, coverEmoji: "🏙️", accentColor: "#FBBF24", country: "UAE" },
   };
   const base = destMap[destination] || { days: 7, dates: "TBD", activities: ["Sightseeing", "Local food", "Culture"], highlights: ["Amazing sunsets", "Local markets", "Hidden gems"], cashback: 80, coverEmoji: "✈️", accentColor: "#6443F4", country: "Unknown" };
   return {
@@ -165,7 +165,7 @@ export default function TripShareScreen() {
         <View style={{ width: 40 }} />
       </View>
 
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 120 }}>
+      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 130 }}>
         {/* Card */}
         <Animated.View style={{ transform: [{ scale: scaleAnim }] }}>
           <ShareCardVisual data={cardData} />
@@ -209,7 +209,7 @@ export default function TripShareScreen() {
 // ─── Styles ───────────────────────────────────────────────────────────────────
 const S = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#0D0628" },
-  header: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 16, paddingBottom: 16, paddingTop: 4 },
+  header: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 16, paddingBottom: 130, paddingTop: 4 },
   backBtn: { width: 40, height: 40, alignItems: "center", justifyContent: "center" },
   headerTitle: { color: "#FFF", fontSize: 18, fontWeight: "800", fontFamily: "Chillax-Bold" },
 
@@ -231,13 +231,13 @@ const S = StyleSheet.create({
   highlightDot: { width: 6, height: 6, borderRadius: 3 },
   highlightText: { color: "#ECEDEE", fontSize: 13, lineHeight: 18 },
   activityPills: { flexDirection: "row", flexWrap: "wrap", gap: 6 },
-  activityPill: { borderRadius: 10, paddingHorizontal: 10, paddingVertical: 4, backgroundColor: "rgba(255,255,255,0.08)", borderWidth: 1, borderColor: "rgba(255,255,255,0.12)" },
+  activityPill: { borderRadius: 10, paddingHorizontal: 10, paddingVertical: 4, backgroundColor: "rgba(255,255,255,0.55)", borderWidth: 1, borderColor: "rgba(255,255,255,0.55)" },
   activityPillText: { color: "#ECEDEE", fontSize: 12 },
-  cardFooter: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingTop: 8, borderTopWidth: 1, borderTopColor: "rgba(255,255,255,0.08)" },
-  cardFooterLabel: { color: "rgba(255,255,255,0.4)", fontSize: 11 },
+  cardFooter: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingTop: 8, borderTopWidth: 1, borderTopColor: "rgba(255,255,255,0.55)" },
+  cardFooterLabel: { color: "rgba(255,255,255,0.5)", fontSize: 11 },
   cardFooterValue: { color: "#FFF", fontSize: 14, fontWeight: "700" },
   cashbackBadge: { alignItems: "flex-end" },
-  cashbackLabel: { color: "rgba(255,255,255,0.4)", fontSize: 11 },
+  cashbackLabel: { color: "rgba(255,255,255,0.5)", fontSize: 11 },
   cashbackAmount: { color: "#22C55E", fontSize: 20, fontWeight: "900", fontFamily: "Chillax-Bold" },
 
   // Success
@@ -254,5 +254,5 @@ const S = StyleSheet.create({
   mainShareBtn: { borderRadius: 16, overflow: "hidden", flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 8, paddingVertical: 16, marginBottom: 16 },
   mainShareBtnText: { color: "#FFF", fontSize: 16, fontWeight: "800", fontFamily: "Chillax-Bold" },
 
-  footerNote: { color: "rgba(255,255,255,0.25)", fontSize: 11, textAlign: "center", lineHeight: 16 },
+  footerNote: { color: "rgba(255,255,255,0.55)", fontSize: 11, textAlign: "center", lineHeight: 16 },
 });

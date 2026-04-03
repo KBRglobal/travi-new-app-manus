@@ -38,7 +38,10 @@ export default function SignUpScreen() {
   };
 
   const handleGuest = () => {
+    // Set 25-hour expiry for guest session
+    const expiresAt = new Date(Date.now() + 25 * 60 * 60 * 1000).toISOString();
     dispatch({ type: "SET_AUTH", payload: { isAuthenticated: false, isGuest: true } });
+    dispatch({ type: "SET_GUEST_EXPIRES", payload: expiresAt });
     dispatch({
       type: "SET_PROFILE",
       payload: {
@@ -70,7 +73,7 @@ export default function SignUpScreen() {
 
           {/* Glass card */}
           <View style={s.card}>
-            <LinearGradient colors={["rgba(255,255,255,0.09)", "rgba(255,255,255,0.03)"]} style={s.cardBg}>
+            <LinearGradient colors={["rgba(255,255,255,0.55)", "rgba(255,255,255,0.55)"]} style={s.cardBg}>
 
               {/* Tab toggle */}
               <View style={s.tabRow}>
@@ -134,7 +137,7 @@ export default function SignUpScreen() {
               <View style={s.socialRow}>
                 {(["Google", "Apple"] as const).map((p) => (
                   <TouchableOpacity key={p} style={s.socialBtn} onPress={() => handleSocial(p)} activeOpacity={0.8}>
-                    <LinearGradient colors={["rgba(255,255,255,0.10)", "rgba(255,255,255,0.05)"]} style={s.socialGradient}>
+                    <LinearGradient colors={["rgba(255,255,255,0.55)", "rgba(255,255,255,0.55)"]} style={s.socialGradient}>
                       {p === "Google" ? (
                         <Text style={s.googleG}>
                           <Text style={{ color: "#4285F4" }}>G</Text>
@@ -182,7 +185,7 @@ const s = StyleSheet.create({
     position: "absolute", width: 260, height: 260, borderRadius: 130,
     bottom: 60, left: -100, backgroundColor: "rgba(249,68,152,0.09)",
   },
-  scroll: { flexGrow: 1, paddingHorizontal: 22, paddingTop: 72, paddingBottom: 40, alignItems: "center" },
+  scroll: { flexGrow: 1, paddingHorizontal: 22, paddingTop: 72, paddingBottom: 130, alignItems: "center" },
 
   // Logo — logotype only
   logoArea: { alignItems: "center", gap: 8, marginBottom: 32 },
@@ -206,7 +209,7 @@ const s = StyleSheet.create({
   inputGradient: {
     flexDirection: "row", alignItems: "center", gap: 12,
     paddingHorizontal: Spacing.md, paddingVertical: Spacing.md,
-    backgroundColor: "rgba(255,255,255,0.04)",
+    backgroundColor: "rgba(255,255,255,0.55)",
   },
   input: { flex: 1, color: DS.primary, fontSize: 16, fontWeight: "500", fontFamily: "Satoshi-Medium" },
 
@@ -236,7 +239,7 @@ const s = StyleSheet.create({
     marginTop: 20, alignItems: "center", gap: 3,
     paddingVertical: 16, paddingHorizontal: 32,
     borderRadius: Radius.lg, borderWidth: 1, borderColor: Border.subtle,
-    backgroundColor: "rgba(255,255,255,0.025)", width: "100%",
+    backgroundColor: "rgba(255,255,255,0.55)", width: "100%",
   },
   guestText: { color: DS.secondary, fontSize: 15, fontWeight: "600", fontFamily: "Satoshi-Medium" },
   guestSub: { ...Typography.small, color: DS.muted, fontFamily: "Satoshi-Regular" },

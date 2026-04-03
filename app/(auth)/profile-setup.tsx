@@ -18,7 +18,7 @@ type AvatarOption = {
 
 const AVATARS: AvatarOption[] = [
   { id: "fire",     iconName: "flame.fill",      color: "#FF5722", label: "Fire" },
-  { id: "bolt",     iconName: "bolt.fill",        color: "#FFD700", label: "Bolt" },
+  { id: "bolt",     iconName: "bolt.fill",        color: "#FBBF24", label: "Bolt" },
   { id: "leaf",     iconName: "leaf.fill",        color: "#4CAF50", label: "Nature" },
   { id: "mountain", iconName: "mountain.2.fill",  color: "#78909C", label: "Explorer" },
   { id: "globe",    iconName: "globe",            color: "#2196F3", label: "Globetrotter" },
@@ -27,7 +27,7 @@ const AVATARS: AvatarOption[] = [
   { id: "moon",     iconName: "moon.fill",        color: "#9C27B0", label: "Night Owl" },
   { id: "sun",      iconName: "sun.max.fill",     color: "#FF9800", label: "Sunny" },
   { id: "sparkles", iconName: "sparkles",         color: "#00BCD4", label: "Dreamer" },
-  { id: "crown",    iconName: "crown.fill",       color: "#FFD700", label: "Elite" },
+  { id: "crown",    iconName: "crown.fill",       color: "#FBBF24", label: "Elite" },
   { id: "trophy",   iconName: "trophy.fill",      color: "#FF9800", label: "Champion" },
 ];
 
@@ -154,7 +154,7 @@ export default function ProfileSetupScreen() {
                   <Text style={s.previewName}>{name.trim()}</Text>
                   <Text style={s.previewSub}>TRAVI Traveler</Text>
                 </View>
-                <LinearGradient colors={["#FFD700", "#FF9500"]} style={s.newBadge}>
+                <LinearGradient colors={["#FBBF24", "#FF9500"]} style={s.newBadge}>
                   <Text style={s.newBadgeText}>NEW</Text>
                 </LinearGradient>
               </LinearGradient>
@@ -164,7 +164,7 @@ export default function ProfileSetupScreen() {
           {/* CTA */}
           <TouchableOpacity style={s.cta} onPress={handleContinue} activeOpacity={0.85} disabled={!canContinue}>
             <LinearGradient
-              colors={canContinue ? Gradients.cta : ["rgba(255,255,255,0.06)", "rgba(255,255,255,0.03)"]}
+              colors={canContinue ? Gradients.cta : ["rgba(255,255,255,0.55)", "rgba(255,255,255,0.55)"]}
               start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
               style={s.ctaGradient}
             >
@@ -189,7 +189,7 @@ const s = StyleSheet.create({
     position: "absolute", width: 260, height: 260, borderRadius: 130,
     bottom: 60, left: -100, backgroundColor: "rgba(249,68,152,0.08)",
   },
-  scroll: { flexGrow: 1, paddingHorizontal: 24, paddingTop: 64, paddingBottom: 40, gap: 24 },
+  scroll: { flexGrow: 1, paddingHorizontal: 24, paddingTop: 64, paddingBottom: 130, gap: 24 },
 
   stepBadge: { alignSelf: "flex-start" },
   stepGradient: {
@@ -212,7 +212,7 @@ const s = StyleSheet.create({
   grid: { flexDirection: "row", flexWrap: "wrap", gap: 10, justifyContent: "center" },
   gridItem: {
     width: 52, height: 52, borderRadius: Radius.md, alignItems: "center", justifyContent: "center",
-    borderWidth: 1.5, borderColor: Border.idle, backgroundColor: "rgba(255,255,255,0.07)", overflow: "hidden",
+    borderWidth: 1.5, borderColor: Border.idle, backgroundColor: "rgba(255,255,255,0.55)", overflow: "hidden",
   },
   gridItemActive: { borderColor: "rgba(249,68,152,0.80)" },
   gridIcon: { width: 36, height: 36, borderRadius: 10, alignItems: "center", justifyContent: "center" },
@@ -222,7 +222,7 @@ const s = StyleSheet.create({
   inputGradient: {
     flexDirection: "row", alignItems: "center", gap: 12,
     paddingHorizontal: Spacing.md, paddingVertical: Spacing.md,
-    backgroundColor: "rgba(255,255,255,0.04)",
+    backgroundColor: "rgba(255,255,255,0.55)",
   },
   input: { flex: 1, color: DS.primary, fontSize: 16, fontWeight: "500", fontFamily: "Satoshi-Medium" },
 

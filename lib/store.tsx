@@ -108,6 +108,7 @@ export type PointTransaction = {
 export type AppState = {
   isAuthenticated: boolean;
   isGuest: boolean;
+  guestExpiresAt: string | null; // ISO timestamp — 25 hours from guest login
   onboardingCompleted: boolean;
   profile: TravelerProfile | null;
   trips: Trip[];
@@ -152,6 +153,7 @@ export type AppNotification = {
 
 type Action =
   | { type: "SET_AUTH"; payload: { isAuthenticated: boolean; isGuest: boolean } }
+  | { type: "SET_GUEST_EXPIRES"; payload: string | null }
   | { type: "ADD_PRICE_ALERT"; payload: PriceAlert }
   | { type: "REMOVE_PRICE_ALERT"; payload: string }
   | { type: "TRIGGER_PRICE_ALERT"; payload: string }
@@ -176,6 +178,7 @@ type Action =
 const initialState: AppState = {
   isAuthenticated: false,
   isGuest: false,
+  guestExpiresAt: null,
   onboardingCompleted: false,
   profile: null,
   trips: [],
@@ -190,6 +193,8 @@ function reducer(state: AppState, action: Action): AppState {
   switch (action.type) {
     case "SET_AUTH":
       return { ...state, isAuthenticated: action.payload.isAuthenticated, isGuest: action.payload.isGuest };
+    case "SET_GUEST_EXPIRES":
+      return { ...state, guestExpiresAt: action.payload };
     case "SET_PROFILE":
       return { ...state, profile: action.payload };
     case "UPDATE_PROFILE":

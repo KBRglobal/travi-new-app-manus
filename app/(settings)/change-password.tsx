@@ -85,7 +85,7 @@ export default function ChangePasswordScreen() {
 const S = StyleSheet.create({
   header: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 20, paddingVertical: 16, borderBottomWidth: 0.5 },
   headerTitle: { fontSize: 18, fontFamily: "Chillax-Semibold", fontWeight: "600" },
-  scroll: { padding: 20, paddingBottom: 100 },
+  scroll: { padding: 20, paddingBottom: 130 },
   subtitle: { fontSize: 14, fontFamily: "Satoshi-Regular", marginBottom: 28, lineHeight: 20 },
   form: { gap: 20 },
   field: { gap: 8 },

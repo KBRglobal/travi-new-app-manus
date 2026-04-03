@@ -96,7 +96,7 @@ const S = StyleSheet.create({
   header: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 20, paddingVertical: 16, borderBottomWidth: 0.5 },
   headerTitle: { fontSize: 18, fontFamily: "Chillax-Semibold", fontWeight: "600" },
   saveBtn: { fontSize: 16, fontFamily: "Chillax-Semibold", fontWeight: "600" },
-  scroll: { padding: 20, paddingBottom: 100 },
+  scroll: { padding: 20, paddingBottom: 130 },
   avatarSection: { alignItems: "center", marginBottom: 32 },
   avatarCircle: { width: 100, height: 100, borderRadius: 50, alignItems: "center", justifyContent: "center", marginBottom: 12 },
   avatarImg: { width: 60, height: 60, resizeMode: "contain" },

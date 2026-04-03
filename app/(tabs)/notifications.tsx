@@ -120,7 +120,7 @@ function NotifCard({ item, onPress, onDismiss }: { item: Notif; onPress: () => v
         {/* Glass background */}
         <LinearGradient
           colors={item.read
-            ? ["rgba(255,255,255,0.04)", "rgba(255,255,255,0.02)"]
+            ? ["rgba(255,255,255,0.55)", "rgba(255,255,255,0.55)"]
             : ["rgba(100,67,244,0.12)", "rgba(249,68,152,0.06)"]}
           style={StyleSheet.absoluteFillObject}
         />
@@ -174,7 +174,7 @@ function NotifCard({ item, onPress, onDismiss }: { item: Notif; onPress: () => v
 
           {/* Dismiss */}
           <TouchableOpacity style={S.dismissBtn} onPress={handleDismiss} hitSlop={{ top: 8, right: 8, bottom: 8, left: 8 }}>
-            <IconSymbol name="xmark" size={12} color="rgba(255,255,255,0.3)" />
+            <IconSymbol name="xmark" size={12} color="rgba(255,255,255,0.55)" />
           </TouchableOpacity>
         </View>
       </TouchableOpacity>
@@ -287,7 +287,7 @@ export default function NotificationsScreen() {
         data={[1]}
         keyExtractor={() => "list"}
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingBottom: 100, paddingHorizontal: 16 }}
+        contentContainerStyle={{ paddingBottom: 130, paddingHorizontal: 16 }}
         renderItem={() => (
           <View>
             {renderSection("Today", today)}
@@ -317,9 +317,9 @@ const S = StyleSheet.create({
   orb2: { position: "absolute", bottom: 200, left: -80, width: 180, height: 180, borderRadius: 90, backgroundColor: "rgba(249,68,152,0.08)" },
 
   // Header
-  header: { flexDirection: "row", alignItems: "center", paddingHorizontal: 16, paddingBottom: 12, paddingTop: 4 },
+  header: { flexDirection: "row", alignItems: "center", paddingHorizontal: 16, paddingBottom: 130, paddingTop: 4 },
   backBtn: { marginRight: 8 },
-  backBtnInner: { width: 36, height: 36, borderRadius: 18, backgroundColor: "rgba(255,255,255,0.08)", alignItems: "center", justifyContent: "center" },
+  backBtnInner: { width: 36, height: 36, borderRadius: 18, backgroundColor: "rgba(255,255,255,0.55)", alignItems: "center", justifyContent: "center" },
   headerCenter: { flex: 1, flexDirection: "row", alignItems: "center", gap: 8 },
   headerTitle: { ...TYPE.h2, color: BRAND.textPrimary },
   unreadBadge: { backgroundColor: BRAND.pink, borderRadius: 10, paddingHorizontal: 7, paddingVertical: 2 },
@@ -329,7 +329,7 @@ const S = StyleSheet.create({
 
   // Filter
   filterRow: { flexDirection: "row", paddingHorizontal: 16, marginBottom: 16, gap: 8 },
-  filterTab: { overflow: "hidden", borderRadius: RADIUS.full, paddingHorizontal: 16, paddingVertical: 8, borderWidth: 1, borderColor: "rgba(255,255,255,0.1)" },
+  filterTab: { overflow: "hidden", borderRadius: RADIUS.full, paddingHorizontal: 16, paddingVertical: 8, borderWidth: 1, borderColor: "rgba(255,255,255,0.55)" },
   filterTabActive: { borderColor: "transparent" },
   filterTabText: { ...TYPE.label, color: BRAND.textSecondary },
   filterTabTextActive: { color: "#FFFFFF" },
@@ -339,7 +339,7 @@ const S = StyleSheet.create({
 
   // Notif card
   notifWrap: { marginBottom: 10 },
-  notifCard: { overflow: "hidden", borderRadius: RADIUS.xl, borderWidth: 1, borderColor: "rgba(255,255,255,0.07)" },
+  notifCard: { overflow: "hidden", borderRadius: RADIUS.xl, borderWidth: 1, borderColor: "rgba(255,255,255,0.55)" },
   unreadBar: { position: "absolute", left: 0, top: 0, bottom: 0, width: 3, backgroundColor: BRAND.purple, zIndex: 1 },
   notifRow: { flexDirection: "row", alignItems: "flex-start", padding: 14, gap: 12 },
 

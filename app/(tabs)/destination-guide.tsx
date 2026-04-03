@@ -346,7 +346,7 @@ function BudgetTab({ dest }: { dest: DestinationData }) {
   const tiers = [
     { key: "backpacker", label: "Backpacker", icon: "🎒", color: "#22C55E", data: dest.budget.backpacker },
     { key: "midrange", label: "Mid-Range", icon: "🏨", color: "#6443F4", data: dest.budget.midrange },
-    { key: "luxury", label: "Luxury", icon: "💎", color: "#FFD700", data: dest.budget.luxury },
+    { key: "luxury", label: "Luxury", icon: "💎", color: "#FBBF24", data: dest.budget.luxury },
   ];
   return (
     <View style={T.wrap}>
@@ -399,18 +399,18 @@ const T = StyleSheet.create({
   sectionTitle: { color: "#FFFFFF", fontSize: 18, fontWeight: "800", marginTop: 4, marginBottom: 4, fontFamily: "Chillax-Bold" },
   bodyText: { color: "rgba(255,255,255,0.65)", fontSize: 14, lineHeight: 22, fontFamily: "Satoshi-Regular" },
 
-  regionCard: { borderRadius: 16, overflow: "hidden", padding: 14, borderWidth: 1, borderColor: "rgba(255,255,255,0.08)", gap: 8 },
+  regionCard: { borderRadius: 16, overflow: "hidden", padding: 14, borderWidth: 1, borderColor: "rgba(255,255,255,0.55)", gap: 8 },
   regionTop: { flexDirection: "row", alignItems: "center", gap: 10 },
   regionIcon: { fontSize: 24 },
   regionName: { color: "#FFFFFF", fontSize: 15, fontWeight: "700", fontFamily: "Chillax-Semibold" },
-  regionTypeBadge: { backgroundColor: "rgba(255,255,255,0.1)", borderRadius: 8, paddingHorizontal: 8, paddingVertical: 2, alignSelf: "flex-start", marginTop: 2 },
+  regionTypeBadge: { backgroundColor: "rgba(255,255,255,0.55)", borderRadius: 8, paddingHorizontal: 8, paddingVertical: 2, alignSelf: "flex-start", marginTop: 2 },
   regionTypeText: { color: "rgba(255,255,255,0.6)", fontSize: 11, fontWeight: "600" },
   regionDesc: { color: "rgba(255,255,255,0.55)", fontSize: 13, lineHeight: 19, fontFamily: "Satoshi-Regular" },
   highlightRow: { flexDirection: "row", alignItems: "center", gap: 6 },
   highlightIcon: { fontSize: 12 },
-  highlightText: { color: "#FFD700", fontSize: 12, fontWeight: "600" },
+  highlightText: { color: "#FBBF24", fontSize: 12, fontWeight: "600" },
 
-  cultureCard: { flexDirection: "row", gap: 12, backgroundColor: "rgba(255,255,255,0.05)", borderRadius: 14, padding: 14, borderWidth: 1, borderColor: "rgba(255,255,255,0.07)" },
+  cultureCard: { flexDirection: "row", gap: 12, backgroundColor: "rgba(255,255,255,0.55)", borderRadius: 14, padding: 14, borderWidth: 1, borderColor: "rgba(255,255,255,0.55)" },
   cultureIcon: { fontSize: 26 },
   cultureName: { color: "#FFFFFF", fontSize: 14, fontWeight: "700", marginBottom: 3, fontFamily: "Chillax-Semibold" },
   cultureDesc: { color: "rgba(255,255,255,0.55)", fontSize: 13, lineHeight: 18, fontFamily: "Satoshi-Regular" },
@@ -418,13 +418,13 @@ const T = StyleSheet.create({
   dietBadge: { borderRadius: 10, borderWidth: 1, paddingHorizontal: 12, paddingVertical: 8 },
   dietText: { fontSize: 13, fontWeight: "700", fontFamily: "Satoshi-Medium" },
 
-  foodCard: { backgroundColor: "rgba(255,255,255,0.05)", borderRadius: 14, padding: 14, borderWidth: 1, borderColor: "rgba(255,255,255,0.07)", gap: 4 },
+  foodCard: { backgroundColor: "rgba(255,255,255,0.55)", borderRadius: 14, padding: 14, borderWidth: 1, borderColor: "rgba(255,255,255,0.55)", gap: 4 },
   foodTop: { flexDirection: "row", justifyContent: "space-between", alignItems: "center" },
   foodName: { color: "#FFFFFF", fontSize: 15, fontWeight: "700", fontFamily: "Chillax-Semibold" },
-  foodPrice: { color: "#FFD700", fontSize: 14, fontWeight: "800", fontFamily: "Chillax-Bold" },
+  foodPrice: { color: "#FBBF24", fontSize: 14, fontWeight: "800", fontFamily: "Chillax-Bold" },
   foodMeta: { flexDirection: "row", gap: 10 },
   foodType: { color: "#C084FC", fontSize: 12, fontWeight: "600" },
-  foodArea: { color: "rgba(255,255,255,0.4)", fontSize: 12 },
+  foodArea: { color: "rgba(255,255,255,0.5)", fontSize: 12 },
   foodDesc: { color: "rgba(255,255,255,0.55)", fontSize: 13, lineHeight: 18, fontFamily: "Satoshi-Regular" },
 
   budgetCard: { borderRadius: 16, overflow: "hidden", padding: 14, borderWidth: 1, gap: 8 },
@@ -455,21 +455,22 @@ const S = StyleSheet.create({
   heroCountry: { color: "rgba(255,255,255,0.55)", fontSize: 14, fontWeight: "600", fontFamily: "Satoshi-Medium" },
   heroTagline: { color: "rgba(255,255,255,0.45)", fontSize: 13, fontStyle: "italic", marginBottom: 8, fontFamily: "Satoshi-Regular" },
   statsRow: { flexDirection: "row", flexWrap: "wrap", gap: 8 },
-  statChip: { flexDirection: "row", alignItems: "center", gap: 4, backgroundColor: "rgba(255,255,255,0.1)", borderRadius: 10, paddingHorizontal: 8, paddingVertical: 4 },
+  statChip: { flexDirection: "row", alignItems: "center", gap: 4, backgroundColor: "rgba(255,255,255,0.55)", borderRadius: 10, paddingHorizontal: 8, paddingVertical: 4 },
   statIcon: { fontSize: 12 },
   statLabel: { color: "rgba(255,255,255,0.75)", fontSize: 11, fontWeight: "600" },
 
-  tabsContainer: { backgroundColor: "rgba(13,6,40,0.95)", borderBottomWidth: 1, borderBottomColor: "rgba(255,255,255,0.06)" },
+  tabsContainer: { backgroundColor: "rgba(13,6,40,0.95)", borderBottomWidth: 1, borderBottomColor: "rgba(255,255,255,0.55)" },
   tabsRow: { paddingHorizontal: 16, paddingVertical: 10, gap: 8 },
-  tab: { borderRadius: 20, overflow: "hidden", paddingHorizontal: 16, paddingVertical: 7, borderWidth: 1, borderColor: "rgba(255,255,255,0.1)" },
+  tab: { borderRadius: 20, overflow: "hidden", paddingHorizontal: 16, paddingVertical: 7, borderWidth: 1, borderColor: "rgba(255,255,255,0.55)" },
   tabActive: { borderColor: "transparent" },
   tabText: { color: "rgba(255,255,255,0.5)", fontSize: 13, fontWeight: "600" },
   tabTextActive: { color: "#FFFFFF" },
 
-  content: { padding: 16, paddingBottom: 100, gap: 16 },
+  content: { padding: 16, paddingBottom: 130, gap: 16 },
 
-  ctaWrap: { position: "absolute", bottom: 0, left: 0, right: 0, padding: 16, paddingBottom: 32 },
-  ctaBtn: { borderRadius: 18, overflow: "hidden" },
+  ctaWrap: { position: "absolute", bottom: 0, left: 0, right: 0, padding: 16, paddingBottom: 130 },
+  ctaBtn: { borderRadius: 18, shadowColor: "#F94498", shadowOffset: { width: 0, height: 6 }, shadowOpacity: 0.4, shadowRadius: 24, elevation: 10,
+    overflow: "hidden" },
   ctaGradient: { alignItems: "center", justifyContent: "center", paddingVertical: 16 },
   ctaText: { color: "#FFFFFF", fontSize: 16, fontWeight: "800", fontFamily: "Chillax-Bold" },
 });

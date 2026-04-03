@@ -183,7 +183,7 @@ export default function DnaUpdateScreen() {
       <View style={styles.orb1} />
       <View style={styles.orb2} />
 
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 120 }}>
+      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 130 }}>
         <Animated.View style={{ opacity: fadeAnim, transform: [{ translateY: slideAnim }] }}>
 
           {/* Header */}
@@ -298,14 +298,14 @@ const styles = StyleSheet.create({
   typeDesc: { color: "rgba(255,255,255,0.8)", fontSize: 14, fontFamily: "Satoshi-Regular", lineHeight: 21 },
   section: { marginHorizontal: 20, marginBottom: 24 },
   sectionTitle: { color: "#FFFFFF", fontSize: 18, fontFamily: "Chillax-Bold", fontWeight: "800", marginBottom: 2 },
-  sectionSub: { color: "rgba(255,255,255,0.4)", fontSize: 13, fontFamily: "Satoshi-Regular", marginBottom: 14 },
-  traitsCard: { backgroundColor: "rgba(255,255,255,0.05)", borderRadius: 20, padding: 18, gap: 18, borderWidth: 1, borderColor: "rgba(255,255,255,0.07)" },
+  sectionSub: { color: "rgba(255,255,255,0.5)", fontSize: 13, fontFamily: "Satoshi-Regular", marginBottom: 14 },
+  traitsCard: { backgroundColor: "rgba(255,255,255,0.55)", borderRadius: 20, padding: 18, gap: 18, borderWidth: 1, borderColor: "rgba(255,255,255,0.55)" },
   traitRow: { flexDirection: "row", alignItems: "center", gap: 10 },
   traitLeft: { flexDirection: "row", alignItems: "center", gap: 10, width: 155 },
   traitIcon: { fontSize: 20, fontFamily: "Satoshi-Regular" },
   traitLabel: { color: "rgba(255,255,255,0.85)", fontSize: 13, fontFamily: "Chillax-Semibold", fontWeight: "700", flex: 1 },
   traitRight: { flex: 1, flexDirection: "row", alignItems: "center", gap: 10 },
-  barTrack: { flex: 1, height: 8, backgroundColor: "rgba(255,255,255,0.08)", borderRadius: 4, overflow: "hidden" },
+  barTrack: { flex: 1, height: 8, backgroundColor: "rgba(255,255,255,0.55)", borderRadius: 4, overflow: "hidden" },
   barFill: { height: "100%", borderRadius: 4 },
   traitScoreWrap: { flexDirection: "row", alignItems: "center", gap: 4, width: 48, justifyContent: "flex-end" },
   traitScore: { fontSize: 15, fontFamily: "Chillax-Bold", fontWeight: "900", width: 30, textAlign: "right" },
@@ -315,7 +315,7 @@ const styles = StyleSheet.create({
   interestPill: { borderRadius: 20, overflow: "hidden" },
   pillGrad: { paddingHorizontal: 14, paddingVertical: 8 },
   pillText: { color: "rgba(255,255,255,0.85)", fontSize: 13, fontFamily: "Chillax-Semibold", fontWeight: "600" },
-  learnedCard: { backgroundColor: "rgba(255,255,255,0.04)", borderRadius: 20, padding: 16, gap: 14 },
+  learnedCard: { backgroundColor: "rgba(255,255,255,0.55)", borderRadius: 20, padding: 16, gap: 14 },
   learnedRow: { flexDirection: "row", gap: 12, alignItems: "flex-start" },
   learnedIcon: { fontSize: 20, fontFamily: "Satoshi-Regular", marginTop: 1 },
   learnedText: { flex: 1, color: "rgba(255,255,255,0.65)", fontSize: 14, fontFamily: "Satoshi-Regular", lineHeight: 20 },

@@ -1,5 +1,5 @@
 import { createTRPCReact } from "@trpc/react-query";
-import { httpBatchLink } from "@trpc/client";
+import { httpBatchLink, retryLink } from "@trpc/client";
 import superjson from "superjson";
 import type { AppRouter } from "@/server/routers";
 import { getApiBaseUrl } from "@/constants/oauth";
@@ -21,6 +21,13 @@ export const trpc = createTRPCReact<AppRouter>();
 export function createTRPCClient() {
   return trpc.createClient({
     links: [
+      // Retry once on 401 (token expired) — refreshes session token before retry
+      retryLink({
+        retry(opts) {
+          const isUnauthorized = opts.error?.data?.httpStatus === 401;
+          return isUnauthorized && opts.attempts <= 1;
+        },
+      }),
       httpBatchLink({
         url: `${getApiBaseUrl()}/api/trpc`,
         // tRPC v11: transformer MUST be inside httpBatchLink, not at root

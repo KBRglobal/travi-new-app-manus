@@ -10,6 +10,8 @@ import { Image } from "react-native";
 import { IconSymbol } from "@/components/ui/icon-symbol";
 import * as Haptics from "expo-haptics";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { trpc } from "@/lib/trpc";
+import { useAuth } from "@/hooks/use-auth";
 
 const { width: W } = Dimensions.get("window");
 
@@ -37,8 +39,27 @@ export default function ReferScreen() {
   const insets = useSafeAreaInsets();
   const [copied, setCopied] = useState(false);
   const pulseAnim = useRef(new Animated.Value(1)).current;
-  const totalEarned = REFERRED_FRIENDS.filter(f => f.status === "completed").reduce((s, f) => s + f.reward, 0);
-  const completedCount = REFERRED_FRIENDS.filter(f => f.status === "completed").length;
+  const { isAuthenticated } = useAuth();
+
+  // Fetch real referrals from DB when authenticated
+  const referralsQuery = trpc.referrals.list.useQuery(undefined, { enabled: isAuthenticated });
+  const dbReferrals = referralsQuery.data ?? [];
+
+  // Use real DB referrals if available, otherwise fall back to mock data
+  const displayReferrals = dbReferrals.length > 0
+    ? dbReferrals.map((r, i) => ({
+        id: String(r.id),
+        name: `Referral #${i + 1}`,
+        joined: new Date(r.createdAt).toLocaleDateString("en-US", { month: "short", day: "numeric" }),
+        status: r.status,
+        reward: r.status === "completed" ? 500 : 0,
+        initial: String.fromCharCode(65 + (i % 26)),
+        color: ["#6443F4", "#F94498", "#02A65C", "#F59E0B", "#06B6D4"][i % 5],
+      }))
+    : REFERRED_FRIENDS;
+
+  const totalEarned = displayReferrals.filter(f => f.status === "completed").reduce((s, f) => s + f.reward, 0);
+  const completedCount = displayReferrals.filter(f => f.status === "completed").length;
 
   const handleCopyCode = () => {
     if (Platform.OS !== "web") Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
@@ -172,17 +193,17 @@ export default function ReferScreen() {
         {/* Friends list */}
         <View style={S.section}>
           <Text style={S.sectionTitle}>Friends You Referred</Text>
-          {REFERRED_FRIENDS.length === 0 ? (
+          {displayReferrals.length === 0 ? (
             <View style={S.emptyCard}>
-              <IconSymbol name="person.2.fill" size={32} color="rgba(255,255,255,0.2)" />
+              <IconSymbol name="person.2.fill" size={32} color="rgba(255,255,255,0.55)" />
               <Text style={S.emptyText}>No referrals yet</Text>
               <Text style={S.emptySub}>Share your code to start earning</Text>
             </View>
           ) : (
             <View style={S.friendsList}>
-              {REFERRED_FRIENDS.map((friend) => (
+              {displayReferrals.map((friend) => (
                 <View key={friend.id} style={S.friendRow}>
-                  <LinearGradient colors={["rgba(255,255,255,0.04)", "transparent"]} style={StyleSheet.absoluteFillObject} />
+                  <LinearGradient colors={["rgba(255,255,255,0.55)", "transparent"]} style={StyleSheet.absoluteFillObject} />
                   <View style={[S.friendAvatar, { backgroundColor: friend.color + "25", borderColor: friend.color + "50" }]}>
                     <Text style={[S.friendInitial, { color: friend.color }]}>{friend.initial}</Text>
                   </View>
@@ -218,54 +239,55 @@ const S = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#0D0628" },
   orb1: { position: "absolute", width: W * 1.2, height: W * 1.2, borderRadius: W * 0.6, top: -W * 0.5, left: -W * 0.3, backgroundColor: "rgba(123,47,190,0.1)" },
   orb2: { position: "absolute", width: W * 0.8, height: W * 0.8, borderRadius: W * 0.4, bottom: 100, right: -W * 0.3, backgroundColor: "rgba(233,30,140,0.07)" },
-  header: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 20, paddingBottom: 12 },
+  header: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 20, paddingBottom: 130 },
   backBtn: {},
-  backBtnInner: { width: 40, height: 40, borderRadius: 14, backgroundColor: "rgba(255,255,255,0.08)", alignItems: "center", justifyContent: "center", borderWidth: 1, borderColor: "rgba(255,255,255,0.1)" },
+  backBtnInner: { width: 40, height: 40, borderRadius: 14, backgroundColor: "rgba(255,255,255,0.55)", alignItems: "center", justifyContent: "center", borderWidth: 1, borderColor: "rgba(255,255,255,0.55)" },
   headerTitle: { color: "#FFFFFF", fontSize: 18, fontWeight: "800", fontFamily: "Chillax-Bold" },
   hero: { alignItems: "center", paddingVertical: 28, paddingHorizontal: 24, gap: 10, overflow: "hidden" },
   heroIconWrap: { marginBottom: 4 },
   heroIconGrad: { width: 80, height: 80, borderRadius: 28, alignItems: "center", justifyContent: "center" },
   heroTitle: { color: "#FFFFFF", fontSize: 26, fontWeight: "900", textAlign: "center", letterSpacing: -0.5, fontFamily: "Chillax-Bold" },
   heroSub: { color: "rgba(255,255,255,0.5)", fontSize: 14, textAlign: "center", lineHeight: 20, maxWidth: 280, fontFamily: "Satoshi-Regular" },
-  statsRow: { flexDirection: "row", backgroundColor: "rgba(255,255,255,0.05)", borderRadius: 20, borderWidth: 1, borderColor: "rgba(255,255,255,0.08)", overflow: "hidden", width: "100%", marginTop: 8 },
+  statsRow: { flexDirection: "row", backgroundColor: "rgba(255,255,255,0.55)", borderRadius: 20, borderWidth: 1, borderColor: "rgba(255,255,255,0.55)", overflow: "hidden", width: "100%", marginTop: 8 },
   statCard: { flex: 1, alignItems: "center", paddingVertical: 16, overflow: "hidden" },
-  statDivider: { width: 1, backgroundColor: "rgba(255,255,255,0.08)" },
+  statDivider: { width: 1, backgroundColor: "rgba(255,255,255,0.55)" },
   statValue: { color: "#FFFFFF", fontSize: 24, fontWeight: "900", fontFamily: "Chillax-Bold" },
-  statLabel: { color: "rgba(255,255,255,0.4)", fontSize: 11, marginTop: 2 },
+  statLabel: { color: "rgba(255,255,255,0.5)", fontSize: 11, marginTop: 2 },
   section: { paddingHorizontal: 20, marginBottom: 24, gap: 12 },
   sectionTitle: { color: "#FFFFFF", fontSize: 17, fontWeight: "700", fontFamily: "Chillax-Semibold" },
   codeCard: { borderRadius: 20, borderWidth: 1.5, borderColor: "rgba(123,47,190,0.5)", padding: 20, flexDirection: "row", alignItems: "center", justifyContent: "space-between", overflow: "hidden" },
   codeLeft: { gap: 4 },
-  codeLabel: { color: "rgba(255,255,255,0.4)", fontSize: 12 },
+  codeLabel: { color: "rgba(255,255,255,0.5)", fontSize: 12 },
   codeValue: { color: "#FFFFFF", fontSize: 22, fontWeight: "900", letterSpacing: 2, fontFamily: "Chillax-Bold" },
   copyBtn: { flexDirection: "row", alignItems: "center", gap: 6, backgroundColor: "rgba(123,47,190,0.4)", borderRadius: 12, paddingHorizontal: 14, paddingVertical: 10, borderWidth: 1, borderColor: "rgba(123,47,190,0.5)" },
   copyBtnSuccess: { backgroundColor: "rgba(16,185,129,0.2)", borderColor: "rgba(16,185,129,0.4)" },
   copyBtnText: { color: "#FFFFFF", fontSize: 14, fontWeight: "700", fontFamily: "Chillax-Semibold" },
   shareGrid: { flexDirection: "row", gap: 12 },
   shareBtn: { flex: 1, alignItems: "center", gap: 8 },
-  shareBtnIcon: { width: 56, height: 56, borderRadius: 18, alignItems: "center", justifyContent: "center", borderWidth: 1, borderColor: "rgba(255,255,255,0.08)" },
+  shareBtnIcon: { width: 56, height: 56, borderRadius: 18, alignItems: "center", justifyContent: "center", borderWidth: 1, borderColor: "rgba(255,255,255,0.55)" },
   shareBtnLabel: { color: "rgba(255,255,255,0.6)", fontSize: 12 },
   rewardsCol: { gap: 10 },
-  rewardRow: { flexDirection: "row", alignItems: "center", gap: 14, borderRadius: 16, padding: 16, borderWidth: 1, borderColor: "rgba(255,255,255,0.06)", overflow: "hidden" },
+  rewardRow: { flexDirection: "row", alignItems: "center", gap: 14, borderRadius: 16, padding: 16, borderWidth: 1, borderColor: "rgba(255,255,255,0.55)", overflow: "hidden" },
   rewardIconWrap: { width: 46, height: 46, borderRadius: 14, alignItems: "center", justifyContent: "center" },
   rewardInfo: { flex: 1 },
   rewardTitle: { color: "#FFFFFF", fontSize: 15, fontWeight: "700", fontFamily: "Chillax-Semibold" },
-  rewardSub: { color: "rgba(255,255,255,0.4)", fontSize: 12, marginTop: 2 },
+  rewardSub: { color: "rgba(255,255,255,0.5)", fontSize: 12, marginTop: 2 },
   rewardStep: { borderRadius: 8, paddingHorizontal: 10, paddingVertical: 4 },
   rewardStepText: { fontSize: 11, fontWeight: "700" },
-  emptyCard: { alignItems: "center", paddingVertical: 32, gap: 8, backgroundColor: "rgba(255,255,255,0.03)", borderRadius: 20, borderWidth: 1, borderColor: "rgba(255,255,255,0.06)" },
-  emptyText: { color: "rgba(255,255,255,0.4)", fontSize: 15, fontWeight: "600", fontFamily: "Satoshi-Medium" },
-  emptySub: { color: "rgba(255,255,255,0.25)", fontSize: 13, fontFamily: "Satoshi-Regular" },
+  emptyCard: { alignItems: "center", paddingVertical: 32, gap: 8, backgroundColor: "rgba(255,255,255,0.55)", borderRadius: 20, borderWidth: 1, borderColor: "rgba(255,255,255,0.55)" },
+  emptyText: { color: "rgba(255,255,255,0.5)", fontSize: 15, fontWeight: "600", fontFamily: "Satoshi-Medium" },
+  emptySub: { color: "rgba(255,255,255,0.55)", fontSize: 13, fontFamily: "Satoshi-Regular" },
   friendsList: { gap: 10 },
-  friendRow: { flexDirection: "row", alignItems: "center", gap: 12, borderRadius: 16, padding: 14, borderWidth: 1, borderColor: "rgba(255,255,255,0.06)", overflow: "hidden" },
+  friendRow: { flexDirection: "row", alignItems: "center", gap: 12, borderRadius: 16, padding: 14, borderWidth: 1, borderColor: "rgba(255,255,255,0.55)", overflow: "hidden" },
   friendAvatar: { width: 44, height: 44, borderRadius: 14, alignItems: "center", justifyContent: "center", borderWidth: 1 },
   friendInitial: { fontSize: 18, fontWeight: "800", fontFamily: "Chillax-Bold" },
   friendInfo: { flex: 1 },
   friendName: { color: "#FFFFFF", fontSize: 14, fontWeight: "700", fontFamily: "Chillax-Semibold" },
-  friendJoined: { color: "rgba(255,255,255,0.4)", fontSize: 12, marginTop: 2 },
+  friendJoined: { color: "rgba(255,255,255,0.5)", fontSize: 12, marginTop: 2 },
   friendStatus: { borderRadius: 8, paddingHorizontal: 10, paddingVertical: 5 },
   friendStatusText: { fontSize: 12, fontWeight: "700" },
   ctaWrap: { paddingHorizontal: 20, marginBottom: 8 },
-  ctaBtn: { borderRadius: 18, paddingVertical: 18, alignItems: "center", justifyContent: "center", flexDirection: "row", gap: 10, overflow: "hidden" },
+  ctaBtn: { borderRadius: 18, paddingVertical: 18, alignItems: "center", justifyContent: "center", flexDirection: "row", gap: 10, shadowColor: "#F94498", shadowOffset: { width: 0, height: 6 }, shadowOpacity: 0.4, shadowRadius: 24, elevation: 10,
+    overflow: "hidden" },
   ctaBtnText: { color: "#FFFFFF", fontSize: 17, fontWeight: "800", fontFamily: "Chillax-Bold" },
 });

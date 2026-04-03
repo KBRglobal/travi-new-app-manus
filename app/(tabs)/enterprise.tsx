@@ -109,7 +109,7 @@ function MiniBarChart({ data }: { data: { month: string; value: number }[] }) {
             <View style={BC.barTrack}>
               <View style={[BC.barFill, { height: `${pct * 100}%` }]}>
                 {isLast && <LinearGradient colors={["#6443F4", "#F94498"]} style={StyleSheet.absoluteFillObject} />}
-                {!isLast && <View style={[StyleSheet.absoluteFillObject, { backgroundColor: "rgba(255,255,255,0.2)" }]} />}
+                {!isLast && <View style={[StyleSheet.absoluteFillObject, { backgroundColor: "rgba(255,255,255,0.55)" }]} />}
               </View>
             </View>
             <Text style={[BC.label, isLast && { color: "#C084FC" }]}>{d.month}</Text>
@@ -125,7 +125,7 @@ const BC = StyleSheet.create({
   barWrap: { flex: 1, alignItems: "center", gap: 4 },
   barTrack: { flex: 1, width: "100%", justifyContent: "flex-end" },
   barFill: { width: "100%", borderRadius: 4, overflow: "hidden" },
-  label: { color: "rgba(255,255,255,0.4)", fontSize: 10, fontWeight: "600" },
+  label: { color: "rgba(255,255,255,0.5)", fontSize: 10, fontWeight: "600" },
 });
 
 export default function EnterpriseScreen() {
@@ -308,7 +308,7 @@ function CompetitorsTab() {
       {COMPETITORS.map((comp, i) => (
         <View key={i} style={[T.compCard, comp.isUs && T.compCardUs]}>
           {comp.isUs && <LinearGradient colors={["rgba(100,67,244,0.25)", "rgba(249,68,152,0.15)"]} style={StyleSheet.absoluteFillObject} />}
-          {!comp.isUs && <View style={[StyleSheet.absoluteFillObject, { backgroundColor: "rgba(255,255,255,0.04)" }]} />}
+          {!comp.isUs && <View style={[StyleSheet.absoluteFillObject, { backgroundColor: "rgba(255,255,255,0.55)" }]} />}
           <View style={T.compHeader}>
             <Text style={T.compLogo}>{comp.logo}</Text>
             <View style={{ flex: 1 }}>
@@ -403,47 +403,48 @@ const T = StyleSheet.create({
 
   revCard: { borderRadius: 18, overflow: "hidden", padding: 16, borderWidth: 1, borderColor: "rgba(100,67,244,0.2)", gap: 10 },
   revTotal: { color: "#FFFFFF", fontSize: 28, fontWeight: "900", fontFamily: "Chillax-Bold" },
-  revTotalLabel: { color: "rgba(255,255,255,0.4)", fontSize: 12, marginBottom: 4 },
+  revTotalLabel: { color: "rgba(255,255,255,0.5)", fontSize: 12, marginBottom: 4 },
   revBarRow: { flexDirection: "row", height: 8, borderRadius: 4, overflow: "hidden", gap: 1 },
   revBarSeg: { height: "100%" },
   revRow: { flexDirection: "row", alignItems: "center", gap: 8 },
   revDot: { width: 8, height: 8, borderRadius: 4 },
   revLabel: { color: "rgba(255,255,255,0.6)", fontSize: 13, flex: 1 },
-  revPct: { color: "rgba(255,255,255,0.4)", fontSize: 12, width: 32, textAlign: "right" },
+  revPct: { color: "rgba(255,255,255,0.5)", fontSize: 12, width: 32, textAlign: "right" },
   revValue: { color: "#FFFFFF", fontSize: 13, fontWeight: "700", fontFamily: "Satoshi-Bold", width: 70, textAlign: "right" },
 
   trendStats: { flexDirection: "row", gap: 10 },
   trendStat: { flex: 1, alignItems: "center", gap: 2 },
   trendStatValue: { color: "#FFFFFF", fontSize: 15, fontWeight: "800", fontFamily: "Chillax-Bold" },
-  trendStatLabel: { color: "rgba(255,255,255,0.4)", fontSize: 11 },
+  trendStatLabel: { color: "rgba(255,255,255,0.5)", fontSize: 11 },
 
-  compCard: { borderRadius: 18, overflow: "hidden", padding: 14, borderWidth: 1, borderColor: "rgba(255,255,255,0.07)", gap: 10 },
+  compCard: { borderRadius: 18, overflow: "hidden", padding: 14, borderWidth: 1, borderColor: "rgba(255,255,255,0.55)", gap: 10 },
   compCardUs: { borderColor: "rgba(100,67,244,0.4)" },
   compHeader: { flexDirection: "row", alignItems: "center", gap: 10 },
   compLogo: { fontSize: 28 },
   compNameRow: { flexDirection: "row", alignItems: "center", gap: 8 },
   compName: { color: "#FFFFFF", fontSize: 16, fontWeight: "800", fontFamily: "Chillax-Bold" },
   usBadge: { backgroundColor: "#6443F4", borderRadius: 6, paddingHorizontal: 6, paddingVertical: 2 },
-  usBadgeText: { color: "#FFFFFF", fontSize: 10, fontWeight: "800" },
-  compShare: { color: "rgba(255,255,255,0.4)", fontSize: 12, marginTop: 2 },
+  usBadgeText: { color: "#FFFFFF", fontSize: 10, fontWeight: "800",
+      fontFamily: "Chillax-Bold" },
+  compShare: { color: "rgba(255,255,255,0.5)", fontSize: 12, marginTop: 2 },
   ratingBadge: { backgroundColor: "rgba(255,215,0,0.15)", borderRadius: 10, paddingHorizontal: 8, paddingVertical: 4 },
-  ratingText: { color: "#FFD700", fontSize: 12, fontWeight: "700" },
+  ratingText: { color: "#FBBF24", fontSize: 12, fontWeight: "700" },
   commRow: { flexDirection: "row", gap: 10 },
-  commItem: { flex: 1, backgroundColor: "rgba(255,255,255,0.05)", borderRadius: 10, padding: 10 },
-  commLabel: { color: "rgba(255,255,255,0.4)", fontSize: 11 },
+  commItem: { flex: 1, backgroundColor: "rgba(255,255,255,0.55)", borderRadius: 10, padding: 10 },
+  commLabel: { color: "rgba(255,255,255,0.5)", fontSize: 11 },
   commValue: { color: "#FFFFFF", fontSize: 13, fontWeight: "700", fontFamily: "Satoshi-Bold", marginTop: 2 },
   swRow: { flexDirection: "row", gap: 10 },
   swCol: { flex: 1, gap: 4 },
   swTitle: { color: "rgba(255,255,255,0.55)", fontSize: 12, fontWeight: "700", marginBottom: 2 },
   swItem: { color: "rgba(255,255,255,0.5)", fontSize: 12, lineHeight: 17 },
 
-  regCountryCard: { backgroundColor: "rgba(255,255,255,0.04)", borderRadius: 16, padding: 14, borderWidth: 1, borderColor: "rgba(255,255,255,0.07)", gap: 10 },
+  regCountryCard: { backgroundColor: "rgba(255,255,255,0.55)", borderRadius: 16, padding: 14, borderWidth: 1, borderColor: "rgba(255,255,255,0.55)", gap: 10 },
   regCountryHeader: { flexDirection: "row", alignItems: "center", gap: 10 },
   regFlag: { fontSize: 24 },
   regCountry: { color: "#FFFFFF", fontSize: 16, fontWeight: "800", fontFamily: "Chillax-Bold", flex: 1 },
   regStatusBadge: { borderRadius: 8, paddingHorizontal: 8, paddingVertical: 4 },
   regStatusText: { fontSize: 12, fontWeight: "700" },
-  ruleCard: { backgroundColor: "rgba(255,255,255,0.04)", borderRadius: 10, padding: 10, gap: 4 },
+  ruleCard: { backgroundColor: "rgba(255,255,255,0.55)", borderRadius: 10, padding: 10, gap: 4 },
   ruleTop: { flexDirection: "row", alignItems: "center", gap: 6 },
   ruleStatus: { fontSize: 14 },
   ruleTitle: { color: "#FFFFFF", fontSize: 13, fontWeight: "700", fontFamily: "Satoshi-Bold" },
@@ -458,18 +459,19 @@ const T = StyleSheet.create({
 
 const S = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#0D0628" },
-  header: { flexDirection: "row", alignItems: "center", gap: 12, paddingTop: 56, paddingHorizontal: 16, paddingBottom: 16 },
-  backBtn: { width: 36, height: 36, borderRadius: 12, backgroundColor: "rgba(255,255,255,0.08)", alignItems: "center", justifyContent: "center" },
+  header: { flexDirection: "row", alignItems: "center", gap: 12, paddingTop: 56, paddingHorizontal: 16, paddingBottom: 130 },
+  backBtn: { width: 36, height: 36, borderRadius: 12, backgroundColor: "rgba(255,255,255,0.55)", alignItems: "center", justifyContent: "center" },
   headerTitle: { color: "#FFFFFF", fontSize: 22, fontWeight: "900", fontFamily: "Chillax-Bold" },
-  headerSub: { color: "rgba(255,255,255,0.4)", fontSize: 12, marginTop: 1 },
+  headerSub: { color: "rgba(255,255,255,0.5)", fontSize: 12, marginTop: 1 },
   liveIndicator: { flexDirection: "row", alignItems: "center", gap: 5, backgroundColor: "rgba(34,197,94,0.15)", borderRadius: 10, paddingHorizontal: 10, paddingVertical: 5, borderWidth: 1, borderColor: "rgba(34,197,94,0.3)" },
   liveDot: { width: 6, height: 6, borderRadius: 3, backgroundColor: "#22C55E" },
-  liveText: { color: "#22C55E", fontSize: 12, fontWeight: "800" },
-  tabsContainer: { borderBottomWidth: 1, borderBottomColor: "rgba(255,255,255,0.06)" },
+  liveText: { color: "#22C55E", fontSize: 12, fontWeight: "800",
+      fontFamily: "Chillax-Bold" },
+  tabsContainer: { borderBottomWidth: 1, borderBottomColor: "rgba(255,255,255,0.55)" },
   tabsRow: { paddingHorizontal: 16, paddingVertical: 10, gap: 8 },
-  tab: { borderRadius: 20, overflow: "hidden", paddingHorizontal: 16, paddingVertical: 7, borderWidth: 1, borderColor: "rgba(255,255,255,0.1)" },
+  tab: { borderRadius: 20, overflow: "hidden", paddingHorizontal: 16, paddingVertical: 7, borderWidth: 1, borderColor: "rgba(255,255,255,0.55)" },
   tabActive: { borderColor: "transparent" },
   tabText: { color: "rgba(255,255,255,0.5)", fontSize: 13, fontWeight: "600", fontFamily: "Satoshi-Medium" },
   tabTextActive: { color: "#FFFFFF" },
-  content: { padding: 16, paddingBottom: 48, gap: 16 },
+  content: { padding: 16, paddingBottom: 130, gap: 16 },
 });

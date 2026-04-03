@@ -172,7 +172,7 @@ const styles = StyleSheet.create({
   header: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 20, paddingVertical: 16 },
   backBtn: { padding: 4 },
   headerTitle: { ...TYPE.h2, color: BRAND.textPrimary },
-  scrollContent: { paddingHorizontal: 20, paddingBottom: 100 },
+  scrollContent: { paddingHorizontal: 20, paddingBottom: 130 },
 
   scoreCard: { flexDirection: "row", alignItems: "center", gap: 16, borderRadius: RADIUS.lg, padding: 20, marginBottom: 24, overflow: "hidden", borderWidth: 1, borderColor: BRAND.purple + "40" },
   scoreCircle: { width: 80, height: 80, borderRadius: 40, alignItems: "center", justifyContent: "center", overflow: "hidden" },
@@ -189,7 +189,7 @@ const styles = StyleSheet.create({
   barsContainer: { gap: 12 },
   barRow: { flexDirection: "row", alignItems: "center", gap: 10 },
   barLabel: { ...TYPE.caption, color: BRAND.textSecondary, width: 90 },
-  barTrack: { flex: 1, height: 8, borderRadius: 4, backgroundColor: "rgba(255,255,255,0.08)", overflow: "hidden", position: "relative" },
+  barTrack: { flex: 1, height: 8, borderRadius: 4, backgroundColor: "rgba(255,255,255,0.55)", overflow: "hidden", position: "relative" },
   barFill: { position: "absolute", top: 0, left: 0, height: "100%", borderRadius: 4, opacity: 0.9 },
   barFillOverlay: { position: "absolute", top: 0, left: 0, height: "100%", borderRadius: 4, opacity: 0.4 },
   compatScore: { ...TYPE.caption, fontFamily: "Satoshi-Bold", width: 36, textAlign: "right" },

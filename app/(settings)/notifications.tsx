@@ -64,7 +64,7 @@ export default function NotificationsSettingsScreen() {
         <Text style={S.headerTitle}>Notifications</Text>
         <View style={{ width: 36 }} />
       </View>
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 40 }}>
+      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 130 }}>
         {SECTIONS.map((section) => (
           <View key={section.title} style={S.section}>
             <Text style={S.sectionTitle}>{section.title}</Text>
@@ -91,14 +91,16 @@ export default function NotificationsSettingsScreen() {
 
 const S = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#0D0628" },
-  header: { flexDirection: "row", alignItems: "center", paddingHorizontal: 20, paddingBottom: 16, gap: 12 },
-  backBtn: { width: 36, height: 36, borderRadius: 18, backgroundColor: "rgba(255,255,255,0.08)", alignItems: "center", justifyContent: "center" },
-  backText: { color: "#FFFFFF", fontSize: 18, fontWeight: "700" },
+  header: { flexDirection: "row", alignItems: "center", paddingHorizontal: 20, paddingBottom: 130, gap: 12 },
+  backBtn: { width: 36, height: 36, borderRadius: 18, backgroundColor: "rgba(255,255,255,0.55)", alignItems: "center", justifyContent: "center" },
+  backText: { color: "#FFFFFF", fontSize: 18, fontWeight: "700",
+      fontFamily: "Chillax-Semibold" },
   headerTitle: { flex: 1, color: "#FFFFFF", fontSize: 20, fontWeight: "900", textAlign: "center", fontFamily: "Chillax-Bold" },
   section: { paddingHorizontal: 20, marginBottom: 24 },
-  sectionTitle: { color: "rgba(255,255,255,0.4)", fontSize: 11, fontWeight: "800", textTransform: "uppercase", letterSpacing: 1.5, marginBottom: 12 },
-  row: { flexDirection: "row", alignItems: "center", paddingVertical: 12, borderBottomWidth: 1, borderBottomColor: "rgba(255,255,255,0.04)", gap: 12 },
+  sectionTitle: { color: "rgba(255,255,255,0.5)", fontSize: 11, fontWeight: "800",
+      fontFamily: "Chillax-Bold", textTransform: "uppercase", letterSpacing: 1.5, marginBottom: 12 },
+  row: { flexDirection: "row", alignItems: "center", paddingVertical: 12, borderBottomWidth: 1, borderBottomColor: "rgba(255,255,255,0.55)", gap: 12 },
   rowText: { flex: 1, gap: 2 },
   rowLabel: { color: "#FFFFFF", fontSize: 14, fontWeight: "700" },
-  rowDesc: { color: "rgba(255,255,255,0.4)", fontSize: 12, lineHeight: 18 },
+  rowDesc: { color: "rgba(255,255,255,0.5)", fontSize: 12, lineHeight: 18 },
 });

@@ -121,7 +121,7 @@ export default function WalletKYCScreen() {
               <TextInput
                 style={styles.input}
                 placeholder="Enter your first name"
-                placeholderTextColor="rgba(255,255,255,0.3)"
+                placeholderTextColor="rgba(255,255,255,0.55)"
                 value={firstName}
                 onChangeText={setFirstName}
                 returnKeyType="next"
@@ -132,7 +132,7 @@ export default function WalletKYCScreen() {
               <TextInput
                 style={styles.input}
                 placeholder="Enter your last name"
-                placeholderTextColor="rgba(255,255,255,0.3)"
+                placeholderTextColor="rgba(255,255,255,0.55)"
                 value={lastName}
                 onChangeText={setLastName}
                 returnKeyType="next"
@@ -143,7 +143,7 @@ export default function WalletKYCScreen() {
               <TextInput
                 style={styles.input}
                 placeholder="DD/MM/YYYY"
-                placeholderTextColor="rgba(255,255,255,0.3)"
+                placeholderTextColor="rgba(255,255,255,0.55)"
                 value={dob}
                 onChangeText={setDob}
                 keyboardType="numeric"
@@ -155,7 +155,7 @@ export default function WalletKYCScreen() {
               <TextInput
                 style={styles.input}
                 placeholder="e.g. Israeli, American, British"
-                placeholderTextColor="rgba(255,255,255,0.3)"
+                placeholderTextColor="rgba(255,255,255,0.55)"
                 value={nationality}
                 onChangeText={setNationality}
                 returnKeyType="done"
@@ -301,50 +301,50 @@ export default function WalletKYCScreen() {
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#0D0628" },
-  header: { flexDirection: "row", alignItems: "center", paddingHorizontal: 20, paddingBottom: 12, gap: 12 },
-  backBtn: { width: 36, height: 36, borderRadius: 18, backgroundColor: "rgba(255,255,255,0.08)", alignItems: "center", justifyContent: "center" },
+  header: { flexDirection: "row", alignItems: "center", paddingHorizontal: 20, paddingBottom: 130, gap: 12 },
+  backBtn: { width: 36, height: 36, borderRadius: 18, backgroundColor: "rgba(255,255,255,0.55)", alignItems: "center", justifyContent: "center" },
   backText: { color: "#FFFFFF", fontSize: 18, fontWeight: "700", fontFamily: "Chillax-Semibold" },
   headerCenter: { flex: 1 },
   headerTitle: { color: "#FFFFFF", fontSize: 20, fontWeight: "900", fontFamily: "Chillax-Bold" },
   headerSub: { color: "rgba(255,255,255,0.5)", fontSize: 12 },
-  progressBar: { height: 3, backgroundColor: "rgba(255,255,255,0.08)", marginHorizontal: 20, borderRadius: 2, overflow: "hidden", marginBottom: 16 },
+  progressBar: { height: 3, backgroundColor: "rgba(255,255,255,0.55)", marginHorizontal: 20, borderRadius: 2, overflow: "hidden", marginBottom: 16 },
   progressFill: { height: 3, borderRadius: 2, backgroundColor: "#6443F4" },
   stepsRow: { flexDirection: "row", paddingHorizontal: 20, marginBottom: 20, justifyContent: "space-between" },
   stepItem: { alignItems: "center", gap: 4, flex: 1 },
-  stepCircle: { width: 32, height: 32, borderRadius: 16, backgroundColor: "rgba(255,255,255,0.08)", alignItems: "center", justifyContent: "center", borderWidth: 1, borderColor: "rgba(255,255,255,0.1)" },
+  stepCircle: { width: 32, height: 32, borderRadius: 16, backgroundColor: "rgba(255,255,255,0.55)", alignItems: "center", justifyContent: "center", borderWidth: 1, borderColor: "rgba(255,255,255,0.55)" },
   stepCircleActive: { backgroundColor: "rgba(100,67,244,0.3)", borderColor: "#6443F4" },
   stepCircleDone: { backgroundColor: "rgba(34,197,94,0.3)", borderColor: "#22C55E" },
   stepCircleText: { color: "#FFFFFF", fontSize: 12, fontWeight: "800", fontFamily: "Chillax-Bold" },
-  stepLabel: { color: "rgba(255,255,255,0.3)", fontSize: 9, fontWeight: "700", textAlign: "center" },
+  stepLabel: { color: "rgba(255,255,255,0.55)", fontSize: 9, fontWeight: "700", textAlign: "center" },
   stepLabelActive: { color: "#FFFFFF" },
-  content: { paddingHorizontal: 20, paddingBottom: 20 },
+  content: { paddingHorizontal: 20, paddingBottom: 130 },
   stepContent: { gap: 16 },
   stepEmoji: { fontSize: 48, textAlign: "center" },
   stepTitle: { color: "#FFFFFF", fontSize: 22, fontWeight: "900", textAlign: "center", fontFamily: "Chillax-Bold" },
   stepDesc: { color: "rgba(255,255,255,0.5)", fontSize: 14, textAlign: "center", lineHeight: 22, fontFamily: "Satoshi-Regular" },
   inputGroup: { gap: 8 },
   inputLabel: { color: "rgba(255,255,255,0.6)", fontSize: 13, fontWeight: "700" },
-  input: { backgroundColor: "rgba(255,255,255,0.06)", borderRadius: 14, paddingHorizontal: 16, paddingVertical: 14, color: "#FFFFFF", fontSize: 15, borderWidth: 1, borderColor: "rgba(255,255,255,0.08)", fontFamily: "Satoshi-Regular" },
+  input: { backgroundColor: "rgba(255,255,255,0.55)", borderRadius: 14, paddingHorizontal: 16, paddingVertical: 14, color: "#FFFFFF", fontSize: 15, borderWidth: 1, borderColor: "rgba(255,255,255,0.55)", fontFamily: "Satoshi-Regular" },
   docTypeGrid: { flexDirection: "row", flexWrap: "wrap", gap: 8 },
-  docTypeChip: { paddingHorizontal: 14, paddingVertical: 9, borderRadius: 12, backgroundColor: "rgba(255,255,255,0.05)", borderWidth: 1, borderColor: "rgba(255,255,255,0.08)" },
+  docTypeChip: { paddingHorizontal: 14, paddingVertical: 9, borderRadius: 12, backgroundColor: "rgba(255,255,255,0.55)", borderWidth: 1, borderColor: "rgba(255,255,255,0.55)" },
   docTypeChipActive: { backgroundColor: "rgba(100,67,244,0.3)", borderColor: "#6443F4" },
   docTypeText: { color: "rgba(255,255,255,0.5)", fontSize: 13, fontWeight: "700" },
   docTypeTextActive: { color: "#FFFFFF" },
-  uploadBox: { borderRadius: 16, borderWidth: 2, borderColor: "rgba(255,255,255,0.1)", borderStyle: "dashed", padding: 24, alignItems: "center", gap: 8, backgroundColor: "rgba(255,255,255,0.03)" },
+  uploadBox: { borderRadius: 16, borderWidth: 2, borderColor: "rgba(255,255,255,0.55)", borderStyle: "dashed", padding: 24, alignItems: "center", gap: 8, backgroundColor: "rgba(255,255,255,0.55)" },
   uploadBoxDone: { borderColor: "#22C55E", borderStyle: "solid", backgroundColor: "rgba(34,197,94,0.08)" },
   uploadEmoji: { fontSize: 36 },
   uploadTitle: { color: "#FFFFFF", fontSize: 15, fontWeight: "800", fontFamily: "Chillax-Bold" },
-  uploadSub: { color: "rgba(255,255,255,0.4)", fontSize: 13 },
-  selfieBox: { borderRadius: 16, borderWidth: 2, borderColor: "rgba(255,255,255,0.1)", borderStyle: "dashed", padding: 40, alignItems: "center", gap: 12, backgroundColor: "rgba(255,255,255,0.03)" },
-  selfieFrame: { width: 100, height: 100, borderRadius: 50, backgroundColor: "rgba(255,255,255,0.06)", alignItems: "center", justifyContent: "center", borderWidth: 2, borderColor: "rgba(255,255,255,0.15)" },
+  uploadSub: { color: "rgba(255,255,255,0.5)", fontSize: 13 },
+  selfieBox: { borderRadius: 16, borderWidth: 2, borderColor: "rgba(255,255,255,0.55)", borderStyle: "dashed", padding: 40, alignItems: "center", gap: 12, backgroundColor: "rgba(255,255,255,0.55)" },
+  selfieFrame: { width: 100, height: 100, borderRadius: 50, backgroundColor: "rgba(255,255,255,0.55)", alignItems: "center", justifyContent: "center", borderWidth: 2, borderColor: "rgba(255,255,255,0.55)" },
   selfieIcon: { fontSize: 48 },
   selfieEmoji: { fontSize: 48 },
   selfieTitle: { color: "#FFFFFF", fontSize: 16, fontWeight: "800", fontFamily: "Chillax-Bold" },
-  selfieSub: { color: "rgba(255,255,255,0.4)", fontSize: 13 },
-  tipCard: { backgroundColor: "rgba(255,255,255,0.04)", borderRadius: 14, padding: 14, gap: 8, borderWidth: 1, borderColor: "rgba(255,255,255,0.06)" },
+  selfieSub: { color: "rgba(255,255,255,0.5)", fontSize: 13 },
+  tipCard: { backgroundColor: "rgba(255,255,255,0.55)", borderRadius: 14, padding: 14, gap: 8, borderWidth: 1, borderColor: "rgba(255,255,255,0.55)" },
   tipTitle: { color: "#FFFFFF", fontSize: 14, fontWeight: "800", fontFamily: "Chillax-Bold" },
   tipItem: { color: "rgba(255,255,255,0.5)", fontSize: 13, lineHeight: 20 },
-  reviewCard: { backgroundColor: "rgba(255,255,255,0.04)", borderRadius: 16, padding: 16, gap: 10, borderWidth: 1, borderColor: "rgba(255,255,255,0.06)" },
+  reviewCard: { backgroundColor: "rgba(255,255,255,0.55)", borderRadius: 16, padding: 16, gap: 10, borderWidth: 1, borderColor: "rgba(255,255,255,0.55)" },
   reviewSectionTitle: { color: "rgba(255,255,255,0.5)", fontSize: 12, fontWeight: "800", textTransform: "uppercase", letterSpacing: 1, fontFamily: "Chillax-Bold" },
   reviewRow: { flexDirection: "row", justifyContent: "space-between", alignItems: "center" },
   reviewLabel: { color: "rgba(255,255,255,0.5)", fontSize: 14, fontFamily: "Satoshi-Regular" },
@@ -361,9 +361,10 @@ const styles = StyleSheet.create({
   successDesc: { color: "rgba(255,255,255,0.5)", fontSize: 14, textAlign: "center", lineHeight: 22, fontFamily: "Satoshi-Regular" },
   successSteps: { width: "100%", gap: 12, marginTop: 8 },
   successStep: { flexDirection: "row", alignItems: "center", gap: 12 },
-  successStepDot: { width: 10, height: 10, borderRadius: 5, backgroundColor: "rgba(255,255,255,0.2)" },
+  successStepDot: { width: 10, height: 10, borderRadius: 5, backgroundColor: "rgba(255,255,255,0.55)" },
   successStepText: { color: "rgba(255,255,255,0.5)", fontSize: 14, fontFamily: "Satoshi-Regular" },
-  doneBtn: { borderRadius: 16, overflow: "hidden", width: "100%", marginTop: 12 },
+  doneBtn: { borderRadius: 16, shadowColor: "#F94498", shadowOffset: { width: 0, height: 6 }, shadowOpacity: 0.4, shadowRadius: 24, elevation: 10,
+    overflow: "hidden", width: "100%", marginTop: 12 },
   doneBtnGradient: { paddingVertical: 16, alignItems: "center" },
   doneBtnText: { color: "#FFFFFF", fontSize: 16, fontWeight: "900", fontFamily: "Chillax-Bold" },
 });

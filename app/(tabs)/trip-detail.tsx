@@ -125,7 +125,7 @@ export default function TripDetailScreen() {
       </ScrollView>
 
       {/* Timeline */}
-      <ScrollView style={styles.timeline} contentContainerStyle={{ padding: 20, gap: 0, paddingBottom: 120 }}>
+      <ScrollView style={styles.timeline} contentContainerStyle={{ padding: 20, gap: 0, paddingBottom: 130 }}>
         <View style={styles.dayHeader}>
           <Text style={styles.dayHeaderTitle}>{day.date} — {day.label}</Text>
           <Text style={styles.dayHeaderCost}>Est. ${totalCost}</Text>
@@ -142,7 +142,7 @@ export default function TripDetailScreen() {
 
             {/* Stop card */}
             <View style={styles.stopCard}>
-              <LinearGradient colors={["rgba(255,255,255,0.05)", "rgba(255,255,255,0.02)"]} style={StyleSheet.absoluteFillObject} />
+              <LinearGradient colors={["rgba(255,255,255,0.55)", "rgba(255,255,255,0.55)"]} style={StyleSheet.absoluteFillObject} />
               <View style={styles.stopHeader}>
                 <View style={styles.stopInfo}>
                   <Text style={styles.stopName}>{stop.name}</Text>
@@ -191,11 +191,11 @@ const styles = StyleSheet.create({
   heroTitle: { color: "#FFFFFF", fontSize: 22, fontWeight: "800", fontFamily: "Chillax-Bold" },
   heroSub: { color: "rgba(255,255,255,0.6)", fontSize: 14 },
   dayTabs: { maxHeight: 72, flexGrow: 0 },
-  dayTab: { borderRadius: 14, paddingHorizontal: 16, paddingVertical: 10, borderWidth: 1.5, borderColor: "rgba(255,255,255,0.1)", overflow: "hidden", minWidth: 100, alignItems: "center" },
+  dayTab: { borderRadius: 14, paddingHorizontal: 16, paddingVertical: 10, borderWidth: 1.5, borderColor: "rgba(255,255,255,0.55)", overflow: "hidden", minWidth: 100, alignItems: "center" },
   dayTabActive: { borderColor: "transparent" },
   dayTabText: { color: "rgba(255,255,255,0.5)", fontSize: 13, fontWeight: "700" },
   dayTabTextActive: { color: "#FFFFFF" },
-  dayTabLabel: { color: "rgba(255,255,255,0.3)", fontSize: 10 },
+  dayTabLabel: { color: "rgba(255,255,255,0.55)", fontSize: 10 },
   dayTabLabelActive: { color: "rgba(255,255,255,0.8)" },
   timeline: { flex: 1 },
   dayHeader: { flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: 16 },
@@ -206,18 +206,19 @@ const styles = StyleSheet.create({
   stopTime: { color: "rgba(255,255,255,0.5)", fontSize: 12, fontWeight: "600", marginBottom: 6 },
   timelineDot: { width: 10, height: 10, borderRadius: 5, backgroundColor: "#6443F4", borderWidth: 2, borderColor: "#C084FC" },
   timelineLine: { width: 2, flex: 1, backgroundColor: "rgba(100,67,244,0.3)", marginTop: 4, marginBottom: 0 },
-  stopCard: { flex: 1, borderRadius: 16, padding: 14, gap: 8, borderWidth: 1.5, borderColor: "rgba(255,255,255,0.08)", overflow: "hidden", marginBottom: 12 },
+  stopCard: { flex: 1, borderRadius: 16, padding: 14, gap: 8, borderWidth: 1.5, borderColor: "rgba(255,255,255,0.55)", overflow: "hidden", marginBottom: 12 },
   stopHeader: { flexDirection: "row", justifyContent: "space-between", alignItems: "flex-start" },
   stopInfo: { flex: 1, gap: 2 },
   stopName: { color: "#FFFFFF", fontSize: 15, fontWeight: "700" },
-  stopType: { color: "rgba(255,255,255,0.4)", fontSize: 12 },
+  stopType: { color: "rgba(255,255,255,0.5)", fontSize: 12 },
   stopCost: { color: "#22C55E", fontSize: 14, fontWeight: "700" },
   stopNotes: { color: "rgba(255,255,255,0.55)", fontSize: 12, lineHeight: 18 },
   travelBadge: { flexDirection: "row", alignItems: "center", gap: 6, paddingHorizontal: 10, paddingVertical: 6, borderRadius: 10 },
   travelMode: { fontSize: 14 },
   travelText: { fontSize: 12, fontWeight: "600" },
-  bookBar: { position: "absolute", bottom: 0, left: 0, right: 0, padding: 20, paddingBottom: 36, overflow: "hidden" },
-  bookBtn: { borderRadius: 18, overflow: "hidden" },
+  bookBar: { position: "absolute", bottom: 0, left: 0, right: 0, padding: 20, paddingBottom: 130, overflow: "hidden" },
+  bookBtn: { borderRadius: 18, shadowColor: "#F94498", shadowOffset: { width: 0, height: 6 }, shadowOpacity: 0.4, shadowRadius: 24, elevation: 10,
+    overflow: "hidden" },
   bookGradient: { paddingVertical: 18, alignItems: "center", borderRadius: 18 },
   bookText: { color: "#FFFFFF", fontSize: 16, fontWeight: "800", fontFamily: "Chillax-Bold" },
 });

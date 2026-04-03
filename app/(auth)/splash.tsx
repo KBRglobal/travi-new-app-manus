@@ -191,9 +191,9 @@ const styles = StyleSheet.create({
     letterSpacing: 3, fontWeight: "500", textAlign: "center",
     textTransform: "uppercase", fontFamily: "Satoshi-Medium",
   },
-  bottomArea: { paddingHorizontal: 50, paddingBottom: 64, gap: 12, alignItems: "center", width: "100%" },
+  bottomArea: { paddingHorizontal: 50, paddingBottom: 130, gap: 12, alignItems: "center", width: "100%" },
   progressTrack: {
-    width: "100%", height: 3, backgroundColor: "rgba(255,255,255,0.08)",
+    width: "100%", height: 3, backgroundColor: "rgba(255,255,255,0.55)",
     borderRadius: 2, overflow: "hidden",
   },
   progressFill: { height: "100%", borderRadius: 2, position: "relative" },

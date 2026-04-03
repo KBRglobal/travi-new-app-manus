@@ -147,7 +147,7 @@ export default function HotelsScreen() {
             const isSelected = selectedHotel === item.id;
             return (
               <TouchableOpacity style={[styles.hotelCard, isSelected && styles.hotelCardSelected]} onPress={() => handleSelect(item.id)} activeOpacity={0.88}>
-                <LinearGradient colors={isSelected ? ["rgba(123,47,190,0.35)", "rgba(233,30,140,0.2)"] : ["rgba(255,255,255,0.06)", "rgba(255,255,255,0.03)"]} style={StyleSheet.absoluteFillObject} />
+                <LinearGradient colors={isSelected ? ["rgba(123,47,190,0.35)", "rgba(233,30,140,0.2)"] : ["rgba(255,255,255,0.55)", "rgba(255,255,255,0.55)"]} style={StyleSheet.absoluteFillObject} />
                 <View style={styles.hotelImageWrap}>
                   <LinearGradient colors={["#1A0A3D", "#2D1A5E"]} style={styles.hotelImage}>
                     <IconSymbol name="building.2.fill" size={32} color="rgba(192,132,252,0.4)" />
@@ -165,10 +165,10 @@ export default function HotelsScreen() {
                     <View style={{ flex: 1 }}>
                       <Text style={[styles.hotelName, isSelected && { color: "#FFFFFF" }]}>{item.name}</Text>
                       <View style={styles.hotelMeta}>
-                        <IconSymbol name="location.fill" size={12} color="rgba(255,255,255,0.4)" />
+                        <IconSymbol name="location.fill" size={12} color="rgba(255,255,255,0.5)" />
                         <Text style={styles.hotelArea}>{item.area}</Text>
                         <View style={styles.starsRow}>
-                          {Array.from({ length: item.stars }).map((_, i) => <IconSymbol key={i} name="star.fill" size={10} color="#FFD700" />)}
+                          {Array.from({ length: item.stars }).map((_, i) => <IconSymbol key={i} name="star.fill" size={10} color="#FBBF24" />)}
                         </View>
                       </View>
                     </View>
@@ -208,7 +208,7 @@ export default function HotelsScreen() {
       </Animated.View>
       <View style={styles.ctaWrap}>
         <TouchableOpacity style={[styles.ctaBtn, !selectedHotel && styles.ctaBtnDisabled]} onPress={handleNext} activeOpacity={0.88}>
-          <LinearGradient colors={selectedHotel ? ["#6443F4", "#F94498"] : ["rgba(255,255,255,0.08)", "rgba(255,255,255,0.05)"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.ctaGradient}>
+          <LinearGradient colors={selectedHotel ? ["#6443F4", "#F94498"] : ["rgba(255,255,255,0.55)", "rgba(255,255,255,0.55)"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.ctaGradient}>
             <Text style={[styles.ctaText, !selectedHotel && styles.ctaTextDisabled]}>Review My Trip</Text>
             <IconSymbol name="arrow.right" size={20} color={selectedHotel ? "#FFFFFF" : "#3A2D4E"} />
           </LinearGradient>
@@ -221,12 +221,12 @@ export default function HotelsScreen() {
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#0D0628" },
   orb1: { position: "absolute", width: width, height: width, borderRadius: width / 2, top: -width * 0.4, right: -width * 0.3, backgroundColor: "rgba(233,30,140,0.07)" },
-  header: { flexDirection: "row", alignItems: "center", paddingHorizontal: 20, paddingTop: 60, paddingBottom: 16, gap: 12 },
-  backBtn: { width: 40, height: 40, borderRadius: 14, backgroundColor: "rgba(255,255,255,0.08)", alignItems: "center", justifyContent: "center" },
+  header: { flexDirection: "row", alignItems: "center", paddingHorizontal: 20, paddingTop: 60, paddingBottom: 130, gap: 12 },
+  backBtn: { width: 40, height: 40, borderRadius: 14, backgroundColor: "rgba(255,255,255,0.55)", alignItems: "center", justifyContent: "center" },
   progressWrap: { flex: 1, gap: 6 },
-  progressTrack: { height: 4, backgroundColor: "rgba(255,255,255,0.1)", borderRadius: 2, overflow: "hidden" },
+  progressTrack: { height: 4, backgroundColor: "rgba(255,255,255,0.55)", borderRadius: 2, overflow: "hidden" },
   progressFill: { height: "100%", backgroundColor: "#F94498", borderRadius: 2 },
-  progressLabel: { color: "rgba(255,255,255,0.4)", fontSize: 12, fontFamily: "Satoshi-Regular", textAlign: "right" },
+  progressLabel: { color: "rgba(255,255,255,0.5)", fontSize: 12, fontFamily: "Satoshi-Regular", textAlign: "right" },
   loadingWrap: { flex: 1, alignItems: "center", justifyContent: "center", gap: 16 },
   duckLarge: { width: 90, height: 90, borderRadius: 45, overflow: "hidden" },
   duckLargeGradient: { flex: 1, alignItems: "center", justifyContent: "center" },
@@ -236,15 +236,15 @@ const styles = StyleSheet.create({
   loadingSubtitle: { color: "rgba(255,255,255,0.5)", fontSize: 14, fontFamily: "Satoshi-Regular", textAlign: "center", paddingHorizontal: 40, lineHeight: 22 },
   dotsRow: { flexDirection: "row", gap: 8 },
   dot: { width: 8, height: 8, borderRadius: 4, backgroundColor: "#F94498" },
-  duckRow: { flexDirection: "row", alignItems: "flex-end", paddingHorizontal: 20, paddingBottom: 12, gap: 10 },
+  duckRow: { flexDirection: "row", alignItems: "flex-end", paddingHorizontal: 20, paddingBottom: 130, gap: 10 },
   duckAvatar: { width: 44, height: 44, borderRadius: 22, overflow: "hidden" },
   duckGradient: { flex: 1, alignItems: "center", justifyContent: "center" },
   duckBubble: { flex: 1, borderRadius: 18, borderBottomLeftRadius: 4, overflow: "hidden" },
   duckBubbleGradient: { paddingHorizontal: 16, paddingVertical: 12, borderRadius: 18, borderBottomLeftRadius: 4, borderWidth: 1, borderColor: "rgba(123,47,190,0.4)" },
   duckMessage: { color: "#FFFFFF", fontSize: 15, fontFamily: "Chillax-Semibold", fontWeight: "700", lineHeight: 20 },
   duckSub: { color: "rgba(255,255,255,0.5)", fontSize: 12, fontFamily: "Satoshi-Regular", marginTop: 2 },
-  list: { paddingHorizontal: 20, gap: 14, paddingBottom: 20 },
-  hotelCard: { borderRadius: 20, overflow: "hidden", borderWidth: 2, borderColor: "rgba(255,255,255,0.08)" },
+  list: { paddingHorizontal: 20, gap: 14, paddingBottom: 130 },
+  hotelCard: { borderRadius: 20, overflow: "hidden", borderWidth: 2, borderColor: "rgba(255,255,255,0.55)" },
   hotelCardSelected: { borderColor: "rgba(233,30,140,0.6)" },
   hotelImageWrap: { position: "relative" },
   hotelImage: { height: 110, alignItems: "center", justifyContent: "center" },
@@ -255,22 +255,23 @@ const styles = StyleSheet.create({
   hotelTopRow: { flexDirection: "row", alignItems: "flex-start" },
   hotelName: { color: "rgba(255,255,255,0.9)", fontSize: 16, fontFamily: "Chillax-Bold", fontWeight: "800", lineHeight: 22 },
   hotelMeta: { flexDirection: "row", alignItems: "center", gap: 6, marginTop: 4 },
-  hotelArea: { color: "rgba(255,255,255,0.4)", fontSize: 12, fontFamily: "Satoshi-Regular" },
+  hotelArea: { color: "rgba(255,255,255,0.5)", fontSize: 12, fontFamily: "Satoshi-Regular" },
   starsRow: { flexDirection: "row", gap: 2 },
   hotelPrice: { color: "#FFFFFF", fontSize: 22, fontFamily: "Chillax-Bold", fontWeight: "900" },
-  perNight: { color: "rgba(255,255,255,0.4)", fontSize: 11, fontFamily: "Satoshi-Regular" },
+  perNight: { color: "rgba(255,255,255,0.5)", fontSize: 11, fontFamily: "Satoshi-Regular" },
   ratingRow: { flexDirection: "row", alignItems: "center", gap: 8 },
   ratingBadge: { backgroundColor: "#4CAF50", borderRadius: 8, paddingHorizontal: 8, paddingVertical: 4 },
   ratingScore: { color: "#FFFFFF", fontSize: 13, fontFamily: "Chillax-Bold", fontWeight: "800" },
   ratingLabel: { color: "#4CAF50", fontSize: 13, fontFamily: "Chillax-Semibold", fontWeight: "600" },
-  reviewCount: { color: "rgba(255,255,255,0.4)", fontSize: 12, fontFamily: "Satoshi-Regular" },
+  reviewCount: { color: "rgba(255,255,255,0.5)", fontSize: 12, fontFamily: "Satoshi-Regular" },
   amenitiesRow: { flexDirection: "row", gap: 8 },
   amenityChip: { width: 32, height: 32, borderRadius: 10, backgroundColor: "rgba(192,132,252,0.1)", alignItems: "center", justifyContent: "center", borderWidth: 1, borderColor: "rgba(192,132,252,0.2)" },
   selectedBadge: { margin: 14, marginTop: 0, alignSelf: "flex-start", borderRadius: 10, overflow: "hidden" },
   selectedBadgeGradient: { flexDirection: "row", alignItems: "center", gap: 5, paddingHorizontal: 12, paddingVertical: 6 },
   selectedBadgeText: { color: "#FFFFFF", fontSize: 12, fontFamily: "Chillax-Semibold", fontWeight: "700" },
-  ctaWrap: { paddingHorizontal: 20, paddingBottom: 40, paddingTop: 12 },
-  ctaBtn: { borderRadius: 20, overflow: "hidden" },
+  ctaWrap: { paddingHorizontal: 20, paddingBottom: 130, paddingTop: 12 },
+  ctaBtn: { borderRadius: 20, shadowColor: "#F94498", shadowOffset: { width: 0, height: 6 }, shadowOpacity: 0.4, shadowRadius: 24, elevation: 10,
+    overflow: "hidden" },
   ctaBtnDisabled: { opacity: 0.5 },
   ctaGradient: { flexDirection: "row", alignItems: "center", justifyContent: "center", paddingVertical: 18, gap: 10, borderRadius: 20 },
   ctaText: { color: "#FFFFFF", fontSize: 18, fontFamily: "Chillax-Bold", fontWeight: "800" },

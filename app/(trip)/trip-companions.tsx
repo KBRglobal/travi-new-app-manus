@@ -156,7 +156,7 @@ export default function TripCompanionsScreen() {
                 <TextInput
                   style={S.inviteInput}
                   placeholder="friend@email.com"
-                  placeholderTextColor="rgba(255,255,255,0.3)"
+                  placeholderTextColor="rgba(255,255,255,0.55)"
                   value={emailInput}
                   onChangeText={setEmailInput}
                   keyboardType="email-address"
@@ -200,7 +200,7 @@ export default function TripCompanionsScreen() {
             {companions.map((c) => (
               <View key={c.id} style={S.companionCard}>
                 <LinearGradient
-                  colors={c.status === "accepted" ? ["rgba(34,197,94,0.1)", "rgba(34,197,94,0.05)"] : ["rgba(255,255,255,0.04)", "rgba(255,255,255,0.02)"]}
+                  colors={c.status === "accepted" ? ["rgba(34,197,94,0.1)", "rgba(34,197,94,0.05)"] : ["rgba(255,255,255,0.55)", "rgba(255,255,255,0.55)"]}
                   style={StyleSheet.absoluteFillObject}
                 />
                 <Text style={S.companionAvatar}>{c.avatar}</Text>
@@ -227,7 +227,7 @@ export default function TripCompanionsScreen() {
                   </View>
                 </View>
                 <TouchableOpacity style={S.removeBtn} onPress={() => handleRemove(c.id)} activeOpacity={0.7}>
-                  <IconSymbol name="xmark" size={12} color="rgba(255,255,255,0.3)" />
+                  <IconSymbol name="xmark" size={12} color="rgba(255,255,255,0.55)" />
                 </TouchableOpacity>
               </View>
             ))}
@@ -251,7 +251,7 @@ export default function TripCompanionsScreen() {
               const perP = Math.ceil(item.total / totalPeople);
               return (
                 <View key={item.label} style={S.splitItem}>
-                  <LinearGradient colors={["rgba(255,255,255,0.05)", "rgba(255,255,255,0.02)"]} style={StyleSheet.absoluteFillObject} />
+                  <LinearGradient colors={["rgba(255,255,255,0.55)", "rgba(255,255,255,0.55)"]} style={StyleSheet.absoluteFillObject} />
                   <Text style={S.splitItemIcon}>{item.icon}</Text>
                   <View style={S.splitItemInfo}>
                     <Text style={S.splitItemLabel}>{item.label}</Text>
@@ -294,18 +294,19 @@ const S = StyleSheet.create({
   orb1: { position: "absolute", width: 350, height: 350, borderRadius: 175, top: -100, right: -80, backgroundColor: "rgba(100,67,244,0.07)" },
   orb2: { position: "absolute", width: 250, height: 250, borderRadius: 125, bottom: 100, left: -60, backgroundColor: "rgba(249,68,152,0.05)" },
 
-  header: { flexDirection: "row", alignItems: "center", paddingHorizontal: 16, paddingBottom: 12, gap: 12 },
-  backBtn: { width: 40, height: 40, borderRadius: 20, backgroundColor: "rgba(255,255,255,0.08)", alignItems: "center", justifyContent: "center" },
+  header: { flexDirection: "row", alignItems: "center", paddingHorizontal: 16, paddingBottom: 130, gap: 12 },
+  backBtn: { width: 40, height: 40, borderRadius: 20, backgroundColor: "rgba(255,255,255,0.55)", alignItems: "center", justifyContent: "center" },
   headerCenter: { flex: 1 },
   headerTitle: { color: "#FFFFFF", fontSize: 18, fontWeight: "900", fontFamily: "Chillax-Bold" },
-  headerSub: { color: "rgba(255,255,255,0.4)", fontSize: 12, marginTop: 1 },
-  shareBtn: { borderRadius: 14, overflow: "hidden", flexDirection: "row", alignItems: "center", gap: 6, paddingHorizontal: 12, paddingVertical: 8, borderWidth: 1, borderColor: "rgba(100,67,244,0.4)" },
+  headerSub: { color: "rgba(255,255,255,0.5)", fontSize: 12, marginTop: 1 },
+  shareBtn: { borderRadius: 14, shadowColor: "#F94498", shadowOffset: { width: 0, height: 6 }, shadowOpacity: 0.4, shadowRadius: 24, elevation: 10,
+    overflow: "hidden", flexDirection: "row", alignItems: "center", gap: 6, paddingHorizontal: 12, paddingVertical: 8, borderWidth: 1, borderColor: "rgba(100,67,244,0.4)" },
   shareBtnText: { color: "#FFFFFF", fontSize: 12, fontWeight: "700" },
 
-  tabs: { flexDirection: "row", marginHorizontal: 16, marginBottom: 16, borderRadius: 14, overflow: "hidden", backgroundColor: "rgba(255,255,255,0.06)", padding: 4, gap: 4 },
+  tabs: { flexDirection: "row", marginHorizontal: 16, marginBottom: 16, borderRadius: 14, overflow: "hidden", backgroundColor: "rgba(255,255,255,0.55)", padding: 4, gap: 4 },
   tab: { flex: 1, borderRadius: 10, overflow: "hidden", paddingVertical: 10, alignItems: "center" },
   tabActive: {},
-  tabText: { color: "rgba(255,255,255,0.4)", fontSize: 13, fontWeight: "700" },
+  tabText: { color: "rgba(255,255,255,0.5)", fontSize: 13, fontWeight: "700" },
   tabTextActive: { color: "#FFFFFF" },
 
   content: { paddingHorizontal: 16, gap: 12 },
@@ -313,7 +314,7 @@ const S = StyleSheet.create({
   inviteCard: { borderRadius: 18, overflow: "hidden", padding: 16, gap: 10, borderWidth: 1, borderColor: "rgba(100,67,244,0.25)" },
   inviteTitle: { color: "#FFFFFF", fontSize: 15, fontWeight: "800", fontFamily: "Chillax-Bold" },
   inviteRow: { flexDirection: "row", gap: 8 },
-  inviteInput: { flex: 1, backgroundColor: "rgba(255,255,255,0.08)", borderRadius: 12, paddingHorizontal: 14, paddingVertical: 10, color: "#FFFFFF", fontSize: 14, borderWidth: 1, borderColor: "rgba(255,255,255,0.12)" },
+  inviteInput: { flex: 1, backgroundColor: "rgba(255,255,255,0.55)", borderRadius: 12, paddingHorizontal: 14, paddingVertical: 10, color: "#FFFFFF", fontSize: 14, borderWidth: 1, borderColor: "rgba(255,255,255,0.55)" },
   inviteBtn: { borderRadius: 12, overflow: "hidden", paddingHorizontal: 18, justifyContent: "center" },
   inviteBtnText: { color: "#FFFFFF", fontSize: 14, fontWeight: "800", fontFamily: "Chillax-Bold" },
   inviteSuccess: { alignItems: "center" },
@@ -321,45 +322,46 @@ const S = StyleSheet.create({
   shareLinkBtn: { flexDirection: "row", alignItems: "center", gap: 6 },
   shareLinkText: { color: "rgba(192,132,252,0.7)", fontSize: 13, fontWeight: "600" },
 
-  sectionLabel: { color: "rgba(255,255,255,0.35)", fontSize: 12, fontWeight: "700", letterSpacing: 0.8, textTransform: "uppercase", marginTop: 4 },
+  sectionLabel: { color: "rgba(255,255,255,0.55)", fontSize: 12, fontWeight: "700", letterSpacing: 0.8, textTransform: "uppercase", marginTop: 4 },
 
-  companionCard: { borderRadius: 18, overflow: "hidden", padding: 14, flexDirection: "row", alignItems: "flex-start", gap: 12, borderWidth: 1, borderColor: "rgba(255,255,255,0.08)" },
+  companionCard: { borderRadius: 18, overflow: "hidden", padding: 14, flexDirection: "row", alignItems: "flex-start", gap: 12, borderWidth: 1, borderColor: "rgba(255,255,255,0.55)" },
   companionAvatar: { fontSize: 36, lineHeight: 44 },
   companionInfo: { flex: 1, gap: 4 },
   companionNameRow: { flexDirection: "row", alignItems: "center", gap: 8, flexWrap: "wrap" },
   companionName: { color: "#FFFFFF", fontSize: 15, fontWeight: "800", fontFamily: "Chillax-Bold" },
   statusBadge: { borderRadius: 8, paddingHorizontal: 8, paddingVertical: 3 },
   statusText: { fontSize: 11, fontWeight: "700" },
-  companionDna: { color: "rgba(255,255,255,0.4)", fontSize: 12 },
+  companionDna: { color: "rgba(255,255,255,0.5)", fontSize: 12 },
   compatRow: { flexDirection: "row", alignItems: "center", gap: 8, marginTop: 2 },
   compatBar: { flex: 1, height: 4, borderRadius: 2, overflow: "hidden" },
   compatFill: { height: "100%", borderRadius: 2 },
   compatScore: { fontSize: 11, fontWeight: "700" },
   companionCats: { flexDirection: "row", flexWrap: "wrap", gap: 4, marginTop: 4 },
-  catPill: { backgroundColor: "rgba(255,255,255,0.08)", borderRadius: 8, paddingHorizontal: 8, paddingVertical: 3 },
+  catPill: { backgroundColor: "rgba(255,255,255,0.55)", borderRadius: 8, paddingHorizontal: 8, paddingVertical: 3 },
   catPillText: { color: "rgba(255,255,255,0.5)", fontSize: 10 },
   organiserBadge: { width: 32, height: 32, borderRadius: 16, backgroundColor: "rgba(255,215,0,0.15)", alignItems: "center", justifyContent: "center" },
   organiserBadgeText: { fontSize: 16 },
-  removeBtn: { width: 28, height: 28, borderRadius: 14, backgroundColor: "rgba(255,255,255,0.06)", alignItems: "center", justifyContent: "center" },
+  removeBtn: { width: 28, height: 28, borderRadius: 14, backgroundColor: "rgba(255,255,255,0.55)", alignItems: "center", justifyContent: "center" },
 
   splitHeader: { borderRadius: 20, overflow: "hidden", padding: 20, alignItems: "center", gap: 4, borderWidth: 1, borderColor: "rgba(100,67,244,0.25)" },
   splitTotal: { color: "#FFFFFF", fontSize: 40, fontWeight: "900", fontFamily: "Chillax-Bold" },
-  splitSub: { color: "rgba(255,255,255,0.4)", fontSize: 13 },
-  splitDivider: { width: 40, height: 1, backgroundColor: "rgba(255,255,255,0.15)", marginVertical: 8 },
+  splitSub: { color: "rgba(255,255,255,0.5)", fontSize: 13 },
+  splitDivider: { width: 40, height: 1, backgroundColor: "rgba(255,255,255,0.55)", marginVertical: 8 },
   splitPerPerson: { color: "#6443F4", fontSize: 28, fontWeight: "900", fontFamily: "Chillax-Bold" },
-  splitPerPersonSub: { color: "rgba(255,255,255,0.4)", fontSize: 13 },
-  splitItem: { borderRadius: 16, overflow: "hidden", padding: 14, flexDirection: "row", alignItems: "center", gap: 12, borderWidth: 1, borderColor: "rgba(255,255,255,0.08)" },
+  splitPerPersonSub: { color: "rgba(255,255,255,0.5)", fontSize: 13 },
+  splitItem: { borderRadius: 16, overflow: "hidden", padding: 14, flexDirection: "row", alignItems: "center", gap: 12, borderWidth: 1, borderColor: "rgba(255,255,255,0.55)" },
   splitItemIcon: { fontSize: 24, width: 36, textAlign: "center" },
   splitItemInfo: { flex: 1 },
   splitItemLabel: { color: "#FFFFFF", fontSize: 14, fontWeight: "700" },
-  splitItemTotal: { color: "rgba(255,255,255,0.4)", fontSize: 12, marginTop: 2 },
+  splitItemTotal: { color: "rgba(255,255,255,0.5)", fontSize: 12, marginTop: 2 },
   splitItemRight: { alignItems: "flex-end" },
   splitItemPer: { color: "#FFFFFF", fontSize: 18, fontWeight: "900", fontFamily: "Chillax-Bold" },
-  splitItemPerLabel: { color: "rgba(255,255,255,0.35)", fontSize: 11 },
+  splitItemPerLabel: { color: "rgba(255,255,255,0.55)", fontSize: 11 },
   splitNote: { flexDirection: "row", gap: 8, backgroundColor: "rgba(100,67,244,0.1)", borderRadius: 14, padding: 12, borderWidth: 1, borderColor: "rgba(100,67,244,0.2)" },
   splitNoteText: { color: "rgba(255,255,255,0.5)", fontSize: 12, lineHeight: 18, flex: 1 },
 
   bottomCta: { position: "absolute", bottom: 0, left: 0, right: 0, paddingHorizontal: 20, paddingTop: 24 },
-  doneBtn: { borderRadius: 20, overflow: "hidden", paddingVertical: 18, alignItems: "center" },
+  doneBtn: { borderRadius: 20, shadowColor: "#F94498", shadowOffset: { width: 0, height: 6 }, shadowOpacity: 0.4, shadowRadius: 24, elevation: 10,
+    overflow: "hidden", paddingVertical: 18, alignItems: "center" },
   doneBtnText: { color: "#FFFFFF", fontSize: 17, fontWeight: "800", fontFamily: "Chillax-Bold" },
 });

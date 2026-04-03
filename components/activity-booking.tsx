@@ -33,7 +33,7 @@ type BookingStep = "detail" | "travelers" | "payment" | "confirmation";
 const PAYMENT_METHODS = [
   { id: "apple", label: "Apple Pay", icon: "apple.logo", color: "#000000" },
   { id: "card", label: "Credit Card", icon: "creditcard.fill", color: "#6443F4" },
-  { id: "points", label: "TRAVI Points", icon: "star.fill", color: "#FFD700" },
+  { id: "points", label: "TRAVI Points", icon: "star.fill", color: "#FBBF24" },
 ];
 
 interface Props {
@@ -152,7 +152,7 @@ export function ActivityBookingModal({ activity, visible, onClose }: Props) {
                     {activity.cashback > 0 && (
                       <View style={S.cashbackBadge}>
                         <LinearGradient colors={["rgba(255,215,0,0.2)", "rgba(255,215,0,0.1)"]} style={StyleSheet.absoluteFillObject} />
-                        <IconSymbol name="star.fill" size={14} color="#FFD700" />
+                        <IconSymbol name="star.fill" size={14} color="#FBBF24" />
                         <Text style={S.cashbackText}>${activity.cashback} cashback / person</Text>
                       </View>
                     )}
@@ -206,7 +206,7 @@ export function ActivityBookingModal({ activity, visible, onClose }: Props) {
                   {totalCashback > 0 && (
                     <View style={S.summaryRow}>
                       <Text style={S.summaryLabel}>Cashback earned</Text>
-                      <Text style={[S.summaryValue, { color: "#FFD700" }]}>+${totalCashback}</Text>
+                      <Text style={[S.summaryValue, { color: "#FBBF24" }]}>+${totalCashback}</Text>
                     </View>
                   )}
                   <View style={[S.summaryRow, S.summaryTotal]}>
@@ -263,7 +263,7 @@ export function ActivityBookingModal({ activity, visible, onClose }: Props) {
                   {paymentMethod === "points" && (
                     <View style={S.summaryRow}>
                       <Text style={S.summaryLabel}>Points discount</Text>
-                      <Text style={[S.summaryValue, { color: "#FFD700" }]}>−${pointsValue.toFixed(0)}</Text>
+                      <Text style={[S.summaryValue, { color: "#FBBF24" }]}>−${pointsValue.toFixed(0)}</Text>
                     </View>
                   )}
                   <View style={[S.summaryRow, S.summaryTotal]}>
@@ -342,75 +342,87 @@ const S = StyleSheet.create({
   sheet: { maxHeight: height * 0.92, borderTopLeftRadius: 28, borderTopRightRadius: 28, overflow: "hidden", backgroundColor: "#0D0628" },
   orb1: { position: "absolute", width: 300, height: 300, borderRadius: 150, top: -100, right: -80, backgroundColor: "rgba(100,67,244,0.08)" },
   orb2: { position: "absolute", width: 200, height: 200, borderRadius: 100, bottom: 50, left: -60, backgroundColor: "rgba(249,68,152,0.06)" },
-  handle: { width: 40, height: 4, borderRadius: 2, backgroundColor: "rgba(255,255,255,0.2)", alignSelf: "center", marginTop: 12, marginBottom: 8 },
-  progressTrack: { height: 3, marginHorizontal: 20, marginBottom: 4, backgroundColor: "rgba(255,255,255,0.08)", borderRadius: 2, overflow: "hidden" },
+  handle: { width: 40, height: 4, borderRadius: 2, backgroundColor: "rgba(255,255,255,0.55)", alignSelf: "center", marginTop: 12, marginBottom: 8 },
+  progressTrack: { height: 3, marginHorizontal: 20, marginBottom: 4, backgroundColor: "rgba(255,255,255,0.55)", borderRadius: 2, overflow: "hidden" },
   progressFill: { height: "100%", borderRadius: 2 },
-  content: { paddingBottom: 20 },
+  content: { paddingBottom: 130 },
 
   // Detail step
   actImage: { width: "100%", height: 220 },
   actImageGradient: { position: "absolute", top: 0, left: 0, right: "100%", height: 220, width: "100%" },
   detailContent: { padding: 20, gap: 12 },
-  actTitle: { color: "#FFFFFF", fontSize: 22, fontWeight: "900", lineHeight: 28 },
+  actTitle: { color: "#FFFFFF", fontSize: 22, fontWeight: "900",
+      fontFamily: "Chillax-Bold", lineHeight: 28 },
   metaRow: { flexDirection: "row", alignItems: "center", gap: 6 },
-  metaStar: { color: "#FFD700", fontSize: 14, fontWeight: "700" },
-  metaReviews: { color: "rgba(255,255,255,0.4)", fontSize: 13 },
-  metaDuration: { color: "rgba(255,255,255,0.4)", fontSize: 13 },
+  metaStar: { color: "#FBBF24", fontSize: 14, fontWeight: "700" },
+  metaReviews: { color: "rgba(255,255,255,0.5)", fontSize: 13 },
+  metaDuration: { color: "rgba(255,255,255,0.5)", fontSize: 13 },
   actDesc: { color: "rgba(255,255,255,0.6)", fontSize: 14, lineHeight: 21 },
   priceRow: { flexDirection: "row", alignItems: "center", justifyContent: "space-between" },
-  priceLabel: { color: "rgba(255,255,255,0.4)", fontSize: 12, fontWeight: "600" },
-  priceValue: { color: "#FFFFFF", fontSize: 28, fontWeight: "900" },
-  pricePer: { color: "rgba(255,255,255,0.4)", fontSize: 14, fontWeight: "500" },
+  priceLabel: { color: "rgba(255,255,255,0.5)", fontSize: 12, fontWeight: "600" },
+  priceValue: { color: "#FFFFFF", fontSize: 28, fontWeight: "900",
+      fontFamily: "Chillax-Bold" },
+  pricePer: { color: "rgba(255,255,255,0.5)", fontSize: 14, fontWeight: "500",
+      fontFamily: "Satoshi-Medium" },
   cashbackBadge: { borderRadius: 14, overflow: "hidden", flexDirection: "row", alignItems: "center", gap: 6, paddingHorizontal: 12, paddingVertical: 8, borderWidth: 1, borderColor: "rgba(255,215,0,0.3)" },
-  cashbackText: { color: "#FFD700", fontSize: 13, fontWeight: "700" },
+  cashbackText: { color: "#FBBF24", fontSize: 13, fontWeight: "700" },
   highlights: { gap: 8 },
   highlightRow: { flexDirection: "row", alignItems: "center", gap: 8 },
   highlightText: { color: "rgba(255,255,255,0.6)", fontSize: 13 },
 
   // Travelers step
   stepContent: { padding: 24, gap: 20 },
-  stepTitle: { color: "#FFFFFF", fontSize: 24, fontWeight: "900" },
-  stepSubtitle: { color: "rgba(255,255,255,0.4)", fontSize: 14 },
+  stepTitle: { color: "#FFFFFF", fontSize: 24, fontWeight: "900",
+      fontFamily: "Chillax-Bold" },
+  stepSubtitle: { color: "rgba(255,255,255,0.5)", fontSize: 14 },
   travelerCounter: { flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 24 },
   counterBtn: { width: 56, height: 56, borderRadius: 28, backgroundColor: "rgba(100,67,244,0.3)", alignItems: "center", justifyContent: "center", borderWidth: 1.5, borderColor: "rgba(100,67,244,0.6)" },
   counterBtnDisabled: { opacity: 0.3 },
   counterBtnText: { color: "#FFFFFF", fontSize: 28, fontWeight: "300" },
   counterValue: { alignItems: "center", minWidth: 80 },
-  counterNum: { color: "#FFFFFF", fontSize: 52, fontWeight: "900", lineHeight: 58 },
-  counterLabel: { color: "rgba(255,255,255,0.4)", fontSize: 13, marginTop: 2 },
+  counterNum: { color: "#FFFFFF", fontSize: 52, fontWeight: "900",
+      fontFamily: "Chillax-Bold", lineHeight: 58 },
+  counterLabel: { color: "rgba(255,255,255,0.5)", fontSize: 13, marginTop: 2 },
   summaryCard: { borderRadius: 18, overflow: "hidden", padding: 16, gap: 10, borderWidth: 1, borderColor: "rgba(100,67,244,0.3)" },
   summaryRow: { flexDirection: "row", justifyContent: "space-between", alignItems: "center" },
   summaryLabel: { color: "rgba(255,255,255,0.5)", fontSize: 14 },
   summaryValue: { color: "#FFFFFF", fontSize: 14, fontWeight: "700" },
-  summaryTotal: { borderTopWidth: 1, borderTopColor: "rgba(255,255,255,0.1)", paddingTop: 10, marginTop: 4 },
-  summaryTotalLabel: { color: "#FFFFFF", fontSize: 16, fontWeight: "800" },
-  summaryTotalValue: { color: "#FFFFFF", fontSize: 22, fontWeight: "900" },
+  summaryTotal: { borderTopWidth: 1, borderTopColor: "rgba(255,255,255,0.55)", paddingTop: 10, marginTop: 4 },
+  summaryTotalLabel: { color: "#FFFFFF", fontSize: 16, fontWeight: "800",
+      fontFamily: "Chillax-Bold" },
+  summaryTotalValue: { color: "#FFFFFF", fontSize: 22, fontWeight: "900",
+      fontFamily: "Chillax-Bold" },
 
   // Payment step
-  paymentCard: { borderRadius: 16, overflow: "hidden", padding: 16, flexDirection: "row", alignItems: "center", gap: 14, borderWidth: 1.5, borderColor: "rgba(255,255,255,0.1)", backgroundColor: "rgba(255,255,255,0.04)" },
+  paymentCard: { borderRadius: 16, overflow: "hidden", padding: 16, flexDirection: "row", alignItems: "center", gap: 14, borderWidth: 1.5, borderColor: "rgba(255,255,255,0.55)", backgroundColor: "rgba(255,255,255,0.55)" },
   paymentCardSelected: { borderColor: "rgba(100,67,244,0.7)" },
   paymentIcon: { width: 44, height: 44, borderRadius: 12, alignItems: "center", justifyContent: "center" },
   paymentLabel: { color: "#FFFFFF", fontSize: 15, fontWeight: "700" },
-  paymentSub: { color: "rgba(255,255,255,0.4)", fontSize: 12, marginTop: 2 },
+  paymentSub: { color: "rgba(255,255,255,0.5)", fontSize: 12, marginTop: 2 },
   paymentCheck: { width: 24, height: 24, borderRadius: 12, backgroundColor: "#6443F4", alignItems: "center", justifyContent: "center" },
 
   // Confirmation
   confirmContent: { padding: 24, alignItems: "center", gap: 16 },
   successCircle: { width: 100, height: 100, borderRadius: 50, overflow: "hidden", alignItems: "center", justifyContent: "center", marginBottom: 8 },
-  confirmTitle: { color: "#FFFFFF", fontSize: 28, fontWeight: "900" },
-  confirmSubtitle: { color: "rgba(255,255,255,0.7)", fontSize: 16, fontWeight: "700", textAlign: "center" },
-  confirmSub: { color: "rgba(255,255,255,0.4)", fontSize: 14 },
+  confirmTitle: { color: "#FFFFFF", fontSize: 28, fontWeight: "900",
+      fontFamily: "Chillax-Bold" },
+  confirmSubtitle: { color: "rgba(255,255,255,0.7)", fontSize: 16, fontWeight: "700",
+      fontFamily: "Chillax-Semibold", textAlign: "center" },
+  confirmSub: { color: "rgba(255,255,255,0.5)", fontSize: 14 },
   cashbackConfirm: { borderRadius: 18, overflow: "hidden", padding: 16, flexDirection: "row", alignItems: "center", gap: 12, borderWidth: 1, borderColor: "rgba(255,215,0,0.3)", width: "100%" },
   cashbackConfirmEmoji: { fontSize: 28 },
-  cashbackConfirmTitle: { color: "#FFD700", fontSize: 16, fontWeight: "800" },
-  cashbackConfirmSub: { color: "rgba(255,255,255,0.4)", fontSize: 12, marginTop: 2 },
-  confirmDetails: { width: "100%", backgroundColor: "rgba(255,255,255,0.04)", borderRadius: 16, padding: 16, gap: 12 },
+  cashbackConfirmTitle: { color: "#FBBF24", fontSize: 16, fontWeight: "800",
+      fontFamily: "Chillax-Bold" },
+  cashbackConfirmSub: { color: "rgba(255,255,255,0.5)", fontSize: 12, marginTop: 2 },
+  confirmDetails: { width: "100%", backgroundColor: "rgba(255,255,255,0.55)", borderRadius: 16, padding: 16, gap: 12 },
   confirmDetailRow: { flexDirection: "row", justifyContent: "space-between" },
-  confirmDetailLabel: { color: "rgba(255,255,255,0.4)", fontSize: 13 },
+  confirmDetailLabel: { color: "rgba(255,255,255,0.5)", fontSize: 13 },
   confirmDetailValue: { color: "#FFFFFF", fontSize: 13, fontWeight: "700" },
 
   // CTA
-  ctaWrap: { paddingHorizontal: 20, paddingBottom: 32, paddingTop: 8 },
-  ctaBtn: { borderRadius: 20, overflow: "hidden", paddingVertical: 18, alignItems: "center", justifyContent: "center" },
-  ctaBtnText: { color: "#FFFFFF", fontSize: 17, fontWeight: "800" },
+  ctaWrap: { paddingHorizontal: 20, paddingBottom: 130, paddingTop: 8 },
+  ctaBtn: { borderRadius: 20, shadowColor: "#F94498", shadowOffset: { width: 0, height: 6 }, shadowOpacity: 0.4, shadowRadius: 24, elevation: 10,
+    overflow: "hidden", paddingVertical: 18, alignItems: "center", justifyContent: "center" },
+  ctaBtnText: { color: "#FFFFFF", fontSize: 17, fontWeight: "800",
+      fontFamily: "Chillax-Bold" },
 });

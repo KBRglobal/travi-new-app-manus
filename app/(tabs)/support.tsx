@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { trpc } from "@/lib/trpc";
+import { useAuth } from "@/hooks/use-auth";
 import {
   View, Text, TouchableOpacity, StyleSheet, Dimensions,
   ScrollView, TextInput, Platform, Animated
@@ -70,11 +72,30 @@ const STATUS_CONFIG = {
 export default function SupportScreen() {
   const [activeTab, setActiveTab] = useState(0);
   const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
-  const [category, setCategory] = useState("Booking");
+  const [category, setCategory] = useState<"booking" | "payment" | "account" | "technical" | "feedback" | "other">("booking");
   const [subject, setSubject] = useState("");
   const [description, setDescription] = useState("");
   const [priority, setPriority] = useState("Normal");
   const [submitted, setSubmitted] = useState(false);
+  const { isAuthenticated } = useAuth();
+
+  // Fetch real tickets from DB when authenticated
+  const ticketsQuery = trpc.support.list.useQuery(undefined, { enabled: isAuthenticated });
+  const createTicketMutation = trpc.support.create.useMutation({
+    onSuccess: () => ticketsQuery.refetch(),
+  });
+
+  // Use real DB tickets if available, otherwise fall back to mock data
+  const dbTickets = ticketsQuery.data ?? [];
+  const displayTickets = dbTickets.length > 0
+    ? dbTickets.map((t) => ({
+        id: `TKT-${String(t.id).padStart(4, "0")}`,
+        subject: t.subject,
+        status: t.status as keyof typeof STATUS_CONFIG,
+        date: new Date(t.createdAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }),
+        category: t.category,
+      }))
+    : TICKET_STATUSES;
 
   const handleTab = (i: number) => {
     if (Platform.OS !== "web") Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
@@ -84,6 +105,10 @@ export default function SupportScreen() {
   const handleSubmit = () => {
     if (!subject.trim() || !description.trim()) return;
     if (Platform.OS !== "web") Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+    // Submit to real DB if authenticated
+    if (isAuthenticated) {
+      createTicketMutation.mutate({ subject, description, category });
+    }
     setSubmitted(true);
   };
 
@@ -140,7 +165,7 @@ export default function SupportScreen() {
             onSubmit={handleSubmit}
           />
         )}
-        {activeTab === 2 && <TicketsTab tickets={TICKET_STATUSES} />}
+        {activeTab === 2 && <TicketsTab tickets={displayTickets} />}
       </ScrollView>
     </View>
   );
@@ -189,19 +214,19 @@ function FAQTab({ faqs, expanded, onToggle }: { faqs: typeof FAQS; expanded: num
 const F = StyleSheet.create({
   wrap: { gap: 10 },
   sectionTitle: { color: "#FFFFFF", fontSize: 18, fontWeight: "800", marginBottom: 4, fontFamily: "Chillax-Bold" },
-  faqCard: { backgroundColor: "rgba(255,255,255,0.05)", borderRadius: 14, padding: 14, borderWidth: 1, borderColor: "rgba(255,255,255,0.07)" },
+  faqCard: { backgroundColor: "rgba(255,255,255,0.55)", borderRadius: 14, padding: 14, borderWidth: 1, borderColor: "rgba(255,255,255,0.55)" },
   faqCardOpen: { borderColor: "rgba(100,67,244,0.35)", backgroundColor: "rgba(100,67,244,0.08)" },
   faqHeader: { flexDirection: "row", alignItems: "center", gap: 10 },
   faqQ: { color: "#FFFFFF", fontSize: 14, fontWeight: "600", flex: 1, lineHeight: 20, fontFamily: "Satoshi-Medium" },
   faqChevron: { transform: [{ rotate: "0deg" }] },
   faqChevronOpen: { transform: [{ rotate: "90deg" }] },
   faqBody: { marginTop: 10, gap: 8 },
-  faqDivider: { height: 1, backgroundColor: "rgba(255,255,255,0.08)" },
+  faqDivider: { height: 1, backgroundColor: "rgba(255,255,255,0.55)" },
   faqA: { color: "rgba(255,255,255,0.6)", fontSize: 13, lineHeight: 20, fontFamily: "Satoshi-Regular" },
   faqCategoryBadge: { backgroundColor: "rgba(100,67,244,0.2)", borderRadius: 8, paddingHorizontal: 8, paddingVertical: 3, alignSelf: "flex-start" },
   faqCategoryText: { color: "#C084FC", fontSize: 11, fontWeight: "600" },
   emailRow: { marginTop: 8, alignItems: "center", gap: 8 },
-  emailLabel: { color: "rgba(255,255,255,0.4)", fontSize: 13, fontFamily: "Satoshi-Regular" },
+  emailLabel: { color: "rgba(255,255,255,0.5)", fontSize: 13, fontFamily: "Satoshi-Regular" },
   emailBtn: { flexDirection: "row", alignItems: "center", gap: 8, borderRadius: 12, overflow: "hidden", paddingHorizontal: 16, paddingVertical: 10, borderWidth: 1, borderColor: "rgba(100,67,244,0.3)" },
   emailBtnText: { color: "#C084FC", fontSize: 13, fontWeight: "600", fontFamily: "Satoshi-Medium" },
 });
@@ -232,7 +257,7 @@ function ContactTab({
       <Text style={C.sectionTitle}>Submit a Request</Text>
 
       <Text style={C.fieldLabel}>Category</Text>
-      <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: 8, paddingBottom: 4 }}>
+      <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: 8, paddingBottom: 130 }}>
         {CATEGORIES.map((cat) => (
           <TouchableOpacity
             key={cat}
@@ -252,7 +277,7 @@ function ContactTab({
         value={subject}
         onChangeText={onSubject}
         placeholder="Briefly describe your issue..."
-        placeholderTextColor="rgba(255,255,255,0.3)"
+        placeholderTextColor="rgba(255,255,255,0.55)"
       />
 
       <Text style={C.fieldLabel}>Description</Text>
@@ -261,7 +286,7 @@ function ContactTab({
         value={description}
         onChangeText={onDescription}
         placeholder="Provide as much detail as possible..."
-        placeholderTextColor="rgba(255,255,255,0.3)"
+        placeholderTextColor="rgba(255,255,255,0.55)"
         multiline
         numberOfLines={5}
         textAlignVertical="top"
@@ -294,18 +319,19 @@ const C = StyleSheet.create({
   wrap: { gap: 12 },
   sectionTitle: { color: "#FFFFFF", fontSize: 18, fontWeight: "800", marginBottom: 4, fontFamily: "Chillax-Bold" },
   fieldLabel: { color: "rgba(255,255,255,0.55)", fontSize: 12, fontWeight: "700", letterSpacing: 0.5, marginBottom: -4, fontFamily: "Satoshi-Medium" },
-  input: { backgroundColor: "rgba(255,255,255,0.07)", borderRadius: 12, borderWidth: 1, borderColor: "rgba(255,255,255,0.1)", padding: 13, color: "#FFFFFF", fontSize: 14, fontFamily: "Satoshi-Regular" },
+  input: { backgroundColor: "rgba(255,255,255,0.55)", borderRadius: 12, borderWidth: 1, borderColor: "rgba(255,255,255,0.55)", padding: 13, color: "#FFFFFF", fontSize: 14, fontFamily: "Satoshi-Regular" },
   textarea: { minHeight: 110 },
-  catChip: { borderRadius: 20, overflow: "hidden", paddingHorizontal: 14, paddingVertical: 7, borderWidth: 1, borderColor: "rgba(255,255,255,0.15)" },
+  catChip: { borderRadius: 20, overflow: "hidden", paddingHorizontal: 14, paddingVertical: 7, borderWidth: 1, borderColor: "rgba(255,255,255,0.55)" },
   catChipActive: { borderColor: "transparent" },
   catText: { color: "rgba(255,255,255,0.55)", fontSize: 13, fontWeight: "600", fontFamily: "Satoshi-Medium" },
   catTextActive: { color: "#FFFFFF" },
   priorityRow: { flexDirection: "row", gap: 8 },
-  priorityChip: { flex: 1, borderRadius: 10, borderWidth: 1, borderColor: "rgba(255,255,255,0.1)", paddingVertical: 8, alignItems: "center" },
+  priorityChip: { flex: 1, borderRadius: 10, borderWidth: 1, borderColor: "rgba(255,255,255,0.55)", paddingVertical: 8, alignItems: "center" },
   priorityChipActive: { borderColor: "#6443F4", backgroundColor: "rgba(100,67,244,0.2)" },
-  priorityText: { color: "rgba(255,255,255,0.4)", fontSize: 12, fontWeight: "600" },
+  priorityText: { color: "rgba(255,255,255,0.5)", fontSize: 12, fontWeight: "600" },
   priorityTextActive: { color: "#C084FC" },
-  submitBtn: { borderRadius: 16, overflow: "hidden", marginTop: 4 },
+  submitBtn: { borderRadius: 16, shadowColor: "#F94498", shadowOffset: { width: 0, height: 6 }, shadowOpacity: 0.4, shadowRadius: 24, elevation: 10,
+    overflow: "hidden", marginTop: 4 },
   submitGradient: { alignItems: "center", paddingVertical: 15 },
   submitText: { color: "#FFFFFF", fontSize: 16, fontWeight: "800", fontFamily: "Chillax-Bold" },
   successWrap: { alignItems: "center", gap: 16, paddingTop: 40 },
@@ -356,16 +382,16 @@ const TK = StyleSheet.create({
   wrap: { gap: 10 },
   headerRow: { flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: 4 },
   sectionTitle: { color: "#FFFFFF", fontSize: 18, fontWeight: "800", fontFamily: "Chillax-Bold" },
-  count: { color: "rgba(255,255,255,0.35)", fontSize: 13, fontFamily: "Satoshi-Regular" },
-  ticketCard: { backgroundColor: "rgba(255,255,255,0.05)", borderRadius: 14, padding: 14, borderWidth: 1, borderColor: "rgba(255,255,255,0.07)", gap: 6 },
+  count: { color: "rgba(255,255,255,0.55)", fontSize: 13, fontFamily: "Satoshi-Regular" },
+  ticketCard: { backgroundColor: "rgba(255,255,255,0.55)", borderRadius: 14, padding: 14, borderWidth: 1, borderColor: "rgba(255,255,255,0.55)", gap: 6 },
   ticketTop: { flexDirection: "row", justifyContent: "space-between", alignItems: "center" },
-  ticketId: { color: "rgba(255,255,255,0.4)", fontSize: 12, fontWeight: "700", fontFamily: Platform.OS === "ios" ? "Courier" : "monospace" },
+  ticketId: { color: "rgba(255,255,255,0.5)", fontSize: 12, fontWeight: "700", fontFamily: Platform.OS === "ios" ? "Courier" : "monospace" },
   statusBadge: { borderRadius: 8, paddingHorizontal: 8, paddingVertical: 3 },
   statusText: { fontSize: 11, fontWeight: "700" },
   ticketSubject: { color: "#FFFFFF", fontSize: 14, fontWeight: "600", lineHeight: 20, fontFamily: "Satoshi-Medium" },
   ticketMeta: { flexDirection: "row", justifyContent: "space-between" },
   ticketCategory: { color: "#C084FC", fontSize: 12, fontWeight: "600" },
-  ticketDate: { color: "rgba(255,255,255,0.35)", fontSize: 12 },
+  ticketDate: { color: "rgba(255,255,255,0.55)", fontSize: 12 },
   empty: { alignItems: "center", gap: 10, paddingTop: 40 },
   emptyTitle: { color: "#FFFFFF", fontSize: 18, fontWeight: "800", fontFamily: "Chillax-Bold" },
   emptyDesc: { color: "rgba(255,255,255,0.45)", fontSize: 13, textAlign: "center", lineHeight: 19, fontFamily: "Satoshi-Regular" },
@@ -373,16 +399,16 @@ const TK = StyleSheet.create({
 
 const S = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#0D0628" },
-  header: { flexDirection: "row", alignItems: "center", gap: 12, paddingTop: 56, paddingHorizontal: 16, paddingBottom: 16 },
-  backBtn: { width: 36, height: 36, borderRadius: 12, backgroundColor: "rgba(255,255,255,0.08)", alignItems: "center", justifyContent: "center" },
+  header: { flexDirection: "row", alignItems: "center", gap: 12, paddingTop: 56, paddingHorizontal: 16, paddingBottom: 130 },
+  backBtn: { width: 36, height: 36, borderRadius: 12, backgroundColor: "rgba(255,255,255,0.55)", alignItems: "center", justifyContent: "center" },
   headerTitle: { color: "#FFFFFF", fontSize: 22, fontWeight: "900", fontFamily: "Chillax-Bold" },
-  headerSub: { color: "rgba(255,255,255,0.4)", fontSize: 12, marginTop: 1 },
+  headerSub: { color: "rgba(255,255,255,0.5)", fontSize: 12, marginTop: 1 },
   headerBadge: { backgroundColor: "rgba(34,197,94,0.2)", borderRadius: 10, paddingHorizontal: 10, paddingVertical: 5, borderWidth: 1, borderColor: "rgba(34,197,94,0.3)" },
   headerBadgeText: { color: "#22C55E", fontSize: 12, fontWeight: "800", fontFamily: "Chillax-Bold" },
-  tabsRow: { flexDirection: "row", paddingHorizontal: 16, paddingBottom: 12, gap: 8 },
-  tab: { flex: 1, borderRadius: 20, overflow: "hidden", paddingVertical: 9, alignItems: "center", borderWidth: 1, borderColor: "rgba(255,255,255,0.1)" },
+  tabsRow: { flexDirection: "row", paddingHorizontal: 16, paddingBottom: 130, gap: 8 },
+  tab: { flex: 1, borderRadius: 20, overflow: "hidden", paddingVertical: 9, alignItems: "center", borderWidth: 1, borderColor: "rgba(255,255,255,0.55)" },
   tabActive: { borderColor: "transparent" },
   tabText: { color: "rgba(255,255,255,0.5)", fontSize: 13, fontWeight: "700", fontFamily: "Satoshi-Medium" },
   tabTextActive: { color: "#FFFFFF" },
-  content: { padding: 16, paddingBottom: 48, gap: 16 },
+  content: { padding: 16, paddingBottom: 130, gap: 16 },
 });

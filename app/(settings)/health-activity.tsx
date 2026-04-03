@@ -57,7 +57,7 @@ export default function HealthActivityScreen() {
         <Text style={S.headerTitle}>Health & Activity</Text>
         <View style={{ width: 36 }} />
       </View>
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 40 }}>
+      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 130 }}>
         <View style={S.infoBox}>
           <Text style={S.infoText}>This information helps TRAVI recommend activities, restaurants, and accommodations that match your health needs and fitness level.</Text>
         </View>
@@ -119,31 +119,34 @@ export default function HealthActivityScreen() {
 
 const S = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#0D0628" },
-  header: { flexDirection: "row", alignItems: "center", paddingHorizontal: 20, paddingBottom: 16, gap: 12 },
-  backBtn: { width: 36, height: 36, borderRadius: 18, backgroundColor: "rgba(255,255,255,0.08)", alignItems: "center", justifyContent: "center" },
-  backText: { color: "#FFFFFF", fontSize: 18, fontWeight: "700" },
+  header: { flexDirection: "row", alignItems: "center", paddingHorizontal: 20, paddingBottom: 130, gap: 12 },
+  backBtn: { width: 36, height: 36, borderRadius: 18, backgroundColor: "rgba(255,255,255,0.55)", alignItems: "center", justifyContent: "center" },
+  backText: { color: "#FFFFFF", fontSize: 18, fontWeight: "700",
+      fontFamily: "Chillax-Semibold" },
   headerTitle: { flex: 1, color: "#FFFFFF", fontSize: 20, fontWeight: "900", textAlign: "center", fontFamily: "Chillax-Bold" },
   infoBox: { marginHorizontal: 20, marginBottom: 20, borderRadius: 12, backgroundColor: "rgba(100,67,244,0.1)", borderWidth: 1, borderColor: "rgba(100,67,244,0.2)", padding: 14 },
   infoText: { color: "rgba(255,255,255,0.6)", fontSize: 13, lineHeight: 20 },
   section: { paddingHorizontal: 20, marginBottom: 24 },
-  sectionTitle: { color: "rgba(255,255,255,0.4)", fontSize: 11, fontWeight: "800", textTransform: "uppercase", letterSpacing: 1.5, marginBottom: 8 },
-  sectionDesc: { color: "rgba(255,255,255,0.3)", fontSize: 12, marginBottom: 12 },
-  optionRow: { flexDirection: "row", alignItems: "center", gap: 12, paddingVertical: 12, paddingHorizontal: 14, borderRadius: 12, marginBottom: 8, backgroundColor: "rgba(255,255,255,0.03)", borderWidth: 1, borderColor: "rgba(255,255,255,0.05)" },
+  sectionTitle: { color: "rgba(255,255,255,0.5)", fontSize: 11, fontWeight: "800",
+      fontFamily: "Chillax-Bold", textTransform: "uppercase", letterSpacing: 1.5, marginBottom: 8 },
+  sectionDesc: { color: "rgba(255,255,255,0.55)", fontSize: 12, marginBottom: 12 },
+  optionRow: { flexDirection: "row", alignItems: "center", gap: 12, paddingVertical: 12, paddingHorizontal: 14, borderRadius: 12, marginBottom: 8, backgroundColor: "rgba(255,255,255,0.55)", borderWidth: 1, borderColor: "rgba(255,255,255,0.55)" },
   optionRowActive: { backgroundColor: "rgba(100,67,244,0.12)", borderColor: "rgba(100,67,244,0.35)" },
   optionEmoji: { fontSize: 22 },
   optionText: { flex: 1, gap: 2 },
   optionLabel: { color: "rgba(255,255,255,0.6)", fontSize: 14, fontWeight: "700" },
   optionLabelActive: { color: "#FFFFFF" },
-  optionDesc: { color: "rgba(255,255,255,0.35)", fontSize: 12 },
-  radio: { width: 20, height: 20, borderRadius: 10, borderWidth: 2, borderColor: "rgba(255,255,255,0.2)", alignItems: "center", justifyContent: "center" },
+  optionDesc: { color: "rgba(255,255,255,0.55)", fontSize: 12 },
+  radio: { width: 20, height: 20, borderRadius: 10, borderWidth: 2, borderColor: "rgba(255,255,255,0.55)", alignItems: "center", justifyContent: "center" },
   radioActive: { borderColor: "#6443F4" },
   radioDot: { width: 10, height: 10, borderRadius: 5, backgroundColor: "#6443F4" },
   chipGrid: { flexDirection: "row", flexWrap: "wrap", gap: 8 },
-  chip: { flexDirection: "row", alignItems: "center", gap: 6, paddingHorizontal: 12, paddingVertical: 8, borderRadius: 20, backgroundColor: "rgba(255,255,255,0.04)", borderWidth: 1, borderColor: "rgba(255,255,255,0.08)" },
+  chip: { flexDirection: "row", alignItems: "center", gap: 6, paddingHorizontal: 12, paddingVertical: 8, borderRadius: 20, backgroundColor: "rgba(255,255,255,0.55)", borderWidth: 1, borderColor: "rgba(255,255,255,0.55)" },
   chipActive: { backgroundColor: "rgba(100,67,244,0.18)", borderColor: "rgba(100,67,244,0.4)" },
   chipEmoji: { fontSize: 14 },
   chipLabel: { color: "rgba(255,255,255,0.5)", fontSize: 12, fontWeight: "700" },
   chipLabelActive: { color: "#FFFFFF" },
   saveBtn: { borderRadius: 14, backgroundColor: "#6443F4", paddingVertical: 16, alignItems: "center" },
-  saveBtnText: { color: "#FFFFFF", fontSize: 15, fontWeight: "900" },
+  saveBtnText: { color: "#FFFFFF", fontSize: 15, fontWeight: "900",
+      fontFamily: "Chillax-Bold" },
 });
