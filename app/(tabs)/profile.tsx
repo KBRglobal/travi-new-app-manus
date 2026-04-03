@@ -112,7 +112,7 @@ export default function ProfileScreen() {
         <View style={S.sectionPad}>
           <View style={S.sectionHeader}>
             <Text style={S.sectionTitle}>Travel DNA</Text>
-            <TouchableOpacity style={S.retakeBtn} onPress={() => router.push('/(trip)/swipe')} activeOpacity={0.85}>
+            <TouchableOpacity style={S.retakeBtn} onPress={() => router.push('/(trip)/swipe')} accessibilityLabel="Start DNA Swipe" accessibilityRole="button" activeOpacity={0.85}>
               <Text style={S.retakeBtnText}>Retake Quiz</Text>
             </TouchableOpacity>
           </View>

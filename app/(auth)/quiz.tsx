@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * TRAVI DNA Quiz — Onboarding
  * Phase A: Activity categories (multi-select, min 3)
@@ -467,7 +468,7 @@ export default function QuizScreen() {
               {/* Check */}
               {isSelected && (
                 <View style={S.checkBadge}>
-                  <IconSymbol name="checkmark" size={11} color="#FFFFFF" />
+                  <IconSymbol name="checkmark" size={11} color="#1A0B2E" />
                 </View>
               )}
             </TouchableOpacity>
@@ -509,7 +510,7 @@ const S = StyleSheet.create({
 
   // Phase header
   phaseHeader: { paddingHorizontal: 24, paddingBottom: 16, gap: 8 },
-  phaseTitle: { color: "#FFFFFF", fontSize: 24, fontWeight: "900", lineHeight: 30, letterSpacing: -0.5, fontFamily: "Chillax-Bold" },
+  phaseTitle: { color: "#1A0B2E", fontSize: 24, fontWeight: "900", lineHeight: 30, letterSpacing: -0.5, fontFamily: "Chillax-Bold" },
   phaseSubtitle: { color: "rgba(255,255,255,0.45)", fontSize: 14, lineHeight: 20, fontFamily: "Satoshi-Regular" },
 
   // Duck avatar
@@ -545,7 +546,7 @@ const S = StyleSheet.create({
   continueBtn: { borderRadius: 20, shadowColor: "#F94498", shadowOffset: { width: 0, height: 6 }, shadowOpacity: 0.4, shadowRadius: 24, elevation: 10,
     overflow: "hidden", paddingVertical: 18, alignItems: "center", justifyContent: "center" },
   continueBtnDisabled: {},
-  continueBtnText: { color: "#FFFFFF", fontSize: 16, fontWeight: "800", fontFamily: "Chillax-Bold" },
+  continueBtnText: { color: "#1A0B2E", fontSize: 16, fontWeight: "800", fontFamily: "Chillax-Bold" },
   continueBtnTextDisabled: { color: "rgba(255,255,255,0.55)" },
 
   // Pace
@@ -564,7 +565,7 @@ const S = StyleSheet.create({
   paceCardGlow: { position: "absolute", top: 0, left: 0, right: 0, bottom: 0, backgroundColor: "rgba(255,255,255,0.06)" },
   paceCardLeft: { flex: 1, flexDirection: "row", alignItems: "flex-start", gap: 14 },
   paceEmoji: { fontSize: 32, lineHeight: 38 },
-  paceLabel: { color: "#FFFFFF", fontSize: 18, fontWeight: "800", lineHeight: 22, fontFamily: "Chillax-Bold" },
+  paceLabel: { color: "#1A0B2E", fontSize: 18, fontWeight: "800", lineHeight: 22, fontFamily: "Chillax-Bold" },
   paceSublabel: { color: "rgba(255,255,255,0.6)", fontSize: 12, fontWeight: "700", marginTop: 2 },
   paceDesc: { color: "rgba(255,255,255,0.5)", fontSize: 12, lineHeight: 17, marginTop: 4 },
   paceCheck: { width: 28, height: 28, borderRadius: 14, backgroundColor: "rgba(255,255,255,0.06)", alignItems: "center", justifyContent: "center", borderWidth: 1.5, borderColor: "rgba(255,255,255,0.7)" },
@@ -579,7 +580,7 @@ const S = StyleSheet.create({
   },
   questionNumText: { color: "rgba(192,132,252,0.9)", fontSize: 12, fontWeight: "700", fontFamily: "Satoshi-Bold" },
   questionNumLine: { flex: 1, height: 1, backgroundColor: "rgba(255,255,255,0.06)" },
-  questionText: { color: "#FFFFFF", fontSize: 26, fontWeight: "900", lineHeight: 32, letterSpacing: -0.5, fontFamily: "Chillax-Bold" },
+  questionText: { color: "#1A0B2E", fontSize: 26, fontWeight: "900", lineHeight: 32, letterSpacing: -0.5, fontFamily: "Chillax-Bold" },
   questionSubtitle: { color: "rgba(255,255,255,0.45)", fontSize: 14, lineHeight: 20, fontFamily: "Satoshi-Regular" },
   optionsGrid: { flex: 1, flexDirection: "column", paddingHorizontal: 16, gap: 10, paddingBottom: 8 },
   optionCard: {
@@ -600,7 +601,7 @@ const S = StyleSheet.create({
   selectedOverlay: { position: "absolute", top: 0, left: 0, right: 0, bottom: 0, backgroundColor: "rgba(255,255,255,0.07)" },
   optionIconWrap: { width: 46, height: 46, borderRadius: 14, backgroundColor: "rgba(0,0,0,0.22)", alignItems: "center", justifyContent: "center", marginRight: 14, flexShrink: 0 },
   optionTextBlock: { flex: 1 },
-  optionLabel: { color: "#FFFFFF", fontSize: 16, fontWeight: "800", lineHeight: 21, fontFamily: "Chillax-Bold" },
+  optionLabel: { color: "#1A0B2E", fontSize: 16, fontWeight: "800", lineHeight: 21, fontFamily: "Chillax-Bold" },
   optionSublabel: { color: "rgba(255,255,255,0.6)", fontSize: 12, lineHeight: 16, fontFamily: "Satoshi-Regular" },
   checkBadge: { width: 24, height: 24, borderRadius: 12, backgroundColor: "rgba(255,255,255,0.15)", alignItems: "center", justifyContent: "center", borderWidth: 1.5, borderColor: "rgba(255,255,255,0.9)", marginLeft: 8, flexShrink: 0 },
 

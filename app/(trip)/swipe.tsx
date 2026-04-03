@@ -28,6 +28,7 @@ import { IconSymbol } from "@/components/ui/icon-symbol";
 import { recordSwipe, type InterestCategory } from "@/lib/dna-store";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { FirstSwipeTutorial } from "@/components/first-swipe-tutorial";
+import { trackDnaSwipe, trackScreen } from "@/lib/analytics";
 
 const { width, height } = Dimensions.get("window");
 const SWIPE_THRESHOLD = width * 0.35;

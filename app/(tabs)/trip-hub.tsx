@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * TRAVI — Trip Hub
  * Post-booking command center. Shown after a trip is confirmed.

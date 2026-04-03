@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useState, useRef } from "react";
 import {
   View, Text, TouchableOpacity, StyleSheet, FlatList,

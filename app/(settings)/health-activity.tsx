@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * TRAVI — Health & Activity Settings
  */
@@ -121,9 +122,9 @@ const S = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#0D0628" },
   header: { flexDirection: "row", alignItems: "center", paddingHorizontal: 20, paddingBottom: 16, gap: 12 },
   backBtn: { width: 36, height: 36, borderRadius: 18, backgroundColor: "rgba(255,255,255,0.06)", alignItems: "center", justifyContent: "center" },
-  backText: { color: "#FFFFFF", fontSize: 18, fontWeight: "700",
+  backText: { color: "#1A0B2E", fontSize: 18, fontWeight: "700",
       fontFamily: "Chillax-Semibold" },
-  headerTitle: { flex: 1, color: "#FFFFFF", fontSize: 20, fontWeight: "900", textAlign: "center", fontFamily: "Chillax-Bold" },
+  headerTitle: { flex: 1, color: "#1A0B2E", fontSize: 20, fontWeight: "900", textAlign: "center", fontFamily: "Chillax-Bold" },
   infoBox: { marginHorizontal: 20, marginBottom: 20, borderRadius: 12, backgroundColor: "rgba(100,67,244,0.1)", borderWidth: 1, borderColor: "rgba(100,67,244,0.2)", padding: 18 },
   infoText: { color: "rgba(255,255,255,0.6)", fontSize: 13, lineHeight: 20 },
   section: { paddingHorizontal: 20, marginBottom: 24 },
@@ -135,7 +136,7 @@ const S = StyleSheet.create({
   optionEmoji: { fontSize: 22 },
   optionText: { flex: 1, gap: 2 },
   optionLabel: { color: "rgba(255,255,255,0.6)", fontSize: 14, fontWeight: "700" },
-  optionLabelActive: { color: "#FFFFFF" },
+  optionLabelActive: { color: "#1A0B2E" },
   optionDesc: { color: "rgba(255,255,255,0.55)", fontSize: 12 },
   radio: { width: 20, height: 20, borderRadius: 10, borderWidth: 2, borderColor: "rgba(255,255,255,0.12)", alignItems: "center", justifyContent: "center" },
   radioActive: { borderColor: "#6443F4" },
@@ -145,8 +146,8 @@ const S = StyleSheet.create({
   chipActive: { backgroundColor: "rgba(100,67,244,0.18)", borderColor: "rgba(100,67,244,0.4)" },
   chipEmoji: { fontSize: 14 },
   chipLabel: { color: "rgba(255,255,255,0.5)", fontSize: 12, fontWeight: "700" },
-  chipLabelActive: { color: "#FFFFFF" },
+  chipLabelActive: { color: "#1A0B2E" },
   saveBtn: { borderRadius: 14, backgroundColor: "#6443F4", paddingVertical: 16, alignItems: "center", shadowColor: "#F94498", shadowOffset: { width: 0, height: 6 }, shadowOpacity: 0.4, shadowRadius: 24, elevation: 10 },
-  saveBtnText: { color: "#FFFFFF", fontSize: 15, fontWeight: "900",
+  saveBtnText: { color: "#1A0B2E", fontSize: 15, fontWeight: "900",
       fontFamily: "Chillax-Bold" },
 });

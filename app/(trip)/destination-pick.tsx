@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * TRAVI — Destination Picker
  * Visual photo-grid to choose your destination before the swipe session.

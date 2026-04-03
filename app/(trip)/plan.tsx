@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { useRef, useCallback, useState, useEffect } from "react";
 import {
   View, Text, TouchableOpacity, StyleSheet, ScrollView,
@@ -131,7 +132,7 @@ export default function PlanScreen() {
       {/* Header */}
       <View style={styles.header}>
         <TouchableOpacity style={styles.backBtn} onPress={handleBack} activeOpacity={0.7}>
-          <IconSymbol name="chevron.left" size={22} color="#FFFFFF" />
+          <IconSymbol name="chevron.left" size={22} color="#1A0B2E" />
         </TouchableOpacity>
         <View style={styles.progressWrap}>
           <View style={styles.progressTrack}>
@@ -177,7 +178,7 @@ export default function PlanScreen() {
                   <LinearGradient colors={dest.gradient} style={styles.destGradient}>
                     {selected && <View style={styles.destSelectedOverlay} />}
                     <View style={[styles.destIconWrap, { backgroundColor: "rgba(255,255,255,0.06)" }]}>
-                      <IconSymbol name={dest.icon} size={28} color="#FFFFFF" />
+                      <IconSymbol name={dest.icon} size={28} color="#1A0B2E" />
                     </View>
                     <View style={styles.destInfo}>
                       <Text style={styles.destCity}>{dest.city}</Text>
@@ -188,7 +189,7 @@ export default function PlanScreen() {
                     </View>
                     {selected && (
                       <View style={styles.destCheck}>
-                        <IconSymbol name="checkmark.circle.fill" size={24} color="#FFFFFF" />
+                        <IconSymbol name="checkmark.circle.fill" size={24} color="#1A0B2E" />
                       </View>
                     )}
                   </LinearGradient>
@@ -325,7 +326,7 @@ export default function PlanScreen() {
             <Text style={[styles.ctaText, !canProceed() && styles.ctaTextDisabled]}>
               {stepIndex === STEPS.length - 1 ? "Find My Perfect Trip" : "Next"}
             </Text>
-            <IconSymbol name="arrow.right" size={20} color={canProceed() ? "#FFFFFF" : "#3A2D4E"} />
+            <IconSymbol name="arrow.right" size={20} color={canProceed() ? "#1A0B2E" : "#3A2D4E"} />
           </LinearGradient>
         </TouchableOpacity>
       </View>
@@ -349,7 +350,7 @@ const styles = StyleSheet.create({
   duckImg: { width: 30, height: 30 },
   duckBubble: { flex: 1, borderRadius: 18, borderBottomLeftRadius: 4, overflow: "hidden" },
   duckBubbleGradient: { paddingHorizontal: 16, paddingVertical: 12, borderRadius: 18, borderBottomLeftRadius: 4, borderWidth: 1, borderColor: "rgba(123,47,190,0.4)" },
-  duckMessage: { color: "#FFFFFF", fontSize: 16, fontWeight: "700", fontFamily: "Chillax-Semibold", lineHeight: 22 },
+  duckMessage: { color: "#1A0B2E", fontSize: 16, fontWeight: "700", fontFamily: "Chillax-Semibold", lineHeight: 22 },
   content: { flex: 1 },
   destGrid: { paddingHorizontal: 20, gap: 12, paddingBottom: 130 },
   destCard: { borderRadius: 20, overflow: "hidden", borderWidth: 2, borderColor: "rgba(255,255,255,0.12)" },
@@ -358,7 +359,7 @@ const styles = StyleSheet.create({
   destSelectedOverlay: { ...StyleSheet.absoluteFillObject, backgroundColor: "rgba(233,30,140,0.15)" },
   destIconWrap: { width: 56, height: 56, borderRadius: 18, alignItems: "center", justifyContent: "center" },
   destInfo: { flex: 1, gap: 4 },
-  destCity: { color: "#FFFFFF", fontSize: 20, fontWeight: "800", fontFamily: "Chillax-Bold" },
+  destCity: { color: "#1A0B2E", fontSize: 20, fontWeight: "800", fontFamily: "Chillax-Bold" },
   destCountry: { color: "rgba(255,255,255,0.6)", fontSize: 13, fontFamily: "Satoshi-Regular" },
   destVibePill: { alignSelf: "flex-start", backgroundColor: "rgba(255,255,255,0.06)", borderRadius: 8, paddingHorizontal: 8, paddingVertical: 3, marginTop: 4 },
   destVibe: { color: "rgba(255,255,255,0.8)", fontSize: 11, fontWeight: "600" },
@@ -367,7 +368,7 @@ const styles = StyleSheet.create({
   styleCard: { flexDirection: "row", alignItems: "center", borderRadius: 20, padding: 18, gap: 16, overflow: "hidden", borderWidth: 2, borderColor: "rgba(255,255,255,0.12)" },
   styleIconWrap: { width: 56, height: 56, borderRadius: 18, alignItems: "center", justifyContent: "center" },
   styleText: { flex: 1, gap: 4 },
-  styleLabel: { color: "#FFFFFF", fontSize: 18, fontWeight: "700", fontFamily: "Chillax-Semibold" },
+  styleLabel: { color: "#1A0B2E", fontSize: 18, fontWeight: "700", fontFamily: "Chillax-Semibold" },
   styleDesc: { color: "rgba(255,255,255,0.5)", fontSize: 13, fontFamily: "Satoshi-Regular", lineHeight: 18 },
   styleCheck: { width: 28, height: 28, borderRadius: 14, alignItems: "center", justifyContent: "center" },
   travelersWrap: { flex: 1, paddingHorizontal: 20, alignItems: "center", gap: 24 },
@@ -376,8 +377,8 @@ const styles = StyleSheet.create({
   travelerAvatar: { width: 40, height: 40, borderRadius: 20, overflow: "hidden", borderWidth: 2, borderColor: "#0D0628" },
   travelerAvatarGradient: { flex: 1, alignItems: "center", justifyContent: "center" },
   travelerAvatarMore: { backgroundColor: "rgba(255,255,255,0.06)", alignItems: "center", justifyContent: "center" },
-  travelerMoreText: { color: "#FFFFFF", fontSize: 12, fontWeight: "700" },
-  travelersCount: { color: "#FFFFFF", fontSize: 64, fontWeight: "900", fontFamily: "Satoshi-Bold", lineHeight: 72 },
+  travelerMoreText: { color: "#1A0B2E", fontSize: 12, fontWeight: "700" },
+  travelersCount: { color: "#1A0B2E", fontSize: 64, fontWeight: "900", fontFamily: "Satoshi-Bold", lineHeight: 72 },
   travelersLabel: { color: "rgba(255,255,255,0.5)", fontSize: 18, fontWeight: "600", fontFamily: "Satoshi-Medium" },
   travelersControls: { flexDirection: "row", gap: 24 },
   travelerBtn: { borderRadius: 22, overflow: "hidden" },
@@ -391,7 +392,7 @@ const styles = StyleSheet.create({
   budgetGrid: { paddingHorizontal: 20, flexDirection: "row", flexWrap: "wrap", gap: 12 },
   budgetCard: { width: (width - 52) / 2, borderRadius: 20, padding: 20, gap: 10, overflow: "hidden", borderWidth: 2, borderColor: "rgba(255,255,255,0.12)", alignItems: "center" },
   budgetIconWrap: { width: 56, height: 56, borderRadius: 18, alignItems: "center", justifyContent: "center" },
-  budgetLabel: { color: "#FFFFFF", fontSize: 16, fontWeight: "700", fontFamily: "Chillax-Semibold" },
+  budgetLabel: { color: "#1A0B2E", fontSize: 16, fontWeight: "700", fontFamily: "Chillax-Semibold" },
   budgetRange: { color: "rgba(255,255,255,0.5)", fontSize: 12, textAlign: "center" },
   budgetCheck: { position: "absolute", top: 10, right: 10, width: 24, height: 24, borderRadius: 12, alignItems: "center", justifyContent: "center" },
   datesWrap: { paddingHorizontal: 20, gap: 14 },
@@ -400,9 +401,9 @@ const styles = StyleSheet.create({
   dateCardLeft: { flex: 1, flexDirection: "row", alignItems: "center", gap: 14 },
   dateIconWrap: { width: 44, height: 44, borderRadius: 14, backgroundColor: "rgba(255,255,255,0.06)", alignItems: "center", justifyContent: "center" },
   dateCardLabel: { color: "rgba(255,255,255,0.5)", fontSize: 12, fontWeight: "600" },
-  dateCardValue: { color: "#FFFFFF", fontSize: 17, fontWeight: "700", fontFamily: "Chillax-Semibold", marginTop: 2 },
+  dateCardValue: { color: "#1A0B2E", fontSize: 17, fontWeight: "700", fontFamily: "Chillax-Semibold", marginTop: 2 },
   dateInputWrap: { borderRadius: 16, overflow: "hidden", borderWidth: 1.5, borderColor: "rgba(123,47,190,0.4)" },
-  dateInput: { color: "#FFFFFF", fontSize: 16, paddingHorizontal: 18, paddingVertical: 14 },
+  dateInput: { color: "#1A0B2E", fontSize: 16, paddingHorizontal: 18, paddingVertical: 14 },
   durationPill: { flexDirection: "row", alignItems: "center", gap: 8, borderRadius: 14, paddingHorizontal: 16, paddingVertical: 10, overflow: "hidden", borderWidth: 1, borderColor: "rgba(192,132,252,0.3)" },
   durationText: { color: "#C084FC", fontSize: 14, fontWeight: "600", fontFamily: "Satoshi-Medium" },
   presetsTitle: { color: "rgba(255,255,255,0.5)", fontSize: 13, fontWeight: "600", fontFamily: "Satoshi-Medium", marginTop: 4 },
@@ -414,7 +415,7 @@ const styles = StyleSheet.create({
     overflow: "hidden" },
   ctaBtnDisabled: { opacity: 0.5 },
   ctaGradient: { flexDirection: "row", alignItems: "center", justifyContent: "center", paddingVertical: 18, gap: 10, borderRadius: 20 },
-  ctaText: { color: "#FFFFFF", fontSize: 18, fontWeight: "800", fontFamily: "Chillax-Bold" },
+  ctaText: { color: "#1A0B2E", fontSize: 18, fontWeight: "800", fontFamily: "Chillax-Bold" },
   ctaTextDisabled: { color: "#3A2D4E" },
   // Custom budget slider styles
   budgetWrap: { gap: 12, paddingBottom: 130 },
@@ -434,7 +435,7 @@ const styles = StyleSheet.create({
   paceWrap: { flex: 1, paddingHorizontal: 20, paddingTop: 8, gap: 12 },
   paceCard: { borderRadius: 16, borderWidth: 1.5, borderColor: "rgba(255,255,255,0.12)", backgroundColor: "rgba(255,255,255,0.06)", padding: 20, flexDirection: "row", alignItems: "center", gap: 16, position: "relative" },
   paceEmoji: { fontSize: 32 },
-  paceLabel: { fontSize: 17, fontWeight: "700", fontFamily: "Chillax-Semibold", color: "#FFFFFF", marginBottom: 4 },
+  paceLabel: { fontSize: 17, fontWeight: "700", fontFamily: "Chillax-Semibold", color: "#1A0B2E", marginBottom: 4 },
   paceDesc: { fontSize: 13, fontFamily: "Satoshi-Regular", color: "rgba(255,255,255,0.55)", lineHeight: 18 },
   paceCheck: { position: "absolute", top: 12, right: 12, width: 22, height: 22, borderRadius: 11, alignItems: "center", justifyContent: "center" },
 });

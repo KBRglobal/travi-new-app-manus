@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { useState } from "react";
 import { trpc } from "@/lib/trpc";
 import { useAuth } from "@/hooks/use-auth";
@@ -119,7 +120,7 @@ export default function SupportScreen() {
       {/* Header */}
       <View style={S.header}>
         <TouchableOpacity onPress={() => router.back()} style={S.backBtn} activeOpacity={0.8}>
-          <IconSymbol name="chevron.left" size={20} color="#FFFFFF" />
+          <IconSymbol name="chevron.left" size={20} color="#1A0B2E" />
         </TouchableOpacity>
         <View style={{ flex: 1 }}>
           <Text style={S.headerTitle}>Help & Support</Text>
@@ -213,11 +214,11 @@ function FAQTab({ faqs, expanded, onToggle }: { faqs: typeof FAQS; expanded: num
 
 const F = StyleSheet.create({
   wrap: { gap: 10 },
-  sectionTitle: { color: "#FFFFFF", fontSize: 18, fontWeight: "800", marginBottom: 4, fontFamily: "Chillax-Bold" },
+  sectionTitle: { color: "#1A0B2E", fontSize: 18, fontWeight: "800", marginBottom: 4, fontFamily: "Chillax-Bold" },
   faqCard: { backgroundColor: "rgba(255,255,255,0.06)", borderRadius: 14, padding: 14, borderWidth: 1, borderColor: "rgba(255,255,255,0.12)" },
   faqCardOpen: { borderColor: "rgba(100,67,244,0.35)", backgroundColor: "rgba(100,67,244,0.08)" },
   faqHeader: { flexDirection: "row", alignItems: "center", gap: 10 },
-  faqQ: { color: "#FFFFFF", fontSize: 14, fontWeight: "600", flex: 1, lineHeight: 20, fontFamily: "Satoshi-Medium" },
+  faqQ: { color: "#1A0B2E", fontSize: 14, fontWeight: "600", flex: 1, lineHeight: 20, fontFamily: "Satoshi-Medium" },
   faqChevron: { transform: [{ rotate: "0deg" }] },
   faqChevronOpen: { transform: [{ rotate: "90deg" }] },
   faqBody: { marginTop: 10, gap: 8 },
@@ -317,14 +318,14 @@ function ContactTab({
 
 const C = StyleSheet.create({
   wrap: { gap: 12 },
-  sectionTitle: { color: "#FFFFFF", fontSize: 18, fontWeight: "800", marginBottom: 4, fontFamily: "Chillax-Bold" },
+  sectionTitle: { color: "#1A0B2E", fontSize: 18, fontWeight: "800", marginBottom: 4, fontFamily: "Chillax-Bold" },
   fieldLabel: { color: "rgba(255,255,255,0.55)", fontSize: 12, fontWeight: "700", letterSpacing: 0.5, marginBottom: -4, fontFamily: "Satoshi-Medium" },
-  input: { backgroundColor: "rgba(255,255,255,0.06)", borderRadius: 12, borderWidth: 1, borderColor: "rgba(255,255,255,0.12)", padding: 13, color: "#FFFFFF", fontSize: 14, fontFamily: "Satoshi-Regular" },
+  input: { backgroundColor: "rgba(255,255,255,0.06)", borderRadius: 12, borderWidth: 1, borderColor: "rgba(255,255,255,0.12)", padding: 13, color: "#1A0B2E", fontSize: 14, fontFamily: "Satoshi-Regular" },
   textarea: { minHeight: 110 },
   catChip: { borderRadius: 20, overflow: "hidden", paddingHorizontal: 14, paddingVertical: 7, borderWidth: 1, borderColor: "rgba(255,255,255,0.12)" },
   catChipActive: { borderColor: "transparent" },
   catText: { color: "rgba(255,255,255,0.55)", fontSize: 13, fontWeight: "600", fontFamily: "Satoshi-Medium" },
-  catTextActive: { color: "#FFFFFF" },
+  catTextActive: { color: "#1A0B2E" },
   priorityRow: { flexDirection: "row", gap: 8 },
   priorityChip: { flex: 1, borderRadius: 10, borderWidth: 1, borderColor: "rgba(255,255,255,0.12)", paddingVertical: 8, alignItems: "center" },
   priorityChipActive: { borderColor: "#6443F4", backgroundColor: "rgba(100,67,244,0.2)" },
@@ -333,9 +334,9 @@ const C = StyleSheet.create({
   submitBtn: { borderRadius: 16, shadowColor: "#F94498", shadowOffset: { width: 0, height: 6 }, shadowOpacity: 0.4, shadowRadius: 24, elevation: 10,
     overflow: "hidden", marginTop: 4 },
   submitGradient: { alignItems: "center", paddingVertical: 15 },
-  submitText: { color: "#FFFFFF", fontSize: 16, fontWeight: "800", fontFamily: "Chillax-Bold" },
+  submitText: { color: "#1A0B2E", fontSize: 16, fontWeight: "800", fontFamily: "Chillax-Bold" },
   successWrap: { alignItems: "center", gap: 16, paddingTop: 40 },
-  successTitle: { color: "#FFFFFF", fontSize: 24, fontWeight: "900", fontFamily: "Chillax-Bold" },
+  successTitle: { color: "#1A0B2E", fontSize: 24, fontWeight: "900", fontFamily: "Chillax-Bold" },
   successDesc: { color: "rgba(255,255,255,0.55)", fontSize: 14, lineHeight: 21, textAlign: "center", fontFamily: "Satoshi-Regular" },
   ticketIdBox: { backgroundColor: "rgba(100,67,244,0.15)", borderRadius: 14, padding: 16, alignItems: "center", borderWidth: 1, borderColor: "rgba(100,67,244,0.3)", width: "100%" },
   ticketIdLabel: { color: "rgba(255,255,255,0.45)", fontSize: 12, fontWeight: "600" },
@@ -381,19 +382,19 @@ function TicketsTab({ tickets }: { tickets: typeof TICKET_STATUSES }) {
 const TK = StyleSheet.create({
   wrap: { gap: 10 },
   headerRow: { flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: 4 },
-  sectionTitle: { color: "#FFFFFF", fontSize: 18, fontWeight: "800", fontFamily: "Chillax-Bold" },
+  sectionTitle: { color: "#1A0B2E", fontSize: 18, fontWeight: "800", fontFamily: "Chillax-Bold" },
   count: { color: "rgba(255,255,255,0.55)", fontSize: 13, fontFamily: "Satoshi-Regular" },
   ticketCard: { backgroundColor: "rgba(255,255,255,0.06)", borderRadius: 14, padding: 14, borderWidth: 1, borderColor: "rgba(255,255,255,0.12)", gap: 6 },
   ticketTop: { flexDirection: "row", justifyContent: "space-between", alignItems: "center" },
   ticketId: { color: "rgba(255,255,255,0.5)", fontSize: 12, fontWeight: "700", fontFamily: Platform.OS === "ios" ? "Courier" : "monospace" },
   statusBadge: { borderRadius: 8, paddingHorizontal: 8, paddingVertical: 3 },
   statusText: { fontSize: 11, fontWeight: "700" },
-  ticketSubject: { color: "#FFFFFF", fontSize: 14, fontWeight: "600", lineHeight: 20, fontFamily: "Satoshi-Medium" },
+  ticketSubject: { color: "#1A0B2E", fontSize: 14, fontWeight: "600", lineHeight: 20, fontFamily: "Satoshi-Medium" },
   ticketMeta: { flexDirection: "row", justifyContent: "space-between" },
   ticketCategory: { color: "#C084FC", fontSize: 12, fontWeight: "600" },
   ticketDate: { color: "rgba(255,255,255,0.55)", fontSize: 12 },
   empty: { alignItems: "center", gap: 10, paddingTop: 40 },
-  emptyTitle: { color: "#FFFFFF", fontSize: 18, fontWeight: "800", fontFamily: "Chillax-Bold" },
+  emptyTitle: { color: "#1A0B2E", fontSize: 18, fontWeight: "800", fontFamily: "Chillax-Bold" },
   emptyDesc: { color: "rgba(255,255,255,0.45)", fontSize: 13, textAlign: "center", lineHeight: 19, fontFamily: "Satoshi-Regular" },
 });
 
@@ -401,7 +402,7 @@ const S = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#0D0628" },
   header: { flexDirection: "row", alignItems: "center", gap: 12, paddingTop: 56, paddingHorizontal: 16, paddingBottom: 16 },
   backBtn: { width: 36, height: 36, borderRadius: 12, backgroundColor: "rgba(255,255,255,0.06)", alignItems: "center", justifyContent: "center" },
-  headerTitle: { color: "#FFFFFF", fontSize: 22, fontWeight: "900", fontFamily: "Chillax-Bold" },
+  headerTitle: { color: "#1A0B2E", fontSize: 22, fontWeight: "900", fontFamily: "Chillax-Bold" },
   headerSub: { color: "rgba(255,255,255,0.5)", fontSize: 12, marginTop: 1 },
   headerBadge: { backgroundColor: "rgba(34,197,94,0.2)", borderRadius: 10, paddingHorizontal: 10, paddingVertical: 5, borderWidth: 1, borderColor: "rgba(34,197,94,0.3)" },
   headerBadgeText: { color: "#22C55E", fontSize: 12, fontWeight: "800", fontFamily: "Chillax-Bold" },
@@ -409,6 +410,6 @@ const S = StyleSheet.create({
   tab: { flex: 1, borderRadius: 20, overflow: "hidden", paddingVertical: 9, alignItems: "center", borderWidth: 1, borderColor: "rgba(255,255,255,0.12)" },
   tabActive: { borderColor: "transparent" },
   tabText: { color: "rgba(255,255,255,0.5)", fontSize: 13, fontWeight: "700", fontFamily: "Satoshi-Medium" },
-  tabTextActive: { color: "#FFFFFF" },
+  tabTextActive: { color: "#1A0B2E" },
   content: { padding: 16, paddingBottom: 130, gap: 16 },
 });

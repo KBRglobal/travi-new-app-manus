@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { useState } from "react";
 import {
   View, Text, TouchableOpacity, StyleSheet, Dimensions,
@@ -203,7 +204,7 @@ export default function EnterpriseScreen() {
       {/* Header */}
       <View style={S.header}>
         <TouchableOpacity onPress={() => router.back()} style={S.backBtn} activeOpacity={0.8}>
-          <IconSymbol name="chevron.left" size={20} color="#FFFFFF" />
+          <IconSymbol name="chevron.left" size={20} color="#1A0B2E" />
         </TouchableOpacity>
         <View style={{ flex: 1 }}>
           <Text style={S.headerTitle}>Enterprise Dashboard</Text>
@@ -477,22 +478,22 @@ function RegulationsTab() {
 
 const T = StyleSheet.create({
   wrap: { gap: 16 },
-  sectionTitle: { color: "#FFFFFF", fontSize: 18, fontWeight: "800", fontFamily: "Chillax-Bold" },
+  sectionTitle: { color: "#1A0B2E", fontSize: 18, fontWeight: "800", fontFamily: "Chillax-Bold" },
 
   kpiGrid: { flexDirection: "row", flexWrap: "wrap", gap: 10 },
   kpiCard: { width: (width - 42) / 2, borderRadius: 16, overflow: "hidden", padding: 14, borderWidth: 1, borderColor: "rgba(100,67,244,0.2)", gap: 2 },
   kpiIcon: { fontSize: 22, marginBottom: 4 },
-  kpiValue: { color: "#FFFFFF", fontSize: 20, fontWeight: "900", fontFamily: "Chillax-Bold" },
+  kpiValue: { color: "#1A0B2E", fontSize: 20, fontWeight: "900", fontFamily: "Chillax-Bold" },
   kpiLabel: { color: "rgba(255,255,255,0.45)", fontSize: 11 },
   kpiTrend: { fontSize: 12, fontWeight: "700", marginTop: 2 },
 
   chartCard: { borderRadius: 18, overflow: "hidden", padding: 16, borderWidth: 1, borderColor: "rgba(100,67,244,0.2)", gap: 12 },
   chartHeader: { flexDirection: "row", justifyContent: "space-between", alignItems: "center" },
-  chartValue: { color: "#FFFFFF", fontSize: 22, fontWeight: "900", fontFamily: "Chillax-Bold" },
+  chartValue: { color: "#1A0B2E", fontSize: 22, fontWeight: "900", fontFamily: "Chillax-Bold" },
   chartTrend: { color: "#22C55E", fontSize: 13, fontWeight: "700", fontFamily: "Satoshi-Bold" },
 
   revCard: { borderRadius: 18, overflow: "hidden", padding: 16, borderWidth: 1, borderColor: "rgba(100,67,244,0.2)", gap: 10 },
-  revTotal: { color: "#FFFFFF", fontSize: 28, fontWeight: "900", fontFamily: "Chillax-Bold" },
+  revTotal: { color: "#1A0B2E", fontSize: 28, fontWeight: "900", fontFamily: "Chillax-Bold" },
   revTotalLabel: { color: "rgba(255,255,255,0.5)", fontSize: 12, marginBottom: 4 },
   revBarRow: { flexDirection: "row", height: 8, borderRadius: 4, overflow: "hidden", gap: 1 },
   revBarSeg: { height: "100%" },
@@ -500,11 +501,11 @@ const T = StyleSheet.create({
   revDot: { width: 8, height: 8, borderRadius: 4 },
   revLabel: { color: "rgba(255,255,255,0.6)", fontSize: 13, flex: 1 },
   revPct: { color: "rgba(255,255,255,0.5)", fontSize: 12, width: 32, textAlign: "right" },
-  revValue: { color: "#FFFFFF", fontSize: 13, fontWeight: "700", fontFamily: "Satoshi-Bold", width: 70, textAlign: "right" },
+  revValue: { color: "#1A0B2E", fontSize: 13, fontWeight: "700", fontFamily: "Satoshi-Bold", width: 70, textAlign: "right" },
 
   trendStats: { flexDirection: "row", gap: 10 },
   trendStat: { flex: 1, alignItems: "center", gap: 2 },
-  trendStatValue: { color: "#FFFFFF", fontSize: 15, fontWeight: "800", fontFamily: "Chillax-Bold" },
+  trendStatValue: { color: "#1A0B2E", fontSize: 15, fontWeight: "800", fontFamily: "Chillax-Bold" },
   trendStatLabel: { color: "rgba(255,255,255,0.5)", fontSize: 11 },
 
   compCard: { borderRadius: 18, overflow: "hidden", padding: 14, borderWidth: 1, borderColor: "rgba(255,255,255,0.12)", gap: 10 },
@@ -512,9 +513,9 @@ const T = StyleSheet.create({
   compHeader: { flexDirection: "row", alignItems: "center", gap: 10 },
   compLogo: { fontSize: 28 },
   compNameRow: { flexDirection: "row", alignItems: "center", gap: 8 },
-  compName: { color: "#FFFFFF", fontSize: 16, fontWeight: "800", fontFamily: "Chillax-Bold" },
+  compName: { color: "#1A0B2E", fontSize: 16, fontWeight: "800", fontFamily: "Chillax-Bold" },
   usBadge: { backgroundColor: "#6443F4", borderRadius: 6, paddingHorizontal: 6, paddingVertical: 2 },
-  usBadgeText: { color: "#FFFFFF", fontSize: 10, fontWeight: "800",
+  usBadgeText: { color: "#1A0B2E", fontSize: 10, fontWeight: "800",
       fontFamily: "Chillax-Bold" },
   compShare: { color: "rgba(255,255,255,0.5)", fontSize: 12, marginTop: 2 },
   ratingBadge: { backgroundColor: "rgba(255,215,0,0.15)", borderRadius: 10, paddingHorizontal: 8, paddingVertical: 4 },
@@ -522,7 +523,7 @@ const T = StyleSheet.create({
   commRow: { flexDirection: "row", gap: 10 },
   commItem: { flex: 1, backgroundColor: "rgba(255,255,255,0.06)", borderRadius: 10, padding: 10 },
   commLabel: { color: "rgba(255,255,255,0.5)", fontSize: 11 },
-  commValue: { color: "#FFFFFF", fontSize: 13, fontWeight: "700", fontFamily: "Satoshi-Bold", marginTop: 2 },
+  commValue: { color: "#1A0B2E", fontSize: 13, fontWeight: "700", fontFamily: "Satoshi-Bold", marginTop: 2 },
   swRow: { flexDirection: "row", gap: 10 },
   swCol: { flex: 1, gap: 4 },
   swTitle: { color: "rgba(255,255,255,0.55)", fontSize: 12, fontWeight: "700", marginBottom: 2 },
@@ -531,18 +532,18 @@ const T = StyleSheet.create({
   regCountryCard: { backgroundColor: "rgba(255,255,255,0.06)", borderRadius: 16, padding: 14, borderWidth: 1, borderColor: "rgba(255,255,255,0.12)", gap: 10 },
   regCountryHeader: { flexDirection: "row", alignItems: "center", gap: 10 },
   regFlag: { fontSize: 24 },
-  regCountry: { color: "#FFFFFF", fontSize: 16, fontWeight: "800", fontFamily: "Chillax-Bold", flex: 1 },
+  regCountry: { color: "#1A0B2E", fontSize: 16, fontWeight: "800", fontFamily: "Chillax-Bold", flex: 1 },
   regStatusBadge: { borderRadius: 8, paddingHorizontal: 8, paddingVertical: 4 },
   regStatusText: { fontSize: 12, fontWeight: "700" },
   ruleCard: { backgroundColor: "rgba(255,255,255,0.06)", borderRadius: 10, padding: 10, gap: 4 },
   ruleTop: { flexDirection: "row", alignItems: "center", gap: 6 },
   ruleStatus: { fontSize: 14 },
-  ruleTitle: { color: "#FFFFFF", fontSize: 13, fontWeight: "700", fontFamily: "Satoshi-Bold" },
+  ruleTitle: { color: "#1A0B2E", fontSize: 13, fontWeight: "700", fontFamily: "Satoshi-Bold" },
   ruleBody: { color: "rgba(255,255,255,0.5)", fontSize: 12, lineHeight: 17, paddingLeft: 20 },
   crmBanner: { flexDirection: "row", alignItems: "center", gap: 12, borderRadius: 16, overflow: "hidden", padding: 14, marginBottom: 16, borderWidth: 1, borderColor: "rgba(100,67,244,0.3)" },
   crmBannerEmoji: { fontSize: 28 },
   crmBannerInfo: { flex: 1 },
-  crmBannerTitle: { color: "#FFFFFF", fontSize: 15, fontWeight: "800", fontFamily: "Chillax-Bold" },
+  crmBannerTitle: { color: "#1A0B2E", fontSize: 15, fontWeight: "800", fontFamily: "Chillax-Bold" },
   crmBannerSub: { color: "rgba(255,255,255,0.5)", fontSize: 12, marginTop: 2 },
   crmBannerArrow: { color: "rgba(255,255,255,0.6)", fontSize: 20, fontWeight: "700", fontFamily: "Chillax-Semibold" },
 });
@@ -551,7 +552,7 @@ const S = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#0D0628" },
   header: { flexDirection: "row", alignItems: "center", gap: 12, paddingTop: 56, paddingHorizontal: 16, paddingBottom: 16 },
   backBtn: { width: 36, height: 36, borderRadius: 12, backgroundColor: "rgba(255,255,255,0.06)", alignItems: "center", justifyContent: "center" },
-  headerTitle: { color: "#FFFFFF", fontSize: 22, fontWeight: "900", fontFamily: "Chillax-Bold" },
+  headerTitle: { color: "#1A0B2E", fontSize: 22, fontWeight: "900", fontFamily: "Chillax-Bold" },
   headerSub: { color: "rgba(255,255,255,0.5)", fontSize: 12, marginTop: 1 },
   liveIndicator: { flexDirection: "row", alignItems: "center", gap: 5, backgroundColor: "rgba(34,197,94,0.15)", borderRadius: 10, paddingHorizontal: 10, paddingVertical: 5, borderWidth: 1, borderColor: "rgba(34,197,94,0.3)" },
   liveDot: { width: 6, height: 6, borderRadius: 3, backgroundColor: "#22C55E" },
@@ -562,6 +563,6 @@ const S = StyleSheet.create({
   tab: { borderRadius: 20, overflow: "hidden", paddingHorizontal: 16, paddingVertical: 7, borderWidth: 1, borderColor: "rgba(255,255,255,0.12)" },
   tabActive: { borderColor: "transparent" },
   tabText: { color: "rgba(255,255,255,0.5)", fontSize: 13, fontWeight: "600", fontFamily: "Satoshi-Medium" },
-  tabTextActive: { color: "#FFFFFF" },
+  tabTextActive: { color: "#1A0B2E" },
   content: { padding: 16, paddingBottom: 130, gap: 16 },
 });

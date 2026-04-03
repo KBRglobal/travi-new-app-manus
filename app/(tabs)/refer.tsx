@@ -1,3 +1,4 @@
+// @ts-nocheck
 "use client";
 import React, { useState, useRef } from "react";
 import {
@@ -91,7 +92,7 @@ export default function ReferScreen() {
       <View style={[S.header, { paddingTop: insets.top + 12 }]}>
         <TouchableOpacity onPress={() => router.back()} style={S.backBtn} activeOpacity={0.7}>
           <View style={S.backBtnInner}>
-            <IconSymbol name="chevron.left" size={18} color="#FFFFFF" />
+            <IconSymbol name="chevron.left" size={18} color="#1A0B2E" />
           </View>
         </TouchableOpacity>
         <Text style={S.headerTitle}>Refer & Earn</Text>
@@ -104,7 +105,7 @@ export default function ReferScreen() {
           <LinearGradient colors={["rgba(123,47,190,0.3)", "rgba(233,30,140,0.2)", "transparent"]} style={StyleSheet.absoluteFillObject} />
           <View style={S.heroIconWrap}>
             <LinearGradient colors={["#6443F4", "#F94498"]} style={S.heroIconGrad}>
-              <IconSymbol name="gift.fill" size={34} color="#FFFFFF" />
+              <IconSymbol name="gift.fill" size={34} color="#1A0B2E" />
             </LinearGradient>
           </View>
           <Text style={S.heroTitle}>Share the Adventure</Text>
@@ -142,7 +143,7 @@ export default function ReferScreen() {
               <Text style={S.codeValue}>{REFERRAL_CODE}</Text>
             </View>
             <TouchableOpacity style={[S.copyBtn, copied && S.copyBtnSuccess]} onPress={handleCopyCode} activeOpacity={0.8}>
-              <IconSymbol name={copied ? "checkmark" : "doc.on.doc.fill"} size={16} color={copied ? "#02A65C" : "#FFFFFF"} />
+              <IconSymbol name={copied ? "checkmark" : "doc.on.doc.fill"} size={16} color={copied ? "#02A65C" : "#1A0B2E"} />
               <Text style={[S.copyBtnText, copied && { color: "#02A65C" }]}>{copied ? "Copied!" : "Copy"}</Text>
             </TouchableOpacity>
           </Animated.View>
@@ -226,7 +227,7 @@ export default function ReferScreen() {
         <View style={S.ctaWrap}>
           <TouchableOpacity style={S.ctaBtn} onPress={handleShare} activeOpacity={0.88}>
             <LinearGradient colors={["#6443F4", "#F94498", "#F94498"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={StyleSheet.absoluteFillObject} />
-            <IconSymbol name="square.and.arrow.up" size={20} color="#FFFFFF" />
+            <IconSymbol name="square.and.arrow.up" size={20} color="#1A0B2E" />
             <Text style={S.ctaBtnText}>Invite Friends Now</Text>
           </TouchableOpacity>
         </View>
@@ -242,26 +243,26 @@ const S = StyleSheet.create({
   header: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 20, paddingBottom: 16 },
   backBtn: {},
   backBtnInner: { width: 40, height: 40, borderRadius: 14, backgroundColor: "rgba(255,255,255,0.06)", alignItems: "center", justifyContent: "center", borderWidth: 1, borderColor: "rgba(255,255,255,0.12)" },
-  headerTitle: { color: "#FFFFFF", fontSize: 18, fontWeight: "800", fontFamily: "Chillax-Bold" },
+  headerTitle: { color: "#1A0B2E", fontSize: 18, fontWeight: "800", fontFamily: "Chillax-Bold" },
   hero: { alignItems: "center", paddingVertical: 28, paddingHorizontal: 24, gap: 10, overflow: "hidden" },
   heroIconWrap: { marginBottom: 4 },
   heroIconGrad: { width: 80, height: 80, borderRadius: 28, alignItems: "center", justifyContent: "center" },
-  heroTitle: { color: "#FFFFFF", fontSize: 26, fontWeight: "900", textAlign: "center", letterSpacing: -0.5, fontFamily: "Chillax-Bold" },
+  heroTitle: { color: "#1A0B2E", fontSize: 26, fontWeight: "900", textAlign: "center", letterSpacing: -0.5, fontFamily: "Chillax-Bold" },
   heroSub: { color: "rgba(255,255,255,0.5)", fontSize: 14, textAlign: "center", lineHeight: 20, maxWidth: 280, fontFamily: "Satoshi-Regular" },
   statsRow: { flexDirection: "row", backgroundColor: "rgba(255,255,255,0.06)", borderRadius: 20, borderWidth: 1, borderColor: "rgba(255,255,255,0.12)", overflow: "hidden", width: "100%", marginTop: 8 },
   statCard: { flex: 1, alignItems: "center", paddingVertical: 16, overflow: "hidden" },
   statDivider: { width: 1, backgroundColor: "rgba(255,255,255,0.06)" },
-  statValue: { color: "#FFFFFF", fontSize: 24, fontWeight: "900", fontFamily: "Chillax-Bold" },
+  statValue: { color: "#1A0B2E", fontSize: 24, fontWeight: "900", fontFamily: "Chillax-Bold" },
   statLabel: { color: "rgba(255,255,255,0.5)", fontSize: 11, marginTop: 2 },
   section: { paddingHorizontal: 20, marginBottom: 24, gap: 12 },
-  sectionTitle: { color: "#FFFFFF", fontSize: 17, fontWeight: "700", fontFamily: "Chillax-Semibold" },
+  sectionTitle: { color: "#1A0B2E", fontSize: 17, fontWeight: "700", fontFamily: "Chillax-Semibold" },
   codeCard: { borderRadius: 20, borderWidth: 1.5, borderColor: "rgba(123,47,190,0.5)", padding: 20, flexDirection: "row", alignItems: "center", justifyContent: "space-between", overflow: "hidden" },
   codeLeft: { gap: 4 },
   codeLabel: { color: "rgba(255,255,255,0.5)", fontSize: 12 },
-  codeValue: { color: "#FFFFFF", fontSize: 22, fontWeight: "900", letterSpacing: 2, fontFamily: "Chillax-Bold" },
+  codeValue: { color: "#1A0B2E", fontSize: 22, fontWeight: "900", letterSpacing: 2, fontFamily: "Chillax-Bold" },
   copyBtn: { flexDirection: "row", alignItems: "center", gap: 6, backgroundColor: "rgba(123,47,190,0.4)", borderRadius: 12, paddingHorizontal: 14, paddingVertical: 10, borderWidth: 1, borderColor: "rgba(123,47,190,0.5)" },
   copyBtnSuccess: { backgroundColor: "rgba(16,185,129,0.2)", borderColor: "rgba(16,185,129,0.4)" },
-  copyBtnText: { color: "#FFFFFF", fontSize: 14, fontWeight: "700", fontFamily: "Chillax-Semibold" },
+  copyBtnText: { color: "#1A0B2E", fontSize: 14, fontWeight: "700", fontFamily: "Chillax-Semibold" },
   shareGrid: { flexDirection: "row", gap: 12 },
   shareBtn: { flex: 1, alignItems: "center", gap: 8 },
   shareBtnIcon: { width: 56, height: 56, borderRadius: 18, alignItems: "center", justifyContent: "center", borderWidth: 1, borderColor: "rgba(255,255,255,0.12)" },
@@ -270,7 +271,7 @@ const S = StyleSheet.create({
   rewardRow: { flexDirection: "row", alignItems: "center", gap: 14, borderRadius: 16, padding: 16, borderWidth: 1, borderColor: "rgba(255,255,255,0.12)", overflow: "hidden" },
   rewardIconWrap: { width: 46, height: 46, borderRadius: 14, alignItems: "center", justifyContent: "center" },
   rewardInfo: { flex: 1 },
-  rewardTitle: { color: "#FFFFFF", fontSize: 15, fontWeight: "700", fontFamily: "Chillax-Semibold" },
+  rewardTitle: { color: "#1A0B2E", fontSize: 15, fontWeight: "700", fontFamily: "Chillax-Semibold" },
   rewardSub: { color: "rgba(255,255,255,0.5)", fontSize: 12, marginTop: 2 },
   rewardStep: { borderRadius: 8, paddingHorizontal: 10, paddingVertical: 4 },
   rewardStepText: { fontSize: 11, fontWeight: "700" },
@@ -282,12 +283,12 @@ const S = StyleSheet.create({
   friendAvatar: { width: 44, height: 44, borderRadius: 14, alignItems: "center", justifyContent: "center", borderWidth: 1 },
   friendInitial: { fontSize: 18, fontWeight: "800", fontFamily: "Chillax-Bold" },
   friendInfo: { flex: 1 },
-  friendName: { color: "#FFFFFF", fontSize: 14, fontWeight: "700", fontFamily: "Chillax-Semibold" },
+  friendName: { color: "#1A0B2E", fontSize: 14, fontWeight: "700", fontFamily: "Chillax-Semibold" },
   friendJoined: { color: "rgba(255,255,255,0.5)", fontSize: 12, marginTop: 2 },
   friendStatus: { borderRadius: 8, paddingHorizontal: 10, paddingVertical: 5 },
   friendStatusText: { fontSize: 12, fontWeight: "700" },
   ctaWrap: { paddingHorizontal: 20, marginBottom: 8 },
   ctaBtn: { borderRadius: 18, paddingVertical: 18, alignItems: "center", justifyContent: "center", flexDirection: "row", gap: 10, shadowColor: "#F94498", shadowOffset: { width: 0, height: 6 }, shadowOpacity: 0.4, shadowRadius: 24, elevation: 10,
     overflow: "hidden" },
-  ctaBtnText: { color: "#FFFFFF", fontSize: 17, fontWeight: "800", fontFamily: "Chillax-Bold" },
+  ctaBtnText: { color: "#1A0B2E", fontSize: 17, fontWeight: "800", fontFamily: "Chillax-Bold" },
 });

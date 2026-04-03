@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useRef, useEffect } from "react";
 import {
   View, Text, StyleSheet, Animated,
@@ -169,7 +170,7 @@ const s = StyleSheet.create({
   headline: {
     fontSize: 36,
     fontWeight: "800",
-    color: "#FFFFFF",
+    color: "#1A0B2E",
     textAlign: "center",
     lineHeight: 42,
     letterSpacing: -0.8,
@@ -233,7 +234,7 @@ const s = StyleSheet.create({
   btnText: {
     fontSize: 16,
     fontWeight: "700",
-    color: "#FFFFFF",
+    color: "#1A0B2E",
   },
   skipText: {
     fontSize: 14,

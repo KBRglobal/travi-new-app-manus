@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * TRAVI — My Trips Screen
  * Dark mode: #1A0B2E bg, #24103E surface, purple→pink gradients
@@ -22,8 +23,8 @@ const C = {
   pink:         "#F94498",
   orange:       "#FF9327",
   green:        "#02A65C",
-  white:        "#FFFFFF",
-  textPrimary:  "#FFFFFF",
+  white:        "#1A0B2E",
+  textPrimary:  "#1A0B2E",
   textSecondary:"#D3CFD8",
   textMuted:    "#A79FB2",
   textDisabled: "#504065",

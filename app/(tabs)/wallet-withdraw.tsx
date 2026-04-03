@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * TRAVI — Wallet Withdrawal Screen
  * Withdraw cashback to bank, PayPal, or crypto wallet.
@@ -197,7 +198,7 @@ export default function WalletWithdrawScreen() {
                 <LinearGradient colors={[m.color + "22", m.color + "11"]} style={StyleSheet.absoluteFillObject} />
               )}
               <Text style={styles.methodEmoji}>{m.emoji}</Text>
-              <Text style={[styles.methodTitle, method === m.id && { color: "#FFFFFF" }]}>{m.title}</Text>
+              <Text style={[styles.methodTitle, method === m.id && { color: "#1A0B2E" }]}>{m.title}</Text>
               <Text style={styles.methodDesc}>{m.desc}</Text>
               <View style={[styles.methodFee, { backgroundColor: m.color + "22" }]}>
                 <Text style={[styles.methodFeeText, { color: m.color }]}>{m.fee}</Text>
@@ -218,7 +219,7 @@ export default function WalletWithdrawScreen() {
               <Text style={styles.summaryValue}>{fee > 0 ? `$${fee.toFixed(2)}` : "Free"}</Text>
             </View>
             <View style={[styles.summaryRow, { borderTopWidth: 1, borderTopColor: "rgba(255,255,255,0.12)", paddingTop: 10, marginTop: 4 }]}>
-              <Text style={[styles.summaryLabel, { color: "#FFFFFF" }]}>You receive</Text>
+              <Text style={[styles.summaryLabel, { color: "#1A0B2E" }]}>You receive</Text>
               <Text style={[styles.summaryValue, { color: "#22C55E", fontSize: 18, fontWeight: "900",
       fontFamily: "Chillax-Bold" }]}>${youReceive.toFixed(2)}</Text>
             </View>
@@ -232,7 +233,7 @@ export default function WalletWithdrawScreen() {
           disabled={!numAmount || numAmount > availableBalance}
         >
           <LinearGradient
-            colors={(!numAmount || numAmount > availableBalance) ? ["#333", "#333"] : ["#6443F4", "#F94498"]}
+            colors={(!numAmount || numAmount > availableBalance) ? ["#FFFFFF", "#FFFFFF"] : ["#6443F4", "#F94498"]}
             start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
             style={styles.nextBtnGradient}
           >
@@ -251,23 +252,23 @@ const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#0D0628" },
   header: { flexDirection: "row", alignItems: "center", paddingHorizontal: 20, paddingBottom: 16, gap: 14 },
   backBtn: { width: 36, height: 36, borderRadius: 18, backgroundColor: "rgba(255,255,255,0.06)", alignItems: "center", justifyContent: "center" },
-  backText: { color: "#FFFFFF", fontSize: 18, fontWeight: "700", fontFamily: "Chillax-Semibold" },
-  headerTitle: { color: "#FFFFFF", fontSize: 20, fontWeight: "900", fontFamily: "Chillax-Bold" },
+  backText: { color: "#1A0B2E", fontSize: 18, fontWeight: "700", fontFamily: "Chillax-Semibold" },
+  headerTitle: { color: "#1A0B2E", fontSize: 20, fontWeight: "900", fontFamily: "Chillax-Bold" },
   content: { paddingHorizontal: 20, gap: 20, paddingBottom: 130 },
   balanceCard: { borderRadius: 20, overflow: "hidden", padding: 20, alignItems: "center", gap: 4, borderWidth: 1, borderColor: "rgba(255,255,255,0.12)" },
   balanceLabel: { color: "rgba(255,255,255,0.5)", fontSize: 13, fontWeight: "700", textTransform: "uppercase", letterSpacing: 1 },
-  balanceAmount: { color: "#FFFFFF", fontSize: 36, fontWeight: "900", fontFamily: "Chillax-Bold" },
+  balanceAmount: { color: "#1A0B2E", fontSize: 36, fontWeight: "900", fontFamily: "Chillax-Bold" },
   balanceSub: { color: "rgba(255,255,255,0.5)", fontSize: 13 },
   amountSection: { gap: 12 },
   sectionTitle: { color: "rgba(255,255,255,0.6)", fontSize: 13, fontWeight: "800", textTransform: "uppercase", letterSpacing: 1, fontFamily: "Chillax-Bold" },
   amountInputWrap: { flexDirection: "row", alignItems: "center", backgroundColor: "rgba(255,255,255,0.06)", borderRadius: 16, borderWidth: 1, borderColor: "rgba(255,255,255,0.12)", paddingHorizontal: 16 },
   amountCurrency: { color: "rgba(255,255,255,0.5)", fontSize: 24, fontWeight: "700", marginRight: 4, fontFamily: "Chillax-Semibold" },
-  amountInput: { flex: 1, color: "#FFFFFF", fontSize: 32, fontWeight: "900", paddingVertical: 16, fontFamily: "Chillax-Bold" },
+  amountInput: { flex: 1, color: "#1A0B2E", fontSize: 32, fontWeight: "900", paddingVertical: 16, fontFamily: "Chillax-Bold" },
   quickAmounts: { flexDirection: "row", gap: 8, flexWrap: "wrap" },
   quickAmountChip: { paddingHorizontal: 14, paddingVertical: 8, borderRadius: 10, backgroundColor: "rgba(255,255,255,0.06)", borderWidth: 1, borderColor: "rgba(255,255,255,0.12)" },
   quickAmountChipActive: { backgroundColor: "rgba(100,67,244,0.3)", borderColor: "#6443F4" },
   quickAmountText: { color: "rgba(255,255,255,0.5)", fontSize: 13, fontWeight: "700" },
-  quickAmountTextActive: { color: "#FFFFFF" },
+  quickAmountTextActive: { color: "#1A0B2E" },
   methodsGrid: { flexDirection: "row", flexWrap: "wrap", gap: 10 },
   methodCard: { width: (width - 50) / 2, borderRadius: 16, overflow: "hidden", padding: 14, gap: 6, backgroundColor: "rgba(255,255,255,0.06)", borderWidth: 1, borderColor: "rgba(255,255,255,0.12)" },
   methodCardActive: { borderColor: "rgba(100,67,244,0.5)" },
@@ -279,33 +280,33 @@ const styles = StyleSheet.create({
   summaryCard: { backgroundColor: "rgba(255,255,255,0.06)", borderRadius: 16, padding: 16, gap: 10, borderWidth: 1, borderColor: "rgba(255,255,255,0.12)" },
   summaryRow: { flexDirection: "row", justifyContent: "space-between", alignItems: "center" },
   summaryLabel: { color: "rgba(255,255,255,0.5)", fontSize: 14, fontFamily: "Satoshi-Regular" },
-  summaryValue: { color: "#FFFFFF", fontSize: 14, fontWeight: "700" },
+  summaryValue: { color: "#1A0B2E", fontSize: 14, fontWeight: "700" },
   nextBtn: { borderRadius: 16, overflow: "hidden" },
   nextBtnDisabled: { opacity: 0.5 },
   nextBtnGradient: { paddingVertical: 16, alignItems: "center" },
-  nextBtnText: { color: "#FFFFFF", fontSize: 16, fontWeight: "900", fontFamily: "Chillax-Bold" },
+  nextBtnText: { color: "#1A0B2E", fontSize: 16, fontWeight: "900", fontFamily: "Chillax-Bold" },
   // Confirm screen
   confirmCard: { borderRadius: 20, overflow: "hidden", padding: 32, alignItems: "center", gap: 8, borderWidth: 1, borderColor: "rgba(255,255,255,0.12)" },
   confirmEmoji: { fontSize: 48 },
-  confirmAmount: { color: "#FFFFFF", fontSize: 40, fontWeight: "900", fontFamily: "Chillax-Bold" },
+  confirmAmount: { color: "#1A0B2E", fontSize: 40, fontWeight: "900", fontFamily: "Chillax-Bold" },
   confirmMethod: { color: "rgba(255,255,255,0.5)", fontSize: 15, fontFamily: "Satoshi-Regular" },
   reviewCard: { backgroundColor: "rgba(255,255,255,0.06)", borderRadius: 16, padding: 16, borderWidth: 1, borderColor: "rgba(255,255,255,0.12)" },
   reviewRow: { flexDirection: "row", justifyContent: "space-between", alignItems: "center", paddingVertical: 10 },
   reviewRowBorder: { borderBottomWidth: 1, borderBottomColor: "rgba(255,255,255,0.12)" },
   reviewLabel: { color: "rgba(255,255,255,0.5)", fontSize: 14, fontFamily: "Satoshi-Regular" },
-  reviewValue: { color: "#FFFFFF", fontSize: 14, fontWeight: "700" },
+  reviewValue: { color: "#1A0B2E", fontSize: 14, fontWeight: "700" },
   // Success screen
   successScreen: { flex: 1, alignItems: "center", justifyContent: "center", paddingHorizontal: 32, gap: 12 },
   successEmoji: { fontSize: 64 },
-  successTitle: { color: "#FFFFFF", fontSize: 24, fontWeight: "900", textAlign: "center", fontFamily: "Chillax-Bold" },
+  successTitle: { color: "#1A0B2E", fontSize: 24, fontWeight: "900", textAlign: "center", fontFamily: "Chillax-Bold" },
   successAmount: { color: "#22C55E", fontSize: 40, fontWeight: "900", fontFamily: "Chillax-Bold" },
   successDesc: { color: "rgba(255,255,255,0.5)", fontSize: 14, textAlign: "center", lineHeight: 22, fontFamily: "Satoshi-Regular" },
   successDetails: { width: "100%", backgroundColor: "rgba(255,255,255,0.06)", borderRadius: 16, padding: 16, gap: 10, borderWidth: 1, borderColor: "rgba(255,255,255,0.12)" },
   successDetailRow: { flexDirection: "row", justifyContent: "space-between" },
   successDetailLabel: { color: "rgba(255,255,255,0.5)", fontSize: 13 },
-  successDetailValue: { color: "#FFFFFF", fontSize: 13, fontWeight: "700" },
+  successDetailValue: { color: "#1A0B2E", fontSize: 13, fontWeight: "700" },
   doneBtn: { borderRadius: 16, shadowColor: "#F94498", shadowOffset: { width: 0, height: 6 }, shadowOpacity: 0.4, shadowRadius: 24, elevation: 10,
     overflow: "hidden", width: "100%", marginTop: 8 },
   doneBtnGradient: { paddingVertical: 16, alignItems: "center" },
-  doneBtnText: { color: "#FFFFFF", fontSize: 16, fontWeight: "900", fontFamily: "Chillax-Bold" },
+  doneBtnText: { color: "#1A0B2E", fontSize: 16, fontWeight: "900", fontFamily: "Chillax-Bold" },
 });

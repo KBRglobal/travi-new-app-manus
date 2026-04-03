@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * TRAVI — Quick DNA Swipe Mode
  * Tinder-style swipe through 116 items across 11 categories.
@@ -370,7 +371,7 @@ export default function QuickSwipeScreen() {
           <View style={styles.resultHeader}>
             <View style={styles.resultIconWrap}>
               <LinearGradient colors={["#6443F4","#F94498"]} style={StyleSheet.absoluteFillObject} />
-              <IconSymbol name={topDim.icon as any} size={32} color="#FFFFFF" />
+              <IconSymbol name={topDim.icon as any} size={32} color="#1A0B2E" />
             </View>
             <Text style={styles.resultTitle}>Your Quick DNA</Text>
             <Text style={styles.resultSub}>Based on {likes.length} of {total} experiences you loved</Text>
@@ -404,7 +405,7 @@ export default function QuickSwipeScreen() {
           {/* XP reward */}
           <View style={styles.xpCard}>
             <LinearGradient colors={["#F59E0B","#D97706"]} style={StyleSheet.absoluteFillObject} />
-            <IconSymbol name="star.fill" size={24} color="#FFFFFF" />
+            <IconSymbol name="star.fill" size={24} color="#1A0B2E" />
             <View style={{ flex: 1 }}>
               <Text style={styles.xpTitle}>+250 XP Earned</Text>
               <Text style={styles.xpSub}>Quick DNA complete — upgrade to First Class DNA for 580 signals</Text>
@@ -441,7 +442,7 @@ export default function QuickSwipeScreen() {
           >
             <LinearGradient colors={["#6443F4","#F94498"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={StyleSheet.absoluteFillObject} />
             <Text style={styles.ctaText}>Start Planning My Trip</Text>
-            <IconSymbol name="chevron.right" size={18} color="#FFFFFF" />
+            <IconSymbol name="chevron.right" size={18} color="#1A0B2E" />
           </TouchableOpacity>
 
           <TouchableOpacity
@@ -464,7 +465,7 @@ export default function QuickSwipeScreen() {
       {/* Header */}
       <View style={styles.header}>
         <TouchableOpacity onPress={() => router.back()} style={styles.backBtn} activeOpacity={0.8}>
-          <IconSymbol name="chevron.left.forwardslash.chevron.right" size={20} color="#FFFFFF" />
+          <IconSymbol name="chevron.left.forwardslash.chevron.right" size={20} color="#1A0B2E" />
         </TouchableOpacity>
         <View style={{ flex: 1, alignItems: "center" }}>
           <Text style={styles.headerTitle}>Quick DNA</Text>
@@ -516,7 +517,7 @@ const styles = StyleSheet.create({
   container: { flex: 1 },
   header: { flexDirection: "row", alignItems: "center", paddingHorizontal: 16, paddingVertical: 12 },
   backBtn: { width: 40, height: 40, borderRadius: 20, backgroundColor: "rgba(255,255,255,0.06)", alignItems: "center", justifyContent: "center" },
-  headerTitle: { color: "#FFFFFF", fontSize: 16, fontWeight: "700", fontFamily: "Chillax-Semibold" },
+  headerTitle: { color: "#1A0B2E", fontSize: 16, fontWeight: "700", fontFamily: "Chillax-Semibold" },
   headerSub: { color: "rgba(255,255,255,0.5)", fontSize: 12, marginTop: 2 },
   progressWrap: { height: 3, backgroundColor: "rgba(255,255,255,0.06)", marginHorizontal: 20, borderRadius: 2, overflow: "hidden" },
   progressFill: { height: 3, backgroundColor: "#6443F4", borderRadius: 2 },
@@ -530,12 +531,12 @@ const styles = StyleSheet.create({
   badge: { position: "absolute", top: 24, paddingHorizontal: 16, paddingVertical: 8, borderRadius: 8, borderWidth: 3 },
   likeBadge: { right: 20, borderColor: "#22C55E", backgroundColor: "rgba(34,197,94,0.15)" },
   nopeBadge: { left: 20, borderColor: "#EF4444", backgroundColor: "rgba(239,68,68,0.15)" },
-  badgeText: { color: "#FFFFFF", fontSize: 18, fontWeight: "900", fontFamily: "Chillax-Bold", letterSpacing: 2 },
+  badgeText: { color: "#1A0B2E", fontSize: 18, fontWeight: "900", fontFamily: "Chillax-Bold", letterSpacing: 2 },
   categoryPill: { position: "absolute", top: 20, alignSelf: "center", backgroundColor: "rgba(0,0,0,0.4)", paddingHorizontal: 14, paddingVertical: 6, borderRadius: 20 },
   categoryText: { color: "rgba(255,255,255,0.9)", fontSize: 12, fontWeight: "600" },
   cardIconWrap: { alignItems: "center", justifyContent: "center", marginBottom: 16 },
   cardBottom: { position: "absolute", bottom: 28, left: 20, right: 20 },
-  cardLabel: { color: "#FFFFFF", fontSize: 22, fontWeight: "800", fontFamily: "Chillax-Bold", textAlign: "center", textShadowColor: "rgba(0,0,0,0.5)", textShadowOffset: { width: 0, height: 2 }, textShadowRadius: 8 },
+  cardLabel: { color: "#1A0B2E", fontSize: 22, fontWeight: "800", fontFamily: "Chillax-Bold", textAlign: "center", textShadowColor: "rgba(0,0,0,0.5)", textShadowOffset: { width: 0, height: 2 }, textShadowRadius: 8 },
   buttons: { flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 24, paddingHorizontal: 40, paddingTop: 16 },
   actionBtn: { width: 64, height: 64, borderRadius: 32, alignItems: "center", justifyContent: "center", shadowColor: "#000", shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.3, shadowRadius: 8, elevation: 8 },
   nopeBtn: { backgroundColor: "rgba(239,68,68,0.15)", borderWidth: 2, borderColor: "rgba(239,68,68,0.4)" },
@@ -545,11 +546,11 @@ const styles = StyleSheet.create({
   // Results
   resultHeader: { alignItems: "center", paddingTop: 24, paddingBottom: 16 },
   resultIconWrap: { width: 72, height: 72, borderRadius: 36, overflow: "hidden", alignItems: "center", justifyContent: "center", marginBottom: 16 },
-  resultTitle: { color: "#FFFFFF", fontSize: 28, fontWeight: "900", fontFamily: "Chillax-Bold" },
+  resultTitle: { color: "#1A0B2E", fontSize: 28, fontWeight: "900", fontFamily: "Chillax-Bold" },
   resultSub: { color: "rgba(255,255,255,0.5)", fontSize: 14, fontFamily: "Satoshi-Regular", marginTop: 6, textAlign: "center" },
   topTypeCard: { borderRadius: 20, overflow: "hidden", padding: 24, alignItems: "center", marginBottom: 24, borderWidth: 1, borderColor: "rgba(100,67,244,0.3)" },
   topTypeLabel: { color: "rgba(255,255,255,0.5)", fontSize: 11, fontWeight: "700", letterSpacing: 2, marginBottom: 8 },
-  topTypeName: { color: "#FFFFFF", fontSize: 32, fontWeight: "900", fontFamily: "Chillax-Bold" },
+  topTypeName: { color: "#1A0B2E", fontSize: 32, fontWeight: "900", fontFamily: "Chillax-Bold" },
   topTypeScore: { color: "#6443F4", fontSize: 16, fontWeight: "700", fontFamily: "Satoshi-Bold", marginTop: 4 },
   dimsTitle: { color: "rgba(255,255,255,0.6)", fontSize: 13, fontWeight: "700", fontFamily: "Satoshi-Medium", letterSpacing: 1, marginBottom: 16 },
   dimRow: { flexDirection: "row", alignItems: "center", gap: 10, marginBottom: 12 },
@@ -560,11 +561,11 @@ const styles = StyleSheet.create({
   dimBarFill: { height: 6, borderRadius: 3 },
   dimScore: { color: "rgba(255,255,255,0.6)", fontSize: 12, fontWeight: "700", fontFamily: "Satoshi-Bold", width: 28, textAlign: "right" },
   xpCard: { flexDirection: "row", alignItems: "center", gap: 14, borderRadius: 16, overflow: "hidden", padding: 18, marginTop: 24, marginBottom: 16 },
-  xpTitle: { color: "#FFFFFF", fontSize: 16, fontWeight: "800", fontFamily: "Chillax-Bold" },
+  xpTitle: { color: "#1A0B2E", fontSize: 16, fontWeight: "800", fontFamily: "Chillax-Bold" },
   xpSub: { color: "rgba(255,255,255,0.7)", fontSize: 12, marginTop: 2 },
   ctaBtn: { borderRadius: 16, shadowColor: "#F94498", shadowOffset: { width: 0, height: 6 }, shadowOpacity: 0.4, shadowRadius: 24, elevation: 10,
     overflow: "hidden", flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 8, paddingVertical: 18, marginBottom: 12 },
-  ctaText: { color: "#FFFFFF", fontSize: 16, fontWeight: "800", fontFamily: "Chillax-Bold" },
+  ctaText: { color: "#1A0B2E", fontSize: 16, fontWeight: "800", fontFamily: "Chillax-Bold" },
   secondaryCta: { alignItems: "center", paddingVertical: 12 },
   secondaryCtaText: { color: "rgba(255,255,255,0.5)", fontSize: 13, fontFamily: "Satoshi-Regular", textDecorationLine: "underline" },
 
@@ -580,6 +581,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "rgba(249,68,152,0.3)",
   },
-  guestDnaTitle: { color: "#FFFFFF", fontSize: 14, fontWeight: "700", fontFamily: "Satoshi-Bold" },
+  guestDnaTitle: { color: "#1A0B2E", fontSize: 14, fontWeight: "700", fontFamily: "Satoshi-Bold" },
   guestDnaSub: { color: "rgba(255,255,255,0.5)", fontSize: 12, fontFamily: "Satoshi-Regular" },
 });

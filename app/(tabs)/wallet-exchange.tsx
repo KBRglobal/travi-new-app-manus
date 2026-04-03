@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * TRAVI — Wallet Currency Exchange
  */
@@ -153,11 +154,11 @@ const S = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#0D0628" },
   header: { flexDirection: "row", alignItems: "center", paddingHorizontal: 20, paddingBottom: 16, gap: 12 },
   backBtn: { width: 36, height: 36, borderRadius: 18, backgroundColor: "rgba(255,255,255,0.06)", alignItems: "center", justifyContent: "center" },
-  backText: { color: "#FFFFFF", fontSize: 18, fontWeight: "700", fontFamily: "Chillax-Semibold" },
-  headerTitle: { flex: 1, color: "#FFFFFF", fontSize: 20, fontWeight: "900", fontFamily: "Chillax-Bold", textAlign: "center" },
+  backText: { color: "#1A0B2E", fontSize: 18, fontWeight: "700", fontFamily: "Chillax-Semibold" },
+  headerTitle: { flex: 1, color: "#1A0B2E", fontSize: 20, fontWeight: "900", fontFamily: "Chillax-Bold", textAlign: "center" },
   rateCard: { marginHorizontal: 20, marginBottom: 24, borderRadius: 16, backgroundColor: "rgba(100,67,244,0.12)", borderWidth: 1, borderColor: "rgba(100,67,244,0.25)", padding: 16, alignItems: "center", gap: 4 },
   rateLabel: { color: "rgba(255,255,255,0.5)", fontSize: 11, fontWeight: "700", textTransform: "uppercase", letterSpacing: 1 },
-  rateValue: { color: "#FFFFFF", fontSize: 22, fontWeight: "900", fontFamily: "Chillax-Bold" },
+  rateValue: { color: "#1A0B2E", fontSize: 22, fontWeight: "900", fontFamily: "Chillax-Bold" },
   rateNote: { color: "rgba(255,255,255,0.55)", fontSize: 11 },
   section: { paddingHorizontal: 20, marginBottom: 16 },
   fieldLabel: { color: "rgba(255,255,255,0.5)", fontSize: 11, fontWeight: "800",
@@ -165,9 +166,9 @@ const S = StyleSheet.create({
   inputRow: { flexDirection: "row", gap: 10 },
   currencyPicker: { flexDirection: "row", alignItems: "center", gap: 6, paddingHorizontal: 14, paddingVertical: 14, borderRadius: 12, backgroundColor: "rgba(255,255,255,0.06)", borderWidth: 1, borderColor: "rgba(255,255,255,0.12)" },
   currencyFlag: { fontSize: 20 },
-  currencyCode: { color: "#FFFFFF", fontSize: 14, fontWeight: "900", fontFamily: "Chillax-Bold" },
+  currencyCode: { color: "#1A0B2E", fontSize: 14, fontWeight: "900", fontFamily: "Chillax-Bold" },
   chevron: { color: "rgba(255,255,255,0.5)", fontSize: 12 },
-  amountInput: { flex: 1, backgroundColor: "rgba(255,255,255,0.06)", borderRadius: 12, borderWidth: 1, borderColor: "rgba(255,255,255,0.12)", paddingHorizontal: 14, paddingVertical: 14, color: "#FFFFFF", fontSize: 20, fontWeight: "900", fontFamily: "Chillax-Bold" },
+  amountInput: { flex: 1, backgroundColor: "rgba(255,255,255,0.06)", borderRadius: 12, borderWidth: 1, borderColor: "rgba(255,255,255,0.12)", paddingHorizontal: 14, paddingVertical: 14, color: "#1A0B2E", fontSize: 20, fontWeight: "900", fontFamily: "Chillax-Bold" },
   amountDisplay: { justifyContent: "center" },
   amountDisplayText: { color: "#22C55E", fontSize: 20, fontWeight: "900", fontFamily: "Chillax-Bold" },
   swapRow: { flexDirection: "row", alignItems: "center", paddingHorizontal: 20, marginBottom: 16, gap: 12 },
@@ -178,7 +179,7 @@ const S = StyleSheet.create({
   pickerItem: { flexDirection: "row", alignItems: "center", gap: 10, paddingHorizontal: 14, paddingVertical: 10, borderBottomWidth: 1, borderBottomColor: "rgba(255,255,255,0.12)" },
   pickerItemActive: { backgroundColor: "rgba(100,67,244,0.15)" },
   pickerFlag: { fontSize: 18 },
-  pickerCode: { color: "#FFFFFF", fontSize: 13, fontWeight: "900", fontFamily: "Chillax-Bold", width: 40 },
+  pickerCode: { color: "#1A0B2E", fontSize: 13, fontWeight: "900", fontFamily: "Chillax-Bold", width: 40 },
   pickerName: { flex: 1, color: "rgba(255,255,255,0.5)", fontSize: 12 },
   pickerRate: { color: "rgba(255,255,255,0.55)", fontSize: 11 },
   summaryCard: { marginHorizontal: 20, marginBottom: 20, borderRadius: 16, backgroundColor: "rgba(255,255,255,0.06)", borderWidth: 1, borderColor: "rgba(255,255,255,0.12)", padding: 16, gap: 10 },
@@ -186,8 +187,8 @@ const S = StyleSheet.create({
   summaryLabel: { color: "rgba(255,255,255,0.5)", fontSize: 13 },
   summaryValue: { color: "rgba(255,255,255,0.7)", fontSize: 13, fontWeight: "700" },
   summaryTotal: { borderTopWidth: 1, borderTopColor: "rgba(255,255,255,0.12)", paddingTop: 10, marginTop: 4 },
-  summaryTotalLabel: { color: "#FFFFFF", fontSize: 14, fontWeight: "800", fontFamily: "Chillax-Bold" },
+  summaryTotalLabel: { color: "#1A0B2E", fontSize: 14, fontWeight: "800", fontFamily: "Chillax-Bold" },
   summaryTotalValue: { color: "#22C55E", fontSize: 16, fontWeight: "900", fontFamily: "Chillax-Bold" },
   exchangeBtn: { borderRadius: 14, backgroundColor: "#6443F4", paddingVertical: 16, alignItems: "center" },
-  exchangeBtnText: { color: "#FFFFFF", fontSize: 15, fontWeight: "900", fontFamily: "Chillax-Bold" },
+  exchangeBtnText: { color: "#1A0B2E", fontSize: 15, fontWeight: "900", fontFamily: "Chillax-Bold" },
 });

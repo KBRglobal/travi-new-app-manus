@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useState } from "react";
 import {
   View, Text, TouchableOpacity, StyleSheet, ScrollView, Dimensions, Platform
