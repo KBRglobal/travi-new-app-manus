@@ -19,6 +19,8 @@ import * as Font from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 
 import { trpc, createTRPCClient } from "@/lib/trpc";
+// Initialize i18n — must be imported before any component that uses t()
+import "@/lib/i18n";
 import { initManusRuntime, subscribeSafeAreaInsets } from "@/lib/_core/manus-runtime";
 import { TraviStoreProvider } from "@/lib/store";
 import { registerForPushNotificationsAsync, addNotificationListeners } from "@/lib/notifications";

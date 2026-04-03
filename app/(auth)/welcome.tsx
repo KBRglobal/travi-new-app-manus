@@ -45,7 +45,7 @@ export default function WelcomeScreen() {
     <View style={s.root}>
       {/* Background */}
       <LinearGradient
-        colors={["#0C0720", "#160B35", "#1A0D3A"]}
+        colors={["#1A0B2E", "#160B35", "#1A0D3A"]}
         style={StyleSheet.absoluteFillObject}
       />
       {/* Orbs — positioned to not block text */}
@@ -120,7 +120,7 @@ export default function WelcomeScreen() {
 }
 
 const s = StyleSheet.create({
-  root: { flex: 1, backgroundColor: "#0C0720" },
+  root: { flex: 1, backgroundColor: "#1A0B2E" },
 
   // Orbs — symmetric, not blocking content
   orb1: {

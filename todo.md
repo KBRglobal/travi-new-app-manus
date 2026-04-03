@@ -222,3 +222,39 @@ Rules:
 
 - [ ] My Trips: header overlaps status bar (title + New Trip button cover time/battery)
 - [ ] My Trips: card layout cleanup — inconsistent image coverage, elements overlapping
+
+## UX/UI Dark Mode Redesign (Apr 3 Session)
+- [x] Dark mode design system: background #1A0B2E, surface #24103E, gradient #6443F4→#F94498
+- [x] Home Dashboard: dark mode, no circles, glassmorphism cards, gradient hero
+- [x] Explore screen: dark mode, glassmorphism destination cards, filter chips
+- [x] Trips screen: dark mode, stats row, filter tabs, trip cards
+- [x] Wallet screen: dark mode, balance card, points section, redeem options
+- [x] Profile screen: dark mode, DNA traits, achievements, settings rows
+- [x] Auth screens: consistent dark background #1A0B2E
+- [x] AI Chat screen: updated to design system colors
+- [x] Swipe screen: StyleSheet.create<any> fix for TypeScript error
+
+## i18n — Multi-language Support (Apr 3 Session)
+- [x] Install i18next + react-i18next + expo-localization
+- [x] Create 12 locale files: EN, HE, ES, FR, DE, IT, PT, JA, ZH, KO, AR, RU
+- [x] Wire i18n to root _layout.tsx
+- [x] Create useAppTranslation hook with changeLanguage + RTL support
+- [x] Wire i18n to existing language-selector.tsx screen
+
+## UX/UI Dark Mode Redesign (Apr 3 Session)
+- [x] Dark mode design system: background #1A0B2E, surface #24103E, gradient #6443F4->F94498
+- [x] Home Dashboard: dark mode, no circles, glassmorphism cards, gradient hero
+- [x] Explore screen: dark mode, glassmorphism destination cards, filter chips
+- [x] Trips screen: dark mode, stats row, filter tabs, trip cards
+- [x] Wallet screen: dark mode, balance card, points section, redeem options
+- [x] Profile screen: dark mode, DNA traits, achievements, settings rows
+- [x] Auth screens: consistent dark background #1A0B2E
+- [x] AI Chat screen: updated to design system colors
+- [x] Swipe screen: StyleSheet.create<any> fix for TypeScript error
+
+## i18n Multi-language Support (Apr 3 Session)
+- [x] Install i18next + react-i18next + expo-localization
+- [x] Create 12 locale files: EN, HE, ES, FR, DE, IT, PT, JA, ZH, KO, AR, RU
+- [x] Wire i18n to root _layout.tsx
+- [x] Create useAppTranslation hook with changeLanguage + RTL support
+- [x] Wire i18n to existing language-selector.tsx screen

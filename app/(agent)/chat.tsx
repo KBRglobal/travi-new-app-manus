@@ -89,7 +89,7 @@ function MessageBubble({ message }: { message: Message }) {
     return (
       <View style={styles.userRow}>
         <LinearGradient
-          colors={["#9333EA", "#7C3AED"]}
+          colors={["#9333EA", "#6443F4"]}
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 1 }}
           style={styles.userBubble}
@@ -220,7 +220,7 @@ export default function AgentChatScreen() {
         <View style={styles.headerCenter}>
           <View style={styles.headerAvatarWrap}>
             <LinearGradient
-              colors={["#9333EA", "#7C3AED"]}
+              colors={["#9333EA", "#6443F4"]}
               style={styles.headerAvatar}
             >
               <Text style={styles.headerAvatarText}>T</Text>
@@ -339,7 +339,7 @@ export default function AgentChatScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#0A0118",
+    backgroundColor: "#1A0B2E",
   },
   flex: {
     flex: 1,
@@ -395,7 +395,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     backgroundColor: "#22C55E",
     borderWidth: 2,
-    borderColor: "#0A0118",
+    borderColor: "#1A0B2E",
   },
   headerName: {
     fontSize: 16,
@@ -412,7 +412,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 6,
     borderRadius: 12,
-    backgroundColor: "rgba(147,51,234,0.2)",
+    backgroundColor: "rgba(100,67,244,0.2)",
     borderWidth: 0.5,
     borderColor: "rgba(147,51,234,0.4)",
   },
@@ -455,7 +455,7 @@ const styles = StyleSheet.create({
     width: 32,
     height: 32,
     borderRadius: 16,
-    backgroundColor: "#7C3AED",
+    backgroundColor: "#6443F4",
     alignItems: "center",
     justifyContent: "center",
     flexShrink: 0,
@@ -529,7 +529,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 14,
     paddingVertical: 8,
     borderRadius: 20,
-    backgroundColor: "rgba(147,51,234,0.15)",
+    backgroundColor: "rgba(100,67,244,0.15)",
     borderWidth: 0.5,
     borderColor: "rgba(147,51,234,0.4)",
   },
@@ -543,9 +543,9 @@ const styles = StyleSheet.create({
   inputBar: {
     paddingHorizontal: 16,
     paddingTop: 10,
-    backgroundColor: "rgba(10,1,24,0.95)",
+    backgroundColor: "rgba(26,11,46,0.97)",
     borderTopWidth: 0.5,
-    borderTopColor: "rgba(147,51,234,0.2)",
+    borderTopColor: "rgba(100,67,244,0.2)",
   },
   inputWrap: {
     flexDirection: "row",
@@ -570,13 +570,13 @@ const styles = StyleSheet.create({
     width: 36,
     height: 36,
     borderRadius: 18,
-    backgroundColor: "#7C3AED",
+    backgroundColor: "#6443F4",
     alignItems: "center",
     justifyContent: "center",
     flexShrink: 0,
   },
   sendBtnDisabled: {
-    backgroundColor: "rgba(124,58,237,0.3)",
+    backgroundColor: "rgba(100,67,244,0.3)",
   },
   sendIcon: {
     fontSize: 18,

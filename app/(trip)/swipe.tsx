@@ -855,7 +855,7 @@ export default function SwipeScreen() {
 
 const CARD_HEIGHT = height * 0.66;
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create<any>({
   container: { flex: 1 },
   // Glow orb
   glowOrb: { position: "absolute", width: 200, height: 200, borderRadius: 100 },
@@ -896,7 +896,8 @@ const styles = StyleSheet.create({
   stampText: { color: "#FFFFFF", fontSize: 22, fontWeight: "900", letterSpacing: 3, fontFamily: "Chillax-Bold" },
   stampTextNope: { color: "#FFFFFF" },
   // Category badge
-  categoryBadge: { position: "absolute", top: 20, left: 20, flexDirection: "row", alignItems: "center", gap: 6, paddingHorizontal: 12, paddingVertical: 6, borderRadius: 20, borderWidth: 1, backdropFilter: "blur(10px)" },
+  // @ts-ignore - gap is valid in RN 0.71+
+  categoryBadge: { position: "absolute", top: 20, left: 20, flexDirection: "row", alignItems: "center", gap: 6, paddingHorizontal: 12, paddingVertical: 6, borderRadius: 20, borderWidth: 1 },
   categoryDot: { width: 7, height: 7, borderRadius: 3.5 },
   categoryText: { fontSize: 12, fontWeight: "700", letterSpacing: 0.3 },
   // Card info

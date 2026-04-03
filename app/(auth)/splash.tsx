@@ -156,7 +156,7 @@ export default function SplashScreen() {
     <Animated.View style={[s.root, { opacity: screenOpacity }]}>
       {/* Background — deep dark gradient */}
       <LinearGradient
-        colors={["#06021A", "#0E0528", "#06021A"]}
+        colors={["#1A0B2E", "#0E0528", "#1A0B2E"]}
         style={StyleSheet.absoluteFillObject}
         start={{ x: 0.5, y: 0 }}
         end={{ x: 0.5, y: 1 }}
@@ -219,7 +219,7 @@ export default function SplashScreen() {
 const s = StyleSheet.create({
   root: {
     flex: 1,
-    backgroundColor: "#06021A",
+    backgroundColor: "#1A0B2E",
     alignItems: "center",
   },
   center: {

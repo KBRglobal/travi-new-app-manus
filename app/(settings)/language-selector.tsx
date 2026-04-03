@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useAppTranslation } from "@/hooks/use-translation";
 import { View, Text, TouchableOpacity, StyleSheet, FlatList, Platform } from "react-native";
 import { router } from "expo-router";
 import { ScreenContainer } from "@/components/screen-container";
@@ -25,9 +26,11 @@ export default function LanguageSelectorScreen() {
   const colors = useColors();
   const [selected, setSelected] = useState("en");
 
+  const { changeLanguage } = useAppTranslation();
   const handleSelect = (code: string) => {
     if (Platform.OS !== "web") Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     setSelected(code);
+    changeLanguage(code as any);
   };
 
   return (
