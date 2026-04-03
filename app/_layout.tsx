@@ -169,7 +169,7 @@ export default function RootLayout() {
             <Stack.Screen name="(agent)" />
             <Stack.Screen name="oauth/callback" />
           </Stack>
-          <StatusBar style="light" backgroundColor="#24103E" />
+          <StatusBar style="light" backgroundColor="#6443F4" />
           <PushNotificationHandler />
         </QueryClientProvider>
       </trpc.Provider>

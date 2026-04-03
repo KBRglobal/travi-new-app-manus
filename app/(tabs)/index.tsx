@@ -1,7 +1,8 @@
-import React, { useRef, useCallback, useState, useEffect } from "react";
+import { useRef, useState, useEffect, useCallback } from "react";
 import {
   View, Text, TouchableOpacity, StyleSheet, Dimensions,
   ScrollView, Animated, Platform, StatusBar, ImageBackground,
+  Image,
 } from "react-native";
 import { router } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
@@ -11,116 +12,55 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import * as Haptics from "expo-haptics";
 import { fetchWeather, type WeatherData } from "@/lib/weather";
 
-const { width, height } = Dimensions.get("window");
+const { width } = Dimensions.get("window");
 
-// ─── Cinematic destination images ────────────────────────────────────────────
+// ─── TRAVI Brand ─────────────────────────────────────────────────────────────
+const B = {
+  purple:      "#6443F4",
+  purpleDark:  "#1A0D3D",
+  purpleMid:   "#2E1A6E",
+  purpleLight: "#8266F6",
+  pink:        "#F94498",
+  pinkDark:    "#C4206A",
+  orange:      "#FF9327",
+  green:       "#02A65C",
+  cyan:        "#01BEFF",
+  white:       "#FFFFFF",
+  offWhite:    "rgba(255,255,255,0.92)",
+  dim:         "rgba(255,255,255,0.55)",
+  dimmer:      "rgba(255,255,255,0.30)",
+};
+
+// ─── Hero destinations ────────────────────────────────────────────────────────
 const HERO_DESTINATIONS = [
-  {
-    id: "1",
-    city: "Santorini",
-    country: "Greece",
-    mood: "Where sunsets stop time",
-    image: require("@/assets/destinations/santorini.jpg"),
-    color: "#F59E0B",
-  },
-  {
-    id: "2",
-    city: "Kyoto",
-    country: "Japan",
-    mood: "Ancient beauty, modern soul",
-    image: require("@/assets/destinations/kyoto.jpg"),
-    color: "#F94498",
-  },
-  {
-    id: "3",
-    city: "Bali",
-    country: "Indonesia",
-    mood: "Find your inner peace",
-    image: require("@/assets/destinations/bali.jpg"),
-    color: "#02A65C",
-  },
-  {
-    id: "4",
-    city: "Patagonia",
-    country: "Argentina",
-    mood: "The edge of the world",
-    image: require("@/assets/destinations/patagonia.jpg"),
-    color: "#6443F4",
-  },
-  {
-    id: "5",
-    city: "Tokyo",
-    country: "Japan",
-    mood: "Neon dreams never sleep",
-    image: require("@/assets/destinations/tokyo.jpg"),
-    color: "#C084FC",
-  },
+  { id: "1", city: "Santorini", country: "Greece",    emoji: "🇬🇷", vibe: "Sunsets that break hearts",       image: require("@/assets/destinations/santorini.jpg") },
+  { id: "2", city: "Kyoto",     country: "Japan",     emoji: "🇯🇵", vibe: "Ancient beauty, modern soul",     image: require("@/assets/destinations/kyoto.jpg") },
+  { id: "3", city: "Bali",      country: "Indonesia", emoji: "🇮🇩", vibe: "Find your inner peace",           image: require("@/assets/destinations/bali.jpg") },
+  { id: "4", city: "Tokyo",     country: "Japan",     emoji: "🇯🇵", vibe: "Neon dreams never sleep",         image: require("@/assets/destinations/tokyo.jpg") },
+  { id: "5", city: "Patagonia", country: "Argentina", emoji: "🇦🇷", vibe: "The edge of the world",           image: require("@/assets/destinations/patagonia.jpg") },
 ];
 
-const HOW_IT_WORKS = [
-  {
-    icon: "sparkles" as const,
-    color: "#C084FC",
-    gradient: ["#6443F4", "#9077EF"] as [string, string],
-    title: "Your Travel DNA",
-    desc: "Answer 7 questions once. TRAVI learns your travel personality — your pace, your vibe, your non-negotiables.",
-  },
-  {
-    icon: "airplane" as const,
-    color: "#F94498",
-    gradient: ["#F94498", "#C2185B"] as [string, string],
-    title: "AI plans everything",
-    desc: "Flights, hotels, and experiences curated for you — not for the masses. Built around your DNA.",
-  },
-  {
-    icon: "dollarsign.circle.fill" as const,
-    color: "#FBBF24",
-    gradient: ["#F59E0B", "#D97706"] as [string, string],
-    title: "Cashback, not commissions",
-    desc: "The 10–15% that used to go to a travel agent? After your trip, it comes back to you as TRAVI cashback.",
-  },
-];
-
+// ─── Quick-start options ──────────────────────────────────────────────────────
 const START_OPTIONS = [
-  {
-    id: "destination",
-    icon: "location.fill" as const,
-    label: "I have a destination",
-    sub: "Tell me where you want to go",
-    gradient: ["#6443F4", "#9077EF"] as [string, string],
-  },
-  {
-    id: "inspiration",
-    icon: "sparkles" as const,
-    label: "Inspire me",
-    sub: "Let TRAVI surprise you",
-    gradient: ["#F94498", "#C2185B"] as [string, string],
-  },
-  {
-    id: "dates",
-    icon: "calendar" as const,
-    label: "I have dates",
-    sub: "I know when, not where",
-    gradient: ["#02A65C", "#059669"] as [string, string],
-  },
+  { id: "destination", icon: "location.fill" as const, label: "I know where",   sub: "Pick a destination",       color: B.purple,  bg: "rgba(100,67,244,0.12)" },
+  { id: "inspiration", icon: "sparkles"      as const, label: "Surprise me",    sub: "Let TRAVI choose",         color: B.pink,    bg: "rgba(249,68,152,0.12)" },
+  { id: "dates",       icon: "calendar"      as const, label: "I have dates",   sub: "Find what fits",           color: B.orange,  bg: "rgba(255,147,39,0.12)" },
 ];
 
 export default function HomeScreen() {
   const { state } = useStore();
   const insets = useSafeAreaInsets();
-  const scrollY = useRef(new Animated.Value(0)).current;
-  const heroFade = useRef(new Animated.Value(0)).current;
+  const heroFade = useRef(new Animated.Value(1)).current;
   const [heroIndex, setHeroIndex] = useState(0);
   const heroTimer = useRef<ReturnType<typeof setInterval> | null>(null);
-
-  const profile = state.profile;
-  const activeTrip = state.activeTrip;
-  const dnaType = profile?.travelerDNA?.type;
-  const firstName = profile?.name?.split(" ")[0] || "Traveler";
-  const hasQuiz = !!dnaType;
   const [upcomingWeather, setUpcomingWeather] = useState<WeatherData | null>(null);
 
-  // Time-based greeting
+  const profile    = state.profile;
+  const activeTrip = state.activeTrip;
+  const dnaType    = profile?.travelerDNA?.type;
+  const firstName  = profile?.name?.split(" ")[0] || "Traveler";
+  const hasQuiz    = !!dnaType;
+
   const greeting = (() => {
     const h = new Date().getHours();
     if (h < 12) return "Good morning";
@@ -129,391 +69,348 @@ export default function HomeScreen() {
     return "Good night";
   })();
 
-  // Fetch weather for upcoming trip
+  // Fetch upcoming trip weather
   useEffect(() => {
-    const upcoming = state.trips.filter(t => t.status === "upcoming").sort((a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime())[0];
-    if (upcoming) {
-      fetchWeather(upcoming.destination).then(w => setUpcomingWeather(w));
-    }
+    const upcoming = state.trips
+      .filter(t => t.status === "upcoming")
+      .sort((a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime())[0];
+    if (upcoming) fetchWeather(upcoming.destination).then(w => setUpcomingWeather(w));
   }, [state.trips]);
 
-  const headerOpacity = scrollY.interpolate({ inputRange: [0, 100], outputRange: [0, 1], extrapolate: "clamp" });
-
-  // Auto-rotate hero destinations
+  // Auto-rotate hero
   useEffect(() => {
-    Animated.timing(heroFade, { toValue: 1, duration: 800, useNativeDriver: true }).start();
     heroTimer.current = setInterval(() => {
       Animated.sequence([
-        Animated.timing(heroFade, { toValue: 0, duration: 600, useNativeDriver: true }),
-        Animated.delay(100),
-        Animated.timing(heroFade, { toValue: 1, duration: 800, useNativeDriver: true }),
+        Animated.timing(heroFade, { toValue: 0, duration: 400, useNativeDriver: true }),
+        Animated.timing(heroFade, { toValue: 1, duration: 600, useNativeDriver: true }),
       ]).start();
-      setHeroIndex((i) => (i + 1) % HERO_DESTINATIONS.length);
-    }, 4500);
+      setHeroIndex(i => (i + 1) % HERO_DESTINATIONS.length);
+    }, 5000);
     return () => { if (heroTimer.current) clearInterval(heroTimer.current); };
   }, []);
 
   const handleStart = useCallback((optionId: string) => {
     if (Platform.OS !== "web") Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-    if (optionId === "inspiration") {
-      router.push("/(trip)/surprise" as never);
-    } else {
-      router.push("/(trip)/plan" as never);
-    }
+    if (optionId === "inspiration") router.push("/(trip)/surprise" as never);
+    else router.push("/(trip)/plan" as never);
   }, []);
 
-  const handleLiveTrip = useCallback(() => {
-    if (Platform.OS !== "web") Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-    router.push("/(live)/home" as never);
-  }, []);
-
-  const currentDest = HERO_DESTINATIONS[heroIndex];
+  const currentDest  = HERO_DESTINATIONS[heroIndex];
+  const tabBarOffset = 60 + Math.max(insets.bottom, 8);
 
   return (
-    <View style={S.container}>
-      <StatusBar barStyle="light-content" />
+    <View style={S.root}>
+      <StatusBar barStyle="light-content" backgroundColor={B.purpleDark} />
 
-      {/* ── Sticky mini-header ── */}
-      <Animated.View style={[S.stickyHeader, { opacity: headerOpacity }]}>
-        <LinearGradient colors={["rgba(4,0,16,0.97)", "rgba(13,5,32,0.95)"]} style={StyleSheet.absoluteFillObject} />
-        <Text style={S.stickyTitle}>TRAVI</Text>
-        <TouchableOpacity onPress={() => router.push("/(tabs)/notifications" as never)} style={S.stickyNotif} activeOpacity={0.8}>
-          <IconSymbol name="bell.fill" size={18} color="#FFFFFF" />
-        </TouchableOpacity>
-      </Animated.View>
-
-      <Animated.ScrollView
+      <ScrollView
         showsVerticalScrollIndicator={false}
-        onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], { useNativeDriver: false })}
-        scrollEventThrottle={16}
-        contentContainerStyle={{ paddingBottom: 130 }}
+        contentContainerStyle={{ paddingBottom: tabBarOffset + 32 }}
       >
 
-        {/* ══════════════════════════════════════════
-            BLOCK 1 — Cinematic Hero
-        ══════════════════════════════════════════ */}
+        {/* ══════════════════════════════════════════════════════
+            HERO — Full-bleed destination photo
+        ══════════════════════════════════════════════════════ */}
         <View style={S.heroWrap}>
+          {/* Background image with fade */}
           <Animated.View style={[StyleSheet.absoluteFillObject, { opacity: heroFade }]}>
-            <ImageBackground source={currentDest.image} style={StyleSheet.absoluteFillObject} resizeMode="cover" />
+            <ImageBackground
+              source={currentDest.image}
+              style={StyleSheet.absoluteFillObject}
+              resizeMode="cover"
+            />
           </Animated.View>
 
-          {/* Multi-layer cinematic overlay */}
+          {/* Dark gradient overlay — top to bottom */}
           <LinearGradient
-            colors={["rgba(0,0,0,0.15)", "rgba(13,5,32,0.5)", "rgba(13,5,32,0.95)"]}
-            locations={[0, 0.5, 1]}
-            style={StyleSheet.absoluteFillObject}
-          />
-          {/* Subtle color tint from destination */}
-          <LinearGradient
-            colors={["transparent", `${currentDest.color}22`]}
+            colors={["rgba(26,13,61,0.55)", "rgba(26,13,61,0.15)", "rgba(26,13,61,0.80)"]}
+            locations={[0, 0.45, 1]}
             style={StyleSheet.absoluteFillObject}
           />
 
-          {/* Header row */}
-          <View style={[S.heroHeader, { paddingTop: Math.max(insets.top, 44) + 8 }]}>
-            <View>
-              <Text style={S.heroGreeting}>
-                {state.isAuthenticated ? `${greeting}, ${firstName}` : greeting}
-              </Text>
-            </View>
-            <TouchableOpacity style={S.notifBtn} onPress={() => router.push("/(tabs)/notifications" as never)} activeOpacity={0.8}>
-              <LinearGradient colors={["rgba(123,47,190,0.5)", "rgba(233,30,140,0.3)"]} style={S.notifGradient}>
-                <IconSymbol name="bell.fill" size={18} color="#FFFFFF" />
-              </LinearGradient>
-            </TouchableOpacity>
-          </View>
-
-          {/* Main headline */}
-          <View style={S.heroBody}>
-            <Text style={S.heroTagline}>{currentDest.mood}</Text>
-            <Text style={S.heroCity}>{currentDest.city}</Text>
-            <Text style={S.heroCountry}>{currentDest.country}</Text>
-
-            {/* Dot indicators */}
-            <View style={S.heroDots}>
-              {HERO_DESTINATIONS.map((_, i) => (
-                <View
-                  key={i}
-                  style={[S.heroDot, i === heroIndex && S.heroDotActive]}
-                />
-              ))}
+          {/* ── Top bar ── */}
+          <View style={[S.topBar, { paddingTop: insets.top + 10 }]}>
+            {/* Official TRAVI logotype (white version for dark bg) */}
+            <Image
+              source={require("@/assets/images/logotype-dark.webp")}
+              style={S.logoImg}
+              resizeMode="contain"
+            />
+            <View style={S.topBarRight}>
+              {state.isAuthenticated && (
+                <TouchableOpacity
+                  style={S.walletPill}
+                  onPress={() => router.push("/(tabs)/wallet" as never)}
+                  activeOpacity={0.85}
+                >
+                  <IconSymbol name="dollarsign.circle.fill" size={13} color={B.white} />
+                  <Text style={S.walletPillText}>$0</Text>
+                </TouchableOpacity>
+              )}
+              <TouchableOpacity
+                style={S.notifBtn}
+                onPress={() => router.push("/(tabs)/notifications" as never)}
+                activeOpacity={0.85}
+              >
+                <IconSymbol name="bell.fill" size={20} color={B.white} />
+              </TouchableOpacity>
             </View>
           </View>
 
-          {/* Big headline */}
-          <View style={S.heroHeadlineWrap}>
-            <Text style={S.heroHeadline}>The travel friend{"\n"}you never had.</Text>
-            <Text style={S.heroSub}>
-              Someone who knows exactly how you travel — and works only for you.
+          {/* ── Greeting ── */}
+          <View style={S.heroGreetingWrap}>
+            <Text style={S.heroGreeting}>
+              {state.isAuthenticated ? `${greeting}, ${firstName} ✈️` : "Where to next? ✈️"}
             </Text>
-            {/* Prominent Plan a Trip CTA */}
+          </View>
+
+          {/* ── Destination info at bottom ── */}
+          <View style={S.heroBottom}>
+            <View style={S.heroDestInfo}>
+              <Text style={S.heroVibe}>{currentDest.vibe}</Text>
+              <View style={S.heroCityRow}>
+                <Text style={S.heroCity}>{currentDest.city}</Text>
+                <Text style={S.heroFlag}>{currentDest.emoji}</Text>
+              </View>
+            </View>
+
+            {/* Dots + Explore button */}
+            <View style={S.heroActions}>
+              <View style={S.heroDots}>
+                {HERO_DESTINATIONS.map((_, i) => (
+                  <View key={i} style={[S.heroDot, i === heroIndex && S.heroDotActive]} />
+                ))}
+              </View>
+              <TouchableOpacity
+                style={S.exploreBtn}
+                onPress={() => router.push("/(tabs)/explore" as never)}
+                activeOpacity={0.85}
+              >
+                <Text style={S.exploreBtnText}>Explore</Text>
+                <IconSymbol name="arrow.right" size={13} color={B.purpleDark} />
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+
+        {/* ══════════════════════════════════════════════════════
+            CONTENT — Dark purple background
+        ══════════════════════════════════════════════════════ */}
+        <View style={S.content}>
+
+          {/* ── Active / Upcoming trip banner ── */}
+          {activeTrip && (
             <TouchableOpacity
-              style={S.heroPlanBtn}
-              onPress={() => router.push("/(trip)/plan" as never)}
+              style={S.liveBanner}
+              onPress={() => router.push("/(live)/home" as never)}
               activeOpacity={0.88}
             >
-              <LinearGradient
-                colors={["#6443F4", "#F94498"]}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 0 }}
-                style={StyleSheet.absoluteFillObject}
-              />
-              <IconSymbol name="airplane" size={18} color="#FFFFFF" />
-              <Text style={S.heroPlanBtnText}>Plan a Trip</Text>
-              <IconSymbol name="chevron.right" size={16} color="rgba(255,255,255,0.7)" />
+              <View style={S.liveDot} />
+              <View style={{ flex: 1 }}>
+                <Text style={S.liveBannerLabel}>LIVE TRIP</Text>
+                <Text style={S.liveBannerDest}>{activeTrip.destination}</Text>
+              </View>
+              <IconSymbol name="chevron.right" size={16} color={B.cyan} />
             </TouchableOpacity>
-          </View>
+          )}
 
-          {/* Upcoming trip countdown banner */}
           {!activeTrip && state.trips.filter(t => t.status === "upcoming").length > 0 && (() => {
-            const upcoming = state.trips.filter(t => t.status === "upcoming").sort((a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime())[0];
-            const daysLeft = Math.ceil((new Date(upcoming.startDate).getTime() - Date.now()) / (1000 * 60 * 60 * 24));
+            const upcoming = state.trips
+              .filter(t => t.status === "upcoming")
+              .sort((a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime())[0];
+            const daysLeft = Math.ceil((new Date(upcoming.startDate).getTime() - Date.now()) / 86400000);
             return (
-              <TouchableOpacity style={S.upcomingBanner} onPress={() => router.push("/(tabs)/trip-hub" as never)} activeOpacity={0.88}>
-                <LinearGradient colors={["rgba(100,67,244,0.3)", "rgba(249,68,152,0.2)"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={StyleSheet.absoluteFillObject} />
+              <TouchableOpacity
+                style={S.upcomingBanner}
+                onPress={() => router.push("/(tabs)/trip-hub" as never)}
+                activeOpacity={0.88}
+              >
                 <View style={S.upcomingCountdown}>
                   <Text style={S.upcomingDays}>{daysLeft}</Text>
                   <Text style={S.upcomingDaysLabel}>days</Text>
                 </View>
                 <View style={{ flex: 1 }}>
-                  <Text style={S.upcomingLabel}>UPCOMING TRIP</Text>
-                  <Text style={S.upcomingDest}>{upcoming.destination}, {upcoming.country}</Text>
+                  <Text style={S.upcomingLabel}>NEXT TRIP</Text>
+                  <Text style={S.upcomingDest}>{upcoming.destination}</Text>
                   {upcomingWeather && (
-                    <Text style={S.upcomingWeather}>{upcomingWeather.icon} {upcomingWeather.temp}°C · {upcomingWeather.condition}</Text>
+                    <Text style={S.upcomingWeather}>{upcomingWeather.temp}° · {upcomingWeather.condition}</Text>
                   )}
                 </View>
-                <View style={S.activeTripArrow}>
-                  <IconSymbol name="chevron.right" size={16} color="#A78BFA" />
-                </View>
+                <IconSymbol name="chevron.right" size={16} color={B.dim} />
               </TouchableOpacity>
             );
           })()}
-          {/* Active trip banner */}
-          {activeTrip && (
-            <TouchableOpacity style={S.activeTripBanner} onPress={handleLiveTrip} activeOpacity={0.88}>
-              <LinearGradient colors={["rgba(16,185,129,0.3)", "rgba(5,150,105,0.2)"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={StyleSheet.absoluteFillObject} />
-              <View style={S.activeDot} />
-              <View style={{ flex: 1 }}>
-                <Text style={S.activeTripLabel}>LIVE TRIP</Text>
-                <Text style={S.activeTripDest}>{activeTrip.destination}, {activeTrip.country}</Text>
-              </View>
-              <View style={S.activeTripArrow}>
-                <IconSymbol name="chevron.right" size={16} color="#02A65C" />
-              </View>
-            </TouchableOpacity>
-          )}
-        </View>
 
-        {/* ══════════════════════════════════════════
-            AUTH GATE — Sign Up CTA for unauthenticated
-        ══════════════════════════════════════════ */}
-        {!state.isAuthenticated && (
-          <View style={S.block}>
+          {/* ── Big pink CTA ── */}
+          <TouchableOpacity
+            style={S.planBtn}
+            onPress={() => router.push("/(trip)/plan" as never)}
+            activeOpacity={0.88}
+          >
+            <LinearGradient
+              colors={[B.pink, B.pinkDark]}
+              start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
+              style={StyleSheet.absoluteFillObject}
+            />
+            <View style={S.planBtnLeft}>
+              <View style={S.planBtnIcon}>
+                <IconSymbol name="airplane" size={20} color={B.pink} />
+              </View>
+              <View>
+                <Text style={S.planBtnTitle}>Plan a Trip</Text>
+                <Text style={S.planBtnSub}>Free to plan · Pay when you book</Text>
+              </View>
+            </View>
+            <View style={S.planBtnArrow}>
+              <IconSymbol name="arrow.right" size={18} color={B.white} />
+            </View>
+          </TouchableOpacity>
+
+          {/* ── Guest join CTA ── */}
+          {!state.isAuthenticated && (
             <TouchableOpacity
-              style={S.authCtaCard}
+              style={S.joinCard}
               onPress={() => router.push("/(auth)/splash" as never)}
               activeOpacity={0.88}
             >
-              <LinearGradient
-                colors={["#6443F4", "#F94498"]}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 0 }}
-                style={StyleSheet.absoluteFillObject}
-              />
-              <View style={S.authCtaContent}>
-                <Text style={S.authCtaTitle}>Join TRAVI for free</Text>
-                <Text style={S.authCtaSub}>Get personalized trips, earn cashback, and unlock your Travel DNA</Text>
+              <View style={{ flex: 1 }}>
+                <Text style={S.joinTitle}>Join TRAVI — it's free</Text>
+                <Text style={S.joinSub}>Cashback · Travel DNA · AI agent</Text>
               </View>
-              <View style={S.authCtaArrow}>
-                <IconSymbol name="arrow.right" size={18} color="#FFFFFF" />
+              <View style={S.joinArrow}>
+                <IconSymbol name="arrow.right" size={16} color={B.purple} />
               </View>
             </TouchableOpacity>
-          </View>
-        )}
+          )}
 
-        {/* ══════════════════════════════════════════
-            BLOCK 2 — Plan Your Trip CTA
-        ══════════════════════════════════════════ */}
-        <View style={S.block}>
+          {/* ── Where's your head at ── */}
+          <View style={S.section}>
+            <Text style={S.sectionTitle}>Where's your head at?</Text>
+            <Text style={S.sectionSub}>Tell us your vibe, we'll handle the rest.</Text>
+            <View style={S.startGrid}>
+              {START_OPTIONS.map((opt) => (
+                <TouchableOpacity
+                  key={opt.id}
+                  style={S.startCard}
+                  onPress={() => handleStart(opt.id)}
+                  activeOpacity={0.85}
+                >
+                  <View style={[S.startIconWrap, { backgroundColor: opt.bg }]}>
+                    <IconSymbol name={opt.icon} size={22} color={opt.color} />
+                  </View>
+                  <Text style={S.startCardLabel}>{opt.label}</Text>
+                  <Text style={S.startCardSub}>{opt.sub}</Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+          </View>
+
+          {/* ── Travel DNA ── */}
           <TouchableOpacity
             style={S.dnaCard}
             onPress={() => router.push("/(dna)/quick-swipe" as never)}
             activeOpacity={0.88}
           >
             <LinearGradient
-              colors={["rgba(100,67,244,0.35)", "rgba(249,68,152,0.25)"]}
+              colors={[B.purpleMid, B.purple]}
               start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}
               style={StyleSheet.absoluteFillObject}
             />
-            <View style={S.dnaCardBorder} />
-            <View style={S.dnaCardLeft}>
-              <View style={S.dnaIconWrap}>
-                <LinearGradient colors={["#6443F4", "#F94498"]} style={StyleSheet.absoluteFillObject} />
-                <IconSymbol name="sparkles" size={22} color="#FFFFFF" />
+            {/* Duck mascot — appears here because it's playful & relevant */}
+            <Image
+              source={require("@/assets/images/mascot-dark.png")}
+              style={S.dnaMascot}
+              resizeMode="contain"
+            />
+            <View style={S.dnaContent}>
+              <View style={S.dnaBadge}>
+                <Text style={S.dnaBadgeText}>2 MIN · FREE</Text>
               </View>
-              <View>
-                <Text style={S.dnaCardLabel}>2 MINUTES · FREE</Text>
-                <Text style={S.dnaCardType}>Discover Your Travel DNA</Text>
-                <Text style={S.dnaCardSub}>Swipe to reveal your traveler profile</Text>
-              </View>
+              <Text style={S.dnaTitle}>
+                {hasQuiz ? `Your DNA: ${dnaType}` : "Discover Your\nTravel DNA"}
+              </Text>
+              <Text style={S.dnaSub}>
+                {hasQuiz ? "View your full traveler profile →" : "Swipe to reveal your traveler type →"}
+              </Text>
             </View>
-            <IconSymbol name="chevron.right" size={18} color="rgba(255,255,255,0.5)" />
           </TouchableOpacity>
-        </View>
 
-        {/* ══════════════════════════════════════════
-            BLOCK 2.5 — DNA-Powered Daily Tips
-        ══════════════════════════════════════════ */}
-        {hasQuiz && (
-          <View style={S.block}>
-            <Text style={S.blockTitle}>Made for you today</Text>
-            <Text style={S.blockSub}>Based on your {dnaType} profile</Text>
-            <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: 12, paddingBottom: 130 }}>
-              {[
-                { emoji: "🏖️", tip: "Book beach activities early — best spots sell out 3 days ahead", color: "#06B6D4" },
-                { emoji: "🍜", tip: "Try the local market for lunch — 3x better value than tourist restaurants", color: "#F59E0B" },
-                { emoji: "🗺️", tip: "Your Balanced pace = 4-5 stops/day. Don't over-schedule Day 1", color: "#6443F4" },
-              ].map((tip, i) => (
-                <View key={i} style={[S.tipCard, { borderColor: tip.color + "30" }]}>
-                  <LinearGradient colors={[tip.color + "18", tip.color + "06"]} style={StyleSheet.absoluteFillObject} />
-                  <Text style={{ fontSize: 24 }}>{tip.emoji}</Text>
-                  <Text style={S.tipText}>{tip.tip}</Text>
-                </View>
-              ))}
-            </ScrollView>
-          </View>
-        )}
-
-        {/* ══════════════════════════════════════════
-            BLOCK 3 — "Where's your head at?" CTA
-        ══════════════════════════════════════════ */}
-        <View style={S.block}>
-          <Text style={S.blockTitle}>Where's your head at?</Text>
-          <Text style={S.blockSub}>Let's build your perfect trip.</Text>
-          <View style={S.startOptions}>
-            {START_OPTIONS.map((opt) => (
-              <TouchableOpacity
-                key={opt.id}
-                style={S.startCard}
-                onPress={() => handleStart(opt.id)}
-                activeOpacity={0.88}
-              >
-                <LinearGradient
-                  colors={["rgba(255,255,255,0.06)", "rgba(255,255,255,0.06)"]}
-                  style={StyleSheet.absoluteFillObject}
-                />
-                <View style={S.startCardBorder} />
-                <View style={[S.startIconWrap, { overflow: "hidden" }]}>
-                  <LinearGradient colors={opt.gradient} style={StyleSheet.absoluteFillObject} />
-                  <IconSymbol name={opt.icon} size={22} color="#FFFFFF" />
-                </View>
-                <View style={S.startCardText}>
-                  <Text style={S.startCardLabel}>{opt.label}</Text>
-                  <Text style={S.startCardSub}>{opt.sub}</Text>
-                </View>
-                <IconSymbol name="chevron.right" size={16} color="rgba(255,255,255,0.06)" />
-              </TouchableOpacity>
-            ))}
-          </View>
-        </View>
-
-        {/* ══════════════════════════════════════════
-            BLOCK 4 — How It Works
-        ══════════════════════════════════════════ */}
-        <View style={S.block}>
-          <Text style={S.blockTitle}>How TRAVI works</Text>
-          <Text style={S.blockSub}>The travel friend you never had — who works only for you.</Text>
-
-          <View style={S.howItWorksWrap}>
-            {HOW_IT_WORKS.map((step, i) => (
-              <View key={i} style={S.howStep}>
-                {/* Connector line */}
-                {i < HOW_IT_WORKS.length - 1 && <View style={S.howConnector} />}
-
-                <View style={S.howLeft}>
-                  <View style={[S.howIconWrap, { overflow: "hidden" }]}>
-                    <LinearGradient colors={step.gradient} style={StyleSheet.absoluteFillObject} />
-                    <IconSymbol name={step.icon} size={22} color="#FFFFFF" />
+          {/* ── DNA tips (if quiz done) ── */}
+          {hasQuiz && (
+            <View style={S.section}>
+              <Text style={S.sectionTitle}>Made for you today</Text>
+              <Text style={S.sectionSub}>Based on your {dnaType} profile</Text>
+              <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: 12, paddingRight: 4 }}>
+                {[
+                  { icon: "sun.max.fill" as const, tip: "Book beach activities early — best spots sell out 3 days ahead", color: B.orange },
+                  { icon: "fork.knife"   as const, tip: "Try the local market for lunch — 3× better value",              color: B.green },
+                  { icon: "map.fill"     as const, tip: "Your pace = 4–5 stops/day. Don't over-schedule Day 1",          color: B.purple },
+                ].map((tip, i) => (
+                  <View key={i} style={[S.tipCard, { borderColor: tip.color + "40" }]}>
+                    <View style={[S.tipIcon, { backgroundColor: tip.color + "18" }]}>
+                      <IconSymbol name={tip.icon} size={18} color={tip.color} />
+                    </View>
+                    <Text style={S.tipText}>{tip.tip}</Text>
                   </View>
+                ))}
+              </ScrollView>
+            </View>
+          )}
+
+          {/* ── How TRAVI works ── */}
+          <View style={S.section}>
+            <Text style={S.sectionTitle}>How it works</Text>
+            <Text style={S.sectionSub}>The travel friend you never had.</Text>
+            {[
+              { icon: "sparkles"             as const, color: B.purple, title: "Your Travel DNA",      desc: "Answer 7 questions. TRAVI learns your travel personality forever." },
+              { icon: "airplane"             as const, color: B.pink,   title: "AI plans everything",  desc: "Flights, hotels, experiences — curated for you, not the masses." },
+              { icon: "dollarsign.circle.fill" as const, color: B.orange, title: "Cashback, not fees", desc: "The 10–15% that used to go to agents? It comes back to you." },
+            ].map((step, i) => (
+              <View key={i} style={S.howRow}>
+                <View style={[S.howIcon, { backgroundColor: step.color + "18" }]}>
+                  <IconSymbol name={step.icon} size={20} color={step.color} />
                 </View>
-                <View style={S.howContent}>
+                <View style={{ flex: 1 }}>
                   <Text style={S.howTitle}>{step.title}</Text>
                   <Text style={S.howDesc}>{step.desc}</Text>
                 </View>
               </View>
             ))}
           </View>
-        </View>
 
-        {/* ══════════════════════════════════════════
-            BLOCK 5 — No Middleman Manifesto
-        ══════════════════════════════════════════ */}
-        <View style={S.block}>
+          {/* ── Cashback manifesto ── */}
           <View style={S.manifestoCard}>
             <LinearGradient
-              colors={["rgba(100,67,244,0.25)", "rgba(249,68,152,0.2)", "rgba(255,215,0,0.1)"]}
+              colors={[B.purpleMid, B.purple]}
               start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}
               style={StyleSheet.absoluteFillObject}
             />
-            <View style={S.manifestoBorder} />
-
-            <View style={S.manifestoHeader}>
-              <View style={S.manifestoIconWrap}>
-                <LinearGradient colors={["#F59E0B", "#D97706"]} style={StyleSheet.absoluteFillObject} />
-                <IconSymbol name="dollarsign.circle.fill" size={22} color="#FFFFFF" />
-              </View>
-              <Text style={S.manifestoTitle}>You are your own agent</Text>
-            </View>
-
-            <Text style={S.manifestoText}>
-              Traditional travel agents take 10–15% of every booking — without you knowing. TRAVI removes the middleman entirely. You plan, you book directly, and that commission comes back to you as cashback after your trip. No hidden fees. No surprises.
+            <Text style={S.manifestoTitle}>You are your own agent.</Text>
+            <Text style={S.manifestoBody}>
+              Traditional agents pocket 10–15% of every booking. TRAVI removes the middleman — that commission comes back to you as cashback.
             </Text>
-
-            <View style={S.manifestoComparison}>
-              <View style={S.manifestoCompCol}>
-                <Text style={S.manifestoCompLabel}>Traditional</Text>
-                <View style={S.manifestoCompBadge}>
-                  <Text style={S.manifestoCompBadgeText}>Agent keeps 10–15%</Text>
+            <View style={S.manifestoRow}>
+              <View style={S.manifestoCol}>
+                <Text style={S.manifestoColLabel}>Old way</Text>
+                <View style={[S.manifestoPill, { backgroundColor: "rgba(255,255,255,0.12)" }]}>
+                  <Text style={S.manifestoPillText}>Agent keeps 15%</Text>
                 </View>
               </View>
-              <View style={S.manifestoVs}>
-                <Text style={S.manifestoVsText}>vs</Text>
-              </View>
-              <View style={S.manifestoCompCol}>
-                <Text style={[S.manifestoCompLabel, { color: "#02A65C" }]}>TRAVI</Text>
-                <View style={[S.manifestoCompBadge, { backgroundColor: "rgba(2,166,92,0.2)", borderColor: "rgba(2,166,92,0.4)" }]}>
-                  <Text style={[S.manifestoCompBadgeText, { color: "#02A65C" }]}>You keep it all</Text>
+              <Text style={S.manifestoVs}>vs</Text>
+              <View style={S.manifestoCol}>
+                <Text style={S.manifestoColLabel}>TRAVI</Text>
+                <View style={[S.manifestoPill, { backgroundColor: "rgba(2,166,92,0.25)" }]}>
+                  <Text style={[S.manifestoPillText, { color: "#7FFFB8" }]}>You keep it all</Text>
                 </View>
               </View>
             </View>
           </View>
-        </View>
 
-        {/* ══════════════════════════════════════════
-            BLOCK 6 — Final CTA
-        ══════════════════════════════════════════ */}
-        <View style={[S.block, { paddingBottom: 130 }]}>
-          <TouchableOpacity style={S.finalCta} onPress={() => handleStart("destination")} activeOpacity={0.88}>
-            <LinearGradient
-              colors={["#6443F4", "#F94498"]}
-              start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
-              style={StyleSheet.absoluteFillObject}
-            />
-            <View style={S.finalCtaContent}>
-              <Text style={S.finalCtaTitle}>Plan your next trip</Text>
-              <Text style={S.finalCtaSub}>Free to plan · Pay only when you book · Cashback guaranteed</Text>
-            </View>
-            <View style={S.finalCtaArrow}>
-              <IconSymbol name="arrow.right" size={20} color="#FFFFFF" />
-            </View>
-          </TouchableOpacity>
         </View>
-
-      </Animated.ScrollView>
+      </ScrollView>
 
       {/* ── AI Agent FAB ── */}
       <TouchableOpacity
-        style={[S.agentFab, { bottom: Math.max(insets.bottom, 16) + 72 }]}
+        style={[S.fab, { bottom: tabBarOffset + 12 }]}
         onPress={() => {
           if (Platform.OS !== "web") Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
           router.push("/(agent)/chat" as never);
@@ -521,155 +418,529 @@ export default function HomeScreen() {
         activeOpacity={0.88}
       >
         <LinearGradient
-          colors={["#7C3AED", "#9333EA"]}
-          start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 1 }}
+          colors={[B.pink, B.pinkDark]}
+          start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}
           style={StyleSheet.absoluteFillObject}
         />
-        <View style={S.agentFabBorder} />
-        <IconSymbol name="bubble.left.fill" size={20} color="#FFFFFF" />
-        <Text style={S.agentFabLabel}>Agent</Text>
+        <IconSymbol name="bubble.left.fill" size={17} color={B.white} />
+        <Text style={S.fabLabel}>Agent</Text>
       </TouchableOpacity>
     </View>
   );
 }
 
+// ─── Styles ───────────────────────────────────────────────────────────────────
 const S = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#0D0628" },
+  root: { flex: 1, backgroundColor: B.purpleDark },
 
-  // Sticky header
-  stickyHeader: { position: "absolute", top: 0, left: 0, right: 0, zIndex: 100, flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 24, paddingTop: 56, paddingBottom: 16 },
-  stickyTitle: { color: "#FFFFFF", fontSize: 18, fontWeight: "900", letterSpacing: 2, fontFamily: "Chillax-Bold" },
-  stickyNotif: { width: 36, height: 36, borderRadius: 18, backgroundColor: "rgba(255,255,255,0.06)", alignItems: "center", justifyContent: "center" },
+  // ── Hero ──
+  heroWrap: {
+    height: 380,
+    overflow: "hidden",
+    justifyContent: "space-between",
+    flexDirection: "column",
+  },
+  topBar: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingHorizontal: 20,
+    paddingBottom: 8,
+  },
+  logoImg: {
+    width: 80,
+    height: 28,
+  },
+  topBarRight: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 10,
+  },
+  walletPill: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 5,
+    backgroundColor: "rgba(255,255,255,0.18)",
+    borderRadius: 20,
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+  },
+  walletPillText: {
+    color: B.white,
+    fontSize: 13,
+    fontWeight: "700",
+    fontFamily: "Satoshi-Bold",
+  },
+  notifBtn: {
+    width: 38,
+    height: 38,
+    borderRadius: 19,
+    backgroundColor: "rgba(255,255,255,0.15)",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  heroGreetingWrap: {
+    paddingHorizontal: 20,
+    flex: 1,
+    justifyContent: "flex-end",
+    paddingBottom: 8,
+  },
+  heroGreeting: {
+    color: B.offWhite,
+    fontSize: 17,
+    fontWeight: "600",
+    fontFamily: "Satoshi-Medium",
+  },
+  heroBottom: {
+    paddingHorizontal: 20,
+    paddingBottom: 22,
+    gap: 10,
+  },
+  heroDestInfo: {
+    gap: 4,
+  },
+  heroVibe: {
+    color: B.dim,
+    fontSize: 13,
+    fontFamily: "Satoshi-Medium",
+    letterSpacing: 0.3,
+  },
+  heroCityRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
+  },
+  heroCity: {
+    color: B.white,
+    fontSize: 36,
+    fontWeight: "800",
+    fontFamily: "Chillax-Bold",
+    letterSpacing: -1,
+  },
+  heroFlag: {
+    fontSize: 24,
+  },
+  heroActions: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+  heroDots: {
+    flexDirection: "row",
+    gap: 6,
+  },
+  heroDot: {
+    width: 6,
+    height: 6,
+    borderRadius: 3,
+    backgroundColor: B.dimmer,
+  },
+  heroDotActive: {
+    width: 18,
+    backgroundColor: B.white,
+  },
+  exploreBtn: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 6,
+    backgroundColor: B.white,
+    borderRadius: 20,
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+  },
+  exploreBtnText: {
+    color: B.purpleDark,
+    fontSize: 13,
+    fontWeight: "700",
+    fontFamily: "Satoshi-Bold",
+  },
 
-  // Hero
-  heroWrap: { height: height * 0.72, justifyContent: "flex-end", overflow: "hidden" },
-  heroHeader: { position: "absolute", top: 0, left: 0, right: 0, flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 20, paddingTop: 60, paddingBottom: 16 },
-  heroGreeting: { color: "rgba(255,255,255,0.7)", fontSize: 15, fontWeight: "500", fontFamily: "Satoshi-Medium" },
-  notifBtn: { width: 44, height: 44, borderRadius: 22, overflow: "hidden" },
-  notifGradient: { flex: 1, alignItems: "center", justifyContent: "center", borderWidth: 1, borderColor: "rgba(255,255,255,0.12)", borderRadius: 22 },
+  // ── Content ──
+  content: {
+    backgroundColor: B.purpleDark,
+    paddingHorizontal: 20,
+    paddingTop: 20,
+    gap: 16,
+  },
 
-  heroBody: { position: "absolute", bottom: 220, left: 20, right: 20, zIndex: 2 },
-  heroTagline: { color: "rgba(255,255,255,0.55)", fontSize: 13, fontWeight: "600", letterSpacing: 0.5, marginBottom: 4 },
-  heroCity: { color: "#FFFFFF", fontSize: 42, fontWeight: "900", letterSpacing: -1.5, lineHeight: 46, fontFamily: "Chillax-Bold" },
-  heroCountry: { color: "rgba(255,255,255,0.55)", fontSize: 16, fontWeight: "600", marginTop: 2 },
-  heroDots: { flexDirection: "row", gap: 6, marginTop: 14 },
-  heroDot: { width: 6, height: 6, borderRadius: 3, backgroundColor: "rgba(255,255,255,0.06)" },
-  heroDotActive: { width: 20, backgroundColor: "#FFFFFF" },
+  // ── Live / Upcoming banners ──
+  liveBanner: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 12,
+    backgroundColor: "rgba(1,190,255,0.12)",
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: "rgba(1,190,255,0.30)",
+    paddingHorizontal: 16,
+    paddingVertical: 14,
+  },
+  liveDot: {
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+    backgroundColor: B.cyan,
+  },
+  liveBannerLabel: {
+    color: B.cyan,
+    fontSize: 10,
+    fontWeight: "700",
+    fontFamily: "Satoshi-Bold",
+    letterSpacing: 1.2,
+  },
+  liveBannerDest: {
+    color: B.white,
+    fontSize: 15,
+    fontWeight: "700",
+    fontFamily: "Chillax-Bold",
+  },
+  upcomingBanner: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 14,
+    backgroundColor: B.purpleMid,
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: "rgba(100,67,244,0.35)",
+    paddingHorizontal: 16,
+    paddingVertical: 14,
+  },
+  upcomingCountdown: {
+    alignItems: "center",
+    minWidth: 40,
+  },
+  upcomingDays: {
+    color: B.white,
+    fontSize: 24,
+    fontWeight: "800",
+    fontFamily: "Chillax-Bold",
+    lineHeight: 26,
+  },
+  upcomingDaysLabel: {
+    color: B.dim,
+    fontSize: 10,
+    fontFamily: "Satoshi-Medium",
+  },
+  upcomingLabel: {
+    color: B.purple,
+    fontSize: 10,
+    fontWeight: "700",
+    fontFamily: "Satoshi-Bold",
+    letterSpacing: 1.2,
+  },
+  upcomingDest: {
+    color: B.white,
+    fontSize: 15,
+    fontWeight: "700",
+    fontFamily: "Chillax-Bold",
+  },
+  upcomingWeather: {
+    color: B.dim,
+    fontSize: 12,
+    fontFamily: "Satoshi-Regular",
+    marginTop: 2,
+  },
 
-  heroHeadlineWrap: { paddingHorizontal: 20, paddingBottom: 130 },
-  heroHeadline: { color: "#FFFFFF", fontSize: 28, fontWeight: "900", letterSpacing: -0.8, lineHeight: 34, fontFamily: "Chillax-Bold" },
-  heroSub: { color: "rgba(255,255,255,0.5)", fontSize: 14, lineHeight: 21, marginTop: 8 },
-  heroPlanBtn: { flexDirection: "row", alignItems: "center", gap: 8, marginTop: 18, borderRadius: 28, paddingVertical: 14, paddingHorizontal: 24, overflow: "hidden", alignSelf: "flex-start" },
-  heroPlanBtnText: { color: "#FFFFFF", fontSize: 16, fontWeight: "700",
-      fontFamily: "Chillax-Semibold", letterSpacing: 0.2 },
+  // ── Plan a Trip CTA ──
+  planBtn: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    borderRadius: 18,
+    paddingHorizontal: 18,
+    paddingVertical: 18,
+    overflow: "hidden",
+  },
+  planBtnLeft: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 14,
+  },
+  planBtnIcon: {
+    width: 42,
+    height: 42,
+    borderRadius: 12,
+    backgroundColor: B.white,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  planBtnTitle: {
+    color: B.white,
+    fontSize: 17,
+    fontWeight: "800",
+    fontFamily: "Chillax-Bold",
+  },
+  planBtnSub: {
+    color: "rgba(255,255,255,0.75)",
+    fontSize: 12,
+    fontFamily: "Satoshi-Regular",
+    marginTop: 2,
+  },
+  planBtnArrow: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    backgroundColor: "rgba(255,255,255,0.20)",
+    alignItems: "center",
+    justifyContent: "center",
+  },
 
-  upcomingBanner: { flexDirection: "row", alignItems: "center", gap: 12, marginHorizontal: 20, marginBottom: 16, borderRadius: 16, overflow: "hidden", padding: 14, borderWidth: 1, borderColor: "rgba(100,67,244,0.3)" },
-  upcomingCountdown: { width: 44, height: 44, borderRadius: 12, backgroundColor: "rgba(100,67,244,0.25)", alignItems: "center", justifyContent: "center" },
-  upcomingDays: { fontSize: 18, fontWeight: "800",
-      fontFamily: "Chillax-Bold", color: "#A78BFA", lineHeight: 20 },
-  upcomingDaysLabel: { fontSize: 9, color: "#A78BFA", fontWeight: "600", letterSpacing: 0.5 },
-  upcomingLabel: { color: "#A78BFA", fontSize: 10, fontWeight: "800",
-      fontFamily: "Chillax-Bold", letterSpacing: 1.5 },
-  upcomingDest: { color: "#FFFFFF", fontSize: 15, fontWeight: "700" },
-  upcomingWeather: { color: "rgba(167,139,250,0.8)", fontSize: 11, marginTop: 2 },
-  activeTripBanner: { flexDirection: "row", alignItems: "center", gap: 12, marginHorizontal: 20, marginBottom: 20, borderRadius: 16, overflow: "hidden", padding: 14, borderWidth: 1, borderColor: "rgba(16,185,129,0.3)" },
-  activeDot: { width: 8, height: 8, borderRadius: 4, backgroundColor: "#02A65C" },
-  activeTripLabel: { color: "#02A65C", fontSize: 10, fontWeight: "800",
-      fontFamily: "Chillax-Bold", letterSpacing: 1.5 },
-  activeTripDest: { color: "#FFFFFF", fontSize: 15, fontWeight: "700" },
-  activeTripArrow: { width: 28, height: 28, borderRadius: 14, backgroundColor: "rgba(16,185,129,0.2)", alignItems: "center", justifyContent: "center" },
+  // ── Join card ──
+  joinCard: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: B.white,
+    borderRadius: 16,
+    paddingHorizontal: 18,
+    paddingVertical: 16,
+  },
+  joinTitle: {
+    color: B.purpleDark,
+    fontSize: 15,
+    fontWeight: "700",
+    fontFamily: "Chillax-Bold",
+  },
+  joinSub: {
+    color: "#7B6B8D",
+    fontSize: 12,
+    fontFamily: "Satoshi-Regular",
+    marginTop: 2,
+  },
+  joinArrow: {
+    width: 34,
+    height: 34,
+    borderRadius: 17,
+    backgroundColor: "rgba(100,67,244,0.10)",
+    alignItems: "center",
+    justifyContent: "center",
+  },
 
-  // Blocks
-  block: { paddingHorizontal: 20, paddingTop: 28 },
-  blockTitle: { color: "#FFFFFF", fontSize: 22, fontWeight: "900", letterSpacing: -0.5, fontFamily: "Chillax-Bold" },
-  blockSub: { color: "rgba(255,255,255,0.5)", fontSize: 13, marginTop: 4, marginBottom: 16, lineHeight: 19 },
+  // ── Section ──
+  section: {
+    gap: 12,
+  },
+  sectionTitle: {
+    color: B.white,
+    fontSize: 20,
+    fontWeight: "800",
+    fontFamily: "Chillax-Bold",
+    letterSpacing: -0.3,
+  },
+  sectionSub: {
+    color: B.dim,
+    fontSize: 13,
+    fontFamily: "Satoshi-Regular",
+    marginTop: -8,
+  },
 
-  // Plan Trip CTA card
-  planTripCard: { borderRadius: 20, overflow: "hidden", padding: 18, shadowColor: "#6443F4", shadowOffset: { width: 0, height: 6 }, shadowOpacity: 0.45, shadowRadius: 18, elevation: 12 },
-  planTripContent: { flexDirection: "row", alignItems: "center", justifyContent: "space-between" },
-  planTripLeft: { flexDirection: "row", alignItems: "center", gap: 14, flex: 1 },
-  planTripIconBox: { width: 52, height: 52, borderRadius: 16, backgroundColor: "rgba(255,255,255,0.06)", alignItems: "center", justifyContent: "center" },
-  planTripTitle: { color: "#FFFFFF", fontSize: 18, fontWeight: "900", lineHeight: 22, fontFamily: "Chillax-Bold" },
-  planTripSub: { color: "rgba(255,255,255,0.7)", fontSize: 13, marginTop: 3, fontWeight: "500",
-      fontFamily: "Satoshi-Medium" },
-  planTripArrow: { width: 36, height: 36, borderRadius: 18, backgroundColor: "rgba(255,255,255,0.06)", alignItems: "center", justifyContent: "center" },
+  // ── Start options grid ──
+  startGrid: {
+    flexDirection: "row",
+    gap: 10,
+  },
+  startCard: {
+    flex: 1,
+    backgroundColor: B.purpleMid,
+    borderRadius: 16,
+    padding: 14,
+    gap: 10,
+    borderWidth: 1,
+    borderColor: "rgba(100,67,244,0.30)",
+  },
+  startIconWrap: {
+    width: 44,
+    height: 44,
+    borderRadius: 12,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  startCardLabel: {
+    color: B.white,
+    fontSize: 13,
+    fontWeight: "700",
+    fontFamily: "Satoshi-Bold",
+    lineHeight: 17,
+  },
+  startCardSub: {
+    color: B.dim,
+    fontSize: 11,
+    fontFamily: "Satoshi-Regular",
+    lineHeight: 15,
+  },
 
-  // DNA card (has quiz)
-  dnaCard: { borderRadius: 20, overflow: "hidden", flexDirection: "row", alignItems: "center", padding: 16, gap: 14 },
-  dnaCardBorder: { position: "absolute", top: 0, left: 0, right: 0, bottom: 0, borderRadius: 20, borderWidth: 1, borderColor: "rgba(100,67,244,0.35)" },
-  dnaCardLeft: { flexDirection: "row", alignItems: "center", gap: 14, flex: 1 },
-  dnaIconWrap: { width: 48, height: 48, borderRadius: 16, overflow: "hidden", alignItems: "center", justifyContent: "center" },
-  dnaCardLabel: { color: "rgba(255,255,255,0.45)", fontSize: 11, fontWeight: "700", letterSpacing: 1 },
-  dnaCardType: { color: "#C084FC", fontSize: 18, fontWeight: "900",
-      fontFamily: "Chillax-Bold", marginTop: 1 },
-  dnaCardSub: { color: "rgba(255,255,255,0.55)", fontSize: 12, marginTop: 2 },
+  // ── Travel DNA card (duck mascot here!) ──
+  dnaCard: {
+    borderRadius: 20,
+    overflow: "hidden",
+    paddingLeft: 20,
+    paddingRight: 130,
+    paddingVertical: 22,
+    minHeight: 130,
+    justifyContent: "center",
+  },
+  dnaMascot: {
+    position: "absolute",
+    right: -10,
+    bottom: -5,
+    width: 130,
+    height: 130,
+  },
+  dnaContent: {
+    gap: 8,
+  },
+  dnaBadge: {
+    alignSelf: "flex-start",
+    backgroundColor: "rgba(249,68,152,0.25)",
+    borderRadius: 20,
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+  },
+  dnaBadgeText: {
+    color: B.pink,
+    fontSize: 10,
+    fontWeight: "700",
+    fontFamily: "Satoshi-Bold",
+    letterSpacing: 0.8,
+  },
+  dnaTitle: {
+    color: B.white,
+    fontSize: 20,
+    fontWeight: "800",
+    fontFamily: "Chillax-Bold",
+    letterSpacing: -0.3,
+    lineHeight: 24,
+  },
+  dnaSub: {
+    color: B.dim,
+    fontSize: 13,
+    fontFamily: "Satoshi-Medium",
+  },
 
-  // DNA teaser (no quiz)
-  dnaTeaser: { borderRadius: 20, overflow: "hidden", padding: 18 },
-  dnaTeaserContent: { flexDirection: "row", alignItems: "center", gap: 14 },
-  dnaTeaserLeft: { flex: 1 },
-  dnaTeaserTitle: { color: "#FFFFFF", fontSize: 16, fontWeight: "800",
-      fontFamily: "Chillax-Bold", lineHeight: 22 },
-  dnaTeaserSub: { color: "rgba(255,255,255,0.45)", fontSize: 13, marginTop: 4, lineHeight: 18 },
-  dnaTeaserBtn: { borderRadius: 14, overflow: "hidden", paddingHorizontal: 16, paddingVertical: 10 },
-  dnaTeaserBtnText: { color: "#FFFFFF", fontSize: 14, fontWeight: "800",
-      fontFamily: "Chillax-Bold" },
+  // ── Tips ──
+  tipCard: {
+    width: width * 0.58,
+    backgroundColor: B.purpleMid,
+    borderRadius: 14,
+    borderWidth: 1,
+    padding: 14,
+    gap: 10,
+  },
+  tipIcon: {
+    width: 36,
+    height: 36,
+    borderRadius: 10,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  tipText: {
+    color: B.offWhite,
+    fontSize: 13,
+    fontFamily: "Satoshi-Regular",
+    lineHeight: 18,
+  },
 
-  // Start options
-  startOptions: { gap: 10 },
-  startCard: { borderRadius: 18, overflow: "hidden", flexDirection: "row", alignItems: "center", padding: 16, gap: 14 },
-  startCardBorder: { position: "absolute", top: 0, left: 0, right: 0, bottom: 0, borderRadius: 18, borderWidth: 1, borderColor: "rgba(255,255,255,0.12)" },
-  startIconWrap: { width: 50, height: 50, borderRadius: 16, alignItems: "center", justifyContent: "center" },
-  startCardText: { flex: 1 },
-  startCardLabel: { color: "#FFFFFF", fontSize: 16, fontWeight: "800",
-      fontFamily: "Chillax-Bold" },
-  startCardSub: { color: "rgba(255,255,255,0.5)", fontSize: 12, marginTop: 2 },
+  // ── How it works ──
+  howRow: {
+    flexDirection: "row",
+    alignItems: "flex-start",
+    gap: 14,
+  },
+  howIcon: {
+    width: 44,
+    height: 44,
+    borderRadius: 12,
+    alignItems: "center",
+    justifyContent: "center",
+    flexShrink: 0,
+  },
+  howTitle: {
+    color: B.white,
+    fontSize: 15,
+    fontWeight: "700",
+    fontFamily: "Satoshi-Bold",
+    marginBottom: 3,
+  },
+  howDesc: {
+    color: B.dim,
+    fontSize: 13,
+    fontFamily: "Satoshi-Regular",
+    lineHeight: 18,
+  },
 
-  // How it works
-  howItWorksWrap: { gap: 0 },
-  howStep: { flexDirection: "row", gap: 16, paddingBottom: 130, position: "relative" },
-  howConnector: { position: "absolute", left: 24, top: 52, width: 2, height: "100%", backgroundColor: "rgba(255,255,255,0.06)" },
-  howLeft: { alignItems: "center" },
-  howIconWrap: { width: 48, height: 48, borderRadius: 16, alignItems: "center", justifyContent: "center" },
-  howContent: { flex: 1, paddingTop: 4 },
-  howTitle: { color: "#FFFFFF", fontSize: 17, fontWeight: "800",
-      fontFamily: "Chillax-Bold" },
-  howDesc: { color: "rgba(255,255,255,0.45)", fontSize: 13, lineHeight: 20, marginTop: 4 },
+  // ── Manifesto ──
+  manifestoCard: {
+    borderRadius: 20,
+    overflow: "hidden",
+    padding: 22,
+    gap: 14,
+  },
+  manifestoTitle: {
+    color: B.white,
+    fontSize: 22,
+    fontWeight: "800",
+    fontFamily: "Chillax-Bold",
+    letterSpacing: -0.3,
+  },
+  manifestoBody: {
+    color: B.dim,
+    fontSize: 14,
+    fontFamily: "Satoshi-Regular",
+    lineHeight: 20,
+  },
+  manifestoRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 12,
+  },
+  manifestoCol: {
+    flex: 1,
+    gap: 6,
+  },
+  manifestoColLabel: {
+    color: B.dimmer,
+    fontSize: 11,
+    fontFamily: "Satoshi-Medium",
+    letterSpacing: 0.5,
+  },
+  manifestoPill: {
+    borderRadius: 8,
+    paddingHorizontal: 10,
+    paddingVertical: 7,
+    alignItems: "center",
+  },
+  manifestoPillText: {
+    color: B.white,
+    fontSize: 12,
+    fontWeight: "700",
+    fontFamily: "Satoshi-Bold",
+  },
+  manifestoVs: {
+    color: B.dimmer,
+    fontSize: 13,
+    fontFamily: "Satoshi-Medium",
+  },
 
-  // Manifesto
-  manifestoCard: { borderRadius: 24, overflow: "hidden", padding: 22, gap: 16 },
-  manifestoBorder: { position: "absolute", top: 0, left: 0, right: 0, bottom: 0, borderRadius: 24, borderWidth: 1, borderColor: "rgba(100,67,244,0.3)" },
-  manifestoHeader: { flexDirection: "row", alignItems: "center", gap: 12 },
-  manifestoIconWrap: { width: 44, height: 44, borderRadius: 14, overflow: "hidden", alignItems: "center", justifyContent: "center" },
-  manifestoTitle: { color: "#FFFFFF", fontSize: 18, fontWeight: "900", flex: 1, fontFamily: "Chillax-Bold" },
-  manifestoText: { color: "rgba(255,255,255,0.55)", fontSize: 14, lineHeight: 22 },
-  manifestoComparison: { flexDirection: "row", alignItems: "center", gap: 12 },
-  manifestoCompCol: { flex: 1, alignItems: "center", gap: 8 },
-  manifestoCompLabel: { color: "rgba(255,255,255,0.45)", fontSize: 12, fontWeight: "700", letterSpacing: 0.5 },
-  manifestoCompBadge: { borderRadius: 10, paddingHorizontal: 12, paddingVertical: 7, backgroundColor: "rgba(239,68,68,0.15)", borderWidth: 1, borderColor: "rgba(239,68,68,0.3)", alignItems: "center" },
-  manifestoCompBadgeText: { color: "#F87171", fontSize: 12, fontWeight: "700" },
-  manifestoVs: { width: 32, height: 32, borderRadius: 16, backgroundColor: "rgba(255,255,255,0.06)", alignItems: "center", justifyContent: "center" },
-  manifestoVsText: { color: "rgba(255,255,255,0.5)", fontSize: 11, fontWeight: "700" },
-  tipCard: { width: 200, borderRadius: 16, padding: 14, gap: 8, overflow: "hidden", borderWidth: 1 },
-  tipText: { color: "#ECEDEE", fontSize: 13, lineHeight: 19 },
-
-  // Final CTA
-  finalCta: { borderRadius: 22, overflow: "hidden", flexDirection: "row", alignItems: "center", padding: 20 },
-  finalCtaContent: { flex: 1 },
-  finalCtaTitle: { color: "#FFFFFF", fontSize: 18, fontWeight: "900", fontFamily: "Chillax-Bold" },
-  finalCtaSub: { color: "rgba(255,255,255,0.65)", fontSize: 12, marginTop: 3 },
-  finalCtaArrow: { width: 40, height: 40, borderRadius: 20, backgroundColor: "rgba(255,255,255,0.06)", alignItems: "center", justifyContent: "center" },
-
-  // Auth CTA
-  authCtaCard: { flexDirection: "row", alignItems: "center", borderRadius: 20, overflow: "hidden", padding: 20, gap: 14 },
-  authCtaContent: { flex: 1, gap: 4 },
-  authCtaTitle: { color: "#FFFFFF", fontSize: 18, fontWeight: "900", fontFamily: "Chillax-Bold" },
-  authCtaSub: { color: "rgba(255,255,255,0.7)", fontSize: 13, lineHeight: 18, fontFamily: "Satoshi-Regular" },
-  authCtaArrow: { width: 40, height: 40, borderRadius: 20, backgroundColor: "rgba(255,255,255,0.15)", alignItems: "center", justifyContent: "center" },
-
-  // AI Agent FAB
-  agentFab: { position: "absolute", right: 20, flexDirection: "row", alignItems: "center", gap: 8, paddingHorizontal: 18, paddingVertical: 14, borderRadius: 28, overflow: "hidden", shadowColor: "#7C3AED", shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.6, shadowRadius: 16, elevation: 12 },
-  agentFabBorder: { position: "absolute", top: 0, left: 0, right: 0, bottom: 0, borderRadius: 28, borderWidth: 1, borderColor: "rgba(192,132,252,0.4)" },
-  agentFabLabel: { color: "#FFFFFF", fontSize: 14, fontWeight: "700", letterSpacing: 0.3 },
+  // ── FAB ──
+  fab: {
+    position: "absolute",
+    right: 20,
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 7,
+    paddingHorizontal: 18,
+    paddingVertical: 13,
+    borderRadius: 30,
+    overflow: "hidden",
+    elevation: 8,
+    shadowColor: B.pink,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.45,
+    shadowRadius: 12,
+  },
+  fabLabel: {
+    color: B.white,
+    fontSize: 14,
+    fontWeight: "700",
+    fontFamily: "Satoshi-Bold",
+  },
 });

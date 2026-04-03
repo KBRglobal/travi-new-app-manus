@@ -10,6 +10,7 @@ import { getTierForXP, XP_TIERS } from "@/lib/xp-tiers";
 import { AgentFAB } from "@/components/agent-fab";
 import { trpc } from "@/lib/trpc";
 import { useAuth } from "@/hooks/use-auth";
+import { useThemeContext } from "@/lib/theme-provider";
 
 const { width } = Dimensions.get("window");
 
@@ -105,7 +106,8 @@ export default function ProfileScreen() {
   const insets = useSafeAreaInsets();
   const { isAuthenticated, user } = useAuth();
   const profile = state.profile;
-  const [toggles, setToggles] = useState({ darkMode: false, notifications: true });
+  const { colorScheme, toggleTheme } = useThemeContext();
+  const [toggles, setToggles] = useState({ darkMode: colorScheme === "dark", notifications: true });
   const [liveDNA, setLiveDNA] = useState<TravelerDNA | null>(null);
   const traitAnims = useRef(TRAIT_CONFIG.map(() => new Animated.Value(0))).current;
 
@@ -374,8 +376,14 @@ export default function ProfileScreen() {
                   <Text style={styles.settingsLabel}>{item.label}</Text>
                   {item.isToggle ? (
                     <Switch
-                      value={toggles[item.toggleKey as keyof typeof toggles]}
-                      onValueChange={(v) => setToggles((t) => ({ ...t, [item.toggleKey]: v }))}
+                      value={item.toggleKey === "darkMode" ? colorScheme === "dark" : toggles[item.toggleKey as keyof typeof toggles]}
+                      onValueChange={(v) => {
+                        if (item.toggleKey === "darkMode") {
+                          toggleTheme();
+                        } else {
+                          setToggles((t) => ({ ...t, [item.toggleKey]: v }));
+                        }
+                      }}
                       trackColor={{ false: "rgba(255,255,255,0.06)", true: "#6443F4" }}
                       thumbColor="#FFFFFF"
                     />

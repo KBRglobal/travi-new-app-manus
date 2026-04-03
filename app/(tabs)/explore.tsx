@@ -107,7 +107,7 @@ export default function ExploreScreen() {
   return (
     <View style={S.container}>
       <LinearGradient
-        colors={["#0D0628", "#1A0A3D", "#0D0628"]}
+        colors={["#1A0D3D", "#2D1060", "#1A0D3D"]}
         locations={[0, 0.5, 1]}
         style={StyleSheet.absoluteFillObject}
       />
@@ -353,7 +353,7 @@ export default function ExploreScreen() {
 }
 
 const S = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#0D0628" },
+  container: { flex: 1, backgroundColor: "#1A0D3D" },
   safeArea: { flex: 1 },
 
   header: { paddingHorizontal: 20, paddingTop: 16, paddingBottom: 16 },

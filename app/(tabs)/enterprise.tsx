@@ -188,7 +188,7 @@ export default function EnterpriseScreen() {
     : KPIS;
 
   const displayRevenue = metrics && metrics.length >= 2
-    ? metrics.slice(0, 6).reverse().map((m) => ({ month: m.period.slice(-2) === "01" ? "Jan" : m.period.slice(-2) === "02" ? "Feb" : m.period.slice(-2) === "03" ? "Mar" : m.period.slice(-2) === "04" ? "Apr" : m.period.slice(-2) === "05" ? "May" : m.period.slice(-2) === "06" ? "Jun" : m.period.slice(-2) === "07" ? "Jul" : m.period.slice(-2) === "08" ? "Aug" : m.period.slice(-2) === "09" ? "Sep" : m.period.slice(-2) === "10" ? "Oct" : m.period.slice(-2) === "11" ? "Nov" : "Dec", value: m.mrr }))
+    ? metrics.slice(0, 6).reverse().map((m: any) => ({ month: m.period.slice(-2) === "01" ? "Jan" : m.period.slice(-2) === "02" ? "Feb" : m.period.slice(-2) === "03" ? "Mar" : m.period.slice(-2) === "04" ? "Apr" : m.period.slice(-2) === "05" ? "May" : m.period.slice(-2) === "06" ? "Jun" : m.period.slice(-2) === "07" ? "Jul" : m.period.slice(-2) === "08" ? "Aug" : m.period.slice(-2) === "09" ? "Sep" : m.period.slice(-2) === "10" ? "Oct" : m.period.slice(-2) === "11" ? "Nov" : "Dec", value: m.mrr }))
     : MONTHLY_REVENUE;
 
   const handleTab = (i: number) => {

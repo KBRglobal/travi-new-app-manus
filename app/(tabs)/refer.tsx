@@ -47,7 +47,7 @@ export default function ReferScreen() {
 
   // Use real DB referrals if available, otherwise fall back to mock data
   const displayReferrals = dbReferrals.length > 0
-    ? dbReferrals.map((r, i) => ({
+    ? dbReferrals.map((r: any, i: number) => ({
         id: String(r.id),
         name: `Referral #${i + 1}`,
         joined: new Date(r.createdAt).toLocaleDateString("en-US", { month: "short", day: "numeric" }),
@@ -58,8 +58,8 @@ export default function ReferScreen() {
       }))
     : REFERRED_FRIENDS;
 
-  const totalEarned = displayReferrals.filter(f => f.status === "completed").reduce((s, f) => s + f.reward, 0);
-  const completedCount = displayReferrals.filter(f => f.status === "completed").length;
+  const totalEarned = displayReferrals.filter((f: any) => f.status === "completed").reduce((s: number, f: any) => s + f.reward, 0);
+  const completedCount = displayReferrals.filter((f: any) => f.status === "completed").length;
 
   const handleCopyCode = () => {
     if (Platform.OS !== "web") Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);

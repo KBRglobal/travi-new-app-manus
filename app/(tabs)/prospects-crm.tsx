@@ -134,9 +134,9 @@ export default function ProspectsCRMScreen() {
   // Convert DB prospects to local shape, fall back to mock data
   const PROSPECTS: Prospect[] = useMemo(() => {
     if (!dbProspects || dbProspects.length === 0) return MOCK_PROSPECTS;
-    return dbProspects.map((p) => {
+    return dbProspects.map((p: any) => {
       const name = p.contactName ?? p.companyName;
-      const initials = name.split(" ").map((w) => w[0]).join("").slice(0, 2).toUpperCase();
+      const initials = name.split(" ").map((w: string) => w[0]).join("").slice(0, 2).toUpperCase();
       const country = p.country ?? "";
       return {
         id: String(p.id),

@@ -88,7 +88,7 @@ export default function SupportScreen() {
   // Use real DB tickets if available, otherwise fall back to mock data
   const dbTickets = ticketsQuery.data ?? [];
   const displayTickets = dbTickets.length > 0
-    ? dbTickets.map((t) => ({
+    ? dbTickets.map((t: any) => ({
         id: `TKT-${String(t.id).padStart(4, "0")}`,
         subject: t.subject,
         status: t.status as keyof typeof STATUS_CONFIG,
