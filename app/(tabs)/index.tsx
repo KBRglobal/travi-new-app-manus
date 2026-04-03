@@ -520,7 +520,7 @@ const S = StyleSheet.create({
   notifBtn: { width: 44, height: 44, borderRadius: 22, overflow: "hidden" },
   notifGradient: { flex: 1, alignItems: "center", justifyContent: "center", borderWidth: 1, borderColor: "rgba(255,255,255,0.12)", borderRadius: 22 },
 
-  heroBody: { position: "absolute", bottom: 160, left: 20, right: 20 },
+  heroBody: { position: "absolute", bottom: 220, left: 20, right: 20, zIndex: 2 },
   heroTagline: { color: "rgba(255,255,255,0.55)", fontSize: 13, fontWeight: "600", letterSpacing: 0.5, marginBottom: 4 },
   heroCity: { color: "#FFFFFF", fontSize: 42, fontWeight: "900", letterSpacing: -1.5, lineHeight: 46, fontFamily: "Chillax-Bold" },
   heroCountry: { color: "rgba(255,255,255,0.55)", fontSize: 16, fontWeight: "600", marginTop: 2 },
