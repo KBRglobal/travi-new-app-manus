@@ -187,7 +187,7 @@ const S = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  headerTitle: { fontSize: 18, fontWeight: "700" },
+  headerTitle: { fontSize: 18, fontFamily: "Chillax-Semibold", fontWeight: "700" },
   filterRow: {
     paddingHorizontal: 16,
     paddingVertical: 12,
@@ -198,7 +198,7 @@ const S = StyleSheet.create({
     paddingVertical: 8,
     borderRadius: 20,
   },
-  filterText: { fontSize: 14, fontWeight: "600", textTransform: "capitalize" },
+  filterText: { fontSize: 14, fontFamily: "Chillax-Semibold", fontWeight: "600", textTransform: "capitalize" },
   listContent: { paddingHorizontal: 16, paddingTop: 8, gap: 12 },
   pinCard: {
     borderRadius: 16,
@@ -206,13 +206,13 @@ const S = StyleSheet.create({
     borderLeftWidth: 4,
   },
   pinHeader: { flexDirection: "row", alignItems: "center", gap: 12 },
-  pinEmoji: { fontSize: 32 },
-  pinName: { fontSize: 16, fontWeight: "700", marginBottom: 4 },
-  pinMeta: { fontSize: 13 },
+  pinEmoji: { fontSize: 32, fontFamily: "Satoshi-Regular" },
+  pinName: { fontSize: 16, fontFamily: "Chillax-Semibold", fontWeight: "700", marginBottom: 4 },
+  pinMeta: { fontSize: 13, fontFamily: "Satoshi-Regular" },
   dayBadge: {
     paddingHorizontal: 10,
     paddingVertical: 4,
     borderRadius: 12,
   },
-  dayText: { color: "#fff", fontSize: 12, fontWeight: "700" },
+  dayText: { color: "#fff", fontSize: 12, fontFamily: "Chillax-Semibold", fontWeight: "700" },
 });

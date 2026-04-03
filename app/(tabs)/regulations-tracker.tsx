@@ -426,16 +426,16 @@ const styles = StyleSheet.create({
     alignItems: "center", justifyContent: "center", marginTop: 4,
   },
   headerContent: { flex: 1 },
-  headerLabel: { fontSize: 10, fontWeight: "700", color: "#06B6D4", letterSpacing: 2, marginBottom: 2 },
-  headerTitle: { fontSize: 22, fontWeight: "800", color: "#fff" },
-  headerSub: { fontSize: 13, color: "rgba(255,255,255,0.6)", marginTop: 2 },
+  headerLabel: { fontSize: 10, fontFamily: "Chillax-Semibold", fontWeight: "700", color: "#06B6D4", letterSpacing: 2, marginBottom: 2 },
+  headerTitle: { fontSize: 22, fontFamily: "Chillax-Bold", fontWeight: "800", color: "#fff" },
+  headerSub: { fontSize: 13, fontFamily: "Satoshi-Regular", color: "rgba(255,255,255,0.6)", marginTop: 2 },
   scoreCircle: {
     width: 56, height: 56, borderRadius: 28, borderWidth: 2,
     alignItems: "center", justifyContent: "center",
     backgroundColor: "rgba(0,0,0,0.3)",
   },
-  scoreValue: { fontSize: 14, fontWeight: "800" },
-  scoreLabel: { fontSize: 9, color: "#9BA1A6", fontWeight: "600" },
+  scoreValue: { fontSize: 14, fontFamily: "Chillax-Bold", fontWeight: "800" },
+  scoreLabel: { fontSize: 9, fontFamily: "Chillax-Semibold", color: "#9BA1A6", fontWeight: "600" },
 
   statsRow: {
     flexDirection: "row", paddingHorizontal: 16, paddingVertical: 12, gap: 8,
@@ -444,8 +444,8 @@ const styles = StyleSheet.create({
     flex: 1, backgroundColor: "#1e2022", borderRadius: 12, padding: 10,
     alignItems: "center", borderWidth: 1, borderColor: "rgba(255,255,255,0.06)",
   },
-  statCount: { fontSize: 20, fontWeight: "800" },
-  statLabel: { fontSize: 9, color: "#9BA1A6", marginTop: 2, textAlign: "center" },
+  statCount: { fontSize: 20, fontFamily: "Chillax-Bold", fontWeight: "800" },
+  statLabel: { fontSize: 9, fontFamily: "Satoshi-Regular", color: "#9BA1A6", marginTop: 2, textAlign: "center" },
 
   searchRow: {
     flexDirection: "row", alignItems: "center", gap: 10,
@@ -453,7 +453,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#1e2022", borderRadius: 12, paddingHorizontal: 14, paddingVertical: 10,
     borderWidth: 1, borderColor: "rgba(255,255,255,0.06)",
   },
-  searchInput: { flex: 1, fontSize: 14, color: "#ECEDEE" },
+  searchInput: { flex: 1, fontSize: 14, fontFamily: "Satoshi-Regular", color: "#ECEDEE" },
 
   categoryScroll: { marginBottom: 8 },
   catChip: {
@@ -461,11 +461,11 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(100,67,244,0.08)", borderWidth: 1, borderColor: "transparent",
   },
   catChipActive: { backgroundColor: "#6443F4", borderColor: "#6443F4" },
-  catText: { fontSize: 12, fontWeight: "600", color: "#9BA1A6" },
+  catText: { fontSize: 12, fontFamily: "Chillax-Semibold", fontWeight: "600", color: "#9BA1A6" },
   catTextActive: { color: "#fff" },
 
   resultsCount: {
-    fontSize: 12, color: "#9BA1A6", paddingHorizontal: 20, marginBottom: 8,
+    fontSize: 12, fontFamily: "Satoshi-Regular", color: "#9BA1A6", paddingHorizontal: 20, marginBottom: 8,
   },
 
   cardList: { paddingHorizontal: 16, gap: 10 },
@@ -477,24 +477,24 @@ const styles = StyleSheet.create({
   regCardCritical: { borderColor: "rgba(239,68,68,0.3)" },
 
   regHeader: { flexDirection: "row", alignItems: "flex-start", gap: 10, marginBottom: 8 },
-  regFlag: { fontSize: 22, marginTop: 2 },
+  regFlag: { fontSize: 22, fontFamily: "Satoshi-Regular", marginTop: 2 },
   regTitleBlock: { flex: 1 },
-  regTitle: { fontSize: 14, fontWeight: "700", color: "#ECEDEE" },
-  regJurisdiction: { fontSize: 11, color: "#9BA1A6", marginTop: 1 },
+  regTitle: { fontSize: 14, fontFamily: "Chillax-Semibold", fontWeight: "700", color: "#ECEDEE" },
+  regJurisdiction: { fontSize: 11, fontFamily: "Satoshi-Regular", color: "#9BA1A6", marginTop: 1 },
   statusBadge: {
     flexDirection: "row", alignItems: "center", gap: 4,
     paddingHorizontal: 8, paddingVertical: 4, borderRadius: 10,
   },
-  statusText: { fontSize: 10, fontWeight: "700" },
+  statusText: { fontSize: 10, fontFamily: "Chillax-Semibold", fontWeight: "700" },
 
   tagRow: { flexDirection: "row", alignItems: "center", gap: 6, marginBottom: 8, flexWrap: "wrap" },
   catTag: { paddingHorizontal: 8, paddingVertical: 3, borderRadius: 6 },
-  catTagText: { fontSize: 9, fontWeight: "800", letterSpacing: 0.5 },
+  catTagText: { fontSize: 9, fontFamily: "Chillax-Bold", fontWeight: "800", letterSpacing: 0.5 },
   priorityTag: { paddingHorizontal: 8, paddingVertical: 3, borderRadius: 6 },
-  priorityText: { fontSize: 9, fontWeight: "800", letterSpacing: 0.5 },
-  updatedText: { fontSize: 10, color: "#9BA1A6", marginLeft: "auto" },
+  priorityText: { fontSize: 9, fontFamily: "Chillax-Bold", fontWeight: "800", letterSpacing: 0.5 },
+  updatedText: { fontSize: 10, fontFamily: "Satoshi-Regular", color: "#9BA1A6", marginLeft: "auto" },
 
-  regSummary: { fontSize: 13, color: "#9BA1A6", lineHeight: 19, marginBottom: 4 },
+  regSummary: { fontSize: 13, fontFamily: "Satoshi-Regular", color: "#9BA1A6", lineHeight: 19, marginBottom: 4 },
 
   expandedContent: { marginTop: 12, gap: 10 },
 
@@ -503,16 +503,16 @@ const styles = StyleSheet.create({
     borderWidth: 1, borderColor: "rgba(245,158,11,0.15)",
   },
   impactHeader: { flexDirection: "row", alignItems: "center", gap: 6, marginBottom: 6 },
-  impactTitle: { fontSize: 12, fontWeight: "700", color: "#F59E0B" },
-  impactText: { fontSize: 12, color: "#9BA1A6", lineHeight: 18 },
+  impactTitle: { fontSize: 12, fontFamily: "Chillax-Semibold", fontWeight: "700", color: "#F59E0B" },
+  impactText: { fontSize: 12, fontFamily: "Satoshi-Regular", color: "#9BA1A6", lineHeight: 18 },
 
   dateRow: {
     flexDirection: "row", backgroundColor: "rgba(255,255,255,0.04)",
     borderRadius: 10, padding: 12,
   },
   dateItem: { flex: 1, alignItems: "center" },
-  dateLabel: { fontSize: 10, color: "#9BA1A6", marginBottom: 3 },
-  dateValue: { fontSize: 12, fontWeight: "700", color: "#ECEDEE" },
+  dateLabel: { fontSize: 10, fontFamily: "Satoshi-Regular", color: "#9BA1A6", marginBottom: 3 },
+  dateValue: { fontSize: 12, fontFamily: "Chillax-Semibold", fontWeight: "700", color: "#ECEDEE" },
   dateDivider: { width: 1, backgroundColor: "rgba(255,255,255,0.08)", marginHorizontal: 12 },
 
   actionBox: {
@@ -520,7 +520,7 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(100,67,244,0.1)", borderRadius: 10, padding: 12,
     borderWidth: 1, borderColor: "rgba(100,67,244,0.2)",
   },
-  actionText: { flex: 1, fontSize: 12, color: "#ECEDEE", lineHeight: 18, fontWeight: "600" },
+  actionText: { flex: 1, fontSize: 12, fontFamily: "Chillax-Semibold", color: "#ECEDEE", lineHeight: 18, fontWeight: "600" },
 
   expandRow: { alignItems: "center", marginTop: 8 },
 
@@ -529,5 +529,5 @@ const styles = StyleSheet.create({
     margin: 16, padding: 12,
     backgroundColor: "rgba(255,255,255,0.04)", borderRadius: 10,
   },
-  disclaimerText: { flex: 1, fontSize: 11, color: "#9BA1A6", lineHeight: 16 },
+  disclaimerText: { flex: 1, fontSize: 11, fontFamily: "Satoshi-Regular", color: "#9BA1A6", lineHeight: 16 },
 });

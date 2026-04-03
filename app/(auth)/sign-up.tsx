@@ -9,6 +9,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { IconSymbol } from "@/components/ui/icon-symbol";
 import { useStore } from "@/lib/store";
 import { Brand, Gradients, Text as DS, Border, Typography, Radius, Spacing } from "@/lib/design-system";
+import { startOAuthLogin } from "@/constants/oauth";
 
 export default function SignUpScreen() {
   const { dispatch } = useStore();
@@ -31,20 +32,9 @@ export default function SignUpScreen() {
     router.push({ pathname: "/(auth)/verify" as never, params: { email } });
   };
 
-  const handleSocial = (provider: string) => {
-    dispatch({ type: "SET_AUTH", payload: { isAuthenticated: true, isGuest: false } });
-    dispatch({
-      type: "SET_PROFILE",
-      payload: {
-        id: Date.now().toString(), name: "",
-        email: `user@${provider.toLowerCase()}.com`,
-        quizCompleted: false, travelerDNA: {},
-        activityCategories: [], tripPace: "balanced" as const,
-        foodPreferences: { cuisines: [], avoid: [], allergies: [], dietary: [] },
-        points: 0, xp: 0, lifetimeSavings: 0, subscriptionActive: false,
-      },
-    });
-    router.replace("/(auth)/profile-setup" as never);
+  const handleSocial = async (_provider: string) => {
+    // Trigger real Manus OAuth — opens system browser, returns via deep link to app/oauth/callback.tsx
+    await startOAuthLogin();
   };
 
   const handleGuest = () => {

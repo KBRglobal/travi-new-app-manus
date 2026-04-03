@@ -194,7 +194,7 @@ export default function TripChatScreen() {
             <View key={msg.id} style={[S.msgRow, msg.role === "user" && S.msgRowUser]}>
               {msg.role === "travi" && (
                 <LinearGradient colors={["#6443F4", "#F94498"]} style={S.msgAvatar}>
-                  <Text style={{ fontSize: 12 }}>✨</Text>
+                  <Text style={{ fontSize: 12, fontFamily: "Satoshi-Regular" }}>✨</Text>
                 </LinearGradient>
               )}
               <View style={[S.bubble, msg.role === "user" ? S.bubbleUser : S.bubbleTravi]}>
@@ -210,7 +210,7 @@ export default function TripChatScreen() {
           {isTyping && (
             <View style={S.msgRow}>
               <LinearGradient colors={["#6443F4", "#F94498"]} style={S.msgAvatar}>
-                <Text style={{ fontSize: 12 }}>✨</Text>
+                <Text style={{ fontSize: 12, fontFamily: "Satoshi-Regular" }}>✨</Text>
               </LinearGradient>
               <View style={S.bubbleTravi}>
                 <View style={S.typingDots}>
@@ -318,11 +318,11 @@ const S = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  avatarEmoji: { fontSize: 18 },
-  headerTitle: { color: "#FFFFFF", fontSize: 15, fontWeight: "700" },
+  avatarEmoji: { fontSize: 18, fontFamily: "Satoshi-Regular" },
+  headerTitle: { color: "#FFFFFF", fontSize: 15, fontFamily: "Chillax-Semibold", fontWeight: "700" },
   onlineRow: { flexDirection: "row", alignItems: "center", gap: 5, marginTop: 2 },
   onlineDot: { width: 7, height: 7, borderRadius: 3.5, backgroundColor: "#4ADE80" },
-  onlineText: { color: "#9BA1A6", fontSize: 12 },
+  onlineText: { color: "#9BA1A6", fontSize: 12, fontFamily: "Satoshi-Regular" },
   itineraryBtn: {
     width: 36,
     height: 36,
@@ -360,13 +360,13 @@ const S = StyleSheet.create({
   },
   bubbleText: {
     color: "#E8E0F5",
-    fontSize: 14,
+    fontSize: 14, fontFamily: "Satoshi-Regular",
     lineHeight: 20,
   },
   bubbleTextUser: { color: "#FFFFFF" },
   bubbleTime: {
     color: "rgba(196,181,217,0.5)",
-    fontSize: 10,
+    fontSize: 10, fontFamily: "Satoshi-Regular",
     marginTop: 4,
     textAlign: "right",
   },
@@ -400,8 +400,8 @@ const S = StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 6,
   },
-  suggestionIcon: { fontSize: 14 },
-  suggestionLabel: { color: "#C4B5D9", fontSize: 12, fontWeight: "500" },
+  suggestionIcon: { fontSize: 14, fontFamily: "Satoshi-Regular" },
+  suggestionLabel: { color: "#C4B5D9", fontSize: 12, fontFamily: "Satoshi-Regular", fontWeight: "500" },
   inputRow: {
     flexDirection: "row",
     alignItems: "flex-end",
@@ -425,7 +425,7 @@ const S = StyleSheet.create({
   },
   input: {
     color: "#FFFFFF",
-    fontSize: 15,
+    fontSize: 15, fontFamily: "Satoshi-Regular",
     maxHeight: 100,
   },
   sendBtn: { marginBottom: 0 },

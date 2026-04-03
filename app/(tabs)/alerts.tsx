@@ -18,6 +18,8 @@ import { IconSymbol } from "@/components/ui/icon-symbol";
 import { useStore } from "@/lib/store";
 import type { PriceAlert } from "@/lib/store";
 import * as Haptics from "expo-haptics";
+import { trpc } from "@/lib/trpc";
+import { useAuth } from "@/hooks/use-auth";
 
 const DESTINATIONS = [
   { code: "TLV", city: "Tel Aviv", country: "Israel", emoji: "IL", gradient: ["#1a0a2e", "#6B21A8"] as const },
@@ -39,6 +41,7 @@ const MOCK_PRICES: Record<string, number> = {
 
 export default function AlertsScreen() {
   const { state, dispatch } = useStore();
+  const { isAuthenticated } = useAuth({ autoFetch: false });
   const [showModal, setShowModal] = useState(false);
   const [selectedDest, setSelectedDest] = useState<typeof DESTINATIONS[0] | null>(null);
   const [maxPrice, setMaxPrice] = useState("");
@@ -46,7 +49,29 @@ export default function AlertsScreen() {
   const pulseAnim = useRef(new Animated.Value(1)).current;
   const slideAnim = useRef(new Animated.Value(300)).current;
 
-  const alerts = state.priceAlerts;
+  // tRPC — real DB price alerts (when authenticated)
+  const { data: dbAlerts, refetch: refetchAlerts } = trpc.priceAlerts.list.useQuery(undefined, {
+    enabled: isAuthenticated,
+  });
+  const createAlertMutation = trpc.priceAlerts.create.useMutation({
+    onSuccess: () => refetchAlerts(),
+  });
+  const deleteAlertMutation = trpc.priceAlerts.delete.useMutation({
+    onSuccess: () => refetchAlerts(),
+  });
+
+  // Merge DB alerts with local store alerts
+  type DbAlert = NonNullable<typeof dbAlerts>[number];
+  const dbAlertsConverted: PriceAlert[] = (dbAlerts ?? []).map((a: DbAlert) => ({
+    id: String(a.id),
+    destination: a.destination,
+    destinationCode: a.destination.split(",")[0]?.trim().toUpperCase() ?? "???",
+    maxPrice: a.targetPrice,
+    currentPrice: MOCK_PRICES[a.destination.split(",")[0]?.trim().toUpperCase() ?? ""] ?? a.targetPrice + 100,
+    triggered: a.isTriggered ?? false,
+    createdAt: a.createdAt ? String(a.createdAt) : new Date().toISOString(),
+  }));
+  const alerts = isAuthenticated && dbAlerts ? dbAlertsConverted : state.priceAlerts;
   const triggeredAlerts = alerts.filter((a) => a.triggered);
   const activeAlerts = alerts.filter((a) => !a.triggered);
 
@@ -82,25 +107,37 @@ export default function AlertsScreen() {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
   };
 
-  const handleCreateAlert = () => {
+  const handleCreateAlert = async () => {
     if (!selectedDest || !maxPrice) return;
-    const currentPrice = MOCK_PRICES[selectedDest.code] ?? 999;
-    const alert: PriceAlert = {
-      id: Date.now().toString(),
-      destination: `${selectedDest.city}, ${selectedDest.country}`,
-      destinationCode: selectedDest.code,
-      maxPrice: parseInt(maxPrice),
-      currentPrice,
-      triggered: parseInt(maxPrice) >= currentPrice,
-      createdAt: new Date().toISOString(),
-    };
-    dispatch({ type: "ADD_PRICE_ALERT", payload: alert });
+    if (isAuthenticated) {
+      await createAlertMutation.mutateAsync({
+        destination: `${selectedDest.city}, ${selectedDest.country}`,
+        targetPrice: parseInt(maxPrice),
+        type: "flight",
+      });
+    } else {
+      const currentPrice = MOCK_PRICES[selectedDest.code] ?? 999;
+      const alert: PriceAlert = {
+        id: Date.now().toString(),
+        destination: `${selectedDest.city}, ${selectedDest.country}`,
+        destinationCode: selectedDest.code,
+        maxPrice: parseInt(maxPrice),
+        currentPrice,
+        triggered: parseInt(maxPrice) >= currentPrice,
+        createdAt: new Date().toISOString(),
+      };
+      dispatch({ type: "ADD_PRICE_ALERT", payload: alert });
+    }
     Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
     closeModal();
   };
 
-  const handleDelete = (id: string) => {
-    dispatch({ type: "REMOVE_PRICE_ALERT", payload: id });
+  const handleDelete = async (id: string) => {
+    if (isAuthenticated && !isNaN(Number(id))) {
+      await deleteAlertMutation.mutateAsync({ alertId: Number(id) });
+    } else {
+      dispatch({ type: "REMOVE_PRICE_ALERT", payload: id });
+    }
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
   };
 
