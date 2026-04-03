@@ -400,26 +400,41 @@ export default function QuizScreen() {
 
   return (
     <View style={S.container}>
-      <LinearGradient colors={["#0D0628", "#1A0A3D", "#1A0A3D"]} style={StyleSheet.absoluteFillObject} />
+      <LinearGradient colors={["#0D0628", "#1A0A3D", "#0D0628"]} style={StyleSheet.absoluteFillObject} />
       <View style={S.orb1} />
       <View style={S.orb2} />
-      {renderHeader(`${currentQ + 1}/${QUESTIONS.length}`)}
+
+      {/* ── Header: progress + skip ── */}
+      <View style={S.header}>
+        <View style={S.progressSection}>
+          <View style={S.progressTrack}>
+            <Animated.View style={[S.progressFill, {
+              width: progressAnim.interpolate({ inputRange: [0, 1], outputRange: ["0%", "100%"] })
+            }]}>
+              <LinearGradient colors={["#6443F4", "#F94498"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={StyleSheet.absoluteFillObject} />
+            </Animated.View>
+          </View>
+          <Text style={S.progressText}>{currentQ + 1} / {QUESTIONS.length}</Text>
+        </View>
+        <TouchableOpacity style={S.skipBtn} onPress={handleSkip} activeOpacity={0.7}>
+          <Text style={S.skipText}>Skip</Text>
+        </TouchableOpacity>
+      </View>
+
+      {/* ── Question zone ── */}
       <Animated.View style={[S.questionBlock, { opacity: cardAnim, transform: [{ scale: scaleAnim }] }]}>
-        <View style={S.duckRow}>
-          <View style={S.duckAvatar}>
-            <LinearGradient colors={["#6443F4", "#F94498"]} style={S.duckGradient}>
-              <Image source={require("@/assets/logos/mascot-dark.png")} style={S.duckImg} resizeMode="contain" />
-            </LinearGradient>
+        <View style={S.questionNumRow}>
+          <View style={S.questionNumBadge}>
+            <LinearGradient colors={["rgba(100,67,244,0.3)", "rgba(249,68,152,0.2)"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={StyleSheet.absoluteFillObject} />
+            <Text style={S.questionNumText}>Q{currentQ + 1}</Text>
           </View>
-          <View style={S.duckBubble}>
-            <LinearGradient colors={["rgba(123,47,190,0.35)", "rgba(233,30,140,0.2)"]} style={S.duckBubbleGradient}>
-              <Text style={S.duckBubbleText}>Question {currentQ + 1} of {QUESTIONS.length}</Text>
-            </LinearGradient>
-          </View>
+          <View style={S.questionNumLine} />
         </View>
         <Text style={S.questionText}>{question.question}</Text>
         <Text style={S.questionSubtitle}>{question.subtitle}</Text>
       </Animated.View>
+
+      {/* ── Options ── */}
       <Animated.View style={[S.optionsGrid, { opacity: cardAnim }]}>
         {question.options.map((option) => {
           const isSelected = selected[currentQ] === option.id;
@@ -428,29 +443,39 @@ export default function QuizScreen() {
               key={option.id}
               style={[S.optionCard, isSelected && S.optionCardSelected]}
               onPress={() => handleSelect(option)}
-              activeOpacity={0.85}
+              activeOpacity={0.88}
             >
-              <LinearGradient colors={option.colors} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={StyleSheet.absoluteFillObject} />
+              <LinearGradient
+                colors={option.colors}
+                start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}
+                style={StyleSheet.absoluteFillObject}
+              />
+              {/* Ghost icon background */}
               <View style={S.ghostIconWrap} pointerEvents="none">
-                <IconSymbol name={option.iconName as never} size={90} color="rgba(255,255,255,0.06)" />
+                <IconSymbol name={option.iconName as never} size={80} color="rgba(255,255,255,0.07)" />
               </View>
               {isSelected && <View style={S.selectedOverlay} />}
+              {/* Icon circle */}
               <View style={S.optionIconWrap}>
-                <IconSymbol name={option.iconName as never} size={28} color="rgba(255,255,255,0.9)" />
+                <IconSymbol name={option.iconName as never} size={26} color="rgba(255,255,255,0.95)" />
               </View>
+              {/* Text */}
               <View style={S.optionTextBlock}>
                 <Text style={S.optionLabel}>{option.label}</Text>
-                <Text style={S.optionSublabel} numberOfLines={2}>{option.sublabel}</Text>
+                <Text style={S.optionSublabel} numberOfLines={1}>{option.sublabel}</Text>
               </View>
+              {/* Check */}
               {isSelected && (
                 <View style={S.checkBadge}>
-                  <IconSymbol name="checkmark" size={10} color="#FFFFFF" />
+                  <IconSymbol name="checkmark" size={11} color="#FFFFFF" />
                 </View>
               )}
             </TouchableOpacity>
           );
         })}
       </Animated.View>
+
+      {/* ── Bottom hint ── */}
       <Animated.View style={[S.bottomHint, { opacity: cardAnim }]}>
         <View style={S.hintDots}>
           {QUESTIONS.map((_, i) => (
@@ -459,8 +484,8 @@ export default function QuizScreen() {
         </View>
         <Text style={S.hintText}>
           {QUESTIONS.length - currentQ - 1 > 0
-            ? `${QUESTIONS.length - currentQ - 1} more question${QUESTIONS.length - currentQ - 1 > 1 ? "s" : ""} to reveal your DNA`
-            : "Last one — make it count ✨"}
+            ? `${QUESTIONS.length - currentQ - 1} more to reveal your DNA`
+            : "Last one — make it count"}
         </Text>
       </Animated.View>
     </View>
@@ -474,12 +499,13 @@ const S = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#0D0628" },
   orb1: { position: "absolute", width: width * 1.4, height: width * 1.4, borderRadius: width * 0.7, top: -width * 0.5, left: -width * 0.3, backgroundColor: "rgba(123,47,190,0.1)" },
   orb2: { position: "absolute", width: width, height: width, borderRadius: width / 2, bottom: -width * 0.3, right: -width * 0.3, backgroundColor: "rgba(233,30,140,0.07)" },
-  header: { flexDirection: "row", alignItems: "center", paddingHorizontal: 20, paddingTop: 60, paddingBottom: 16, gap: 12 },
-  skipBtn: { paddingHorizontal: 12, paddingVertical: 6, borderRadius: 12, backgroundColor: "rgba(255,255,255,0.06)" },
-  skipText: { color: "rgba(255,255,255,0.5)", fontSize: 14, fontWeight: "600", fontFamily: "Satoshi-Medium" },
-  progressTrack: { flex: 1, height: 6, borderRadius: 3, backgroundColor: "rgba(255,255,255,0.06)", overflow: "hidden" },
-  progressFill: { height: "100%", borderRadius: 3 },
-  progressText: { color: "rgba(255,255,255,0.5)", fontSize: 13, fontWeight: "700", minWidth: 36, textAlign: "right", fontFamily: "Satoshi-Bold" },
+  header: { flexDirection: "row", alignItems: "center", paddingHorizontal: 20, paddingTop: 58, paddingBottom: 12, gap: 12 },
+  progressSection: { flex: 1, gap: 6 },
+  progressTrack: { height: 8, borderRadius: 4, backgroundColor: "rgba(255,255,255,0.08)", overflow: "hidden" },
+  progressFill: { height: "100%", borderRadius: 4 },
+  progressText: { color: "rgba(255,255,255,0.6)", fontSize: 12, fontWeight: "700", fontFamily: "Satoshi-Bold", letterSpacing: 0.5 },
+  skipBtn: { paddingHorizontal: 14, paddingVertical: 8, borderRadius: 14, backgroundColor: "rgba(255,255,255,0.07)", borderWidth: 1, borderColor: "rgba(255,255,255,0.1)" },
+  skipText: { color: "rgba(255,255,255,0.55)", fontSize: 13, fontWeight: "600", fontFamily: "Satoshi-Medium" },
 
   // Phase header
   phaseHeader: { paddingHorizontal: 24, paddingBottom: 16, gap: 8 },
@@ -544,22 +570,42 @@ const S = StyleSheet.create({
   paceCheck: { width: 28, height: 28, borderRadius: 14, backgroundColor: "rgba(255,255,255,0.06)", alignItems: "center", justifyContent: "center", borderWidth: 1.5, borderColor: "rgba(255,255,255,0.7)" },
 
   // DNA Questions
-  questionBlock: { paddingHorizontal: 24, paddingBottom: 130, gap: 8 },
-  questionText: { color: "#FFFFFF", fontSize: 24, fontWeight: "900", lineHeight: 30, letterSpacing: -0.5, fontFamily: "Chillax-Bold" },
+  questionBlock: { paddingHorizontal: 22, paddingBottom: 14, gap: 8 },
+  questionNumRow: { flexDirection: "row", alignItems: "center", gap: 10, marginBottom: 4 },
+  questionNumBadge: {
+    borderRadius: 10, overflow: "hidden",
+    paddingHorizontal: 10, paddingVertical: 4,
+    borderWidth: 1, borderColor: "rgba(100,67,244,0.4)",
+  },
+  questionNumText: { color: "rgba(192,132,252,0.9)", fontSize: 12, fontWeight: "700", fontFamily: "Satoshi-Bold" },
+  questionNumLine: { flex: 1, height: 1, backgroundColor: "rgba(255,255,255,0.06)" },
+  questionText: { color: "#FFFFFF", fontSize: 26, fontWeight: "900", lineHeight: 32, letterSpacing: -0.5, fontFamily: "Chillax-Bold" },
   questionSubtitle: { color: "rgba(255,255,255,0.45)", fontSize: 14, lineHeight: 20, fontFamily: "Satoshi-Regular" },
-  optionsGrid: { flex: 1, flexDirection: "column", paddingHorizontal: 16, gap: 10, paddingBottom: 130 },
-  optionCard: { flex: 1, width: "100%", borderRadius: 22, overflow: "hidden", padding: 18, gap: 4, borderWidth: 2, borderColor: "transparent", justifyContent: "flex-end", flexDirection: "row", alignItems: "center" },
-  ghostIconWrap: { position: "absolute", right: 16, top: "50%", opacity: 1, transform: [{ translateY: -45 }] },
-  optionCardSelected: { borderColor: "rgba(255,255,255,0.7)" },
-  selectedOverlay: { position: "absolute", top: 0, left: 0, right: 0, bottom: 0, backgroundColor: "rgba(255,255,255,0.06)" },
-  optionIconWrap: { width: 50, height: 50, borderRadius: 16, backgroundColor: "rgba(0,0,0,0.25)", alignItems: "center", justifyContent: "center", marginRight: 14, flexShrink: 0 },
+  optionsGrid: { flex: 1, flexDirection: "column", paddingHorizontal: 16, gap: 10, paddingBottom: 8 },
+  optionCard: {
+    flex: 1,
+    width: "100%",
+    borderRadius: 20,
+    overflow: "hidden",
+    paddingHorizontal: 16,
+    paddingVertical: 0,
+    borderWidth: 2,
+    borderColor: "transparent",
+    flexDirection: "row",
+    alignItems: "center",
+    minHeight: 68,
+  },
+  ghostIconWrap: { position: "absolute", right: 12, top: "50%", transform: [{ translateY: -40 }] },
+  optionCardSelected: { borderColor: "rgba(255,255,255,0.75)" },
+  selectedOverlay: { position: "absolute", top: 0, left: 0, right: 0, bottom: 0, backgroundColor: "rgba(255,255,255,0.07)" },
+  optionIconWrap: { width: 46, height: 46, borderRadius: 14, backgroundColor: "rgba(0,0,0,0.22)", alignItems: "center", justifyContent: "center", marginRight: 14, flexShrink: 0 },
   optionTextBlock: { flex: 1 },
-  optionLabel: { color: "#FFFFFF", fontSize: 16, fontWeight: "800", lineHeight: 20, fontFamily: "Chillax-Bold" },
-  optionSublabel: { color: "rgba(255,255,255,0.6)", fontSize: 11, lineHeight: 15 },
-  checkBadge: { position: "absolute", top: 10, right: 10, width: 22, height: 22, borderRadius: 11, backgroundColor: "rgba(255,255,255,0.06)", alignItems: "center", justifyContent: "center", borderWidth: 1.5, borderColor: "rgba(255,255,255,0.9)" },
+  optionLabel: { color: "#FFFFFF", fontSize: 16, fontWeight: "800", lineHeight: 21, fontFamily: "Chillax-Bold" },
+  optionSublabel: { color: "rgba(255,255,255,0.6)", fontSize: 12, lineHeight: 16, fontFamily: "Satoshi-Regular" },
+  checkBadge: { width: 24, height: 24, borderRadius: 12, backgroundColor: "rgba(255,255,255,0.15)", alignItems: "center", justifyContent: "center", borderWidth: 1.5, borderColor: "rgba(255,255,255,0.9)", marginLeft: 8, flexShrink: 0 },
 
   // Bottom hint
-  bottomHint: { alignItems: "center", paddingHorizontal: 24, paddingBottom: 130, paddingTop: 16, gap: 10 },
+  bottomHint: { alignItems: "center", paddingHorizontal: 24, paddingBottom: 36, paddingTop: 10, gap: 8 },
   hintDots: { flexDirection: "row", gap: 5, alignItems: "center" },
   hintDot: { width: 5, height: 5, borderRadius: 2.5, backgroundColor: "rgba(255,255,255,0.06)" },
   hintDotActive: { width: 18, height: 5, borderRadius: 2.5, backgroundColor: "#6443F4" },
