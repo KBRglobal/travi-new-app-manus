@@ -67,7 +67,7 @@ export default function WelcomeScreen() {
   const firstName = state.profile?.name?.split(" ")[0];
 
   return (
-    <View style={[s.root, { paddingTop: insets.top + 8, paddingBottom: insets.bottom + 16 }]}>
+    <View style={[s.root, { paddingTop: insets.top + 36, paddingBottom: insets.bottom + 16 }]}>
       {/* Background */}
       <LinearGradient
         colors={["#0C0720", "#160B35", "#1A0D3A"]}
