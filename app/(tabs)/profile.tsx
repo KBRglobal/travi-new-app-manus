@@ -39,7 +39,7 @@ const SETTINGS_SECTIONS = [
     items: [
       { icon: "person.fill" as const, label: "Edit Profile", value: "", toggleKey: "", isToggle: false, route: "/(settings)/edit-profile" },
       { icon: "checkmark.circle.fill" as const, label: "Complete Your Profile", value: "Deep DNA", toggleKey: "", isToggle: false, route: "/(auth)/deep-onboarding" },
-      { icon: "bell.fill" as const, label: "Notifications", value: "", toggleKey: "notifications", isToggle: true },
+      { icon: "bell.fill" as const, label: "Notifications", value: "", toggleKey: "", isToggle: false, route: "/(settings)/notifications" },
       { icon: "shield.fill" as const, label: "Privacy & Security", value: "", toggleKey: "", isToggle: false, route: "/(settings)/privacy-security" },
       { icon: "lock.fill" as const, label: "Change Password", value: "", toggleKey: "", isToggle: false, route: "/(settings)/change-password" },
     ],
@@ -63,8 +63,10 @@ const SETTINGS_SECTIONS = [
   {
     title: "Travel",
     items: [
-      { icon: "heart.fill" as const, label: "Saved Destinations", value: "", toggleKey: "", isToggle: false },
-      { icon: "doc.fill" as const, label: "Travel Documents", value: "", toggleKey: "", isToggle: false },
+      { icon: "heart.fill" as const, label: "Wishlist", value: "6 saved", toggleKey: "", isToggle: false, route: "/(tabs)/wishlist" },
+      { icon: "person.2.fill" as const, label: "Invite Travel Partner", value: "", toggleKey: "", isToggle: false, route: "/(tabs)/invite-partner" },
+      { icon: "cross.circle.fill" as const, label: "Health & Activity", value: "", toggleKey: "", isToggle: false, route: "/(settings)/health-activity" },
+      { icon: "exclamationmark.triangle.fill" as const, label: "Emergency Info", value: "", toggleKey: "", isToggle: false, route: "/(settings)/emergency" },
       { icon: "creditcard.fill" as const, label: "Payment Methods", value: "", toggleKey: "", isToggle: false },
       { icon: "tag.fill" as const, label: "Promo Codes", value: "", toggleKey: "", isToggle: false },
     ],

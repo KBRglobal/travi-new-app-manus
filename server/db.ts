@@ -1,5 +1,5 @@
 import { eq, and } from "drizzle-orm";
-import { drizzle, type NodePgDatabase } from "drizzle-orm/node-postgres";
+import { drizzle } from "drizzle-orm/node-postgres";
 import { Pool } from "pg";
 import * as schema from "../drizzle/schema";
 import type {
@@ -12,7 +12,8 @@ import type {
 const { users, travelerProfiles, trips, priceAlerts, pushTokens } = schema;
 import { ENV } from "./_core/env";
 
-let _db: NodePgDatabase<typeof schema> | null = null;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+let _db: any | null = null;
 
 // Lazily create the drizzle instance so local tooling can run without a DB.
 export async function getDb() {

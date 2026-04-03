@@ -288,6 +288,11 @@ export default function WalletScreen() {
               <Text style={S.actionBtnEmoji}>🏆</Text>
               <Text style={S.actionBtnText}>Badges</Text>
             </TouchableOpacity>
+            <TouchableOpacity style={S.actionBtn} onPress={() => router.push("/(tabs)/wallet-exchange" as never)} activeOpacity={0.85}>
+              <LinearGradient colors={["rgba(34,197,94,0.2)", "rgba(34,197,94,0.08)"]} style={StyleSheet.absoluteFillObject} />
+              <Text style={S.actionBtnEmoji}>💱</Text>
+              <Text style={S.actionBtnText}>Exchange</Text>
+            </TouchableOpacity>
           </View>
         </View>
         {/* ═══ TABS ═══ */}

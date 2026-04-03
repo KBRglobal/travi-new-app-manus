@@ -216,7 +216,7 @@ export default function RealEstateScreen() {
               style={S.propCard}
               onPress={() => {
                 if (Platform.OS !== "web") Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-                setSelectedProperty(prop);
+                router.push("/(tabs)/property-detail" as never);
               }}
               activeOpacity={0.88}
             >

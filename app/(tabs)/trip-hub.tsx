@@ -485,6 +485,20 @@ export default function TripHubScreen() {
                 <Text style={styles.itineraryBtnText}>🎒 Prepare for Trip</Text>
               </LinearGradient>
             </TouchableOpacity>
+            {/* Invite Travel Partner */}
+            <TouchableOpacity
+              style={styles.itineraryBtn}
+              onPress={() => router.push("/(tabs)/invite-partner" as never)}
+              activeOpacity={0.85}
+            >
+              <LinearGradient
+                colors={["rgba(249,68,152,0.25)", "rgba(249,68,152,0.12)"]}
+                start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
+                style={styles.itineraryBtnGradient}
+              >
+                <Text style={styles.itineraryBtnText}>👫 Invite Travel Partner</Text>
+              </LinearGradient>
+            </TouchableOpacity>
           </>
         )}
 

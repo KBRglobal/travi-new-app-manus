@@ -190,6 +190,17 @@ export default function ExploreScreen() {
             </TouchableOpacity>
           )}
 
+          {/* South America Hub Banner */}
+          <TouchableOpacity style={S.regionBanner} onPress={() => router.push("/(tabs)/south-america-hub" as never)} activeOpacity={0.88}>
+            <LinearGradient colors={["rgba(34,197,94,0.2)", "rgba(6,182,212,0.15)"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={S.regionBannerGradient}>
+              <Text style={S.regionBannerEmoji}>🌎</Text>
+              <View style={S.regionBannerInfo}>
+                <Text style={S.regionBannerTitle}>South America Hub</Text>
+                <Text style={S.regionBannerSub}>Brazil · Argentina · Colombia · Peru · Chile</Text>
+              </View>
+              <Text style={S.regionBannerArrow}>→</Text>
+            </LinearGradient>
+          </TouchableOpacity>
           <View style={S.listHeader}>
             <Text style={S.listTitle}>
               {activeCategory === "all"
@@ -469,4 +480,11 @@ const S = StyleSheet.create({
   emptyBtnText: { color: "#FFFFFF", fontSize: 15, fontWeight: "800" },
   compatBadge: { position: "absolute", bottom: 52, left: 12, borderRadius: 8, paddingHorizontal: 8, paddingVertical: 3 },
   compatText: { color: "#FFFFFF", fontSize: 10, fontWeight: "800", letterSpacing: 0.5 },
+  regionBanner: { marginHorizontal: 16, marginBottom: 12, borderRadius: 14, overflow: "hidden" },
+  regionBannerGradient: { flexDirection: "row", alignItems: "center", paddingHorizontal: 16, paddingVertical: 14, gap: 12, borderWidth: 1, borderColor: "rgba(34,197,94,0.2)", borderRadius: 14 },
+  regionBannerEmoji: { fontSize: 28 },
+  regionBannerInfo: { flex: 1, gap: 2 },
+  regionBannerTitle: { color: "#FFFFFF", fontSize: 14, fontWeight: "900" },
+  regionBannerSub: { color: "rgba(255,255,255,0.5)", fontSize: 11 },
+  regionBannerArrow: { color: "rgba(255,255,255,0.5)", fontSize: 18, fontWeight: "700" },
 });
