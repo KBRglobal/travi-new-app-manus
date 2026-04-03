@@ -156,6 +156,50 @@ Return ONLY valid JSON, no markdown.`;
       }),
   }),
 
+  // ─── AI Agent Chat ──────────────────────────────────────────────────────────────────
+  agent: router({
+    chat: publicProcedure
+      .input(z.object({
+        message: z.string().min(1).max(2000),
+        history: z.array(z.object({
+          role: z.enum(["user", "assistant"]),
+          content: z.string(),
+        })).max(20).optional().default([]),
+      }))
+      .mutation(async ({ input }) => {
+        const systemPrompt = `You are TRAVI, an expert AI travel agent. You help users plan trips, find deals, understand visa requirements, suggest activities, and answer any travel-related questions.
+
+You are friendly, knowledgeable, and proactive. You speak Hebrew naturally and can switch to English if needed.
+
+Key capabilities:
+- Trip planning and itinerary building
+- Flight and hotel recommendations
+- Visa and entry requirements
+- Budget optimization and cashback tips
+- Local culture, food, and activities
+- Safety and health advice
+- Real-time price alerts
+- TRAVI Points loyalty rewards explanation
+
+Always be helpful, concise, and actionable. Use emojis sparingly but naturally.`;
+
+        const messages = [
+          { role: "system" as const, content: systemPrompt },
+          ...input.history.map((h) => ({ role: h.role as "user" | "assistant", content: h.content })),
+          { role: "user" as const, content: input.message },
+        ];
+
+        try {
+          const response = await invokeLLM({ messages });
+          const raw = response.choices[0].message.content;
+          const reply = typeof raw === "string" ? raw : JSON.stringify(raw);
+          return { reply };
+        } catch {
+          return { reply: "מצטער, נתקלתי בבעיה טכנית. נסה שוב בעוד רגע 🙏" };
+        }
+      }),
+  }),
+
   // ─── Push Tokens ──────────────────────────────────────────────────────────────────
   pushTokens: router({
     register: protectedProcedure

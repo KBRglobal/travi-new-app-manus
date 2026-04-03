@@ -481,6 +481,26 @@ export default function HomeScreen() {
         </View>
 
       </Animated.ScrollView>
+
+      {/* ── AI Agent FAB ── */}
+      <TouchableOpacity
+        style={[S.agentFab, { bottom: Math.max(insets.bottom, 16) + 72 }]}
+        onPress={() => {
+          if (Platform.OS !== "web") Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+          router.push("/(agent)/chat" as never);
+        }}
+        activeOpacity={0.88}
+      >
+        <LinearGradient
+          colors={["#7C3AED", "#9333EA"]}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 1 }}
+          style={StyleSheet.absoluteFillObject}
+        />
+        <View style={S.agentFabBorder} />
+        <IconSymbol name="bubble.left.fill" size={20} color="#FFFFFF" />
+        <Text style={S.agentFabLabel}>Agent</Text>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -601,4 +621,9 @@ const S = StyleSheet.create({
   finalCtaTitle: { color: "#FFFFFF", fontSize: 18, fontWeight: "900" },
   finalCtaSub: { color: "rgba(255,255,255,0.65)", fontSize: 12, marginTop: 3 },
   finalCtaArrow: { width: 40, height: 40, borderRadius: 20, backgroundColor: "rgba(255,255,255,0.15)", alignItems: "center", justifyContent: "center" },
+
+  // AI Agent FAB
+  agentFab: { position: "absolute", right: 20, flexDirection: "row", alignItems: "center", gap: 8, paddingHorizontal: 18, paddingVertical: 14, borderRadius: 28, overflow: "hidden", shadowColor: "#7C3AED", shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.6, shadowRadius: 16, elevation: 12 },
+  agentFabBorder: { position: "absolute", top: 0, left: 0, right: 0, bottom: 0, borderRadius: 28, borderWidth: 1, borderColor: "rgba(192,132,252,0.4)" },
+  agentFabLabel: { color: "#FFFFFF", fontSize: 14, fontWeight: "700", letterSpacing: 0.3 },
 });

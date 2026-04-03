@@ -109,6 +109,7 @@ export default function RootLayout() {
             <Stack.Screen name="(dna)" />
             <Stack.Screen name="(settings)" />
             <Stack.Screen name="(social)" />
+            <Stack.Screen name="(agent)" />
             <Stack.Screen name="oauth/callback" />
           </Stack>
           <StatusBar style="light" backgroundColor="#24103E" />

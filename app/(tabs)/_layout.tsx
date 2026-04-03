@@ -96,18 +96,7 @@ export default function TabLayout() {
         }}
       />
 
-      {/* ── 4. Community ── */}
-      <Tabs.Screen
-        name="connecting"
-        options={{
-          title: "Community",
-          tabBarIcon: ({ color, focused }) => (
-            <TabIcon icon="person.2.fill" label="Community" color={color} focused={focused} />
-          ),
-        }}
-      />
-
-      {/* ── 5. Profile ── */}
+      {/* ── 4. Profile ── */}
       <Tabs.Screen
         name="profile"
         options={{
@@ -118,21 +107,60 @@ export default function TabLayout() {
         }}
       />
 
-      {/* ── Hidden screens (accessible via navigation, not tab bar) ── */}
+      {/* ── All other screens — hidden from tab bar, accessible via router.push() ── */}
+
+      {/* Community */}
+      <Tabs.Screen name="connecting" options={{ href: null }} />
+
+      {/* Wallet */}
       <Tabs.Screen name="wallet" options={{ href: null }} />
+      <Tabs.Screen name="wallet-kyc" options={{ href: null }} />
+      <Tabs.Screen name="wallet-withdraw" options={{ href: null }} />
+      <Tabs.Screen name="wallet-exchange" options={{ href: null }} />
+
+      {/* Notifications & Alerts */}
       <Tabs.Screen name="alerts" options={{ href: null }} />
       <Tabs.Screen name="notifications" options={{ href: null }} />
+
+      {/* Premium & Referral */}
       <Tabs.Screen name="subscription" options={{ href: null }} />
       <Tabs.Screen name="refer" options={{ href: null }} />
+
+      {/* Destination & Travel */}
       <Tabs.Screen name="destination-guide" options={{ href: null }} />
+      <Tabs.Screen name="destination-swipe" options={{ href: null }} />
       <Tabs.Screen name="events" options={{ href: null }} />
+
+      {/* Real Estate */}
       <Tabs.Screen name="real-estate" options={{ href: null }} />
+      <Tabs.Screen name="real-estate-analysis" options={{ href: null }} />
+      <Tabs.Screen name="real-estate-contacts" options={{ href: null }} />
+      <Tabs.Screen name="real-estate-guide" options={{ href: null }} />
+      <Tabs.Screen name="property-detail" options={{ href: null }} />
+      <Tabs.Screen name="south-america-hub" options={{ href: null }} />
+
+      {/* B2B */}
       <Tabs.Screen name="enterprise" options={{ href: null }} />
+      <Tabs.Screen name="prospects-crm" options={{ href: null }} />
+
+      {/* Support */}
       <Tabs.Screen name="support" options={{ href: null }} />
+
+      {/* Trip screens */}
       <Tabs.Screen name="trip-detail" options={{ href: null }} />
       <Tabs.Screen name="trip-hub" options={{ href: null }} />
-      <Tabs.Screen name="destination-swipe" options={{ href: null }} />
+
+      {/* DNA & Gamification */}
       <Tabs.Screen name="dna-evolution" options={{ href: null }} />
+      <Tabs.Screen name="badges-leaderboard" options={{ href: null }} />
+      <Tabs.Screen name="memory-hub" options={{ href: null }} />
+      <Tabs.Screen name="rewards-portal" options={{ href: null }} />
+      <Tabs.Screen name="avatar-customization" options={{ href: null }} />
+      <Tabs.Screen name="mini-games" options={{ href: null }} />
+
+      {/* Wishlist & Social */}
+      <Tabs.Screen name="wishlist" options={{ href: null }} />
+      <Tabs.Screen name="invite-partner" options={{ href: null }} />
     </Tabs>
   );
 }
