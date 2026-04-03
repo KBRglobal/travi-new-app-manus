@@ -211,17 +211,17 @@ const S = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#0D0628" },
   header: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 16, paddingBottom: 16, paddingTop: 4 },
   backBtn: { width: 40, height: 40, alignItems: "center", justifyContent: "center" },
-  headerTitle: { color: "#FFF", fontSize: 18, fontWeight: "800" },
+  headerTitle: { color: "#FFF", fontSize: 18, fontWeight: "800", fontFamily: "Chillax-Bold" },
 
   // Card
   card: { borderRadius: 24, overflow: "hidden", borderWidth: 1, padding: 20, gap: 16, marginBottom: 20 },
   cardTop: { flexDirection: "row", alignItems: "center", justifyContent: "space-between" },
   traviBadge: { borderRadius: 8, overflow: "hidden", paddingHorizontal: 10, paddingVertical: 4 },
-  traviBadgeText: { color: "#FFF", fontSize: 12, fontWeight: "900", letterSpacing: 2 },
+  traviBadgeText: { color: "#FFF", fontSize: 12, fontWeight: "900", letterSpacing: 2, fontFamily: "Chillax-Bold" },
   cardDates: { color: "rgba(255,255,255,0.5)", fontSize: 12 },
   cardHero: { alignItems: "center", gap: 4, paddingVertical: 8 },
   cardEmoji: { fontSize: 52 },
-  cardCity: { color: "#FFF", fontSize: 32, fontWeight: "900", letterSpacing: -0.5 },
+  cardCity: { color: "#FFF", fontSize: 32, fontWeight: "900", letterSpacing: -0.5, fontFamily: "Chillax-Bold" },
   cardCountry: { color: "rgba(255,255,255,0.5)", fontSize: 14 },
   daysChip: { borderRadius: 20, paddingHorizontal: 14, paddingVertical: 5, borderWidth: 1, marginTop: 4 },
   daysChipText: { fontSize: 13, fontWeight: "700" },
@@ -238,7 +238,7 @@ const S = StyleSheet.create({
   cardFooterValue: { color: "#FFF", fontSize: 14, fontWeight: "700" },
   cashbackBadge: { alignItems: "flex-end" },
   cashbackLabel: { color: "rgba(255,255,255,0.4)", fontSize: 11 },
-  cashbackAmount: { color: "#22C55E", fontSize: 20, fontWeight: "900" },
+  cashbackAmount: { color: "#22C55E", fontSize: 20, fontWeight: "900", fontFamily: "Chillax-Bold" },
 
   // Success
   successBanner: { borderRadius: 14, overflow: "hidden", padding: 14, flexDirection: "row", alignItems: "center", gap: 10, marginBottom: 20, borderWidth: 1, borderColor: "rgba(2,166,92,0.3)" },
@@ -252,7 +252,7 @@ const S = StyleSheet.create({
   shareOptionLabel: { color: "#9BA1A6", fontSize: 11 },
 
   mainShareBtn: { borderRadius: 16, overflow: "hidden", flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 8, paddingVertical: 16, marginBottom: 16 },
-  mainShareBtnText: { color: "#FFF", fontSize: 16, fontWeight: "800" },
+  mainShareBtnText: { color: "#FFF", fontSize: 16, fontWeight: "800", fontFamily: "Chillax-Bold" },
 
   footerNote: { color: "rgba(255,255,255,0.25)", fontSize: 11, textAlign: "center", lineHeight: 16 },
 });

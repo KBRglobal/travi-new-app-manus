@@ -331,8 +331,8 @@ const S = StyleSheet.create({
   safeArea: { flex: 1 },
 
   header: { paddingHorizontal: 20, paddingTop: 16, paddingBottom: 14 },
-  headerTitle: { color: "#FFFFFF", fontSize: 28, fontWeight: "900", letterSpacing: -0.5 },
-  headerSub: { color: "rgba(255,255,255,0.4)", fontSize: 14, marginTop: 2 },
+  headerTitle: { color: "#FFFFFF", fontSize: 28, fontWeight: "900", letterSpacing: -0.5, fontFamily: "Chillax-Bold" },
+  headerSub: { color: "rgba(255,255,255,0.4)", fontSize: 14, marginTop: 2, fontFamily: "Satoshi-Regular" },
 
   searchWrap: {
     flexDirection: "row",
@@ -347,7 +347,7 @@ const S = StyleSheet.create({
     borderWidth: 1,
     borderColor: "rgba(255,255,255,0.1)",
   },
-  searchInput: { flex: 1, color: "#FFFFFF", fontSize: 15 },
+  searchInput: { flex: 1, color: "#FFFFFF", fontSize: 15, fontFamily: "Satoshi-Regular" },
 
   chipsScroll: { flexGrow: 0, marginBottom: 18 },
   chipsRow: { paddingHorizontal: 20, gap: 8 },
@@ -363,8 +363,8 @@ const S = StyleSheet.create({
     backgroundColor: "rgba(100,67,244,0.35)",
     borderColor: "#6443F4",
   },
-  chipText: { color: "#9BA1A6", fontSize: 13, fontWeight: "600" },
-  chipTextActive: { color: "#C084FC", fontWeight: "700" },
+  chipText: { color: "#9BA1A6", fontSize: 13, fontWeight: "600", fontFamily: "Chillax-Semibold" },
+  chipTextActive: { color: "#C084FC", fontWeight: "700", fontFamily: "Chillax-Semibold" },
 
   listContent: { paddingHorizontal: 20, paddingBottom: 110 },
   listHeader: {
@@ -373,8 +373,8 @@ const S = StyleSheet.create({
     justifyContent: "space-between",
     marginBottom: 16,
   },
-  listTitle: { color: "#FFFFFF", fontSize: 20, fontWeight: "900", letterSpacing: -0.3 },
-  listCount: { color: "rgba(255,255,255,0.35)", fontSize: 14, fontWeight: "600" },
+  listTitle: { color: "#FFFFFF", fontSize: 20, fontWeight: "900", letterSpacing: -0.3, fontFamily: "Chillax-Bold" },
+  listCount: { color: "rgba(255,255,255,0.35)", fontSize: 14, fontWeight: "600", fontFamily: "Chillax-Semibold" },
 
   card: {
     width: "100%",
@@ -394,7 +394,7 @@ const S = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 6,
   },
-  tagText: { color: "#FFFFFF", fontSize: 12, fontWeight: "800" },
+  tagText: { color: "#FFFFFF", fontSize: 12, fontWeight: "800", fontFamily: "Chillax-Bold" },
 
   saveBtn: {
     position: "absolute",
@@ -409,10 +409,10 @@ const S = StyleSheet.create({
   },
 
   cardInfo: { padding: 16, gap: 4 },
-  cardCity: { color: "#FFFFFF", fontSize: 24, fontWeight: "900", letterSpacing: -0.5 },
+  cardCity: { color: "#FFFFFF", fontSize: 24, fontWeight: "900", letterSpacing: -0.5, fontFamily: "Chillax-Bold" },
   cardCountryRow: { flexDirection: "row", alignItems: "center", gap: 5 },
-  cardCountry: { color: "rgba(255,255,255,0.7)", fontSize: 14, fontWeight: "600" },
-  cardTagline: { color: "rgba(255,255,255,0.5)", fontSize: 12, fontStyle: "italic", marginTop: 2 },
+  cardCountry: { color: "rgba(255,255,255,0.7)", fontSize: 14, fontWeight: "600", fontFamily: "Satoshi-Medium" },
+  cardTagline: { color: "rgba(255,255,255,0.5)", fontSize: 12, fontStyle: "italic", marginTop: 2, fontFamily: "Satoshi-Regular" },
 
   gridToggle: {
     width: 34,
@@ -445,7 +445,7 @@ const S = StyleSheet.create({
     paddingHorizontal: 8,
     paddingVertical: 4,
   },
-  gridTagText: { color: "#FFFFFF", fontSize: 10, fontWeight: "800" },
+  gridTagText: { color: "#FFFFFF", fontSize: 10, fontWeight: "800", fontFamily: "Chillax-Bold" },
   gridSaveBtn: {
     position: "absolute",
     top: 8,
@@ -458,35 +458,35 @@ const S = StyleSheet.create({
     justifyContent: "center",
   },
   gridCardInfo: { padding: 10, gap: 2 },
-  gridCardCity: { color: "#FFFFFF", fontSize: 16, fontWeight: "900", letterSpacing: -0.3 },
-  gridCardCountry: { color: "rgba(255,255,255,0.6)", fontSize: 11, fontWeight: "600" },
+  gridCardCity: { color: "#FFFFFF", fontSize: 16, fontWeight: "900", letterSpacing: -0.3, fontFamily: "Chillax-Bold" },
+  gridCardCountry: { color: "rgba(255,255,255,0.6)", fontSize: 11, fontWeight: "600", fontFamily: "Satoshi-Medium" },
 
   emptyState: { alignItems: "center", paddingTop: 60, paddingHorizontal: 40 },
   emptyIcon: { fontSize: 48, marginBottom: 16 },
-  emptyTitle: { color: "#FFFFFF", fontSize: 20, fontWeight: "800", textAlign: "center" },
-  emptyText: { color: "rgba(255,255,255,0.4)", fontSize: 14, textAlign: "center", marginTop: 8, lineHeight: 20 },
+  emptyTitle: { color: "#FFFFFF", fontSize: 20, fontWeight: "800", textAlign: "center", fontFamily: "Chillax-Bold" },
+  emptyText: { color: "rgba(255,255,255,0.4)", fontSize: 14, textAlign: "center", marginTop: 8, lineHeight: 20, fontFamily: "Satoshi-Regular" },
   heroCard: { width: "100%", height: 320, borderRadius: 24, overflow: "hidden", marginBottom: 20 },
   heroCardBg: { flex: 1, justifyContent: "flex-end" },
   heroCardImg: { borderRadius: 24 },
   heroCardBadge: { position: "absolute", top: 16, left: 16, backgroundColor: "rgba(249,68,152,0.85)", borderRadius: 10, paddingHorizontal: 10, paddingVertical: 5 },
   heroCardBadgeText: { color: "#FFFFFF", fontSize: 11, fontWeight: "800", letterSpacing: 1 },
   heroCardInfo: { padding: 20, gap: 4 },
-  heroCardTagline: { color: "rgba(255,255,255,0.6)", fontSize: 13, fontStyle: "italic" },
-  heroCardCity: { color: "#FFFFFF", fontSize: 36, fontWeight: "900", letterSpacing: -1, lineHeight: 42 },
+  heroCardTagline: { color: "rgba(255,255,255,0.6)", fontSize: 13, fontStyle: "italic", fontFamily: "Satoshi-Regular" },
+  heroCardCity: { color: "#FFFFFF", fontSize: 36, fontWeight: "900", letterSpacing: -1, lineHeight: 42, fontFamily: "Chillax-Bold" },
   heroCardRow: { flexDirection: "row", alignItems: "center", gap: 6, marginTop: 4 },
-  heroCardCountry: { color: "rgba(255,255,255,0.7)", fontSize: 14, fontWeight: "600", flex: 1 },
+  heroCardCountry: { color: "rgba(255,255,255,0.7)", fontSize: 14, fontWeight: "600", flex: 1, fontFamily: "Satoshi-Medium" },
   heroCardCashback: { backgroundColor: "rgba(255,215,18,0.2)", borderRadius: 8, paddingHorizontal: 8, paddingVertical: 4, borderWidth: 1, borderColor: "rgba(255,215,18,0.3)" },
-  heroCardCashbackText: { color: "#FFD712", fontSize: 11, fontWeight: "700" },
+  heroCardCashbackText: { color: "#FFD712", fontSize: 11, fontWeight: "700", fontFamily: "Satoshi-Bold" },
   emptyBtn: { marginTop: 24, borderRadius: 14, overflow: "hidden" },
   emptyBtnGrad: { paddingHorizontal: 24, paddingVertical: 12 },
-  emptyBtnText: { color: "#FFFFFF", fontSize: 15, fontWeight: "800" },
+  emptyBtnText: { color: "#FFFFFF", fontSize: 15, fontWeight: "800", fontFamily: "Chillax-Bold" },
   compatBadge: { position: "absolute", bottom: 52, left: 12, borderRadius: 8, paddingHorizontal: 8, paddingVertical: 3 },
   compatText: { color: "#FFFFFF", fontSize: 10, fontWeight: "800", letterSpacing: 0.5 },
   regionBanner: { marginHorizontal: 16, marginBottom: 12, borderRadius: 14, overflow: "hidden" },
   regionBannerGradient: { flexDirection: "row", alignItems: "center", paddingHorizontal: 16, paddingVertical: 14, gap: 12, borderWidth: 1, borderColor: "rgba(34,197,94,0.2)", borderRadius: 14 },
   regionBannerEmoji: { fontSize: 28 },
   regionBannerInfo: { flex: 1, gap: 2 },
-  regionBannerTitle: { color: "#FFFFFF", fontSize: 14, fontWeight: "900" },
-  regionBannerSub: { color: "rgba(255,255,255,0.5)", fontSize: 11 },
+  regionBannerTitle: { color: "#FFFFFF", fontSize: 14, fontWeight: "900", fontFamily: "Chillax-Bold" },
+  regionBannerSub: { color: "rgba(255,255,255,0.5)", fontSize: 11, fontFamily: "Satoshi-Regular" },
   regionBannerArrow: { color: "rgba(255,255,255,0.5)", fontSize: 18, fontWeight: "700" },
 });

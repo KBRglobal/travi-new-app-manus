@@ -204,11 +204,11 @@ const s = StyleSheet.create({
   cardBg: { padding: 22, gap: 18 },
   tabRow: { flexDirection: "row", backgroundColor: "rgba(0,0,0,0.35)", borderRadius: 14, padding: 4, overflow: "hidden" },
   tab: { flex: 1, paddingVertical: 11, borderRadius: 11, alignItems: "center", overflow: "hidden" },
-  tabText: { fontSize: 14, fontWeight: "600", color: DS.disabled },
+  tabText: { fontSize: 14, fontWeight: "600", color: DS.disabled, fontFamily: "Satoshi-Medium" },
   tabTextActive: { color: DS.primary },
   cardHeader: { gap: 4 },
-  cardTitle: { ...Typography.h3 },
-  cardSub: { ...Typography.body, color: DS.muted },
+  cardTitle: { ...Typography.h3, fontFamily: "Chillax-Semibold" },
+  cardSub: { ...Typography.body, color: DS.muted, fontFamily: "Satoshi-Regular" },
 
   // Input
   inputWrap: { borderRadius: Radius.lg, overflow: "hidden", borderWidth: 1.5, borderColor: Border.idle },
@@ -218,17 +218,17 @@ const s = StyleSheet.create({
     paddingHorizontal: Spacing.md, paddingVertical: Spacing.md,
     backgroundColor: "rgba(255,255,255,0.04)",
   },
-  input: { flex: 1, color: DS.primary, fontSize: 16, fontWeight: "500" },
+  input: { flex: 1, color: DS.primary, fontSize: 16, fontWeight: "500", fontFamily: "Satoshi-Medium" },
 
   // CTA
   cta: { borderRadius: Radius.lg, overflow: "hidden" },
   ctaGradient: { flexDirection: "row", alignItems: "center", justifyContent: "center", paddingVertical: 17, gap: 10 },
-  ctaText: { ...Typography.cta },
+  ctaText: { ...Typography.cta, fontFamily: "Chillax-Semibold" },
 
   // Divider
   divider: { flexDirection: "row", alignItems: "center", gap: 12 },
   dividerLine: { flex: 1, height: 1, backgroundColor: Border.subtle },
-  dividerText: { ...Typography.small, color: DS.muted },
+  dividerText: { ...Typography.small, color: DS.muted, fontFamily: "Satoshi-Regular" },
 
   // Social
   socialRow: { flexDirection: "row", gap: 12 },
@@ -238,8 +238,8 @@ const s = StyleSheet.create({
     paddingVertical: 14, gap: 8, borderRadius: Radius.lg,
     borderWidth: 1, borderColor: Border.idle,
   },
-  googleG: { fontSize: 16, fontWeight: "800" },
-  socialLabel: { color: DS.primary, fontSize: 14, fontWeight: "600" },
+  googleG: { fontSize: 16, fontWeight: "800", fontFamily: "Chillax-Bold" },
+  socialLabel: { color: DS.primary, fontSize: 14, fontWeight: "600", fontFamily: "Satoshi-Medium" },
 
   // Guest
   guestBtn: {
@@ -248,8 +248,8 @@ const s = StyleSheet.create({
     borderRadius: Radius.lg, borderWidth: 1, borderColor: Border.subtle,
     backgroundColor: "rgba(255,255,255,0.025)", width: "100%",
   },
-  guestText: { color: DS.secondary, fontSize: 15, fontWeight: "600" },
-  guestSub: { ...Typography.small, color: DS.muted },
+  guestText: { color: DS.secondary, fontSize: 15, fontWeight: "600", fontFamily: "Satoshi-Medium" },
+  guestSub: { ...Typography.small, color: DS.muted, fontFamily: "Satoshi-Regular" },
 
   // Legal
   terms: { marginTop: 18, fontSize: 12, color: DS.muted, textAlign: "center", lineHeight: 18 },

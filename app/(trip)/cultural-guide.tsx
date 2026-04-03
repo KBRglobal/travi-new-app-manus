@@ -249,7 +249,7 @@ const S = StyleSheet.create({
   },
   headerCenter: { alignItems: "center" },
   headerEmoji: { fontSize: 32, marginBottom: 4 },
-  headerTitle: { fontSize: 22, fontWeight: "800", color: "#fff", letterSpacing: 0.3 },
+  headerTitle: { fontSize: 22, fontWeight: "800", color: "#fff", letterSpacing: 0.3, fontFamily: "Chillax-Bold" },
   headerSub: { fontSize: 13, color: "#A78BFA", marginTop: 2 },
   headlineBanner: {
     flexDirection: "row", alignItems: "flex-start", gap: 8,

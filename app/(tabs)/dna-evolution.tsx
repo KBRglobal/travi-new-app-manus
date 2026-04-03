@@ -227,7 +227,7 @@ const S = StyleSheet.create({
   snapshotTrip: { ...TYPE.h4, color: BRAND.textPrimary },
   snapshotDate: { ...TYPE.small, color: BRAND.textMuted, marginTop: 2 },
   latestBadge: { backgroundColor: "rgba(100,67,244,0.25)", borderRadius: 10, paddingHorizontal: 10, paddingVertical: 4, borderWidth: 1, borderColor: "rgba(100,67,244,0.5)" },
-  latestBadgeText: { color: BRAND.purple, fontSize: 11, fontWeight: "800" },
+  latestBadgeText: { color: BRAND.purple, fontSize: 11, fontWeight: "800", fontFamily: "Chillax-Bold" },
 
   traitsGrid: { flexDirection: "row", flexWrap: "wrap", gap: 8 },
   traitPill: { flexDirection: "row", alignItems: "center", gap: 6, backgroundColor: "rgba(255,255,255,0.06)", borderRadius: 12, paddingHorizontal: 10, paddingVertical: 6, borderWidth: 1, borderColor: "rgba(255,255,255,0.08)" },

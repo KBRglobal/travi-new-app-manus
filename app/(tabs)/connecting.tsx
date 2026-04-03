@@ -435,7 +435,7 @@ const S = StyleSheet.create({
   dnaMatchRow: { flexDirection: "row", alignItems: "center", gap: 8 },
   dnaMatchBarWrap: { flex: 1, height: 4, borderRadius: 2, backgroundColor: "rgba(255,255,255,0.08)", overflow: "hidden" },
   dnaMatchFill: { height: "100%", borderRadius: 2 },
-  dnaMatchScore: { fontSize: 11, fontWeight: "800", minWidth: 90, textAlign: "right" },
+  dnaMatchScore: { fontSize: 11, fontWeight: "800", minWidth: 90, textAlign: "right", fontFamily: "Chillax-Bold" },
   activitiesRow: { flexDirection: "row", flexWrap: "wrap", gap: 6 },
   activityPill: { backgroundColor: "rgba(255,255,255,0.07)", borderRadius: 8, paddingHorizontal: 8, paddingVertical: 3, borderWidth: 1, borderColor: "rgba(255,255,255,0.1)" },
   activityPillText: { color: "rgba(255,255,255,0.5)", fontSize: 11 },

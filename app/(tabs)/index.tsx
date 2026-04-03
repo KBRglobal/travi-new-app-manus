@@ -510,26 +510,26 @@ const S = StyleSheet.create({
 
   // Sticky header
   stickyHeader: { position: "absolute", top: 0, left: 0, right: 0, zIndex: 100, flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 24, paddingTop: 56, paddingBottom: 12 },
-  stickyTitle: { color: "#FFFFFF", fontSize: 18, fontWeight: "900", letterSpacing: 2 },
+  stickyTitle: { color: "#FFFFFF", fontSize: 18, fontWeight: "900", letterSpacing: 2, fontFamily: "Chillax-Bold" },
   stickyNotif: { width: 36, height: 36, borderRadius: 18, backgroundColor: "rgba(255,255,255,0.1)", alignItems: "center", justifyContent: "center" },
 
   // Hero
   heroWrap: { height: height * 0.72, justifyContent: "flex-end", overflow: "hidden" },
   heroHeader: { position: "absolute", top: 0, left: 0, right: 0, flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 20, paddingTop: 60, paddingBottom: 12 },
-  heroGreeting: { color: "rgba(255,255,255,0.7)", fontSize: 15, fontWeight: "500" },
+  heroGreeting: { color: "rgba(255,255,255,0.7)", fontSize: 15, fontWeight: "500", fontFamily: "Satoshi-Medium" },
   notifBtn: { width: 44, height: 44, borderRadius: 22, overflow: "hidden" },
   notifGradient: { flex: 1, alignItems: "center", justifyContent: "center", borderWidth: 1, borderColor: "rgba(255,255,255,0.15)", borderRadius: 22 },
 
   heroBody: { position: "absolute", bottom: 160, left: 20, right: 20 },
   heroTagline: { color: "rgba(255,255,255,0.55)", fontSize: 13, fontWeight: "600", letterSpacing: 0.5, marginBottom: 4 },
-  heroCity: { color: "#FFFFFF", fontSize: 42, fontWeight: "900", letterSpacing: -1.5, lineHeight: 46 },
+  heroCity: { color: "#FFFFFF", fontSize: 42, fontWeight: "900", letterSpacing: -1.5, lineHeight: 46, fontFamily: "Chillax-Bold" },
   heroCountry: { color: "rgba(255,255,255,0.55)", fontSize: 16, fontWeight: "600", marginTop: 2 },
   heroDots: { flexDirection: "row", gap: 6, marginTop: 14 },
   heroDot: { width: 6, height: 6, borderRadius: 3, backgroundColor: "rgba(255,255,255,0.25)" },
   heroDotActive: { width: 20, backgroundColor: "#FFFFFF" },
 
   heroHeadlineWrap: { paddingHorizontal: 20, paddingBottom: 28 },
-  heroHeadline: { color: "#FFFFFF", fontSize: 28, fontWeight: "900", letterSpacing: -0.8, lineHeight: 34 },
+  heroHeadline: { color: "#FFFFFF", fontSize: 28, fontWeight: "900", letterSpacing: -0.8, lineHeight: 34, fontFamily: "Chillax-Bold" },
   heroSub: { color: "rgba(255,255,255,0.5)", fontSize: 14, lineHeight: 21, marginTop: 8 },
   heroPlanBtn: { flexDirection: "row", alignItems: "center", gap: 8, marginTop: 18, borderRadius: 28, paddingVertical: 14, paddingHorizontal: 24, overflow: "hidden", alignSelf: "flex-start" },
   heroPlanBtnText: { color: "#FFFFFF", fontSize: 16, fontWeight: "700", letterSpacing: 0.2 },
@@ -549,7 +549,7 @@ const S = StyleSheet.create({
 
   // Blocks
   block: { paddingHorizontal: 20, paddingTop: 28 },
-  blockTitle: { color: "#FFFFFF", fontSize: 22, fontWeight: "900", letterSpacing: -0.5 },
+  blockTitle: { color: "#FFFFFF", fontSize: 22, fontWeight: "900", letterSpacing: -0.5, fontFamily: "Chillax-Bold" },
   blockSub: { color: "rgba(255,255,255,0.4)", fontSize: 13, marginTop: 4, marginBottom: 16, lineHeight: 19 },
 
   // Plan Trip CTA card
@@ -557,7 +557,7 @@ const S = StyleSheet.create({
   planTripContent: { flexDirection: "row", alignItems: "center", justifyContent: "space-between" },
   planTripLeft: { flexDirection: "row", alignItems: "center", gap: 14, flex: 1 },
   planTripIconBox: { width: 52, height: 52, borderRadius: 16, backgroundColor: "rgba(255,255,255,0.2)", alignItems: "center", justifyContent: "center" },
-  planTripTitle: { color: "#FFFFFF", fontSize: 18, fontWeight: "900", lineHeight: 22 },
+  planTripTitle: { color: "#FFFFFF", fontSize: 18, fontWeight: "900", lineHeight: 22, fontFamily: "Chillax-Bold" },
   planTripSub: { color: "rgba(255,255,255,0.7)", fontSize: 13, marginTop: 3, fontWeight: "500" },
   planTripArrow: { width: 36, height: 36, borderRadius: 18, backgroundColor: "rgba(255,255,255,0.2)", alignItems: "center", justifyContent: "center" },
 
@@ -603,7 +603,7 @@ const S = StyleSheet.create({
   manifestoBorder: { position: "absolute", top: 0, left: 0, right: 0, bottom: 0, borderRadius: 24, borderWidth: 1, borderColor: "rgba(100,67,244,0.3)" },
   manifestoHeader: { flexDirection: "row", alignItems: "center", gap: 12 },
   manifestoIconWrap: { width: 44, height: 44, borderRadius: 14, overflow: "hidden", alignItems: "center", justifyContent: "center" },
-  manifestoTitle: { color: "#FFFFFF", fontSize: 18, fontWeight: "900", flex: 1 },
+  manifestoTitle: { color: "#FFFFFF", fontSize: 18, fontWeight: "900", flex: 1, fontFamily: "Chillax-Bold" },
   manifestoText: { color: "rgba(255,255,255,0.55)", fontSize: 14, lineHeight: 22 },
   manifestoComparison: { flexDirection: "row", alignItems: "center", gap: 12 },
   manifestoCompCol: { flex: 1, alignItems: "center", gap: 8 },
@@ -618,7 +618,7 @@ const S = StyleSheet.create({
   // Final CTA
   finalCta: { borderRadius: 22, overflow: "hidden", flexDirection: "row", alignItems: "center", padding: 20 },
   finalCtaContent: { flex: 1 },
-  finalCtaTitle: { color: "#FFFFFF", fontSize: 18, fontWeight: "900" },
+  finalCtaTitle: { color: "#FFFFFF", fontSize: 18, fontWeight: "900", fontFamily: "Chillax-Bold" },
   finalCtaSub: { color: "rgba(255,255,255,0.65)", fontSize: 12, marginTop: 3 },
   finalCtaArrow: { width: 40, height: 40, borderRadius: 20, backgroundColor: "rgba(255,255,255,0.15)", alignItems: "center", justifyContent: "center" },
 

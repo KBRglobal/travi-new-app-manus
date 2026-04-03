@@ -126,19 +126,19 @@ const tm = StyleSheet.create({
   sheet: { backgroundColor: "#1A1A2E", borderTopLeftRadius: 28, borderTopRightRadius: 28, padding: 24, paddingBottom: 40, alignItems: "center" },
   handle: { width: 40, height: 4, backgroundColor: "rgba(255,255,255,0.2)", borderRadius: 2, marginBottom: 20 },
   closeBtn: { position: "absolute", top: 20, right: 20, width: 32, height: 32, borderRadius: 16, backgroundColor: "rgba(255,255,255,0.1)", alignItems: "center", justifyContent: "center" },
-  closeX: { color: "rgba(255,255,255,0.6)", fontSize: 14, fontWeight: "700" },
+  closeX: { color: "rgba(255,255,255,0.6)", fontSize: 14, fontWeight: "700", fontFamily: "Satoshi-Bold" },
   iconCircle: { width: 72, height: 72, borderRadius: 36, alignItems: "center", justifyContent: "center", marginBottom: 12 },
   iconEmoji: { fontSize: 32 },
-  txTitle: { color: "#FFFFFF", fontSize: 18, fontWeight: "800", textAlign: "center" },
-  txAmount: { color: "#22C55E", fontSize: 32, fontWeight: "900", marginTop: 4 },
+  txTitle: { color: "#FFFFFF", fontSize: 18, fontWeight: "800", textAlign: "center", fontFamily: "Chillax-Bold" },
+  txAmount: { color: "#22C55E", fontSize: 32, fontWeight: "900", marginTop: 4, fontFamily: "Satoshi-Bold" },
   txTime: { color: "rgba(255,255,255,0.45)", fontSize: 13, marginTop: 4, marginBottom: 20 },
   rows: { width: "100%", backgroundColor: "rgba(255,255,255,0.05)", borderRadius: 16, overflow: "hidden" },
   row: { flexDirection: "row", justifyContent: "space-between", alignItems: "center", padding: 16 },
   divider: { height: 1, backgroundColor: "rgba(255,255,255,0.07)", marginHorizontal: 16 },
   rowLabel: { color: "rgba(255,255,255,0.5)", fontSize: 14 },
-  rowValue: { color: "#FFFFFF", fontSize: 14, fontWeight: "700" },
+  rowValue: { color: "#FFFFFF", fontSize: 14, fontWeight: "700", fontFamily: "Satoshi-Bold" },
   statusBadge: { backgroundColor: "rgba(34,197,94,0.15)", borderRadius: 8, paddingHorizontal: 10, paddingVertical: 4 },
-  statusText: { color: "#22C55E", fontSize: 13, fontWeight: "700" },
+  statusText: { color: "#22C55E", fontSize: 13, fontWeight: "700", fontFamily: "Satoshi-Bold" },
   helpBtn: { marginTop: 20, padding: 12 },
   helpText: { color: "rgba(255,255,255,0.4)", fontSize: 14 },
 });
@@ -446,9 +446,9 @@ const S = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#0D0628" },
 
   header: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 20, paddingBottom: 16 },
-  headerTitle: { color: "#FFFFFF", fontSize: 26, fontWeight: "900", letterSpacing: -0.5 },
+  headerTitle: { color: "#FFFFFF", fontSize: 26, fontWeight: "900", letterSpacing: -0.5, fontFamily: "Chillax-Bold" },
   pointsBadge: { borderRadius: 20, overflow: "hidden", paddingHorizontal: 14, paddingVertical: 7 },
-  pointsBadgeText: { color: "#FFFFFF", fontSize: 14, fontWeight: "800" },
+  pointsBadgeText: { color: "#FFFFFF", fontSize: 14, fontWeight: "800", fontFamily: "Chillax-Bold" },
 
   // Balance card
   cardWrap: { paddingHorizontal: 20, marginBottom: 20 },
@@ -458,8 +458,8 @@ const S = StyleSheet.create({
   cardTopRow: { flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: 12 },
   cardLabel: { color: "rgba(255,255,255,0.65)", fontSize: 11, fontWeight: "800", letterSpacing: 1.5 },
   tierBadge: { backgroundColor: "rgba(255,255,255,0.2)", borderRadius: 12, paddingHorizontal: 10, paddingVertical: 4 },
-  tierBadgeText: { color: "#FFFFFF", fontSize: 12, fontWeight: "800" },
-  balanceAmount: { color: "#FFFFFF", fontSize: 52, fontWeight: "900", letterSpacing: -2, lineHeight: 56 },
+  tierBadgeText: { color: "#FFFFFF", fontSize: 12, fontWeight: "800", fontFamily: "Chillax-Bold" },
+  balanceAmount: { color: "#FFFFFF", fontSize: 52, fontWeight: "900", letterSpacing: -2, lineHeight: 56, fontFamily: "Satoshi-Bold" },
   balanceSub: { color: "rgba(255,255,255,0.6)", fontSize: 14, marginTop: 4, marginBottom: 18 },
 
   tierProgress: { gap: 6, marginBottom: 18 },
@@ -470,7 +470,7 @@ const S = StyleSheet.create({
 
   statsRow: { flexDirection: "row", backgroundColor: "rgba(0,0,0,0.2)", borderRadius: 16, padding: 14 },
   statItem: { flex: 1, alignItems: "center", gap: 3 },
-  statValue: { color: "#FFFFFF", fontSize: 18, fontWeight: "900" },
+  statValue: { color: "#FFFFFF", fontSize: 18, fontWeight: "900", fontFamily: "Satoshi-Bold" },
   statLabel: { color: "rgba(255,255,255,0.55)", fontSize: 10, fontWeight: "600" },
   statDivider: { width: 1, backgroundColor: "rgba(255,255,255,0.15)" },
 
@@ -479,28 +479,28 @@ const S = StyleSheet.create({
   tabs: { flexDirection: "row", backgroundColor: "rgba(255,255,255,0.06)", borderRadius: 16, padding: 4, position: "relative" },
   tabIndicator: { position: "absolute", top: 4, bottom: 4, width: "30%", backgroundColor: "rgba(255,255,255,0.12)", borderRadius: 12 },
   tab: { flex: 1, paddingVertical: 10, alignItems: "center" },
-  tabText: { color: "rgba(255,255,255,0.4)", fontSize: 14, fontWeight: "700" },
+  tabText: { color: "rgba(255,255,255,0.4)", fontSize: 14, fontWeight: "700", fontFamily: "Satoshi-Bold" },
   tabTextActive: { color: "#FFFFFF" },
 
   tabContent: { paddingHorizontal: 20, paddingTop: 20 },
 
-  sectionTitle: { color: "#FFFFFF", fontSize: 20, fontWeight: "900", letterSpacing: -0.3 },
+  sectionTitle: { color: "#FFFFFF", fontSize: 20, fontWeight: "900", letterSpacing: -0.3, fontFamily: "Chillax-Bold" },
   sectionSub: { color: "rgba(255,255,255,0.4)", fontSize: 13, marginTop: 4, marginBottom: 14 },
 
   // Earn rows
   earnList: { gap: 2, backgroundColor: "rgba(255,255,255,0.04)", borderRadius: 20, overflow: "hidden", borderWidth: 1, borderColor: "rgba(255,255,255,0.07)" },
   earnRow: { flexDirection: "row", alignItems: "center", padding: 14, gap: 12 },
   earnIcon: { width: 44, height: 44, borderRadius: 14, alignItems: "center", justifyContent: "center" },
-  earnAction: { flex: 1, color: "#FFFFFF", fontSize: 15, fontWeight: "700" },
+  earnAction: { flex: 1, color: "#FFFFFF", fontSize: 15, fontWeight: "700", fontFamily: "Satoshi-Bold" },
   earnBadge: { borderRadius: 10, paddingHorizontal: 10, paddingVertical: 5, borderWidth: 1 },
-  earnBadgeText: { fontSize: 12, fontWeight: "800" },
+  earnBadgeText: { fontSize: 12, fontWeight: "800", fontFamily: "Chillax-Bold" },
 
   // Tier ladder
   tierLadder: { gap: 2, backgroundColor: "rgba(255,255,255,0.04)", borderRadius: 20, overflow: "hidden", borderWidth: 1, borderColor: "rgba(255,255,255,0.07)", marginTop: 12 },
   tierRow: { flexDirection: "row", alignItems: "center", padding: 14, gap: 12 },
   tierEmoji: { fontSize: 22, width: 32, textAlign: "center" },
   tierInfo: { flex: 1 },
-  tierName: { color: "#FFFFFF", fontSize: 15, fontWeight: "800" },
+  tierName: { color: "#FFFFFF", fontSize: 15, fontWeight: "800", fontFamily: "Chillax-Bold" },
   tierRange: { color: "rgba(255,255,255,0.4)", fontSize: 12, marginTop: 1 },
   activeDot: { width: 8, height: 8, borderRadius: 4 },
 
@@ -508,7 +508,7 @@ const S = StyleSheet.create({
   featuredCard: { width: width * 0.52, height: 160, borderRadius: 18, overflow: "hidden", marginRight: 10 },
   featuredCardIcon: { position: "absolute", top: 12, left: 12, width: 36, height: 36, borderRadius: 10, backgroundColor: "rgba(0,0,0,0.4)", alignItems: "center", justifyContent: "center" },
   featuredCardBottom: { position: "absolute", bottom: 12, left: 12, right: 12 },
-  featuredCardTitle: { color: "#FFFFFF", fontSize: 14, fontWeight: "800", lineHeight: 18 },
+  featuredCardTitle: { color: "#FFFFFF", fontSize: 14, fontWeight: "800", lineHeight: 18, fontFamily: "Chillax-Bold" },
   featuredCardSub: { color: "rgba(255,255,255,0.65)", fontSize: 12, marginTop: 2 },
 
   // Redeem list
@@ -516,21 +516,21 @@ const S = StyleSheet.create({
   redeemRow: { flexDirection: "row", alignItems: "center", padding: 14, gap: 12 },
   redeemIcon: { width: 44, height: 44, borderRadius: 14, alignItems: "center", justifyContent: "center" },
   redeemText: { flex: 1 },
-  redeemTitle: { color: "#FFFFFF", fontSize: 15, fontWeight: "700" },
+  redeemTitle: { color: "#FFFFFF", fontSize: 15, fontWeight: "700", fontFamily: "Satoshi-Bold" },
   redeemDesc: { color: "rgba(255,255,255,0.4)", fontSize: 12, marginTop: 1 },
 
   // History
   groupHeader: { flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: 8 },
-  groupDate: { color: "#FFFFFF", fontSize: 16, fontWeight: "800" },
-  groupTotal: { color: "#22C55E", fontSize: 13, fontWeight: "700" },
+  groupDate: { color: "#FFFFFF", fontSize: 16, fontWeight: "800", fontFamily: "Chillax-Bold" },
+  groupTotal: { color: "#22C55E", fontSize: 13, fontWeight: "700", fontFamily: "Satoshi-Bold" },
   txGroup: { backgroundColor: "rgba(255,255,255,0.04)", borderRadius: 20, overflow: "hidden", borderWidth: 1, borderColor: "rgba(255,255,255,0.07)" },
   txRow: { flexDirection: "row", alignItems: "center", padding: 14, gap: 12 },
   txIcon: { width: 44, height: 44, borderRadius: 14, alignItems: "center", justifyContent: "center" },
   txInfo: { flex: 1 },
-  txTitle: { color: "#FFFFFF", fontSize: 14, fontWeight: "700" },
+  txTitle: { color: "#FFFFFF", fontSize: 14, fontWeight: "700", fontFamily: "Satoshi-Bold" },
   txSub: { color: "rgba(255,255,255,0.4)", fontSize: 12, marginTop: 1 },
   txRight: { alignItems: "flex-end" },
-  txAmount: { color: "#22C55E", fontSize: 15, fontWeight: "900" },
+  txAmount: { color: "#22C55E", fontSize: 15, fontWeight: "900", fontFamily: "Satoshi-Bold" },
   txPts: { color: "rgba(255,255,255,0.4)", fontSize: 11, marginTop: 1 },
   actionBtnsRow: { flexDirection: "row", gap: 8, paddingHorizontal: 20, paddingTop: 12, paddingBottom: 4 },
   actionBtn: { flex: 1, borderRadius: 14, overflow: "hidden", paddingVertical: 12, alignItems: "center", gap: 4, borderWidth: 1, borderColor: "rgba(255,255,255,0.1)" },

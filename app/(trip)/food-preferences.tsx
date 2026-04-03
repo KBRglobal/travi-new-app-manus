@@ -272,7 +272,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   backArrow: { color: "#fff", fontSize: 20 },
-  headerTitle: { color: "#fff", fontSize: 18, fontWeight: "700" },
+  headerTitle: { color: "#fff", fontSize: 18, fontWeight: "700", fontFamily: "Chillax-Semibold" },
   scroll: { flex: 1 },
   scrollContent: { padding: 20, paddingBottom: 48 },
 
@@ -292,6 +292,7 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     textAlign: "center",
     marginBottom: 8,
+    fontFamily: "Chillax-Semibold",
   },
   introText: {
     color: "#9BA1A6",
@@ -306,6 +307,7 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     marginBottom: 12,
     marginTop: 8,
+    fontFamily: "Chillax-Semibold",
   },
   chipGrid: {
     flexDirection: "row",
@@ -328,7 +330,7 @@ const styles = StyleSheet.create({
     borderColor: "#F94498",
   },
   chipCheck: { color: "#F94498", fontSize: 12, fontWeight: "700" },
-  chipText: { color: "#9BA1A6", fontSize: 13, fontWeight: "500" },
+  chipText: { color: "#9BA1A6", fontSize: 13, fontWeight: "500", fontFamily: "Satoshi-Medium" },
   chipTextSelected: { color: "#F94498", fontWeight: "600" },
 
   allergyHeader: {
@@ -383,7 +385,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     borderRadius: 12,
   },
-  addBtnText: { color: "#fff", fontSize: 24, fontWeight: "700", lineHeight: 28 },
+  addBtnText: { color: "#fff", fontSize: 24, fontWeight: "700", lineHeight: 28, fontFamily: "Chillax-Semibold" },
 
   notesInput: {
     backgroundColor: "rgba(255,255,255,0.07)",
@@ -404,7 +406,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderRadius: 16,
   },
-  saveBtnText: { color: "#fff", fontSize: 17, fontWeight: "700" },
+  saveBtnText: { color: "#fff", fontSize: 17, fontWeight: "700", fontFamily: "Chillax-Semibold" },
 
   dnaNote: {
     color: "#6443F4",

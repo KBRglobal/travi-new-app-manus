@@ -104,7 +104,7 @@ const S = StyleSheet.create({
   header: { flexDirection: "row", alignItems: "center", paddingHorizontal: 20, paddingBottom: 16, gap: 12 },
   backBtn: { width: 36, height: 36, borderRadius: 18, backgroundColor: "rgba(255,255,255,0.08)", alignItems: "center", justifyContent: "center" },
   backText: { color: "#FFFFFF", fontSize: 18, fontWeight: "700" },
-  headerTitle: { flex: 1, color: "#FFFFFF", fontSize: 20, fontWeight: "900", textAlign: "center" },
+  headerTitle: { flex: 1, color: "#FFFFFF", fontSize: 20, fontWeight: "900", textAlign: "center", fontFamily: "Chillax-Bold" },
   sosBanner: { marginHorizontal: 20, marginBottom: 24, borderRadius: 16, backgroundColor: "rgba(239,68,68,0.12)", borderWidth: 1, borderColor: "rgba(239,68,68,0.3)", padding: 16, flexDirection: "row", gap: 14, alignItems: "flex-start" },
   sosEmoji: { fontSize: 28 },
   sosBannerText: { flex: 1, gap: 4 },

@@ -4,14 +4,19 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { HapticTab } from "@/components/haptic-tab";
 import { IconSymbol } from "@/components/ui/icon-symbol";
 import { LinearGradient } from "expo-linear-gradient";
+import { BlurView } from "expo-blur";
 
 function TabBarBackground() {
   return (
     <View style={StyleSheet.absoluteFillObject}>
-      <LinearGradient
-        colors={["rgba(4,0,20,0.97)", "rgba(8,4,28,0.99)"]}
-        style={StyleSheet.absoluteFillObject}
-      />
+      {Platform.OS === "ios" ? (
+        <BlurView intensity={25} tint="dark" style={StyleSheet.absoluteFillObject} />
+      ) : (
+        <LinearGradient
+          colors={["rgba(4,0,20,0.97)", "rgba(8,4,28,0.99)"]}
+          style={StyleSheet.absoluteFillObject}
+        />
+      )}
       <View style={styles.tabBorder} />
     </View>
   );

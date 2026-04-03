@@ -183,6 +183,7 @@ const s = StyleSheet.create({
     textAlign: "center",
     lineHeight: 42,
     letterSpacing: -0.8,
+    fontFamily: "Chillax-Bold",
   },
   sub: {
     fontSize: 14,
@@ -200,8 +201,8 @@ const s = StyleSheet.create({
     flexShrink: 0,
   },
   rowText: { flex: 1, gap: 2 },
-  rowTitle: { fontSize: 14, fontWeight: "700", color: "#FFFFFF" },
-  rowDesc:  { fontSize: 12, color: "rgba(196,181,217,0.60)", lineHeight: 17 },
+  rowTitle: { fontSize: 14, fontWeight: "700", color: "#FFFFFF", fontFamily: "Satoshi-Bold" },
+  rowDesc:  { fontSize: 12, color: "rgba(196,181,217,0.60)", lineHeight: 17, fontFamily: "Satoshi-Regular" },
 
   // CTA
   cta: { gap: 12, alignItems: "center" },

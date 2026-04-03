@@ -1,8 +1,58 @@
 /**
  * TRAVI Design System — Global Design Tokens
- * 
+ *
  * Use these tokens across all screens for visual consistency.
  */
+
+// ─── Font Families ───────────────────────────────────────────────────────────
+// Chillax for display/headlines, Satoshi for body. Loaded in app/_layout.tsx
+export const FONTS = {
+  displayRegular: "Chillax-Regular",
+  displaySemibold: "Chillax-Semibold",
+  displayBold: "Chillax-Bold",
+  bodyRegular: "Satoshi-Regular",
+  bodyMedium: "Satoshi-Medium",
+  bodyBold: "Satoshi-Bold",
+  /** Fallback when custom fonts haven't loaded yet */
+  system: undefined as string | undefined,
+} as const;
+
+// ─── Premium Animation Config ────────────────────────────────────────────────
+export const SPRING = {
+  /** Card press — snappy return */
+  press: { damping: 20, stiffness: 90, mass: 1 },
+  /** Modal entrance — bouncy */
+  modal: { damping: 15, stiffness: 120, mass: 1 },
+  /** Page transition — smooth */
+  page: { damping: 25, stiffness: 100, mass: 1 },
+} as const;
+
+export const EASING_EXPO_OUT = [0.16, 1, 0.3, 1] as const;
+
+// ─── Accent Glow Shadows ─────────────────────────────────────────────────────
+export const GLOW = {
+  purple: {
+    shadowColor: "#C084FC",
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.35,
+    shadowRadius: 16,
+    elevation: 8,
+  },
+  pink: {
+    shadowColor: "#F94498",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 20,
+    elevation: 8,
+  },
+  cta: {
+    shadowColor: "#F94498",
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.4,
+    shadowRadius: 24,
+    elevation: 10,
+  },
+} as const;
 
 // ─── Spacing Scale ────────────────────────────────────────────────────────────
 export const SPACING = {

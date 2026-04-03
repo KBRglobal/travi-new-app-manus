@@ -244,7 +244,7 @@ const S = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#0D1B2A" },
   header: { flexDirection: "row", alignItems: "center", paddingHorizontal: 16, paddingBottom: 12, paddingTop: 4, gap: 8 },
   backBtn: { width: 40, height: 40, alignItems: "center", justifyContent: "center" },
-  headerTitle: { color: "#FFF", fontSize: 18, fontWeight: "800" },
+  headerTitle: { color: "#FFF", fontSize: 18, fontWeight: "800", fontFamily: "Chillax-Bold" },
   headerSub: { color: "#5A4D72", fontSize: 12 },
   headerCount: { color: "#9BA1A6", fontSize: 14, fontWeight: "700" },
 
@@ -255,7 +255,7 @@ const S = StyleSheet.create({
 
   sectionHeader: { flexDirection: "row", alignItems: "center", gap: 8, paddingVertical: 14, paddingTop: 20 },
   sectionIcon: { fontSize: 18 },
-  sectionTitle: { fontSize: 14, fontWeight: "800", textTransform: "uppercase", letterSpacing: 0.5, flex: 1 },
+  sectionTitle: { fontSize: 14, fontWeight: "800", textTransform: "uppercase", letterSpacing: 0.5, flex: 1, fontFamily: "Chillax-Bold" },
   addToSectionBtn: { width: 28, height: 28, borderRadius: 8, backgroundColor: "rgba(255,255,255,0.06)", alignItems: "center", justifyContent: "center" },
 
   itemRow: { flexDirection: "row", alignItems: "center", gap: 12, paddingVertical: 12, borderBottomWidth: 1, borderBottomColor: "rgba(255,255,255,0.05)" },
