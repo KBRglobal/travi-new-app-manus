@@ -15,25 +15,25 @@ const FEATURES = [
     icon: "sparkles"               as const,
     color: "#A78BFA",
     title: "AI That Knows You",
-    desc:  "Learns your travel DNA through fun scenarios",
+    desc:  "Recommendations that actually match who you are",
   },
   {
     icon: "dollarsign.circle.fill" as const,
     color: "#F472B6",
     title: "Zero Hidden Fees",
-    desc:  "All commissions returned as TRAVI Points",
+    desc:  "What we earn, you earn back",
   },
   {
     icon: "location.fill"          as const,
     color: "#34D399",
     title: "Real-Time Agent",
-    desc:  "Your AI guide knows exactly where you are",
+    desc:  "In-trip help whenever you need it",
   },
   {
-    icon: "trophy.fill"            as const,
+    icon: "suitcase.fill"          as const,
     color: "#FBBF24",
-    title: "Travel Gamified",
-    desc:  "Earn badges, climb tiers, unlock rewards",
+    title: "All-in-One Trips",
+    desc:  "Flights, hotels, and experiences — no app-switching",
   },
 ];
 
@@ -87,10 +87,10 @@ export default function WelcomeScreen() {
       {/* ─── Headline ─── */}
       <Animated.View style={[s.headlineWrap, { opacity: fade, transform: [{ translateY: textY }] }]}>
         <Text style={s.greeting}>
-          {firstName ? `Hey ${firstName}! 👋` : "Welcome! 👋"}
+          {firstName && firstName !== "Traveler" ? `Hey ${firstName}! 👋` : "Hey there! 👋"}
         </Text>
-        <Text style={s.headline}>Your AI Travel{"\n"}Companion</Text>
-        <Text style={s.sub}>Plan, book, and explore — all in one place</Text>
+        <Text style={s.headline}>Travel like{"\n"}never before</Text>
+        <Text style={s.sub}>Smart planning, real bookings, zero hassle</Text>
       </Animated.View>
 
       {/* ─── Feature list ─── */}
@@ -172,9 +172,9 @@ const s = StyleSheet.create({
   headlineWrap: { gap: 6 },
   greeting: {
     fontSize: 14,
-    color: "rgba(196,181,217,0.65)",
+    color: "rgba(196,181,217,0.80)",
     fontWeight: "500",
-      fontFamily: "Satoshi-Medium",
+    fontFamily: "Satoshi-Medium",
     textAlign: "center",
   },
   headline: {
@@ -188,7 +188,7 @@ const s = StyleSheet.create({
   },
   sub: {
     fontSize: 14,
-    color: "rgba(196,181,217,0.55)",
+    color: "rgba(196,181,217,0.80)",
     textAlign: "center",
     lineHeight: 20,
   },
@@ -203,7 +203,7 @@ const s = StyleSheet.create({
   },
   rowText: { flex: 1, gap: 2 },
   rowTitle: { fontSize: 14, fontWeight: "700", color: "#FFFFFF", fontFamily: "Satoshi-Bold" },
-  rowDesc:  { fontSize: 12, color: "rgba(196,181,217,0.60)", lineHeight: 17, fontFamily: "Satoshi-Regular" },
+  rowDesc:  { fontSize: 13, color: "rgba(196,181,217,0.75)", lineHeight: 18, fontFamily: "Satoshi-Regular" },
 
   // CTA
   cta: { gap: 12, alignItems: "center" },
@@ -213,8 +213,8 @@ const s = StyleSheet.create({
     paddingVertical: 17, gap: 10,
   },
   btnText: { fontSize: 16, fontWeight: "700",
-      fontFamily: "Chillax-Semibold", color: "#FFFFFF" },
+    fontFamily: "Chillax-Semibold", color: "#FFFFFF" },
   skip: { paddingVertical: 6 },
-  skipText: { fontSize: 14, color: "rgba(196,181,217,0.60)", fontWeight: "500",
-      fontFamily: "Satoshi-Medium" },
+  skipText: { fontSize: 14, color: "rgba(196,181,217,0.75)", fontWeight: "500",
+    fontFamily: "Satoshi-Medium" },
 });
