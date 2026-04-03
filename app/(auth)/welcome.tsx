@@ -3,16 +3,13 @@ import {
   View, Text, StyleSheet, Animated,
   TouchableOpacity, Image, Dimensions,
 } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { router } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
 import { IconSymbol } from "@/components/ui/icon-symbol";
 import { useStore } from "@/lib/store";
 
-const { width, height } = Dimensions.get("window");
-
-// Mascot: 20% of screen height — always fits regardless of device
-const MASCOT_SIZE = height * 0.20;
+const { width } = Dimensions.get("window");
 
 const FEATURES = [
   {
@@ -43,65 +40,70 @@ const FEATURES = [
 
 export default function WelcomeScreen() {
   const { state, dispatch } = useStore();
+  const insets = useSafeAreaInsets();
 
-  const fade   = useRef(new Animated.Value(0)).current;
-  const duckY  = useRef(new Animated.Value(-16)).current;
-  const textY  = useRef(new Animated.Value(14)).current;
-  const listY  = useRef(new Animated.Value(20)).current;
-  const ctaY   = useRef(new Animated.Value(14)).current;
+  const fade  = useRef(new Animated.Value(0)).current;
+  const slideY = useRef(new Animated.Value(20)).current;
 
   useEffect(() => {
-    Animated.sequence([
-      Animated.parallel([
-        Animated.timing(fade,  { toValue: 1, duration: 380, useNativeDriver: true }),
-        Animated.spring(duckY, { toValue: 0, friction: 7, tension: 55, useNativeDriver: true }),
-        Animated.timing(textY, { toValue: 0, duration: 380, useNativeDriver: true }),
-      ]),
-      Animated.parallel([
-        Animated.timing(listY, { toValue: 0, duration: 320, useNativeDriver: true }),
-        Animated.timing(ctaY,  { toValue: 0, duration: 320, delay: 60, useNativeDriver: true }),
-      ]),
+    Animated.parallel([
+      Animated.timing(fade,   { toValue: 1, duration: 500, useNativeDriver: true }),
+      Animated.timing(slideY, { toValue: 0, duration: 500, useNativeDriver: true }),
     ]).start();
   }, []);
 
   const firstName = state.profile?.name?.split(" ")[0];
 
+  // Mascot: square, 48% of screen width
+  const mascotSize = width * 0.48;
+
   return (
-    <View style={s.bg}>
+    <View style={s.root}>
+      {/* Background gradient */}
       <LinearGradient
         colors={["#0C0720", "#160B35", "#1A0D3A"]}
         locations={[0, 0.5, 1]}
         style={StyleSheet.absoluteFillObject}
       />
+      {/* Ambient glows */}
       <View style={s.glowTR} />
       <View style={s.glowBL} />
 
-      {/* SafeAreaView handles top notch/island + bottom home indicator */}
-      <SafeAreaView style={s.safe} edges={["top", "bottom"]}>
-
-        {/* ─── Mascot ─── */}
-        <Animated.View style={[s.duckWrap, { opacity: fade, transform: [{ translateY: duckY }] }]}>
+      {/* ── CONTENT ── */}
+      <Animated.View
+        style={[
+          s.content,
+          {
+            paddingTop: insets.top + 16,
+            paddingBottom: insets.bottom + 12,
+            opacity: fade,
+            transform: [{ translateY: slideY }],
+          },
+        ]}
+      >
+        {/* Mascot */}
+        <View style={s.mascotWrap}>
           <Image
             source={require("@/assets/logos/mascot-centered.png")}
-            style={s.duck}
+            style={{ width: mascotSize, height: mascotSize }}
             resizeMode="contain"
           />
-        </Animated.View>
+        </View>
 
-        {/* ─── Headline ─── */}
-        <Animated.View style={[s.headlineWrap, { opacity: fade, transform: [{ translateY: textY }] }]}>
+        {/* Greeting + headline */}
+        <View style={s.headBlock}>
           <Text style={s.greeting}>
             {firstName && firstName !== "Traveler" ? `Hey ${firstName}! 👋` : "Hey there! 👋"}
           </Text>
           <Text style={s.headline}>Travel like{"\n"}never before</Text>
           <Text style={s.sub}>Smart planning, real bookings, zero hassle</Text>
-        </Animated.View>
+        </View>
 
-        {/* ─── Features — flex:1 fills middle ─── */}
-        <Animated.View style={[s.list, { opacity: fade, transform: [{ translateY: listY }] }]}>
+        {/* Feature rows */}
+        <View style={s.features}>
           {FEATURES.map((f, i) => (
             <View key={i} style={s.row}>
-              <View style={[s.iconCircle, { backgroundColor: f.color + "20" }]}>
+              <View style={[s.iconBox, { backgroundColor: f.color + "22" }]}>
                 <IconSymbol name={f.icon} size={20} color={f.color} />
               </View>
               <View style={s.rowText}>
@@ -110,10 +112,10 @@ export default function WelcomeScreen() {
               </View>
             </View>
           ))}
-        </Animated.View>
+        </View>
 
-        {/* ─── CTA ─── */}
-        <Animated.View style={[s.cta, { opacity: fade, transform: [{ translateY: ctaY }] }]}>
+        {/* CTA */}
+        <View style={s.ctaBlock}>
           <TouchableOpacity
             style={s.btn}
             onPress={() => router.push("/(auth)/quiz" as never)}
@@ -121,8 +123,9 @@ export default function WelcomeScreen() {
           >
             <LinearGradient
               colors={["#6443F4", "#B91C7C", "#F94498"]}
-              start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
-              style={s.btnGrad}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 0 }}
+              style={s.btnInner}
             >
               <Text style={s.btnText}>Build My Traveler Profile</Text>
               <IconSymbol name="arrow.right" size={17} color="#fff" />
@@ -135,54 +138,54 @@ export default function WelcomeScreen() {
               router.replace("/(tabs)" as never);
             }}
             activeOpacity={0.6}
-            style={s.skip}
           >
             <Text style={s.skipText}>Skip for now</Text>
           </TouchableOpacity>
-        </Animated.View>
-
-      </SafeAreaView>
+        </View>
+      </Animated.View>
     </View>
   );
 }
 
 const s = StyleSheet.create({
-  bg: {
+  root: {
     flex: 1,
     backgroundColor: "#0C0720",
   },
 
-  // SafeAreaView fills the whole screen, column layout
-  safe: {
-    flex: 1,
-    paddingHorizontal: 28,
-    paddingTop: 8,
-    paddingBottom: 8,
-    flexDirection: "column",
-  },
-
   glowTR: {
     position: "absolute",
-    width: 300, height: 300, borderRadius: 150,
-    top: -120, right: -120,
-    backgroundColor: "rgba(100,67,244,0.16)",
+    width: 280, height: 280, borderRadius: 140,
+    top: -100, right: -100,
+    backgroundColor: "rgba(100,67,244,0.18)",
   },
   glowBL: {
     position: "absolute",
-    width: 260, height: 260, borderRadius: 130,
-    bottom: -80, left: -100,
-    backgroundColor: "rgba(249,68,152,0.11)",
+    width: 240, height: 240, borderRadius: 120,
+    bottom: -60, left: -80,
+    backgroundColor: "rgba(249,68,152,0.12)",
   },
 
-  // Mascot — fixed height, centered
-  duckWrap: { alignItems: "center", marginBottom: 4 },
-  duck: { width: MASCOT_SIZE, height: MASCOT_SIZE },
+  // Main column — fills screen, distributes sections with space-between
+  content: {
+    flex: 1,
+    paddingHorizontal: 28,
+    justifyContent: "space-between",
+  },
+
+  // Mascot centered
+  mascotWrap: {
+    alignItems: "center",
+  },
 
   // Headline block
-  headlineWrap: { gap: 6, alignItems: "center", marginBottom: 4 },
+  headBlock: {
+    alignItems: "center",
+    gap: 6,
+  },
   greeting: {
     fontSize: 14,
-    color: "rgba(196,181,217,0.80)",
+    color: "rgba(196,181,217,0.82)",
     fontWeight: "500",
     fontFamily: "Satoshi-Medium",
     textAlign: "center",
@@ -193,45 +196,74 @@ const s = StyleSheet.create({
     color: "#FFFFFF",
     textAlign: "center",
     lineHeight: 40,
-    letterSpacing: -0.8,
+    letterSpacing: -0.5,
     fontFamily: "Chillax-Bold",
   },
   sub: {
     fontSize: 14,
-    color: "rgba(196,181,217,0.80)",
+    color: "rgba(196,181,217,0.78)",
     textAlign: "center",
     lineHeight: 20,
     fontFamily: "Satoshi-Regular",
   },
 
-  // Feature list — flex:1 fills remaining space, items evenly distributed
-  list: {
-    flex: 1,
-    justifyContent: "space-evenly",
-    paddingVertical: 8,
+  // Feature rows
+  features: {
+    gap: 14,
   },
-  row: { flexDirection: "row", alignItems: "center", gap: 14 },
-  iconCircle: {
+  row: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 14,
+  },
+  iconBox: {
     width: 44, height: 44, borderRadius: 13,
     alignItems: "center", justifyContent: "center",
     flexShrink: 0,
   },
-  rowText: { flex: 1, gap: 3 },
-  rowTitle: { fontSize: 14, fontWeight: "700", color: "#FFFFFF", fontFamily: "Satoshi-Bold" },
-  rowDesc:  { fontSize: 13, color: "rgba(196,181,217,0.75)", lineHeight: 18, fontFamily: "Satoshi-Regular" },
+  rowText: { flex: 1, gap: 2 },
+  rowTitle: {
+    fontSize: 14, fontWeight: "700",
+    color: "#FFFFFF", fontFamily: "Satoshi-Bold",
+  },
+  rowDesc: {
+    fontSize: 13,
+    color: "rgba(196,181,217,0.75)",
+    lineHeight: 18,
+    fontFamily: "Satoshi-Regular",
+  },
 
-  // CTA
-  cta: { gap: 12, alignItems: "center" },
+  // CTA block
+  ctaBlock: {
+    gap: 12,
+    alignItems: "center",
+  },
   btn: {
-    width: "100%", borderRadius: 16, overflow: "hidden",
-    shadowColor: "#F94498", shadowOffset: { width: 0, height: 6 },
-    shadowOpacity: 0.4, shadowRadius: 24, elevation: 10,
+    width: "100%",
+    borderRadius: 16,
+    overflow: "hidden",
+    shadowColor: "#F94498",
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.4,
+    shadowRadius: 20,
+    elevation: 10,
   },
-  btnGrad: {
-    flexDirection: "row", alignItems: "center", justifyContent: "center",
-    paddingVertical: 18, gap: 10,
+  btnInner: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    paddingVertical: 17,
+    gap: 10,
   },
-  btnText: { fontSize: 16, fontWeight: "700", fontFamily: "Chillax-Semibold", color: "#FFFFFF" },
-  skip: { paddingVertical: 6 },
-  skipText: { fontSize: 14, color: "rgba(196,181,217,0.75)", fontWeight: "500", fontFamily: "Satoshi-Medium" },
+  btnText: {
+    fontSize: 16, fontWeight: "700",
+    fontFamily: "Chillax-Semibold", color: "#FFFFFF",
+  },
+  skipText: {
+    fontSize: 14,
+    color: "rgba(196,181,217,0.75)",
+    fontWeight: "500",
+    fontFamily: "Satoshi-Medium",
+    paddingVertical: 4,
+  },
 });
