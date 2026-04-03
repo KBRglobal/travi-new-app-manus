@@ -333,7 +333,7 @@ const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#0D0628" },
   orb1: { position: "absolute", width: width, height: width, borderRadius: width / 2, top: -width * 0.4, left: -width * 0.3, backgroundColor: "rgba(123,47,190,0.09)" },
   orb2: { position: "absolute", width: width * 0.7, height: width * 0.7, borderRadius: width * 0.35, bottom: 0, right: -width * 0.3, backgroundColor: "rgba(233,30,140,0.06)" },
-  listContent: { paddingHorizontal: 22, paddingTop: 0, paddingBottom: 110, gap: 14 },
+  listContent: { paddingHorizontal: 20, paddingTop: 0, paddingBottom: 130, gap: 16 },
   header: { flexDirection: "row", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 6 },
   headerTitle: { color: "#FFFFFF", fontSize: 28, fontWeight: "800", fontFamily: "Chillax-Bold" },
   headerSub: { color: "#5A4D72", fontSize: 13, marginTop: 2 },
