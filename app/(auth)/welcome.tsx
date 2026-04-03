@@ -1,7 +1,7 @@
 import { useRef, useEffect } from "react";
 import {
   View, Text, StyleSheet, Animated,
-  TouchableOpacity, Image, Dimensions, ScrollView,
+  TouchableOpacity, Image, Dimensions,
 } from "react-native";
 import { router } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
@@ -38,12 +38,14 @@ const FEATURES = [
   },
 ];
 
+const MASCOT_SIZE = width * 0.42;
+
 export default function WelcomeScreen() {
   const { state, dispatch } = useStore();
   const insets = useSafeAreaInsets();
 
   const fade   = useRef(new Animated.Value(0)).current;
-  const duckY  = useRef(new Animated.Value(-24)).current;
+  const duckY  = useRef(new Animated.Value(-20)).current;
   const textY  = useRef(new Animated.Value(16)).current;
   const listY  = useRef(new Animated.Value(24)).current;
   const ctaY   = useRef(new Animated.Value(16)).current;
@@ -65,107 +67,89 @@ export default function WelcomeScreen() {
   const firstName = state.profile?.name?.split(" ")[0];
 
   return (
-    <View style={s.root}>
+    <View style={[s.root, { paddingTop: insets.top + 8, paddingBottom: insets.bottom + 16 }]}>
       {/* Background */}
       <LinearGradient
         colors={["#0C0720", "#160B35", "#1A0D3A"]}
         locations={[0, 0.5, 1]}
         style={StyleSheet.absoluteFillObject}
       />
-      {/* Glow top-right */}
       <View style={s.glowTR} />
-      {/* Glow bottom-left */}
       <View style={s.glowBL} />
 
-      <ScrollView
-        contentContainerStyle={[
-          s.scroll,
-          { paddingTop: insets.top + 20, paddingBottom: insets.bottom + 24 },
-        ]}
-        showsVerticalScrollIndicator={false}
-        bounces={false}
-      >
-        {/* ─── Mascot ─── */}
-        <Animated.View style={[s.duckWrap, { opacity: fade, transform: [{ translateY: duckY }] }]}>
-          <Image
-            source={require("@/assets/logos/mascot-centered.png")}
-            style={s.duck}
-            resizeMode="contain"
-          />
-        </Animated.View>
+      {/* ─── Mascot ─── */}
+      <Animated.View style={[s.duckWrap, { opacity: fade, transform: [{ translateY: duckY }] }]}>
+        <Image
+          source={require("@/assets/logos/mascot-centered.png")}
+          style={s.duck}
+          resizeMode="contain"
+        />
+      </Animated.View>
 
-        {/* ─── Headline ─── */}
-        <Animated.View style={[s.headlineWrap, { opacity: fade, transform: [{ translateY: textY }] }]}>
-          <Text style={s.greeting}>
-            {firstName && firstName !== "Traveler" ? `Hey ${firstName}! 👋` : "Hey there! 👋"}
-          </Text>
-          <Text style={s.headline}>Travel like{"\n"}never before</Text>
-          <Text style={s.sub}>Smart planning, real bookings, zero hassle</Text>
-        </Animated.View>
+      {/* ─── Headline ─── */}
+      <Animated.View style={[s.headlineWrap, { opacity: fade, transform: [{ translateY: textY }] }]}>
+        <Text style={s.greeting}>
+          {firstName && firstName !== "Traveler" ? `Hey ${firstName}! 👋` : "Hey there! 👋"}
+        </Text>
+        <Text style={s.headline}>Travel like{"\n"}never before</Text>
+        <Text style={s.sub}>Smart planning, real bookings, zero hassle</Text>
+      </Animated.View>
 
-        {/* ─── Feature list ─── */}
-        <Animated.View style={[s.list, { opacity: fade, transform: [{ translateY: listY }] }]}>
-          {FEATURES.map((f, i) => (
-            <View key={i} style={s.row}>
-              <View style={[s.iconCircle, { backgroundColor: f.color + "20" }]}>
-                <IconSymbol name={f.icon} size={20} color={f.color} />
-              </View>
-              <View style={s.rowText}>
-                <Text style={s.rowTitle}>{f.title}</Text>
-                <Text style={s.rowDesc}>{f.desc}</Text>
-              </View>
+      {/* ─── Feature list — flex:1 so it fills remaining space ─── */}
+      <Animated.View style={[s.list, { opacity: fade, transform: [{ translateY: listY }] }]}>
+        {FEATURES.map((f, i) => (
+          <View key={i} style={s.row}>
+            <View style={[s.iconCircle, { backgroundColor: f.color + "20" }]}>
+              <IconSymbol name={f.icon} size={20} color={f.color} />
             </View>
-          ))}
-        </Animated.View>
+            <View style={s.rowText}>
+              <Text style={s.rowTitle}>{f.title}</Text>
+              <Text style={s.rowDesc}>{f.desc}</Text>
+            </View>
+          </View>
+        ))}
+      </Animated.View>
 
-        {/* ─── CTA ─── */}
-        <Animated.View style={[s.cta, { opacity: fade, transform: [{ translateY: ctaY }] }]}>
-          <TouchableOpacity
-            style={s.btn}
-            onPress={() => router.push("/(auth)/quiz" as never)}
-            activeOpacity={0.88}
+      {/* ─── CTA — pinned to bottom ─── */}
+      <Animated.View style={[s.cta, { opacity: fade, transform: [{ translateY: ctaY }] }]}>
+        <TouchableOpacity
+          style={s.btn}
+          onPress={() => router.push("/(auth)/quiz" as never)}
+          activeOpacity={0.88}
+        >
+          <LinearGradient
+            colors={["#6443F4", "#B91C7C", "#F94498"]}
+            start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
+            style={s.btnGrad}
           >
-            <LinearGradient
-              colors={["#6443F4", "#B91C7C", "#F94498"]}
-              start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
-              style={s.btnGrad}
-            >
-              <Text style={s.btnText}>Build My Traveler Profile</Text>
-              <IconSymbol name="arrow.right" size={17} color="#fff" />
-            </LinearGradient>
-          </TouchableOpacity>
+            <Text style={s.btnText}>Build My Traveler Profile</Text>
+            <IconSymbol name="arrow.right" size={17} color="#fff" />
+          </LinearGradient>
+        </TouchableOpacity>
 
-          <TouchableOpacity
-            onPress={() => {
-              dispatch({ type: "SET_ONBOARDING_COMPLETED" });
-              router.replace("/(tabs)" as never);
-            }}
-            activeOpacity={0.6}
-            style={s.skip}
-          >
-            <Text style={s.skipText}>Skip for now</Text>
-          </TouchableOpacity>
-        </Animated.View>
-      </ScrollView>
+        <TouchableOpacity
+          onPress={() => {
+            dispatch({ type: "SET_ONBOARDING_COMPLETED" });
+            router.replace("/(tabs)" as never);
+          }}
+          activeOpacity={0.6}
+          style={s.skip}
+        >
+          <Text style={s.skipText}>Skip for now</Text>
+        </TouchableOpacity>
+      </Animated.View>
     </View>
   );
 }
-
-const MASCOT_SIZE = width * 0.44;
 
 const s = StyleSheet.create({
   root: {
     flex: 1,
     backgroundColor: "#0C0720",
-  },
-
-  scroll: {
     paddingHorizontal: 28,
-    gap: 28,
-    alignItems: "stretch",
+    // top/bottom set dynamically via insets
   },
 
-  // Ambient glows
   glowTR: {
     position: "absolute",
     width: 300, height: 300, borderRadius: 150,
@@ -179,12 +163,12 @@ const s = StyleSheet.create({
     backgroundColor: "rgba(249,68,152,0.11)",
   },
 
-  // Mascot
-  duckWrap: { alignItems: "center", marginBottom: -8 },
+  // Mascot — sits at top, no flex growth
+  duckWrap: { alignItems: "center", marginBottom: 4 },
   duck: { width: MASCOT_SIZE, height: MASCOT_SIZE },
 
-  // Headline block
-  headlineWrap: { gap: 8, alignItems: "center" },
+  // Headline
+  headlineWrap: { gap: 6, alignItems: "center", marginBottom: 20 },
   greeting: {
     fontSize: 15,
     color: "rgba(196,181,217,0.80)",
@@ -193,24 +177,24 @@ const s = StyleSheet.create({
     textAlign: "center",
   },
   headline: {
-    fontSize: 38,
+    fontSize: 36,
     fontWeight: "800",
     color: "#FFFFFF",
     textAlign: "center",
-    lineHeight: 44,
+    lineHeight: 42,
     letterSpacing: -0.8,
     fontFamily: "Chillax-Bold",
   },
   sub: {
-    fontSize: 15,
+    fontSize: 14,
     color: "rgba(196,181,217,0.80)",
     textAlign: "center",
-    lineHeight: 22,
+    lineHeight: 20,
     fontFamily: "Satoshi-Regular",
   },
 
-  // Feature list
-  list: { gap: 16 },
+  // Feature list — flex:1 fills the middle space
+  list: { flex: 1, gap: 14, justifyContent: "center" },
   row: { flexDirection: "row", alignItems: "center", gap: 14 },
   iconCircle: {
     width: 46, height: 46, borderRadius: 14,
@@ -221,8 +205,8 @@ const s = StyleSheet.create({
   rowTitle: { fontSize: 15, fontWeight: "700", color: "#FFFFFF", fontFamily: "Satoshi-Bold" },
   rowDesc:  { fontSize: 13, color: "rgba(196,181,217,0.75)", lineHeight: 18, fontFamily: "Satoshi-Regular" },
 
-  // CTA
-  cta: { gap: 14, alignItems: "center" },
+  // CTA — anchored at bottom
+  cta: { gap: 12, alignItems: "center", marginTop: 20 },
   btn: {
     width: "100%", borderRadius: 16, overflow: "hidden",
     shadowColor: "#F94498", shadowOffset: { width: 0, height: 6 },
