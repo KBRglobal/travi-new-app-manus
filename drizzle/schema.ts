@@ -344,3 +344,122 @@ export const referrals = pgTable("referrals", {
 });
 export type Referral = typeof referrals.$inferSelect;
 export type InsertReferral = typeof referrals.$inferInsert;
+
+// ─── Social Connections ───────────────────────────────────────────────────────
+export const connectionStatusEnum = pgEnum("connection_status", ["pending", "accepted", "declined", "blocked"]);
+export const socialConnections = pgTable("social_connections", {
+  id: serial("id").primaryKey(),
+  requesterId: integer("requesterId").notNull(),
+  receiverId: integer("receiverId").notNull(),
+  status: connectionStatusEnum("status").default("pending").notNull(),
+  compatibilityScore: integer("compatibilityScore").default(0),
+  sharedDestinations: text("sharedDestinations"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().notNull(),
+});
+export type SocialConnection = typeof socialConnections.$inferSelect;
+export type InsertSocialConnection = typeof socialConnections.$inferInsert;
+
+// ─── Social Messages ──────────────────────────────────────────────────────────
+export const socialMessages = pgTable("social_messages", {
+  id: serial("id").primaryKey(),
+  senderId: integer("senderId").notNull(),
+  receiverId: integer("receiverId").notNull(),
+  content: text("content").notNull(),
+  read: boolean("read").default(false).notNull(),
+  tripId: integer("tripId"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+export type SocialMessage = typeof socialMessages.$inferSelect;
+export type InsertSocialMessage = typeof socialMessages.$inferInsert;
+
+// ─── Properties (Real Estate) ─────────────────────────────────────────────────
+export const propertyTypeEnum = pgEnum("property_type", ["apartment", "villa", "penthouse", "townhouse", "studio"]);
+export const properties = pgTable("properties", {
+  id: serial("id").primaryKey(),
+  title: varchar("title", { length: 256 }).notNull(),
+  type: propertyTypeEnum("type").default("apartment").notNull(),
+  city: varchar("city", { length: 128 }).notNull(),
+  country: varchar("country", { length: 64 }).notNull(),
+  priceUsd: integer("priceUsd").notNull(),
+  bedrooms: integer("bedrooms").default(1).notNull(),
+  bathrooms: integer("bathrooms").default(1).notNull(),
+  sqm: integer("sqm"),
+  roiPercent: integer("roiPercent").default(0),
+  rentalYieldPercent: integer("rentalYieldPercent").default(0),
+  description: text("description"),
+  photos: text("photos"),
+  amenities: text("amenities"),
+  developer: varchar("developer", { length: 128 }),
+  handoverDate: varchar("handoverDate", { length: 16 }),
+  featured: boolean("featured").default(false).notNull(),
+  active: boolean("active").default(true).notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().notNull(),
+});
+export type Property = typeof properties.$inferSelect;
+export type InsertProperty = typeof properties.$inferInsert;
+
+// ─── RE Contacts ──────────────────────────────────────────────────────────────
+export const reContactTypeEnum = pgEnum("re_contact_type", ["agent", "developer", "lawyer", "consultant"]);
+export const reContacts = pgTable("re_contacts", {
+  id: serial("id").primaryKey(),
+  name: varchar("name", { length: 128 }).notNull(),
+  type: reContactTypeEnum("type").notNull(),
+  company: varchar("company", { length: 128 }),
+  city: varchar("city", { length: 64 }),
+  country: varchar("country", { length: 64 }),
+  phone: varchar("phone", { length: 32 }),
+  email: varchar("email", { length: 128 }),
+  languages: text("languages"),
+  specialties: text("specialties"),
+  rating: integer("rating").default(0),
+  reviewCount: integer("reviewCount").default(0).notNull(),
+  verified: boolean("verified").default(false).notNull(),
+  photoUrl: varchar("photoUrl", { length: 512 }),
+  bio: text("bio"),
+  active: boolean("active").default(true).notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+export type ReContact = typeof reContacts.$inferSelect;
+export type InsertReContact = typeof reContacts.$inferInsert;
+
+// ─── Enterprise Metrics ───────────────────────────────────────────────────────
+export const enterpriseMetrics = pgTable("enterprise_metrics", {
+  id: serial("id").primaryKey(),
+  period: varchar("period", { length: 8 }).notNull(),
+  mrr: integer("mrr").default(0).notNull(),
+  arr: integer("arr").default(0).notNull(),
+  newUsers: integer("newUsers").default(0).notNull(),
+  activeUsers: integer("activeUsers").default(0).notNull(),
+  churnRate: integer("churnRate").default(0),
+  cac: integer("cac").default(0),
+  clv: integer("clv").default(0),
+  bookingsCount: integer("bookingsCount").default(0).notNull(),
+  bookingsRevenue: integer("bookingsRevenue").default(0).notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+export type EnterpriseMetric = typeof enterpriseMetrics.$inferSelect;
+export type InsertEnterpriseMetric = typeof enterpriseMetrics.$inferInsert;
+
+// ─── CRM Prospects ────────────────────────────────────────────────────────────
+export const prospectStatusEnum = pgEnum("prospect_status", ["lead", "qualified", "proposal", "negotiation", "closed_won", "closed_lost"]);
+export const prospects = pgTable("prospects", {
+  id: serial("id").primaryKey(),
+  companyName: varchar("companyName", { length: 128 }).notNull(),
+  contactName: varchar("contactName", { length: 128 }),
+  email: varchar("email", { length: 128 }),
+  phone: varchar("phone", { length: 32 }),
+  status: prospectStatusEnum("status").default("lead").notNull(),
+  dealValue: integer("dealValue").default(0),
+  industry: varchar("industry", { length: 64 }),
+  country: varchar("country", { length: 64 }),
+  notes: text("notes"),
+  assignedTo: integer("assignedTo"),
+  nextFollowUp: timestamp("nextFollowUp"),
+  closedAt: timestamp("closedAt"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().notNull(),
+});
+export type Prospect = typeof prospects.$inferSelect;
+export type InsertProspect = typeof prospects.$inferInsert;

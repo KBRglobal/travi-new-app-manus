@@ -33,6 +33,13 @@ const MAPPING = {
   "arrow.left": "arrow-back",
   "arrow.up": "arrow-upward",
   "arrow.down": "arrow-downward",
+  "chevron.up": "expand-less",
+  "chevron.down": "expand-more",
+  "arrow.uturn.backward": "undo",
+  "arrow.right.circle.fill": "arrow-circle-right",
+  // Utility
+  "lightbulb.fill": "lightbulb",
+  "lock.shield.fill": "security",
   // Travel
   "airplane": "flight",
   "airplane.departure": "flight-takeoff",

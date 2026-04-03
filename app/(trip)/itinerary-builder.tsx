@@ -11,7 +11,7 @@
  *  - Pace-aware: shows daily tip based on tripPace
  */
 
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef, useCallback, useEffect } from "react";
 import {
   View, Text, TouchableOpacity, StyleSheet, ScrollView,
   Dimensions, Animated, Image, Platform, FlatList,
@@ -22,6 +22,7 @@ import { router, useLocalSearchParams } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import * as Haptics from "expo-haptics";
 import { useStore } from "@/lib/store";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { buildSmartItinerary, type RoutingActivity, type RoutedDay, type RoutedStop } from "@/lib/smart-routing";
 import { ActivityBookingModal, type BookableActivity } from "@/components/activity-booking";
 import type { ActivityCategory } from "@/lib/store";
@@ -52,7 +53,7 @@ const TRANSPORT_COLORS: Record<string, string> = { walk: "#22C55E", taxi: "#F59E
 
 export default function ItineraryBuilderScreen() {
   const insets = useSafeAreaInsets();
-  const params = useLocalSearchParams<{ destination?: string; days?: string; startDate?: string }>();
+  const params = useLocalSearchParams<{ destination?: string; days?: string; startDate?: string; tripId?: string }>();
   const { state } = useStore();
 
   const userCategories = (state.profile?.activityCategories ?? []) as ActivityCategory[];
@@ -64,17 +65,55 @@ export default function ItineraryBuilderScreen() {
     if (Platform.OS !== "web") Haptics.impactAsync(style);
   };
 
+  const [sourceActivities, setSourceActivities] = useState<RoutingActivity[]>(DUBAI_ROUTING_ACTIVITIES);
+
+  // Load liked activities from AsyncStorage (saved by swipe screen)
+  useEffect(() => {
+    AsyncStorage.getItem("travi_liked_activities").then((raw) => {
+      if (!raw) return;
+      try {
+        const parsed = JSON.parse(raw);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          const converted: RoutingActivity[] = parsed.map((a: Record<string, unknown>) => ({
+            id: String(a.id ?? ""),
+            title: String(a.name ?? a.title ?? ""),
+            desc: String(a.description ?? a.desc ?? ""),
+            price: parseInt(String(a.price ?? "0").replace(/[^0-9]/g, ""), 10),
+            cashback: Math.round(parseInt(String(a.price ?? "0").replace(/[^0-9]/g, ""), 10) * 0.08),
+            rating: Number(a.rating ?? 4.5),
+            duration: String(a.duration ?? "2h"),
+            image: a.image ?? require("@/assets/destinations/dubai.jpg"),
+            url: String(a.url ?? "https://example.com"),
+            categories: (Array.isArray(a.categories) ? a.categories : [String(a.category ?? "culture")]) as ActivityCategory[],
+            mustSee: Number(a.rating ?? 0) >= 4.8,
+            area: String(a.location ?? destination).split(",")[0],
+            openTime: "09:00",
+            closeTime: "22:00",
+          }));
+          setSourceActivities(converted);
+        }
+      } catch { /* use default */ }
+    });
+  }, []);
+
   // Build initial itinerary
   const buildItinerary = useCallback(() => {
-    return buildSmartItinerary(DUBAI_ROUTING_ACTIVITIES, {
+    return buildSmartItinerary(sourceActivities, {
       pace: userPace,
       days: tripDays,
       userCategories,
       startDate: params.startDate,
     });
-  }, [userPace, tripDays, userCategories, params.startDate]);
+  }, [userPace, tripDays, userCategories, params.startDate, sourceActivities]);
 
   const [days, setDays] = useState<RoutedDay[]>(() => buildItinerary());
+
+  // Rebuild when liked activities load
+  useEffect(() => {
+    if (sourceActivities !== DUBAI_ROUTING_ACTIVITIES) {
+      setDays(buildItinerary());
+    }
+  }, [sourceActivities]);
   const [selectedDay, setSelectedDay] = useState(0);
   const [bookingActivity, setBookingActivity] = useState<BookableActivity | null>(null);
   const [bookingVisible, setBookingVisible] = useState(false);

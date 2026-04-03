@@ -200,6 +200,32 @@ function OverviewTab() {
         </View>
         <Text style={T.crmBannerArrow}>→</Text>
       </TouchableOpacity>
+      <TouchableOpacity
+        style={T.crmBanner}
+        onPress={() => router.push("/(tabs)/revenue-dashboard" as never)}
+        activeOpacity={0.85}
+      >
+        <LinearGradient colors={["rgba(34,197,94,0.25)", "rgba(6,182,212,0.15)"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={StyleSheet.absoluteFillObject} />
+        <Text style={T.crmBannerEmoji}>📊</Text>
+        <View style={T.crmBannerInfo}>
+          <Text style={T.crmBannerTitle}>Revenue Dashboard</Text>
+          <Text style={T.crmBannerSub}>$312K March · +25.8% growth</Text>
+        </View>
+        <Text style={T.crmBannerArrow}>→</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={T.crmBanner}
+        onPress={() => router.push("/(tabs)/regulations-tracker" as never)}
+        activeOpacity={0.85}
+      >
+        <LinearGradient colors={["rgba(6,182,212,0.25)", "rgba(100,67,244,0.15)"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={StyleSheet.absoluteFillObject} />
+        <Text style={T.crmBannerEmoji}>⚖️</Text>
+        <View style={T.crmBannerInfo}>
+          <Text style={T.crmBannerTitle}>Regulations Tracker</Text>
+          <Text style={T.crmBannerSub}>10 regulations · 80% compliant</Text>
+        </View>
+        <Text style={T.crmBannerArrow}>→</Text>
+      </TouchableOpacity>
       <Text style={T.sectionTitle}>Key Performance Indicators</Text>
       <View style={T.kpiGrid}>
         {KPIS.map((kpi, i) => (

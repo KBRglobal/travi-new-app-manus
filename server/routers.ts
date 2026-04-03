@@ -9,6 +9,20 @@ import {
   getUserTrips, getTripById, createTrip, updateTrip, deleteTrip,
   getUserPriceAlerts, createPriceAlert, deletePriceAlert,
   upsertPushToken,
+  getWalletBalance, createWalletTransaction,
+  getTripItineraryItems, createItineraryItem, updateItineraryItem, deleteItineraryItem,
+  upsertQuickDnaResult, getQuickDnaResult, createDnaSession,
+  getTripReflection, upsertTripReflection,
+  getUserConversations, createConversation, getConversationMessages, createMessage,
+  getUserSupportTickets, createSupportTicket, updateSupportTicket,
+  getUserReferrals, createReferral, getReferralByCode,
+  getUserConnections, createSocialConnection, updateSocialConnection,
+  getSocialMessages, createSocialMessage,
+  getProperties, getPropertyById,
+  getReContacts,
+  getEnterpriseMetrics, upsertEnterpriseMetric,
+  getProspects, createProspect, updateProspect,
+  getUserPreferences, upsertUserPreferences,
 } from "./db";
 
 export const appRouter = router({
@@ -209,6 +223,316 @@ Always be helpful, concise, and actionable. Use emojis sparingly but naturally.`
       }))
       .mutation(async ({ ctx, input }) => {
         await upsertPushToken({ userId: ctx.user.id, ...input });
+        return { success: true };
+      }),
+  }),
+
+  // ─── Wallet ───────────────────────────────────────────────────────────────────
+  wallet: router({
+    balance: protectedProcedure.query(async ({ ctx }) => getWalletBalance(ctx.user.id)),
+    addFunds: protectedProcedure
+      .input(z.object({ amount: z.number().min(1), currency: z.string().default("USD"), description: z.string().optional() }))
+      .mutation(async ({ ctx, input }) => {
+        await createWalletTransaction({ userId: ctx.user.id, type: "credit", ...input });
+        return { success: true };
+      }),
+    redeem: protectedProcedure
+      .input(z.object({ amount: z.number().min(1), tripId: z.number().optional(), description: z.string().optional() }))
+      .mutation(async ({ ctx, input }) => {
+        const { balance } = await getWalletBalance(ctx.user.id);
+        if (balance < input.amount) throw new Error("Insufficient balance");
+        await createWalletTransaction({ userId: ctx.user.id, type: "debit", currency: "USD", ...input });
+        return { success: true };
+      }),
+  }),
+
+  // ─── Itinerary Items ──────────────────────────────────────────────────────────
+  itinerary: router({
+    list: protectedProcedure
+      .input(z.object({ tripId: z.number() }))
+      .query(async ({ ctx, input }) => getTripItineraryItems(input.tripId, ctx.user.id)),
+    create: protectedProcedure
+      .input(z.object({
+        tripId: z.number(),
+        type: z.enum(["flight","hotel","activity","restaurant","transport","note"]),
+        title: z.string().min(1).max(256),
+        description: z.string().optional(),
+        location: z.string().optional(),
+        date: z.string().optional(),
+        startTime: z.string().optional(),
+        endTime: z.string().optional(),
+        cost: z.number().optional(),
+        currency: z.string().optional(),
+        sortOrder: z.number().optional(),
+        metadata: z.string().optional(),
+      }))
+      .mutation(async ({ ctx, input }) => createItineraryItem({ userId: ctx.user.id, confirmed: false, ...input })),
+    update: protectedProcedure
+      .input(z.object({
+        itemId: z.number(),
+        title: z.string().optional(),
+        description: z.string().optional(),
+        startTime: z.string().optional(),
+        endTime: z.string().optional(),
+        sortOrder: z.number().optional(),
+        confirmed: z.boolean().optional(),
+      }))
+      .mutation(async ({ ctx, input }) => {
+        const { itemId, ...data } = input;
+        await updateItineraryItem(itemId, ctx.user.id, data);
+        return { success: true };
+      }),
+    delete: protectedProcedure
+      .input(z.object({ itemId: z.number() }))
+      .mutation(async ({ ctx, input }) => {
+        await deleteItineraryItem(input.itemId, ctx.user.id);
+        return { success: true };
+      }),
+  }),
+
+  // ─── DNA Engine ───────────────────────────────────────────────────────────────
+  dna: router({
+    getResult: protectedProcedure.query(async ({ ctx }) => getQuickDnaResult(ctx.user.id)),
+    saveSwipeResult: protectedProcedure
+      .input(z.object({
+        adventureCount: z.number().default(0),
+        cultureCount: z.number().default(0),
+        foodCount: z.number().default(0),
+        natureCount: z.number().default(0),
+        luxuryCount: z.number().default(0),
+        urbanCount: z.number().default(0),
+        beachCount: z.number().default(0),
+        nightlifeCount: z.number().default(0),
+        wellnessCount: z.number().default(0),
+        historyCount: z.number().default(0),
+        familyCount: z.number().default(0),
+      }))
+      .mutation(async ({ ctx, input }) => {
+        const total = Object.values(input).reduce((s, v) => s + v, 0) || 1;
+        const score = (count: number) => Math.round((count / total) * 100);
+        await upsertQuickDnaResult({
+          userId: ctx.user.id,
+          ...input,
+          explorerScore: score(input.adventureCount + input.urbanCount),
+          relaxerScore: score(input.wellnessCount + input.beachCount),
+          adventurerScore: score(input.adventureCount + input.natureCount),
+          culturalistScore: score(input.cultureCount + input.historyCount),
+          foodieScore: score(input.foodCount),
+          photographerScore: score(input.cultureCount + input.natureCount),
+          historianScore: score(input.historyCount),
+          naturalistScore: score(input.natureCount),
+        });
+        return { success: true };
+      }),
+  }),
+
+  // ─── Trip Reflections ─────────────────────────────────────────────────────────
+  reflections: router({
+    get: protectedProcedure
+      .input(z.object({ tripId: z.number() }))
+      .query(async ({ ctx, input }) => getTripReflection(input.tripId, ctx.user.id)),
+    save: protectedProcedure
+      .input(z.object({
+        tripId: z.number(),
+        overallRating: z.number().min(1).max(5).optional(),
+        highlights: z.string().optional(),
+        lowlights: z.string().optional(),
+        wouldReturn: z.boolean().optional(),
+        notes: z.string().optional(),
+      }))
+      .mutation(async ({ ctx, input }) => {
+        await upsertTripReflection({ userId: ctx.user.id, xpEarned: 50, ...input });
+        return { success: true };
+      }),
+  }),
+
+  // ─── Conversations ────────────────────────────────────────────────────────────
+  conversations: router({
+    list: protectedProcedure.query(async ({ ctx }) => getUserConversations(ctx.user.id)),
+    create: protectedProcedure
+      .input(z.object({ title: z.string().optional(), context: z.string().optional() }))
+      .mutation(async ({ ctx, input }) => createConversation({ userId: ctx.user.id, ...input })),
+    messages: protectedProcedure
+      .input(z.object({ conversationId: z.number() }))
+      .query(async ({ ctx, input }) => getConversationMessages(input.conversationId, ctx.user.id)),
+    addMessage: protectedProcedure
+      .input(z.object({
+        conversationId: z.number(),
+        role: z.enum(["user","assistant","system"]),
+        content: z.string().min(1),
+      }))
+      .mutation(async ({ ctx, input }) => createMessage({ userId: ctx.user.id, ...input })),
+  }),
+
+  // ─── Support ──────────────────────────────────────────────────────────────────
+  support: router({
+    list: protectedProcedure.query(async ({ ctx }) => getUserSupportTickets(ctx.user.id)),
+    create: protectedProcedure
+      .input(z.object({
+        category: z.enum(["booking","payment","account","technical","feedback","other"]).default("other"),
+        subject: z.string().min(1).max(256),
+        description: z.string().min(1),
+        tripId: z.number().optional(),
+      }))
+      .mutation(async ({ ctx, input }) => createSupportTicket({ userId: ctx.user.id, ...input })),
+    close: protectedProcedure
+      .input(z.object({ ticketId: z.number() }))
+      .mutation(async ({ ctx, input }) => {
+        await updateSupportTicket(input.ticketId, ctx.user.id, { status: "closed" });
+        return { success: true };
+      }),
+  }),
+
+  // ─── Referrals ────────────────────────────────────────────────────────────────
+  referrals: router({
+    list: protectedProcedure.query(async ({ ctx }) => getUserReferrals(ctx.user.id)),
+    create: protectedProcedure
+      .input(z.object({ referralCode: z.string().min(4).max(16) }))
+      .mutation(async ({ ctx, input }) => {
+        const existing = await getReferralByCode(input.referralCode);
+        if (existing) throw new Error("Referral code already exists");
+        return createReferral({ referrerId: ctx.user.id, ...input });
+      }),
+    redeem: protectedProcedure
+      .input(z.object({ code: z.string().min(4).max(16) }))
+      .mutation(async ({ ctx, input }) => {
+        const referral = await getReferralByCode(input.code);
+        if (!referral || referral.status !== "pending") throw new Error("Invalid or expired code");
+        return { success: true, referrerId: referral.referrerId };
+      }),
+  }),
+
+  // ─── Social ───────────────────────────────────────────────────────────────────
+  social: router({
+    connections: protectedProcedure.query(async ({ ctx }) => getUserConnections(ctx.user.id)),
+    connect: protectedProcedure
+      .input(z.object({ receiverId: z.number(), compatibilityScore: z.number().optional() }))
+      .mutation(async ({ ctx, input }) => createSocialConnection({ requesterId: ctx.user.id, ...input })),
+    respond: protectedProcedure
+      .input(z.object({ connectionId: z.number(), accept: z.boolean() }))
+      .mutation(async ({ ctx, input }) => {
+        await updateSocialConnection(input.connectionId, { status: input.accept ? "accepted" : "declined" });
+        return { success: true };
+      }),
+    messages: protectedProcedure
+      .input(z.object({ partnerId: z.number() }))
+      .query(async ({ ctx, input }) => getSocialMessages(ctx.user.id, input.partnerId)),
+    sendMessage: protectedProcedure
+      .input(z.object({ receiverId: z.number(), content: z.string().min(1).max(1000), tripId: z.number().optional() }))
+      .mutation(async ({ ctx, input }) => createSocialMessage({ senderId: ctx.user.id, ...input })),
+  }),
+
+  // ─── Real Estate ──────────────────────────────────────────────────────────────
+  realEstate: router({
+    properties: publicProcedure
+      .input(z.object({ city: z.string().optional(), featured: z.boolean().optional() }).optional())
+      .query(async ({ input }) => getProperties(input ?? undefined)),
+    property: publicProcedure
+      .input(z.object({ id: z.number() }))
+      .query(async ({ input }) => getPropertyById(input.id)),
+    contacts: publicProcedure
+      .input(z.object({ city: z.string().optional() }).optional())
+      .query(async ({ input }) => getReContacts(input?.city)),
+  }),
+
+  // ─── Enterprise / Revenue ─────────────────────────────────────────────────────
+  enterprise: router({
+    metrics: protectedProcedure.query(async () => getEnterpriseMetrics(12)),
+    upsertMetric: protectedProcedure
+      .input(z.object({
+        period: z.string().min(6).max(8),
+        mrr: z.number().optional(),
+        arr: z.number().optional(),
+        newUsers: z.number().optional(),
+        activeUsers: z.number().optional(),
+        churnRate: z.number().optional(),
+        cac: z.number().optional(),
+        clv: z.number().optional(),
+        bookingsCount: z.number().optional(),
+        bookingsRevenue: z.number().optional(),
+      }))
+      .mutation(async ({ input }) => {
+        await upsertEnterpriseMetric(input as Parameters<typeof upsertEnterpriseMetric>[0]);
+        return { success: true };
+      }),
+    prospects: protectedProcedure.query(async () => getProspects()),
+    createProspect: protectedProcedure
+      .input(z.object({
+        companyName: z.string().min(1).max(128),
+        contactName: z.string().optional(),
+        email: z.string().optional(),
+        phone: z.string().optional(),
+        dealValue: z.number().optional(),
+        industry: z.string().optional(),
+        country: z.string().optional(),
+        notes: z.string().optional(),
+      }))
+      .mutation(async ({ input }) => createProspect(input)),
+    updateProspect: protectedProcedure
+      .input(z.object({
+        id: z.number(),
+        status: z.enum(["lead","qualified","proposal","negotiation","closed_won","closed_lost"]).optional(),
+        notes: z.string().optional(),
+        dealValue: z.number().optional(),
+      }))
+      .mutation(async ({ input }) => {
+        const { id, ...data } = input;
+        await updateProspect(id, data);
+        return { success: true };
+      }),
+  }),
+
+  // ─  // ─── Stripe Payments ─────────────────────────────────────────────
+  payments: router({
+    createCheckout: protectedProcedure
+      .input(z.object({
+        priceId: z.string(),
+        successUrl: z.string(),
+        cancelUrl: z.string(),
+      }))
+      .mutation(async ({ ctx, input }) => {
+        const { createCheckoutSession } = await import("./stripe");
+        const session = await createCheckoutSession({
+          userId: String(ctx.user.id),
+          priceId: input.priceId,
+          successUrl: input.successUrl,
+          cancelUrl: input.cancelUrl,
+          customerEmail: ctx.user.email ?? undefined,
+        });
+        return { url: session.url, sessionId: session.id };
+      }),
+    createPaymentIntent: protectedProcedure
+      .input(z.object({
+        amount: z.number(),
+        description: z.string(),
+        metadata: z.record(z.string(), z.string()).optional(),
+      }))
+      .mutation(async ({ ctx, input }) => {
+        const { createPaymentIntent } = await import("./stripe");
+        const intent = await createPaymentIntent({
+          amount: input.amount,
+          userId: String(ctx.user.id),
+          description: input.description,
+          metadata: input.metadata as Record<string, string> | undefined,
+        });
+        return { clientSecret: intent.client_secret, intentId: intent.id };
+      }),
+  }),
+
+  // ─── User Preferences ─────────────────────────────────────────────
+  preferences: router({
+    get: protectedProcedure.query(async ({ ctx }) => getUserPreferences(ctx.user.id)),
+    update: protectedProcedure
+      .input(z.object({
+        language: z.string().optional(),
+        currency: z.string().optional(),
+        notificationsEnabled: z.boolean().optional(),
+        darkMode: z.boolean().optional(),
+        biometricAuth: z.boolean().optional(),
+        marketingEmails: z.boolean().optional(),
+      }))
+      .mutation(async ({ ctx, input }) => {
+        await upsertUserPreferences({ userId: ctx.user.id, ...input });
         return { success: true };
       }),
   }),
