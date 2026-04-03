@@ -10,17 +10,6 @@ const { width, height } = Dimensions.get("window");
 const PURPLE = "#6443F4";
 const ORANGE = "#FF9327";
 const PINK = "#F94498";
-const GREEN = "#02A65C";
-
-const DOTS = Array.from({ length: 10 }, (_, i) => ({
-  id: i,
-  top: (i * 97 + 40) % height,
-  left: (i * 83 + 25) % width,
-  size: i % 3 === 0 ? 5 : 3,
-  opacity: 0.06 + (i % 4) * 0.03,
-  color: i % 4 === 0 ? ORANGE : i % 4 === 1 ? PINK : i % 4 === 2 ? GREEN : PURPLE,
-}));
-
 export default function SplashScreen() {
   const { state } = useStore();
 
@@ -64,7 +53,7 @@ export default function SplashScreen() {
     ]).start();
 
     Animated.timing(progressWidth, {
-      toValue: 1, duration: 2400, delay: 1000, useNativeDriver: false,
+      toValue: 1, duration: 1800, delay: 500, useNativeDriver: false,
       easing: Easing.inOut(Easing.quad),
     }).start();
 
@@ -78,7 +67,7 @@ export default function SplashScreen() {
       } else {
         router.replace("/(auth)/sign-up" as never);
       }
-    }, 3800);
+    }, 2500);
     return () => clearTimeout(timer);
   }, []);
 
@@ -98,15 +87,7 @@ export default function SplashScreen() {
       <Animated.View style={[styles.orb2, { transform: [{ scale: orb2 }] }]} />
       <Animated.View style={[styles.orb3, { transform: [{ scale: orb1 }] }]} />
 
-      {/* Brand color dots */}
-      {DOTS.map((d) => (
-        <View key={d.id} style={[styles.dot, {
-          top: d.top, left: d.left,
-          width: d.size, height: d.size,
-          opacity: d.opacity,
-          backgroundColor: d.color,
-        }]} />
-      ))}
+
 
       {/* Center content */}
       <View style={styles.center}>
@@ -178,17 +159,16 @@ const styles = StyleSheet.create({
     borderRadius: width * 0.35, top: height * 0.55, left: -width * 0.2,
     backgroundColor: "rgba(255,147,39,0.05)",
   },
-  dot: { position: "absolute", borderRadius: 3 },
   center: { flex: 1, alignItems: "center", justifyContent: "center", gap: 20 },
   mascotImage: {
-    width: 200, height: 200,
+    width: width * 0.45, height: width * 0.45,
   },
-  logotype: { width: 160, height: 56 },
+  logotype: { width: width * 0.38, height: width * 0.13 },
   titleWrap: { alignItems: "center", gap: 10 },
   titleBar: { width: 120, height: 2, borderRadius: 2, overflow: "hidden" },
   tagline: {
-    fontSize: 13, color: "rgba(200,190,230,0.7)",
-    letterSpacing: 3, fontWeight: "500", textAlign: "center",
+    fontSize: 13, color: "rgba(255,255,255,0.85)",
+    letterSpacing: 1.5, fontWeight: "500", textAlign: "center",
     textTransform: "uppercase", fontFamily: "Satoshi-Medium",
   },
   bottomArea: { paddingHorizontal: 50, paddingBottom: 130, gap: 12, alignItems: "center", width: "100%" },
@@ -202,7 +182,7 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(249,68,152,0.8)", borderRadius: 4,
   },
   loadingText: {
-    color: "rgba(160,145,200,0.6)", fontSize: 11,
+    color: "rgba(200,190,230,0.8)", fontSize: 11,
     letterSpacing: 2, fontWeight: "600", textTransform: "uppercase",
     fontFamily: "Satoshi-Medium",
   },
