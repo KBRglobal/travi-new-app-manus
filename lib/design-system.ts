@@ -92,6 +92,8 @@ export const Gradients = {
   planCard:     ["rgba(249,68,152,0.20)", "rgba(255,147,39,0.12)"] as const,
   /** Discovery mode card */
   discoveryCard:["rgba(100,67,244,0.20)", "rgba(249,68,152,0.12)"] as const,
+  /** Step badge / pill gradient */
+  badge:        ["#6443F4", "#F94498"] as const,
 } as const;
 
 // ─── Text Colors ──────────────────────────────────────────────────────────────
@@ -115,6 +117,8 @@ export const Border = {
   card:         "rgba(100,67,244,0.25)",
   live:         "rgba(2,166,92,0.40)",
   planning:     "rgba(249,68,152,0.40)",
+  /** Badge / pill border */
+  badge:        "rgba(100,67,244,0.50)",
 } as const;
 
 // ─── Typography ───────────────────────────────────────────────────────────────
@@ -137,6 +141,8 @@ export const Typography = {
   // CTA
   cta:      { fontSize: 16, fontFamily: "Satoshi-Bold",    color: Text.primary, letterSpacing: 0.3 },
   ctaSm:    { fontSize: 14, fontFamily: "Satoshi-Bold",    color: Text.primary, letterSpacing: 0.2 },
+  /** Small text — secondary info */
+  small:    { fontSize: 13, fontFamily: "Satoshi-Regular", color: Text.muted,    lineHeight: 18 },
 } as const;
 
 // ─── Spacing ──────────────────────────────────────────────────────────────────

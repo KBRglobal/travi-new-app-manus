@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * TRAVI — Tinder Swipe for Attractions & Restaurants
  * Swipe right = add to trip + boost DNA score
@@ -6,7 +7,6 @@
  *
  * Every interaction feeds the DNA engine.
  */
-// @ts-nocheck
 
 import { LinearGradient } from "expo-linear-gradient";
 import * as Haptics from "expo-haptics";
@@ -27,6 +27,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { IconSymbol } from "@/components/ui/icon-symbol";
 import { recordSwipe, type InterestCategory } from "@/lib/dna-store";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { FirstSwipeTutorial } from "@/components/first-swipe-tutorial";
 
 const { width, height } = Dimensions.get("window");
 const SWIPE_THRESHOLD = width * 0.35;
@@ -850,6 +851,8 @@ export default function SwipeScreen() {
           <Text style={[styles.actionBtnLabel, { color: "#F94498" }]}>Add</Text>
         </TouchableOpacity>
       </View>
+      {/* First Swipe Tutorial */}
+      <FirstSwipeTutorial />
     </View>
   );
 }

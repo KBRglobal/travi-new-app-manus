@@ -27,7 +27,7 @@ export function SkeletonBlock({ width = "100%", height = 16, borderRadius = 8, s
   return (
     <Animated.View
       style={[
-        { width, height, borderRadius, backgroundColor: "rgba(255,255,255,0.06)" },
+        { width, height, borderRadius, backgroundColor: "#24103E" },
         { opacity },
         style,
       ]}
@@ -113,7 +113,7 @@ export function PageSkeleton({ rows = 4 }: { rows?: number }) {
 
 // ─── Styles ───────────────────────────────────────────────────────────────────
 const SK = StyleSheet.create({
-  destCard: { borderRadius: 20, overflow: "hidden", backgroundColor: "rgba(255,255,255,0.06)", borderWidth: 1, borderColor: "rgba(255,255,255,0.12)" },
+  destCard: { borderRadius: 20, overflow: "hidden", backgroundColor: "#24103E", borderWidth: 1, borderColor: "rgba(123,68,230,0.3)" },
   activityRow: { flexDirection: "row", alignItems: "center", gap: 12, paddingVertical: 10 },
-  tripCard: { borderRadius: 16, overflow: "hidden", backgroundColor: "rgba(255,255,255,0.06)", borderWidth: 1, borderColor: "rgba(255,255,255,0.12)" },
+  tripCard: { borderRadius: 16, overflow: "hidden", backgroundColor: "#24103E", borderWidth: 1, borderColor: "rgba(123,68,230,0.3)" },
 });

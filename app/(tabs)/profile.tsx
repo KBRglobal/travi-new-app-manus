@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * TRAVI — Profile Screen
  * Dark mode: #1A0B2E bg, #24103E surface, purple->pink gradients

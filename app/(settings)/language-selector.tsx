@@ -36,11 +36,12 @@ const LANGUAGES = [
 export default function LanguageSelectorScreen() {
   const insets = useSafeAreaInsets();
   const { changeLanguage, language } = useAppTranslation();
-  const [selected, setSelected] = useState(language || "en");
+  type LangCode = "en" | "he" | "es" | "fr" | "de" | "it" | "pt" | "ja" | "zh" | "ko" | "ar" | "ru";
+  const [selected, setSelected] = useState<LangCode>((language as LangCode) || "en");
 
   const handleSelect = (code: string) => {
     if (Platform.OS !== "web") Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-    setSelected(code);
+    setSelected(code as LangCode);
     changeLanguage(code as any);
   };
 

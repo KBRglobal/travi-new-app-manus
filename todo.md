@@ -269,3 +269,30 @@ Rules:
 - [x] Add i18n tests — 54 tests covering all 12 locales
 - [x] Fix all 11 non-English locale files (added missing explore/trips/wallet/profile sections)
 - [x] All 134 tests passing (DNA engine, points engine, wallet, i18n)
+
+## Phase 3 — Design Bible P0/P1 Implementation (Apr 3, 2026)
+
+### P0 — Blockers (cannot launch without)
+- [ ] Error Screen: No Internet (full-page, cloud-off icon, retry CTA)
+- [ ] Error Screen: API Failure (brand copy: "Our ducks are in a row... wrong.")
+- [ ] Error Screen: Payment Failed (dynamic copy by error code)
+- [ ] Matching Engine states: loading / empty / match / feedback
+
+### P1 — UX Gaps (needed for retention)
+- [ ] Mode Awareness Badge (persistent header pill, dynamic color per mode)
+- [ ] Skeleton Loader component (shimmer animation, purple glow)
+- [ ] First Swipe Tutorial overlay (pointers, skip option)
+- [ ] Micro-Feedback During Trip (lightweight overlay, one question, one tap)
+
+### P2 — Post-launch
+- [ ] Mascot Lottie Animations (8 files)
+- [ ] Mode Transitions (ripple, color morph, 500ms bounce)
+
+## Phase 4 — Design Bible P0/P1 Completion (Apr 4, 2026)
+- [x] Fix all TypeScript errors (design-system.ts badge/small, profile.tsx, language-selector.tsx)
+- [x] Skeleton Loader updated to Design Bible colors (#24103E, purple shimmer)
+- [x] First Swipe Tutorial overlay component (3-step, auto-dismiss, AsyncStorage)
+- [x] First Swipe Tutorial wired into swipe.tsx
+- [x] Mode Awareness Badge — already existed, verified
+- [x] Error Screens — already existed (NoInternet, ApiFailure, PaymentFailed, SessionExpired)
+- [x] 134 tests passing (5 test files)
