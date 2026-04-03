@@ -5,6 +5,27 @@
 
 ---
 
+## URGENT — Priority 0: Security Vulnerabilities
+
+### axios — Prototype Pollution (CVSS 8.7) ✅ FIX NOW
+- [ ] Upgrade `axios` from 1.13.2 → **1.13.5** in package.json
+- This is a **direct dependency** — easy fix, high impact
+- Allows attacker to pollute global JS prototype → DoS, logic manipulation, potential RCE
+
+### minimatch@9.0.5 — ReDoS + Algorithmic Complexity (CVSS 8.7) ⏳ NO FIX YET
+- [ ] Monitor for fix from expo/react-native upstream
+- Two separate vulnerabilities: exponential algorithm growth + catastrophic regex backtracking
+- Affects almost all transitive deps (expo, expo-constants, expo-image, react-native, etc.)
+- **No action possible** — wait for expo/react-native to update minimatch
+
+### brace-expansion@2.0.2 — Infinite Loop (CVSS 7.1) ⏳ NO FIX YET
+- [ ] Monitor for fix from expo/react-native upstream
+- Specific input patterns cause infinite loop → DoS
+- Same transitive dependency chain as minimatch
+- **No action possible** — wait for upstream fix
+
+---
+
 ## NOW — Priority 1: Auth & Live Connections
 
 ### Auth Flow (CRITICAL — no one can use the app without this)
