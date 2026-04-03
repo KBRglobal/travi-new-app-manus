@@ -32,10 +32,10 @@
 - [x] Connect sign-up screen to server OAuth (Google/Apple/Email) — startOAuthLogin wired
 - [x] Connect login screen to server auth
 - [x] Guest mode flow — guestToken, isGuest, 25-hour timer
-- [ ] Guest → account merge (preserve DNA, trips, favorites)
+- [x] Guest → account merge (preserve DNA, trips, favorites) — server endpoint + store action
 - [x] JWT token refresh on 401
-- [ ] Email verification (OTP via SendGrid/Resend)
-- [ ] Wire auth state to all screens (show real user data when logged in)
+- [ ] Email verification (OTP via SendGrid/Resend) — needs API key
+- [x] Wire auth state to all screens (Home, Wallet, Profile, Explore, DNA swipe)
 
 ### tRPC UI→DB Connections (partially done)
 - [x] Wallet screen → Railway PostgreSQL (transaction history)
@@ -87,29 +87,34 @@ Rules:
 ## NEXT — Priority 3: Real-time & Notifications
 
 ### Socket.IO Real-Time Messaging
-- [ ] Server-side Socket.IO setup
-- [ ] Connect social_messages table to chat screens
-- [ ] Real-time message delivery (no polling)
+- [x] Client-side Socket.IO setup (lib/socket.ts)
+- [x] Connect social_messages to chat screen with real-time delivery
+- [x] Typing indicator (debounced 500ms, auto-clear 3s)
+- [x] Online/offline status indicators
+- [ ] Server-side Socket.IO setup (needs Railway server config)
 - [ ] Trip group chat support
-- [ ] Online/offline status indicators
 
 ### Push Notifications
-- [ ] Connect push_tokens table to Expo Push API
-- [ ] Price alert triggers (when price drops below threshold)
-- [ ] Trip reminders (3 days before, 1 day before)
-- [ ] Friend request notifications
-- [ ] Booking confirmation notifications
+- [x] Client-side push notification setup (lib/notifications.ts)
+- [x] Token registration via pushTokens.register tRPC
+- [x] Deep link navigation on notification tap
+- [x] Android notification channels (default + price alerts)
+- [ ] Server-side push sending (needs Expo project ID)
+- [ ] Price alert triggers
+- [ ] Trip reminders
 
 ---
 
 ## NEXT — Priority 4: Stripe & Payments
 
-### Stripe Integration
-- [ ] Add STRIPE_SECRET_KEY + STRIPE_PUBLISHABLE_KEY to Railway env vars
-- [ ] Subscription billing (Free/Adventurer/Elite Nomad)
-- [ ] One-time booking payments (PaymentIntents)
-- [ ] Webhook handlers (payment success, subscription changes, disputes)
-- [ ] Refund flow
+### In-App Purchases (Apple + Google — NOT Stripe)
+- [ ] Install react-native-iap or expo-in-app-purchases
+- [ ] Configure subscription products in App Store Connect (Adventurer $9.99, Elite $24.99)
+- [ ] Configure subscription products in Google Play Console
+- [ ] IAP purchase flow in subscription.tsx
+- [ ] Receipt validation on server
+- [ ] Restore purchases flow
+- Note: Apple Developer ✅ | Google Developer — needs $25 one-time registration
 
 ---
 
@@ -118,7 +123,7 @@ Rules:
 ### Screens Still Unchecked from PRD Phase 38
 - [ ] Dubai Cultural Guide (Islamic etiquette, prayer times, halal/kosher, dress code)
 - [ ] Mexico Destination Guide (Urban vs Coastal comparison)
-- [ ] Quick DNA expand to 116 items across 11 categories (currently 10 questions)
+- [x] Quick DNA expand to 116 items across 11 categories (lib/dna-swipe-data.ts)
 - [ ] DNA 8-dimension scoring with confidence scores + share card
 - [ ] "Surprise Me" mode in destination selection (pick by DNA)
 - [ ] Multi-traveler DNA merge (invite friend → combine DNA profiles)
