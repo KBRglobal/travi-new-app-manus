@@ -13,6 +13,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { IconSymbol } from "@/components/ui/icon-symbol";
 import * as Haptics from "expo-haptics";
+import { AgentFAB } from "@/components/agent-fab";
 
 const IMG = {
   santorini: require("@/assets/destinations/santorini.jpg"),
@@ -320,6 +321,7 @@ export default function ExploreScreen() {
           <View style={{ height: 100 }} />
         </ScrollView>
       </SafeAreaView>
+      <AgentFAB />
     </View>
   );
 }

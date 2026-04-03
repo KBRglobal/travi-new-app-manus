@@ -174,7 +174,7 @@ export default function DnaUpdateScreen() {
   const handleContinue = () => {
     router.push({
       pathname: "/(trip)/itinerary",
-      params: { tripId, destination },
+      params: { tripId, destination, liked },
     } as never);
   };
 

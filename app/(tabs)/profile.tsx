@@ -7,6 +7,7 @@ import { IconSymbol } from "@/components/ui/icon-symbol";
 import { useStore } from "@/lib/store";
 import { getDNA, type TravelerDNA } from "@/lib/dna-store";
 import { getTierForXP, XP_TIERS } from "@/lib/xp-tiers";
+import { AgentFAB } from "@/components/agent-fab";
 
 const { width } = Dimensions.get("window");
 
@@ -364,10 +365,10 @@ export default function ProfileScreen() {
 
         <Text style={styles.version}>TRAVI v1.0.0 • Made with care for travelers</Text>
       </ScrollView>
+      <AgentFAB />
     </View>
   );
 }
-
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#0D0628" },
   orb1: { position: "absolute", width: width, height: width, borderRadius: width / 2, top: -width * 0.4, left: -width * 0.3, backgroundColor: "rgba(123,47,190,0.09)" },

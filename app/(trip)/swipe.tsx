@@ -25,6 +25,7 @@ import {
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { IconSymbol } from "@/components/ui/icon-symbol";
 import { recordSwipe, type InterestCategory } from "@/lib/dna-store";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const { width, height } = Dimensions.get("window");
 const SWIPE_THRESHOLD = width * 0.35;
@@ -153,6 +154,86 @@ const ALL_ATTRACTIONS: Attraction[] = [
     tags: ["History", "Medieval", "Night"], image: { uri: "https://images.unsplash.com/photo-1539037116277-4db20889f2d4?w=600&q=80" },
     description: "2,000 years of history in a labyrinth of narrow streets. Roman ruins under your feet.", color: "#D97706" },
 
+  // ── PARIS ──
+  { id: "p1", name: "Eiffel Tower at Sunset", type: "Landmark", category: "landmarks", destination: "paris",
+    location: "Champ de Mars, Paris", rating: 4.9, reviews: 320000, duration: "2–3 hrs", price: "$30", priceLevel: "mid",
+    tags: ["Iconic", "Views", "Romance"], image: { uri: "https://images.unsplash.com/photo-1499856871958-5b9627545d1a?w=600&q=80" },
+    description: "Watch the iron lady sparkle at night from the Trocadéro. The most romantic view on earth.", color: "#F94498" },
+  { id: "p2", name: "Louvre Museum", type: "Museum", category: "art_culture", destination: "paris",
+    location: "1st Arr., Paris", rating: 4.7, reviews: 280000, duration: "3–5 hrs", price: "$20", priceLevel: "mid",
+    tags: ["Art", "Mona Lisa", "History"], image: { uri: "https://images.unsplash.com/photo-1565799557186-3c6c4b5a3a1e?w=600&q=80" },
+    description: "The world's largest art museum. 35,000 works including the Mona Lisa and Venus de Milo.", color: "#D97706" },
+  { id: "p3", name: "Montmartre & Sacré-Cœur", type: "Neighborhood", category: "history", destination: "paris",
+    location: "18th Arr., Paris", rating: 4.8, reviews: 195000, duration: "2–3 hrs", price: "Free", priceLevel: "budget",
+    tags: ["Artists", "Views", "Bohemian"], image: { uri: "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=600&q=80" },
+    description: "Cobblestone streets, street artists, and the white dome of Sacré-Cœur overlooking Paris.", color: "#8B5CF6" },
+  { id: "p4", name: "Seine River Cruise", type: "Experience", category: "landmarks", destination: "paris",
+    location: "Seine River, Paris", rating: 4.6, reviews: 87000, duration: "1 hr", price: "$18", priceLevel: "mid",
+    tags: ["Cruise", "Views", "Romantic"], image: { uri: "https://images.unsplash.com/photo-1431274172761-fca41d930114?w=600&q=80" },
+    description: "Glide past Notre-Dame, the Louvre, and the Eiffel Tower from the water. Magical at night.", color: "#06B6D4" },
+  { id: "p5", name: "Le Marais Food & Shopping", type: "Shopping & Food", category: "shopping", destination: "paris",
+    location: "3rd & 4th Arr., Paris", rating: 4.7, reviews: 112000, duration: "3–4 hrs", price: "Free", priceLevel: "budget",
+    tags: ["Falafel", "Boutiques", "Trendy"], image: { uri: "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=600&q=80" },
+    description: "Paris's hippest neighborhood. World-famous falafel, vintage shops, and hidden courtyards.", color: "#F97316" },
+  { id: "p6", name: "Versailles Palace & Gardens", type: "Palace", category: "history", destination: "paris",
+    location: "Versailles (40 min)", rating: 4.8, reviews: 145000, duration: "Full day", price: "$22", priceLevel: "mid",
+    tags: ["Royal", "Gardens", "History"], image: { uri: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80" },
+    description: "The Sun King's palace with 2,000 rooms and 800 hectares of manicured gardens.", color: "#D97706" },
+  { id: "p7", name: "Café de Flore Breakfast", type: "Café", category: "food", destination: "paris",
+    location: "Saint-Germain, Paris", rating: 4.5, reviews: 43000, duration: "1 hr", price: "$25", priceLevel: "mid",
+    tags: ["Café", "Croissant", "Iconic"], image: { uri: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&q=80" },
+    description: "Breakfast at Paris's most legendary café. Croissants, café au lait, and intellectual history.", color: "#F59E0B" },
+  { id: "p8", name: "Moulin Rouge Show", type: "Nightlife", category: "nightlife", destination: "paris",
+    location: "Pigalle, Paris", rating: 4.7, reviews: 38000, duration: "2 hrs", price: "$120", priceLevel: "premium",
+    tags: ["Cabaret", "Cancan", "Show"], image: { uri: "https://images.unsplash.com/photo-1543783207-ec64e4d95325?w=600&q=80" },
+    description: "The world's most famous cabaret. Feathers, sequins, and the original cancan since 1889.", color: "#EC4899" },
+
+  // ── NEW YORK ──
+  { id: "ny1", name: "Central Park", type: "Park", category: "nature", destination: "new york",
+    location: "Manhattan, NYC", rating: 4.8, reviews: 250000, duration: "2–4 hrs", price: "Free", priceLevel: "budget",
+    tags: ["Park", "Skyline", "Iconic"], image: { uri: "https://images.unsplash.com/photo-1568515387631-8b650bbcdb90?w=600&q=80" },
+    description: "843 acres of green in the heart of Manhattan. Rowboats, concerts, and the Bethesda Fountain.", color: "#22C55E" },
+  { id: "ny2", name: "Top of the Rock", type: "Landmark", category: "landmarks", destination: "new york",
+    location: "Midtown, NYC", rating: 4.8, reviews: 130000, duration: "1–2 hrs", price: "$40", priceLevel: "mid",
+    tags: ["Views", "Skyline", "Empire State"], image: { uri: "https://images.unsplash.com/photo-1485871981521-5b1fd3805eee?w=600&q=80" },
+    description: "The best view of Manhattan — including the Empire State Building. Especially stunning at dusk.", color: "#6443F4" },
+  { id: "ny3", name: "Brooklyn Bridge Walk", type: "Walk", category: "landmarks", destination: "new york",
+    location: "Brooklyn, NYC", rating: 4.7, reviews: 98000, duration: "1 hr", price: "Free", priceLevel: "budget",
+    tags: ["Bridge", "Views", "Photography"], image: { uri: "https://images.unsplash.com/photo-1534430480872-3498386e7856?w=600&q=80" },
+    description: "Walk across one of the world's most iconic bridges with stunning Manhattan skyline views.", color: "#D97706" },
+  { id: "ny4", name: "Chelsea Market & High Line", type: "Food & Walk", category: "food", destination: "new york",
+    location: "Chelsea, NYC", rating: 4.6, reviews: 75000, duration: "2–3 hrs", price: "Free", priceLevel: "budget",
+    tags: ["Food Hall", "Park", "Art"], image: { uri: "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=600&q=80" },
+    description: "NYC's best food hall then a walk on an elevated park built on old railway tracks.", color: "#F97316" },
+
+  // ── MALDIVES ──
+  { id: "mv1", name: "Overwater Villa Stay", type: "Accommodation", category: "beaches", destination: "maldives",
+    location: "North Malé Atoll", rating: 4.9, reviews: 32000, duration: "Full day", price: "$500", priceLevel: "luxury",
+    tags: ["Overwater", "Luxury", "Ocean"], image: { uri: "https://images.unsplash.com/photo-1514282401047-d79a71a590e8?w=600&q=80" },
+    description: "Wake up above turquoise water. Step off your deck into a private lagoon. Pure paradise.", color: "#06B6D4" },
+  { id: "mv2", name: "Snorkeling with Manta Rays", type: "Water Sport", category: "water_sports", destination: "maldives",
+    location: "Hanifaru Bay", rating: 4.9, reviews: 18000, duration: "3 hrs", price: "$80", priceLevel: "premium",
+    tags: ["Manta Rays", "Snorkeling", "Wildlife"], image: { uri: "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=600&q=80" },
+    description: "Swim alongside dozens of manta rays in one of the world's best snorkeling spots.", color: "#0EA5E9" },
+  { id: "mv3", name: "Sunset Dolphin Cruise", type: "Experience", category: "nature", destination: "maldives",
+    location: "Indian Ocean", rating: 4.8, reviews: 24000, duration: "2 hrs", price: "$60", priceLevel: "premium",
+    tags: ["Dolphins", "Sunset", "Cruise"], image: { uri: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&q=80" },
+    description: "Watch spinner dolphins leap at sunset from a traditional dhoni boat.", color: "#F97316" },
+
+  // ── SANTORINI ──
+  { id: "s1", name: "Oia Sunset", type: "Experience", category: "landmarks", destination: "santorini",
+    location: "Oia, Santorini", rating: 4.9, reviews: 145000, duration: "2 hrs", price: "Free", priceLevel: "budget",
+    tags: ["Sunset", "Blue Domes", "Iconic"], image: { uri: "https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?w=600&q=80" },
+    description: "The most photographed sunset in the world. Blue domes, white walls, and a blazing sky.", color: "#F97316" },
+  { id: "s2", name: "Caldera Boat Tour", type: "Cruise", category: "water_sports", destination: "santorini",
+    location: "Fira, Santorini", rating: 4.8, reviews: 67000, duration: "6 hrs", price: "$90", priceLevel: "premium",
+    tags: ["Volcano", "Hot Springs", "Cruise"], image: { uri: "https://images.unsplash.com/photo-1533105079780-92b9be482077?w=600&q=80" },
+    description: "Sail around the volcanic caldera, swim in hot springs, and snorkel in crystal-clear water.", color: "#06B6D4" },
+  { id: "s3", name: "Wine Tasting at Sunset Winery", type: "Food & Drink", category: "food", destination: "santorini",
+    location: "Pyrgos, Santorini", rating: 4.7, reviews: 28000, duration: "2 hrs", price: "$45", priceLevel: "mid",
+    tags: ["Wine", "Volcano", "Views"], image: { uri: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&q=80" },
+    description: "Assyrtiko wine grown in volcanic soil. Taste it with caldera views at a clifftop winery.", color: "#D97706" },
+
   // ── TOKYO ──
   { id: "t1", name: "Shibuya Crossing", type: "Landmark", category: "landmarks", destination: "tokyo",
     location: "Shibuya, Tokyo", rating: 4.7, reviews: 187000, duration: "30 min", price: "Free", priceLevel: "budget",
@@ -176,9 +257,10 @@ export default function SwipeScreen() {
   const insets = useSafeAreaInsets();
   const { tripId, interests, destination, budget, foodCuisines, foodAvoid, foodAllergies } = useLocalSearchParams<{ tripId: string; interests: string; destination: string; budget: string; foodCuisines?: string; foodAvoid?: string; foodAllergies?: string }>();
 
-  // 1. Filter by destination (exact match)
-  const destFiltered = destination
-    ? ALL_ATTRACTIONS.filter((a) => a.destination === destination.toLowerCase())
+  // 1. Filter by destination (case-insensitive, also handle multi-word like "New York")
+  const destKey = destination ? destination.toLowerCase().trim() : "";
+  const destFiltered = destKey
+    ? ALL_ATTRACTIONS.filter((a) => a.destination === destKey)
     : ALL_ATTRACTIONS;
 
   // 2. Filter by budget level
@@ -332,33 +414,45 @@ export default function SwipeScreen() {
 
   if (isDone) {
     return (
-      <View style={[styles.container, { paddingTop: insets.top }]}>
-        <View style={styles.orb1} />
-        <View style={styles.orb2} />
+      <View style={styles.container}>
+        <LinearGradient colors={["#0D0628", "#1A0A3D", "#0D0628"]} style={StyleSheet.absoluteFillObject} />
         <View style={styles.doneWrap}>
-          <LinearGradient colors={["rgba(249,68,152,0.2)", "rgba(100,67,244,0.15)"]} style={styles.doneBg} />
+          {/* Glow orbs */}
+          <View style={[styles.glowOrb, { backgroundColor: "rgba(249,68,152,0.18)", top: height * 0.1, left: -60 }]} />
+          <View style={[styles.glowOrb, { backgroundColor: "rgba(100,67,244,0.15)", bottom: height * 0.15, right: -80, width: 220, height: 220 }]} />
+
           <Text style={styles.doneEmoji}>✨</Text>
           <Text style={styles.doneTitle}>Your trip is taking shape!</Text>
           <Text style={styles.doneSub}>
-            You liked {liked.length} attraction{liked.length !== 1 ? "s" : ""}. TRAVI is building your perfect itinerary.
+            You picked {liked.length} highlight{liked.length !== 1 ? "s" : ""}. TRAVI is building your perfect itinerary.
           </Text>
-          <View style={styles.likedList}>
-            {liked.slice(0, 4).map((a) => (
-              <View key={a.id} style={[styles.likedChip, { borderColor: a.color + "60" }]}>
+
+          {/* Liked chips */}
+          <View style={styles.likedGrid}>
+            {liked.slice(0, 6).map((a) => (
+              <View key={a.id} style={[styles.likedChip, { borderColor: a.color + "50", shadowColor: a.color }]}>
                 <View style={[styles.likedDot, { backgroundColor: a.color }]} />
-                <Text style={styles.likedChipText}>{a.name}</Text>
+                <Text style={styles.likedChipText} numberOfLines={1}>{a.name}</Text>
               </View>
             ))}
-            {liked.length > 4 && (
-              <Text style={styles.likedMore}>+{liked.length - 4} more</Text>
+            {liked.length > 6 && (
+              <View style={[styles.likedChip, { borderColor: "rgba(255,255,255,0.15)" }]}>
+                <Text style={styles.likedMore}>+{liked.length - 6} more</Text>
+              </View>
             )}
           </View>
+
           <TouchableOpacity
             style={styles.ctaBtn}
-            onPress={() => router.push({ pathname: "/(trip)/dna-update", params: { tripId, destination: destination ?? "dubai", liked: liked.map((a) => a.id).join(","), interests } } as never)}
+            onPress={async () => {
+              try {
+                await AsyncStorage.setItem(`liked_activities_${tripId}`, JSON.stringify(liked));
+              } catch (_) {}
+              router.push({ pathname: "/(trip)/dna-update", params: { tripId, destination: destination ?? "dubai", liked: liked.map((a) => a.id).join(","), interests } } as never);
+            }}
             activeOpacity={0.88}
           >
-            <LinearGradient colors={["#F94498", "#6443F4"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.ctaGradient}>
+            <LinearGradient colors={["#F94498", "#A855F7", "#6443F4"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.ctaGradient}>
               <Text style={styles.ctaText}>Build My Itinerary</Text>
               <IconSymbol name="arrow.right" size={20} color="#FFFFFF" />
             </LinearGradient>
@@ -369,21 +463,21 @@ export default function SwipeScreen() {
   }
 
   return (
-    <View style={[styles.container, { paddingTop: insets.top }]}>
-      <View style={styles.orb1} />
-      <View style={styles.orb2} />
+    <View style={styles.container}>
+      {/* Background */}
+      <LinearGradient colors={["#0D0628", "#130A2E"]} style={StyleSheet.absoluteFillObject} />
+      <View style={[styles.glowOrb, { backgroundColor: "rgba(100,67,244,0.12)", top: -80, right: -60, width: 260, height: 260 }]} />
 
       {/* Header */}
-      <View style={styles.header}>
+      <View style={[styles.header, { paddingTop: insets.top + 8 }]}>
         <TouchableOpacity style={styles.backBtn} onPress={() => router.back()} activeOpacity={0.7}>
           <IconSymbol name="chevron.left" size={20} color="rgba(255,255,255,0.8)" />
         </TouchableOpacity>
         <View style={styles.headerCenter}>
           <Text style={styles.headerTitle}>Pick your highlights</Text>
-          <Text style={styles.headerSub}>{currentIndex + 1} of {cards.length}</Text>
         </View>
         <View style={[styles.likedBadge, liked.length > 0 && styles.likedBadgeActive]}>
-          <IconSymbol name="heart.fill" size={14} color={liked.length > 0 ? "#F94498" : "rgba(255,255,255,0.3)"} />
+          <Text style={styles.likedBadgeHeart}>{liked.length > 0 ? "❤️" : "🤍"}</Text>
           <Text style={[styles.likedCount, liked.length > 0 && styles.likedCountActive]}>{liked.length}</Text>
         </View>
       </View>
@@ -392,20 +486,25 @@ export default function SwipeScreen() {
       <View style={styles.progressWrap}>
         <View style={styles.progressTrack}>
           <LinearGradient
-            colors={["#F94498", "#6443F4"]}
+            colors={["#F94498", "#A855F7", "#6443F4"]}
             start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
             style={[styles.progressFill, { width: `${((currentIndex) / cards.length) * 100}%` as unknown as number }]}
           />
         </View>
+        <Text style={styles.progressLabel}>{currentIndex + 1} / {cards.length}</Text>
       </View>
 
-      {/* Cards stack */}
+      {/* Cards stack — full screen height */}
       <View style={styles.cardsArea}>
-        {/* Next card (behind) */}
+        {/* Next card (behind, slightly scaled down) */}
         {nextCard && (
           <Animated.View style={[styles.card, styles.nextCard, { transform: [{ scale: nextCardScale }] }]}>
             <Image source={nextCard.image} style={styles.cardImage} resizeMode="cover" />
-            <LinearGradient colors={["transparent", "rgba(0,0,0,0.9)"]} style={StyleSheet.absoluteFillObject} />
+            <LinearGradient
+              colors={["rgba(13,6,40,0.1)", "rgba(13,6,40,0.3)", "rgba(13,6,40,0.98)"]}
+              locations={[0, 0.45, 1]}
+              style={StyleSheet.absoluteFillObject}
+            />
           </Animated.View>
         )}
 
@@ -420,32 +519,53 @@ export default function SwipeScreen() {
                   { translateY: position.y },
                   { rotate },
                 ],
+                shadowColor: currentCard.color,
+                shadowOpacity: 0.35,
+                shadowRadius: 24,
+                shadowOffset: { width: 0, height: 8 },
               },
             ]}
             {...panResponder.panHandlers}
           >
             <Image source={currentCard.image} style={styles.cardImage} resizeMode="cover" />
-            <LinearGradient colors={["transparent", "rgba(0,0,0,0.95)"]} style={StyleSheet.absoluteFillObject} />
+
+            {/* Multi-stop gradient for cinematic look */}
+            <LinearGradient
+              colors={["transparent", "transparent", "rgba(13,6,40,0.7)", "rgba(13,6,40,0.98)"]}
+              locations={[0, 0.35, 0.65, 1]}
+              style={StyleSheet.absoluteFillObject}
+            />
+
+            {/* Color tint overlay based on card color */}
+            <View style={[styles.colorTint, { backgroundColor: currentCard.color + "18" }]} />
 
             {/* LIKE stamp */}
             <Animated.View style={[styles.stamp, styles.stampLike, { opacity: likeOpacity }]}>
-              <Text style={styles.stampText}>LIKE</Text>
+              <LinearGradient colors={["rgba(34,197,94,0.9)", "rgba(34,197,94,0.7)"]} style={styles.stampGradient}>
+                <Text style={styles.stampText}>LOVE IT</Text>
+              </LinearGradient>
             </Animated.View>
 
             {/* NOPE stamp */}
             <Animated.View style={[styles.stamp, styles.stampNope, { opacity: nopeOpacity }]}>
-              <Text style={[styles.stampText, styles.stampTextNope]}>SKIP</Text>
+              <LinearGradient colors={["rgba(239,68,68,0.9)", "rgba(239,68,68,0.7)"]} style={styles.stampGradient}>
+                <Text style={[styles.stampText, styles.stampTextNope]}>SKIP</Text>
+              </LinearGradient>
             </Animated.View>
+
+            {/* Category badge top-right */}
+            <View style={[styles.categoryBadge, { backgroundColor: currentCard.color + "22", borderColor: currentCard.color + "60" }]}>
+              <View style={[styles.categoryDot, { backgroundColor: currentCard.color }]} />
+              <Text style={[styles.categoryText, { color: currentCard.color }]}>{currentCard.type}</Text>
+            </View>
 
             {/* Card info */}
             <View style={styles.cardInfo}>
-              <View style={styles.cardTypePill}>
-                <Text style={styles.cardTypeText}>{currentCard.type}</Text>
-              </View>
               <Text style={styles.cardName}>{currentCard.name}</Text>
               <Text style={styles.cardLocation}>📍 {currentCard.location}</Text>
               <Text style={styles.cardDesc}>{currentCard.description}</Text>
 
+              {/* Meta row */}
               <View style={styles.cardMeta}>
                 <View style={styles.metaItem}>
                   <Text style={styles.metaValue}>⭐ {currentCard.rating}</Text>
@@ -463,9 +583,10 @@ export default function SwipeScreen() {
                 </View>
               </View>
 
+              {/* Tags */}
               <View style={styles.tags}>
                 {currentCard.tags.map((tag) => (
-                  <View key={tag} style={[styles.tag, { borderColor: currentCard.color + "60" }]}>
+                  <View key={tag} style={[styles.tag, { backgroundColor: currentCard.color + "18", borderColor: currentCard.color + "50" }]}>
                     <Text style={[styles.tagText, { color: currentCard.color }]}>{tag}</Text>
                   </View>
                 ))}
@@ -476,97 +597,127 @@ export default function SwipeScreen() {
       </View>
 
       {/* Action buttons */}
-      <View style={[styles.actions, { paddingBottom: Math.max(insets.bottom, 24) }]}>
+      <View style={[styles.actions, { paddingBottom: Math.max(insets.bottom + 8, 28) }]}>
+        {/* Skip button */}
         <TouchableOpacity
-          style={[styles.actionBtn, styles.actionBtnNope]}
+          style={styles.actionBtnWrap}
           onPress={() => handleSwipe("left")}
-          activeOpacity={0.8}
+          activeOpacity={0.85}
         >
-          <LinearGradient colors={["rgba(239,68,68,0.2)", "rgba(239,68,68,0.1)"]} style={styles.actionBtnGradient}>
-            <Text style={styles.actionBtnNopeTxt}>✕</Text>
-          </LinearGradient>
+          <View style={[styles.actionBtnInner, styles.actionBtnSkip]}>
+            <Text style={styles.actionBtnSkipIcon}>✕</Text>
+          </View>
+          <Text style={styles.actionBtnLabel}>Skip</Text>
         </TouchableOpacity>
 
+        {/* Center hint */}
         <View style={styles.actionCenter}>
+          <Text style={styles.swipeHintEmoji}>👆</Text>
           <Text style={styles.swipeHint}>Swipe to decide</Text>
         </View>
 
+        {/* Like button */}
         <TouchableOpacity
-          style={[styles.actionBtn, styles.actionBtnLike]}
+          style={styles.actionBtnWrap}
           onPress={() => handleSwipe("right")}
-          activeOpacity={0.8}
+          activeOpacity={0.85}
         >
-          <LinearGradient colors={["rgba(249,68,152,0.3)", "rgba(100,67,244,0.2)"]} style={styles.actionBtnGradient}>
-            <Text style={styles.actionBtnLikeTxt}>♥</Text>
+          <LinearGradient
+            colors={["#F94498", "#A855F7"]}
+            start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}
+            style={[styles.actionBtnInner, styles.actionBtnLike]}
+          >
+            <Text style={styles.actionBtnLikeIcon}>♥</Text>
           </LinearGradient>
+          <Text style={[styles.actionBtnLabel, { color: "#F94498" }]}>Add</Text>
         </TouchableOpacity>
       </View>
     </View>
   );
 }
 
-const CARD_HEIGHT = height * 0.58;
+const CARD_HEIGHT = height * 0.66;
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#0D0628" },
-  orb1: { position: "absolute", width: width, height: width, borderRadius: width / 2, top: -width * 0.4, left: -width * 0.3, backgroundColor: "rgba(123,47,190,0.09)" },
-  orb2: { position: "absolute", width: width * 0.7, height: width * 0.7, borderRadius: width * 0.35, bottom: 0, right: -width * 0.3, backgroundColor: "rgba(233,30,140,0.06)" },
-  header: { flexDirection: "row", alignItems: "center", paddingHorizontal: 20, paddingBottom: 8, gap: 12 },
+  container: { flex: 1 },
+  // Glow orb
+  glowOrb: { position: "absolute", width: 200, height: 200, borderRadius: 100 },
+  // Header
+  header: { flexDirection: "row", alignItems: "center", paddingHorizontal: 20, paddingBottom: 10, gap: 12 },
   backBtn: { width: 40, height: 40, borderRadius: 14, backgroundColor: "rgba(255,255,255,0.08)", alignItems: "center", justifyContent: "center" },
   headerCenter: { flex: 1, alignItems: "center" },
-  headerTitle: { color: "#FFFFFF", fontSize: 17, fontWeight: "700" },
-  headerSub: { color: "rgba(255,255,255,0.4)", fontSize: 12, marginTop: 2 },
-  likedBadge: { flexDirection: "row", alignItems: "center", gap: 4, paddingHorizontal: 12, paddingVertical: 8, borderRadius: 20, backgroundColor: "rgba(255,255,255,0.06)", borderWidth: 1.5, borderColor: "rgba(255,255,255,0.08)" },
-  likedBadgeActive: { backgroundColor: "rgba(249,68,152,0.12)", borderColor: "rgba(249,68,152,0.3)" },
-  likedCount: { color: "rgba(255,255,255,0.3)", fontSize: 14, fontWeight: "700" },
+  headerTitle: { color: "#FFFFFF", fontSize: 17, fontWeight: "700", letterSpacing: 0.3 },
+  likedBadge: { flexDirection: "row", alignItems: "center", gap: 5, paddingHorizontal: 13, paddingVertical: 8, borderRadius: 20, backgroundColor: "rgba(255,255,255,0.06)", borderWidth: 1.5, borderColor: "rgba(255,255,255,0.08)" },
+  likedBadgeActive: { backgroundColor: "rgba(249,68,152,0.12)", borderColor: "rgba(249,68,152,0.35)" },
+  likedBadgeHeart: { fontSize: 13 },
+  likedCount: { color: "rgba(255,255,255,0.35)", fontSize: 14, fontWeight: "800" },
   likedCountActive: { color: "#F94498" },
-  progressWrap: { paddingHorizontal: 20, paddingBottom: 12 },
-  progressTrack: { height: 3, backgroundColor: "rgba(255,255,255,0.08)", borderRadius: 2, overflow: "hidden" },
+  // Progress
+  progressWrap: { flexDirection: "row", alignItems: "center", paddingHorizontal: 20, paddingBottom: 14, gap: 10 },
+  progressTrack: { flex: 1, height: 4, backgroundColor: "rgba(255,255,255,0.08)", borderRadius: 2, overflow: "hidden" },
   progressFill: { height: "100%" as unknown as number, borderRadius: 2 },
-  cardsArea: { flex: 1, alignItems: "center", justifyContent: "center", paddingHorizontal: 16 },
-  card: { position: "absolute", width: width - 32, height: CARD_HEIGHT, borderRadius: 28, overflow: "hidden", backgroundColor: "#1A0A3D" },
-  nextCard: { top: 16 },
+  progressLabel: { color: "rgba(255,255,255,0.3)", fontSize: 12, fontWeight: "700", minWidth: 36, textAlign: "right" },
+  // Cards
+  cardsArea: { flex: 1, alignItems: "center", justifyContent: "center", paddingHorizontal: 12 },
+  card: {
+    position: "absolute",
+    width: width - 24,
+    height: CARD_HEIGHT,
+    borderRadius: 32,
+    overflow: "hidden",
+    backgroundColor: "#1A0A3D",
+    elevation: 16,
+  },
+  nextCard: { top: 18 },
   cardImage: { position: "absolute", top: 0, left: 0, right: 0, bottom: 0, width: "100%", height: "100%" },
-  stamp: { position: "absolute", top: 40, paddingHorizontal: 20, paddingVertical: 10, borderRadius: 12, borderWidth: 4 },
-  stampLike: { right: 20, borderColor: "#22C55E", transform: [{ rotate: "15deg" }] },
-  stampNope: { left: 20, borderColor: "#EF4444", transform: [{ rotate: "-15deg" }] },
-  stampText: { color: "#22C55E", fontSize: 28, fontWeight: "900", letterSpacing: 2 },
-  stampTextNope: { color: "#EF4444" },
-  cardInfo: { position: "absolute", bottom: 0, left: 0, right: 0, padding: 20, gap: 8 },
-  cardTypePill: { alignSelf: "flex-start", backgroundColor: "rgba(255,255,255,0.15)", borderRadius: 8, paddingHorizontal: 10, paddingVertical: 4 },
-  cardTypeText: { color: "rgba(255,255,255,0.8)", fontSize: 11, fontWeight: "700", letterSpacing: 0.5 },
-  cardName: { color: "#FFFFFF", fontSize: 22, fontWeight: "800", lineHeight: 28 },
-  cardLocation: { color: "rgba(255,255,255,0.6)", fontSize: 13 },
-  cardDesc: { color: "rgba(255,255,255,0.7)", fontSize: 13, lineHeight: 19 },
-  cardMeta: { flexDirection: "row", alignItems: "center", backgroundColor: "rgba(0,0,0,0.4)", borderRadius: 14, padding: 12, gap: 8 },
-  metaItem: { flex: 1, alignItems: "center", gap: 2 },
-  metaValue: { color: "#FFFFFF", fontSize: 13, fontWeight: "700" },
-  metaLabel: { color: "rgba(255,255,255,0.4)", fontSize: 10 },
+  colorTint: { ...StyleSheet.absoluteFillObject },
+  // Stamps
+  stamp: { position: "absolute", top: 44, overflow: "hidden", borderRadius: 12 },
+  stampLike: { right: 20, transform: [{ rotate: "12deg" }] },
+  stampNope: { left: 20, transform: [{ rotate: "-12deg" }] },
+  stampGradient: { paddingHorizontal: 18, paddingVertical: 10, borderRadius: 12 },
+  stampText: { color: "#FFFFFF", fontSize: 22, fontWeight: "900", letterSpacing: 3 },
+  stampTextNope: { color: "#FFFFFF" },
+  // Category badge
+  categoryBadge: { position: "absolute", top: 20, left: 20, flexDirection: "row", alignItems: "center", gap: 6, paddingHorizontal: 12, paddingVertical: 6, borderRadius: 20, borderWidth: 1, backdropFilter: "blur(10px)" },
+  categoryDot: { width: 7, height: 7, borderRadius: 3.5 },
+  categoryText: { fontSize: 12, fontWeight: "700", letterSpacing: 0.3 },
+  // Card info
+  cardInfo: { position: "absolute", bottom: 0, left: 0, right: 0, padding: 22, gap: 10 },
+  cardName: { color: "#FFFFFF", fontSize: 24, fontWeight: "900", lineHeight: 30, letterSpacing: -0.3 },
+  cardLocation: { color: "rgba(255,255,255,0.65)", fontSize: 13, fontWeight: "500" },
+  cardDesc: { color: "rgba(255,255,255,0.75)", fontSize: 13.5, lineHeight: 20 },
+  cardMeta: { flexDirection: "row", alignItems: "center", backgroundColor: "rgba(0,0,0,0.45)", borderRadius: 16, padding: 14, gap: 8 },
+  metaItem: { flex: 1, alignItems: "center", gap: 3 },
+  metaValue: { color: "#FFFFFF", fontSize: 13, fontWeight: "800" },
+  metaLabel: { color: "rgba(255,255,255,0.4)", fontSize: 10, fontWeight: "500" },
   metaDivider: { width: 1, height: 28, backgroundColor: "rgba(255,255,255,0.1)" },
-  tags: { flexDirection: "row", gap: 6, flexWrap: "wrap" },
-  tag: { borderRadius: 8, paddingHorizontal: 10, paddingVertical: 4, borderWidth: 1, backgroundColor: "rgba(0,0,0,0.3)" },
-  tagText: { fontSize: 11, fontWeight: "600" },
-  actions: { flexDirection: "row", alignItems: "center", paddingHorizontal: 32, paddingTop: 16, gap: 16 },
-  actionBtn: { borderRadius: 36, overflow: "hidden" },
-  actionBtnGradient: { width: 72, height: 72, alignItems: "center", justifyContent: "center", borderRadius: 36, borderWidth: 2, borderColor: "rgba(255,255,255,0.08)" },
-  actionBtnNope: {},
+  tags: { flexDirection: "row", gap: 7, flexWrap: "wrap" },
+  tag: { borderRadius: 10, paddingHorizontal: 11, paddingVertical: 5, borderWidth: 1 },
+  tagText: { fontSize: 11, fontWeight: "700" },
+  // Action buttons
+  actions: { flexDirection: "row", alignItems: "center", paddingHorizontal: 28, paddingTop: 14, gap: 12 },
+  actionBtnWrap: { alignItems: "center", gap: 6 },
+  actionBtnInner: { width: 68, height: 68, borderRadius: 34, alignItems: "center", justifyContent: "center" },
+  actionBtnSkip: { backgroundColor: "rgba(239,68,68,0.12)", borderWidth: 2, borderColor: "rgba(239,68,68,0.3)" },
   actionBtnLike: {},
-  actionBtnNopeTxt: { fontSize: 28, color: "#EF4444" },
-  actionBtnLikeTxt: { fontSize: 26, color: "#F94498" },
-  actionCenter: { flex: 1, alignItems: "center" },
-  swipeHint: { color: "rgba(255,255,255,0.3)", fontSize: 12, fontWeight: "600" },
+  actionBtnSkipIcon: { fontSize: 26, color: "#EF4444" },
+  actionBtnLikeIcon: { fontSize: 26, color: "#FFFFFF" },
+  actionBtnLabel: { color: "rgba(255,255,255,0.4)", fontSize: 11, fontWeight: "700", letterSpacing: 0.5 },
+  actionCenter: { flex: 1, alignItems: "center", gap: 4 },
+  swipeHintEmoji: { fontSize: 18 },
+  swipeHint: { color: "rgba(255,255,255,0.25)", fontSize: 11, fontWeight: "600" },
   // Done screen
-  doneWrap: { flex: 1, alignItems: "center", justifyContent: "center", paddingHorizontal: 32, gap: 16, overflow: "hidden" },
-  doneBg: { ...StyleSheet.absoluteFillObject },
-  doneEmoji: { fontSize: 56 },
-  doneTitle: { color: "#FFFFFF", fontSize: 26, fontWeight: "800", textAlign: "center" },
-  doneSub: { color: "rgba(255,255,255,0.6)", fontSize: 15, textAlign: "center", lineHeight: 22 },
-  likedList: { width: "100%", gap: 8, marginTop: 8 },
-  likedChip: { flexDirection: "row", alignItems: "center", gap: 10, backgroundColor: "rgba(255,255,255,0.06)", borderRadius: 12, paddingHorizontal: 14, paddingVertical: 10, borderWidth: 1 },
-  likedDot: { width: 8, height: 8, borderRadius: 4 },
-  likedChipText: { color: "rgba(255,255,255,0.8)", fontSize: 14, fontWeight: "600", flex: 1 },
-  likedMore: { color: "rgba(255,255,255,0.4)", fontSize: 13, textAlign: "center", marginTop: 4 },
-  ctaBtn: { width: "100%", borderRadius: 20, overflow: "hidden", marginTop: 8 },
+  doneWrap: { flex: 1, alignItems: "center", justifyContent: "center", paddingHorizontal: 28, gap: 18 },
+  doneEmoji: { fontSize: 60 },
+  doneTitle: { color: "#FFFFFF", fontSize: 28, fontWeight: "900", textAlign: "center", letterSpacing: -0.5 },
+  doneSub: { color: "rgba(255,255,255,0.6)", fontSize: 15, textAlign: "center", lineHeight: 23 },
+  likedGrid: { width: "100%", flexDirection: "row", flexWrap: "wrap", gap: 8, marginTop: 4 },
+  likedChip: { flexDirection: "row", alignItems: "center", gap: 8, backgroundColor: "rgba(255,255,255,0.06)", borderRadius: 14, paddingHorizontal: 14, paddingVertical: 10, borderWidth: 1, maxWidth: (width - 56 - 8) / 2, shadowOpacity: 0.2, shadowRadius: 8, shadowOffset: { width: 0, height: 2 } },
+  likedDot: { width: 8, height: 8, borderRadius: 4, flexShrink: 0 },
+  likedChipText: { color: "rgba(255,255,255,0.85)", fontSize: 13, fontWeight: "600", flex: 1 },
+  likedMore: { color: "rgba(255,255,255,0.4)", fontSize: 13, fontWeight: "600" },
+  ctaBtn: { width: "100%", borderRadius: 22, overflow: "hidden", marginTop: 6 },
   ctaGradient: { flexDirection: "row", alignItems: "center", justifyContent: "center", paddingVertical: 18, gap: 10 },
-  ctaText: { color: "#FFFFFF", fontSize: 17, fontWeight: "800" },
+  ctaText: { color: "#FFFFFF", fontSize: 17, fontWeight: "900", letterSpacing: 0.3 },
 });

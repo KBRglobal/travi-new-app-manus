@@ -121,7 +121,7 @@ export default function PlanScreen() {
         pointsEarned: 0,
       };
       dispatch({ type: "ADD_TRIP", payload: draft });
-      router.push({ pathname: "/(trip)/interests", params: { tripId: draft.id, destination: draft.destinationCode, budget: draft.budget } } as never);
+      router.push({ pathname: "/(trip)/interests", params: { tripId: draft.id, destination: draft.destination, budget: draft.budget } } as never);
     }
   };
 

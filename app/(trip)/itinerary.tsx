@@ -7,7 +7,7 @@
 import { LinearGradient } from "expo-linear-gradient";
 import * as Haptics from "expo-haptics";
 import { router, useLocalSearchParams } from "expo-router";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useMemo } from "react";
 import {
   Animated,
   Dimensions,
@@ -21,6 +21,8 @@ import {
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { IconSymbol } from "@/components/ui/icon-symbol";
+import { useStore } from "@/lib/store";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const { width } = Dimensions.get("window");
 
@@ -177,12 +179,166 @@ function isTransfer(item: Stop | Transfer): item is Transfer {
   return "mode" in item;
 }
 
+// ── Build dynamic itinerary from full liked activity objects ─────────────────
+function buildItineraryFromActivities(activities: any[], tripDays: number): DayPlan[] {
+  const TRANSPORT_POOL: Transfer[] = [
+    { mode: "walk", duration: "10 min", distance: "700 m" },
+    { mode: "taxi", duration: "12 min", distance: "4 km", cost: "$8" },
+    { mode: "metro", duration: "15 min", distance: "6 km", cost: "$3" },
+    { mode: "walk", duration: "7 min", distance: "500 m" },
+    { mode: "taxi", duration: "20 min", distance: "8 km", cost: "$12" },
+  ];
+  const THEMES = [
+    { theme: "Arrive & Explore", emoji: "🌅" },
+    { theme: "Deep Dive", emoji: "🏙️" },
+    { theme: "Hidden Gems", emoji: "💎" },
+    { theme: "Culture & Food", emoji: "🍽️" },
+    { theme: "Adventure Day", emoji: "🧗" },
+    { theme: "Relax & Wander", emoji: "🌿" },
+    { theme: "Final Memories", emoji: "✨" },
+  ];
+  const START_TIMES = ["09:00", "11:00", "14:00", "16:30", "19:00"];
+  const stopsPerDay = Math.max(2, Math.min(4, Math.ceil(activities.length / tripDays)));
+  const days: DayPlan[] = [];
+  let idx = 0;
+  for (let d = 0; d < tripDays; d++) {
+    const dayActivities = activities.slice(idx, idx + stopsPerDay);
+    idx += stopsPerDay;
+    const dayStops: (Stop | Transfer)[] = [];
+    dayActivities.forEach((act: any, i: number) => {
+      const stop: Stop = {
+        id: act.id,
+        time: START_TIMES[Math.min(i * 2, START_TIMES.length - 1)],
+        name: act.name,
+        type: act.type ?? "Activity",
+        duration: act.duration ?? "2 hrs",
+        image: act.image ?? { uri: "https://images.unsplash.com/photo-1499856871958-5b9627545d1a?w=600&q=80" },
+        color: act.color ?? "#F94498",
+        notes: act.description,
+      };
+      dayStops.push(stop);
+      if (i < dayActivities.length - 1) dayStops.push(TRANSPORT_POOL[i % TRANSPORT_POOL.length]);
+    });
+    const theme = THEMES[d % THEMES.length];
+    const dateOffset = new Date();
+    dateOffset.setDate(dateOffset.getDate() + d);
+    const dateStr = dateOffset.toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" });
+    days.push({ day: d + 1, date: dateStr, theme: theme.theme, emoji: theme.emoji, stops: dayStops });
+  }
+  return days;
+}
+
+// ── Build dynamic itinerary from liked activity IDs ──────────────────────────
+function buildItinerary(likedIds: string[], destination: string, tripDays: number): DayPlan[] {
+  // Import all attractions from swipe data inline (subset for itinerary building)
+  const DEST_IMAGES: Record<string, any> = {
+    paris: { uri: "https://images.unsplash.com/photo-1499856871958-5b9627545d1a?w=600&q=80" },
+    dubai: require("@/assets/destinations/dubai.jpg"),
+    bali: require("@/assets/destinations/bali.jpg"),
+    barcelona: require("@/assets/destinations/barcelona.jpg"),
+    tokyo: require("@/assets/destinations/tokyo.jpg"),
+    kyoto: require("@/assets/destinations/tokyo.jpg"),
+    maldives: require("@/assets/destinations/maldives.jpg"),
+    santorini: require("@/assets/destinations/barcelona.jpg"),
+    "new york": require("@/assets/destinations/rome.jpg"),
+  };
+  const destImg = DEST_IMAGES[destination.toLowerCase()] || require("@/assets/destinations/dubai.jpg");
+
+  const TRANSPORT_POOL: Transfer[] = [
+    { mode: "walk", duration: "10 min", distance: "700 m" },
+    { mode: "taxi", duration: "12 min", distance: "4 km", cost: "$8" },
+    { mode: "metro", duration: "15 min", distance: "6 km", cost: "$3" },
+    { mode: "walk", duration: "7 min", distance: "500 m" },
+    { mode: "taxi", duration: "20 min", distance: "8 km", cost: "$12" },
+  ];
+
+  const THEMES = [
+    { theme: "Arrive & Explore", emoji: "🌅" },
+    { theme: "Deep Dive", emoji: "🏙️" },
+    { theme: "Hidden Gems", emoji: "💎" },
+    { theme: "Culture & Food", emoji: "🍽️" },
+    { theme: "Adventure Day", emoji: "🧗" },
+    { theme: "Relax & Wander", emoji: "🌿" },
+    { theme: "Final Memories", emoji: "✨" },
+  ];
+
+  const START_TIMES = ["09:00", "11:00", "14:00", "16:30", "19:00"];
+  const days: DayPlan[] = [];
+
+  // Chunk liked IDs into days (max 3 stops per day)
+  const stopsPerDay = Math.max(2, Math.min(3, Math.ceil(likedIds.length / tripDays)));
+  let stopIdx = 0;
+
+  for (let d = 0; d < tripDays; d++) {
+    const dayStops: (Stop | Transfer)[] = [];
+    const dayLiked = likedIds.slice(stopIdx, stopIdx + stopsPerDay);
+    stopIdx += stopsPerDay;
+
+    dayLiked.forEach((id, i) => {
+      // Create stop from ID (we reconstruct basic info from the id pattern)
+      const timeIdx = Math.min(i * 2, START_TIMES.length - 1);
+      const stop: Stop = {
+        id,
+        time: START_TIMES[timeIdx],
+        name: id.replace(/^[a-z]+\d+$/, id), // fallback to id if no name
+        type: "Activity",
+        duration: "2 hrs",
+        image: destImg,
+        color: ["#F94498", "#6443F4", "#F59E0B", "#22C55E", "#06B6D4", "#D97706"][i % 6],
+      };
+      dayStops.push(stop);
+      if (i < dayLiked.length - 1) {
+        dayStops.push(TRANSPORT_POOL[i % TRANSPORT_POOL.length]);
+      }
+    });
+
+    const theme = THEMES[d % THEMES.length];
+    const dateOffset = new Date();
+    dateOffset.setDate(dateOffset.getDate() + d);
+    const dateStr = dateOffset.toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" });
+
+    days.push({ day: d + 1, date: dateStr, theme: theme.theme, emoji: theme.emoji, stops: dayStops });
+  }
+
+  return days;
+}
+
 export default function ItineraryScreen() {
   const insets = useSafeAreaInsets();
-  const { tripId, destination } = useLocalSearchParams<{ tripId: string; destination: string }>();
+  const { tripId, destination, liked } = useLocalSearchParams<{ tripId: string; destination: string; liked?: string }>();
+  const { state } = useStore();
   const [activeDay, setActiveDay] = useState(0);
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const [building, setBuilding] = useState(true);
+
+  // Find trip to get number of days
+  const trip = state.trips.find((t) => t.id === tripId);
+  const tripDays = useMemo(() => {
+    if (!trip) return 3;
+    const start = new Date(trip.startDate);
+    const end = new Date(trip.endDate);
+    const diff = Math.ceil((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24));
+    return Math.max(1, diff || 3);
+  }, [trip]);
+
+  // Load full liked activity data from AsyncStorage
+  const [likedActivities, setLikedActivities] = useState<any[]>([]);
+  useEffect(() => {
+    if (tripId) {
+      AsyncStorage.getItem(`liked_activities_${tripId}`).then((data) => {
+        if (data) {
+          try { setLikedActivities(JSON.parse(data)); } catch (_) {}
+        }
+      });
+    }
+  }, [tripId]);
+
+  const likedIds = useMemo(() => liked ? liked.split(",").filter(Boolean) : [], [liked]);
+  const itinerary = useMemo(() => {
+    if (likedActivities.length > 0) return buildItineraryFromActivities(likedActivities, tripDays);
+    if (likedIds.length > 0) return buildItinerary(likedIds, destination ?? "dubai", tripDays);
+    return SAMPLE_ITINERARY;
+  }, [likedActivities, likedIds, destination, tripDays]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -198,8 +354,8 @@ export default function ItineraryScreen() {
     if (Platform.OS !== "web") Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
   };
 
-  const day = SAMPLE_ITINERARY[activeDay];
-  const totalStops = SAMPLE_ITINERARY.reduce((acc, d) => acc + d.stops.filter((s) => !isTransfer(s)).length, 0);
+  const day = itinerary[activeDay] ?? itinerary[0];
+  const totalStops = itinerary.reduce((acc, d) => acc + d.stops.filter((s) => !isTransfer(s)).length, 0);
 
   if (building) {
     return (
@@ -232,7 +388,7 @@ export default function ItineraryScreen() {
         </TouchableOpacity>
         <View style={styles.headerCenter}>
           <Text style={styles.headerTitle}>{destination ? destination.charAt(0).toUpperCase() + destination.slice(1) : "Dubai"}</Text>
-          <Text style={styles.headerSub}>{SAMPLE_ITINERARY.length} days · {totalStops} stops</Text>
+          <Text style={styles.headerSub}>{itinerary.length} days · {totalStops} stops</Text>
         </View>
         <TouchableOpacity style={styles.shareBtn} activeOpacity={0.7}>
           <IconSymbol name="square.and.arrow.up" size={18} color="rgba(255,255,255,0.8)" />
@@ -241,7 +397,7 @@ export default function ItineraryScreen() {
 
       {/* Compact Day Pill Selector */}
       <View style={styles.dayRow}>
-        {SAMPLE_ITINERARY.map((d, i) => (
+        {itinerary.map((d, i) => (
           <TouchableOpacity
             key={d.day}
             style={[styles.dayPill, i === activeDay && styles.dayPillActive]}

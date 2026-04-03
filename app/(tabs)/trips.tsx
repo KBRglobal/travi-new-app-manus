@@ -7,6 +7,7 @@ import { Image } from "react-native";
 import { IconSymbol } from "@/components/ui/icon-symbol";
 import { useStore, Trip } from "@/lib/store";
 import * as Haptics from "expo-haptics";
+import { AgentFAB } from "@/components/agent-fab";
 
 const { width } = Dimensions.get("window");
 
@@ -323,6 +324,7 @@ export default function TripsScreen() {
           </View>
         }
       />
+      <AgentFAB />
     </View>
   );
 }
