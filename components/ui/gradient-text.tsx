@@ -30,7 +30,7 @@ export function GradientText({
           <Text style={[style, { backgroundColor: "transparent" }]}>{text}</Text>
         }
       >
-        <LinearGradient colors={colors} start={start} end={end}>
+        <LinearGradient colors={colors as [string, string, ...string[]]} start={start} end={end}>
           <Text style={[style, { opacity: 0 }]}>{text}</Text>
         </LinearGradient>
       </MaskedView>

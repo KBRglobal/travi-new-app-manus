@@ -659,3 +659,13 @@
 - [x] Railway deployment configuration
 - [x] CI/CD — GitHub Actions (lint, test, build, deploy)
 - [x] Environment variables for production
+
+## Phase 40 — tRPC UI→DB Connection (Session 4 — Apr 3 2026)
+
+- [x] Connect Wallet screen to real DB data (wallet.balance, wallet transactions)
+- [x] Connect Trips screen to real DB data (trips.list, trips.get)
+- [x] Connect Profile/DNA screen to real DB data (profile.get, dna.getResult)
+- [x] Add tRPC hooks to wallet.tsx (replace TRANSACTIONS mock with real data)
+- [x] Add tRPC hooks to trips.tsx (replace MOCK_TRIPS with real data)
+- [x] Add tRPC hooks to profile.tsx (sync XP/points from DB)
+- [x] Push merged ui/fixes-round2 to GitHub
