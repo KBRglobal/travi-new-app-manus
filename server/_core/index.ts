@@ -59,6 +59,10 @@ async function startServer() {
   app.get("/api/health", (_req, res) => {
     res.json({ ok: true, timestamp: Date.now() });
   });
+  // Railway health check alias
+  app.get("/health", (_req, res) => {
+    res.json({ status: "ok", service: "travi-api", timestamp: new Date().toISOString() });
+  });
 
   app.use(
     "/api/trpc",
