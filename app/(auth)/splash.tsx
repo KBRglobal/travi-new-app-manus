@@ -1,6 +1,21 @@
+/**
+ * SplashScreen — Cinematic Intro
+ *
+ * Animation sequence (total ~5s):
+ * 0.0s  Black screen
+ * 0.0s  Mascot starts HUGE (scale 4.5, close-up on face) → snaps to normal (scale 1) in 0.5s
+ * 0.5s  Mascot settles with spring bounce
+ * 0.8s  Mascot starts gentle float loop
+ * 1.0s  Logotype reveals left→right (mask wipe, 0.7s)
+ * 1.8s  Gradient accent line sweeps under logo (0.4s)
+ * 2.2s  Tagline fades in (0.5s)
+ * 4.5s  Fade to black → navigate
+ */
+
 import { useEffect, useRef } from "react";
 import {
   View, StyleSheet, Animated, Dimensions, Easing, Image,
+  Text,
 } from "react-native";
 import { router } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
@@ -8,240 +23,119 @@ import { useStore } from "@/lib/store";
 
 const { width, height } = Dimensions.get("window");
 
-const PURPLE = "#6443F4";
-const PINK   = "#F94498";
-const ORANGE = "#FF9327";
-const GREEN  = "#22C55E";
-
-// ── Particles ─────────────────────────────────────────────────────────────────
-const PARTICLES = Array.from({ length: 32 }, (_, i) => ({
-  id: i,
-  x: Math.random() * width,
-  y: Math.random() * height,
-  size: 1.2 + Math.random() * 3,
-  color: [PURPLE, PINK, ORANGE, "#FFFFFF", "#C4B5F9"][i % 5],
-  delay: 600 + i * 60,
-  duration: 2800 + Math.random() * 2200,
-  drift: (Math.random() - 0.5) * 80,
-}));
-
-// ── Ring data ─────────────────────────────────────────────────────────────────
-const RINGS = [
-  { size: width * 0.55, color: PURPLE + "30", delay: 700,  duration: 900 },
-  { size: width * 0.80, color: PINK   + "20", delay: 900,  duration: 900 },
-  { size: width * 1.10, color: PURPLE + "12", delay: 1100, duration: 900 },
-];
-
-// Total splash timeline:
-// 0–500ms: flash fade
-// 500–1700ms: bg + orbs + glow + mascot
-// 1700–2400ms: logotype + tagline
-// 2400–3200ms: idle / float
-// 3200ms: dots appear
-// 4200ms: completion animation starts (green check)
-// 4900ms: fade-out begins → navigate at 5400ms
+const MASCOT_SIZE   = width * 0.54;
+const LOGO_WIDTH    = width * 0.46;
+const LOGO_HEIGHT   = LOGO_WIDTH * 0.32;
 
 export default function SplashScreen() {
   const { state } = useStore();
 
   // ── Animated values ──────────────────────────────────────────────────────────
-  const flashOpacity    = useRef(new Animated.Value(1)).current;
-  const bgOpacity       = useRef(new Animated.Value(0)).current;
+  const mascotScale   = useRef(new Animated.Value(4.5)).current;  // starts huge
+  const mascotOpacity = useRef(new Animated.Value(0)).current;
+  const floatY        = useRef(new Animated.Value(0)).current;
 
-  const orb1Scale       = useRef(new Animated.Value(0)).current;
-  const orb2Scale       = useRef(new Animated.Value(0)).current;
-  const orb3Scale       = useRef(new Animated.Value(0)).current;
-  const breathe1        = useRef(new Animated.Value(1)).current;
-  const breathe2        = useRef(new Animated.Value(1)).current;
+  // Logo: revealed via width mask (0 → LOGO_WIDTH)
+  const logoReveal    = useRef(new Animated.Value(0)).current;
+  const logoOpacity   = useRef(new Animated.Value(0)).current;
 
-  const ringAnims       = useRef(RINGS.map(() => ({
-    scale:   new Animated.Value(0),
-    opacity: new Animated.Value(0),
-  }))).current;
+  // Accent line under logo
+  const lineWidth     = useRef(new Animated.Value(0)).current;
+  const lineOpacity   = useRef(new Animated.Value(0)).current;
 
-  const mascotScale     = useRef(new Animated.Value(0)).current;
-  const mascotOpacity   = useRef(new Animated.Value(0)).current;
-  const mascotRotate    = useRef(new Animated.Value(-8)).current;
-  const floatY          = useRef(new Animated.Value(0)).current;
+  // Tagline
+  const taglineOpacity = useRef(new Animated.Value(0)).current;
+  const taglineY       = useRef(new Animated.Value(10)).current;
 
-  const glowScale       = useRef(new Animated.Value(0.4)).current;
-  const glowOpacity     = useRef(new Animated.Value(0)).current;
-
-  const logoOpacity     = useRef(new Animated.Value(0)).current;
-  const logoY           = useRef(new Animated.Value(40)).current;
-  const logoScale       = useRef(new Animated.Value(0.85)).current;
-
-  const taglineOpacity  = useRef(new Animated.Value(0)).current;
-  const taglineY        = useRef(new Animated.Value(16)).current;
-
-  const screenOpacity   = useRef(new Animated.Value(1)).current;
-
-  // Dots: 3 animated values for color transition
-  const dotsOpacity     = useRef(new Animated.Value(0)).current;
-  const dot1Scale       = useRef(new Animated.Value(1)).current;
-  const dot2Scale       = useRef(new Animated.Value(1)).current;
-  const dot3Scale       = useRef(new Animated.Value(1)).current;
-
-  // Completion: green ring + checkmark
-  const checkOpacity    = useRef(new Animated.Value(0)).current;
-  const checkScale      = useRef(new Animated.Value(0.3)).current;
-  const checkPulse      = useRef(new Animated.Value(1)).current;
-  const checkRingScale  = useRef(new Animated.Value(0.5)).current;
-  const checkRingOpacity = useRef(new Animated.Value(0)).current;
-
-  const particleAnims   = useRef(PARTICLES.map(() => ({
-    opacity: new Animated.Value(0),
-    y:       new Animated.Value(0),
-    x:       new Animated.Value(0),
-  }))).current;
+  // Screen fade-out
+  const screenOpacity = useRef(new Animated.Value(1)).current;
 
   useEffect(() => {
-    // ── Continuous orb breathing ──────────────────────────────────────────────
-    Animated.loop(Animated.sequence([
-      Animated.timing(breathe1, { toValue: 1.3,  duration: 4500, useNativeDriver: true, easing: Easing.inOut(Easing.sin) }),
-      Animated.timing(breathe1, { toValue: 0.75, duration: 4500, useNativeDriver: true, easing: Easing.inOut(Easing.sin) }),
-    ])).start();
-    Animated.loop(Animated.sequence([
-      Animated.timing(breathe2, { toValue: 1.4,  duration: 6000, useNativeDriver: true, easing: Easing.inOut(Easing.sin) }),
-      Animated.timing(breathe2, { toValue: 0.6,  duration: 6000, useNativeDriver: true, easing: Easing.inOut(Easing.sin) }),
-    ])).start();
-
-    // ── Particles ─────────────────────────────────────────────────────────────
-    PARTICLES.forEach((p, i) => {
-      const anim = particleAnims[i];
-      const loop = () => {
-        anim.y.setValue(0);
-        anim.x.setValue(0);
-        Animated.sequence([
-          Animated.delay(p.delay + i * 30),
-          Animated.parallel([
-            Animated.timing(anim.opacity, { toValue: 0.8, duration: 500, useNativeDriver: true }),
-            Animated.timing(anim.y, { toValue: -p.drift, duration: p.duration, useNativeDriver: true, easing: Easing.inOut(Easing.sin) }),
-            Animated.timing(anim.x, { toValue: (Math.random() - 0.5) * 30, duration: p.duration, useNativeDriver: true }),
-          ]),
-          Animated.timing(anim.opacity, { toValue: 0, duration: 500, useNativeDriver: true }),
-        ]).start(({ finished }) => { if (finished) loop(); });
-      };
-      loop();
-    });
-
-    // ── Rings ripple ──────────────────────────────────────────────────────────
-    RINGS.forEach((r, i) => {
-      const anim = ringAnims[i];
-      setTimeout(() => {
-        Animated.parallel([
-          Animated.timing(anim.opacity, { toValue: 1, duration: 200, useNativeDriver: true }),
-          Animated.timing(anim.scale,   { toValue: 1, duration: r.duration, useNativeDriver: true, easing: Easing.out(Easing.cubic) }),
-        ]).start(() => {
-          Animated.timing(anim.opacity, { toValue: 0, duration: 400, useNativeDriver: true }).start();
-        });
-      }, r.delay);
-    });
-
-    // ── Main cinematic sequence ───────────────────────────────────────────────
+    // ── 1. Mascot snap zoom-out ───────────────────────────────────────────────
     Animated.sequence([
-      // 1. Flash fades out
-      Animated.timing(flashOpacity, {
-        toValue: 0, duration: 500,
-        useNativeDriver: true, easing: Easing.out(Easing.cubic),
+      // Flash in at huge scale
+      Animated.timing(mascotOpacity, {
+        toValue: 1, duration: 80,
+        useNativeDriver: true,
       }),
-      // 2. Background + orbs burst in
-      Animated.parallel([
-        Animated.timing(bgOpacity, { toValue: 1, duration: 600, useNativeDriver: true }),
-        Animated.spring(orb1Scale, { toValue: 1, friction: 3.5, tension: 35, useNativeDriver: true }),
-        Animated.spring(orb2Scale, { toValue: 1, friction: 4,   tension: 30, useNativeDriver: true }),
-        Animated.spring(orb3Scale, { toValue: 1, friction: 5,   tension: 25, useNativeDriver: true }),
-      ]),
-      Animated.delay(80),
-      // 3. Glow halo
-      Animated.parallel([
-        Animated.timing(glowOpacity, { toValue: 0.75, duration: 700, useNativeDriver: true }),
-        Animated.timing(glowScale,   { toValue: 1,    duration: 800, useNativeDriver: true, easing: Easing.out(Easing.cubic) }),
-      ]),
-      Animated.delay(60),
-      // 4. Mascot slams in
-      Animated.parallel([
-        Animated.timing(mascotOpacity, { toValue: 1, duration: 200, useNativeDriver: true }),
-        Animated.spring(mascotScale, { toValue: 1, friction: 3.5, tension: 70, useNativeDriver: true }),
-        Animated.timing(mascotRotate, { toValue: 0, duration: 500, useNativeDriver: true, easing: Easing.out(Easing.back(2)) }),
-      ]),
-      Animated.delay(200),
-      // 5. Logotype slides up
-      Animated.parallel([
-        Animated.timing(logoOpacity, { toValue: 1, duration: 450, useNativeDriver: true }),
-        Animated.timing(logoY,       { toValue: 0, duration: 500, useNativeDriver: true, easing: Easing.out(Easing.back(1.2)) }),
-        Animated.spring(logoScale,   { toValue: 1, friction: 5, tension: 80, useNativeDriver: true }),
-      ]),
-      Animated.delay(120),
-      // 6. Tagline drifts up
-      Animated.parallel([
-        Animated.timing(taglineOpacity, { toValue: 1, duration: 500, useNativeDriver: true }),
-        Animated.timing(taglineY,       { toValue: 0, duration: 550, useNativeDriver: true, easing: Easing.out(Easing.cubic) }),
-      ]),
+      // Snap back — fast ease-out like the video
+      Animated.spring(mascotScale, {
+        toValue: 1,
+        friction: 4.5,
+        tension: 120,
+        useNativeDriver: true,
+      }),
     ]).start();
 
-    // Dots appear at 2400ms
-    Animated.timing(dotsOpacity, {
-      toValue: 1, duration: 400, delay: 2400,
-      useNativeDriver: true,
-    }).start();
-
-    // Dots wave animation at 2800ms
-    setTimeout(() => {
-      const waveOne = (anim: Animated.Value, delay: number) =>
-        Animated.loop(
-          Animated.sequence([
-            Animated.delay(delay),
-            Animated.timing(anim, { toValue: 1.6, duration: 300, useNativeDriver: true, easing: Easing.out(Easing.quad) }),
-            Animated.timing(anim, { toValue: 1.0, duration: 300, useNativeDriver: true, easing: Easing.in(Easing.quad) }),
-            Animated.delay(600),
-          ]),
-          { iterations: 3 }
-        );
-      Animated.parallel([
-        waveOne(dot1Scale, 0),
-        waveOne(dot2Scale, 150),
-        waveOne(dot3Scale, 300),
-      ]).start();
-    }, 2800);
-
-    // Mascot float loop
+    // ── 2. Float loop (starts at 0.8s) ────────────────────────────────────────
     setTimeout(() => {
       Animated.loop(Animated.sequence([
-        Animated.timing(floatY, { toValue: -12, duration: 2000, useNativeDriver: true, easing: Easing.inOut(Easing.sin) }),
-        Animated.timing(floatY, { toValue:   0, duration: 2000, useNativeDriver: true, easing: Easing.inOut(Easing.sin) }),
+        Animated.timing(floatY, {
+          toValue: -10, duration: 2200,
+          useNativeDriver: true,
+          easing: Easing.inOut(Easing.sin),
+        }),
+        Animated.timing(floatY, {
+          toValue: 0, duration: 2200,
+          useNativeDriver: true,
+          easing: Easing.inOut(Easing.sin),
+        }),
       ])).start();
-    }, 1400);
+    }, 800);
 
-    // ── Completion animation at 4200ms ────────────────────────────────────────
+    // ── 3. Logo reveal — left to right wipe (starts at 1.0s) ─────────────────
     setTimeout(() => {
-      // Outer ring expands
       Animated.parallel([
-        Animated.timing(checkRingOpacity, { toValue: 1, duration: 250, useNativeDriver: true }),
-        Animated.timing(checkRingScale,   { toValue: 1, duration: 400, useNativeDriver: true, easing: Easing.out(Easing.back(1.5)) }),
+        Animated.timing(logoOpacity, {
+          toValue: 1, duration: 100,
+          useNativeDriver: true,
+        }),
+        Animated.timing(logoReveal, {
+          toValue: LOGO_WIDTH,
+          duration: 700,
+          useNativeDriver: false,
+          easing: Easing.out(Easing.cubic),
+        }),
       ]).start();
-      // Check icon pops in
-      setTimeout(() => {
-        Animated.parallel([
-          Animated.timing(checkOpacity, { toValue: 1, duration: 200, useNativeDriver: true }),
-          Animated.spring(checkScale, { toValue: 1, friction: 4, tension: 80, useNativeDriver: true }),
-        ]).start(() => {
-          // Pulse twice
-          Animated.sequence([
-            Animated.timing(checkPulse, { toValue: 1.15, duration: 200, useNativeDriver: true }),
-            Animated.timing(checkPulse, { toValue: 1.0,  duration: 200, useNativeDriver: true }),
-            Animated.timing(checkPulse, { toValue: 1.10, duration: 180, useNativeDriver: true }),
-            Animated.timing(checkPulse, { toValue: 1.0,  duration: 180, useNativeDriver: true }),
-          ]).start();
-        });
-      }, 300);
-    }, 4200);
+    }, 1000);
 
-    // ── Navigate with fade-out at 5000ms ─────────────────────────────────────
+    // ── 4. Accent line sweeps (starts at 1.8s) ────────────────────────────────
+    setTimeout(() => {
+      Animated.parallel([
+        Animated.timing(lineOpacity, {
+          toValue: 1, duration: 150,
+          useNativeDriver: false,
+        }),
+        Animated.timing(lineWidth, {
+          toValue: LOGO_WIDTH * 0.7,
+          duration: 400,
+          useNativeDriver: false,
+          easing: Easing.out(Easing.cubic),
+        }),
+      ]).start();
+    }, 1800);
+
+    // ── 5. Tagline fades in (starts at 2.2s) ─────────────────────────────────
+    setTimeout(() => {
+      Animated.parallel([
+        Animated.timing(taglineOpacity, {
+          toValue: 1, duration: 500,
+          useNativeDriver: true,
+        }),
+        Animated.timing(taglineY, {
+          toValue: 0, duration: 500,
+          useNativeDriver: true,
+          easing: Easing.out(Easing.cubic),
+        }),
+      ]).start();
+    }, 2200);
+
+    // ── 6. Fade to black → navigate (at 4.5s) ────────────────────────────────
     const timer = setTimeout(() => {
       Animated.timing(screenOpacity, {
-        toValue: 0, duration: 500,
-        useNativeDriver: true, easing: Easing.in(Easing.cubic),
+        toValue: 0, duration: 600,
+        useNativeDriver: true,
+        easing: Easing.in(Easing.cubic),
       }).start(() => {
         if (state.isAuthenticated || state.isGuest) {
           if (!state.onboardingCompleted) {
@@ -253,84 +147,31 @@ export default function SplashScreen() {
           router.replace("/(auth)/sign-up" as never);
         }
       });
-    }, 5000);
+    }, 4500);
+
     return () => clearTimeout(timer);
   }, []);
 
-  const mascotRotateDeg = mascotRotate.interpolate({
-    inputRange: [-8, 0], outputRange: ["-8deg", "0deg"],
-  });
-
   return (
     <Animated.View style={[s.root, { opacity: screenOpacity }]}>
-      {/* ── Background ── */}
-      <Animated.View style={[StyleSheet.absoluteFillObject, { opacity: bgOpacity }]}>
-        <LinearGradient
-          colors={["#06021A", "#0E0528", "#1A0840", "#0E0528", "#06021A"]}
-          locations={[0, 0.25, 0.5, 0.75, 1]}
-          style={StyleSheet.absoluteFillObject}
-          start={{ x: 0.3, y: 0 }} end={{ x: 0.7, y: 1 }}
-        />
-      </Animated.View>
-
-      {/* ── Orbs ── */}
-      <Animated.View style={[s.orb1, { transform: [{ scale: Animated.multiply(orb1Scale, breathe1) }] }]} />
-      <Animated.View style={[s.orb2, { transform: [{ scale: Animated.multiply(orb2Scale, breathe2) }] }]} />
-      <Animated.View style={[s.orb3, { transform: [{ scale: orb3Scale }] }]} />
-
-      {/* ── Ripple rings ── */}
-      {RINGS.map((r, i) => (
-        <Animated.View
-          key={i}
-          style={[s.ring, {
-            width: r.size, height: r.size,
-            borderRadius: r.size / 2,
-            marginLeft: -r.size / 2,
-            marginTop: -r.size / 2,
-            borderColor: r.color,
-            opacity: ringAnims[i].opacity,
-            transform: [{ scale: ringAnims[i].scale }],
-          }]}
-        />
-      ))}
-
-      {/* ── Particles ── */}
-      {PARTICLES.map((p, i) => (
-        <Animated.View
-          key={p.id}
-          style={[s.particle, {
-            left: p.x, top: p.y,
-            width: p.size, height: p.size,
-            borderRadius: p.size / 2,
-            backgroundColor: p.color,
-            opacity: particleAnims[i].opacity,
-            transform: [
-              { translateY: particleAnims[i].y },
-              { translateX: particleAnims[i].x },
-            ],
-          }]}
-        />
-      ))}
-
-      {/* ── Glow halo ── */}
-      <Animated.View style={[s.glowHalo, { opacity: glowOpacity, transform: [{ scale: glowScale }] }]}>
-        <LinearGradient
-          colors={[PURPLE + "60", PINK + "40", "transparent"]}
-          style={StyleSheet.absoluteFillObject}
-          start={{ x: 0.5, y: 0 }} end={{ x: 0.5, y: 1 }}
-        />
-      </Animated.View>
+      {/* Background — deep dark gradient */}
+      <LinearGradient
+        colors={["#06021A", "#0E0528", "#06021A"]}
+        style={StyleSheet.absoluteFillObject}
+        start={{ x: 0.5, y: 0 }}
+        end={{ x: 0.5, y: 1 }}
+      />
 
       {/* ── Center content ── */}
       <View style={s.center}>
-        {/* Mascot */}
+
+        {/* Mascot — starts huge (close-up), snaps to normal */}
         <Animated.View style={{
-          opacity: mascotOpacity,
           transform: [
             { scale: mascotScale },
-            { rotate: mascotRotateDeg },
             { translateY: floatY },
           ],
+          opacity: mascotOpacity,
         }}>
           <Image
             source={require("@/assets/logos/mascot-centered.png")}
@@ -339,23 +180,27 @@ export default function SplashScreen() {
           />
         </Animated.View>
 
-        {/* Logotype */}
-        <Animated.View style={[s.logoWrap, {
-          opacity: logoOpacity,
-          transform: [{ translateY: logoY }, { scale: logoScale }],
-        }]}>
-          <Image
-            source={require("@/assets/logos/logotype-white.webp")}
-            style={s.logotype}
-            resizeMode="contain"
-          />
-          <View style={s.accentLine}>
+        {/* Logotype — revealed left→right via animated width clip */}
+        <Animated.View style={[s.logoContainer, { opacity: logoOpacity }]}>
+          <Animated.View style={[s.logoClip, { width: logoReveal }]}>
+            <Image
+              source={require("@/assets/logos/logotype-white.webp")}
+              style={s.logotype}
+              resizeMode="contain"
+            />
+          </Animated.View>
+        </Animated.View>
+
+        {/* Accent line — sweeps left→right under logo */}
+        <Animated.View style={[s.accentWrap, { opacity: lineOpacity }]}>
+          <Animated.View style={[s.accentLine, { width: lineWidth }]}>
             <LinearGradient
-              colors={["transparent", PINK, PURPLE, "transparent"]}
-              start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
+              colors={["#6443F4", "#F94498"]}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 0 }}
               style={StyleSheet.absoluteFillObject}
             />
-          </View>
+          </Animated.View>
         </Animated.View>
 
         {/* Tagline */}
@@ -365,38 +210,8 @@ export default function SplashScreen() {
         }]}>
           YOUR AI TRAVEL COMPANION
         </Animated.Text>
+
       </View>
-
-      {/* ── Bottom: dots + completion check ── */}
-      <Animated.View style={[s.bottom, { opacity: dotsOpacity }]}>
-        {/* Dots row */}
-        <View style={s.dotsRow}>
-          <Animated.View style={[s.dot, { transform: [{ scale: dot1Scale }] }]} />
-          <Animated.View style={[s.dot, s.dotActive, { transform: [{ scale: dot2Scale }] }]} />
-          <Animated.View style={[s.dot, { transform: [{ scale: dot3Scale }] }]} />
-        </View>
-
-        {/* Completion check — appears over dots */}
-        <Animated.View style={[s.checkWrap, {
-          opacity: checkOpacity,
-          transform: [{ scale: Animated.multiply(checkScale, checkPulse) }],
-        }]}>
-          {/* Outer ring */}
-          <Animated.View style={[s.checkRing, {
-            opacity: checkRingOpacity,
-            transform: [{ scale: checkRingScale }],
-          }]} />
-          {/* Green circle */}
-          <View style={s.checkCircle}>
-            {/* Checkmark drawn with two rotated views */}
-            <View style={s.checkmarkShort} />
-            <View style={s.checkmarkLong} />
-          </View>
-        </Animated.View>
-      </Animated.View>
-
-      {/* ── Flash overlay ── */}
-      <Animated.View style={[StyleSheet.absoluteFillObject, s.flash, { opacity: flashOpacity }]} />
     </Animated.View>
   );
 }
@@ -407,135 +222,50 @@ const s = StyleSheet.create({
     backgroundColor: "#06021A",
     alignItems: "center",
   },
-  orb1: {
-    position: "absolute",
-    width: width * 1.8, height: width * 1.8,
-    borderRadius: width * 0.9,
-    top: -width * 0.9, left: -width * 0.65,
-    backgroundColor: "rgba(100,67,244,0.22)",
-  },
-  orb2: {
-    position: "absolute",
-    width: width * 1.2, height: width * 1.2,
-    borderRadius: width * 0.6,
-    bottom: -height * 0.08, right: -width * 0.5,
-    backgroundColor: "rgba(249,68,152,0.16)",
-  },
-  orb3: {
-    position: "absolute",
-    width: width * 0.9, height: width * 0.9,
-    borderRadius: width * 0.45,
-    top: height * 0.55, left: -width * 0.3,
-    backgroundColor: "rgba(255,147,39,0.09)",
-  },
-  ring: {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    borderWidth: 1.5,
-  },
-  particle: {
-    position: "absolute",
-  },
-  glowHalo: {
-    position: "absolute",
-    width: width * 0.80, height: width * 0.80,
-    borderRadius: width * 0.40,
-    top: height * 0.5 - width * 0.40 - 80,
-    alignSelf: "center",
-    overflow: "hidden",
-    borderWidth: 1,
-    borderColor: "rgba(100,67,244,0.30)",
-  },
   center: {
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    gap: 20,
+    gap: 16,
   },
   mascot: {
-    width: width * 0.52,
-    height: width * 0.52,
+    width: MASCOT_SIZE,
+    height: MASCOT_SIZE,
   },
-  logoWrap: {
-    alignItems: "center",
-    gap: 12,
+  // Logo clip container — overflow hidden, width animates
+  logoContainer: {
+    height: LOGO_HEIGHT,
+    alignItems: "flex-start",
+    overflow: "hidden",
+    // Full width so the clip can grow into it
+    width: LOGO_WIDTH,
+  },
+  logoClip: {
+    height: LOGO_HEIGHT,
+    overflow: "hidden",
   },
   logotype: {
-    width: width * 0.44,
-    height: width * 0.15,
+    width: LOGO_WIDTH,
+    height: LOGO_HEIGHT,
+  },
+  // Accent line
+  accentWrap: {
+    width: LOGO_WIDTH,
+    height: 2,
+    alignItems: "flex-start",
+    marginTop: -8,
   },
   accentLine: {
-    width: 160, height: 2,
-    borderRadius: 2,
+    height: 2,
+    borderRadius: 1,
     overflow: "hidden",
   },
   tagline: {
     fontSize: 11,
-    color: "rgba(196,181,217,0.70)",
+    color: "rgba(196,181,217,0.65)",
     letterSpacing: 3.5,
     fontWeight: "600",
     textAlign: "center",
-  },
-  bottom: {
-    paddingHorizontal: 44,
-    paddingBottom: 100,
-    alignItems: "center",
-    gap: 0,
-  },
-  dotsRow: {
-    flexDirection: "row",
-    gap: 8,
-    alignItems: "center",
-  },
-  dot: {
-    width: 6, height: 6,
-    borderRadius: 3,
-    backgroundColor: "rgba(255,255,255,0.25)",
-  },
-  dotActive: {
-    width: 20, height: 6,
-    borderRadius: 3,
-    backgroundColor: PINK,
-  },
-  // Completion check
-  checkWrap: {
-    position: "absolute",
-    alignItems: "center",
-    justifyContent: "center",
-    width: 52, height: 52,
-  },
-  checkRing: {
-    position: "absolute",
-    width: 52, height: 52,
-    borderRadius: 26,
-    borderWidth: 2,
-    borderColor: GREEN + "60",
-  },
-  checkCircle: {
-    width: 40, height: 40,
-    borderRadius: 20,
-    backgroundColor: GREEN,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  checkmarkShort: {
-    position: "absolute",
-    width: 8, height: 3,
-    backgroundColor: "#fff",
-    borderRadius: 2,
-    left: 8, top: 20,
-    transform: [{ rotate: "45deg" }],
-  },
-  checkmarkLong: {
-    position: "absolute",
-    width: 16, height: 3,
-    backgroundColor: "#fff",
-    borderRadius: 2,
-    left: 13, top: 16,
-    transform: [{ rotate: "-45deg" }],
-  },
-  flash: {
-    backgroundColor: "#FFFFFF",
+    marginTop: 4,
   },
 });
