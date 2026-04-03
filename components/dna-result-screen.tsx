@@ -139,7 +139,7 @@ function DNACircle({ tagCounts, colors }: { tagCounts: Record<string, number>; c
     <View style={{ width: SIZE, height: SIZE, alignItems: "center", justifyContent: "center" }}>
       <Svg width={SIZE} height={SIZE}>
         {/* Background circle */}
-        <Circle cx={cx} cy={cy} r={R} fill="none" stroke="rgba(255,255,255,0.55)" strokeWidth={strokeW} />
+        <Circle cx={cx} cy={cy} r={R} fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth={strokeW} />
         {/* Colored segments */}
         {segments.map((seg, i) => (
           <Circle
@@ -201,7 +201,7 @@ function TraitBar({ label, value, max, color }: { label: string; value: number; 
 const TB = StyleSheet.create({
   row: { flexDirection: "row", alignItems: "center", gap: 10, marginBottom: 8 },
   label: { color: "rgba(255,255,255,0.6)", fontSize: 12, fontWeight: "600", width: 72 },
-  track: { flex: 1, height: 6, borderRadius: 3, backgroundColor: "rgba(255,255,255,0.55)", overflow: "hidden" },
+  track: { flex: 1, height: 6, borderRadius: 3, backgroundColor: "rgba(255,255,255,0.06)", overflow: "hidden" },
   fill: { height: "100%", borderRadius: 3 },
   pct: { fontSize: 11, fontWeight: "700", width: 34, textAlign: "right" },
 });
@@ -628,10 +628,10 @@ const RS = StyleSheet.create({
   // Card
   card: {
     width: width - 32,
-    backgroundColor: "rgba(255,255,255,0.55)",
+    backgroundColor: "rgba(255,255,255,0.06)",
     borderRadius: 20,
     borderWidth: 1,
-    borderColor: "rgba(255,255,255,0.55)",
+    borderColor: "rgba(255,255,255,0.12)",
     padding: 18,
     gap: 4,
   },

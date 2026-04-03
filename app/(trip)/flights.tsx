@@ -163,7 +163,7 @@ export default function FlightsScreen() {
                 activeOpacity={0.88}
               >
                 <LinearGradient
-                  colors={isSelected ? ["rgba(123,47,190,0.35)", "rgba(233,30,140,0.2)"] : ["rgba(255,255,255,0.55)", "rgba(255,255,255,0.55)"]}
+                  colors={isSelected ? ["rgba(123,47,190,0.35)", "rgba(233,30,140,0.2)"] : ["rgba(255,255,255,0.06)", "rgba(255,255,255,0.06)"]}
                   style={StyleSheet.absoluteFillObject}
                 />
                 <View style={styles.flightTop}>
@@ -189,7 +189,7 @@ export default function FlightsScreen() {
                     <View style={styles.routeLine}>
                       <View style={styles.routeDot} />
                       <View style={styles.routeLineBar} />
-                      <IconSymbol name="airplane" size={16} color={isSelected ? "#F94498" : "rgba(255,255,255,0.55)"} />
+                      <IconSymbol name="airplane" size={16} color={isSelected ? "#F94498" : "rgba(255,255,255,0.06)"} />
                       <View style={styles.routeLineBar} />
                       <View style={styles.routeDot} />
                     </View>
@@ -217,7 +217,7 @@ export default function FlightsScreen() {
       <View style={styles.ctaWrap}>
         <TouchableOpacity style={[styles.ctaBtn, !selectedFlight && styles.ctaBtnDisabled]} onPress={handleNext} activeOpacity={0.88}>
           <LinearGradient
-            colors={selectedFlight ? ["#6443F4", "#F94498"] : ["rgba(255,255,255,0.55)", "rgba(255,255,255,0.55)"]}
+            colors={selectedFlight ? ["#6443F4", "#F94498"] : ["rgba(255,255,255,0.06)", "rgba(255,255,255,0.06)"]}
             start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
             style={styles.ctaGradient}
           >
@@ -233,10 +233,10 @@ export default function FlightsScreen() {
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#0D0628" },
   orb1: { position: "absolute", width: width, height: width, borderRadius: width / 2, top: -width * 0.4, left: -width * 0.2, backgroundColor: "rgba(123,47,190,0.09)" },
-  header: { flexDirection: "row", alignItems: "center", paddingHorizontal: 20, paddingTop: 60, paddingBottom: 130, gap: 12 },
-  backBtn: { width: 40, height: 40, borderRadius: 14, backgroundColor: "rgba(255,255,255,0.55)", alignItems: "center", justifyContent: "center" },
+  header: { flexDirection: "row", alignItems: "center", paddingHorizontal: 20, paddingTop: 60, paddingBottom: 16, gap: 12 },
+  backBtn: { width: 40, height: 40, borderRadius: 14, backgroundColor: "rgba(255,255,255,0.06)", alignItems: "center", justifyContent: "center" },
   progressWrap: { flex: 1, gap: 6 },
-  progressTrack: { height: 4, backgroundColor: "rgba(255,255,255,0.55)", borderRadius: 2, overflow: "hidden" },
+  progressTrack: { height: 4, backgroundColor: "rgba(255,255,255,0.06)", borderRadius: 2, overflow: "hidden" },
   progressFill: { height: "100%", backgroundColor: "#F94498", borderRadius: 2 },
   progressLabel: { color: "rgba(255,255,255,0.5)", fontSize: 12, fontFamily: "Satoshi-Regular", textAlign: "right" },
   loadingWrap: { flex: 1, alignItems: "center", justifyContent: "center", gap: 16 },
@@ -254,12 +254,12 @@ const styles = StyleSheet.create({
   duckMessage: { color: "#FFFFFF", fontSize: 15, fontFamily: "Chillax-Semibold", fontWeight: "700", lineHeight: 20 },
   duckSub: { color: "rgba(255,255,255,0.5)", fontSize: 12, fontFamily: "Satoshi-Regular", marginTop: 2 },
   filterList: { paddingHorizontal: 20, gap: 8, paddingBottom: 130 },
-  filterChip: { borderRadius: 14, paddingHorizontal: 16, paddingVertical: 8, overflow: "hidden", borderWidth: 1.5, borderColor: "rgba(255,255,255,0.55)" },
+  filterChip: { borderRadius: 14, paddingHorizontal: 16, paddingVertical: 8, overflow: "hidden", borderWidth: 1.5, borderColor: "rgba(255,255,255,0.12)" },
   filterChipActive: { borderColor: "rgba(192,132,252,0.5)" },
   filterLabel: { color: "rgba(255,255,255,0.5)", fontSize: 13, fontFamily: "Chillax-Semibold", fontWeight: "600" },
   filterLabelActive: { color: "#C084FC" },
   list: { paddingHorizontal: 20, gap: 12, paddingBottom: 130 },
-  flightCard: { borderRadius: 20, padding: 18, gap: 14, overflow: "hidden", borderWidth: 2, borderColor: "rgba(255,255,255,0.55)" },
+  flightCard: { borderRadius: 20, padding: 18, gap: 14, overflow: "hidden", borderWidth: 2, borderColor: "rgba(255,255,255,0.12)" },
   flightCardSelected: { borderColor: "rgba(233,30,140,0.6)" },
   flightTop: { flexDirection: "row", alignItems: "center", justifyContent: "space-between" },
   airlineRow: { flexDirection: "row", alignItems: "center", gap: 8 },
@@ -273,8 +273,8 @@ const styles = StyleSheet.create({
   routeMiddle: { flex: 1, alignItems: "center", gap: 4, paddingHorizontal: 12 },
   routeDuration: { color: "rgba(255,255,255,0.6)", fontSize: 12, fontFamily: "Satoshi-Regular" },
   routeLine: { flexDirection: "row", alignItems: "center", width: "100%", gap: 4 },
-  routeDot: { width: 6, height: 6, borderRadius: 3, backgroundColor: "rgba(255,255,255,0.55)" },
-  routeLineBar: { flex: 1, height: 1, backgroundColor: "rgba(255,255,255,0.55)" },
+  routeDot: { width: 6, height: 6, borderRadius: 3, backgroundColor: "rgba(255,255,255,0.06)" },
+  routeLineBar: { flex: 1, height: 1, backgroundColor: "rgba(255,255,255,0.06)" },
   routeStops: { color: "rgba(255,255,255,0.5)", fontSize: 11, fontFamily: "Chillax-Semibold", fontWeight: "600" },
   routeTime: { color: "#FFFFFF", fontSize: 18, fontFamily: "Chillax-Bold", fontWeight: "800" },
   routeCode: { color: "rgba(255,255,255,0.5)", fontSize: 13, fontFamily: "Chillax-Semibold", fontWeight: "600" },

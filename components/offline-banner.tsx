@@ -131,7 +131,7 @@ const S = StyleSheet.create({
   bannerRight: { flexDirection: "row", alignItems: "center", gap: 8 },
   cachedBtn: { borderRadius: 10, overflow: "hidden", paddingHorizontal: 14, paddingVertical: 7 },
   cachedBtnText: { color: "#FFF", fontSize: 13, fontWeight: "700" },
-  dismissBtn: { width: 28, height: 28, borderRadius: 8, backgroundColor: "rgba(255,255,255,0.55)", alignItems: "center", justifyContent: "center" },
+  dismissBtn: { width: 28, height: 28, borderRadius: 8, backgroundColor: "rgba(255,255,255,0.06)", alignItems: "center", justifyContent: "center" },
 
   cachedBadge: { flexDirection: "row", alignItems: "center", gap: 5, backgroundColor: "rgba(34,197,94,0.1)", borderRadius: 8, paddingHorizontal: 8, paddingVertical: 4, borderWidth: 1, borderColor: "rgba(34,197,94,0.25)" },
   cachedDot: { width: 6, height: 6, borderRadius: 3, backgroundColor: "#22C55E" },

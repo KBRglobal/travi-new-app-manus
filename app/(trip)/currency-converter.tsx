@@ -242,21 +242,21 @@ export default function CurrencyConverterScreen() {
 // ─── Styles ───────────────────────────────────────────────────────────────────
 const S = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#0D0628" },
-  header: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 16, paddingBottom: 130, paddingTop: 4 },
+  header: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 16, paddingBottom: 16, paddingTop: 4 },
   backBtn: { width: 40, height: 40, alignItems: "center", justifyContent: "center" },
   headerTitle: { color: "#FFF", fontSize: 18, fontFamily: "Chillax-Bold", fontWeight: "800" },
 
   converterCard: { borderRadius: 24, overflow: "hidden", borderWidth: 1, borderColor: "rgba(100,67,244,0.3)", padding: 20, gap: 8, marginBottom: 24 },
   converterLabel: { color: "rgba(255,255,255,0.5)", fontSize: 11, fontFamily: "Chillax-Semibold", fontWeight: "700", letterSpacing: 0.5, textTransform: "uppercase" },
   converterRow: { flexDirection: "row", alignItems: "center", gap: 12 },
-  currencyBtn: { flexDirection: "row", alignItems: "center", gap: 6, backgroundColor: "rgba(255,255,255,0.55)", borderRadius: 12, paddingHorizontal: 12, paddingVertical: 10, borderWidth: 1, borderColor: "rgba(255,255,255,0.55)" },
+  currencyBtn: { flexDirection: "row", alignItems: "center", gap: 6, backgroundColor: "rgba(255,255,255,0.06)", borderRadius: 12, paddingHorizontal: 12, paddingVertical: 10, borderWidth: 1, borderColor: "rgba(255,255,255,0.12)" },
   currencyBtnCode: { color: "#FFF", fontSize: 15, fontFamily: "Chillax-Semibold", fontWeight: "700" },
   amountInput: { flex: 1, color: "#FFF", fontSize: 28, fontFamily: "Chillax-Bold", fontWeight: "800", textAlign: "right" },
   resultWrap: { flex: 1, alignItems: "flex-end" },
   resultAmount: { color: "#A78BFA", fontSize: 28, fontFamily: "Chillax-Bold", fontWeight: "800" },
 
   swapRow: { flexDirection: "row", alignItems: "center", gap: 12, marginVertical: 4 },
-  dividerLine: { flex: 1, height: 1, backgroundColor: "rgba(255,255,255,0.55)" },
+  dividerLine: { flex: 1, height: 1, backgroundColor: "rgba(255,255,255,0.06)" },
   swapBtn: { width: 40, height: 40, borderRadius: 20, overflow: "hidden", alignItems: "center", justifyContent: "center" },
 
   rateRow: { flexDirection: "row", alignItems: "center", gap: 6, marginTop: 4 },
@@ -266,14 +266,14 @@ const S = StyleSheet.create({
 
   sectionLabel: { color: "rgba(255,255,255,0.5)", fontSize: 11, fontFamily: "Chillax-Semibold", fontWeight: "700", letterSpacing: 0.5, textTransform: "uppercase", marginBottom: 10 },
   quickGrid: { flexDirection: "row", flexWrap: "wrap", gap: 8, marginBottom: 24 },
-  quickChip: { borderRadius: 12, paddingHorizontal: 16, paddingVertical: 9, borderWidth: 1, borderColor: "rgba(255,255,255,0.55)", backgroundColor: "rgba(255,255,255,0.55)" },
+  quickChip: { borderRadius: 12, paddingHorizontal: 16, paddingVertical: 9, borderWidth: 1, borderColor: "rgba(255,255,255,0.12)", backgroundColor: "rgba(255,255,255,0.06)" },
   quickChipActive: { borderColor: "#6443F4", backgroundColor: "rgba(100,67,244,0.2)" },
   quickChipText: { color: "#9BA1A6", fontSize: 14, fontFamily: "Chillax-Semibold", fontWeight: "600" },
   quickChipTextActive: { color: "#A78BFA" },
 
-  ratesCard: { borderRadius: 20, overflow: "hidden", borderWidth: 1, borderColor: "rgba(255,255,255,0.55)", backgroundColor: "rgba(255,255,255,0.55)" },
+  ratesCard: { borderRadius: 20, overflow: "hidden", borderWidth: 1, borderColor: "rgba(255,255,255,0.12)", backgroundColor: "rgba(255,255,255,0.06)" },
   rateItem: { flexDirection: "row", alignItems: "center", gap: 12, paddingHorizontal: 16, paddingVertical: 12 },
-  rateItemBorder: { borderTopWidth: 1, borderTopColor: "rgba(255,255,255,0.55)" },
+  rateItemBorder: { borderTopWidth: 1, borderTopColor: "rgba(255,255,255,0.12)" },
   rateItemCode: { color: "#FFF", fontSize: 14, fontFamily: "Chillax-Semibold", fontWeight: "700" },
   rateItemName: { color: "#9BA1A6", fontSize: 11, fontFamily: "Satoshi-Regular" },
   rateItemValue: { color: "#ECEDEE", fontSize: 15, fontFamily: "Chillax-Semibold", fontWeight: "700" },
@@ -282,14 +282,14 @@ const S = StyleSheet.create({
 const P = StyleSheet.create({
   overlay: { ...StyleSheet.absoluteFillObject, backgroundColor: "rgba(0,0,0,0.7)", justifyContent: "flex-end", zIndex: 100 },
   sheet: { borderTopLeftRadius: 28, borderTopRightRadius: 28, overflow: "hidden", padding: 20, paddingBottom: 130 },
-  handle: { width: 40, height: 4, borderRadius: 2, backgroundColor: "rgba(255,255,255,0.55)", alignSelf: "center", marginBottom: 16 },
+  handle: { width: 40, height: 4, borderRadius: 2, backgroundColor: "rgba(255,255,255,0.06)", alignSelf: "center", marginBottom: 16 },
   title: { color: "#FFF", fontSize: 18, fontFamily: "Chillax-Bold", fontWeight: "800", marginBottom: 12 },
-  searchWrap: { flexDirection: "row", alignItems: "center", gap: 8, backgroundColor: "rgba(255,255,255,0.55)", borderRadius: 12, paddingHorizontal: 12, paddingVertical: 10, marginBottom: 12, borderWidth: 1, borderColor: "rgba(255,255,255,0.55)" },
+  searchWrap: { flexDirection: "row", alignItems: "center", gap: 8, backgroundColor: "rgba(255,255,255,0.06)", borderRadius: 12, paddingHorizontal: 12, paddingVertical: 10, marginBottom: 12, borderWidth: 1, borderColor: "rgba(255,255,255,0.12)" },
   searchInput: { flex: 1, color: "#FFF", fontSize: 15, fontFamily: "Satoshi-Regular" },
   currencyRow: { flexDirection: "row", alignItems: "center", gap: 12, paddingVertical: 12, paddingHorizontal: 4, borderRadius: 12 },
   currencyRowSelected: { backgroundColor: "rgba(100,67,244,0.15)" },
   currencyCode: { color: "#FFF", fontSize: 15, fontFamily: "Chillax-Semibold", fontWeight: "700" },
   currencyName: { color: "#9BA1A6", fontSize: 12, fontFamily: "Satoshi-Regular" },
-  closeBtn: { marginTop: 12, backgroundColor: "rgba(255,255,255,0.55)", borderRadius: 14, paddingVertical: 14, alignItems: "center" },
+  closeBtn: { marginTop: 12, backgroundColor: "rgba(255,255,255,0.06)", borderRadius: 14, paddingVertical: 14, alignItems: "center" },
   closeBtnText: { color: "#9BA1A6", fontSize: 16, fontFamily: "Chillax-Semibold", fontWeight: "700" },
 });

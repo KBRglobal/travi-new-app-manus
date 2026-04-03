@@ -323,10 +323,10 @@ const styles = StyleSheet.create({
   searchBtn: { padding: 8 },
   mapContainer: { height: 200, overflow: "hidden" },
   mapBg: { flex: 1, position: "relative" },
-  gridLine: { position: "absolute", backgroundColor: "rgba(255,255,255,0.55)" },
+  gridLine: { position: "absolute", backgroundColor: "rgba(255,255,255,0.06)" },
   gridLineH: { left: 0, right: 0, height: 1 },
   gridLineV: { top: 0, bottom: 0, width: 1 },
-  street: { position: "absolute", backgroundColor: "rgba(255,255,255,0.55)" },
+  street: { position: "absolute", backgroundColor: "rgba(255,255,255,0.06)" },
   parkArea: {
     position: "absolute", top: "10%", left: "5%", width: "25%", height: "25%",
     backgroundColor: "rgba(76,175,80,0.15)", borderRadius: 8,
@@ -346,7 +346,7 @@ const styles = StyleSheet.create({
     width: 26, height: 26, borderRadius: 8,
     backgroundColor: "rgba(45,27,105,0.9)",
     alignItems: "center", justifyContent: "center",
-    borderWidth: 1, borderColor: "rgba(255,255,255,0.55)",
+    borderWidth: 1, borderColor: "rgba(255,255,255,0.12)",
   },
   markerLabel: {
     backgroundColor: "#6443F4", borderRadius: 6,

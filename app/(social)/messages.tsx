@@ -180,7 +180,7 @@ const styles = StyleSheet.create({
   headerTitle: { ...TYPE.h2, color: BRAND.textPrimary },
   headerSub: { ...TYPE.small, color: BRAND.textSecondary, marginTop: 1 },
   newBtn: { marginLeft: "auto", width: 40, height: 40, borderRadius: 20, backgroundColor: BRAND.purple + "20", alignItems: "center", justifyContent: "center" },
-  searchContainer: { flexDirection: "row", alignItems: "center", gap: 10, marginHorizontal: 20, marginBottom: 16, backgroundColor: "rgba(255,255,255,0.55)", borderRadius: RADIUS.md, paddingHorizontal: 14, paddingVertical: 10, borderWidth: 1, borderColor: BRAND.border },
+  searchContainer: { flexDirection: "row", alignItems: "center", gap: 10, marginHorizontal: 20, marginBottom: 16, backgroundColor: "rgba(255,255,255,0.06)", borderRadius: RADIUS.md, paddingHorizontal: 14, paddingVertical: 10, borderWidth: 1, borderColor: BRAND.border },
   searchInput: { flex: 1, ...TYPE.body, color: BRAND.textPrimary },
 
   onlineSection: { paddingHorizontal: 20, marginBottom: 16 },

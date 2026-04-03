@@ -214,14 +214,14 @@ function FAQTab({ faqs, expanded, onToggle }: { faqs: typeof FAQS; expanded: num
 const F = StyleSheet.create({
   wrap: { gap: 10 },
   sectionTitle: { color: "#FFFFFF", fontSize: 18, fontWeight: "800", marginBottom: 4, fontFamily: "Chillax-Bold" },
-  faqCard: { backgroundColor: "rgba(255,255,255,0.55)", borderRadius: 14, padding: 14, borderWidth: 1, borderColor: "rgba(255,255,255,0.55)" },
+  faqCard: { backgroundColor: "rgba(255,255,255,0.06)", borderRadius: 14, padding: 14, borderWidth: 1, borderColor: "rgba(255,255,255,0.12)" },
   faqCardOpen: { borderColor: "rgba(100,67,244,0.35)", backgroundColor: "rgba(100,67,244,0.08)" },
   faqHeader: { flexDirection: "row", alignItems: "center", gap: 10 },
   faqQ: { color: "#FFFFFF", fontSize: 14, fontWeight: "600", flex: 1, lineHeight: 20, fontFamily: "Satoshi-Medium" },
   faqChevron: { transform: [{ rotate: "0deg" }] },
   faqChevronOpen: { transform: [{ rotate: "90deg" }] },
   faqBody: { marginTop: 10, gap: 8 },
-  faqDivider: { height: 1, backgroundColor: "rgba(255,255,255,0.55)" },
+  faqDivider: { height: 1, backgroundColor: "rgba(255,255,255,0.06)" },
   faqA: { color: "rgba(255,255,255,0.6)", fontSize: 13, lineHeight: 20, fontFamily: "Satoshi-Regular" },
   faqCategoryBadge: { backgroundColor: "rgba(100,67,244,0.2)", borderRadius: 8, paddingHorizontal: 8, paddingVertical: 3, alignSelf: "flex-start" },
   faqCategoryText: { color: "#C084FC", fontSize: 11, fontWeight: "600" },
@@ -277,7 +277,7 @@ function ContactTab({
         value={subject}
         onChangeText={onSubject}
         placeholder="Briefly describe your issue..."
-        placeholderTextColor="rgba(255,255,255,0.55)"
+        placeholderTextColor="rgba(255,255,255,0.35)"
       />
 
       <Text style={C.fieldLabel}>Description</Text>
@@ -286,7 +286,7 @@ function ContactTab({
         value={description}
         onChangeText={onDescription}
         placeholder="Provide as much detail as possible..."
-        placeholderTextColor="rgba(255,255,255,0.55)"
+        placeholderTextColor="rgba(255,255,255,0.35)"
         multiline
         numberOfLines={5}
         textAlignVertical="top"
@@ -319,14 +319,14 @@ const C = StyleSheet.create({
   wrap: { gap: 12 },
   sectionTitle: { color: "#FFFFFF", fontSize: 18, fontWeight: "800", marginBottom: 4, fontFamily: "Chillax-Bold" },
   fieldLabel: { color: "rgba(255,255,255,0.55)", fontSize: 12, fontWeight: "700", letterSpacing: 0.5, marginBottom: -4, fontFamily: "Satoshi-Medium" },
-  input: { backgroundColor: "rgba(255,255,255,0.55)", borderRadius: 12, borderWidth: 1, borderColor: "rgba(255,255,255,0.55)", padding: 13, color: "#FFFFFF", fontSize: 14, fontFamily: "Satoshi-Regular" },
+  input: { backgroundColor: "rgba(255,255,255,0.06)", borderRadius: 12, borderWidth: 1, borderColor: "rgba(255,255,255,0.12)", padding: 13, color: "#FFFFFF", fontSize: 14, fontFamily: "Satoshi-Regular" },
   textarea: { minHeight: 110 },
-  catChip: { borderRadius: 20, overflow: "hidden", paddingHorizontal: 14, paddingVertical: 7, borderWidth: 1, borderColor: "rgba(255,255,255,0.55)" },
+  catChip: { borderRadius: 20, overflow: "hidden", paddingHorizontal: 14, paddingVertical: 7, borderWidth: 1, borderColor: "rgba(255,255,255,0.12)" },
   catChipActive: { borderColor: "transparent" },
   catText: { color: "rgba(255,255,255,0.55)", fontSize: 13, fontWeight: "600", fontFamily: "Satoshi-Medium" },
   catTextActive: { color: "#FFFFFF" },
   priorityRow: { flexDirection: "row", gap: 8 },
-  priorityChip: { flex: 1, borderRadius: 10, borderWidth: 1, borderColor: "rgba(255,255,255,0.55)", paddingVertical: 8, alignItems: "center" },
+  priorityChip: { flex: 1, borderRadius: 10, borderWidth: 1, borderColor: "rgba(255,255,255,0.12)", paddingVertical: 8, alignItems: "center" },
   priorityChipActive: { borderColor: "#6443F4", backgroundColor: "rgba(100,67,244,0.2)" },
   priorityText: { color: "rgba(255,255,255,0.5)", fontSize: 12, fontWeight: "600" },
   priorityTextActive: { color: "#C084FC" },
@@ -383,7 +383,7 @@ const TK = StyleSheet.create({
   headerRow: { flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: 4 },
   sectionTitle: { color: "#FFFFFF", fontSize: 18, fontWeight: "800", fontFamily: "Chillax-Bold" },
   count: { color: "rgba(255,255,255,0.55)", fontSize: 13, fontFamily: "Satoshi-Regular" },
-  ticketCard: { backgroundColor: "rgba(255,255,255,0.55)", borderRadius: 14, padding: 14, borderWidth: 1, borderColor: "rgba(255,255,255,0.55)", gap: 6 },
+  ticketCard: { backgroundColor: "rgba(255,255,255,0.06)", borderRadius: 14, padding: 14, borderWidth: 1, borderColor: "rgba(255,255,255,0.12)", gap: 6 },
   ticketTop: { flexDirection: "row", justifyContent: "space-between", alignItems: "center" },
   ticketId: { color: "rgba(255,255,255,0.5)", fontSize: 12, fontWeight: "700", fontFamily: Platform.OS === "ios" ? "Courier" : "monospace" },
   statusBadge: { borderRadius: 8, paddingHorizontal: 8, paddingVertical: 3 },
@@ -399,14 +399,14 @@ const TK = StyleSheet.create({
 
 const S = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#0D0628" },
-  header: { flexDirection: "row", alignItems: "center", gap: 12, paddingTop: 56, paddingHorizontal: 16, paddingBottom: 130 },
-  backBtn: { width: 36, height: 36, borderRadius: 12, backgroundColor: "rgba(255,255,255,0.55)", alignItems: "center", justifyContent: "center" },
+  header: { flexDirection: "row", alignItems: "center", gap: 12, paddingTop: 56, paddingHorizontal: 16, paddingBottom: 16 },
+  backBtn: { width: 36, height: 36, borderRadius: 12, backgroundColor: "rgba(255,255,255,0.06)", alignItems: "center", justifyContent: "center" },
   headerTitle: { color: "#FFFFFF", fontSize: 22, fontWeight: "900", fontFamily: "Chillax-Bold" },
   headerSub: { color: "rgba(255,255,255,0.5)", fontSize: 12, marginTop: 1 },
   headerBadge: { backgroundColor: "rgba(34,197,94,0.2)", borderRadius: 10, paddingHorizontal: 10, paddingVertical: 5, borderWidth: 1, borderColor: "rgba(34,197,94,0.3)" },
   headerBadgeText: { color: "#22C55E", fontSize: 12, fontWeight: "800", fontFamily: "Chillax-Bold" },
   tabsRow: { flexDirection: "row", paddingHorizontal: 16, paddingBottom: 130, gap: 8 },
-  tab: { flex: 1, borderRadius: 20, overflow: "hidden", paddingVertical: 9, alignItems: "center", borderWidth: 1, borderColor: "rgba(255,255,255,0.55)" },
+  tab: { flex: 1, borderRadius: 20, overflow: "hidden", paddingVertical: 9, alignItems: "center", borderWidth: 1, borderColor: "rgba(255,255,255,0.12)" },
   tabActive: { borderColor: "transparent" },
   tabText: { color: "rgba(255,255,255,0.5)", fontSize: 13, fontWeight: "700", fontFamily: "Satoshi-Medium" },
   tabTextActive: { color: "#FFFFFF" },

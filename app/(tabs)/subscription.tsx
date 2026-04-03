@@ -238,11 +238,11 @@ export default function SubscriptionScreen() {
                   <View style={S.planFeatures}>
                     {plan.features.map((feat) => (
                       <View key={feat.label} style={S.featRow}>
-                        <View style={[S.featIcon, { backgroundColor: feat.included ? plan.accentColor + "20" : "rgba(255,255,255,0.55)" }]}>
+                        <View style={[S.featIcon, { backgroundColor: feat.included ? plan.accentColor + "20" : "rgba(255,255,255,0.06)" }]}>
                           <IconSymbol
                             name={feat.included ? "checkmark" : "xmark"}
                             size={10}
-                            color={feat.included ? plan.accentColor : "rgba(255,255,255,0.55)"}
+                            color={feat.included ? plan.accentColor : "rgba(255,255,255,0.06)"}
                           />
                         </View>
                         <Text style={[S.featLabel, !feat.included && S.featLabelDim]}>{feat.label}</Text>
@@ -278,7 +278,7 @@ export default function SubscriptionScreen() {
 
         {/* Footer note */}
         <View style={S.footer}>
-          <IconSymbol name="lock.fill" size={12} color="rgba(255,255,255,0.55)" />
+          <IconSymbol name="lock.fill" size={12} color="rgba(255,255,255,0.06)" />
           <Text style={S.footerText}>Secure payment · Cancel anytime · No hidden fees</Text>
         </View>
       </ScrollView>
@@ -290,9 +290,9 @@ const S = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#0D0628" },
   orb1: { position: "absolute", width: W * 1.2, height: W * 1.2, borderRadius: W * 0.6, top: -W * 0.5, left: -W * 0.3, backgroundColor: "rgba(123,47,190,0.1)" },
   orb2: { position: "absolute", width: W * 0.8, height: W * 0.8, borderRadius: W * 0.4, bottom: 100, right: -W * 0.3, backgroundColor: "rgba(233,30,140,0.07)" },
-  header: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 20, paddingBottom: 130 },
+  header: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 20, paddingBottom: 16 },
   backBtn: {},
-  backBtnInner: { width: 40, height: 40, borderRadius: 14, backgroundColor: "rgba(255,255,255,0.55)", alignItems: "center", justifyContent: "center", borderWidth: 1, borderColor: "rgba(255,255,255,0.55)" },
+  backBtnInner: { width: 40, height: 40, borderRadius: 14, backgroundColor: "rgba(255,255,255,0.06)", alignItems: "center", justifyContent: "center", borderWidth: 1, borderColor: "rgba(255,255,255,0.12)" },
   headerCenter: { alignItems: "center" },
   headerTitle: { color: "#FFFFFF", fontSize: 18, fontWeight: "800", fontFamily: "Chillax-Bold" },
   headerSub: { color: "rgba(255,255,255,0.5)", fontSize: 12, marginTop: 2 },
@@ -302,11 +302,11 @@ const S = StyleSheet.create({
   heroTitle: { color: "#FFFFFF", fontSize: 26, fontWeight: "900", textAlign: "center", letterSpacing: -0.5, fontFamily: "Chillax-Bold" },
   heroSub: { color: "rgba(255,255,255,0.5)", fontSize: 14, textAlign: "center", lineHeight: 20, fontFamily: "Satoshi-Regular" },
   perksRow: { gap: 10, paddingHorizontal: 20, paddingVertical: 4 },
-  perkCard: { width: 100, borderRadius: 16, padding: 14, gap: 6, borderWidth: 1, borderColor: "rgba(255,255,255,0.55)", overflow: "hidden", alignItems: "center" },
+  perkCard: { width: 100, borderRadius: 16, padding: 14, gap: 6, borderWidth: 1, borderColor: "rgba(255,255,255,0.12)", overflow: "hidden", alignItems: "center" },
   perkIconWrap: { width: 40, height: 40, borderRadius: 12, alignItems: "center", justifyContent: "center" },
   perkLabel: { color: "#FFFFFF", fontSize: 12, fontWeight: "700", textAlign: "center", fontFamily: "Satoshi-Medium" },
   perkSub: { color: "rgba(255,255,255,0.5)", fontSize: 10, textAlign: "center" },
-  billingToggle: { flexDirection: "row", marginHorizontal: 20, marginVertical: 16, backgroundColor: "rgba(255,255,255,0.55)", borderRadius: 14, padding: 4, borderWidth: 1, borderColor: "rgba(255,255,255,0.55)" },
+  billingToggle: { flexDirection: "row", marginHorizontal: 20, marginVertical: 16, backgroundColor: "rgba(255,255,255,0.06)", borderRadius: 14, padding: 4, borderWidth: 1, borderColor: "rgba(255,255,255,0.12)" },
   billingBtn: { flex: 1, paddingVertical: 10, borderRadius: 10, alignItems: "center", flexDirection: "row", justifyContent: "center", gap: 6 },
   billingBtnActive: { backgroundColor: "rgba(123,47,190,0.5)" },
   billingBtnText: { color: "rgba(255,255,255,0.5)", fontSize: 14, fontWeight: "600", fontFamily: "Satoshi-Medium" },
@@ -332,7 +332,7 @@ const S = StyleSheet.create({
   featIcon: { width: 20, height: 20, borderRadius: 6, alignItems: "center", justifyContent: "center" },
   featLabel: { color: "rgba(255,255,255,0.85)", fontSize: 13, flex: 1, fontFamily: "Satoshi-Regular" },
   featLabelDim: { color: "rgba(255,255,255,0.55)" },
-  selectBtn: { borderRadius: 14, paddingVertical: 14, alignItems: "center", justifyContent: "center", flexDirection: "row", gap: 8, borderWidth: 1, borderColor: "rgba(255,255,255,0.55)", overflow: "hidden" },
+  selectBtn: { borderRadius: 14, paddingVertical: 14, alignItems: "center", justifyContent: "center", flexDirection: "row", gap: 8, borderWidth: 1, borderColor: "rgba(255,255,255,0.12)", overflow: "hidden" },
   selectBtnText: { color: "rgba(255,255,255,0.6)", fontSize: 15, fontWeight: "700", fontFamily: "Chillax-Semibold" },
   footer: { flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 6, paddingVertical: 20, paddingHorizontal: 20 },
   footerText: { color: "rgba(255,255,255,0.55)", fontSize: 12 },

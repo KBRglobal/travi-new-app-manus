@@ -171,7 +171,7 @@ export default function InterestsScreen() {
           activeOpacity={0.88}
         >
           <LinearGradient
-            colors={selected.size > 0 ? ["#F94498", "#6443F4"] : ["rgba(255,255,255,0.55)", "rgba(255,255,255,0.55)"]}
+            colors={selected.size > 0 ? ["#F94498", "#6443F4"] : ["rgba(255,255,255,0.06)", "rgba(255,255,255,0.06)"]}
             start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
             style={styles.ctaGradient}
           >
@@ -192,12 +192,12 @@ const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#0D0628" },
   orb1: { position: "absolute", width: width, height: width, borderRadius: width / 2, top: -width * 0.4, left: -width * 0.3, backgroundColor: "rgba(123,47,190,0.09)" },
   orb2: { position: "absolute", width: width * 0.7, height: width * 0.7, borderRadius: width * 0.35, bottom: 0, right: -width * 0.3, backgroundColor: "rgba(233,30,140,0.06)" },
-  header: { flexDirection: "row", alignItems: "center", paddingHorizontal: 20, paddingBottom: 130, gap: 12 },
-  backBtn: { width: 40, height: 40, borderRadius: 14, backgroundColor: "rgba(255,255,255,0.55)", alignItems: "center", justifyContent: "center" },
+  header: { flexDirection: "row", alignItems: "center", paddingHorizontal: 20, paddingBottom: 16, gap: 12 },
+  backBtn: { width: 40, height: 40, borderRadius: 14, backgroundColor: "rgba(255,255,255,0.06)", alignItems: "center", justifyContent: "center" },
   headerCenter: { flex: 1, alignItems: "center" },
   logo: { width: 80, height: 28 },
   logoText: { color: "#FFFFFF", fontSize: 20, fontFamily: "Chillax-Bold", fontWeight: "900", letterSpacing: 2 },
-  countBadge: { width: 40, height: 40, borderRadius: 20, backgroundColor: "rgba(255,255,255,0.55)", borderWidth: 1.5, borderColor: "rgba(255,255,255,0.55)", alignItems: "center", justifyContent: "center" },
+  countBadge: { width: 40, height: 40, borderRadius: 20, backgroundColor: "rgba(255,255,255,0.06)", borderWidth: 1.5, borderColor: "rgba(255,255,255,0.12)", alignItems: "center", justifyContent: "center" },
   countBadgeActive: { backgroundColor: "rgba(249,68,152,0.2)", borderColor: "rgba(249,68,152,0.4)" },
   countText: { color: "rgba(255,255,255,0.5)", fontSize: 16, fontFamily: "Chillax-Bold", fontWeight: "800" },
   countTextActive: { color: "#F94498" },
@@ -206,7 +206,7 @@ const styles = StyleSheet.create({
   subtitle: { color: "rgba(255,255,255,0.5)", fontSize: 14, fontFamily: "Satoshi-Regular", marginTop: 4, lineHeight: 20 },
   scroll: { flex: 1 },
   grid: { paddingHorizontal: 16, flexDirection: "row", flexWrap: "wrap", gap: 12 },
-  card: { width: CARD_SIZE, height: CARD_SIZE * 1.1, borderRadius: 20, overflow: "hidden", borderWidth: 2, borderColor: "rgba(255,255,255,0.55)" },
+  card: { width: CARD_SIZE, height: CARD_SIZE * 1.1, borderRadius: 20, overflow: "hidden", borderWidth: 2, borderColor: "rgba(255,255,255,0.12)" },
   cardImage: { position: "absolute", top: 0, left: 0, right: 0, bottom: 0, width: "100%", height: "100%" },
   checkWrap: { position: "absolute", top: 10, left: 10 },
   checkEmpty: { width: 24, height: 24, borderRadius: 12, borderWidth: 2, borderColor: "rgba(255,255,255,0.6)", backgroundColor: "rgba(0,0,0,0.3)" },

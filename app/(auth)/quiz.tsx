@@ -432,7 +432,7 @@ export default function QuizScreen() {
             >
               <LinearGradient colors={option.colors} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={StyleSheet.absoluteFillObject} />
               <View style={S.ghostIconWrap} pointerEvents="none">
-                <IconSymbol name={option.iconName as never} size={90} color="rgba(255,255,255,0.55)" />
+                <IconSymbol name={option.iconName as never} size={90} color="rgba(255,255,255,0.06)" />
               </View>
               {isSelected && <View style={S.selectedOverlay} />}
               <View style={S.optionIconWrap}>
@@ -474,15 +474,15 @@ const S = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#0D0628" },
   orb1: { position: "absolute", width: width * 1.4, height: width * 1.4, borderRadius: width * 0.7, top: -width * 0.5, left: -width * 0.3, backgroundColor: "rgba(123,47,190,0.1)" },
   orb2: { position: "absolute", width: width, height: width, borderRadius: width / 2, bottom: -width * 0.3, right: -width * 0.3, backgroundColor: "rgba(233,30,140,0.07)" },
-  header: { flexDirection: "row", alignItems: "center", paddingHorizontal: 20, paddingTop: 60, paddingBottom: 130, gap: 12 },
-  skipBtn: { paddingHorizontal: 12, paddingVertical: 6, borderRadius: 12, backgroundColor: "rgba(255,255,255,0.55)" },
+  header: { flexDirection: "row", alignItems: "center", paddingHorizontal: 20, paddingTop: 60, paddingBottom: 16, gap: 12 },
+  skipBtn: { paddingHorizontal: 12, paddingVertical: 6, borderRadius: 12, backgroundColor: "rgba(255,255,255,0.06)" },
   skipText: { color: "rgba(255,255,255,0.5)", fontSize: 14, fontWeight: "600", fontFamily: "Satoshi-Medium" },
-  progressTrack: { flex: 1, height: 6, borderRadius: 3, backgroundColor: "rgba(255,255,255,0.55)", overflow: "hidden" },
+  progressTrack: { flex: 1, height: 6, borderRadius: 3, backgroundColor: "rgba(255,255,255,0.06)", overflow: "hidden" },
   progressFill: { height: "100%", borderRadius: 3 },
   progressText: { color: "rgba(255,255,255,0.5)", fontSize: 13, fontWeight: "700", minWidth: 36, textAlign: "right", fontFamily: "Satoshi-Bold" },
 
   // Phase header
-  phaseHeader: { paddingHorizontal: 24, paddingBottom: 130, gap: 8 },
+  phaseHeader: { paddingHorizontal: 24, paddingBottom: 16, gap: 8 },
   phaseTitle: { color: "#FFFFFF", fontSize: 24, fontWeight: "900", lineHeight: 30, letterSpacing: -0.5, fontFamily: "Chillax-Bold" },
   phaseSubtitle: { color: "rgba(255,255,255,0.45)", fontSize: 14, lineHeight: 20, fontFamily: "Satoshi-Regular" },
 
@@ -501,8 +501,8 @@ const S = StyleSheet.create({
     width: (width - 52) / 3,
     borderRadius: 18,
     borderWidth: 1.5,
-    borderColor: "rgba(255,255,255,0.55)",
-    backgroundColor: "rgba(255,255,255,0.55)",
+    borderColor: "rgba(255,255,255,0.12)",
+    backgroundColor: "rgba(255,255,255,0.06)",
     paddingVertical: 14,
     paddingHorizontal: 8,
     alignItems: "center",
@@ -529,19 +529,19 @@ const S = StyleSheet.create({
     overflow: "hidden",
     padding: 20,
     borderWidth: 1.5,
-    borderColor: "rgba(255,255,255,0.55)",
+    borderColor: "rgba(255,255,255,0.12)",
     flexDirection: "row",
     alignItems: "center",
     gap: 14,
   },
   paceCardSelected: { borderColor: "rgba(255,255,255,0.5)" },
-  paceCardGlow: { position: "absolute", top: 0, left: 0, right: 0, bottom: 0, backgroundColor: "rgba(255,255,255,0.55)" },
+  paceCardGlow: { position: "absolute", top: 0, left: 0, right: 0, bottom: 0, backgroundColor: "rgba(255,255,255,0.06)" },
   paceCardLeft: { flex: 1, flexDirection: "row", alignItems: "flex-start", gap: 14 },
   paceEmoji: { fontSize: 32, lineHeight: 38 },
   paceLabel: { color: "#FFFFFF", fontSize: 18, fontWeight: "800", lineHeight: 22, fontFamily: "Chillax-Bold" },
   paceSublabel: { color: "rgba(255,255,255,0.6)", fontSize: 12, fontWeight: "700", marginTop: 2 },
   paceDesc: { color: "rgba(255,255,255,0.5)", fontSize: 12, lineHeight: 17, marginTop: 4 },
-  paceCheck: { width: 28, height: 28, borderRadius: 14, backgroundColor: "rgba(255,255,255,0.55)", alignItems: "center", justifyContent: "center", borderWidth: 1.5, borderColor: "rgba(255,255,255,0.7)" },
+  paceCheck: { width: 28, height: 28, borderRadius: 14, backgroundColor: "rgba(255,255,255,0.06)", alignItems: "center", justifyContent: "center", borderWidth: 1.5, borderColor: "rgba(255,255,255,0.7)" },
 
   // DNA Questions
   questionBlock: { paddingHorizontal: 24, paddingBottom: 130, gap: 8 },
@@ -551,17 +551,17 @@ const S = StyleSheet.create({
   optionCard: { flex: 1, width: "100%", borderRadius: 22, overflow: "hidden", padding: 18, gap: 4, borderWidth: 2, borderColor: "transparent", justifyContent: "flex-end", flexDirection: "row", alignItems: "center" },
   ghostIconWrap: { position: "absolute", right: 16, top: "50%", opacity: 1, transform: [{ translateY: -45 }] },
   optionCardSelected: { borderColor: "rgba(255,255,255,0.7)" },
-  selectedOverlay: { position: "absolute", top: 0, left: 0, right: 0, bottom: 0, backgroundColor: "rgba(255,255,255,0.55)" },
+  selectedOverlay: { position: "absolute", top: 0, left: 0, right: 0, bottom: 0, backgroundColor: "rgba(255,255,255,0.06)" },
   optionIconWrap: { width: 50, height: 50, borderRadius: 16, backgroundColor: "rgba(0,0,0,0.25)", alignItems: "center", justifyContent: "center", marginRight: 14, flexShrink: 0 },
   optionTextBlock: { flex: 1 },
   optionLabel: { color: "#FFFFFF", fontSize: 16, fontWeight: "800", lineHeight: 20, fontFamily: "Chillax-Bold" },
   optionSublabel: { color: "rgba(255,255,255,0.6)", fontSize: 11, lineHeight: 15 },
-  checkBadge: { position: "absolute", top: 10, right: 10, width: 22, height: 22, borderRadius: 11, backgroundColor: "rgba(255,255,255,0.55)", alignItems: "center", justifyContent: "center", borderWidth: 1.5, borderColor: "rgba(255,255,255,0.9)" },
+  checkBadge: { position: "absolute", top: 10, right: 10, width: 22, height: 22, borderRadius: 11, backgroundColor: "rgba(255,255,255,0.06)", alignItems: "center", justifyContent: "center", borderWidth: 1.5, borderColor: "rgba(255,255,255,0.9)" },
 
   // Bottom hint
   bottomHint: { alignItems: "center", paddingHorizontal: 24, paddingBottom: 130, paddingTop: 16, gap: 10 },
   hintDots: { flexDirection: "row", gap: 5, alignItems: "center" },
-  hintDot: { width: 5, height: 5, borderRadius: 2.5, backgroundColor: "rgba(255,255,255,0.55)" },
+  hintDot: { width: 5, height: 5, borderRadius: 2.5, backgroundColor: "rgba(255,255,255,0.06)" },
   hintDotActive: { width: 18, height: 5, borderRadius: 2.5, backgroundColor: "#6443F4" },
   hintDotDone: { backgroundColor: "rgba(100,67,244,0.4)" },
   hintText: { color: "rgba(255,255,255,0.55)", fontSize: 12, fontWeight: "500", textAlign: "center", letterSpacing: 0.2 },

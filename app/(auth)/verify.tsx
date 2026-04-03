@@ -106,7 +106,7 @@ export default function VerifyScreen() {
         <View style={styles.inner}>
           {/* Back */}
           <TouchableOpacity style={styles.backBtn} onPress={() => router.back()} activeOpacity={0.7}>
-            <LinearGradient colors={["rgba(255,255,255,0.55)", "rgba(255,255,255,0.55)"]} style={styles.backGradient}>
+            <LinearGradient colors={["rgba(255,255,255,0.06)", "rgba(255,255,255,0.06)"]} style={styles.backGradient}>
               <IconSymbol name="chevron.left" size={20} color="#C4B5D9" />
             </LinearGradient>
           </TouchableOpacity>
@@ -177,7 +177,7 @@ export default function VerifyScreen() {
               activeOpacity={0.85}
             >
               <LinearGradient
-                colors={code.every(Boolean) ? ["#6443F4", "#F94498"] : ["rgba(255,255,255,0.55)", "rgba(255,255,255,0.55)"]}
+                colors={code.every(Boolean) ? ["#6443F4", "#F94498"] : ["rgba(255,255,255,0.06)", "rgba(255,255,255,0.06)"]}
                 start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
                 style={styles.verifyGradient}
               >
@@ -217,7 +217,7 @@ const styles = StyleSheet.create({
   },
   inner: { flex: 1, paddingHorizontal: 28, paddingTop: 60, alignItems: "center" },
   backBtn: { alignSelf: "flex-start", marginBottom: 40 },
-  backGradient: { width: 44, height: 44, borderRadius: 14, alignItems: "center", justifyContent: "center", borderWidth: 1, borderColor: "rgba(255,255,255,0.55)" },
+  backGradient: { width: 44, height: 44, borderRadius: 14, alignItems: "center", justifyContent: "center", borderWidth: 1, borderColor: "rgba(255,255,255,0.12)" },
   iconWrap: { width: 90, height: 90, alignItems: "center", justifyContent: "center", marginBottom: 28 },
   iconGradient: { width: 90, height: 90, borderRadius: 28, alignItems: "center", justifyContent: "center", borderWidth: 1, borderColor: "rgba(123,47,190,0.5)" },
   iconGlow: { position: "absolute", width: 90, height: 90, borderRadius: 45, backgroundColor: "rgba(123,47,190,0.15)", shadowColor: "#6443F4", shadowOffset: { width: 0, height: 0 }, shadowOpacity: 0.9, shadowRadius: 30 },
@@ -228,8 +228,8 @@ const styles = StyleSheet.create({
   codeRow: { flexDirection: "row", gap: 10, marginBottom: 20 },
   codeBox: {
     width: 46, height: 60, borderRadius: 14, overflow: "hidden",
-    borderWidth: 1.5, borderColor: "rgba(255,255,255,0.55)",
-    backgroundColor: "rgba(255,255,255,0.55)", alignItems: "center", justifyContent: "center",
+    borderWidth: 1.5, borderColor: "rgba(255,255,255,0.12)",
+    backgroundColor: "rgba(255,255,255,0.06)", alignItems: "center", justifyContent: "center",
   },
   codeBoxFilled: { borderColor: "rgba(123,47,190,0.8)" },
   codeBoxError: { borderColor: "rgba(239,68,68,0.8)" },

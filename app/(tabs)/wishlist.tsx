@@ -95,13 +95,13 @@ export default function WishlistScreen() {
 
 const S = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#0D0628" },
-  header: { flexDirection: "row", alignItems: "center", paddingHorizontal: 20, paddingBottom: 130, gap: 12 },
-  backBtn: { width: 36, height: 36, borderRadius: 18, backgroundColor: "rgba(255,255,255,0.55)", alignItems: "center", justifyContent: "center" },
+  header: { flexDirection: "row", alignItems: "center", paddingHorizontal: 20, paddingBottom: 16, gap: 12 },
+  backBtn: { width: 36, height: 36, borderRadius: 18, backgroundColor: "rgba(255,255,255,0.06)", alignItems: "center", justifyContent: "center" },
   backText: { color: "#FFFFFF", fontSize: 18, fontWeight: "700", fontFamily: "Chillax-Semibold" },
   headerTitle: { flex: 1, color: "#FFFFFF", fontSize: 22, fontWeight: "900", fontFamily: "Chillax-Bold" },
   headerCount: { color: "#A78BFA", fontSize: 16, fontWeight: "900", fontFamily: "Chillax-Bold" },
   filterRow: { flexDirection: "row", paddingHorizontal: 20, gap: 8, marginBottom: 16 },
-  filterChip: { paddingHorizontal: 14, paddingVertical: 7, borderRadius: 20, backgroundColor: "rgba(255,255,255,0.55)", borderWidth: 1, borderColor: "rgba(255,255,255,0.55)" },
+  filterChip: { paddingHorizontal: 14, paddingVertical: 7, borderRadius: 20, backgroundColor: "rgba(255,255,255,0.06)", borderWidth: 1, borderColor: "rgba(255,255,255,0.12)" },
   filterChipActive: { backgroundColor: "rgba(100,67,244,0.2)", borderColor: "rgba(100,67,244,0.4)" },
   filterText: { color: "rgba(255,255,255,0.5)", fontSize: 12, fontWeight: "700" },
   filterTextActive: { color: "#FFFFFF" },

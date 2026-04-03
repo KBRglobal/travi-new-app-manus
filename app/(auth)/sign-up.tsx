@@ -73,7 +73,7 @@ export default function SignUpScreen() {
 
           {/* Glass card */}
           <View style={s.card}>
-            <LinearGradient colors={["rgba(255,255,255,0.55)", "rgba(255,255,255,0.55)"]} style={s.cardBg}>
+            <LinearGradient colors={["rgba(255,255,255,0.06)", "rgba(255,255,255,0.06)"]} style={s.cardBg}>
 
               {/* Tab toggle */}
               <View style={s.tabRow}>
@@ -137,7 +137,7 @@ export default function SignUpScreen() {
               <View style={s.socialRow}>
                 {(["Google", "Apple"] as const).map((p) => (
                   <TouchableOpacity key={p} style={s.socialBtn} onPress={() => handleSocial(p)} activeOpacity={0.8}>
-                    <LinearGradient colors={["rgba(255,255,255,0.55)", "rgba(255,255,255,0.55)"]} style={s.socialGradient}>
+                    <LinearGradient colors={["rgba(255,255,255,0.06)", "rgba(255,255,255,0.06)"]} style={s.socialGradient}>
                       {p === "Google" ? (
                         <Text style={s.googleG}>
                           <Text style={{ color: "#4285F4" }}>G</Text>
@@ -209,7 +209,7 @@ const s = StyleSheet.create({
   inputGradient: {
     flexDirection: "row", alignItems: "center", gap: 12,
     paddingHorizontal: Spacing.md, paddingVertical: Spacing.md,
-    backgroundColor: "rgba(255,255,255,0.55)",
+    backgroundColor: "rgba(255,255,255,0.06)",
   },
   input: { flex: 1, color: DS.primary, fontSize: 16, fontWeight: "500", fontFamily: "Satoshi-Medium" },
 
@@ -239,7 +239,7 @@ const s = StyleSheet.create({
     marginTop: 20, alignItems: "center", gap: 3,
     paddingVertical: 16, paddingHorizontal: 32,
     borderRadius: Radius.lg, borderWidth: 1, borderColor: Border.subtle,
-    backgroundColor: "rgba(255,255,255,0.55)", width: "100%",
+    backgroundColor: "rgba(255,255,255,0.06)", width: "100%",
   },
   guestText: { color: DS.secondary, fontSize: 15, fontWeight: "600", fontFamily: "Satoshi-Medium" },
   guestSub: { ...Typography.small, color: DS.muted, fontFamily: "Satoshi-Regular" },

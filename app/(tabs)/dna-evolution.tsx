@@ -211,7 +211,7 @@ const S = StyleSheet.create({
   orb1: { position: "absolute", top: -60, right: -60, width: 200, height: 200, borderRadius: 100, backgroundColor: "rgba(100,67,244,0.1)" },
   orb2: { position: "absolute", bottom: 200, left: -80, width: 160, height: 160, borderRadius: 80, backgroundColor: "rgba(249,68,152,0.07)" },
 
-  header: { flexDirection: "row", alignItems: "center", paddingHorizontal: 16, paddingBottom: 130, paddingTop: 4 },
+  header: { flexDirection: "row", alignItems: "center", paddingHorizontal: 16, paddingBottom: 16, paddingTop: 4 },
   backBtn: { width: 40, height: 40, alignItems: "center", justifyContent: "center" },
   headerTitle: { ...TYPE.h2, color: BRAND.textPrimary, flex: 1, textAlign: "center" },
 
@@ -219,7 +219,7 @@ const S = StyleSheet.create({
   heroTitle: { ...TYPE.h3, color: BRAND.textPrimary },
   heroSub: { ...TYPE.body, color: BRAND.textSecondary, lineHeight: 22 },
 
-  snapshotCard: { borderRadius: RADIUS.xl, overflow: "hidden", padding: 16, gap: 12, borderWidth: 1, borderColor: "rgba(255,255,255,0.55)", backgroundColor: "rgba(255,255,255,0.55)" },
+  snapshotCard: { borderRadius: RADIUS.xl, overflow: "hidden", padding: 16, gap: 12, borderWidth: 1, borderColor: "rgba(255,255,255,0.12)", backgroundColor: "rgba(255,255,255,0.06)" },
   snapshotCardLatest: { borderColor: "rgba(100,67,244,0.4)", borderWidth: 2 },
   snapshotHeader: { flexDirection: "row", alignItems: "center", justifyContent: "space-between" },
   snapshotLeft: { flexDirection: "row", alignItems: "center", gap: 12 },
@@ -230,7 +230,7 @@ const S = StyleSheet.create({
   latestBadgeText: { color: BRAND.purple, fontSize: 11, fontWeight: "800", fontFamily: "Chillax-Bold" },
 
   traitsGrid: { flexDirection: "row", flexWrap: "wrap", gap: 8 },
-  traitPill: { flexDirection: "row", alignItems: "center", gap: 6, backgroundColor: "rgba(255,255,255,0.55)", borderRadius: 12, paddingHorizontal: 10, paddingVertical: 6, borderWidth: 1, borderColor: "rgba(255,255,255,0.55)" },
+  traitPill: { flexDirection: "row", alignItems: "center", gap: 6, backgroundColor: "rgba(255,255,255,0.06)", borderRadius: 12, paddingHorizontal: 10, paddingVertical: 6, borderWidth: 1, borderColor: "rgba(255,255,255,0.12)" },
   traitIcon: { fontSize: 14 },
   traitValue: { color: BRAND.textPrimary, fontSize: 13, fontWeight: "700" },
 

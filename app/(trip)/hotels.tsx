@@ -147,7 +147,7 @@ export default function HotelsScreen() {
             const isSelected = selectedHotel === item.id;
             return (
               <TouchableOpacity style={[styles.hotelCard, isSelected && styles.hotelCardSelected]} onPress={() => handleSelect(item.id)} activeOpacity={0.88}>
-                <LinearGradient colors={isSelected ? ["rgba(123,47,190,0.35)", "rgba(233,30,140,0.2)"] : ["rgba(255,255,255,0.55)", "rgba(255,255,255,0.55)"]} style={StyleSheet.absoluteFillObject} />
+                <LinearGradient colors={isSelected ? ["rgba(123,47,190,0.35)", "rgba(233,30,140,0.2)"] : ["rgba(255,255,255,0.06)", "rgba(255,255,255,0.06)"]} style={StyleSheet.absoluteFillObject} />
                 <View style={styles.hotelImageWrap}>
                   <LinearGradient colors={["#1A0A3D", "#2D1A5E"]} style={styles.hotelImage}>
                     <IconSymbol name="building.2.fill" size={32} color="rgba(192,132,252,0.4)" />
@@ -208,7 +208,7 @@ export default function HotelsScreen() {
       </Animated.View>
       <View style={styles.ctaWrap}>
         <TouchableOpacity style={[styles.ctaBtn, !selectedHotel && styles.ctaBtnDisabled]} onPress={handleNext} activeOpacity={0.88}>
-          <LinearGradient colors={selectedHotel ? ["#6443F4", "#F94498"] : ["rgba(255,255,255,0.55)", "rgba(255,255,255,0.55)"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.ctaGradient}>
+          <LinearGradient colors={selectedHotel ? ["#6443F4", "#F94498"] : ["rgba(255,255,255,0.06)", "rgba(255,255,255,0.06)"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.ctaGradient}>
             <Text style={[styles.ctaText, !selectedHotel && styles.ctaTextDisabled]}>Review My Trip</Text>
             <IconSymbol name="arrow.right" size={20} color={selectedHotel ? "#FFFFFF" : "#3A2D4E"} />
           </LinearGradient>
@@ -221,10 +221,10 @@ export default function HotelsScreen() {
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#0D0628" },
   orb1: { position: "absolute", width: width, height: width, borderRadius: width / 2, top: -width * 0.4, right: -width * 0.3, backgroundColor: "rgba(233,30,140,0.07)" },
-  header: { flexDirection: "row", alignItems: "center", paddingHorizontal: 20, paddingTop: 60, paddingBottom: 130, gap: 12 },
-  backBtn: { width: 40, height: 40, borderRadius: 14, backgroundColor: "rgba(255,255,255,0.55)", alignItems: "center", justifyContent: "center" },
+  header: { flexDirection: "row", alignItems: "center", paddingHorizontal: 20, paddingTop: 60, paddingBottom: 16, gap: 12 },
+  backBtn: { width: 40, height: 40, borderRadius: 14, backgroundColor: "rgba(255,255,255,0.06)", alignItems: "center", justifyContent: "center" },
   progressWrap: { flex: 1, gap: 6 },
-  progressTrack: { height: 4, backgroundColor: "rgba(255,255,255,0.55)", borderRadius: 2, overflow: "hidden" },
+  progressTrack: { height: 4, backgroundColor: "rgba(255,255,255,0.06)", borderRadius: 2, overflow: "hidden" },
   progressFill: { height: "100%", backgroundColor: "#F94498", borderRadius: 2 },
   progressLabel: { color: "rgba(255,255,255,0.5)", fontSize: 12, fontFamily: "Satoshi-Regular", textAlign: "right" },
   loadingWrap: { flex: 1, alignItems: "center", justifyContent: "center", gap: 16 },
@@ -244,7 +244,7 @@ const styles = StyleSheet.create({
   duckMessage: { color: "#FFFFFF", fontSize: 15, fontFamily: "Chillax-Semibold", fontWeight: "700", lineHeight: 20 },
   duckSub: { color: "rgba(255,255,255,0.5)", fontSize: 12, fontFamily: "Satoshi-Regular", marginTop: 2 },
   list: { paddingHorizontal: 20, gap: 14, paddingBottom: 130 },
-  hotelCard: { borderRadius: 20, overflow: "hidden", borderWidth: 2, borderColor: "rgba(255,255,255,0.55)" },
+  hotelCard: { borderRadius: 20, overflow: "hidden", borderWidth: 2, borderColor: "rgba(255,255,255,0.12)" },
   hotelCardSelected: { borderColor: "rgba(233,30,140,0.6)" },
   hotelImageWrap: { position: "relative" },
   hotelImage: { height: 110, alignItems: "center", justifyContent: "center" },

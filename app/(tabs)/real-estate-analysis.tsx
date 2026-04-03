@@ -118,7 +118,7 @@ export default function RealEstateAnalysisScreen() {
         <View style={S.section}>
           <Text style={S.sectionTitle}>Price Index Trend</Text>
           <View style={S.chartCard}>
-            <LinearGradient colors={["rgba(255,255,255,0.55)", "rgba(255,255,255,0.55)"]} style={StyleSheet.absoluteFillObject} />
+            <LinearGradient colors={["rgba(255,255,255,0.06)", "rgba(255,255,255,0.06)"]} style={StyleSheet.absoluteFillObject} />
             <View style={S.chartBars}>
               {data.trends.map((t, i) => {
                 const maxIndex = Math.max(...data.trends.map((x) => x.index));
@@ -180,32 +180,32 @@ export default function RealEstateAnalysisScreen() {
 
 const S = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#0A0A1A" },
-  header: { flexDirection: "row", alignItems: "center", paddingHorizontal: 20, paddingBottom: 130, gap: 12 },
-  backBtn: { width: 36, height: 36, borderRadius: 18, backgroundColor: "rgba(255,255,255,0.55)", alignItems: "center", justifyContent: "center" },
+  header: { flexDirection: "row", alignItems: "center", paddingHorizontal: 20, paddingBottom: 16, gap: 12 },
+  backBtn: { width: 36, height: 36, borderRadius: 18, backgroundColor: "rgba(255,255,255,0.06)", alignItems: "center", justifyContent: "center" },
   backText: { color: "#FFFFFF", fontSize: 18, fontWeight: "700", fontFamily: "Chillax-Semibold" },
   headerCenter: { flex: 1 },
   headerTitle: { color: "#FFFFFF", fontSize: 20, fontWeight: "900", fontFamily: "Chillax-Bold" },
   headerSub: { color: "rgba(255,255,255,0.5)", fontSize: 12 },
   marketRow: { flexDirection: "row", paddingHorizontal: 20, gap: 10, marginBottom: 20 },
-  marketChip: { flex: 1, flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 6, paddingVertical: 10, borderRadius: 12, backgroundColor: "rgba(255,255,255,0.55)", borderWidth: 1, borderColor: "rgba(255,255,255,0.55)" },
+  marketChip: { flex: 1, flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 6, paddingVertical: 10, borderRadius: 12, backgroundColor: "rgba(255,255,255,0.06)", borderWidth: 1, borderColor: "rgba(255,255,255,0.12)" },
   marketEmoji: { fontSize: 16 },
   marketLabel: { color: "rgba(255,255,255,0.5)", fontSize: 12, fontWeight: "700" },
   metricsGrid: { flexDirection: "row", flexWrap: "wrap", paddingHorizontal: 20, gap: 10, marginBottom: 24 },
-  metricCard: { borderRadius: 14, overflow: "hidden", padding: 14, borderWidth: 1, borderColor: "rgba(255,255,255,0.55)" },
+  metricCard: { borderRadius: 14, overflow: "hidden", padding: 14, borderWidth: 1, borderColor: "rgba(255,255,255,0.12)" },
   metricValue: { fontSize: 18, fontWeight: "900", fontFamily: "Chillax-Bold" },
   metricLabel: { color: "#FFFFFF", fontSize: 13, fontWeight: "700", marginTop: 4 },
   metricSub: { color: "rgba(255,255,255,0.55)", fontSize: 11 },
   section: { paddingHorizontal: 20, marginBottom: 24 },
   sectionTitle: { color: "#FFFFFF", fontSize: 18, fontWeight: "900", fontFamily: "Chillax-Bold", marginBottom: 4 },
   sectionSub: { color: "rgba(255,255,255,0.5)", fontSize: 13, marginBottom: 12 },
-  chartCard: { borderRadius: 16, overflow: "hidden", padding: 16, borderWidth: 1, borderColor: "rgba(255,255,255,0.55)" },
+  chartCard: { borderRadius: 16, overflow: "hidden", padding: 16, borderWidth: 1, borderColor: "rgba(255,255,255,0.12)" },
   chartBars: { flexDirection: "row", alignItems: "flex-end", height: 120, gap: 8 },
   chartBarWrap: { flex: 1, alignItems: "center", justifyContent: "flex-end", gap: 4 },
   chartBar: { width: "100%", borderRadius: 4, minHeight: 10 },
   chartBarLabel: { color: "rgba(255,255,255,0.5)", fontSize: 9 },
   chartBarValue: { fontSize: 10, fontWeight: "800",
       fontFamily: "Chillax-Bold" },
-  areaRow: { flexDirection: "row", justifyContent: "space-between", alignItems: "center", paddingVertical: 12, borderBottomWidth: 1, borderBottomColor: "rgba(255,255,255,0.55)" },
+  areaRow: { flexDirection: "row", justifyContent: "space-between", alignItems: "center", paddingVertical: 12, borderBottomWidth: 1, borderBottomColor: "rgba(255,255,255,0.12)" },
   areaLeft: { gap: 4 },
   areaName: { color: "#FFFFFF", fontSize: 14, fontWeight: "700" },
   areaTypeBadge: { paddingHorizontal: 8, paddingVertical: 2, borderRadius: 6, alignSelf: "flex-start" },

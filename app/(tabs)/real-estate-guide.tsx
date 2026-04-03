@@ -126,8 +126,8 @@ export default function RealEstateGuideScreen() {
 
 const S = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#0A0A1A" },
-  header: { flexDirection: "row", alignItems: "center", paddingHorizontal: 20, paddingBottom: 130, gap: 12 },
-  backBtn: { width: 36, height: 36, borderRadius: 18, backgroundColor: "rgba(255,255,255,0.55)", alignItems: "center", justifyContent: "center" },
+  header: { flexDirection: "row", alignItems: "center", paddingHorizontal: 20, paddingBottom: 16, gap: 12 },
+  backBtn: { width: 36, height: 36, borderRadius: 18, backgroundColor: "rgba(255,255,255,0.06)", alignItems: "center", justifyContent: "center" },
   backText: { color: "#FFFFFF", fontSize: 18, fontWeight: "700", fontFamily: "Chillax-Semibold" },
   headerCenter: { flex: 1 },
   headerTitle: { color: "#FFFFFF", fontSize: 20, fontWeight: "900", fontFamily: "Chillax-Bold" },
@@ -145,8 +145,8 @@ const S = StyleSheet.create({
   chapterEmoji: { fontSize: 24 },
   chapterTitle: { flex: 1, fontSize: 15, fontWeight: "900", fontFamily: "Chillax-Bold" },
   chapterArrow: { color: "rgba(255,255,255,0.55)", fontSize: 12 },
-  chapterContent: { borderTopWidth: 1, borderTopColor: "rgba(255,255,255,0.55)", padding: 16, gap: 8 },
-  sectionItem: { borderRadius: 10, backgroundColor: "rgba(255,255,255,0.55)", padding: 12, borderWidth: 1, borderColor: "rgba(255,255,255,0.55)" },
+  chapterContent: { borderTopWidth: 1, borderTopColor: "rgba(255,255,255,0.12)", padding: 16, gap: 8 },
+  sectionItem: { borderRadius: 10, backgroundColor: "rgba(255,255,255,0.06)", padding: 12, borderWidth: 1, borderColor: "rgba(255,255,255,0.12)" },
   sectionItemHeader: { flexDirection: "row", justifyContent: "space-between", alignItems: "center" },
   sectionItemTitle: { color: "#FFFFFF", fontSize: 14, fontWeight: "700", flex: 1 },
   sectionItemArrow: { color: "rgba(255,255,255,0.5)", fontSize: 16, fontWeight: "700", fontFamily: "Chillax-Semibold" },
@@ -154,6 +154,6 @@ const S = StyleSheet.create({
   ctaCard: { borderRadius: 20, overflow: "hidden", padding: 24, gap: 10, alignItems: "center" },
   ctaTitle: { color: "#FFFFFF", fontSize: 20, fontWeight: "900", fontFamily: "Chillax-Bold" },
   ctaDesc: { color: "rgba(255,255,255,0.8)", fontSize: 14, textAlign: "center", lineHeight: 22 },
-  ctaBtn: { backgroundColor: "rgba(255,255,255,0.55)", borderRadius: 12, paddingHorizontal: 24, paddingVertical: 12, marginTop: 4 },
+  ctaBtn: { backgroundColor: "rgba(255,255,255,0.06)", borderRadius: 12, paddingHorizontal: 24, paddingVertical: 12, marginTop: 4 },
   ctaBtnText: { color: "#FFFFFF", fontSize: 14, fontWeight: "900", fontFamily: "Chillax-Bold" },
 });

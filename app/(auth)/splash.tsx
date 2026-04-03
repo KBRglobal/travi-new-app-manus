@@ -193,7 +193,7 @@ const styles = StyleSheet.create({
   },
   bottomArea: { paddingHorizontal: 50, paddingBottom: 130, gap: 12, alignItems: "center", width: "100%" },
   progressTrack: {
-    width: "100%", height: 3, backgroundColor: "rgba(255,255,255,0.55)",
+    width: "100%", height: 3, backgroundColor: "rgba(255,255,255,0.06)",
     borderRadius: 2, overflow: "hidden",
   },
   progressFill: { height: "100%", borderRadius: 2, position: "relative" },

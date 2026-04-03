@@ -142,7 +142,7 @@ export default function TripDetailScreen() {
 
             {/* Stop card */}
             <View style={styles.stopCard}>
-              <LinearGradient colors={["rgba(255,255,255,0.55)", "rgba(255,255,255,0.55)"]} style={StyleSheet.absoluteFillObject} />
+              <LinearGradient colors={["rgba(255,255,255,0.06)", "rgba(255,255,255,0.06)"]} style={StyleSheet.absoluteFillObject} />
               <View style={styles.stopHeader}>
                 <View style={styles.stopInfo}>
                   <Text style={styles.stopName}>{stop.name}</Text>
@@ -191,7 +191,7 @@ const styles = StyleSheet.create({
   heroTitle: { color: "#FFFFFF", fontSize: 22, fontWeight: "800", fontFamily: "Chillax-Bold" },
   heroSub: { color: "rgba(255,255,255,0.6)", fontSize: 14 },
   dayTabs: { maxHeight: 72, flexGrow: 0 },
-  dayTab: { borderRadius: 14, paddingHorizontal: 16, paddingVertical: 10, borderWidth: 1.5, borderColor: "rgba(255,255,255,0.55)", overflow: "hidden", minWidth: 100, alignItems: "center" },
+  dayTab: { borderRadius: 14, paddingHorizontal: 16, paddingVertical: 10, borderWidth: 1.5, borderColor: "rgba(255,255,255,0.12)", overflow: "hidden", minWidth: 100, alignItems: "center" },
   dayTabActive: { borderColor: "transparent" },
   dayTabText: { color: "rgba(255,255,255,0.5)", fontSize: 13, fontWeight: "700" },
   dayTabTextActive: { color: "#FFFFFF" },
@@ -206,7 +206,7 @@ const styles = StyleSheet.create({
   stopTime: { color: "rgba(255,255,255,0.5)", fontSize: 12, fontWeight: "600", marginBottom: 6 },
   timelineDot: { width: 10, height: 10, borderRadius: 5, backgroundColor: "#6443F4", borderWidth: 2, borderColor: "#C084FC" },
   timelineLine: { width: 2, flex: 1, backgroundColor: "rgba(100,67,244,0.3)", marginTop: 4, marginBottom: 0 },
-  stopCard: { flex: 1, borderRadius: 16, padding: 14, gap: 8, borderWidth: 1.5, borderColor: "rgba(255,255,255,0.55)", overflow: "hidden", marginBottom: 12 },
+  stopCard: { flex: 1, borderRadius: 16, padding: 14, gap: 8, borderWidth: 1.5, borderColor: "rgba(255,255,255,0.12)", overflow: "hidden", marginBottom: 12 },
   stopHeader: { flexDirection: "row", justifyContent: "space-between", alignItems: "flex-start" },
   stopInfo: { flex: 1, gap: 2 },
   stopName: { color: "#FFFFFF", fontSize: 15, fontWeight: "700" },

@@ -209,7 +209,7 @@ export default function TripShareScreen() {
 // ─── Styles ───────────────────────────────────────────────────────────────────
 const S = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#0D0628" },
-  header: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 16, paddingBottom: 130, paddingTop: 4 },
+  header: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 16, paddingBottom: 16, paddingTop: 4 },
   backBtn: { width: 40, height: 40, alignItems: "center", justifyContent: "center" },
   headerTitle: { color: "#FFF", fontSize: 18, fontWeight: "800", fontFamily: "Chillax-Bold" },
 
@@ -231,9 +231,9 @@ const S = StyleSheet.create({
   highlightDot: { width: 6, height: 6, borderRadius: 3 },
   highlightText: { color: "#ECEDEE", fontSize: 13, lineHeight: 18 },
   activityPills: { flexDirection: "row", flexWrap: "wrap", gap: 6 },
-  activityPill: { borderRadius: 10, paddingHorizontal: 10, paddingVertical: 4, backgroundColor: "rgba(255,255,255,0.55)", borderWidth: 1, borderColor: "rgba(255,255,255,0.55)" },
+  activityPill: { borderRadius: 10, paddingHorizontal: 10, paddingVertical: 4, backgroundColor: "rgba(255,255,255,0.06)", borderWidth: 1, borderColor: "rgba(255,255,255,0.12)" },
   activityPillText: { color: "#ECEDEE", fontSize: 12 },
-  cardFooter: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingTop: 8, borderTopWidth: 1, borderTopColor: "rgba(255,255,255,0.55)" },
+  cardFooter: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingTop: 8, borderTopWidth: 1, borderTopColor: "rgba(255,255,255,0.12)" },
   cardFooterLabel: { color: "rgba(255,255,255,0.5)", fontSize: 11 },
   cardFooterValue: { color: "#FFF", fontSize: 14, fontWeight: "700" },
   cashbackBadge: { alignItems: "flex-end" },

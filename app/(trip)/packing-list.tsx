@@ -204,7 +204,7 @@ export default function PackingListScreen() {
               onPress={() => toggleItem(section.title, item.id)}
               activeOpacity={0.8}
             >
-              <View style={[S.checkbox, item.checked && S.checkboxChecked, { borderColor: item.checked ? section.color : "rgba(255,255,255,0.55)" }]}>
+              <View style={[S.checkbox, item.checked && S.checkboxChecked, { borderColor: item.checked ? section.color : "rgba(255,255,255,0.06)" }]}>
                 {item.checked && <IconSymbol name="checkmark" size={12} color="#FFF" />}
               </View>
               <Text style={[S.itemLabel, item.checked && S.itemLabelChecked]}>{item.label}</Text>
@@ -242,23 +242,23 @@ export default function PackingListScreen() {
 // ─── Styles ───────────────────────────────────────────────────────────────────
 const S = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#0D1B2A" },
-  header: { flexDirection: "row", alignItems: "center", paddingHorizontal: 16, paddingBottom: 130, paddingTop: 4, gap: 8 },
+  header: { flexDirection: "row", alignItems: "center", paddingHorizontal: 16, paddingBottom: 16, paddingTop: 4, gap: 8 },
   backBtn: { width: 40, height: 40, alignItems: "center", justifyContent: "center" },
   headerTitle: { color: "#FFF", fontSize: 18, fontWeight: "800", fontFamily: "Chillax-Bold" },
   headerSub: { color: "#5A4D72", fontSize: 12 },
   headerCount: { color: "#9BA1A6", fontSize: 14, fontWeight: "700" },
 
   progressWrap: { paddingHorizontal: 16, paddingBottom: 130, gap: 6 },
-  progressTrack: { height: 6, backgroundColor: "rgba(255,255,255,0.55)", borderRadius: 3, overflow: "hidden" },
+  progressTrack: { height: 6, backgroundColor: "rgba(255,255,255,0.06)", borderRadius: 3, overflow: "hidden" },
   progressFill: { height: "100%", borderRadius: 3 },
   progressLabel: { color: "#9BA1A6", fontSize: 12 },
 
   sectionHeader: { flexDirection: "row", alignItems: "center", gap: 8, paddingVertical: 14, paddingTop: 20 },
   sectionIcon: { fontSize: 18 },
   sectionTitle: { fontSize: 14, fontWeight: "800", textTransform: "uppercase", letterSpacing: 0.5, flex: 1, fontFamily: "Chillax-Bold" },
-  addToSectionBtn: { width: 28, height: 28, borderRadius: 8, backgroundColor: "rgba(255,255,255,0.55)", alignItems: "center", justifyContent: "center" },
+  addToSectionBtn: { width: 28, height: 28, borderRadius: 8, backgroundColor: "rgba(255,255,255,0.06)", alignItems: "center", justifyContent: "center" },
 
-  itemRow: { flexDirection: "row", alignItems: "center", gap: 12, paddingVertical: 12, borderBottomWidth: 1, borderBottomColor: "rgba(255,255,255,0.55)" },
+  itemRow: { flexDirection: "row", alignItems: "center", gap: 12, paddingVertical: 12, borderBottomWidth: 1, borderBottomColor: "rgba(255,255,255,0.12)" },
   checkbox: { width: 22, height: 22, borderRadius: 6, borderWidth: 1.5, alignItems: "center", justifyContent: "center" },
   checkboxChecked: { backgroundColor: "#6443F4", borderColor: "#6443F4" },
   itemLabel: { color: "#FFF", fontSize: 14, flex: 1 },
@@ -267,6 +267,6 @@ const S = StyleSheet.create({
   essentialText: { color: "#F59E0B", fontSize: 10, fontWeight: "700" },
 
   addItemRow: { flexDirection: "row", gap: 8, paddingVertical: 8 },
-  addItemInput: { flex: 1, backgroundColor: "rgba(255,255,255,0.55)", borderRadius: 10, padding: 10, color: "#FFF", fontSize: 14, borderWidth: 1, borderColor: "rgba(255,255,255,0.55)" },
+  addItemInput: { flex: 1, backgroundColor: "rgba(255,255,255,0.06)", borderRadius: 10, padding: 10, color: "#FFF", fontSize: 14, borderWidth: 1, borderColor: "rgba(255,255,255,0.12)" },
   addItemBtn: { width: 40, height: 40, borderRadius: 10, alignItems: "center", justifyContent: "center" },
 });

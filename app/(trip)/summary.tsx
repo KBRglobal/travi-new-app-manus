@@ -118,7 +118,7 @@ export default function SummaryScreen() {
           </View>
           {trip.flight && (
             <View style={styles.sectionCard}>
-              <LinearGradient colors={["rgba(255,255,255,0.55)", "rgba(255,255,255,0.55)"]} style={StyleSheet.absoluteFillObject} />
+              <LinearGradient colors={["rgba(255,255,255,0.06)", "rgba(255,255,255,0.06)"]} style={StyleSheet.absoluteFillObject} />
               <View style={styles.sectionHeader}>
                 <View style={styles.sectionIconWrap}>
                   <LinearGradient colors={["#6443F4", "#5B21B6"]} style={styles.sectionIconGradient}>
@@ -160,7 +160,7 @@ export default function SummaryScreen() {
           )}
           {trip.hotel && (
             <View style={styles.sectionCard}>
-              <LinearGradient colors={["rgba(255,255,255,0.55)", "rgba(255,255,255,0.55)"]} style={StyleSheet.absoluteFillObject} />
+              <LinearGradient colors={["rgba(255,255,255,0.06)", "rgba(255,255,255,0.06)"]} style={StyleSheet.absoluteFillObject} />
               <View style={styles.sectionHeader}>
                 <View style={styles.sectionIconWrap}>
                   <LinearGradient colors={["#F94498", "#C2185B"]} style={styles.sectionIconGradient}>
@@ -191,7 +191,7 @@ export default function SummaryScreen() {
           )}
           {trip.interests.length > 0 && (
             <View style={styles.sectionCard}>
-              <LinearGradient colors={["rgba(255,255,255,0.55)", "rgba(255,255,255,0.55)"]} style={StyleSheet.absoluteFillObject} />
+              <LinearGradient colors={["rgba(255,255,255,0.06)", "rgba(255,255,255,0.06)"]} style={StyleSheet.absoluteFillObject} />
               <View style={styles.sectionHeader}>
                 <View style={styles.sectionIconWrap}>
                   <LinearGradient colors={["#FF6B35", "#F94498"]} style={styles.sectionIconGradient}>
@@ -249,13 +249,13 @@ const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#0D0628" },
   orb1: { position: "absolute", width: width * 1.2, height: width * 1.2, borderRadius: width * 0.6, top: -width * 0.5, left: -width * 0.3, backgroundColor: "rgba(123,47,190,0.08)" },
   orb2: { position: "absolute", width: width, height: width, borderRadius: width / 2, bottom: 0, right: -width * 0.3, backgroundColor: "rgba(233,30,140,0.06)" },
-  header: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 20, paddingTop: 60, paddingBottom: 130 },
-  backBtn: { width: 40, height: 40, borderRadius: 14, backgroundColor: "rgba(255,255,255,0.55)", alignItems: "center", justifyContent: "center" },
+  header: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 20, paddingTop: 60, paddingBottom: 16 },
+  backBtn: { width: 40, height: 40, borderRadius: 14, backgroundColor: "rgba(255,255,255,0.06)", alignItems: "center", justifyContent: "center" },
   headerTitle: { color: "#FFFFFF", fontSize: 18, fontWeight: "800", fontFamily: "Chillax-Bold" },
   scroll: { paddingHorizontal: 20, paddingBottom: 130 },
   centerWrap: { flex: 1, alignItems: "center", justifyContent: "center", gap: 16 },
   errorText: { color: "rgba(255,255,255,0.6)", fontSize: 16, fontFamily: "Satoshi-Regular" },
-  backBtnCenter: { paddingHorizontal: 24, paddingVertical: 12, backgroundColor: "rgba(255,255,255,0.55)", borderRadius: 14 },
+  backBtnCenter: { paddingHorizontal: 24, paddingVertical: 12, backgroundColor: "rgba(255,255,255,0.06)", borderRadius: 14 },
   backBtnText: { color: "#FFFFFF", fontSize: 15, fontWeight: "600", fontFamily: "Satoshi-Medium" },
   duckRow: { flexDirection: "row", alignItems: "flex-end", gap: 10 },
   duckAvatar: { width: 44, height: 44, borderRadius: 22, overflow: "hidden" },
@@ -276,8 +276,8 @@ const styles = StyleSheet.create({
   heroStat: { flex: 1, alignItems: "center", gap: 4 },
   heroStatLabel: { color: "rgba(255,255,255,0.5)", fontSize: 11, textAlign: "center" },
   heroStatValue: { color: "#FFFFFF", fontSize: 13, fontWeight: "700", fontFamily: "Satoshi-Medium", textAlign: "center" },
-  heroDivider: { width: 1, height: 40, backgroundColor: "rgba(255,255,255,0.55)" },
-  sectionCard: { borderRadius: 20, overflow: "hidden", padding: 16, borderWidth: 1, borderColor: "rgba(255,255,255,0.55)", gap: 12 },
+  heroDivider: { width: 1, height: 40, backgroundColor: "rgba(255,255,255,0.06)" },
+  sectionCard: { borderRadius: 20, overflow: "hidden", padding: 16, borderWidth: 1, borderColor: "rgba(255,255,255,0.12)", gap: 12 },
   sectionHeader: { flexDirection: "row", alignItems: "center", gap: 10 },
   sectionIconWrap: { borderRadius: 10, overflow: "hidden" },
   sectionIconGradient: { width: 36, height: 36, alignItems: "center", justifyContent: "center" },
@@ -291,10 +291,10 @@ const styles = StyleSheet.create({
   flightMiddle: { flex: 1, alignItems: "center", gap: 4 },
   flightDuration: { color: "rgba(255,255,255,0.6)", fontSize: 12 },
   flightLine: { flexDirection: "row", alignItems: "center", width: "100%" },
-  flightDot: { width: 6, height: 6, borderRadius: 3, backgroundColor: "rgba(255,255,255,0.55)" },
-  flightLineBar: { flex: 1, height: 1, backgroundColor: "rgba(255,255,255,0.55)" },
+  flightDot: { width: 6, height: 6, borderRadius: 3, backgroundColor: "rgba(255,255,255,0.06)" },
+  flightLineBar: { flex: 1, height: 1, backgroundColor: "rgba(255,255,255,0.06)" },
   flightStops: { color: "rgba(255,255,255,0.5)", fontSize: 11 },
-  cardFooter: { flexDirection: "row", justifyContent: "space-between", alignItems: "center", paddingTop: 8, borderTopWidth: 1, borderTopColor: "rgba(255,255,255,0.55)" },
+  cardFooter: { flexDirection: "row", justifyContent: "space-between", alignItems: "center", paddingTop: 8, borderTopWidth: 1, borderTopColor: "rgba(255,255,255,0.12)" },
   cardAirline: { color: "rgba(255,255,255,0.5)", fontSize: 13, fontFamily: "Satoshi-Regular" },
   cardPrice: { color: "#F94498", fontSize: 20, fontWeight: "900", fontFamily: "Satoshi-Bold" },
   hotelName: { color: "#FFFFFF", fontSize: 18, fontWeight: "800", fontFamily: "Chillax-Bold" },

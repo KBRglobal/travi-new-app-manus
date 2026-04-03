@@ -109,7 +109,7 @@ function MiniBarChart({ data }: { data: { month: string; value: number }[] }) {
             <View style={BC.barTrack}>
               <View style={[BC.barFill, { height: `${pct * 100}%` }]}>
                 {isLast && <LinearGradient colors={["#6443F4", "#F94498"]} style={StyleSheet.absoluteFillObject} />}
-                {!isLast && <View style={[StyleSheet.absoluteFillObject, { backgroundColor: "rgba(255,255,255,0.55)" }]} />}
+                {!isLast && <View style={[StyleSheet.absoluteFillObject, { backgroundColor: "rgba(255,255,255,0.06)" }]} />}
               </View>
             </View>
             <Text style={[BC.label, isLast && { color: "#C084FC" }]}>{d.month}</Text>
@@ -308,7 +308,7 @@ function CompetitorsTab() {
       {COMPETITORS.map((comp, i) => (
         <View key={i} style={[T.compCard, comp.isUs && T.compCardUs]}>
           {comp.isUs && <LinearGradient colors={["rgba(100,67,244,0.25)", "rgba(249,68,152,0.15)"]} style={StyleSheet.absoluteFillObject} />}
-          {!comp.isUs && <View style={[StyleSheet.absoluteFillObject, { backgroundColor: "rgba(255,255,255,0.55)" }]} />}
+          {!comp.isUs && <View style={[StyleSheet.absoluteFillObject, { backgroundColor: "rgba(255,255,255,0.06)" }]} />}
           <View style={T.compHeader}>
             <Text style={T.compLogo}>{comp.logo}</Text>
             <View style={{ flex: 1 }}>
@@ -417,7 +417,7 @@ const T = StyleSheet.create({
   trendStatValue: { color: "#FFFFFF", fontSize: 15, fontWeight: "800", fontFamily: "Chillax-Bold" },
   trendStatLabel: { color: "rgba(255,255,255,0.5)", fontSize: 11 },
 
-  compCard: { borderRadius: 18, overflow: "hidden", padding: 14, borderWidth: 1, borderColor: "rgba(255,255,255,0.55)", gap: 10 },
+  compCard: { borderRadius: 18, overflow: "hidden", padding: 14, borderWidth: 1, borderColor: "rgba(255,255,255,0.12)", gap: 10 },
   compCardUs: { borderColor: "rgba(100,67,244,0.4)" },
   compHeader: { flexDirection: "row", alignItems: "center", gap: 10 },
   compLogo: { fontSize: 28 },
@@ -430,7 +430,7 @@ const T = StyleSheet.create({
   ratingBadge: { backgroundColor: "rgba(255,215,0,0.15)", borderRadius: 10, paddingHorizontal: 8, paddingVertical: 4 },
   ratingText: { color: "#FBBF24", fontSize: 12, fontWeight: "700" },
   commRow: { flexDirection: "row", gap: 10 },
-  commItem: { flex: 1, backgroundColor: "rgba(255,255,255,0.55)", borderRadius: 10, padding: 10 },
+  commItem: { flex: 1, backgroundColor: "rgba(255,255,255,0.06)", borderRadius: 10, padding: 10 },
   commLabel: { color: "rgba(255,255,255,0.5)", fontSize: 11 },
   commValue: { color: "#FFFFFF", fontSize: 13, fontWeight: "700", fontFamily: "Satoshi-Bold", marginTop: 2 },
   swRow: { flexDirection: "row", gap: 10 },
@@ -438,13 +438,13 @@ const T = StyleSheet.create({
   swTitle: { color: "rgba(255,255,255,0.55)", fontSize: 12, fontWeight: "700", marginBottom: 2 },
   swItem: { color: "rgba(255,255,255,0.5)", fontSize: 12, lineHeight: 17 },
 
-  regCountryCard: { backgroundColor: "rgba(255,255,255,0.55)", borderRadius: 16, padding: 14, borderWidth: 1, borderColor: "rgba(255,255,255,0.55)", gap: 10 },
+  regCountryCard: { backgroundColor: "rgba(255,255,255,0.06)", borderRadius: 16, padding: 14, borderWidth: 1, borderColor: "rgba(255,255,255,0.12)", gap: 10 },
   regCountryHeader: { flexDirection: "row", alignItems: "center", gap: 10 },
   regFlag: { fontSize: 24 },
   regCountry: { color: "#FFFFFF", fontSize: 16, fontWeight: "800", fontFamily: "Chillax-Bold", flex: 1 },
   regStatusBadge: { borderRadius: 8, paddingHorizontal: 8, paddingVertical: 4 },
   regStatusText: { fontSize: 12, fontWeight: "700" },
-  ruleCard: { backgroundColor: "rgba(255,255,255,0.55)", borderRadius: 10, padding: 10, gap: 4 },
+  ruleCard: { backgroundColor: "rgba(255,255,255,0.06)", borderRadius: 10, padding: 10, gap: 4 },
   ruleTop: { flexDirection: "row", alignItems: "center", gap: 6 },
   ruleStatus: { fontSize: 14 },
   ruleTitle: { color: "#FFFFFF", fontSize: 13, fontWeight: "700", fontFamily: "Satoshi-Bold" },
@@ -459,17 +459,17 @@ const T = StyleSheet.create({
 
 const S = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#0D0628" },
-  header: { flexDirection: "row", alignItems: "center", gap: 12, paddingTop: 56, paddingHorizontal: 16, paddingBottom: 130 },
-  backBtn: { width: 36, height: 36, borderRadius: 12, backgroundColor: "rgba(255,255,255,0.55)", alignItems: "center", justifyContent: "center" },
+  header: { flexDirection: "row", alignItems: "center", gap: 12, paddingTop: 56, paddingHorizontal: 16, paddingBottom: 16 },
+  backBtn: { width: 36, height: 36, borderRadius: 12, backgroundColor: "rgba(255,255,255,0.06)", alignItems: "center", justifyContent: "center" },
   headerTitle: { color: "#FFFFFF", fontSize: 22, fontWeight: "900", fontFamily: "Chillax-Bold" },
   headerSub: { color: "rgba(255,255,255,0.5)", fontSize: 12, marginTop: 1 },
   liveIndicator: { flexDirection: "row", alignItems: "center", gap: 5, backgroundColor: "rgba(34,197,94,0.15)", borderRadius: 10, paddingHorizontal: 10, paddingVertical: 5, borderWidth: 1, borderColor: "rgba(34,197,94,0.3)" },
   liveDot: { width: 6, height: 6, borderRadius: 3, backgroundColor: "#22C55E" },
   liveText: { color: "#22C55E", fontSize: 12, fontWeight: "800",
       fontFamily: "Chillax-Bold" },
-  tabsContainer: { borderBottomWidth: 1, borderBottomColor: "rgba(255,255,255,0.55)" },
+  tabsContainer: { borderBottomWidth: 1, borderBottomColor: "rgba(255,255,255,0.12)" },
   tabsRow: { paddingHorizontal: 16, paddingVertical: 10, gap: 8 },
-  tab: { borderRadius: 20, overflow: "hidden", paddingHorizontal: 16, paddingVertical: 7, borderWidth: 1, borderColor: "rgba(255,255,255,0.55)" },
+  tab: { borderRadius: 20, overflow: "hidden", paddingHorizontal: 16, paddingVertical: 7, borderWidth: 1, borderColor: "rgba(255,255,255,0.12)" },
   tabActive: { borderColor: "transparent" },
   tabText: { color: "rgba(255,255,255,0.5)", fontSize: 13, fontWeight: "600", fontFamily: "Satoshi-Medium" },
   tabTextActive: { color: "#FFFFFF" },

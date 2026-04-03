@@ -125,7 +125,7 @@ export function AuthCTA({
       disabled={disabled || loading}
     >
       <LinearGradient
-        colors={disabled ? ["rgba(255,255,255,0.55)", "rgba(255,255,255,0.55)"] : Gradients.cta}
+        colors={disabled ? ["rgba(255,255,255,0.06)", "rgba(255,255,255,0.06)"] : Gradients.cta}
         start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
         style={s.ctaGradient}
       >
@@ -154,7 +154,7 @@ export function SocialButton({
   return (
     <TouchableOpacity style={s.socialBtn} onPress={onPress} activeOpacity={0.8}>
       <LinearGradient
-        colors={["rgba(255,255,255,0.55)", "rgba(255,255,255,0.55)"]}
+        colors={["rgba(255,255,255,0.06)", "rgba(255,255,255,0.06)"]}
         style={s.socialGradient}
       >
         {isGoogle ? (
@@ -192,7 +192,7 @@ export function GuestLink({ onPress }: { onPress: () => void }) {
   return (
     <TouchableOpacity style={s.guestCard} onPress={onPress} activeOpacity={0.8}>
       <LinearGradient
-        colors={["rgba(255,255,255,0.55)", "rgba(255,255,255,0.55)"]}
+        colors={["rgba(255,255,255,0.06)", "rgba(255,255,255,0.06)"]}
         style={s.guestGradient}
       >
         <Text style={s.guestTitle}>Continue as Guest</Text>
@@ -245,7 +245,7 @@ const s = StyleSheet.create({
   inputGradient: {
     flexDirection: "row", alignItems: "center", gap: 12,
     paddingHorizontal: Spacing.md, paddingVertical: Spacing.md,
-    backgroundColor: "rgba(255,255,255,0.55)",
+    backgroundColor: "rgba(255,255,255,0.06)",
   },
   input: { flex: 1, color: DS.primary, fontSize: 16, fontWeight: "500",
       fontFamily: "Satoshi-Medium" },

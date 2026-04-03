@@ -155,7 +155,7 @@ export default function WalletWithdrawScreen() {
             <TextInput
               style={styles.amountInput}
               placeholder="0.00"
-              placeholderTextColor="rgba(255,255,255,0.55)"
+              placeholderTextColor="rgba(255,255,255,0.35)"
               value={amount}
               onChangeText={setAmount}
               keyboardType="decimal-pad"
@@ -217,7 +217,7 @@ export default function WalletWithdrawScreen() {
               <Text style={styles.summaryLabel}>Fee</Text>
               <Text style={styles.summaryValue}>{fee > 0 ? `$${fee.toFixed(2)}` : "Free"}</Text>
             </View>
-            <View style={[styles.summaryRow, { borderTopWidth: 1, borderTopColor: "rgba(255,255,255,0.55)", paddingTop: 10, marginTop: 4 }]}>
+            <View style={[styles.summaryRow, { borderTopWidth: 1, borderTopColor: "rgba(255,255,255,0.12)", paddingTop: 10, marginTop: 4 }]}>
               <Text style={[styles.summaryLabel, { color: "#FFFFFF" }]}>You receive</Text>
               <Text style={[styles.summaryValue, { color: "#22C55E", fontSize: 18, fontWeight: "900",
       fontFamily: "Chillax-Bold" }]}>${youReceive.toFixed(2)}</Text>
@@ -249,34 +249,34 @@ export default function WalletWithdrawScreen() {
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#0D0628" },
-  header: { flexDirection: "row", alignItems: "center", paddingHorizontal: 20, paddingBottom: 130, gap: 14 },
-  backBtn: { width: 36, height: 36, borderRadius: 18, backgroundColor: "rgba(255,255,255,0.55)", alignItems: "center", justifyContent: "center" },
+  header: { flexDirection: "row", alignItems: "center", paddingHorizontal: 20, paddingBottom: 16, gap: 14 },
+  backBtn: { width: 36, height: 36, borderRadius: 18, backgroundColor: "rgba(255,255,255,0.06)", alignItems: "center", justifyContent: "center" },
   backText: { color: "#FFFFFF", fontSize: 18, fontWeight: "700", fontFamily: "Chillax-Semibold" },
   headerTitle: { color: "#FFFFFF", fontSize: 20, fontWeight: "900", fontFamily: "Chillax-Bold" },
   content: { paddingHorizontal: 20, gap: 20, paddingBottom: 130 },
-  balanceCard: { borderRadius: 20, overflow: "hidden", padding: 20, alignItems: "center", gap: 4, borderWidth: 1, borderColor: "rgba(255,255,255,0.55)" },
+  balanceCard: { borderRadius: 20, overflow: "hidden", padding: 20, alignItems: "center", gap: 4, borderWidth: 1, borderColor: "rgba(255,255,255,0.12)" },
   balanceLabel: { color: "rgba(255,255,255,0.5)", fontSize: 13, fontWeight: "700", textTransform: "uppercase", letterSpacing: 1 },
   balanceAmount: { color: "#FFFFFF", fontSize: 36, fontWeight: "900", fontFamily: "Chillax-Bold" },
   balanceSub: { color: "rgba(255,255,255,0.5)", fontSize: 13 },
   amountSection: { gap: 12 },
   sectionTitle: { color: "rgba(255,255,255,0.6)", fontSize: 13, fontWeight: "800", textTransform: "uppercase", letterSpacing: 1, fontFamily: "Chillax-Bold" },
-  amountInputWrap: { flexDirection: "row", alignItems: "center", backgroundColor: "rgba(255,255,255,0.55)", borderRadius: 16, borderWidth: 1, borderColor: "rgba(255,255,255,0.55)", paddingHorizontal: 16 },
+  amountInputWrap: { flexDirection: "row", alignItems: "center", backgroundColor: "rgba(255,255,255,0.06)", borderRadius: 16, borderWidth: 1, borderColor: "rgba(255,255,255,0.12)", paddingHorizontal: 16 },
   amountCurrency: { color: "rgba(255,255,255,0.5)", fontSize: 24, fontWeight: "700", marginRight: 4, fontFamily: "Chillax-Semibold" },
   amountInput: { flex: 1, color: "#FFFFFF", fontSize: 32, fontWeight: "900", paddingVertical: 16, fontFamily: "Chillax-Bold" },
   quickAmounts: { flexDirection: "row", gap: 8, flexWrap: "wrap" },
-  quickAmountChip: { paddingHorizontal: 14, paddingVertical: 8, borderRadius: 10, backgroundColor: "rgba(255,255,255,0.55)", borderWidth: 1, borderColor: "rgba(255,255,255,0.55)" },
+  quickAmountChip: { paddingHorizontal: 14, paddingVertical: 8, borderRadius: 10, backgroundColor: "rgba(255,255,255,0.06)", borderWidth: 1, borderColor: "rgba(255,255,255,0.12)" },
   quickAmountChipActive: { backgroundColor: "rgba(100,67,244,0.3)", borderColor: "#6443F4" },
   quickAmountText: { color: "rgba(255,255,255,0.5)", fontSize: 13, fontWeight: "700" },
   quickAmountTextActive: { color: "#FFFFFF" },
   methodsGrid: { flexDirection: "row", flexWrap: "wrap", gap: 10 },
-  methodCard: { width: (width - 50) / 2, borderRadius: 16, overflow: "hidden", padding: 14, gap: 6, backgroundColor: "rgba(255,255,255,0.55)", borderWidth: 1, borderColor: "rgba(255,255,255,0.55)" },
+  methodCard: { width: (width - 50) / 2, borderRadius: 16, overflow: "hidden", padding: 14, gap: 6, backgroundColor: "rgba(255,255,255,0.06)", borderWidth: 1, borderColor: "rgba(255,255,255,0.12)" },
   methodCardActive: { borderColor: "rgba(100,67,244,0.5)" },
   methodEmoji: { fontSize: 28 },
   methodTitle: { color: "rgba(255,255,255,0.7)", fontSize: 14, fontWeight: "800", fontFamily: "Chillax-Bold" },
   methodDesc: { color: "rgba(255,255,255,0.5)", fontSize: 12 },
   methodFee: { alignSelf: "flex-start", paddingHorizontal: 8, paddingVertical: 3, borderRadius: 6 },
   methodFeeText: { fontSize: 11, fontWeight: "800", fontFamily: "Chillax-Bold" },
-  summaryCard: { backgroundColor: "rgba(255,255,255,0.55)", borderRadius: 16, padding: 16, gap: 10, borderWidth: 1, borderColor: "rgba(255,255,255,0.55)" },
+  summaryCard: { backgroundColor: "rgba(255,255,255,0.06)", borderRadius: 16, padding: 16, gap: 10, borderWidth: 1, borderColor: "rgba(255,255,255,0.12)" },
   summaryRow: { flexDirection: "row", justifyContent: "space-between", alignItems: "center" },
   summaryLabel: { color: "rgba(255,255,255,0.5)", fontSize: 14, fontFamily: "Satoshi-Regular" },
   summaryValue: { color: "#FFFFFF", fontSize: 14, fontWeight: "700" },
@@ -285,13 +285,13 @@ const styles = StyleSheet.create({
   nextBtnGradient: { paddingVertical: 16, alignItems: "center" },
   nextBtnText: { color: "#FFFFFF", fontSize: 16, fontWeight: "900", fontFamily: "Chillax-Bold" },
   // Confirm screen
-  confirmCard: { borderRadius: 20, overflow: "hidden", padding: 32, alignItems: "center", gap: 8, borderWidth: 1, borderColor: "rgba(255,255,255,0.55)" },
+  confirmCard: { borderRadius: 20, overflow: "hidden", padding: 32, alignItems: "center", gap: 8, borderWidth: 1, borderColor: "rgba(255,255,255,0.12)" },
   confirmEmoji: { fontSize: 48 },
   confirmAmount: { color: "#FFFFFF", fontSize: 40, fontWeight: "900", fontFamily: "Chillax-Bold" },
   confirmMethod: { color: "rgba(255,255,255,0.5)", fontSize: 15, fontFamily: "Satoshi-Regular" },
-  reviewCard: { backgroundColor: "rgba(255,255,255,0.55)", borderRadius: 16, padding: 16, borderWidth: 1, borderColor: "rgba(255,255,255,0.55)" },
+  reviewCard: { backgroundColor: "rgba(255,255,255,0.06)", borderRadius: 16, padding: 16, borderWidth: 1, borderColor: "rgba(255,255,255,0.12)" },
   reviewRow: { flexDirection: "row", justifyContent: "space-between", alignItems: "center", paddingVertical: 10 },
-  reviewRowBorder: { borderBottomWidth: 1, borderBottomColor: "rgba(255,255,255,0.55)" },
+  reviewRowBorder: { borderBottomWidth: 1, borderBottomColor: "rgba(255,255,255,0.12)" },
   reviewLabel: { color: "rgba(255,255,255,0.5)", fontSize: 14, fontFamily: "Satoshi-Regular" },
   reviewValue: { color: "#FFFFFF", fontSize: 14, fontWeight: "700" },
   // Success screen
@@ -300,7 +300,7 @@ const styles = StyleSheet.create({
   successTitle: { color: "#FFFFFF", fontSize: 24, fontWeight: "900", textAlign: "center", fontFamily: "Chillax-Bold" },
   successAmount: { color: "#22C55E", fontSize: 40, fontWeight: "900", fontFamily: "Chillax-Bold" },
   successDesc: { color: "rgba(255,255,255,0.5)", fontSize: 14, textAlign: "center", lineHeight: 22, fontFamily: "Satoshi-Regular" },
-  successDetails: { width: "100%", backgroundColor: "rgba(255,255,255,0.55)", borderRadius: 16, padding: 16, gap: 10, borderWidth: 1, borderColor: "rgba(255,255,255,0.55)" },
+  successDetails: { width: "100%", backgroundColor: "rgba(255,255,255,0.06)", borderRadius: 16, padding: 16, gap: 10, borderWidth: 1, borderColor: "rgba(255,255,255,0.12)" },
   successDetailRow: { flexDirection: "row", justifyContent: "space-between" },
   successDetailLabel: { color: "rgba(255,255,255,0.5)", fontSize: 13 },
   successDetailValue: { color: "#FFFFFF", fontSize: 13, fontWeight: "700" },

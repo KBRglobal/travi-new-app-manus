@@ -301,7 +301,7 @@ export default function ChatScreen() {
             <TextInput
               style={S.input}
               placeholder="Ask TRAVI anything..."
-              placeholderTextColor="rgba(255,255,255,0.55)"
+              placeholderTextColor="rgba(255,255,255,0.35)"
               value={input}
               onChangeText={setInput}
               multiline
@@ -320,8 +320,8 @@ export default function ChatScreen() {
                   <IconSymbol name="arrow.up" size={18} color="#FFFFFF" />
                 </LinearGradient>
               ) : (
-                <View style={[S.sendBtnGrad, { backgroundColor: "rgba(255,255,255,0.55)" }]}>
-                  <IconSymbol name="arrow.up" size={18} color="rgba(255,255,255,0.55)" />
+                <View style={[S.sendBtnGrad, { backgroundColor: "rgba(255,255,255,0.06)" }]}>
+                  <IconSymbol name="arrow.up" size={18} color="rgba(255,255,255,0.06)" />
                 </View>
               )}
             </TouchableOpacity>
@@ -334,8 +334,8 @@ export default function ChatScreen() {
 
 const S = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#0D0628" },
-  header: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 16, paddingTop: 56, paddingBottom: 130 },
-  backBtn: { width: 36, height: 36, borderRadius: 18, backgroundColor: "rgba(255,255,255,0.55)", alignItems: "center", justifyContent: "center" },
+  header: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 16, paddingTop: 56, paddingBottom: 16 },
+  backBtn: { width: 36, height: 36, borderRadius: 18, backgroundColor: "rgba(255,255,255,0.06)", alignItems: "center", justifyContent: "center" },
   headerCenter: { flexDirection: "row", alignItems: "center", gap: 10 },
   headerAvatar: { width: 40, height: 40, borderRadius: 20, overflow: "hidden" },
   headerAvatarGrad: { flex: 1, alignItems: "center", justifyContent: "center" },
@@ -347,7 +347,7 @@ const S = StyleSheet.create({
   headerStatusText: { color: "rgba(255,255,255,0.45)", fontSize: 12 },
   contextBanner: { flexDirection: "row", alignItems: "center", gap: 6, marginHorizontal: 16, borderRadius: 12, overflow: "hidden", paddingHorizontal: 12, paddingVertical: 8, marginBottom: 8, borderWidth: 1, borderColor: "rgba(123,47,190,0.3)" },
   contextText: { flex: 1, color: "rgba(255,255,255,0.55)", fontSize: 12, fontWeight: "600" },
-  contextDot: { width: 4, height: 4, borderRadius: 2, backgroundColor: "rgba(255,255,255,0.55)" },
+  contextDot: { width: 4, height: 4, borderRadius: 2, backgroundColor: "rgba(255,255,255,0.06)" },
   contextPoints: { color: "#FBBF24", fontSize: 12, fontWeight: "700" },
   messagesList: { paddingHorizontal: 16, paddingTop: 8, paddingBottom: 130, gap: 16 },
   msgRow: { flexDirection: "row", gap: 10 },

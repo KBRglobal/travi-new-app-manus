@@ -245,7 +245,7 @@ const S = StyleSheet.create({
   },
   backBtn: {
     width: 40, height: 40, borderRadius: 20,
-    backgroundColor: "rgba(255,255,255,0.55)", alignItems: "center", justifyContent: "center",
+    backgroundColor: "rgba(255,255,255,0.06)", alignItems: "center", justifyContent: "center",
   },
   headerCenter: { alignItems: "center" },
   headerEmoji: { fontSize: 32, marginBottom: 4 },
@@ -267,7 +267,7 @@ const S = StyleSheet.create({
   loadingSubtext: { fontSize: 12, color: "#6B7280", textAlign: "center" },
   sectionCard: {
     backgroundColor: "#1A0A2E", borderRadius: 16,
-    borderWidth: 1, borderColor: "rgba(255,255,255,0.55)",
+    borderWidth: 1, borderColor: "rgba(255,255,255,0.12)",
     marginBottom: 10, overflow: "hidden",
   },
   visaCard: {
@@ -291,7 +291,7 @@ const S = StyleSheet.create({
   sectionBody: { paddingHorizontal: 16, paddingBottom: 130, gap: 10 },
   itemRow: {
     flexDirection: "row", gap: 10, alignItems: "flex-start",
-    paddingTop: 10, borderTopWidth: 1, borderTopColor: "rgba(255,255,255,0.55)",
+    paddingTop: 10, borderTopWidth: 1, borderTopColor: "rgba(255,255,255,0.12)",
   },
   typeBadge: {
     paddingHorizontal: 7, paddingVertical: 3, borderRadius: 6,

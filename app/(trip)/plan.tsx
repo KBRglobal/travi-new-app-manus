@@ -190,7 +190,7 @@ export default function PlanScreen() {
                 >
                   <LinearGradient colors={dest.gradient} style={styles.destGradient}>
                     {selected && <View style={styles.destSelectedOverlay} />}
-                    <View style={[styles.destIconWrap, { backgroundColor: "rgba(255,255,255,0.55)" }]}>
+                    <View style={[styles.destIconWrap, { backgroundColor: "rgba(255,255,255,0.06)" }]}>
                       <IconSymbol name={dest.icon} size={28} color="#FFFFFF" />
                     </View>
                     <View style={styles.destInfo}>
@@ -228,7 +228,7 @@ export default function PlanScreen() {
                   activeOpacity={0.88}
                 >
                   <LinearGradient
-                    colors={selected ? style.gradient : ["rgba(255,255,255,0.55)", "rgba(255,255,255,0.55)"]}
+                    colors={selected ? style.gradient : ["rgba(255,255,255,0.06)", "rgba(255,255,255,0.06)"]}
                     style={StyleSheet.absoluteFillObject}
                   />
                   <View style={[styles.styleIconWrap, { backgroundColor: style.color + "33" }]}>
@@ -317,7 +317,7 @@ export default function PlanScreen() {
                 activeOpacity={0.8}
               >
                 <LinearGradient
-                  colors={travelers > 1 ? ["#6443F4", "#5A1E9E"] : ["rgba(255,255,255,0.55)", "rgba(255,255,255,0.55)"]}
+                  colors={travelers > 1 ? ["#6443F4", "#5A1E9E"] : ["rgba(255,255,255,0.06)", "rgba(255,255,255,0.06)"]}
                   style={styles.travelerBtnGradient}
                 >
                   <IconSymbol name="minus" size={24} color={travelers > 1 ? "#FFFFFF" : "#3A2D4E"} />
@@ -376,7 +376,7 @@ export default function PlanScreen() {
                     activeOpacity={0.88}
                   >
                     <LinearGradient
-                      colors={selected ? [budget.color + "33", budget.color + "18"] : ["rgba(255,255,255,0.55)", "rgba(255,255,255,0.55)"]}
+                      colors={selected ? [budget.color + "33", budget.color + "18"] : ["rgba(255,255,255,0.06)", "rgba(255,255,255,0.06)"]}
                       style={StyleSheet.absoluteFillObject}
                     />
                     <View style={[styles.budgetIconWrap, { backgroundColor: budget.color + "22" }]}>
@@ -404,7 +404,7 @@ export default function PlanScreen() {
               activeOpacity={0.88}
             >
               <LinearGradient
-                colors={selectedBudget === "custom" ? ["rgba(249,68,152,0.25)", "rgba(100,67,244,0.2)"] : ["rgba(255,255,255,0.55)", "rgba(255,255,255,0.55)"]}
+                colors={selectedBudget === "custom" ? ["rgba(249,68,152,0.25)", "rgba(100,67,244,0.2)"] : ["rgba(255,255,255,0.06)", "rgba(255,255,255,0.06)"]}
                 style={StyleSheet.absoluteFillObject}
               />
               <View style={styles.customBudgetTop}>
@@ -485,7 +485,7 @@ export default function PlanScreen() {
               activeOpacity={0.88}
             >
               <LinearGradient
-                colors={editingDate === "start" ? ["rgba(123,47,190,0.4)", "rgba(233,30,140,0.25)"] : ["rgba(255,255,255,0.55)", "rgba(255,255,255,0.55)"]}
+                colors={editingDate === "start" ? ["rgba(123,47,190,0.4)", "rgba(233,30,140,0.25)"] : ["rgba(255,255,255,0.06)", "rgba(255,255,255,0.06)"]}
                 style={StyleSheet.absoluteFillObject}
               />
               <View style={styles.dateCardLeft}>
@@ -497,7 +497,7 @@ export default function PlanScreen() {
                   <Text style={styles.dateCardValue}>{startDate}</Text>
                 </View>
               </View>
-              <IconSymbol name="chevron.right" size={18} color="rgba(255,255,255,0.55)" />
+              <IconSymbol name="chevron.right" size={18} color="rgba(255,255,255,0.06)" />
             </TouchableOpacity>
 
             {editingDate === "start" && (
@@ -508,7 +508,7 @@ export default function PlanScreen() {
                   value={startDate}
                   onChangeText={setStartDate}
                   placeholder="e.g. Apr 15, 2026"
-                  placeholderTextColor="rgba(255,255,255,0.55)"
+                  placeholderTextColor="rgba(255,255,255,0.35)"
                   returnKeyType="done"
                   onSubmitEditing={() => setEditingDate(null)}
                 />
@@ -521,7 +521,7 @@ export default function PlanScreen() {
               activeOpacity={0.88}
             >
               <LinearGradient
-                colors={editingDate === "end" ? ["rgba(123,47,190,0.4)", "rgba(233,30,140,0.25)"] : ["rgba(255,255,255,0.55)", "rgba(255,255,255,0.55)"]}
+                colors={editingDate === "end" ? ["rgba(123,47,190,0.4)", "rgba(233,30,140,0.25)"] : ["rgba(255,255,255,0.06)", "rgba(255,255,255,0.06)"]}
                 style={StyleSheet.absoluteFillObject}
               />
               <View style={styles.dateCardLeft}>
@@ -533,7 +533,7 @@ export default function PlanScreen() {
                   <Text style={styles.dateCardValue}>{endDate}</Text>
                 </View>
               </View>
-              <IconSymbol name="chevron.right" size={18} color="rgba(255,255,255,0.55)" />
+              <IconSymbol name="chevron.right" size={18} color="rgba(255,255,255,0.06)" />
             </TouchableOpacity>
 
             {editingDate === "end" && (
@@ -544,7 +544,7 @@ export default function PlanScreen() {
                   value={endDate}
                   onChangeText={setEndDate}
                   placeholder="e.g. Apr 22, 2026"
-                  placeholderTextColor="rgba(255,255,255,0.55)"
+                  placeholderTextColor="rgba(255,255,255,0.35)"
                   returnKeyType="done"
                   onSubmitEditing={() => setEditingDate(null)}
                 />
@@ -594,7 +594,7 @@ export default function PlanScreen() {
           activeOpacity={0.88}
         >
           <LinearGradient
-            colors={canProceed() ? ["#6443F4", "#F94498"] : ["rgba(255,255,255,0.55)", "rgba(255,255,255,0.55)"]}
+            colors={canProceed() ? ["#6443F4", "#F94498"] : ["rgba(255,255,255,0.06)", "rgba(255,255,255,0.06)"]}
             start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
             style={styles.ctaGradient}
           >
@@ -613,10 +613,10 @@ const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#0D0628" },
   orb1: { position: "absolute", width: width, height: width, borderRadius: width / 2, top: -width * 0.4, left: -width * 0.3, backgroundColor: "rgba(123,47,190,0.09)" },
   orb2: { position: "absolute", width: width * 0.7, height: width * 0.7, borderRadius: width * 0.35, bottom: 0, right: -width * 0.3, backgroundColor: "rgba(233,30,140,0.06)" },
-  header: { flexDirection: "row", alignItems: "center", paddingHorizontal: 20, paddingTop: 60, paddingBottom: 130, gap: 12 },
-  backBtn: { width: 40, height: 40, borderRadius: 14, backgroundColor: "rgba(255,255,255,0.55)", alignItems: "center", justifyContent: "center" },
+  header: { flexDirection: "row", alignItems: "center", paddingHorizontal: 20, paddingTop: 60, paddingBottom: 16, gap: 12 },
+  backBtn: { width: 40, height: 40, borderRadius: 14, backgroundColor: "rgba(255,255,255,0.06)", alignItems: "center", justifyContent: "center" },
   progressWrap: { flex: 1, gap: 6 },
-  progressTrack: { height: 4, backgroundColor: "rgba(255,255,255,0.55)", borderRadius: 2, overflow: "hidden" },
+  progressTrack: { height: 4, backgroundColor: "rgba(255,255,255,0.06)", borderRadius: 2, overflow: "hidden" },
   progressFill: { height: "100%", backgroundColor: "#F94498", borderRadius: 2 },
   progressLabel: { color: "rgba(255,255,255,0.5)", fontSize: 12, textAlign: "right" },
   duckRow: { flexDirection: "row", alignItems: "flex-end", paddingHorizontal: 20, paddingBottom: 130, gap: 10 },
@@ -628,7 +628,7 @@ const styles = StyleSheet.create({
   duckMessage: { color: "#FFFFFF", fontSize: 16, fontWeight: "700", fontFamily: "Chillax-Semibold", lineHeight: 22 },
   content: { flex: 1 },
   destGrid: { paddingHorizontal: 20, gap: 12, paddingBottom: 130 },
-  destCard: { borderRadius: 20, overflow: "hidden", borderWidth: 2, borderColor: "rgba(255,255,255,0.55)" },
+  destCard: { borderRadius: 20, overflow: "hidden", borderWidth: 2, borderColor: "rgba(255,255,255,0.12)" },
   destCardSelected: { borderColor: "#F94498" },
   destGradient: { flexDirection: "row", alignItems: "center", padding: 18, gap: 16 },
   destSelectedOverlay: { ...StyleSheet.absoluteFillObject, backgroundColor: "rgba(233,30,140,0.15)" },
@@ -636,11 +636,11 @@ const styles = StyleSheet.create({
   destInfo: { flex: 1, gap: 4 },
   destCity: { color: "#FFFFFF", fontSize: 20, fontWeight: "800", fontFamily: "Chillax-Bold" },
   destCountry: { color: "rgba(255,255,255,0.6)", fontSize: 13, fontFamily: "Satoshi-Regular" },
-  destVibePill: { alignSelf: "flex-start", backgroundColor: "rgba(255,255,255,0.55)", borderRadius: 8, paddingHorizontal: 8, paddingVertical: 3, marginTop: 4 },
+  destVibePill: { alignSelf: "flex-start", backgroundColor: "rgba(255,255,255,0.06)", borderRadius: 8, paddingHorizontal: 8, paddingVertical: 3, marginTop: 4 },
   destVibe: { color: "rgba(255,255,255,0.8)", fontSize: 11, fontWeight: "600" },
   destCheck: { width: 36, height: 36, borderRadius: 18, backgroundColor: "#F94498", alignItems: "center", justifyContent: "center" },
   styleGrid: { paddingHorizontal: 20, gap: 12, paddingBottom: 130 },
-  styleCard: { flexDirection: "row", alignItems: "center", borderRadius: 20, padding: 18, gap: 16, overflow: "hidden", borderWidth: 2, borderColor: "rgba(255,255,255,0.55)" },
+  styleCard: { flexDirection: "row", alignItems: "center", borderRadius: 20, padding: 18, gap: 16, overflow: "hidden", borderWidth: 2, borderColor: "rgba(255,255,255,0.12)" },
   styleIconWrap: { width: 56, height: 56, borderRadius: 18, alignItems: "center", justifyContent: "center" },
   styleText: { flex: 1, gap: 4 },
   styleLabel: { color: "#FFFFFF", fontSize: 18, fontWeight: "700", fontFamily: "Chillax-Semibold" },
@@ -651,7 +651,7 @@ const styles = StyleSheet.create({
   travelersIconRow: { flexDirection: "row", marginBottom: 8 },
   travelerAvatar: { width: 40, height: 40, borderRadius: 20, overflow: "hidden", borderWidth: 2, borderColor: "#0D0628" },
   travelerAvatarGradient: { flex: 1, alignItems: "center", justifyContent: "center" },
-  travelerAvatarMore: { backgroundColor: "rgba(255,255,255,0.55)", alignItems: "center", justifyContent: "center" },
+  travelerAvatarMore: { backgroundColor: "rgba(255,255,255,0.06)", alignItems: "center", justifyContent: "center" },
   travelerMoreText: { color: "#FFFFFF", fontSize: 12, fontWeight: "700" },
   travelersCount: { color: "#FFFFFF", fontSize: 64, fontWeight: "900", fontFamily: "Satoshi-Bold", lineHeight: 72 },
   travelersLabel: { color: "rgba(255,255,255,0.5)", fontSize: 18, fontWeight: "600", fontFamily: "Satoshi-Medium" },
@@ -660,21 +660,21 @@ const styles = StyleSheet.create({
   travelerBtnDisabled: { opacity: 0.4 },
   travelerBtnGradient: { width: 64, height: 64, alignItems: "center", justifyContent: "center", borderRadius: 22 },
   travelersPresets: { flexDirection: "row", gap: 10, flexWrap: "wrap", justifyContent: "center" },
-  presetChip: { borderRadius: 14, paddingHorizontal: 20, paddingVertical: 10, overflow: "hidden", borderWidth: 1.5, borderColor: "rgba(255,255,255,0.55)" },
+  presetChip: { borderRadius: 14, paddingHorizontal: 20, paddingVertical: 10, overflow: "hidden", borderWidth: 1.5, borderColor: "rgba(255,255,255,0.12)" },
   presetChipActive: { borderColor: "rgba(192,132,252,0.6)" },
   presetLabel: { color: "rgba(255,255,255,0.5)", fontSize: 14, fontWeight: "600", fontFamily: "Satoshi-Medium" },
   presetLabelActive: { color: "#C084FC" },
   budgetGrid: { paddingHorizontal: 20, flexDirection: "row", flexWrap: "wrap", gap: 12 },
-  budgetCard: { width: (width - 52) / 2, borderRadius: 20, padding: 20, gap: 10, overflow: "hidden", borderWidth: 2, borderColor: "rgba(255,255,255,0.55)", alignItems: "center" },
+  budgetCard: { width: (width - 52) / 2, borderRadius: 20, padding: 20, gap: 10, overflow: "hidden", borderWidth: 2, borderColor: "rgba(255,255,255,0.12)", alignItems: "center" },
   budgetIconWrap: { width: 56, height: 56, borderRadius: 18, alignItems: "center", justifyContent: "center" },
   budgetLabel: { color: "#FFFFFF", fontSize: 16, fontWeight: "700", fontFamily: "Chillax-Semibold" },
   budgetRange: { color: "rgba(255,255,255,0.5)", fontSize: 12, textAlign: "center" },
   budgetCheck: { position: "absolute", top: 10, right: 10, width: 24, height: 24, borderRadius: 12, alignItems: "center", justifyContent: "center" },
   datesWrap: { paddingHorizontal: 20, gap: 14 },
-  dateCard: { flexDirection: "row", alignItems: "center", borderRadius: 20, padding: 18, overflow: "hidden", borderWidth: 2, borderColor: "rgba(255,255,255,0.55)" },
+  dateCard: { flexDirection: "row", alignItems: "center", borderRadius: 20, padding: 18, overflow: "hidden", borderWidth: 2, borderColor: "rgba(255,255,255,0.12)" },
   dateCardActive: { borderColor: "rgba(123,47,190,0.6)" },
   dateCardLeft: { flex: 1, flexDirection: "row", alignItems: "center", gap: 14 },
-  dateIconWrap: { width: 44, height: 44, borderRadius: 14, backgroundColor: "rgba(255,255,255,0.55)", alignItems: "center", justifyContent: "center" },
+  dateIconWrap: { width: 44, height: 44, borderRadius: 14, backgroundColor: "rgba(255,255,255,0.06)", alignItems: "center", justifyContent: "center" },
   dateCardLabel: { color: "rgba(255,255,255,0.5)", fontSize: 12, fontWeight: "600" },
   dateCardValue: { color: "#FFFFFF", fontSize: 17, fontWeight: "700", fontFamily: "Chillax-Semibold", marginTop: 2 },
   dateInputWrap: { borderRadius: 16, overflow: "hidden", borderWidth: 1.5, borderColor: "rgba(123,47,190,0.4)" },
@@ -683,7 +683,7 @@ const styles = StyleSheet.create({
   durationText: { color: "#C084FC", fontSize: 14, fontWeight: "600", fontFamily: "Satoshi-Medium" },
   presetsTitle: { color: "rgba(255,255,255,0.5)", fontSize: 13, fontWeight: "600", fontFamily: "Satoshi-Medium", marginTop: 4 },
   datePresets: { flexDirection: "row", gap: 10 },
-  datePresetChip: { flex: 1, borderRadius: 14, paddingVertical: 10, alignItems: "center", backgroundColor: "rgba(255,255,255,0.55)", borderWidth: 1.5, borderColor: "rgba(255,255,255,0.55)" },
+  datePresetChip: { flex: 1, borderRadius: 14, paddingVertical: 10, alignItems: "center", backgroundColor: "rgba(255,255,255,0.06)", borderWidth: 1.5, borderColor: "rgba(255,255,255,0.12)" },
   datePresetLabel: { color: "rgba(255,255,255,0.7)", fontSize: 13, fontWeight: "600", fontFamily: "Satoshi-Medium" },
   ctaWrap: { paddingHorizontal: 20, paddingBottom: 130, paddingTop: 12 },
   ctaBtn: { borderRadius: 20, shadowColor: "#F94498", shadowOffset: { width: 0, height: 6 }, shadowOpacity: 0.4, shadowRadius: 24, elevation: 10,
@@ -694,12 +694,12 @@ const styles = StyleSheet.create({
   ctaTextDisabled: { color: "#3A2D4E" },
   // Custom budget slider styles
   budgetWrap: { gap: 12, paddingBottom: 130 },
-  customBudgetCard: { marginHorizontal: 20, borderRadius: 20, padding: 20, overflow: "hidden", borderWidth: 2, borderColor: "rgba(255,255,255,0.55)" },
+  customBudgetCard: { marginHorizontal: 20, borderRadius: 20, padding: 20, overflow: "hidden", borderWidth: 2, borderColor: "rgba(255,255,255,0.12)" },
   customBudgetCardActive: { borderColor: "rgba(249,68,152,0.6)" },
   customBudgetTop: { flexDirection: "row", alignItems: "center", gap: 12 },
   customAmount: { color: "#F94498", fontSize: 18, fontWeight: "800", fontFamily: "Satoshi-Bold" },
   sliderWrap: { marginTop: 16, gap: 8 },
-  sliderTrack: { height: 6, backgroundColor: "rgba(255,255,255,0.55)", borderRadius: 3, overflow: "hidden", position: "relative" },
+  sliderTrack: { height: 6, backgroundColor: "rgba(255,255,255,0.06)", borderRadius: 3, overflow: "hidden", position: "relative" },
   sliderFill: { height: "100%" as unknown as number, borderRadius: 3 },
   sliderThumb: { position: "absolute", top: -9, width: 24, height: 24, borderRadius: 12, backgroundColor: "#F94498", borderWidth: 3, borderColor: "#0D0628", marginLeft: -12 },
   sliderLabels: { flexDirection: "row", justifyContent: "space-between" },
@@ -708,7 +708,7 @@ const styles = StyleSheet.create({
   presetChipText: { color: "rgba(255,255,255,0.5)", fontSize: 12, fontWeight: "600" },
   presetChipTextActive: { color: "#C084FC" },
   paceWrap: { flex: 1, paddingHorizontal: 20, paddingTop: 8, gap: 12 },
-  paceCard: { borderRadius: 16, borderWidth: 1.5, borderColor: "rgba(255,255,255,0.55)", backgroundColor: "rgba(255,255,255,0.55)", padding: 20, flexDirection: "row", alignItems: "center", gap: 16, position: "relative" },
+  paceCard: { borderRadius: 16, borderWidth: 1.5, borderColor: "rgba(255,255,255,0.12)", backgroundColor: "rgba(255,255,255,0.06)", padding: 20, flexDirection: "row", alignItems: "center", gap: 16, position: "relative" },
   paceEmoji: { fontSize: 32 },
   paceLabel: { fontSize: 17, fontWeight: "700", fontFamily: "Chillax-Semibold", color: "#FFFFFF", marginBottom: 4 },
   paceDesc: { fontSize: 13, fontFamily: "Satoshi-Regular", color: "rgba(255,255,255,0.55)", lineHeight: 18 },

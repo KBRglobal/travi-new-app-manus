@@ -282,7 +282,7 @@ export default function ExpenseTrackerScreen() {
 // ─── Styles ───────────────────────────────────────────────────────────────────
 const S = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#0D1B2A" },
-  header: { flexDirection: "row", alignItems: "center", paddingHorizontal: 16, paddingBottom: 130, paddingTop: 4 },
+  header: { flexDirection: "row", alignItems: "center", paddingHorizontal: 16, paddingBottom: 16, paddingTop: 4 },
   backBtn: { width: 40, height: 40, alignItems: "center", justifyContent: "center" },
   headerTitle: { color: "#FFF", fontSize: 18, fontFamily: "Chillax-Bold", fontWeight: "800", flex: 1, textAlign: "center" },
   addBtn: { width: 40, height: 40, borderRadius: 12, overflow: "hidden" },
@@ -295,10 +295,10 @@ const S = StyleSheet.create({
   summaryMeta: { color: "#5A4D72", fontSize: 11, fontFamily: "Satoshi-Regular" },
 
   breakdownRow: { flexDirection: "row", flexWrap: "wrap", gap: 8, paddingHorizontal: 16, paddingBottom: 130 },
-  breakdownPill: { flexDirection: "row", alignItems: "center", gap: 6, backgroundColor: "rgba(255,255,255,0.55)", borderRadius: 10, paddingHorizontal: 10, paddingVertical: 6, borderWidth: 1, borderColor: "rgba(255,255,255,0.55)" },
+  breakdownPill: { flexDirection: "row", alignItems: "center", gap: 6, backgroundColor: "rgba(255,255,255,0.06)", borderRadius: 10, paddingHorizontal: 10, paddingVertical: 6, borderWidth: 1, borderColor: "rgba(255,255,255,0.12)" },
   breakdownAmt: { fontSize: 13, fontFamily: "Chillax-Semibold", fontWeight: "700" },
 
-  expenseCard: { flexDirection: "row", alignItems: "center", gap: 12, backgroundColor: "rgba(255,255,255,0.55)", borderRadius: 16, padding: 14, borderWidth: 1, borderColor: "rgba(255,255,255,0.55)" },
+  expenseCard: { flexDirection: "row", alignItems: "center", gap: 12, backgroundColor: "rgba(255,255,255,0.06)", borderRadius: 16, padding: 14, borderWidth: 1, borderColor: "rgba(255,255,255,0.12)" },
   expenseCatDot: { width: 44, height: 44, borderRadius: 12, alignItems: "center", justifyContent: "center", borderWidth: 1 },
   expenseInfo: { flex: 1, gap: 3 },
   expenseTitle: { color: "#FFF", fontSize: 14, fontFamily: "Chillax-Semibold", fontWeight: "700" },
@@ -311,14 +311,14 @@ const S = StyleSheet.create({
 
   overlay: { ...StyleSheet.absoluteFillObject, backgroundColor: "rgba(0,0,0,0.6)" },
   sheet: { position: "absolute", bottom: 0, left: 0, right: 0, borderTopLeftRadius: 28, borderTopRightRadius: 28, overflow: "hidden", padding: 20, paddingBottom: 130, gap: 14 },
-  sheetHandle: { width: 36, height: 4, borderRadius: 2, backgroundColor: "rgba(255,255,255,0.55)", alignSelf: "center", marginBottom: 4 },
+  sheetHandle: { width: 36, height: 4, borderRadius: 2, backgroundColor: "rgba(255,255,255,0.06)", alignSelf: "center", marginBottom: 4 },
   sheetTitle: { color: "#FFF", fontSize: 18, fontFamily: "Chillax-Bold", fontWeight: "800" },
   sheetLabel: { color: "#9BA1A6", fontSize: 12, fontFamily: "Chillax-Semibold", fontWeight: "700", textTransform: "uppercase", marginTop: 4 },
-  input: { backgroundColor: "rgba(255,255,255,0.55)", borderRadius: 14, padding: 14, color: "#FFF", fontSize: 15, fontFamily: "Satoshi-Regular", borderWidth: 1, borderColor: "rgba(255,255,255,0.55)" },
-  catChip: { flexDirection: "row", alignItems: "center", gap: 6, borderRadius: 12, paddingHorizontal: 12, paddingVertical: 8, borderWidth: 1, borderColor: "rgba(255,255,255,0.55)", backgroundColor: "rgba(255,255,255,0.55)" },
+  input: { backgroundColor: "rgba(255,255,255,0.06)", borderRadius: 14, padding: 14, color: "#FFF", fontSize: 15, fontFamily: "Satoshi-Regular", borderWidth: 1, borderColor: "rgba(255,255,255,0.12)" },
+  catChip: { flexDirection: "row", alignItems: "center", gap: 6, borderRadius: 12, paddingHorizontal: 12, paddingVertical: 8, borderWidth: 1, borderColor: "rgba(255,255,255,0.12)", backgroundColor: "rgba(255,255,255,0.06)" },
   catChipText: { color: "#9BA1A6", fontSize: 13, fontFamily: "Chillax-Semibold", fontWeight: "600" },
   paidByRow: { flexDirection: "row", gap: 8, flexWrap: "wrap" },
-  paidByChip: { borderRadius: 12, paddingHorizontal: 14, paddingVertical: 8, borderWidth: 1, borderColor: "rgba(255,255,255,0.55)", backgroundColor: "rgba(255,255,255,0.55)" },
+  paidByChip: { borderRadius: 12, paddingHorizontal: 14, paddingVertical: 8, borderWidth: 1, borderColor: "rgba(255,255,255,0.12)", backgroundColor: "rgba(255,255,255,0.06)" },
   paidByChipActive: { borderColor: "#6443F4", backgroundColor: "rgba(100,67,244,0.2)" },
   paidByText: { color: "#9BA1A6", fontSize: 13, fontFamily: "Chillax-Semibold", fontWeight: "600" },
   paidByTextActive: { color: "#A78BFA" },

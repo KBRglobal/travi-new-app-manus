@@ -221,8 +221,8 @@ export default function EventsScreen() {
 
 const S = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#0D0628" },
-  header: { flexDirection: "row", alignItems: "center", gap: 12, paddingTop: 56, paddingHorizontal: 16, paddingBottom: 130 },
-  backBtn: { width: 36, height: 36, borderRadius: 12, backgroundColor: "rgba(255,255,255,0.55)", alignItems: "center", justifyContent: "center" },
+  header: { flexDirection: "row", alignItems: "center", gap: 12, paddingTop: 56, paddingHorizontal: 16, paddingBottom: 16 },
+  backBtn: { width: 36, height: 36, borderRadius: 12, backgroundColor: "rgba(255,255,255,0.06)", alignItems: "center", justifyContent: "center" },
   headerTitle: { color: "#FFFFFF", fontSize: 22, fontWeight: "900", fontFamily: "Chillax-Bold" },
   headerSub: { color: "rgba(255,255,255,0.5)", fontSize: 12, marginTop: 1 },
   savedBadge: { backgroundColor: "rgba(100,67,244,0.2)", borderRadius: 10, paddingHorizontal: 10, paddingVertical: 5, borderWidth: 1, borderColor: "rgba(100,67,244,0.3)" },
@@ -243,7 +243,7 @@ const S = StyleSheet.create({
   featuredPrice: { color: "#FBBF24", fontSize: 13, fontWeight: "800", fontFamily: "Chillax-Bold" },
 
   categoriesRow: { paddingHorizontal: 16, gap: 8 },
-  catChip: { borderRadius: 20, overflow: "hidden", paddingHorizontal: 14, paddingVertical: 8, borderWidth: 1, borderColor: "rgba(255,255,255,0.55)" },
+  catChip: { borderRadius: 20, overflow: "hidden", paddingHorizontal: 14, paddingVertical: 8, borderWidth: 1, borderColor: "rgba(255,255,255,0.12)" },
   catChipActive: { borderColor: "transparent" },
   catText: { color: "rgba(255,255,255,0.5)", fontSize: 13, fontWeight: "600", fontFamily: "Satoshi-Medium" },
   catTextActive: { color: "#FFFFFF" },
@@ -252,7 +252,7 @@ const S = StyleSheet.create({
   listHeader: { flexDirection: "row", justifyContent: "space-between", alignItems: "center" },
   listCount: { color: "rgba(255,255,255,0.55)", fontSize: 13, fontFamily: "Satoshi-Regular" },
 
-  eventCard: { backgroundColor: "rgba(255,255,255,0.55)", borderRadius: 18, overflow: "hidden", borderWidth: 1, borderColor: "rgba(255,255,255,0.55)" },
+  eventCard: { backgroundColor: "rgba(255,255,255,0.06)", borderRadius: 18, overflow: "hidden", borderWidth: 1, borderColor: "rgba(255,255,255,0.12)" },
   eventImageWrap: { height: 140, position: "relative" },
   eventImg: { width: "100%", height: "100%" },
   eventBadge: { position: "absolute", top: 10, left: 10, borderRadius: 8, paddingHorizontal: 8, paddingVertical: 4 },
@@ -261,7 +261,7 @@ const S = StyleSheet.create({
   eventTop: { flexDirection: "row", alignItems: "flex-start", gap: 8 },
   eventTitle: { color: "#FFFFFF", fontSize: 15, fontWeight: "800", lineHeight: 20, fontFamily: "Chillax-Bold" },
   eventVenue: { color: "rgba(255,255,255,0.5)", fontSize: 12, marginTop: 2 },
-  saveBtn: { width: 34, height: 34, borderRadius: 10, backgroundColor: "rgba(255,255,255,0.55)", alignItems: "center", justifyContent: "center" },
+  saveBtn: { width: 34, height: 34, borderRadius: 10, backgroundColor: "rgba(255,255,255,0.06)", alignItems: "center", justifyContent: "center" },
   saveBtnActive: { backgroundColor: "rgba(249,68,152,0.15)" },
   eventMeta: { flexDirection: "row", gap: 14 },
   eventMetaItem: { flexDirection: "row", alignItems: "center", gap: 4 },

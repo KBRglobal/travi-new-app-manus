@@ -290,7 +290,7 @@ export default function ProfileScreen() {
             {ACHIEVEMENTS.map((ach) => (
               <View key={ach.id} style={[styles.achCard, !ach.earned && styles.achCardLocked]}>
                 <LinearGradient
-                  colors={ach.earned ? [ach.iconColor + "33", ach.iconColor + "18"] : ["rgba(255,255,255,0.55)", "rgba(255,255,255,0.55)"]}
+                  colors={ach.earned ? [ach.iconColor + "33", ach.iconColor + "18"] : ["rgba(255,255,255,0.06)", "rgba(255,255,255,0.06)"]}
                   style={StyleSheet.absoluteFillObject}
                 />
                 <View style={[styles.achIconWrap, { backgroundColor: ach.iconColor + "22", opacity: ach.earned ? 1 : 0.3 }]}>
@@ -350,7 +350,7 @@ export default function ProfileScreen() {
                     <Switch
                       value={toggles[item.toggleKey as keyof typeof toggles]}
                       onValueChange={(v) => setToggles((t) => ({ ...t, [item.toggleKey]: v }))}
-                      trackColor={{ false: "rgba(255,255,255,0.55)", true: "#6443F4" }}
+                      trackColor={{ false: "rgba(255,255,255,0.06)", true: "#6443F4" }}
                       thumbColor="#FFFFFF"
                     />
                   ) : (
@@ -401,15 +401,15 @@ const styles = StyleSheet.create({
   xpTierDot: { width: 10, height: 10, borderRadius: 5 },
   xpTierName: { fontSize: 14, fontWeight: "700", flex: 1, fontFamily: "Chillax-Semibold" },
   xpProgressWrap: { marginTop: 10, gap: 4 },
-  xpProgressBg: { height: 6, backgroundColor: "rgba(255,255,255,0.55)", borderRadius: 3, overflow: "hidden" },
+  xpProgressBg: { height: 6, backgroundColor: "rgba(255,255,255,0.06)", borderRadius: 3, overflow: "hidden" },
   xpProgressFill: { height: 6, borderRadius: 3 },
   xpProgressLabel: { fontSize: 11, color: "rgba(255,255,255,0.5)", textAlign: "right", fontFamily: "Satoshi-Regular" },
   tierName: { color: "#FFFFFF", fontSize: 14, fontWeight: "700", fontFamily: "Satoshi-Bold" },
-  tierSep: { width: 1, height: 14, backgroundColor: "rgba(255,255,255,0.55)" },
+  tierSep: { width: 1, height: 14, backgroundColor: "rgba(255,255,255,0.06)" },
   tierPoints: { color: "#FBBF24", fontSize: 13, fontWeight: "700", fontFamily: "Satoshi-Bold" },
-  statsRow: { flexDirection: "row", width: "100%", borderRadius: 20, overflow: "hidden", borderWidth: 1.5, borderColor: "rgba(255,255,255,0.55)", backgroundColor: "rgba(255,255,255,0.55)" },
+  statsRow: { flexDirection: "row", width: "100%", borderRadius: 20, overflow: "hidden", borderWidth: 1.5, borderColor: "rgba(255,255,255,0.12)", backgroundColor: "rgba(255,255,255,0.06)" },
   statItem: { flex: 1, alignItems: "center", paddingVertical: 16, gap: 4 },
-  statDivider: { position: "absolute", left: 0, top: 12, bottom: 12, width: 1, backgroundColor: "rgba(255,255,255,0.55)" },
+  statDivider: { position: "absolute", left: 0, top: 12, bottom: 12, width: 1, backgroundColor: "rgba(255,255,255,0.06)" },
   statValue: { color: "#FFFFFF", fontSize: 18, fontWeight: "800", fontFamily: "Chillax-Bold" },
   statLabel: { color: "#5A4D72", fontSize: 11, fontFamily: "Satoshi-Regular" },
   section: { gap: 14 },
@@ -419,10 +419,10 @@ const styles = StyleSheet.create({
   seeAll: { color: "#C084FC", fontSize: 13, fontWeight: "600", fontFamily: "Satoshi-Medium" },
   dnaRow: { flexDirection: "row", flexWrap: "wrap", gap: 10 },
   dnaBadge: { borderRadius: 12, overflow: "hidden" },
-  dnaBadgeGradient: { flexDirection: "row", alignItems: "center", gap: 6, paddingHorizontal: 12, paddingVertical: 8, borderRadius: 12, borderWidth: 1, borderColor: "rgba(255,255,255,0.55)" },
+  dnaBadgeGradient: { flexDirection: "row", alignItems: "center", gap: 6, paddingHorizontal: 12, paddingVertical: 8, borderRadius: 12, borderWidth: 1, borderColor: "rgba(255,255,255,0.12)" },
   dnaBadgeText: { fontSize: 13, fontWeight: "600", fontFamily: "Satoshi-Medium" },
-  achCard: { width: 120, borderRadius: 18, padding: 14, gap: 6, alignItems: "center", overflow: "hidden", borderWidth: 1.5, borderColor: "rgba(255,255,255,0.55)" },
-  achCardLocked: { borderColor: "rgba(255,255,255,0.55)" },
+  achCard: { width: 120, borderRadius: 18, padding: 14, gap: 6, alignItems: "center", overflow: "hidden", borderWidth: 1.5, borderColor: "rgba(255,255,255,0.12)" },
+  achCardLocked: { borderColor: "rgba(255,255,255,0.12)" },
   achIconWrap: { width: 48, height: 48, borderRadius: 14, alignItems: "center", justifyContent: "center" },
   achTitle: { color: "#FFFFFF", fontSize: 12, fontWeight: "700", textAlign: "center", fontFamily: "Satoshi-Bold" },
   achTitleLocked: { color: "#3A2D4E" },
@@ -431,8 +431,8 @@ const styles = StyleSheet.create({
   achEarnedText: { color: "#4CAF50", fontSize: 10, fontWeight: "700", fontFamily: "Satoshi-Bold" },
   proCard: { borderRadius: 20, overflow: "hidden" },
   proGradient: { flexDirection: "row", alignItems: "center", padding: 20, gap: 14 },
-  proCircle1: { position: "absolute", width: 120, height: 120, borderRadius: 60, top: -30, right: -20, backgroundColor: "rgba(255,255,255,0.55)" },
-  proCircle2: { position: "absolute", width: 80, height: 80, borderRadius: 40, bottom: -20, left: 20, backgroundColor: "rgba(255,255,255,0.55)" },
+  proCircle1: { position: "absolute", width: 120, height: 120, borderRadius: 60, top: -30, right: -20, backgroundColor: "rgba(255,255,255,0.06)" },
+  proCircle2: { position: "absolute", width: 80, height: 80, borderRadius: 40, bottom: -20, left: 20, backgroundColor: "rgba(255,255,255,0.06)" },
   proContent: { flex: 1, gap: 4 },
   proTitleRow: { flexDirection: "row", alignItems: "center", gap: 6 },
   proTitle: { color: "#FFFFFF", fontSize: 18, fontWeight: "800", fontFamily: "Chillax-Bold" },
@@ -440,9 +440,9 @@ const styles = StyleSheet.create({
   proPrice: { alignItems: "flex-end" },
   proPriceValue: { color: "#FFFFFF", fontSize: 22, fontWeight: "800", fontFamily: "Chillax-Bold" },
   proPricePeriod: { color: "rgba(255,255,255,0.6)", fontSize: 12, fontFamily: "Satoshi-Regular" },
-  settingsGroup: { borderRadius: 20, overflow: "hidden", borderWidth: 1.5, borderColor: "rgba(255,255,255,0.55)", backgroundColor: "rgba(255,255,255,0.55)" },
+  settingsGroup: { borderRadius: 20, overflow: "hidden", borderWidth: 1.5, borderColor: "rgba(255,255,255,0.12)", backgroundColor: "rgba(255,255,255,0.06)" },
   settingsRow: { flexDirection: "row", alignItems: "center", paddingHorizontal: 16, paddingVertical: 14, gap: 14 },
-  settingsRowBorder: { borderBottomWidth: 1, borderBottomColor: "rgba(255,255,255,0.55)" },
+  settingsRowBorder: { borderBottomWidth: 1, borderBottomColor: "rgba(255,255,255,0.12)" },
   settingsIconWrap: { width: 36, height: 36, borderRadius: 10, backgroundColor: "rgba(123,47,190,0.2)", alignItems: "center", justifyContent: "center" },
   settingsLabel: { flex: 1, color: "#FFFFFF", fontSize: 15, fontFamily: "Satoshi-Regular" },
   settingsRight: { flexDirection: "row", alignItems: "center", gap: 8 },
@@ -452,7 +452,7 @@ const styles = StyleSheet.create({
   logoutText: { color: "#F44336", fontSize: 16, fontWeight: "700", fontFamily: "Satoshi-Bold" },
   version: { color: "#3A2D4E", fontSize: 12, textAlign: "center", fontFamily: "Satoshi-Regular" },
   // DNA Traits
-  dnaTraitsCard: { borderRadius: 20, overflow: "hidden", borderWidth: 1.5, borderColor: "rgba(255,255,255,0.55)", backgroundColor: "rgba(255,255,255,0.55)", padding: 16, gap: 12 },
+  dnaTraitsCard: { borderRadius: 20, overflow: "hidden", borderWidth: 1.5, borderColor: "rgba(255,255,255,0.12)", backgroundColor: "rgba(255,255,255,0.06)", padding: 16, gap: 12 },
   dnaCardLabel: { color: "#C084FC", fontSize: 12, fontWeight: "600", marginBottom: 4, fontFamily: "Satoshi-Medium" },
   traitRow: { flexDirection: "row", alignItems: "center", gap: 10 },
   traitEmoji: { fontSize: 18, width: 28, textAlign: "center" },
@@ -460,7 +460,7 @@ const styles = StyleSheet.create({
   traitLabelRow: { flexDirection: "row", justifyContent: "space-between", alignItems: "center" },
   traitLabel: { color: "rgba(255,255,255,0.85)", fontSize: 13, fontWeight: "600", fontFamily: "Satoshi-Medium" },
   traitScore: { fontSize: 12, fontWeight: "700", fontFamily: "Satoshi-Bold" },
-  traitTrack: { height: 6, backgroundColor: "rgba(255,255,255,0.55)", borderRadius: 3, overflow: "hidden" },
+  traitTrack: { height: 6, backgroundColor: "rgba(255,255,255,0.06)", borderRadius: 3, overflow: "hidden" },
   traitBar: { height: 6, borderRadius: 3 },
   // DNA Empty State
   dnaEmptyWrap: { alignItems: "center", gap: 10, paddingVertical: 8 },

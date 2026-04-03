@@ -186,7 +186,7 @@ export default function TripSummaryScreen() {
           </TouchableOpacity>
         </View>
         <View style={S.expenseCard}>
-          <LinearGradient colors={["rgba(255,255,255,0.55)", "rgba(255,255,255,0.55)"]} style={StyleSheet.absoluteFillObject} />
+          <LinearGradient colors={["rgba(255,255,255,0.06)", "rgba(255,255,255,0.06)"]} style={StyleSheet.absoluteFillObject} />
           <View style={S.expenseRow}>
             <Text style={S.expenseLabel}>Total Trip Cost</Text>
             <Text style={S.expenseValue}>${TRIP.totalSpent}</Text>
@@ -259,7 +259,7 @@ export default function TripSummaryScreen() {
                 <IconSymbol
                   name={star <= rating ? "star.fill" : "star"}
                   size={36}
-                  color={star <= rating ? "#FFD112" : "rgba(255,255,255,0.55)"}
+                  color={star <= rating ? "#FFD112" : "rgba(255,255,255,0.06)"}
                 />
               </TouchableOpacity>
             ))}
@@ -302,10 +302,10 @@ export default function TripSummaryScreen() {
 const S = StyleSheet.create({
   container: { flex: 1, backgroundColor: BRAND.bgDeep },
 
-  header: { flexDirection: "row", alignItems: "center", paddingHorizontal: 16, paddingBottom: 130, paddingTop: 4 },
-  backBtn: { width: 36, height: 36, borderRadius: 18, backgroundColor: "rgba(255,255,255,0.55)", alignItems: "center", justifyContent: "center" },
+  header: { flexDirection: "row", alignItems: "center", paddingHorizontal: 16, paddingBottom: 16, paddingTop: 4 },
+  backBtn: { width: 36, height: 36, borderRadius: 18, backgroundColor: "rgba(255,255,255,0.06)", alignItems: "center", justifyContent: "center" },
   headerTitle: { ...TYPE.h2, color: BRAND.textPrimary, flex: 1, textAlign: "center" },
-  shareBtn: { width: 36, height: 36, borderRadius: 18, backgroundColor: "rgba(255,255,255,0.55)", alignItems: "center", justifyContent: "center" },
+  shareBtn: { width: 36, height: 36, borderRadius: 18, backgroundColor: "rgba(255,255,255,0.06)", alignItems: "center", justifyContent: "center" },
 
   heroWrap: { marginHorizontal: 16, borderRadius: RADIUS.xxl, overflow: "hidden", marginBottom: 16, height: 260 },
   heroCover: { ...StyleSheet.absoluteFillObject },
@@ -337,11 +337,11 @@ const S = StyleSheet.create({
   statValue: { ...TYPE.h3, fontFamily: "Chillax-Bold" },
   statLabel: { ...TYPE.caption, color: BRAND.textMuted, textAlign: "center" },
 
-  expenseCard: { overflow: "hidden", marginHorizontal: 16, borderRadius: RADIUS.xl, borderWidth: 1, borderColor: "rgba(255,255,255,0.55)", padding: 16, gap: 10 },
+  expenseCard: { overflow: "hidden", marginHorizontal: 16, borderRadius: RADIUS.xl, borderWidth: 1, borderColor: "rgba(255,255,255,0.12)", padding: 16, gap: 10 },
   expenseRow: { flexDirection: "row", justifyContent: "space-between" },
   expenseLabel: { ...TYPE.body, color: BRAND.textSecondary },
   expenseValue: { ...TYPE.bodyMed, color: BRAND.textPrimary, fontFamily: "Chillax-Semibold" },
-  expenseBar: { height: 6, backgroundColor: "rgba(255,255,255,0.55)", borderRadius: 3, overflow: "hidden", marginTop: 4 },
+  expenseBar: { height: 6, backgroundColor: "rgba(255,255,255,0.06)", borderRadius: 3, overflow: "hidden", marginTop: 4 },
   expenseBarFill: { height: "100%", borderRadius: 3 },
   expenseBarLabel: { ...TYPE.caption, color: BRAND.textMuted },
 

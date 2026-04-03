@@ -114,7 +114,7 @@ function EventCard({ event, isLast }: { event: ScheduleEvent; isLast: boolean })
         }}
         activeOpacity={0.85}
       >
-        <LinearGradient colors={["rgba(255,255,255,0.55)", "rgba(255,255,255,0.55)"]} style={StyleSheet.absoluteFillObject} />
+        <LinearGradient colors={["rgba(255,255,255,0.06)", "rgba(255,255,255,0.06)"]} style={StyleSheet.absoluteFillObject} />
 
         {event.image && (
           <Image source={{ uri: event.image }} style={S.eventImage} resizeMode="cover" />
@@ -277,20 +277,20 @@ const S = StyleSheet.create({
   container: { flex: 1, backgroundColor: BRAND.bgDeep },
   orb1: { position: "absolute", top: -60, right: -60, width: 200, height: 200, borderRadius: 100, backgroundColor: "rgba(100,67,244,0.1)" },
 
-  header: { flexDirection: "row", alignItems: "center", paddingHorizontal: 16, paddingBottom: 130, paddingTop: 4 },
-  backBtn: { width: 36, height: 36, borderRadius: 18, backgroundColor: "rgba(255,255,255,0.55)", alignItems: "center", justifyContent: "center" },
+  header: { flexDirection: "row", alignItems: "center", paddingHorizontal: 16, paddingBottom: 16, paddingTop: 4 },
+  backBtn: { width: 36, height: 36, borderRadius: 18, backgroundColor: "rgba(255,255,255,0.06)", alignItems: "center", justifyContent: "center" },
   headerCenter: { flex: 1, alignItems: "center" },
   headerTitle: { ...TYPE.h2, color: BRAND.textPrimary },
   headerSub: { ...TYPE.caption, color: BRAND.textMuted, marginTop: 1 },
-  viewModeBtn: { width: 36, height: 36, borderRadius: 18, backgroundColor: "rgba(255,255,255,0.55)", alignItems: "center", justifyContent: "center" },
+  viewModeBtn: { width: 36, height: 36, borderRadius: 18, backgroundColor: "rgba(255,255,255,0.06)", alignItems: "center", justifyContent: "center" },
 
   progressWrap: { flexDirection: "row", alignItems: "center", paddingHorizontal: 16, gap: 10, marginBottom: 14 },
-  progressBar: { flex: 1, height: 4, backgroundColor: "rgba(255,255,255,0.55)", borderRadius: 2, overflow: "hidden" },
+  progressBar: { flex: 1, height: 4, backgroundColor: "rgba(255,255,255,0.06)", borderRadius: 2, overflow: "hidden" },
   progressFill: { height: "100%", borderRadius: 2 },
   progressText: { ...TYPE.caption, color: BRAND.textMuted },
 
   daySelectorRow: { paddingHorizontal: 16, gap: 10, marginBottom: 16, paddingBottom: 130 },
-  dayChip: { overflow: "hidden", borderRadius: RADIUS.xl, paddingHorizontal: 14, paddingVertical: 10, alignItems: "center", minWidth: 80, borderWidth: 1, borderColor: "rgba(255,255,255,0.55)" },
+  dayChip: { overflow: "hidden", borderRadius: RADIUS.xl, paddingHorizontal: 14, paddingVertical: 10, alignItems: "center", minWidth: 80, borderWidth: 1, borderColor: "rgba(255,255,255,0.12)" },
   dayChipActive: { borderColor: "transparent" },
   dayChipLabel: { ...TYPE.caption, color: BRAND.textMuted, fontFamily: "Satoshi-Bold" },
   dayChipLabelActive: { color: "#FFF" },
@@ -300,9 +300,9 @@ const S = StyleSheet.create({
   dayChipCityActive: { color: "rgba(255,255,255,0.7)" },
 
   daySection: { paddingHorizontal: 16 },
-  dayHeader: { overflow: "hidden", flexDirection: "row", alignItems: "center", borderRadius: RADIUS.xl, padding: 14, marginBottom: 16, borderWidth: 1, borderColor: "rgba(255,255,255,0.55)", gap: 12 },
+  dayHeader: { overflow: "hidden", flexDirection: "row", alignItems: "center", borderRadius: RADIUS.xl, padding: 14, marginBottom: 16, borderWidth: 1, borderColor: "rgba(255,255,255,0.12)", gap: 12 },
   dayHeaderActive: { borderColor: "rgba(100,67,244,0.3)" },
-  dayBadge: { overflow: "hidden", width: 52, height: 52, borderRadius: RADIUS.md, alignItems: "center", justifyContent: "center", backgroundColor: "rgba(255,255,255,0.55)" },
+  dayBadge: { overflow: "hidden", width: 52, height: 52, borderRadius: RADIUS.md, alignItems: "center", justifyContent: "center", backgroundColor: "rgba(255,255,255,0.06)" },
   dayBadgeActive: {},
   dayBadgeText: { ...TYPE.label, color: BRAND.textSecondary },
   dayBadgeTextActive: { color: "#FFF" },
@@ -320,7 +320,7 @@ const S = StyleSheet.create({
   eventDot: { width: 10, height: 10, borderRadius: 5, marginBottom: 4 },
   eventLine: { width: 2, flex: 1, minHeight: 20, borderRadius: 1 },
 
-  eventCard: { overflow: "hidden", flex: 1, borderRadius: RADIUS.xl, borderWidth: 1, borderColor: "rgba(255,255,255,0.55)", marginBottom: 10 },
+  eventCard: { overflow: "hidden", flex: 1, borderRadius: RADIUS.xl, borderWidth: 1, borderColor: "rgba(255,255,255,0.12)", marginBottom: 10 },
   eventCardUnconfirmed: { borderStyle: "dashed", borderColor: "rgba(255,211,18,0.2)" },
   eventImage: { width: "100%", height: 80, borderTopLeftRadius: RADIUS.xl - 1, borderTopRightRadius: RADIUS.xl - 1 },
   eventCardContent: { flexDirection: "row", alignItems: "flex-start", padding: 12, gap: 10 },

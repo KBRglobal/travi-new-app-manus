@@ -292,10 +292,10 @@ export default function ItineraryBuilderScreen() {
               {/* Reorder controls */}
               <View style={S.reorderControls}>
                 <TouchableOpacity style={[S.reorderBtn, idx === 0 && S.reorderBtnDisabled]} onPress={() => handleMoveUp(idx)} activeOpacity={0.8}>
-                  <IconSymbol name="chevron.up" size={14} color={idx === 0 ? "rgba(255,255,255,0.55)" : "#FFFFFF"} />
+                  <IconSymbol name="chevron.up" size={14} color={idx === 0 ? "rgba(255,255,255,0.06)" : "#FFFFFF"} />
                 </TouchableOpacity>
                 <TouchableOpacity style={[S.reorderBtn, idx === (currentDay?.stops.length ?? 0) - 1 && S.reorderBtnDisabled]} onPress={() => handleMoveDown(idx)} activeOpacity={0.8}>
-                  <IconSymbol name="chevron.down" size={14} color={idx === (currentDay?.stops.length ?? 0) - 1 ? "rgba(255,255,255,0.55)" : "#FFFFFF"} />
+                  <IconSymbol name="chevron.down" size={14} color={idx === (currentDay?.stops.length ?? 0) - 1 ? "rgba(255,255,255,0.06)" : "#FFFFFF"} />
                 </TouchableOpacity>
               </View>
 
@@ -383,8 +383,8 @@ const S = StyleSheet.create({
   orb1: { position: "absolute", width: 400, height: 400, borderRadius: 200, top: -150, right: -100, backgroundColor: "rgba(100,67,244,0.07)" },
   orb2: { position: "absolute", width: 250, height: 250, borderRadius: 125, bottom: 100, left: -80, backgroundColor: "rgba(249,68,152,0.05)" },
 
-  header: { flexDirection: "row", alignItems: "center", paddingHorizontal: 16, paddingBottom: 130, gap: 12 },
-  backBtn: { width: 40, height: 40, borderRadius: 20, backgroundColor: "rgba(255,255,255,0.55)", alignItems: "center", justifyContent: "center" },
+  header: { flexDirection: "row", alignItems: "center", paddingHorizontal: 16, paddingBottom: 16, gap: 12 },
+  backBtn: { width: 40, height: 40, borderRadius: 20, backgroundColor: "rgba(255,255,255,0.06)", alignItems: "center", justifyContent: "center" },
   headerCenter: { flex: 1 },
   headerTitle: { color: "#FFFFFF", fontSize: 18, fontWeight: "900", fontFamily: "Chillax-Bold" },
   headerSub: { color: "rgba(255,255,255,0.5)", fontSize: 12, marginTop: 1 },
@@ -393,7 +393,7 @@ const S = StyleSheet.create({
 
   daySelectorWrap: { marginBottom: 0 },
   daySelector: { paddingHorizontal: 16, paddingVertical: 8, gap: 8 },
-  dayTab: { borderRadius: 16, overflow: "hidden", paddingHorizontal: 16, paddingVertical: 10, alignItems: "center", minWidth: 80, borderWidth: 1, borderColor: "rgba(255,255,255,0.55)", backgroundColor: "rgba(255,255,255,0.55)" },
+  dayTab: { borderRadius: 16, overflow: "hidden", paddingHorizontal: 16, paddingVertical: 10, alignItems: "center", minWidth: 80, borderWidth: 1, borderColor: "rgba(255,255,255,0.12)", backgroundColor: "rgba(255,255,255,0.06)" },
   dayTabActive: { borderColor: "transparent" },
   dayTabEmoji: { fontSize: 18, marginBottom: 2 },
   dayTabLabel: { color: "rgba(255,255,255,0.5)", fontSize: 12, fontWeight: "700" },
@@ -422,9 +422,9 @@ const S = StyleSheet.create({
   mustSeeBadgeText: { color: "#000", fontSize: 11, fontWeight: "800",
       fontFamily: "Chillax-Bold" },
   reorderControls: { position: "absolute", top: 12, right: 44, flexDirection: "column", gap: 4 },
-  reorderBtn: { width: 28, height: 28, borderRadius: 8, backgroundColor: "rgba(0,0,0,0.5)", alignItems: "center", justifyContent: "center", borderWidth: 1, borderColor: "rgba(255,255,255,0.55)" },
+  reorderBtn: { width: 28, height: 28, borderRadius: 8, backgroundColor: "rgba(0,0,0,0.5)", alignItems: "center", justifyContent: "center", borderWidth: 1, borderColor: "rgba(255,255,255,0.12)" },
   reorderBtnDisabled: { opacity: 0.3 },
-  removeBtn: { position: "absolute", top: 12, right: 12, width: 28, height: 28, borderRadius: 8, backgroundColor: "rgba(0,0,0,0.5)", alignItems: "center", justifyContent: "center", borderWidth: 1, borderColor: "rgba(255,255,255,0.55)" },
+  removeBtn: { position: "absolute", top: 12, right: 12, width: 28, height: 28, borderRadius: 8, backgroundColor: "rgba(0,0,0,0.5)", alignItems: "center", justifyContent: "center", borderWidth: 1, borderColor: "rgba(255,255,255,0.12)" },
   stopContent: { position: "absolute", bottom: 0, left: 0, right: 0, padding: 14, gap: 4 },
   stopTimeRow: { flexDirection: "row", alignItems: "center", gap: 6 },
   stopTime: { color: "#FFFFFF", fontSize: 13, fontWeight: "800", fontFamily: "Chillax-Bold" },

@@ -126,17 +126,17 @@ function TxModal({ tx, onClose }: { tx: typeof TRANSACTIONS[0]["items"][0] | nul
 const tm = StyleSheet.create({
   overlay: { flex: 1, backgroundColor: "rgba(0,0,0,0.6)", justifyContent: "flex-end" },
   sheet: { backgroundColor: "#1A1A2E", borderTopLeftRadius: 28, borderTopRightRadius: 28, padding: 24, paddingBottom: 130, alignItems: "center" },
-  handle: { width: 40, height: 4, backgroundColor: "rgba(255,255,255,0.55)", borderRadius: 2, marginBottom: 20 },
-  closeBtn: { position: "absolute", top: 20, right: 20, width: 32, height: 32, borderRadius: 16, backgroundColor: "rgba(255,255,255,0.55)", alignItems: "center", justifyContent: "center" },
+  handle: { width: 40, height: 4, backgroundColor: "rgba(255,255,255,0.06)", borderRadius: 2, marginBottom: 20 },
+  closeBtn: { position: "absolute", top: 20, right: 20, width: 32, height: 32, borderRadius: 16, backgroundColor: "rgba(255,255,255,0.06)", alignItems: "center", justifyContent: "center" },
   closeX: { color: "rgba(255,255,255,0.6)", fontSize: 14, fontWeight: "700", fontFamily: "Satoshi-Bold" },
   iconCircle: { width: 72, height: 72, borderRadius: 36, alignItems: "center", justifyContent: "center", marginBottom: 12 },
   iconEmoji: { fontSize: 32 },
   txTitle: { color: "#FFFFFF", fontSize: 18, fontWeight: "800", textAlign: "center", fontFamily: "Chillax-Bold" },
   txAmount: { color: "#22C55E", fontSize: 32, fontWeight: "900", marginTop: 4, fontFamily: "Satoshi-Bold" },
   txTime: { color: "rgba(255,255,255,0.45)", fontSize: 13, marginTop: 4, marginBottom: 20 },
-  rows: { width: "100%", backgroundColor: "rgba(255,255,255,0.55)", borderRadius: 16, overflow: "hidden" },
+  rows: { width: "100%", backgroundColor: "rgba(255,255,255,0.06)", borderRadius: 16, overflow: "hidden" },
   row: { flexDirection: "row", justifyContent: "space-between", alignItems: "center", padding: 16 },
-  divider: { height: 1, backgroundColor: "rgba(255,255,255,0.55)", marginHorizontal: 16 },
+  divider: { height: 1, backgroundColor: "rgba(255,255,255,0.06)", marginHorizontal: 16 },
   rowLabel: { color: "rgba(255,255,255,0.5)", fontSize: 14 },
   rowValue: { color: "#FFFFFF", fontSize: 14, fontWeight: "700", fontFamily: "Satoshi-Bold" },
   statusBadge: { backgroundColor: "rgba(34,197,94,0.15)", borderRadius: 8, paddingHorizontal: 10, paddingVertical: 4 },
@@ -161,7 +161,7 @@ function ProgressBar({ progress, color }: { progress: number; color: string }) {
   );
 }
 const pb = StyleSheet.create({
-  track: { height: 6, backgroundColor: "rgba(255,255,255,0.55)", borderRadius: 3, overflow: "hidden" },
+  track: { height: 6, backgroundColor: "rgba(255,255,255,0.06)", borderRadius: 3, overflow: "hidden" },
   fill: { height: "100%", borderRadius: 3, overflow: "hidden" },
 });
 
@@ -327,7 +327,7 @@ export default function WalletScreen() {
           {/* Action buttons */}
           <View style={S.actionBtnsRow}>
             <TouchableOpacity style={S.actionBtn} onPress={() => router.push("/(tabs)/wallet-kyc" as never)} activeOpacity={0.85}>
-              <LinearGradient colors={["rgba(255,255,255,0.55)", "rgba(255,255,255,0.55)"]} style={StyleSheet.absoluteFillObject} />
+              <LinearGradient colors={["rgba(255,255,255,0.06)", "rgba(255,255,255,0.06)"]} style={StyleSheet.absoluteFillObject} />
               <Text style={S.actionBtnEmoji}>📸</Text>
               <Text style={S.actionBtnText}>Verify ID</Text>
             </TouchableOpacity>
@@ -454,7 +454,7 @@ export default function WalletScreen() {
                     <Text style={S.redeemTitle}>{way.title}</Text>
                     <Text style={S.redeemDesc}>{way.desc}</Text>
                   </View>
-                  <IconSymbol name="chevron.right" size={16} color="rgba(255,255,255,0.55)" />
+                  <IconSymbol name="chevron.right" size={16} color="rgba(255,255,255,0.06)" />
                 </TouchableOpacity>
               ))}
             </View>
@@ -511,7 +511,7 @@ export default function WalletScreen() {
 const S = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#0D0628" },
 
-  header: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 20, paddingBottom: 130 },
+  header: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 20, paddingBottom: 16 },
   headerTitle: { color: "#FFFFFF", fontSize: 26, fontWeight: "900", letterSpacing: -0.5, fontFamily: "Chillax-Bold" },
   pointsBadge: { borderRadius: 20, overflow: "hidden", paddingHorizontal: 14, paddingVertical: 7 },
   pointsBadgeText: { color: "#FFFFFF", fontSize: 14, fontWeight: "800", fontFamily: "Chillax-Bold" },
@@ -519,12 +519,12 @@ const S = StyleSheet.create({
   // Balance card
   cardWrap: { paddingHorizontal: 20, marginBottom: 20 },
   balanceCard: { borderRadius: 28, overflow: "hidden", padding: 22, gap: 0 },
-  cardOrb1: { position: "absolute", width: 200, height: 200, borderRadius: 100, backgroundColor: "rgba(255,255,255,0.55)", top: -60, right: -60 },
-  cardOrb2: { position: "absolute", width: 140, height: 140, borderRadius: 70, backgroundColor: "rgba(255,255,255,0.55)", bottom: -40, left: 20 },
+  cardOrb1: { position: "absolute", width: 200, height: 200, borderRadius: 100, backgroundColor: "rgba(255,255,255,0.06)", top: -60, right: -60 },
+  cardOrb2: { position: "absolute", width: 140, height: 140, borderRadius: 70, backgroundColor: "rgba(255,255,255,0.06)", bottom: -40, left: 20 },
   cardTopRow: { flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: 12 },
   cardLabel: { color: "rgba(255,255,255,0.65)", fontSize: 11, fontWeight: "800",
       fontFamily: "Chillax-Bold", letterSpacing: 1.5 },
-  tierBadge: { backgroundColor: "rgba(255,255,255,0.55)", borderRadius: 12, paddingHorizontal: 10, paddingVertical: 4 },
+  tierBadge: { backgroundColor: "rgba(255,255,255,0.06)", borderRadius: 12, paddingHorizontal: 10, paddingVertical: 4 },
   tierBadgeText: { color: "#FFFFFF", fontSize: 12, fontWeight: "800", fontFamily: "Chillax-Bold" },
   balanceAmount: { color: "#FFFFFF", fontSize: 52, fontWeight: "900", letterSpacing: -2, lineHeight: 56, fontFamily: "Satoshi-Bold" },
   balanceSub: { color: "rgba(255,255,255,0.6)", fontSize: 14, marginTop: 4, marginBottom: 18 },
@@ -539,12 +539,12 @@ const S = StyleSheet.create({
   statItem: { flex: 1, alignItems: "center", gap: 3 },
   statValue: { color: "#FFFFFF", fontSize: 18, fontWeight: "900", fontFamily: "Satoshi-Bold" },
   statLabel: { color: "rgba(255,255,255,0.55)", fontSize: 10, fontWeight: "600" },
-  statDivider: { width: 1, backgroundColor: "rgba(255,255,255,0.55)" },
+  statDivider: { width: 1, backgroundColor: "rgba(255,255,255,0.06)" },
 
   // Tabs
   tabsWrap: { paddingHorizontal: 20, marginBottom: 4 },
-  tabs: { flexDirection: "row", backgroundColor: "rgba(255,255,255,0.55)", borderRadius: 16, padding: 4, position: "relative" },
-  tabIndicator: { position: "absolute", top: 4, bottom: 4, width: "30%", backgroundColor: "rgba(255,255,255,0.55)", borderRadius: 12 },
+  tabs: { flexDirection: "row", backgroundColor: "rgba(255,255,255,0.06)", borderRadius: 16, padding: 4, position: "relative" },
+  tabIndicator: { position: "absolute", top: 4, bottom: 4, width: "30%", backgroundColor: "rgba(255,255,255,0.06)", borderRadius: 12 },
   tab: { flex: 1, paddingVertical: 10, alignItems: "center" },
   tabText: { color: "rgba(255,255,255,0.5)", fontSize: 14, fontWeight: "700", fontFamily: "Satoshi-Bold" },
   tabTextActive: { color: "#FFFFFF" },
@@ -555,7 +555,7 @@ const S = StyleSheet.create({
   sectionSub: { color: "rgba(255,255,255,0.5)", fontSize: 13, marginTop: 4, marginBottom: 14 },
 
   // Earn rows
-  earnList: { gap: 2, backgroundColor: "rgba(255,255,255,0.55)", borderRadius: 20, overflow: "hidden", borderWidth: 1, borderColor: "rgba(255,255,255,0.55)" },
+  earnList: { gap: 2, backgroundColor: "rgba(255,255,255,0.06)", borderRadius: 20, overflow: "hidden", borderWidth: 1, borderColor: "rgba(255,255,255,0.12)" },
   earnRow: { flexDirection: "row", alignItems: "center", padding: 14, gap: 12 },
   earnIcon: { width: 44, height: 44, borderRadius: 14, alignItems: "center", justifyContent: "center" },
   earnAction: { flex: 1, color: "#FFFFFF", fontSize: 15, fontWeight: "700", fontFamily: "Satoshi-Bold" },
@@ -563,7 +563,7 @@ const S = StyleSheet.create({
   earnBadgeText: { fontSize: 12, fontWeight: "800", fontFamily: "Chillax-Bold" },
 
   // Tier ladder
-  tierLadder: { gap: 2, backgroundColor: "rgba(255,255,255,0.55)", borderRadius: 20, overflow: "hidden", borderWidth: 1, borderColor: "rgba(255,255,255,0.55)", marginTop: 12 },
+  tierLadder: { gap: 2, backgroundColor: "rgba(255,255,255,0.06)", borderRadius: 20, overflow: "hidden", borderWidth: 1, borderColor: "rgba(255,255,255,0.12)", marginTop: 12 },
   tierRow: { flexDirection: "row", alignItems: "center", padding: 14, gap: 12 },
   tierEmoji: { fontSize: 22, width: 32, textAlign: "center" },
   tierInfo: { flex: 1 },
@@ -579,7 +579,7 @@ const S = StyleSheet.create({
   featuredCardSub: { color: "rgba(255,255,255,0.65)", fontSize: 12, marginTop: 2 },
 
   // Redeem list
-  redeemList: { gap: 2, backgroundColor: "rgba(255,255,255,0.55)", borderRadius: 20, overflow: "hidden", borderWidth: 1, borderColor: "rgba(255,255,255,0.55)", marginTop: 12 },
+  redeemList: { gap: 2, backgroundColor: "rgba(255,255,255,0.06)", borderRadius: 20, overflow: "hidden", borderWidth: 1, borderColor: "rgba(255,255,255,0.12)", marginTop: 12 },
   redeemRow: { flexDirection: "row", alignItems: "center", padding: 14, gap: 12 },
   redeemIcon: { width: 44, height: 44, borderRadius: 14, alignItems: "center", justifyContent: "center" },
   redeemText: { flex: 1 },
@@ -590,7 +590,7 @@ const S = StyleSheet.create({
   groupHeader: { flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: 8 },
   groupDate: { color: "#FFFFFF", fontSize: 16, fontWeight: "800", fontFamily: "Chillax-Bold" },
   groupTotal: { color: "#22C55E", fontSize: 13, fontWeight: "700", fontFamily: "Satoshi-Bold" },
-  txGroup: { backgroundColor: "rgba(255,255,255,0.55)", borderRadius: 20, overflow: "hidden", borderWidth: 1, borderColor: "rgba(255,255,255,0.55)" },
+  txGroup: { backgroundColor: "rgba(255,255,255,0.06)", borderRadius: 20, overflow: "hidden", borderWidth: 1, borderColor: "rgba(255,255,255,0.12)" },
   txRow: { flexDirection: "row", alignItems: "center", padding: 14, gap: 12 },
   txIcon: { width: 44, height: 44, borderRadius: 14, alignItems: "center", justifyContent: "center" },
   txInfo: { flex: 1 },
@@ -601,7 +601,7 @@ const S = StyleSheet.create({
   txPts: { color: "rgba(255,255,255,0.5)", fontSize: 11, marginTop: 1 },
   actionBtnsRow: { flexDirection: "row", gap: 8, paddingHorizontal: 20, paddingTop: 12, paddingBottom: 130 },
   actionBtn: { flex: 1, borderRadius: 14, shadowColor: "#F94498", shadowOffset: { width: 0, height: 6 }, shadowOpacity: 0.4, shadowRadius: 24, elevation: 10,
-    overflow: "hidden", paddingVertical: 12, alignItems: "center", gap: 4, borderWidth: 1, borderColor: "rgba(255,255,255,0.55)" },
+    overflow: "hidden", paddingVertical: 12, alignItems: "center", gap: 4, borderWidth: 1, borderColor: "rgba(255,255,255,0.12)" },
   actionBtnEmoji: { fontSize: 20 },
   actionBtnText: { color: "#FFFFFF", fontSize: 11, fontWeight: "700" },
 });

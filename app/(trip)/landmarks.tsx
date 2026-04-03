@@ -139,7 +139,7 @@ export default function LandmarksScreen() {
                 activeOpacity={0.88}
               >
                 <LinearGradient
-                  colors={isSelected ? [color + "22", color + "11"] : ["rgba(255,255,255,0.55)", "rgba(255,255,255,0.55)"]}
+                  colors={isSelected ? [color + "22", color + "11"] : ["rgba(255,255,255,0.06)", "rgba(255,255,255,0.06)"]}
                   style={StyleSheet.absoluteFillObject}
                 />
                 <View style={[styles.iconWrap, { backgroundColor: color + "22" }]}>
@@ -159,7 +159,7 @@ export default function LandmarksScreen() {
                   </View>
                 ) : (
                   <View style={styles.addCircle}>
-                    <IconSymbol name="plus" size={16} color="rgba(255,255,255,0.55)" />
+                    <IconSymbol name="plus" size={16} color="rgba(255,255,255,0.06)" />
                   </View>
                 )}
               </TouchableOpacity>
@@ -178,7 +178,7 @@ export default function LandmarksScreen() {
           activeOpacity={0.88}
         >
           <LinearGradient
-            colors={selected.length > 0 ? ["#6443F4", "#F94498"] : ["rgba(255,255,255,0.55)", "rgba(255,255,255,0.55)"]}
+            colors={selected.length > 0 ? ["#6443F4", "#F94498"] : ["rgba(255,255,255,0.06)", "rgba(255,255,255,0.06)"]}
             start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
             style={styles.ctaGradient}
           >
@@ -194,10 +194,10 @@ export default function LandmarksScreen() {
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#0D0628" },
   orb1: { position: "absolute", width: width, height: width, borderRadius: width / 2, top: -width * 0.4, right: -width * 0.3, backgroundColor: "rgba(233,30,140,0.07)" },
-  header: { flexDirection: "row", alignItems: "center", paddingHorizontal: 20, paddingTop: 60, paddingBottom: 130, gap: 12 },
-  backBtn: { width: 40, height: 40, borderRadius: 14, backgroundColor: "rgba(255,255,255,0.55)", alignItems: "center", justifyContent: "center" },
+  header: { flexDirection: "row", alignItems: "center", paddingHorizontal: 20, paddingTop: 60, paddingBottom: 16, gap: 12 },
+  backBtn: { width: 40, height: 40, borderRadius: 14, backgroundColor: "rgba(255,255,255,0.06)", alignItems: "center", justifyContent: "center" },
   progressWrap: { flex: 1, gap: 6 },
-  progressTrack: { height: 4, backgroundColor: "rgba(255,255,255,0.55)", borderRadius: 2, overflow: "hidden" },
+  progressTrack: { height: 4, backgroundColor: "rgba(255,255,255,0.06)", borderRadius: 2, overflow: "hidden" },
   progressFill: { height: "100%", backgroundColor: "#F94498", borderRadius: 2 },
   progressLabel: { color: "rgba(255,255,255,0.5)", fontSize: 12, fontFamily: "Satoshi-Regular", textAlign: "right" },
   duckRow: { flexDirection: "row", alignItems: "flex-end", paddingHorizontal: 20, paddingBottom: 130, gap: 10 },
@@ -209,7 +209,7 @@ const styles = StyleSheet.create({
   duckMessage: { color: "#FFFFFF", fontSize: 15, fontFamily: "Chillax-Semibold", fontWeight: "700", lineHeight: 20 },
   duckSub: { color: "rgba(255,255,255,0.5)", fontSize: 12, fontFamily: "Satoshi-Regular", marginTop: 2 },
   list: { paddingHorizontal: 20, gap: 12, paddingBottom: 130 },
-  card: { flexDirection: "row", alignItems: "center", borderRadius: 20, padding: 20, gap: 14, overflow: "hidden", borderWidth: 2, borderColor: "rgba(255,255,255,0.55)" },
+  card: { flexDirection: "row", alignItems: "center", borderRadius: 20, padding: 20, gap: 14, overflow: "hidden", borderWidth: 2, borderColor: "rgba(255,255,255,0.12)" },
   iconWrap: { width: 52, height: 52, borderRadius: 16, alignItems: "center", justifyContent: "center" },
   cardInfo: { flex: 1, gap: 3 },
   cardName: { color: "rgba(255,255,255,0.8)", fontSize: 16, fontFamily: "Chillax-Semibold", fontWeight: "700" },
@@ -217,7 +217,7 @@ const styles = StyleSheet.create({
   ratingRow: { flexDirection: "row", alignItems: "center", gap: 4, marginTop: 2 },
   ratingText: { color: "#FBBF24", fontSize: 12, fontFamily: "Chillax-Semibold", fontWeight: "600" },
   checkCircle: { width: 36, height: 36, borderRadius: 18, alignItems: "center", justifyContent: "center" },
-  addCircle: { width: 36, height: 36, borderRadius: 18, borderWidth: 1.5, borderColor: "rgba(255,255,255,0.55)", alignItems: "center", justifyContent: "center" },
+  addCircle: { width: 36, height: 36, borderRadius: 18, borderWidth: 1.5, borderColor: "rgba(255,255,255,0.12)", alignItems: "center", justifyContent: "center" },
   ctaWrap: { paddingHorizontal: 20, paddingBottom: 130, paddingTop: 12, gap: 8 },
   selectedCount: { color: "rgba(192,132,252,0.8)", fontSize: 13, fontFamily: "Chillax-Semibold", fontWeight: "600", textAlign: "center" },
   ctaBtn: { borderRadius: 20, shadowColor: "#F94498", shadowOffset: { width: 0, height: 6 }, shadowOpacity: 0.4, shadowRadius: 24, elevation: 10,

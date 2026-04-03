@@ -422,7 +422,7 @@ const styles = StyleSheet.create({
   },
   backBtn: {
     width: 36, height: 36, borderRadius: 18,
-    backgroundColor: "rgba(255,255,255,0.55)",
+    backgroundColor: "rgba(255,255,255,0.06)",
     alignItems: "center", justifyContent: "center", marginTop: 4,
   },
   headerContent: { flex: 1 },
@@ -442,7 +442,7 @@ const styles = StyleSheet.create({
   },
   statCard: {
     flex: 1, backgroundColor: "#1e2022", borderRadius: 12, padding: 10,
-    alignItems: "center", borderWidth: 1, borderColor: "rgba(255,255,255,0.55)",
+    alignItems: "center", borderWidth: 1, borderColor: "rgba(255,255,255,0.12)",
   },
   statCount: { fontSize: 20, fontFamily: "Chillax-Bold", fontWeight: "800" },
   statLabel: { fontSize: 9, fontFamily: "Satoshi-Regular", color: "#9BA1A6", marginTop: 2, textAlign: "center" },
@@ -451,7 +451,7 @@ const styles = StyleSheet.create({
     flexDirection: "row", alignItems: "center", gap: 10,
     marginHorizontal: 16, marginBottom: 8,
     backgroundColor: "#1e2022", borderRadius: 12, paddingHorizontal: 14, paddingVertical: 10,
-    borderWidth: 1, borderColor: "rgba(255,255,255,0.55)",
+    borderWidth: 1, borderColor: "rgba(255,255,255,0.12)",
   },
   searchInput: { flex: 1, fontSize: 14, fontFamily: "Satoshi-Regular", color: "#ECEDEE" },
 
@@ -472,7 +472,7 @@ const styles = StyleSheet.create({
 
   regCard: {
     backgroundColor: "#1e2022", borderRadius: 16, padding: 14,
-    borderWidth: 1, borderColor: "rgba(255,255,255,0.55)",
+    borderWidth: 1, borderColor: "rgba(255,255,255,0.12)",
   },
   regCardCritical: { borderColor: "rgba(239,68,68,0.3)" },
 
@@ -507,13 +507,13 @@ const styles = StyleSheet.create({
   impactText: { fontSize: 12, fontFamily: "Satoshi-Regular", color: "#9BA1A6", lineHeight: 18 },
 
   dateRow: {
-    flexDirection: "row", backgroundColor: "rgba(255,255,255,0.55)",
+    flexDirection: "row", backgroundColor: "rgba(255,255,255,0.06)",
     borderRadius: 10, padding: 12,
   },
   dateItem: { flex: 1, alignItems: "center" },
   dateLabel: { fontSize: 10, fontFamily: "Satoshi-Regular", color: "#9BA1A6", marginBottom: 3 },
   dateValue: { fontSize: 12, fontFamily: "Chillax-Semibold", fontWeight: "700", color: "#ECEDEE" },
-  dateDivider: { width: 1, backgroundColor: "rgba(255,255,255,0.55)", marginHorizontal: 12 },
+  dateDivider: { width: 1, backgroundColor: "rgba(255,255,255,0.06)", marginHorizontal: 12 },
 
   actionBox: {
     flexDirection: "row", alignItems: "flex-start", gap: 8,
@@ -527,7 +527,7 @@ const styles = StyleSheet.create({
   disclaimer: {
     flexDirection: "row", alignItems: "flex-start", gap: 8,
     margin: 16, padding: 12,
-    backgroundColor: "rgba(255,255,255,0.55)", borderRadius: 10,
+    backgroundColor: "rgba(255,255,255,0.06)", borderRadius: 10,
   },
   disclaimerText: { flex: 1, fontSize: 11, fontFamily: "Satoshi-Regular", color: "#9BA1A6", lineHeight: 16 },
 });

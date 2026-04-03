@@ -17,7 +17,7 @@ interface BlurCardProps {
 export function BlurCard({
   intensity = 20,
   borderRadius = 18,
-  borderColor = "rgba(255,255,255,0.55)",
+  borderColor = "rgba(255,255,255,0.12)",
   borderWidth = 1,
   style,
   children,

@@ -247,7 +247,7 @@ export default function DestinationSwipeScreen() {
 // ─── Styles ───────────────────────────────────────────────────────────────────
 const S = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#0D0628" },
-  header: { flexDirection: "row", alignItems: "center", paddingHorizontal: 16, paddingBottom: 130, paddingTop: 4 },
+  header: { flexDirection: "row", alignItems: "center", paddingHorizontal: 16, paddingBottom: 16, paddingTop: 4 },
   backBtn: { width: 40, height: 40, alignItems: "center", justifyContent: "center" },
   headerTitle: { color: "#FFF", fontSize: 18, fontWeight: "800", fontFamily: "Chillax-Bold", flex: 1, textAlign: "center" },
   savedCount: { width: 40, alignItems: "flex-end" },
@@ -279,16 +279,16 @@ const S = StyleSheet.create({
   metaIcon: { fontSize: 14 },
   metaText: { color: "rgba(255,255,255,0.8)", fontSize: 13 },
   tagsRow: { flexDirection: "row", gap: 8, flexWrap: "wrap" },
-  tag: { backgroundColor: "rgba(255,255,255,0.55)", borderRadius: 8, paddingHorizontal: 10, paddingVertical: 4 },
+  tag: { backgroundColor: "rgba(255,255,255,0.06)", borderRadius: 8, paddingHorizontal: 10, paddingVertical: 4 },
   tagText: { color: "#FFF", fontSize: 12, fontWeight: "600" },
   bestFor: { color: "rgba(255,255,255,0.6)", fontSize: 12 },
 
   actionRow: { flexDirection: "row", justifyContent: "center", alignItems: "center", gap: 20, paddingVertical: 20 },
   actionBtn: { width: 60, height: 60, borderRadius: 30, alignItems: "center", justifyContent: "center", shadowColor: "#F94498", shadowOffset: { width: 0, height: 6 }, shadowOpacity: 0.4, shadowRadius: 24, elevation: 10,
     overflow: "hidden" },
-  skipBtn: { backgroundColor: "rgba(255,255,255,0.55)", borderWidth: 1, borderColor: "rgba(255,255,255,0.55)" },
+  skipBtn: { backgroundColor: "rgba(255,255,255,0.06)", borderWidth: 1, borderColor: "rgba(255,255,255,0.12)" },
   skipBtnText: { color: "#EF4444", fontSize: 24, fontWeight: "700", fontFamily: "Chillax-Semibold" },
-  infoBtn: { width: 44, height: 44, borderRadius: 22, backgroundColor: "rgba(255,255,255,0.55)" },
+  infoBtn: { width: 44, height: 44, borderRadius: 22, backgroundColor: "rgba(255,255,255,0.06)" },
   saveBtn: { width: 70, height: 70, borderRadius: 35 },
   saveBtnText: { fontSize: 28 },
 

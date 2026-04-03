@@ -370,7 +370,7 @@ export default function HomeScreen() {
                 activeOpacity={0.88}
               >
                 <LinearGradient
-                  colors={["rgba(255,255,255,0.55)", "rgba(255,255,255,0.55)"]}
+                  colors={["rgba(255,255,255,0.06)", "rgba(255,255,255,0.06)"]}
                   style={StyleSheet.absoluteFillObject}
                 />
                 <View style={S.startCardBorder} />
@@ -382,7 +382,7 @@ export default function HomeScreen() {
                   <Text style={S.startCardLabel}>{opt.label}</Text>
                   <Text style={S.startCardSub}>{opt.sub}</Text>
                 </View>
-                <IconSymbol name="chevron.right" size={16} color="rgba(255,255,255,0.55)" />
+                <IconSymbol name="chevron.right" size={16} color="rgba(255,255,255,0.06)" />
               </TouchableOpacity>
             ))}
           </View>
@@ -509,23 +509,23 @@ const S = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#0D0628" },
 
   // Sticky header
-  stickyHeader: { position: "absolute", top: 0, left: 0, right: 0, zIndex: 100, flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 24, paddingTop: 56, paddingBottom: 130 },
+  stickyHeader: { position: "absolute", top: 0, left: 0, right: 0, zIndex: 100, flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 24, paddingTop: 56, paddingBottom: 16 },
   stickyTitle: { color: "#FFFFFF", fontSize: 18, fontWeight: "900", letterSpacing: 2, fontFamily: "Chillax-Bold" },
-  stickyNotif: { width: 36, height: 36, borderRadius: 18, backgroundColor: "rgba(255,255,255,0.55)", alignItems: "center", justifyContent: "center" },
+  stickyNotif: { width: 36, height: 36, borderRadius: 18, backgroundColor: "rgba(255,255,255,0.06)", alignItems: "center", justifyContent: "center" },
 
   // Hero
   heroWrap: { height: height * 0.72, justifyContent: "flex-end", overflow: "hidden" },
-  heroHeader: { position: "absolute", top: 0, left: 0, right: 0, flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 20, paddingTop: 60, paddingBottom: 130 },
+  heroHeader: { position: "absolute", top: 0, left: 0, right: 0, flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 20, paddingTop: 60, paddingBottom: 16 },
   heroGreeting: { color: "rgba(255,255,255,0.7)", fontSize: 15, fontWeight: "500", fontFamily: "Satoshi-Medium" },
   notifBtn: { width: 44, height: 44, borderRadius: 22, overflow: "hidden" },
-  notifGradient: { flex: 1, alignItems: "center", justifyContent: "center", borderWidth: 1, borderColor: "rgba(255,255,255,0.55)", borderRadius: 22 },
+  notifGradient: { flex: 1, alignItems: "center", justifyContent: "center", borderWidth: 1, borderColor: "rgba(255,255,255,0.12)", borderRadius: 22 },
 
   heroBody: { position: "absolute", bottom: 160, left: 20, right: 20 },
   heroTagline: { color: "rgba(255,255,255,0.55)", fontSize: 13, fontWeight: "600", letterSpacing: 0.5, marginBottom: 4 },
   heroCity: { color: "#FFFFFF", fontSize: 42, fontWeight: "900", letterSpacing: -1.5, lineHeight: 46, fontFamily: "Chillax-Bold" },
   heroCountry: { color: "rgba(255,255,255,0.55)", fontSize: 16, fontWeight: "600", marginTop: 2 },
   heroDots: { flexDirection: "row", gap: 6, marginTop: 14 },
-  heroDot: { width: 6, height: 6, borderRadius: 3, backgroundColor: "rgba(255,255,255,0.55)" },
+  heroDot: { width: 6, height: 6, borderRadius: 3, backgroundColor: "rgba(255,255,255,0.06)" },
   heroDotActive: { width: 20, backgroundColor: "#FFFFFF" },
 
   heroHeadlineWrap: { paddingHorizontal: 20, paddingBottom: 130 },
@@ -560,11 +560,11 @@ const S = StyleSheet.create({
   planTripCard: { borderRadius: 20, overflow: "hidden", padding: 18, shadowColor: "#6443F4", shadowOffset: { width: 0, height: 6 }, shadowOpacity: 0.45, shadowRadius: 18, elevation: 12 },
   planTripContent: { flexDirection: "row", alignItems: "center", justifyContent: "space-between" },
   planTripLeft: { flexDirection: "row", alignItems: "center", gap: 14, flex: 1 },
-  planTripIconBox: { width: 52, height: 52, borderRadius: 16, backgroundColor: "rgba(255,255,255,0.55)", alignItems: "center", justifyContent: "center" },
+  planTripIconBox: { width: 52, height: 52, borderRadius: 16, backgroundColor: "rgba(255,255,255,0.06)", alignItems: "center", justifyContent: "center" },
   planTripTitle: { color: "#FFFFFF", fontSize: 18, fontWeight: "900", lineHeight: 22, fontFamily: "Chillax-Bold" },
   planTripSub: { color: "rgba(255,255,255,0.7)", fontSize: 13, marginTop: 3, fontWeight: "500",
       fontFamily: "Satoshi-Medium" },
-  planTripArrow: { width: 36, height: 36, borderRadius: 18, backgroundColor: "rgba(255,255,255,0.55)", alignItems: "center", justifyContent: "center" },
+  planTripArrow: { width: 36, height: 36, borderRadius: 18, backgroundColor: "rgba(255,255,255,0.06)", alignItems: "center", justifyContent: "center" },
 
   // DNA card (has quiz)
   dnaCard: { borderRadius: 20, overflow: "hidden", flexDirection: "row", alignItems: "center", padding: 16, gap: 14 },
@@ -590,7 +590,7 @@ const S = StyleSheet.create({
   // Start options
   startOptions: { gap: 10 },
   startCard: { borderRadius: 18, overflow: "hidden", flexDirection: "row", alignItems: "center", padding: 16, gap: 14 },
-  startCardBorder: { position: "absolute", top: 0, left: 0, right: 0, bottom: 0, borderRadius: 18, borderWidth: 1, borderColor: "rgba(255,255,255,0.55)" },
+  startCardBorder: { position: "absolute", top: 0, left: 0, right: 0, bottom: 0, borderRadius: 18, borderWidth: 1, borderColor: "rgba(255,255,255,0.12)" },
   startIconWrap: { width: 50, height: 50, borderRadius: 16, alignItems: "center", justifyContent: "center" },
   startCardText: { flex: 1 },
   startCardLabel: { color: "#FFFFFF", fontSize: 16, fontWeight: "800",
@@ -600,7 +600,7 @@ const S = StyleSheet.create({
   // How it works
   howItWorksWrap: { gap: 0 },
   howStep: { flexDirection: "row", gap: 16, paddingBottom: 130, position: "relative" },
-  howConnector: { position: "absolute", left: 24, top: 52, width: 2, height: "100%", backgroundColor: "rgba(255,255,255,0.55)" },
+  howConnector: { position: "absolute", left: 24, top: 52, width: 2, height: "100%", backgroundColor: "rgba(255,255,255,0.06)" },
   howLeft: { alignItems: "center" },
   howIconWrap: { width: 48, height: 48, borderRadius: 16, alignItems: "center", justifyContent: "center" },
   howContent: { flex: 1, paddingTop: 4 },
@@ -620,7 +620,7 @@ const S = StyleSheet.create({
   manifestoCompLabel: { color: "rgba(255,255,255,0.45)", fontSize: 12, fontWeight: "700", letterSpacing: 0.5 },
   manifestoCompBadge: { borderRadius: 10, paddingHorizontal: 12, paddingVertical: 7, backgroundColor: "rgba(239,68,68,0.15)", borderWidth: 1, borderColor: "rgba(239,68,68,0.3)", alignItems: "center" },
   manifestoCompBadgeText: { color: "#F87171", fontSize: 12, fontWeight: "700" },
-  manifestoVs: { width: 32, height: 32, borderRadius: 16, backgroundColor: "rgba(255,255,255,0.55)", alignItems: "center", justifyContent: "center" },
+  manifestoVs: { width: 32, height: 32, borderRadius: 16, backgroundColor: "rgba(255,255,255,0.06)", alignItems: "center", justifyContent: "center" },
   manifestoVsText: { color: "rgba(255,255,255,0.5)", fontSize: 11, fontWeight: "700" },
   tipCard: { width: 200, borderRadius: 16, padding: 14, gap: 8, overflow: "hidden", borderWidth: 1 },
   tipText: { color: "#ECEDEE", fontSize: 13, lineHeight: 19 },
@@ -630,7 +630,7 @@ const S = StyleSheet.create({
   finalCtaContent: { flex: 1 },
   finalCtaTitle: { color: "#FFFFFF", fontSize: 18, fontWeight: "900", fontFamily: "Chillax-Bold" },
   finalCtaSub: { color: "rgba(255,255,255,0.65)", fontSize: 12, marginTop: 3 },
-  finalCtaArrow: { width: 40, height: 40, borderRadius: 20, backgroundColor: "rgba(255,255,255,0.55)", alignItems: "center", justifyContent: "center" },
+  finalCtaArrow: { width: 40, height: 40, borderRadius: 20, backgroundColor: "rgba(255,255,255,0.06)", alignItems: "center", justifyContent: "center" },
 
   // AI Agent FAB
   agentFab: { position: "absolute", right: 20, flexDirection: "row", alignItems: "center", gap: 8, paddingHorizontal: 18, paddingVertical: 14, borderRadius: 28, overflow: "hidden", shadowColor: "#7C3AED", shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.6, shadowRadius: 16, elevation: 12 },

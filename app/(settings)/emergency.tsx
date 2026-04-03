@@ -82,7 +82,7 @@ export default function EmergencySettingsScreen() {
                 value={medInfo[field.key as keyof typeof medInfo]}
                 onChangeText={(v) => setMedInfo((m) => ({ ...m, [field.key]: v }))}
                 placeholder={field.placeholder}
-                placeholderTextColor="rgba(255,255,255,0.55)"
+                placeholderTextColor="rgba(255,255,255,0.35)"
               />
             </View>
           ))}
@@ -101,8 +101,8 @@ export default function EmergencySettingsScreen() {
 
 const S = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#0D0628" },
-  header: { flexDirection: "row", alignItems: "center", paddingHorizontal: 20, paddingBottom: 130, gap: 12 },
-  backBtn: { width: 36, height: 36, borderRadius: 18, backgroundColor: "rgba(255,255,255,0.55)", alignItems: "center", justifyContent: "center" },
+  header: { flexDirection: "row", alignItems: "center", paddingHorizontal: 20, paddingBottom: 16, gap: 12 },
+  backBtn: { width: 36, height: 36, borderRadius: 18, backgroundColor: "rgba(255,255,255,0.06)", alignItems: "center", justifyContent: "center" },
   backText: { color: "#FFFFFF", fontSize: 18, fontWeight: "700",
       fontFamily: "Chillax-Semibold" },
   headerTitle: { flex: 1, color: "#FFFFFF", fontSize: 20, fontWeight: "900", textAlign: "center", fontFamily: "Chillax-Bold" },
@@ -120,7 +120,7 @@ const S = StyleSheet.create({
   addBtn: { paddingHorizontal: 12, paddingVertical: 6, borderRadius: 8, backgroundColor: "rgba(100,67,244,0.2)", borderWidth: 1, borderColor: "rgba(100,67,244,0.4)" },
   addBtnText: { color: "#A78BFA", fontSize: 12, fontWeight: "800",
       fontFamily: "Chillax-Bold" },
-  contactCard: { flexDirection: "row", alignItems: "center", gap: 12, paddingVertical: 12, borderBottomWidth: 1, borderBottomColor: "rgba(255,255,255,0.55)" },
+  contactCard: { flexDirection: "row", alignItems: "center", gap: 12, paddingVertical: 12, borderBottomWidth: 1, borderBottomColor: "rgba(255,255,255,0.12)" },
   contactAvatar: { width: 44, height: 44, borderRadius: 22, backgroundColor: "rgba(100,67,244,0.25)", alignItems: "center", justifyContent: "center" },
   contactAvatarText: { color: "#A78BFA", fontSize: 18, fontWeight: "900",
       fontFamily: "Chillax-Bold" },
@@ -129,11 +129,11 @@ const S = StyleSheet.create({
       fontFamily: "Chillax-Bold" },
   contactPhone: { color: "rgba(255,255,255,0.5)", fontSize: 12 },
   contactRelation: { color: "#A78BFA", fontSize: 11, fontWeight: "700" },
-  contactEdit: { paddingHorizontal: 10, paddingVertical: 5, borderRadius: 8, backgroundColor: "rgba(255,255,255,0.55)" },
+  contactEdit: { paddingHorizontal: 10, paddingVertical: 5, borderRadius: 8, backgroundColor: "rgba(255,255,255,0.06)" },
   contactEditText: { color: "rgba(255,255,255,0.5)", fontSize: 12 },
   fieldRow: { marginBottom: 12 },
   fieldLabel: { color: "rgba(255,255,255,0.5)", fontSize: 12, fontWeight: "700", marginBottom: 6 },
-  fieldInput: { backgroundColor: "rgba(255,255,255,0.55)", borderRadius: 10, borderWidth: 1, borderColor: "rgba(255,255,255,0.55)", paddingHorizontal: 14, paddingVertical: 10, color: "#FFFFFF", fontSize: 14 },
+  fieldInput: { backgroundColor: "rgba(255,255,255,0.06)", borderRadius: 10, borderWidth: 1, borderColor: "rgba(255,255,255,0.12)", paddingHorizontal: 14, paddingVertical: 10, color: "#FFFFFF", fontSize: 14 },
   saveBtn: { borderRadius: 14, backgroundColor: "#6443F4", paddingVertical: 16, alignItems: "center" },
   saveBtnText: { color: "#FFFFFF", fontSize: 15, fontWeight: "900",
       fontFamily: "Chillax-Bold" },

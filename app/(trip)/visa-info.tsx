@@ -198,23 +198,23 @@ function InfoCard({ title, items, color }: { title: string; items: string[]; col
 // ─── Styles ───────────────────────────────────────────────────────────────────
 const S = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#0D1B2A" },
-  header: { flexDirection: "row", alignItems: "center", paddingHorizontal: 16, paddingBottom: 130, paddingTop: 4, gap: 8 },
+  header: { flexDirection: "row", alignItems: "center", paddingHorizontal: 16, paddingBottom: 16, paddingTop: 4, gap: 8 },
   backBtn: { width: 40, height: 40, alignItems: "center", justifyContent: "center" },
   headerTitle: { color: "#FFF", fontSize: 18, fontWeight: "800", fontFamily: "Chillax-Bold" },
   headerSub: { color: "#5A4D72", fontSize: 12 },
 
-  visaHero: { marginHorizontal: 16, borderRadius: 20, padding: 16, gap: 14, overflow: "hidden", borderWidth: 1, borderColor: "rgba(255,255,255,0.55)", marginBottom: 16 },
-  visaStatusBadge: { flexDirection: "row", alignItems: "center", gap: 14, borderRadius: 14, borderWidth: 1, padding: 14, backgroundColor: "rgba(255,255,255,0.55)" },
+  visaHero: { marginHorizontal: 16, borderRadius: 20, padding: 16, gap: 14, overflow: "hidden", borderWidth: 1, borderColor: "rgba(255,255,255,0.12)", marginBottom: 16 },
+  visaStatusBadge: { flexDirection: "row", alignItems: "center", gap: 14, borderRadius: 14, borderWidth: 1, padding: 14, backgroundColor: "rgba(255,255,255,0.06)" },
   visaStatusLabel: { fontSize: 18, fontWeight: "800", fontFamily: "Chillax-Bold" },
   visaStatusSub: { color: "#9BA1A6", fontSize: 13, marginTop: 2 },
   visaMetaRow: { flexDirection: "row", alignItems: "center" },
   visaMetaItem: { flex: 1, alignItems: "center", gap: 3 },
-  visaMetaDivider: { width: 1, height: 32, backgroundColor: "rgba(255,255,255,0.55)" },
+  visaMetaDivider: { width: 1, height: 32, backgroundColor: "rgba(255,255,255,0.06)" },
   visaMetaLabel: { color: "#5A4D72", fontSize: 11, fontWeight: "600", textTransform: "uppercase" },
   visaMetaValue: { color: "#FFF", fontSize: 12, fontWeight: "700", textAlign: "center" },
 
   tabRow: { flexDirection: "row", paddingHorizontal: 16, gap: 8, marginBottom: 8 },
-  tab: { flex: 1, paddingVertical: 8, borderRadius: 10, alignItems: "center", backgroundColor: "rgba(255,255,255,0.55)", borderWidth: 1, borderColor: "rgba(255,255,255,0.55)" },
+  tab: { flex: 1, paddingVertical: 8, borderRadius: 10, alignItems: "center", backgroundColor: "rgba(255,255,255,0.06)", borderWidth: 1, borderColor: "rgba(255,255,255,0.12)" },
   tabActive: { backgroundColor: "rgba(100,67,244,0.2)", borderColor: "rgba(100,67,244,0.5)" },
   tabText: { color: "#5A4D72", fontSize: 11, fontWeight: "700" },
   tabTextActive: { color: "#A78BFA" },
@@ -231,7 +231,7 @@ const S = StyleSheet.create({
   moneyTip: { color: "#9BA1A6", fontSize: 13, textAlign: "center", lineHeight: 20, marginTop: 8 },
 
   emergencyCard: { borderRadius: 16, overflow: "hidden", borderWidth: 1, borderColor: "rgba(239,68,68,0.3)", backgroundColor: "rgba(239,68,68,0.05)" },
-  emergencyRow: { flexDirection: "row", justifyContent: "space-between", alignItems: "center", padding: 16, borderBottomWidth: 1, borderBottomColor: "rgba(255,255,255,0.55)" },
+  emergencyRow: { flexDirection: "row", justifyContent: "space-between", alignItems: "center", padding: 16, borderBottomWidth: 1, borderBottomColor: "rgba(255,255,255,0.12)" },
   emergencyLabel: { color: "#9BA1A6", fontSize: 14 },
   emergencyNumber: { color: "#EF4444", fontSize: 16, fontWeight: "800", fontFamily: "Chillax-Bold" },
 });

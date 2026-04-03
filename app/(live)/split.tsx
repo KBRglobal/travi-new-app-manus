@@ -505,7 +505,7 @@ const styles = StyleSheet.create({
   summaryBlock: { flex: 1, alignItems: "center" },
   summaryLabel: { fontSize: 12, fontFamily: "Satoshi-Regular", color: "rgba(255,255,255,0.7)", marginBottom: 4 },
   summaryValue: { fontSize: 24, fontFamily: "Chillax-Bold", fontWeight: "800", color: "#fff" },
-  summaryDivider: { width: 1, height: 40, backgroundColor: "rgba(255,255,255,0.55)" },
+  summaryDivider: { width: 1, height: 40, backgroundColor: "rgba(255,255,255,0.06)" },
   section: { paddingHorizontal: 20, marginBottom: 24 },
   sectionTitle: { fontSize: 17, fontFamily: "Chillax-Semibold", fontWeight: "700", color: "#F9FAFB", marginBottom: 14 },
   balancesGrid: { flexDirection: "row", gap: 10 },

@@ -164,7 +164,7 @@ export default function ProfileSetupScreen() {
           {/* CTA */}
           <TouchableOpacity style={s.cta} onPress={handleContinue} activeOpacity={0.85} disabled={!canContinue}>
             <LinearGradient
-              colors={canContinue ? Gradients.cta : ["rgba(255,255,255,0.55)", "rgba(255,255,255,0.55)"]}
+              colors={canContinue ? Gradients.cta : ["rgba(255,255,255,0.06)", "rgba(255,255,255,0.06)"]}
               start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
               style={s.ctaGradient}
             >
@@ -212,7 +212,7 @@ const s = StyleSheet.create({
   grid: { flexDirection: "row", flexWrap: "wrap", gap: 10, justifyContent: "center" },
   gridItem: {
     width: 52, height: 52, borderRadius: Radius.md, alignItems: "center", justifyContent: "center",
-    borderWidth: 1.5, borderColor: Border.idle, backgroundColor: "rgba(255,255,255,0.55)", overflow: "hidden",
+    borderWidth: 1.5, borderColor: Border.idle, backgroundColor: "rgba(255,255,255,0.06)", overflow: "hidden",
   },
   gridItemActive: { borderColor: "rgba(249,68,152,0.80)" },
   gridIcon: { width: 36, height: 36, borderRadius: 10, alignItems: "center", justifyContent: "center" },
@@ -222,7 +222,7 @@ const s = StyleSheet.create({
   inputGradient: {
     flexDirection: "row", alignItems: "center", gap: 12,
     paddingHorizontal: Spacing.md, paddingVertical: Spacing.md,
-    backgroundColor: "rgba(255,255,255,0.55)",
+    backgroundColor: "rgba(255,255,255,0.06)",
   },
   input: { flex: 1, color: DS.primary, fontSize: 16, fontWeight: "500", fontFamily: "Satoshi-Medium" },
 

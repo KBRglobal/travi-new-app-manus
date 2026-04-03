@@ -223,7 +223,7 @@ export default function SurpriseScreen() {
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#0D0628" },
-  backBtn: { position: "absolute", top: 60, left: 24, zIndex: 10, paddingHorizontal: 16, paddingVertical: 8, borderRadius: 20, backgroundColor: "rgba(255,255,255,0.55)" },
+  backBtn: { position: "absolute", top: 60, left: 24, zIndex: 10, paddingHorizontal: 16, paddingVertical: 8, borderRadius: 20, backgroundColor: "rgba(255,255,255,0.06)" },
   backText: { color: "rgba(255,255,255,0.8)", fontSize: 14, fontFamily: "Chillax-Semibold", fontWeight: "600" },
   loadingWrap: { flex: 1, alignItems: "center", justifyContent: "center", gap: 16 },
   dnaSpinner: { fontSize: 64, fontFamily: "Satoshi-Regular" },
@@ -239,7 +239,7 @@ const styles = StyleSheet.create({
   statItem: { flexDirection: "row", alignItems: "center", gap: 6 },
   statEmoji: { fontSize: 16, fontFamily: "Satoshi-Regular" },
   statValue: { color: "#FFFFFF", fontSize: 15, fontFamily: "Chillax-Semibold", fontWeight: "600" },
-  statDivider: { width: 1, height: 20, backgroundColor: "rgba(255,255,255,0.55)" },
+  statDivider: { width: 1, height: 20, backgroundColor: "rgba(255,255,255,0.06)" },
   dnaMatch: { color: "#C084FC", fontSize: 13, fontFamily: "Chillax-Semibold", fontWeight: "600" },
   acceptBtn: { borderRadius: 18, overflow: "hidden", marginTop: 8 },
   acceptGradient: { paddingVertical: 18, alignItems: "center", borderRadius: 18 },

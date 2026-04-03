@@ -141,7 +141,7 @@ export default function ItineraryScreen() {
                 </View>
                 <TouchableOpacity style={styles.stopCard} activeOpacity={0.85}>
                   <LinearGradient
-                    colors={["rgba(255,255,255,0.55)", "rgba(255,255,255,0.55)"]}
+                    colors={["rgba(255,255,255,0.06)", "rgba(255,255,255,0.06)"]}
                     style={StyleSheet.absoluteFillObject}
                   />
                   <View style={styles.stopCardHeader}>

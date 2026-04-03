@@ -391,7 +391,7 @@ function PropertyDetailScreen({ property, onBack }: { property: Property; onBack
 
 const S = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#0D0628" },
-  header: { flexDirection: "row", alignItems: "center", gap: 12, paddingTop: 56, paddingHorizontal: 16, paddingBottom: 130 },
+  header: { flexDirection: "row", alignItems: "center", gap: 12, paddingTop: 56, paddingHorizontal: 16, paddingBottom: 16 },
   backBtn: { position: "absolute", top: 52, left: 16, zIndex: 10 },
   backBtnInner: { width: 36, height: 36, borderRadius: 12, backgroundColor: "rgba(0,0,0,0.4)", alignItems: "center", justifyContent: "center" },
   headerTitle: { color: "#FFFFFF", fontSize: 22, fontWeight: "900", fontFamily: "Chillax-Bold" },
@@ -400,7 +400,7 @@ const S = StyleSheet.create({
   headerBadgeText: { color: "#FBBF24", fontSize: 12, fontWeight: "800", fontFamily: "Chillax-Bold" },
   content: { padding: 16, paddingBottom: 130, gap: 20 },
 
-  cityToggle: { flexDirection: "row", backgroundColor: "rgba(255,255,255,0.55)", borderRadius: 16, padding: 4, gap: 4 },
+  cityToggle: { flexDirection: "row", backgroundColor: "rgba(255,255,255,0.06)", borderRadius: 16, padding: 4, gap: 4 },
   cityBtn: { flex: 1, borderRadius: 12, overflow: "hidden", paddingVertical: 10, alignItems: "center" },
   cityBtnActive: {},
   cityBtnText: { color: "rgba(255,255,255,0.45)", fontSize: 14, fontWeight: "700", fontFamily: "Chillax-Semibold" },
@@ -416,7 +416,7 @@ const S = StyleSheet.create({
 
   filtersSection: { gap: 6 },
   filterLabel: { color: "rgba(255,255,255,0.45)", fontSize: 11, fontWeight: "700", letterSpacing: 0.5 },
-  filterChip: { borderRadius: 20, overflow: "hidden", paddingHorizontal: 14, paddingVertical: 7, borderWidth: 1, borderColor: "rgba(255,255,255,0.55)" },
+  filterChip: { borderRadius: 20, overflow: "hidden", paddingHorizontal: 14, paddingVertical: 7, borderWidth: 1, borderColor: "rgba(255,255,255,0.12)" },
   filterChipActive: { borderColor: "transparent" },
   filterChipText: { color: "rgba(255,255,255,0.5)", fontSize: 13, fontWeight: "600", fontFamily: "Satoshi-Medium" },
   filterChipTextActive: { color: "#FFFFFF" },
@@ -425,7 +425,7 @@ const S = StyleSheet.create({
   listingsHeader: { flexDirection: "row", justifyContent: "space-between", alignItems: "center" },
   listingsCount: { color: "rgba(255,255,255,0.55)", fontSize: 13, fontFamily: "Satoshi-Regular" },
 
-  propCard: { backgroundColor: "rgba(255,255,255,0.55)", borderRadius: 18, overflow: "hidden", borderWidth: 1, borderColor: "rgba(255,255,255,0.55)" },
+  propCard: { backgroundColor: "rgba(255,255,255,0.06)", borderRadius: 18, overflow: "hidden", borderWidth: 1, borderColor: "rgba(255,255,255,0.12)" },
   propImageWrap: { height: 180, position: "relative" },
   propImage: { width: "100%", height: "100%" },
   propBadge: { position: "absolute", top: 10, left: 10, borderRadius: 8, paddingHorizontal: 8, paddingVertical: 4 },
@@ -460,7 +460,7 @@ const S = StyleSheet.create({
   detailContent: { padding: 16, paddingBottom: 130, gap: 16 },
 
   specsGrid: { flexDirection: "row", flexWrap: "wrap", gap: 10 },
-  specCard: { width: (width - 42) / 2, backgroundColor: "rgba(255,255,255,0.55)", borderRadius: 14, padding: 14, alignItems: "center", gap: 4, borderWidth: 1, borderColor: "rgba(255,255,255,0.55)" },
+  specCard: { width: (width - 42) / 2, backgroundColor: "rgba(255,255,255,0.06)", borderRadius: 14, padding: 14, alignItems: "center", gap: 4, borderWidth: 1, borderColor: "rgba(255,255,255,0.12)" },
   specIcon: { fontSize: 22 },
   specValue: { color: "#FFFFFF", fontSize: 15, fontWeight: "800", fontFamily: "Chillax-Bold" },
   specLabel: { color: "rgba(255,255,255,0.5)", fontSize: 11 },
@@ -471,14 +471,14 @@ const S = StyleSheet.create({
   roiLabel: { color: "rgba(255,255,255,0.55)", fontSize: 13, fontFamily: "Satoshi-Regular" },
   roiValue: { color: "#FFFFFF", fontSize: 16, fontWeight: "800", fontFamily: "Chillax-Bold" },
   roiYearsRow: { flexDirection: "row", gap: 8 },
-  roiYearBtn: { flex: 1, borderRadius: 10, borderWidth: 1, borderColor: "rgba(255,255,255,0.55)", paddingVertical: 8, alignItems: "center" },
+  roiYearBtn: { flex: 1, borderRadius: 10, borderWidth: 1, borderColor: "rgba(255,255,255,0.12)", paddingVertical: 8, alignItems: "center" },
   roiYearBtnActive: { borderColor: "#22C55E", backgroundColor: "rgba(34,197,94,0.15)" },
   roiYearText: { color: "rgba(255,255,255,0.5)", fontSize: 13, fontWeight: "700", fontFamily: "Satoshi-Medium" },
   roiYearTextActive: { color: "#22C55E" },
 
   nearbyTitle: { color: "#FFFFFF", fontSize: 16, fontWeight: "800", fontFamily: "Chillax-Bold" },
   nearbyRow: { flexDirection: "row", flexWrap: "wrap", gap: 8 },
-  nearbyChip: { backgroundColor: "rgba(255,255,255,0.55)", borderRadius: 10, paddingHorizontal: 10, paddingVertical: 6 },
+  nearbyChip: { backgroundColor: "rgba(255,255,255,0.06)", borderRadius: 10, paddingHorizontal: 10, paddingVertical: 6 },
   nearbyText: { color: "rgba(255,255,255,0.6)", fontSize: 12 },
 
   detailCtaRow: { flexDirection: "row", gap: 10 },

@@ -66,7 +66,7 @@ export default function WalletExchangeScreen() {
               onChangeText={setAmount}
               keyboardType="numeric"
               placeholder="0.00"
-              placeholderTextColor="rgba(255,255,255,0.55)"
+              placeholderTextColor="rgba(255,255,255,0.35)"
             />
           </View>
           {showFromPicker && (
@@ -151,8 +151,8 @@ export default function WalletExchangeScreen() {
 
 const S = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#0D0628" },
-  header: { flexDirection: "row", alignItems: "center", paddingHorizontal: 20, paddingBottom: 130, gap: 12 },
-  backBtn: { width: 36, height: 36, borderRadius: 18, backgroundColor: "rgba(255,255,255,0.55)", alignItems: "center", justifyContent: "center" },
+  header: { flexDirection: "row", alignItems: "center", paddingHorizontal: 20, paddingBottom: 16, gap: 12 },
+  backBtn: { width: 36, height: 36, borderRadius: 18, backgroundColor: "rgba(255,255,255,0.06)", alignItems: "center", justifyContent: "center" },
   backText: { color: "#FFFFFF", fontSize: 18, fontWeight: "700", fontFamily: "Chillax-Semibold" },
   headerTitle: { flex: 1, color: "#FFFFFF", fontSize: 20, fontWeight: "900", fontFamily: "Chillax-Bold", textAlign: "center" },
   rateCard: { marginHorizontal: 20, marginBottom: 24, borderRadius: 16, backgroundColor: "rgba(100,67,244,0.12)", borderWidth: 1, borderColor: "rgba(100,67,244,0.25)", padding: 16, alignItems: "center", gap: 4 },
@@ -163,29 +163,29 @@ const S = StyleSheet.create({
   fieldLabel: { color: "rgba(255,255,255,0.5)", fontSize: 11, fontWeight: "800",
       fontFamily: "Chillax-Bold", textTransform: "uppercase", letterSpacing: 1.5, marginBottom: 8 },
   inputRow: { flexDirection: "row", gap: 10 },
-  currencyPicker: { flexDirection: "row", alignItems: "center", gap: 6, paddingHorizontal: 14, paddingVertical: 14, borderRadius: 12, backgroundColor: "rgba(255,255,255,0.55)", borderWidth: 1, borderColor: "rgba(255,255,255,0.55)" },
+  currencyPicker: { flexDirection: "row", alignItems: "center", gap: 6, paddingHorizontal: 14, paddingVertical: 14, borderRadius: 12, backgroundColor: "rgba(255,255,255,0.06)", borderWidth: 1, borderColor: "rgba(255,255,255,0.12)" },
   currencyFlag: { fontSize: 20 },
   currencyCode: { color: "#FFFFFF", fontSize: 14, fontWeight: "900", fontFamily: "Chillax-Bold" },
   chevron: { color: "rgba(255,255,255,0.5)", fontSize: 12 },
-  amountInput: { flex: 1, backgroundColor: "rgba(255,255,255,0.55)", borderRadius: 12, borderWidth: 1, borderColor: "rgba(255,255,255,0.55)", paddingHorizontal: 14, paddingVertical: 14, color: "#FFFFFF", fontSize: 20, fontWeight: "900", fontFamily: "Chillax-Bold" },
+  amountInput: { flex: 1, backgroundColor: "rgba(255,255,255,0.06)", borderRadius: 12, borderWidth: 1, borderColor: "rgba(255,255,255,0.12)", paddingHorizontal: 14, paddingVertical: 14, color: "#FFFFFF", fontSize: 20, fontWeight: "900", fontFamily: "Chillax-Bold" },
   amountDisplay: { justifyContent: "center" },
   amountDisplayText: { color: "#22C55E", fontSize: 20, fontWeight: "900", fontFamily: "Chillax-Bold" },
   swapRow: { flexDirection: "row", alignItems: "center", paddingHorizontal: 20, marginBottom: 16, gap: 12 },
-  swapLine: { flex: 1, height: 1, backgroundColor: "rgba(255,255,255,0.55)" },
+  swapLine: { flex: 1, height: 1, backgroundColor: "rgba(255,255,255,0.06)" },
   swapBtn: { width: 40, height: 40, borderRadius: 20, backgroundColor: "rgba(100,67,244,0.2)", borderWidth: 1, borderColor: "rgba(100,67,244,0.4)", alignItems: "center", justifyContent: "center" },
   swapBtnText: { color: "#A78BFA", fontSize: 18, fontWeight: "900", fontFamily: "Chillax-Bold" },
-  picker: { marginTop: 8, borderRadius: 12, backgroundColor: "#1A0A3D", borderWidth: 1, borderColor: "rgba(255,255,255,0.55)", overflow: "hidden" },
-  pickerItem: { flexDirection: "row", alignItems: "center", gap: 10, paddingHorizontal: 14, paddingVertical: 10, borderBottomWidth: 1, borderBottomColor: "rgba(255,255,255,0.55)" },
+  picker: { marginTop: 8, borderRadius: 12, backgroundColor: "#1A0A3D", borderWidth: 1, borderColor: "rgba(255,255,255,0.12)", overflow: "hidden" },
+  pickerItem: { flexDirection: "row", alignItems: "center", gap: 10, paddingHorizontal: 14, paddingVertical: 10, borderBottomWidth: 1, borderBottomColor: "rgba(255,255,255,0.12)" },
   pickerItemActive: { backgroundColor: "rgba(100,67,244,0.15)" },
   pickerFlag: { fontSize: 18 },
   pickerCode: { color: "#FFFFFF", fontSize: 13, fontWeight: "900", fontFamily: "Chillax-Bold", width: 40 },
   pickerName: { flex: 1, color: "rgba(255,255,255,0.5)", fontSize: 12 },
   pickerRate: { color: "rgba(255,255,255,0.55)", fontSize: 11 },
-  summaryCard: { marginHorizontal: 20, marginBottom: 20, borderRadius: 16, backgroundColor: "rgba(255,255,255,0.55)", borderWidth: 1, borderColor: "rgba(255,255,255,0.55)", padding: 16, gap: 10 },
+  summaryCard: { marginHorizontal: 20, marginBottom: 20, borderRadius: 16, backgroundColor: "rgba(255,255,255,0.06)", borderWidth: 1, borderColor: "rgba(255,255,255,0.12)", padding: 16, gap: 10 },
   summaryRow: { flexDirection: "row", justifyContent: "space-between" },
   summaryLabel: { color: "rgba(255,255,255,0.5)", fontSize: 13 },
   summaryValue: { color: "rgba(255,255,255,0.7)", fontSize: 13, fontWeight: "700" },
-  summaryTotal: { borderTopWidth: 1, borderTopColor: "rgba(255,255,255,0.55)", paddingTop: 10, marginTop: 4 },
+  summaryTotal: { borderTopWidth: 1, borderTopColor: "rgba(255,255,255,0.12)", paddingTop: 10, marginTop: 4 },
   summaryTotalLabel: { color: "#FFFFFF", fontSize: 14, fontWeight: "800", fontFamily: "Chillax-Bold" },
   summaryTotalValue: { color: "#22C55E", fontSize: 16, fontWeight: "900", fontFamily: "Chillax-Bold" },
   exchangeBtn: { borderRadius: 14, backgroundColor: "#6443F4", paddingVertical: 16, alignItems: "center" },

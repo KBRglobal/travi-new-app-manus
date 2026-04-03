@@ -306,7 +306,7 @@ export default function AgentChatScreen() {
               value={inputText}
               onChangeText={setInputText}
               placeholder="שאל אותי כל דבר על הטיול שלך..."
-              placeholderTextColor="rgba(255,255,255,0.55)"
+              placeholderTextColor="rgba(255,255,255,0.35)"
               multiline
               maxLength={500}
               returnKeyType="send"
@@ -468,9 +468,9 @@ const styles = StyleSheet.create({
   },
   agentBubble: {
     maxWidth: "78%",
-    backgroundColor: "rgba(255,255,255,0.55)",
+    backgroundColor: "rgba(255,255,255,0.06)",
     borderWidth: 0.5,
-    borderColor: "rgba(255,255,255,0.55)",
+    borderColor: "rgba(255,255,255,0.12)",
     paddingHorizontal: 16,
     paddingVertical: 12,
     borderRadius: 20,
@@ -493,9 +493,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     gap: 4,
-    backgroundColor: "rgba(255,255,255,0.55)",
+    backgroundColor: "rgba(255,255,255,0.06)",
     borderWidth: 0.5,
-    borderColor: "rgba(255,255,255,0.55)",
+    borderColor: "rgba(255,255,255,0.12)",
     paddingHorizontal: 14,
     paddingVertical: 12,
     borderRadius: 20,
@@ -551,7 +551,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "flex-end",
     gap: 10,
-    backgroundColor: "rgba(255,255,255,0.55)",
+    backgroundColor: "rgba(255,255,255,0.06)",
     borderRadius: 24,
     borderWidth: 0.5,
     borderColor: "rgba(147,51,234,0.3)",

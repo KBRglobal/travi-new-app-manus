@@ -106,7 +106,7 @@ export default function CompletionScreen() {
           </View>
         </Animated.View>
         <Animated.View style={[styles.detailsCard, { opacity: fadeAnim }]}>
-          <LinearGradient colors={["rgba(255,255,255,0.55)", "rgba(255,255,255,0.55)"]} style={StyleSheet.absoluteFillObject} />
+          <LinearGradient colors={["rgba(255,255,255,0.06)", "rgba(255,255,255,0.06)"]} style={StyleSheet.absoluteFillObject} />
           <View style={styles.detailRow}>
             <View style={styles.detailIconWrap}><IconSymbol name="location.fill" size={16} color="#C084FC" /></View>
             <Text style={styles.detailLabel}>Destination</Text>
@@ -160,7 +160,7 @@ export default function CompletionScreen() {
           }}
           activeOpacity={0.88}
         >
-          <LinearGradient colors={["rgba(255,255,255,0.55)", "rgba(255,255,255,0.55)"]} style={styles.liveBtnGradient}>
+          <LinearGradient colors={["rgba(255,255,255,0.06)", "rgba(255,255,255,0.06)"]} style={styles.liveBtnGradient}>
             <View style={styles.liveDot} />
             <Text style={styles.liveBtnText}>Open Live Trip Mode</Text>
           </LinearGradient>
@@ -191,12 +191,12 @@ const styles = StyleSheet.create({
   pointsValueBadge: { alignItems: "center" },
   pointsValueText: { color: "#FBBF24", fontSize: 20, fontWeight: "900", fontFamily: "Satoshi-Bold" },
   pointsValueSub: { color: "rgba(255,215,0,0.6)", fontSize: 11 },
-  detailsCard: { width: "100%", borderRadius: 20, overflow: "hidden", borderWidth: 1, borderColor: "rgba(255,255,255,0.55)", padding: 4 },
+  detailsCard: { width: "100%", borderRadius: 20, overflow: "hidden", borderWidth: 1, borderColor: "rgba(255,255,255,0.12)", padding: 4 },
   detailRow: { flexDirection: "row", alignItems: "center", paddingHorizontal: 16, paddingVertical: 12, gap: 12 },
   detailIconWrap: { width: 32, height: 32, borderRadius: 10, backgroundColor: "rgba(192,132,252,0.1)", alignItems: "center", justifyContent: "center" },
   detailLabel: { flex: 1, color: "rgba(255,255,255,0.5)", fontSize: 14, fontFamily: "Satoshi-Regular" },
   detailValue: { color: "#FFFFFF", fontSize: 14, fontWeight: "700", fontFamily: "Satoshi-Medium" },
-  detailDivider: { height: 1, backgroundColor: "rgba(255,255,255,0.55)", marginHorizontal: 16 },
+  detailDivider: { height: 1, backgroundColor: "rgba(255,255,255,0.06)", marginHorizontal: 16 },
   duckRow: { flexDirection: "row", alignItems: "flex-end", gap: 10, width: "100%" },
   duckAvatar: { width: 40, height: 40, borderRadius: 20, overflow: "hidden" },
   duckGradient: { flex: 1, alignItems: "center", justifyContent: "center" },
@@ -210,7 +210,7 @@ const styles = StyleSheet.create({
   ctaGradient: { flexDirection: "row", alignItems: "center", justifyContent: "center", paddingVertical: 18, gap: 10, borderRadius: 20 },
   ctaText: { color: "#FFFFFF", fontSize: 18, fontWeight: "800", fontFamily: "Chillax-Bold" },
   liveBtn: { borderRadius: 16, overflow: "hidden" },
-  liveBtnGradient: { flexDirection: "row", alignItems: "center", justifyContent: "center", paddingVertical: 14, gap: 8, borderRadius: 16, borderWidth: 1, borderColor: "rgba(255,255,255,0.55)" },
+  liveBtnGradient: { flexDirection: "row", alignItems: "center", justifyContent: "center", paddingVertical: 14, gap: 8, borderRadius: 16, borderWidth: 1, borderColor: "rgba(255,255,255,0.12)" },
   liveDot: { width: 8, height: 8, borderRadius: 4, backgroundColor: "#4CAF50" },
   liveBtnText: { color: "rgba(255,255,255,0.8)", fontSize: 15, fontWeight: "600", fontFamily: "Satoshi-Medium" },
 });

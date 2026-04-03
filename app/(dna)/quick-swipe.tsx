@@ -493,10 +493,10 @@ export default function QuickSwipeScreen() {
 const styles = StyleSheet.create({
   container: { flex: 1 },
   header: { flexDirection: "row", alignItems: "center", paddingHorizontal: 16, paddingVertical: 12 },
-  backBtn: { width: 40, height: 40, borderRadius: 20, backgroundColor: "rgba(255,255,255,0.55)", alignItems: "center", justifyContent: "center" },
+  backBtn: { width: 40, height: 40, borderRadius: 20, backgroundColor: "rgba(255,255,255,0.06)", alignItems: "center", justifyContent: "center" },
   headerTitle: { color: "#FFFFFF", fontSize: 16, fontWeight: "700", fontFamily: "Chillax-Semibold" },
   headerSub: { color: "rgba(255,255,255,0.5)", fontSize: 12, marginTop: 2 },
-  progressWrap: { height: 3, backgroundColor: "rgba(255,255,255,0.55)", marginHorizontal: 20, borderRadius: 2, overflow: "hidden" },
+  progressWrap: { height: 3, backgroundColor: "rgba(255,255,255,0.06)", marginHorizontal: 20, borderRadius: 2, overflow: "hidden" },
   progressFill: { height: 3, backgroundColor: "#6443F4", borderRadius: 2 },
   cardsArea: { flex: 1, alignItems: "center", justifyContent: "center", marginTop: 16 },
   card: {
@@ -521,7 +521,7 @@ const styles = StyleSheet.create({
   swipeHint: { flex: 1, alignItems: "center" },
   swipeHintText: { color: "rgba(255,255,255,0.55)", fontSize: 11 },
   // Results
-  resultHeader: { alignItems: "center", paddingTop: 24, paddingBottom: 130 },
+  resultHeader: { alignItems: "center", paddingTop: 24, paddingBottom: 16 },
   resultIconWrap: { width: 72, height: 72, borderRadius: 36, overflow: "hidden", alignItems: "center", justifyContent: "center", marginBottom: 16 },
   resultTitle: { color: "#FFFFFF", fontSize: 28, fontWeight: "900", fontFamily: "Chillax-Bold" },
   resultSub: { color: "rgba(255,255,255,0.5)", fontSize: 14, fontFamily: "Satoshi-Regular", marginTop: 6, textAlign: "center" },
@@ -534,7 +534,7 @@ const styles = StyleSheet.create({
   dimLeft: { flexDirection: "row", alignItems: "center", gap: 8, width: 120 },
   dimIcon: { width: 28, height: 28, borderRadius: 8, alignItems: "center", justifyContent: "center" },
   dimLabel: { color: "rgba(255,255,255,0.8)", fontSize: 13, fontWeight: "600", fontFamily: "Satoshi-Medium" },
-  dimBarWrap: { flex: 1, height: 6, backgroundColor: "rgba(255,255,255,0.55)", borderRadius: 3, overflow: "hidden" },
+  dimBarWrap: { flex: 1, height: 6, backgroundColor: "rgba(255,255,255,0.06)", borderRadius: 3, overflow: "hidden" },
   dimBarFill: { height: 6, borderRadius: 3 },
   dimScore: { color: "rgba(255,255,255,0.6)", fontSize: 12, fontWeight: "700", fontFamily: "Satoshi-Bold", width: 28, textAlign: "right" },
   xpCard: { flexDirection: "row", alignItems: "center", gap: 14, borderRadius: 16, overflow: "hidden", padding: 18, marginTop: 24, marginBottom: 16 },

@@ -189,7 +189,7 @@ const styles = StyleSheet.create({
   barsContainer: { gap: 12 },
   barRow: { flexDirection: "row", alignItems: "center", gap: 10 },
   barLabel: { ...TYPE.caption, color: BRAND.textSecondary, width: 90 },
-  barTrack: { flex: 1, height: 8, borderRadius: 4, backgroundColor: "rgba(255,255,255,0.55)", overflow: "hidden", position: "relative" },
+  barTrack: { flex: 1, height: 8, borderRadius: 4, backgroundColor: "rgba(255,255,255,0.06)", overflow: "hidden", position: "relative" },
   barFill: { position: "absolute", top: 0, left: 0, height: "100%", borderRadius: 4, opacity: 0.9 },
   barFillOverlay: { position: "absolute", top: 0, left: 0, height: "100%", borderRadius: 4, opacity: 0.4 },
   compatScore: { ...TYPE.caption, fontFamily: "Satoshi-Bold", width: 36, textAlign: "right" },
