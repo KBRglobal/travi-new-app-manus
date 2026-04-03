@@ -206,3 +206,9 @@ Rules:
 - [x] Explore: hero height reduced, region banner conditional, bottom padding fixed
 - [x] Trips: gap and padding improved
 - [x] PRD v2.0 (2,800+ lines, 44 sections)
+
+## UI Bug Fixes (from screenshots — Apr 3)
+- [ ] Home: hero text ("The travel friend you never had") overlapping destination name (Patagonia/Argentina) — z-index / absolute positioning conflict
+- [ ] Explore: filter tabs (All/Beach/City/etc.) almost invisible — background too transparent
+- [ ] Trips: stats row (Upcoming/Completed/Points) showing 0 with broken circular indicators
+- [ ] Profile: "Your profile is 46% complete" bar text too low contrast (purple on purple)
