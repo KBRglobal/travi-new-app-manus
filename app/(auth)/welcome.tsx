@@ -145,7 +145,7 @@ const s = StyleSheet.create({
   // Mascot — centered, with top margin to clear Dynamic Island + bottom margin to headline
   mascotWrap: {
     alignItems: "center",
-    marginTop: 16,
+    marginTop: 28,
     marginBottom: 16,
   },
 
