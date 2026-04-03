@@ -1,13 +1,12 @@
 /**
- * SignUpScreen — TRAVI Auth Screen
+ * SignUpScreen — TRAVI
  *
- * Layout (3 fixed zones, no outer ScrollView):
- *   Zone 1 [flex:0] — Logo + tagline (top, ~18% height)
- *   Zone 2 [flex:1] — Auth card with inner ScrollView for keyboard
- *   Zone 3 [flex:0] — Guest CTA + legal text (bottom, ~18% height)
+ * Layout (top → middle → bottom, SafeAreaView space-between):
+ *   TOP    : Logotype image (always visible below Dynamic Island)
+ *   MIDDLE : Mascot (small, centered above card) + Auth card  [flex:1]
+ *   BOTTOM : Guest CTA + Legal
  *
- * Safe area handled by SafeAreaView with edges top+bottom.
- * KeyboardAvoidingView wraps only Zone 2 so bottom zone stays anchored.
+ * Background: two symmetric orbs (top-left, bottom-right).
  */
 import { useRef, useState, useEffect } from "react";
 import {
@@ -20,10 +19,10 @@ import {
   Platform,
   TextInput,
   Alert,
-  ScrollView,
+  Dimensions,
 } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
 import { Image } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { LinearGradient } from "expo-linear-gradient";
 import { Svg, Path } from "react-native-svg";
 import { router } from "expo-router";
@@ -45,7 +44,10 @@ import {
 
 WebBrowser.maybeCompleteAuthSession();
 
-/* ─── Google "G" icon ─────────────────────────────────────────────────────── */
+const { width: W } = Dimensions.get("window");
+const MASCOT_SIZE = Math.round(W * 0.22); // ~96px on 390px screen
+
+/* ─── Google icon ─────────────────────────────────────────────────────────── */
 function GoogleIcon({ size = 18 }: { size?: number }) {
   return (
     <Svg width={size} height={size} viewBox="0 0 48 48">
@@ -70,7 +72,7 @@ function AppleIcon({ size = 18, color = "#FFF" }: { size?: number; color?: strin
   );
 }
 
-/* ─── Main component ──────────────────────────────────────────────────────── */
+/* ─── Component ───────────────────────────────────────────────────────────── */
 export default function SignUpScreen() {
   const { dispatch } = useStore();
   const [email, setEmail]           = useState("");
@@ -78,47 +80,44 @@ export default function SignUpScreen() {
   const [emailFocused, setFocused]  = useState(false);
   const [emailError, setEmailError] = useState("");
 
-  /* Micro-animations */
   const inputScale = useRef(new Animated.Value(1)).current;
   const shakeAnim  = useRef(new Animated.Value(0)).current;
 
-  /* Entrance animations */
-  const logoOpacity = useRef(new Animated.Value(0)).current;
-  const logoY       = useRef(new Animated.Value(-20)).current;
-  const cardOpacity = useRef(new Animated.Value(0)).current;
-  const cardY       = useRef(new Animated.Value(28)).current;
+  // Entrance animations
+  const topOpacity  = useRef(new Animated.Value(0)).current;
+  const topY        = useRef(new Animated.Value(-16)).current;
+  const midOpacity  = useRef(new Animated.Value(0)).current;
+  const midY        = useRef(new Animated.Value(24)).current;
   const btmOpacity  = useRef(new Animated.Value(0)).current;
-  const btmY        = useRef(new Animated.Value(16)).current;
+  const btmY        = useRef(new Animated.Value(12)).current;
 
   useEffect(() => {
     Animated.sequence([
       Animated.parallel([
-        Animated.timing(logoOpacity, { toValue: 1, duration: 400, useNativeDriver: true }),
-        Animated.timing(logoY,       { toValue: 0, duration: 400, useNativeDriver: true }),
+        Animated.timing(topOpacity, { toValue: 1, duration: 380, useNativeDriver: true }),
+        Animated.timing(topY,       { toValue: 0, duration: 380, useNativeDriver: true }),
       ]),
       Animated.parallel([
-        Animated.timing(cardOpacity, { toValue: 1, duration: 360, useNativeDriver: true }),
-        Animated.timing(cardY,       { toValue: 0, duration: 360, useNativeDriver: true }),
+        Animated.timing(midOpacity, { toValue: 1, duration: 340, useNativeDriver: true }),
+        Animated.timing(midY,       { toValue: 0, duration: 340, useNativeDriver: true }),
       ]),
       Animated.parallel([
-        Animated.timing(btmOpacity,  { toValue: 1, duration: 280, useNativeDriver: true }),
-        Animated.timing(btmY,        { toValue: 0, duration: 280, useNativeDriver: true }),
+        Animated.timing(btmOpacity, { toValue: 1, duration: 260, useNativeDriver: true }),
+        Animated.timing(btmY,       { toValue: 0, duration: 260, useNativeDriver: true }),
       ]),
     ]).start();
   }, []);
 
-  /* tRPC */
   const initGuestMutation = trpc.auth.initGuest.useMutation();
 
-  /* Input handlers */
   const handleFocus = () => {
     setFocused(true);
     setEmailError("");
-    Animated.timing(inputScale, { toValue: 1.015, duration: 140, useNativeDriver: true }).start();
+    Animated.timing(inputScale, { toValue: 1.015, duration: 130, useNativeDriver: true }).start();
   };
   const handleBlur = () => {
     setFocused(false);
-    Animated.timing(inputScale, { toValue: 1, duration: 140, useNativeDriver: true }).start();
+    Animated.timing(inputScale, { toValue: 1, duration: 130, useNativeDriver: true }).start();
   };
 
   const shake = () => {
@@ -144,7 +143,6 @@ export default function SignUpScreen() {
     router.push({ pathname: "/(auth)/verify" as never, params: { email } });
   };
 
-  /* Google OAuth */
   const [, , promptGoogleAsync] = Google.useAuthRequest({
     iosClientId:     process.env.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID,
     androidClientId: process.env.EXPO_PUBLIC_GOOGLE_ANDROID_CLIENT_ID,
@@ -176,12 +174,11 @@ export default function SignUpScreen() {
         });
         router.replace("/(auth)/welcome" as never);
       }
-    } catch (e) {
+    } catch {
       Alert.alert("Sign in failed", "Could not sign in with Google. Please try again.");
     }
   };
 
-  /* Apple Sign-In */
   const handleApple = async () => {
     if (Platform.OS !== "ios") {
       Alert.alert("Apple Sign-In", "Apple Sign-In is only available on iOS.");
@@ -216,7 +213,6 @@ export default function SignUpScreen() {
     }
   };
 
-  /* Guest */
   const handleGuest = async () => {
     const expiresAt = new Date(Date.now() + 25 * 60 * 60 * 1000).toISOString();
     const result    = await initGuestMutation.mutateAsync().catch(() => null);
@@ -242,28 +238,26 @@ export default function SignUpScreen() {
   const hasError = emailError.length > 0;
 
   return (
-    /* Full-screen background */
     <View style={s.root}>
+      {/* Background gradient */}
       <LinearGradient
         colors={Gradients.authBg}
-        locations={[0, 0.35, 1]}
+        locations={[0, 0.4, 1]}
         style={StyleSheet.absoluteFillObject}
       />
-      {/* Ambient orbs */}
-      <View style={s.orbTR} />
-      <View style={s.orbBL} />
+
+      {/* Symmetric orbs — top-left and bottom-right, same size */}
+      <View style={s.orbTL} />
+      <View style={s.orbBR} />
 
       {/*
-        SafeAreaView with edges top+bottom ensures content never hides
-        behind Dynamic Island or home indicator.
-        flex:1 + justifyContent:space-between = 3-zone layout.
+        SafeAreaView handles Dynamic Island (top) and home indicator (bottom).
+        justifyContent:space-between → 3 zones fill the screen evenly.
       */}
       <SafeAreaView edges={["top", "bottom"]} style={s.safe}>
 
-        {/* ── ZONE 1: Logo (top, fixed height) ── */}
-        <Animated.View
-          style={[s.logoZone, { opacity: logoOpacity, transform: [{ translateY: logoY }] }]}
-        >
+        {/* ══ TOP: Logotype ══ */}
+        <Animated.View style={[s.topZone, { opacity: topOpacity, transform: [{ translateY: topY }] }]}>
           <Image
             source={require("@/assets/logos/logotype-white.webp")}
             style={s.logotype}
@@ -272,21 +266,29 @@ export default function SignUpScreen() {
           <Text style={s.tagline}>YOUR AI TRAVEL COMPANION</Text>
         </Animated.View>
 
-        {/* ── ZONE 2: Auth card (flex:1, fills middle) ── */}
+        {/* ══ MIDDLE: Mascot + Auth card ══ */}
         <KeyboardAvoidingView
           behavior={Platform.OS === "ios" ? "padding" : "height"}
-          style={s.cardZone}
+          style={s.midZone}
         >
-          <Animated.View
-            style={[s.cardWrap, { opacity: cardOpacity, transform: [{ translateY: cardY }] }]}
-          >
-            {/* Glass card */}
+          <Animated.View style={[s.midInner, { opacity: midOpacity, transform: [{ translateY: midY }] }]}>
+
+            {/* Mascot floats above card */}
+            <View style={s.mascotWrap}>
+              <Image
+                source={require("@/assets/logos/mascot-centered.png")}
+                style={s.mascot}
+                resizeMode="contain"
+              />
+            </View>
+
+            {/* Auth card */}
             <View style={s.card}>
               <LinearGradient
-                colors={["rgba(255,255,255,0.07)", "rgba(255,255,255,0.04)"]}
+                colors={["rgba(255,255,255,0.08)", "rgba(255,255,255,0.04)"]}
                 style={s.cardInner}
               >
-                {/* Tab toggle: Sign Up / Log In */}
+                {/* Sign Up / Log In tabs */}
                 <View style={s.tabRow}>
                   {(["Sign Up", "Log In"] as const).map((label, i) => {
                     const active = (i === 0 && !isLogin) || (i === 1 && isLogin);
@@ -321,7 +323,7 @@ export default function SignUpScreen() {
                   </Text>
                 </View>
 
-                {/* Email field */}
+                {/* Email input */}
                 <Animated.View style={{ transform: [{ translateX: shakeAnim }] }}>
                   <Animated.View
                     style={[
@@ -345,10 +347,7 @@ export default function SignUpScreen() {
                         placeholder="Email address"
                         placeholderTextColor={DS.placeholder}
                         value={email}
-                        onChangeText={(v) => {
-                          setEmail(v);
-                          if (emailError) setEmailError("");
-                        }}
+                        onChangeText={(v) => { setEmail(v); if (emailError) setEmailError(""); }}
                         keyboardType="email-address"
                         autoCapitalize="none"
                         returnKeyType="go"
@@ -396,15 +395,14 @@ export default function SignUpScreen() {
                     </View>
                   </TouchableOpacity>
                 </View>
+
               </LinearGradient>
             </View>
           </Animated.View>
         </KeyboardAvoidingView>
 
-        {/* ── ZONE 3: Guest + Legal (bottom, fixed height) ── */}
-        <Animated.View
-          style={[s.bottomZone, { opacity: btmOpacity, transform: [{ translateY: btmY }] }]}
-        >
+        {/* ══ BOTTOM: Guest + Legal ══ */}
+        <Animated.View style={[s.btmZone, { opacity: btmOpacity, transform: [{ translateY: btmY }] }]}>
           <TouchableOpacity style={s.guestBtn} onPress={handleGuest} activeOpacity={0.7}>
             <Text style={s.guestTitle}>Continue as Guest</Text>
             <Text style={s.guestSub}>Explore without an account</Text>
@@ -424,95 +422,115 @@ export default function SignUpScreen() {
 
 /* ─── Styles ──────────────────────────────────────────────────────────────── */
 const s = StyleSheet.create({
-  /* Root */
   root: { flex: 1, backgroundColor: Brand.deepPurple },
 
-  /* Ambient orbs */
-  orbTR: {
-    position: "absolute", width: 300, height: 300, borderRadius: 150,
-    top: -80, right: -110, backgroundColor: "rgba(100,67,244,0.14)",
+  /* Symmetric orbs — same size, opposite corners */
+  orbTL: {
+    position: "absolute",
+    width: 280, height: 280, borderRadius: 140,
+    top: -80, left: -80,
+    backgroundColor: "rgba(100,67,244,0.15)",
   },
-  orbBL: {
-    position: "absolute", width: 240, height: 240, borderRadius: 120,
-    bottom: 50, left: -90, backgroundColor: "rgba(249,68,152,0.10)",
+  orbBR: {
+    position: "absolute",
+    width: 280, height: 280, borderRadius: 140,
+    bottom: -80, right: -80,
+    backgroundColor: "rgba(249,68,152,0.12)",
   },
 
   /*
    * SafeAreaView: flex:1 + justifyContent:space-between
-   * This is the key — 3 children fill top / middle / bottom correctly.
+   * Three children → top / middle / bottom
    */
   safe: {
     flex: 1,
-    paddingHorizontal: 22,
+    paddingHorizontal: 24,
     justifyContent: "space-between",
   },
 
-  /* Zone 1 — Logo */
-  logoZone: {
+  /* TOP zone */
+  topZone: {
     alignItems: "center",
-    paddingTop: 8,
-    gap: 6,
+    paddingTop: 6,
+    gap: 5,
   },
-  logotype: { width: 150, height: 48 },
+  logotype: { width: 140, height: 44 },
   tagline: {
     fontSize: 10,
     letterSpacing: 2.5,
     textTransform: "uppercase",
-    color: "rgba(255,255,255,0.7)",
+    color: "rgba(255,255,255,0.65)",
     fontFamily: "Satoshi-Regular",
   },
 
-  /* Zone 2 — Card */
-  cardZone: { flex: 1, justifyContent: "center", paddingVertical: 20 },
-  cardWrap: { width: "100%" },
+  /* MIDDLE zone */
+  midZone: {
+    flex: 1,
+    justifyContent: "center",
+    paddingTop: 16,
+    paddingBottom: 8,
+  },
+  midInner: { width: "100%", alignItems: "center" },
+
+  /* Mascot */
+  mascotWrap: {
+    width: MASCOT_SIZE,
+    height: MASCOT_SIZE,
+    marginBottom: -MASCOT_SIZE / 2, // overlap the card top
+    zIndex: 10,
+  },
+  mascot: { width: MASCOT_SIZE, height: MASCOT_SIZE },
+
+  /* Card */
   card: {
+    width: "100%",
     borderRadius: Radius.xxl,
     overflow: "hidden",
     borderWidth: 1,
     borderColor: Border.subtle,
   },
-  cardInner: { padding: 20, gap: 16 },
+  cardInner: {
+    paddingTop: MASCOT_SIZE / 2 + 12, // space for mascot overlap
+    paddingHorizontal: 20,
+    paddingBottom: 20,
+    gap: 14,
+  },
 
-  /* Tab toggle */
+  /* Tabs */
   tabRow: {
     flexDirection: "row",
     backgroundColor: "rgba(0,0,0,0.4)",
-    borderRadius: 13,
+    borderRadius: 12,
     padding: 4,
     overflow: "hidden",
   },
   tab: {
     flex: 1,
     paddingVertical: 10,
-    borderRadius: 10,
+    borderRadius: 9,
     alignItems: "center",
     overflow: "hidden",
   },
-  tabText: {
-    fontSize: 14,
-    fontWeight: "600",
-    color: DS.disabled,
-    fontFamily: "Satoshi-Medium",
-  },
+  tabText: { fontSize: 14, fontWeight: "600", color: DS.disabled, fontFamily: "Satoshi-Medium" },
   tabActive: { color: "#FFFFFF" },
 
   /* Heading */
-  heading: { gap: 3 },
+  heading: { gap: 2 },
   headTitle: {
-    fontSize: 22,
+    fontSize: 21,
     fontWeight: "700",
     color: "#FFFFFF",
     fontFamily: "Chillax-Semibold",
-    letterSpacing: -0.3,
+    letterSpacing: -0.2,
   },
   headSub: {
-    fontSize: 14,
+    fontSize: 13,
     color: DS.muted,
     fontFamily: "Satoshi-Regular",
-    lineHeight: 20,
+    lineHeight: 19,
   },
 
-  /* Email input */
+  /* Input */
   inputWrap: {
     borderRadius: Radius.lg,
     overflow: "hidden",
@@ -525,47 +543,39 @@ const s = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     gap: 11,
-    paddingHorizontal: 16,
-    paddingVertical: 14,
+    paddingHorizontal: 15,
+    paddingVertical: 13,
     backgroundColor: "rgba(255,255,255,0.06)",
   },
-  input: {
-    flex: 1,
-    color: "#FFFFFF",
-    fontSize: 15,
-    fontFamily: "Satoshi-Medium",
-  },
+  input: { flex: 1, color: "#FFFFFF", fontSize: 15, fontFamily: "Satoshi-Medium" },
   errorMsg: {
-    color: "#F94498",
-    fontSize: 12,
-    marginTop: 5,
-    marginLeft: 4,
+    color: "#F94498", fontSize: 12, marginTop: 4, marginLeft: 3,
     fontFamily: "Satoshi-Regular",
   },
 
-  /* CTA button */
+  /* CTA */
   cta: {
     borderRadius: Radius.lg,
     overflow: "hidden",
     shadowColor: "#F94498",
-    shadowOffset: { width: 0, height: 6 },
+    shadowOffset: { width: 0, height: 5 },
     shadowOpacity: 0.35,
-    shadowRadius: 20,
+    shadowRadius: 18,
     elevation: 10,
   },
   ctaInner: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    paddingVertical: 16,
-    gap: 9,
+    paddingVertical: 15,
+    gap: 8,
   },
   ctaText: {
     fontSize: 16,
     fontWeight: "700",
     color: "#FFFFFF",
     fontFamily: "Chillax-Semibold",
-    letterSpacing: 0.2,
+    letterSpacing: 0.1,
   },
 
   /* Divider */
@@ -573,7 +583,7 @@ const s = StyleSheet.create({
   divLine: { flex: 1, height: 1, backgroundColor: Border.subtle },
   divText: { fontSize: 12, color: DS.muted, fontFamily: "Satoshi-Regular" },
 
-  /* Social buttons */
+  /* Social */
   socialRow: { flexDirection: "row", gap: 12 },
   socialBtn: {
     flex: 1,
@@ -587,27 +597,18 @@ const s = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    paddingVertical: 13,
+    paddingVertical: 12,
     gap: 8,
   },
-  socialLabel: {
-    color: "#FFFFFF",
-    fontSize: 14,
-    fontWeight: "600",
-    fontFamily: "Satoshi-Medium",
-  },
+  socialLabel: { color: "#FFFFFF", fontSize: 14, fontWeight: "600", fontFamily: "Satoshi-Medium" },
 
-  /* Zone 3 — Bottom */
-  bottomZone: {
-    alignItems: "center",
-    gap: 10,
-    paddingBottom: 4,
-  },
+  /* BOTTOM zone */
+  btmZone: { alignItems: "center", gap: 10, paddingBottom: 2 },
   guestBtn: {
     width: "100%",
     alignItems: "center",
     gap: 2,
-    paddingVertical: 14,
+    paddingVertical: 13,
     borderRadius: Radius.lg,
     borderWidth: 1,
     borderColor: Border.subtle,
@@ -619,11 +620,7 @@ const s = StyleSheet.create({
     color: "rgba(255,255,255,0.85)",
     fontFamily: "Satoshi-Medium",
   },
-  guestSub: {
-    fontSize: 12,
-    color: DS.muted,
-    fontFamily: "Satoshi-Regular",
-  },
+  guestSub: { fontSize: 12, color: DS.muted, fontFamily: "Satoshi-Regular" },
   legal: {
     fontSize: 11,
     color: DS.muted,
