@@ -469,6 +469,22 @@ export default function TripHubScreen() {
                 <Text style={styles.itineraryBtnText}>🌍 Cultural Guide</Text>
               </LinearGradient>
             </TouchableOpacity>
+
+            {/* Prepare for Trip */}
+            <TouchableOpacity
+              style={[styles.itineraryBtn, { marginTop: 10 }]}
+              onPress={() => router.push({ pathname: "/(trip)/trip-prep" as never, params: { destination } })}
+              activeOpacity={0.85}
+            >
+              <LinearGradient
+                colors={["#0EA5E9", "#6443F4"]}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 0 }}
+                style={styles.itineraryBtnGradient}
+              >
+                <Text style={styles.itineraryBtnText}>🎒 Prepare for Trip</Text>
+              </LinearGradient>
+            </TouchableOpacity>
           </>
         )}
 

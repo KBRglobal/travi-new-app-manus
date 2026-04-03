@@ -14,6 +14,7 @@ import { IconSymbol } from "@/components/ui/icon-symbol";
 import { useStore } from "@/lib/store";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import * as Haptics from "expo-haptics";
+import { router } from "expo-router";
 
 const { width } = Dimensions.get("window");
 
@@ -265,8 +266,30 @@ export default function WalletScreen() {
               </View>
             </View>
           </View>
+          {/* Action buttons */}
+          <View style={S.actionBtnsRow}>
+            <TouchableOpacity style={S.actionBtn} onPress={() => router.push("/(tabs)/wallet-kyc" as never)} activeOpacity={0.85}>
+              <LinearGradient colors={["rgba(255,255,255,0.15)", "rgba(255,255,255,0.08)"]} style={StyleSheet.absoluteFillObject} />
+              <Text style={S.actionBtnEmoji}>📸</Text>
+              <Text style={S.actionBtnText}>Verify ID</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={S.actionBtn} onPress={() => router.push("/(tabs)/wallet-withdraw" as never)} activeOpacity={0.85}>
+              <LinearGradient colors={["rgba(34,197,94,0.2)", "rgba(34,197,94,0.08)"]} style={StyleSheet.absoluteFillObject} />
+              <Text style={S.actionBtnEmoji}>💸</Text>
+              <Text style={S.actionBtnText}>Withdraw</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={S.actionBtn} onPress={() => router.push("/(tabs)/rewards-portal" as never)} activeOpacity={0.85}>
+              <LinearGradient colors={["rgba(100,67,244,0.2)", "rgba(100,67,244,0.08)"]} style={StyleSheet.absoluteFillObject} />
+              <Text style={S.actionBtnEmoji}>⭐</Text>
+              <Text style={S.actionBtnText}>Rewards</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={S.actionBtn} onPress={() => router.push("/(tabs)/badges-leaderboard" as never)} activeOpacity={0.85}>
+              <LinearGradient colors={["rgba(249,68,152,0.2)", "rgba(249,68,152,0.08)"]} style={StyleSheet.absoluteFillObject} />
+              <Text style={S.actionBtnEmoji}>🏆</Text>
+              <Text style={S.actionBtnText}>Badges</Text>
+            </TouchableOpacity>
+          </View>
         </View>
-
         {/* ═══ TABS ═══ */}
         <View style={S.tabsWrap}>
           <View style={S.tabs}>
@@ -504,4 +527,8 @@ const S = StyleSheet.create({
   txRight: { alignItems: "flex-end" },
   txAmount: { color: "#22C55E", fontSize: 15, fontWeight: "900" },
   txPts: { color: "rgba(255,255,255,0.4)", fontSize: 11, marginTop: 1 },
+  actionBtnsRow: { flexDirection: "row", gap: 8, paddingHorizontal: 20, paddingTop: 12, paddingBottom: 4 },
+  actionBtn: { flex: 1, borderRadius: 14, overflow: "hidden", paddingVertical: 12, alignItems: "center", gap: 4, borderWidth: 1, borderColor: "rgba(255,255,255,0.1)" },
+  actionBtnEmoji: { fontSize: 20 },
+  actionBtnText: { color: "#FFFFFF", fontSize: 11, fontWeight: "700" },
 });

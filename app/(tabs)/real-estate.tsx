@@ -265,6 +265,21 @@ export default function RealEstateScreen() {
           ))}
         </View>
 
+        {/* Quick links to deep-dive screens */}
+        <View style={S.quickLinksRow}>
+          <TouchableOpacity style={S.quickLinkCard} onPress={() => router.push("/(tabs)/real-estate-analysis" as never)} activeOpacity={0.85}>
+            <Text style={S.quickLinkEmoji}>📊</Text>
+            <Text style={S.quickLinkLabel}>{"Market\nAnalysis"}</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={S.quickLinkCard} onPress={() => router.push("/(tabs)/real-estate-contacts" as never)} activeOpacity={0.85}>
+            <Text style={S.quickLinkEmoji}>🤝</Text>
+            <Text style={S.quickLinkLabel}>{"Expert\nContacts"}</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={S.quickLinkCard} onPress={() => router.push("/(tabs)/real-estate-guide" as never)} activeOpacity={0.85}>
+            <Text style={S.quickLinkEmoji}>📚</Text>
+            <Text style={S.quickLinkLabel}>{"Investor\nGuide"}</Text>
+          </TouchableOpacity>
+        </View>
         {/* CTA */}
         <TouchableOpacity style={S.consultBtn} activeOpacity={0.88}>
           <LinearGradient colors={["#6443F4", "#F94498"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={S.consultGradient}>
@@ -430,6 +445,10 @@ const S = StyleSheet.create({
   consultBtn: { borderRadius: 18, overflow: "hidden" },
   consultGradient: { flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 8, paddingVertical: 16 },
   consultText: { color: "#FFFFFF", fontSize: 16, fontWeight: "800" },
+  quickLinksRow: { flexDirection: "row", paddingHorizontal: 20, gap: 10, marginBottom: 16 },
+  quickLinkCard: { flex: 1, borderRadius: 14, backgroundColor: "rgba(100,67,244,0.12)", borderWidth: 1, borderColor: "rgba(100,67,244,0.25)", paddingVertical: 14, alignItems: "center", gap: 6 },
+  quickLinkEmoji: { fontSize: 24 },
+  quickLinkLabel: { color: "#FFFFFF", fontSize: 11, fontWeight: "800", textAlign: "center", lineHeight: 16 },
 
   // Detail screen
   detailHero: { height: 280, justifyContent: "flex-end" },

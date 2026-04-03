@@ -38,6 +38,7 @@ const SETTINGS_SECTIONS = [
     title: "Account",
     items: [
       { icon: "person.fill" as const, label: "Edit Profile", value: "", toggleKey: "", isToggle: false, route: "/(settings)/edit-profile" },
+      { icon: "checkmark.circle.fill" as const, label: "Complete Your Profile", value: "Deep DNA", toggleKey: "", isToggle: false, route: "/(auth)/deep-onboarding" },
       { icon: "bell.fill" as const, label: "Notifications", value: "", toggleKey: "notifications", isToggle: true },
       { icon: "shield.fill" as const, label: "Privacy & Security", value: "", toggleKey: "", isToggle: false, route: "/(settings)/privacy-security" },
       { icon: "lock.fill" as const, label: "Change Password", value: "", toggleKey: "", isToggle: false, route: "/(settings)/change-password" },
@@ -55,6 +56,7 @@ const SETTINGS_SECTIONS = [
     title: "Premium",
     items: [
       { icon: "crown.fill" as const, label: "Upgrade Plan", value: "Explorer", toggleKey: "", isToggle: false, route: "/(tabs)/subscription" },
+      { icon: "star.fill" as const, label: "Rewards Portal", value: "$2,240 cashback", toggleKey: "", isToggle: false, route: "/(tabs)/rewards-portal" },
       { icon: "gift.fill" as const, label: "Refer & Earn", value: "500 pts/friend", toggleKey: "", isToggle: false, route: "/(tabs)/refer" },
     ],
   },
@@ -207,6 +209,9 @@ export default function ProfileScreen() {
               <TouchableOpacity onPress={() => router.push("/(auth)/quiz" as never)} activeOpacity={0.7}>
                 <Text style={styles.seeAll}>Retake quiz</Text>
               </TouchableOpacity>
+              <TouchableOpacity onPress={() => router.push("/(dna)/first-class-dna" as never)} activeOpacity={0.7}>
+                <Text style={[styles.seeAll, { color: "#F94498" }]}>First Class →</Text>
+              </TouchableOpacity>
             </View>
           </View>
           <View style={styles.dnaTraitsCard}>
@@ -259,9 +264,14 @@ export default function ProfileScreen() {
               <IconSymbol name="trophy.fill" size={16} color="#FFD700" />
               <Text style={styles.sectionTitle}>Achievements</Text>
             </View>
-            <TouchableOpacity activeOpacity={0.7}>
-              <Text style={styles.seeAll}>See all</Text>
-            </TouchableOpacity>
+            <View style={{ flexDirection: "row", gap: 12, alignItems: "center" }}>
+              <TouchableOpacity onPress={() => router.push("/(tabs)/memory-hub" as never)} activeOpacity={0.7}>
+                <Text style={[styles.seeAll, { color: "#F94498" }]}>📸 Memories</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => router.push("/(tabs)/badges-leaderboard" as never)} activeOpacity={0.7}>
+                <Text style={styles.seeAll}>All badges →</Text>
+              </TouchableOpacity>
+            </View>
           </View>
           <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: 10 }}>
             {ACHIEVEMENTS.map((ach) => (

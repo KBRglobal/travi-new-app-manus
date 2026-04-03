@@ -187,6 +187,19 @@ export default function EnterpriseScreen() {
 function OverviewTab() {
   return (
     <View style={T.wrap}>
+      <TouchableOpacity
+        style={T.crmBanner}
+        onPress={() => router.push("/(tabs)/prospects-crm" as never)}
+        activeOpacity={0.85}
+      >
+        <LinearGradient colors={["rgba(100,67,244,0.25)", "rgba(249,68,152,0.15)"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={StyleSheet.absoluteFillObject} />
+        <Text style={T.crmBannerEmoji}>👥</Text>
+        <View style={T.crmBannerInfo}>
+          <Text style={T.crmBannerTitle}>Prospects CRM</Text>
+          <Text style={T.crmBannerSub}>6 contacts · $550K pipeline</Text>
+        </View>
+        <Text style={T.crmBannerArrow}>→</Text>
+      </TouchableOpacity>
       <Text style={T.sectionTitle}>Key Performance Indicators</Text>
       <View style={T.kpiGrid}>
         {KPIS.map((kpi, i) => (
@@ -409,6 +422,12 @@ const T = StyleSheet.create({
   ruleStatus: { fontSize: 14 },
   ruleTitle: { color: "#FFFFFF", fontSize: 13, fontWeight: "700" },
   ruleBody: { color: "rgba(255,255,255,0.5)", fontSize: 12, lineHeight: 17, paddingLeft: 20 },
+  crmBanner: { flexDirection: "row", alignItems: "center", gap: 12, borderRadius: 16, overflow: "hidden", padding: 14, marginBottom: 16, borderWidth: 1, borderColor: "rgba(100,67,244,0.3)" },
+  crmBannerEmoji: { fontSize: 28 },
+  crmBannerInfo: { flex: 1 },
+  crmBannerTitle: { color: "#FFFFFF", fontSize: 15, fontWeight: "800" },
+  crmBannerSub: { color: "rgba(255,255,255,0.5)", fontSize: 12, marginTop: 2 },
+  crmBannerArrow: { color: "rgba(255,255,255,0.6)", fontSize: 20, fontWeight: "700" },
 });
 
 const S = StyleSheet.create({

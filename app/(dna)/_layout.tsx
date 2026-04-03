@@ -4,6 +4,7 @@ export default function DnaLayout() {
   return (
     <Stack screenOptions={{ headerShown: false, animation: "slide_from_bottom" }}>
       <Stack.Screen name="quick-swipe" />
+      <Stack.Screen name="first-class-dna" />
     </Stack>
   );
 }

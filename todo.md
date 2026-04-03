@@ -425,3 +425,143 @@
 - [x] All social screens registered in (social)/_layout.tsx
 - [x] Zero TypeScript errors across all social screens
 - [x] 17 database tables live in Railway PostgreSQL
+
+## Phase 38 — PRD Full Implementation (from PRD v2.0)
+
+### First Class DNA Assessment (9 Modules)
+- [ ] Build first-class-dna.tsx — 9-module deep personality assessment
+- [ ] Module 1: Identity (8-10 questions — who you are as a traveler)
+- [ ] Module 2: Crisis (6-8 questions — how you handle travel problems)
+- [ ] Module 3: Money (8-10 questions — budget attitudes, spending priorities)
+- [ ] Module 4: Visual (6-8 questions — aesthetic preferences)
+- [ ] Module 5: Brand (6-8 questions — brand loyalty, quality expectations)
+- [ ] Module 6: Social (8-10 questions — solo vs. group, introversion/extraversion)
+- [ ] Module 7: Sensory (6-8 questions — food, music, tactile preferences)
+- [ ] Module 8: Future (6-8 questions — bucket list, dream destinations)
+- [ ] Module 9: AI Challenge (4-6 scenario-based AI puzzles)
+- [ ] Output: 8-dimension DNA scores (explorer/relaxer/adventurer/culturalist/foodie/photographer/historian/naturalist)
+- [ ] Unlock 50% subscription discount on completion
+- [ ] Wire from Profile → "Upgrade Your DNA" CTA
+
+### Extended Onboarding (17 Steps)
+- [ ] Build onboarding-travel-mode.tsx (Solo/Couple/Group/Family)
+- [ ] Build onboarding-planning-style.tsx (Detailed/Spontaneous/Mix)
+- [ ] Build onboarding-budget-mindset.tsx (psychology of spending)
+- [ ] Build onboarding-pace.tsx (slider: chill ↔ packed schedule)
+- [ ] Build onboarding-non-negotiables.tsx (must-haves and must-avoids)
+- [ ] Build onboarding-food-preferences.tsx (cuisines, dietary, allergies)
+- [ ] Build onboarding-allergies.tsx (specific allergy multi-select)
+- [ ] Build onboarding-accessibility.tsx (mobility, visual, hearing, cognitive)
+- [ ] Build onboarding-trip-directions.tsx (short-haul vs long-haul, domestic vs international)
+- [ ] Build onboarding-business.tsx (real estate interests, property types, budget ranges)
+- [ ] Build onboarding-dna-complete.tsx (summary + persona reveal)
+- [ ] Wire all 17 onboarding steps in sequence after sign-up
+
+### Trip Preparation Hub
+- [ ] Build trip-prep.tsx — pre-departure services hub
+- [ ] Trip Prep: destination weather, visa requirements, currency info
+- [ ] Trip Prep: services grid (insurance, airport transfer, SIM card, luggage storage, currency exchange)
+- [ ] Trip Prep: AI Concierge "Ask TRAVI anything about your upcoming trip"
+- [ ] Trip Prep: AI-generated packing list based on destination + DNA + weather
+- [ ] Trip Prep: Documents section (passport, visa, booking confirmations, travel insurance)
+- [ ] Trip Prep: Editable pre-departure checklist with check/uncheck
+- [ ] Wire from Trip Hub → "Prepare for Trip" CTA
+
+### Flight / Hotel / Restaurant Detail Screens
+- [ ] Build flight-detail.tsx (booking info, seat map, change flight, cancel, add baggage)
+- [ ] Build hotel-detail.tsx (room info, amenities, photo gallery, edit booking, cancel)
+- [ ] Build restaurant-detail.tsx (info, menu preview, reserve table, reviews, directions)
+- [ ] Wire flight-detail from itinerary transport stops
+- [ ] Wire hotel-detail from itinerary hotel stops
+- [ ] Wire restaurant-detail from itinerary food stops and nearby map
+
+### B2B Screens
+- [ ] Build revenue-dashboard.tsx (MRR, CAC, CLV, churn, revenue chart, conversion rates)
+- [ ] Build prospects-crm.tsx (company cards, search, filters, add prospect modal, bulk actions)
+- [ ] Build regulations-tracker.tsx (pie chart, regulation cards, detail modal, status update)
+- [ ] Wire all 3 B2B screens from Enterprise tab
+
+### Gamification Screens
+- [ ] Build badges.tsx (achievement badges grid, locked/unlocked states, progress)
+- [ ] Build leaderboard.tsx (weekly/monthly/all-time tabs, user rank, top travelers)
+- [ ] Build memory-hub.tsx (trip photos, highlights, stories, share to community)
+- [ ] Build rewards-portal.tsx (available rewards, redeem flow, reward history)
+- [ ] Wire badges from Profile achievements section
+- [ ] Wire leaderboard from Community/Connecting tab
+
+### Wallet KYC & Withdrawal
+- [ ] Build wallet-kyc.tsx (identity verification, document upload, KYC levels 1/2/3)
+- [ ] Build wallet-withdraw.tsx (bank transfer, amount, currency, fee display)
+- [ ] Build wallet-exchange.tsx (currency exchange with live rates, fee display)
+- [ ] Wire KYC from Wallet screen "Verify Identity" CTA
+- [ ] Wire withdrawal from Wallet screen "Withdraw" button
+
+### Destination Detail Immersive Screen
+- [ ] Build destination-detail.tsx (full immersive screen per PRD §8/Appendix P)
+- [ ] Hero: cinematic slideshow with destination name overlay
+- [ ] DNA match score (% match based on user's DNA profile)
+- [ ] Neighborhoods section with photos and vibe descriptions
+- [ ] Top Experiences with price + cashback per item
+- [ ] Food & Drink section with mouth-watering photos
+- [ ] Hidden Gems section
+- [ ] "Plan This Trip" CTA throughout
+- [ ] Wire from Explore destination cards
+
+### Home Screen Improvements
+- [ ] Clarify DNA card action text (make it obvious what to tap)
+- [ ] Reduce visual clutter on home screen
+- [ ] Make user flow obvious: hero → CTA → trip planning
+- [ ] Connect Plan a Trip button to real planning flow
+
+### South America Hub & Dubai Cultural Screen
+- [ ] Build south-america-hub.tsx (Brazil/Argentina/Colombia/Peru content, events, guides)
+- [ ] Build dubai-cultural.tsx (Islamic etiquette, prayer times, halal/kosher, dress code, tipping)
+- [ ] Wire both from Destination Guide tab
+
+### Real Estate Enhancements
+- [ ] Build real-estate-analysis.tsx (market deep dive, price trends, ROI calculator)
+- [ ] Build real-estate-contacts.tsx (agent directory, developer contacts, consultation booking)
+- [ ] Build real-estate-guide.tsx (Israeli investor guide, UAE property law, off-plan explained)
+- [ ] Build property-detail.tsx (gallery, specs, ROI calculator, map, contact agent)
+- [ ] Wire all from Real Estate tab
+
+### Quick DNA 8-Dimension Enhancement
+- [ ] Enhance quiz result to show 8-dimension DNA scores (explorer/relaxer/adventurer/culturalist/foodie/photographer/historian/naturalist)
+- [ ] Add confidence score per destination recommendation
+- [ ] Add share card generation (Instagram Stories format)
+- [ ] Add "Retake Quiz" functionality
+- [ ] Add fun facts per DNA type
+
+### Settings Screens
+- [ ] Build settings-notifications.tsx (push, email, SMS preferences)
+- [ ] Build settings-language-currency.tsx (language + currency combined)
+- [ ] Build settings-emergency.tsx (emergency contacts, medical info, SOS settings)
+- [ ] Build settings-health-activity.tsx (fitness level, health conditions for trip planning)
+- [ ] Wire all from Profile settings
+
+### Invite & Social
+- [ ] Build invite-partner.tsx (accept/decline trip invite, merge itineraries)
+- [ ] Build wishlist.tsx (saved destinations, experiences, hotels)
+- [ ] Wire wishlist from Explore save button
+- [ ] Wire invite-partner from Trip Hub "Invite Travel Partner"
+
+## Phase 39 — PRD Full Implementation (Session 3 — Apr 3 2026)
+
+- [x] First Class DNA Assessment (9 modules, 60+ questions, 8-dimension output)
+- [x] Extended deep onboarding (10 steps: travel mode, planning style, budget mindset, pace, non-negotiables, food prefs, allergies, accessibility, trip directions, business integration)
+- [x] Trip Preparation Hub (weather, visa, services grid, AI packing list, documents, checklist)
+- [x] Flight Detail screen (seat map, amenities, booking flow, cashback)
+- [x] Hotel Detail screen (photos, amenities, room types, reviews, booking)
+- [x] Restaurant Detail screen (menu, reviews, reservation)
+- [x] B2B Prospects CRM screen (pipeline, contacts, deal tracking)
+- [x] Badges & Leaderboard screen (badge collection, global leaderboard)
+- [x] Memory Hub screen (trip photo journal, notes, highlights)
+- [x] Rewards Portal screen (cashback, points redemption, tier benefits)
+- [x] Wallet KYC verification flow (document upload, identity steps)
+- [x] Wallet withdrawal screen (bank/PayPal/crypto options)
+- [x] South America Hub screen (6 countries: Brazil, Argentina, Colombia, Peru, Chile, Ecuador)
+- [x] Real Estate Market Analysis screen (Dubai/Abu Dhabi/RAK, price trends, ROI calculator)
+- [x] Real Estate Contacts screen (agents, developers, lawyers, mortgage — free consultation booking)
+- [x] Real Estate Investor Guide screen (5 chapters: why UAE, buying process, off-plan, legal, mortgage)
+- [x] Wire all new screens to existing navigation (profile, real-estate, enterprise, wallet tabs)
+- [x] Zero TypeScript errors confirmed
