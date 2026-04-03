@@ -166,6 +166,11 @@ export default function TabLayout() {
       {/* Wishlist & Social */}
       <Tabs.Screen name="wishlist" options={{ href: null }} />
       <Tabs.Screen name="invite-partner" options={{ href: null }} />
+
+      {/* B2B Analytics (added by Manus — must be hidden) */}
+      <Tabs.Screen name="competitors" options={{ href: null }} />
+      <Tabs.Screen name="revenue-dashboard" options={{ href: null }} />
+      <Tabs.Screen name="regulations-tracker" options={{ href: null }} />
     </Tabs>
   );
 }
