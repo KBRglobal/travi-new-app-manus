@@ -37,7 +37,7 @@ export default function WelcomeScreen() {
         {/* Skip — top-right, 44px tap area */}
         <Pressable
           style={({ pressed }) => [s.skipBtn, pressed && { opacity: 0.6 }]}
-          onPress={() => router.replace("/(auth)/sign-up")}
+          onPress={() => router.replace("/(tabs)" as any)}
         >
           <Text style={s.skipText}>Skip</Text>
         </Pressable>
@@ -56,7 +56,7 @@ export default function WelcomeScreen() {
           {/* Primary CTA — gradient pill, 56px, full-width minus 48px */}
           <Pressable
             style={({ pressed }) => [s.ctaBtn, pressed && { opacity: 0.8, transform: [{ scale: 0.98 }] }]}
-            onPress={() => router.push("/(auth)/sign-up")}
+            onPress={() => router.replace("/(tabs)" as any)}
           >
             <LinearGradient
               colors={[C.purple, C.pink]}
@@ -71,7 +71,7 @@ export default function WelcomeScreen() {
           {/* Secondary link */}
           <Pressable
             style={({ pressed }) => [{ paddingVertical: 8, minHeight: 44, justifyContent: "center" as const }, pressed && { opacity: 0.6 }]}
-            onPress={() => router.push("/(auth)/sign-up")}
+            onPress={() => router.replace("/(tabs)" as any)}
           >
             <Text style={s.secondaryText}>
               Already have an account? <Text style={s.secondaryAccent}>Sign In</Text>

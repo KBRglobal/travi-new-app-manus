@@ -139,6 +139,18 @@
 - [ ] Apply animation system (transitions, micro-interactions)
 - [ ] Apply screen-specific visual specs
 
+### Home Dashboard Design Fixes (User Feedback)
+- [x] Fix Bottom Tab Bar — rebuild with 5 clean simple icons, remove broken triangle shapes
+- [x] Fix Recommended cards — proper horizontal scroll with snap, 2 visible edges
+- [x] Redesign DNA card — glass card with subtle border, not gradient banner
+- [x] Keep Explorer DNA badge as-is
+- [x] Increase breathing room — 24px spacing between sections
+- [x] Plan a Trip card — hero card 160px, bigger text, strong pink glow shadow
+- [x] Cashback + Explore cards — brighter bg + thicker brighter border
+- [x] Recommended cards — 240px image, strong gradient overlay, 28px city name
+- [x] Typography — Chillax fonts loaded, Chillax-Bold on all headings
+- [x] Spacing — 24px between all sections
+
 ---
 
 ## Phase 2 — Backend / Infra / Logic (LATER — DO NOT TOUCH NOW)

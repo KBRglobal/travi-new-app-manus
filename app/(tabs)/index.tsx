@@ -1,6 +1,6 @@
-// Screen 11 — Home Dashboard — DESIGNED (Premium)
+// Screen 11 — Home Dashboard — DESIGNED (Premium v2)
 // Route: /(tabs) (index) | Mode: Discovery
-// Uses: Chillax/Satoshi fonts, mascot, logotype, Unsplash destination photos, IconSymbol icons
+// Fixes: Hero Plan Trip, card contrast, taller Recommended, Chillax fonts, 24px spacing
 
 import { useRef, useEffect } from "react";
 import {
@@ -27,8 +27,10 @@ const C = {
   bgBase: "#1A0B2E",
   bgDeep: "#0D0221",
   bgSurface: "#24103E",
-  bgCard: "rgba(36,16,62,0.6)",
-  borderCard: "rgba(123,68,230,0.25)",
+  bgCard: "rgba(36,16,62,0.7)",
+  bgCardBright: "rgba(50,24,80,0.85)",
+  borderCard: "rgba(123,68,230,0.35)",
+  borderBright: "rgba(140,90,255,0.5)",
   purple: "#6443F4",
   pink: "#F94498",
   orange: "#FF9327",
@@ -37,6 +39,8 @@ const C = {
   textSecondary: "#D3CFD8",
   textTertiary: "#A79FB2",
   success: "#34D399",
+  glassBg: "rgba(100,67,244,0.08)",
+  glassBorder: "rgba(100,67,244,0.35)",
 };
 
 // Destination images (local Unsplash assets)
@@ -51,10 +55,10 @@ const DEST_IMAGES: Record<string, any> = {
 };
 
 const DESTINATIONS = [
-  { id: "1", key: "bali", city: "Bali", country: "Indonesia", match: 96, price: "€850", days: "7-10", tagline: "Temples & tropical paradise" },
-  { id: "2", key: "santorini", city: "Santorini", country: "Greece", match: 91, price: "€1,200", days: "5-7", tagline: "Blue domes & sunsets" },
-  { id: "3", key: "kyoto", city: "Kyoto", country: "Japan", match: 88, price: "€950", days: "7-10", tagline: "Cherry blossoms & tradition" },
-  { id: "4", key: "paris", city: "Paris", country: "France", match: 85, price: "€780", days: "4-6", tagline: "Romance & culture" },
+  { id: "1", key: "bali", city: "Bali", country: "Indonesia", match: 96, price: "€850", days: "7-10" },
+  { id: "2", key: "santorini", city: "Santorini", country: "Greece", match: 91, price: "€1,200", days: "5-7" },
+  { id: "3", key: "kyoto", city: "Kyoto", country: "Japan", match: 88, price: "€950", days: "7-10" },
+  { id: "4", key: "paris", city: "Paris", country: "France", match: 85, price: "€780", days: "4-6" },
 ];
 
 const TRENDING = [
@@ -69,20 +73,22 @@ function haptic() {
   }
 }
 
+// Card width: show ~1.3 cards so user sees the peek of next card
+const DEST_CARD_W = W * 0.72;
+const TREND_CARD_W = W * 0.42;
+
 export default function HomeScreen() {
   const router = useRouter();
   const mascotBob = useRef(new Animated.Value(0)).current;
   const glowPulse = useRef(new Animated.Value(0.3)).current;
 
   useEffect(() => {
-    // Mascot gentle bob
     Animated.loop(
       Animated.sequence([
         Animated.timing(mascotBob, { toValue: -4, duration: 1500, useNativeDriver: true }),
         Animated.timing(mascotBob, { toValue: 4, duration: 1500, useNativeDriver: true }),
       ])
     ).start();
-    // Glow pulse
     Animated.loop(
       Animated.sequence([
         Animated.timing(glowPulse, { toValue: 0.6, duration: 2000, useNativeDriver: true }),
@@ -93,7 +99,7 @@ export default function HomeScreen() {
 
   return (
     <View style={s.root}>
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 100 }}>
+      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 110 }}>
 
         {/* ─── Header ─── */}
         <LinearGradient
@@ -102,13 +108,11 @@ export default function HomeScreen() {
           end={{ x: 0, y: 1 }}
           style={s.header}
         >
-          {/* Logotype */}
           <Image
             source={require("@/assets/images/logotype-dark.webp")}
             style={s.logotype}
             resizeMode="contain"
           />
-          {/* Profile avatar */}
           <Pressable
             onPress={() => { haptic(); router.push("/(settings)/profile" as any); }}
             style={({ pressed }) => [s.avatar, pressed && { opacity: 0.7, transform: [{ scale: 0.95 }] }]}
@@ -135,48 +139,54 @@ export default function HomeScreen() {
           </Animated.View>
         </View>
 
-        {/* ─── Quick Actions ─── */}
-        <View style={s.section}>
-          {/* Plan Trip — hero CTA */}
+        {/* ─── Plan a Trip — HERO CARD ─── */}
+        <View style={s.sectionSpaced}>
           <Pressable
             onPress={() => { haptic(); router.push("/(tabs)/plan-trip" as any); }}
-            style={({ pressed }) => [s.planTripCard, pressed && { opacity: 0.9, transform: [{ scale: 0.98 }] }]}
+            style={({ pressed }) => [s.planTripCard, pressed && { opacity: 0.92, transform: [{ scale: 0.98 }] }]}
           >
             <LinearGradient
-              colors={[C.purple, C.pink]}
+              colors={[C.purple, "#8B5CF6", C.pink]}
               start={{ x: 0, y: 0 }}
               end={{ x: 1, y: 1 }}
               style={s.planTripGrad}
             >
+              {/* Decorative glow circle */}
+              <View style={s.planGlowCircle} />
+
               <View style={s.planTripIconWrap}>
-                <IconSymbol name="airplane" size={28} color="#FFFFFF" />
+                <IconSymbol name="airplane" size={32} color="#FFFFFF" />
               </View>
               <View style={{ flex: 1 }}>
                 <Text style={s.planTripTitle}>Plan a Trip</Text>
                 <Text style={s.planTripSub}>AI-powered itinerary in minutes</Text>
               </View>
-              <IconSymbol name="chevron.right" size={22} color="rgba(255,255,255,0.5)" />
+              <View style={s.planArrowWrap}>
+                <IconSymbol name="arrow.right" size={20} color="#FFFFFF" />
+              </View>
             </LinearGradient>
           </Pressable>
+        </View>
 
-          {/* Quick cards row */}
+        {/* ─── Quick Cards Row (Cashback + Explore) ─── */}
+        <View style={s.sectionSpaced}>
           <View style={s.quickRow}>
             <Pressable
               onPress={() => { haptic(); router.push("/(points)/wallet" as any); }}
-              style={({ pressed }) => [s.quickCard, pressed && { opacity: 0.8 }]}
+              style={({ pressed }) => [s.quickCard, pressed && { opacity: 0.85, transform: [{ scale: 0.97 }] }]}
             >
               <View style={s.quickIconCircle}>
-                <IconSymbol name="dollarsign.circle.fill" size={22} color={C.yellow} />
+                <IconSymbol name="dollarsign.circle.fill" size={24} color={C.yellow} />
               </View>
               <Text style={s.quickLabel}>Cashback</Text>
               <Text style={s.quickValue}>€45.20</Text>
             </Pressable>
             <Pressable
               onPress={() => { haptic(); router.push("/(tabs)/explore" as any); }}
-              style={({ pressed }) => [s.quickCard, pressed && { opacity: 0.8 }]}
+              style={({ pressed }) => [s.quickCard, pressed && { opacity: 0.85, transform: [{ scale: 0.97 }] }]}
             >
-              <View style={s.quickIconCircle}>
-                <IconSymbol name="safari.fill" size={22} color={C.purple} />
+              <View style={[s.quickIconCircle, { backgroundColor: "rgba(100,67,244,0.18)" }]}>
+                <IconSymbol name="safari.fill" size={24} color={C.purple} />
               </View>
               <Text style={s.quickLabel}>Explore</Text>
               <Text style={s.quickValue}>12 new</Text>
@@ -184,18 +194,13 @@ export default function HomeScreen() {
           </View>
         </View>
 
-        {/* ─── DNA Banner ─── */}
-        <View style={s.section}>
+        {/* ─── Complete Your DNA — Glass Card ─── */}
+        <View style={s.sectionSpaced}>
           <Pressable
             onPress={() => { haptic(); router.push("/(dna)/profile" as any); }}
-            style={({ pressed }) => [pressed && { opacity: 0.85 }]}
+            style={({ pressed }) => [pressed && { opacity: 0.88 }]}
           >
-            <LinearGradient
-              colors={["rgba(100,67,244,0.15)", "rgba(249,68,152,0.15)"]}
-              start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 0 }}
-              style={s.dnaBannerGrad}
-            >
+            <View style={s.dnaGlassCard}>
               <View style={s.dnaIconWrap}>
                 <IconSymbol name="waveform" size={24} color={C.purple} />
               </View>
@@ -204,15 +209,15 @@ export default function HomeScreen() {
                 <Text style={s.dnaSub}>Get personalized recommendations</Text>
               </View>
               <IconSymbol name="chevron.right" size={18} color={C.textTertiary} />
-            </LinearGradient>
+            </View>
           </Pressable>
         </View>
 
         {/* ─── Live Trip Banner ─── */}
-        <View style={s.section}>
+        <View style={s.sectionSpaced}>
           <Pressable
             onPress={() => { haptic(); router.push("/(live)/home" as any); }}
-            style={({ pressed }) => [s.liveBanner, pressed && { opacity: 0.85 }]}
+            style={({ pressed }) => [s.liveBanner, pressed && { opacity: 0.88 }]}
           >
             <Animated.View style={[s.liveDotOuter, { opacity: glowPulse }]} />
             <View style={s.liveDot} />
@@ -232,13 +237,15 @@ export default function HomeScreen() {
             horizontal
             showsHorizontalScrollIndicator={false}
             keyExtractor={(i) => i.id}
-            contentContainerStyle={{ paddingHorizontal: 20, gap: 14 }}
+            contentContainerStyle={{ paddingHorizontal: 20, gap: 16 }}
+            snapToInterval={DEST_CARD_W + 16}
+            decelerationRate="fast"
             renderItem={({ item }) => (
               <Pressable
                 onPress={() => { haptic(); router.push({ pathname: "/(tabs)/destination-guide", params: { id: item.key } } as any); }}
-                style={({ pressed }) => [s.destCard, pressed && { opacity: 0.92, transform: [{ scale: 0.98 }] }]}
+                style={({ pressed }) => [s.destCard, pressed && { opacity: 0.93, transform: [{ scale: 0.98 }] }]}
               >
-                {/* Photo */}
+                {/* Photo — tall and dramatic */}
                 <View style={s.destImageWrap}>
                   <ExpoImage
                     source={DEST_IMAGES[item.key]}
@@ -246,9 +253,10 @@ export default function HomeScreen() {
                     contentFit="cover"
                     transition={300}
                   />
-                  {/* Gradient overlay */}
+                  {/* Strong gradient overlay from bottom */}
                   <LinearGradient
-                    colors={["transparent", "rgba(0,0,0,0.6)"]}
+                    colors={["transparent", "rgba(0,0,0,0.15)", "rgba(0,0,0,0.75)"]}
+                    locations={[0.3, 0.55, 1]}
                     style={s.destOverlay}
                   />
                   {/* Match badge */}
@@ -261,18 +269,17 @@ export default function HomeScreen() {
                     <IconSymbol name="sparkles" size={11} color="#FFFFFF" />
                     <Text style={s.matchText}>{item.match}% Match</Text>
                   </LinearGradient>
-                  {/* City name on image */}
+                  {/* City name on image — bigger font */}
                   <View style={s.destNameOnImage}>
                     <Text style={s.destCityOnImage}>{item.city}</Text>
                     <Text style={s.destCountryOnImage}>{item.country}</Text>
                   </View>
                 </View>
-                {/* Info */}
+                {/* Info strip */}
                 <View style={s.destInfo}>
-                  <Text style={s.destTagline}>{item.tagline}</Text>
                   <View style={s.destMeta}>
                     <View style={s.destMetaItem}>
-                      <IconSymbol name="tag.fill" size={13} color={C.textTertiary} />
+                      <IconSymbol name="tag.fill" size={13} color={C.yellow} />
                       <Text style={s.destPrice}>From {item.price}</Text>
                     </View>
                     <View style={s.destMetaItem}>
@@ -280,20 +287,6 @@ export default function HomeScreen() {
                       <Text style={s.destPrice}>{item.days} days</Text>
                     </View>
                   </View>
-                  <Pressable
-                    onPress={() => { haptic(); router.push("/(tabs)/plan-trip" as any); }}
-                    style={({ pressed }) => [s.destBtn, pressed && { opacity: 0.8 }]}
-                  >
-                    <LinearGradient
-                      colors={[C.purple, C.pink]}
-                      start={{ x: 0, y: 0 }}
-                      end={{ x: 1, y: 0 }}
-                      style={s.destBtnGrad}
-                    >
-                      <IconSymbol name="airplane" size={14} color="#FFFFFF" />
-                      <Text style={s.destBtnText}>Plan Trip</Text>
-                    </LinearGradient>
-                  </Pressable>
                 </View>
               </Pressable>
             )}
@@ -311,11 +304,13 @@ export default function HomeScreen() {
             horizontal
             showsHorizontalScrollIndicator={false}
             keyExtractor={(i) => i.id}
-            contentContainerStyle={{ paddingHorizontal: 20, gap: 12 }}
+            contentContainerStyle={{ paddingHorizontal: 20, gap: 14 }}
+            snapToInterval={TREND_CARD_W + 14}
+            decelerationRate="fast"
             renderItem={({ item }) => (
               <Pressable
                 onPress={() => { haptic(); router.push({ pathname: "/(tabs)/destination-guide", params: { id: item.key } } as any); }}
-                style={({ pressed }) => [s.trendCard, pressed && { opacity: 0.85, transform: [{ scale: 0.97 }] }]}
+                style={({ pressed }) => [s.trendCard, pressed && { opacity: 0.88, transform: [{ scale: 0.97 }] }]}
               >
                 <ExpoImage
                   source={DEST_IMAGES[item.key]}
@@ -324,7 +319,8 @@ export default function HomeScreen() {
                   transition={300}
                 />
                 <LinearGradient
-                  colors={["transparent", "rgba(0,0,0,0.7)"]}
+                  colors={["transparent", "rgba(0,0,0,0.75)"]}
+                  locations={[0.4, 1]}
                   style={s.trendOverlay}
                 />
                 <View style={s.trendContent}>
@@ -340,7 +336,7 @@ export default function HomeScreen() {
         </View>
 
         {/* ─── TRAVI Tip ─── */}
-        <View style={s.section}>
+        <View style={s.sectionSpaced}>
           <View style={s.tipCard}>
             <Image
               source={require("@/assets/images/mascot-dark.png")}
@@ -399,24 +395,25 @@ const s = StyleSheet.create({
     alignItems: "center",
     paddingHorizontal: 20,
     paddingTop: 16,
-    paddingBottom: 4,
+    paddingBottom: 8,
   },
   greetingTextWrap: {
     flex: 1,
   },
   greetingText: {
     color: C.textPrimary,
-    fontSize: 22,
+    fontSize: 24,
     fontFamily: "Chillax-Bold",
+    lineHeight: 30,
   },
   dnaTag: {
     flexDirection: "row",
     alignItems: "center",
     gap: 6,
-    marginTop: 6,
+    marginTop: 8,
     backgroundColor: "rgba(100,67,244,0.12)",
     paddingHorizontal: 10,
-    paddingVertical: 4,
+    paddingVertical: 5,
     borderRadius: 12,
     alignSelf: "flex-start",
   },
@@ -427,145 +424,165 @@ const s = StyleSheet.create({
     letterSpacing: 0.5,
   },
   mascotSmall: {
-    width: 64,
-    height: 64,
+    width: 68,
+    height: 68,
   },
 
   // ─── Sections ───
-  section: { paddingHorizontal: 20, marginTop: 20 },
-  sectionNoHPad: { marginTop: 24 },
+  sectionSpaced: { paddingHorizontal: 20, marginTop: 24 },
+  sectionNoHPad: { marginTop: 28 },
   sectionTitle: {
     color: C.textPrimary,
-    fontSize: 18,
+    fontSize: 19,
     fontFamily: "Chillax-Semibold",
-    marginBottom: 14,
+    marginBottom: 16,
   },
   sectionTitleRow: {
     flexDirection: "row",
     alignItems: "center",
     gap: 8,
-    marginBottom: 14,
+    marginBottom: 16,
   },
 
-  // ─── Plan Trip CTA ───
+  // ─── Plan Trip — HERO CTA (160px+) ───
   planTripCard: {
-    height: 100,
-    borderRadius: 20,
+    height: 160,
+    borderRadius: 24,
     overflow: "hidden",
-    marginBottom: 12,
-    shadowColor: C.purple,
-    shadowOffset: { width: 0, height: 8 },
-    shadowOpacity: 0.3,
-    shadowRadius: 16,
-    elevation: 8,
+    shadowColor: C.pink,
+    shadowOffset: { width: 0, height: 12 },
+    shadowOpacity: 0.45,
+    shadowRadius: 24,
+    elevation: 12,
   },
   planTripGrad: {
     flex: 1,
     flexDirection: "row",
     alignItems: "center",
-    paddingHorizontal: 20,
-    gap: 16,
-    borderRadius: 20,
+    paddingHorizontal: 24,
+    gap: 18,
+    borderRadius: 24,
+    position: "relative",
+    overflow: "hidden",
+  },
+  planGlowCircle: {
+    position: "absolute",
+    right: -30,
+    top: -30,
+    width: 140,
+    height: 140,
+    borderRadius: 70,
+    backgroundColor: "rgba(255,255,255,0.08)",
   },
   planTripIconWrap: {
-    width: 52,
-    height: 52,
-    borderRadius: 16,
-    backgroundColor: "rgba(255,255,255,0.15)",
+    width: 64,
+    height: 64,
+    borderRadius: 20,
+    backgroundColor: "rgba(255,255,255,0.18)",
     justifyContent: "center",
     alignItems: "center",
   },
   planTripTitle: {
     color: C.textPrimary,
-    fontSize: 18,
+    fontSize: 24,
     fontFamily: "Chillax-Bold",
+    lineHeight: 30,
   },
   planTripSub: {
-    color: "rgba(255,255,255,0.7)",
-    fontSize: 13,
+    color: "rgba(255,255,255,0.75)",
+    fontSize: 14,
     fontFamily: "Satoshi-Regular",
-    marginTop: 2,
+    marginTop: 4,
+  },
+  planArrowWrap: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    backgroundColor: "rgba(255,255,255,0.15)",
+    justifyContent: "center",
+    alignItems: "center",
   },
 
-  // ─── Quick Cards ───
-  quickRow: { flexDirection: "row", gap: 12 },
+  // ─── Quick Cards (brighter contrast) ───
+  quickRow: { flexDirection: "row", gap: 14 },
   quickCard: {
     flex: 1,
-    height: 110,
-    borderRadius: 16,
-    backgroundColor: C.bgCard,
-    borderWidth: 1,
-    borderColor: C.borderCard,
+    height: 120,
+    borderRadius: 18,
+    backgroundColor: C.bgCardBright,
+    borderWidth: 1.5,
+    borderColor: C.borderBright,
     padding: 16,
     justifyContent: "space-between",
   },
   quickIconCircle: {
-    width: 40,
-    height: 40,
-    borderRadius: 12,
-    backgroundColor: "rgba(100,67,244,0.12)",
+    width: 44,
+    height: 44,
+    borderRadius: 14,
+    backgroundColor: "rgba(253,205,10,0.12)",
     justifyContent: "center",
     alignItems: "center",
   },
   quickLabel: {
-    color: C.textTertiary,
+    color: C.textSecondary,
     fontSize: 13,
     fontFamily: "Satoshi-Regular",
   },
   quickValue: {
     color: C.textPrimary,
-    fontSize: 18,
+    fontSize: 20,
     fontFamily: "Chillax-Bold",
   },
 
-  // ─── DNA Banner ───
-  dnaBannerGrad: {
+  // ─── DNA Glass Card ───
+  dnaGlassCard: {
     flexDirection: "row",
     alignItems: "center",
-    paddingHorizontal: 16,
-    paddingVertical: 16,
-    gap: 12,
-    borderRadius: 16,
-    borderWidth: 1,
-    borderColor: C.borderCard,
+    paddingHorizontal: 18,
+    paddingVertical: 18,
+    gap: 14,
+    borderRadius: 18,
+    backgroundColor: C.glassBg,
+    borderWidth: 1.5,
+    borderColor: C.glassBorder,
   },
   dnaIconWrap: {
-    width: 40,
-    height: 40,
-    borderRadius: 12,
+    width: 44,
+    height: 44,
+    borderRadius: 14,
     backgroundColor: "rgba(100,67,244,0.15)",
     justifyContent: "center",
     alignItems: "center",
   },
   dnaTitle: {
     color: C.textPrimary,
-    fontSize: 15,
+    fontSize: 16,
     fontFamily: "Satoshi-Bold",
   },
   dnaSub: {
     color: C.textTertiary,
     fontSize: 13,
     fontFamily: "Satoshi-Regular",
-    marginTop: 2,
+    marginTop: 3,
   },
 
   // ─── Live Trip Banner ───
   liveBanner: {
-    height: 72,
-    borderRadius: 16,
+    height: 76,
+    borderRadius: 18,
     backgroundColor: C.bgCard,
-    borderWidth: 1,
-    borderColor: "rgba(52,211,153,0.3)",
+    borderWidth: 1.5,
+    borderColor: "rgba(52,211,153,0.35)",
     flexDirection: "row",
     alignItems: "center",
-    paddingHorizontal: 16,
+    paddingHorizontal: 18,
   },
   liveDotOuter: {
     position: "absolute",
-    left: 16,
-    width: 20,
-    height: 20,
-    borderRadius: 10,
+    left: 18,
+    width: 22,
+    height: 22,
+    borderRadius: 11,
     backgroundColor: C.success,
   },
   liveDot: {
@@ -582,21 +599,22 @@ const s = StyleSheet.create({
   },
   liveDest: {
     color: C.textPrimary,
-    fontSize: 16,
+    fontSize: 17,
     fontFamily: "Chillax-Semibold",
+    marginTop: 2,
   },
 
-  // ─── Destination Cards ───
+  // ─── Destination Cards (taller, dramatic) ───
   destCard: {
-    width: 280,
-    borderRadius: 20,
+    width: DEST_CARD_W,
+    borderRadius: 22,
     backgroundColor: C.bgCard,
     borderWidth: 1,
     borderColor: C.borderCard,
     overflow: "hidden",
   },
   destImageWrap: {
-    height: 200,
+    height: 240,
     overflow: "hidden",
   },
   destImage: {
@@ -608,89 +626,67 @@ const s = StyleSheet.create({
   },
   matchBadge: {
     position: "absolute",
-    top: 12,
-    right: 12,
+    top: 14,
+    right: 14,
     flexDirection: "row",
     alignItems: "center",
-    gap: 4,
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-    borderRadius: 12,
+    gap: 5,
+    paddingHorizontal: 11,
+    paddingVertical: 6,
+    borderRadius: 14,
   },
   matchText: {
     color: C.textPrimary,
-    fontSize: 11,
+    fontSize: 12,
     fontFamily: "Satoshi-Bold",
   },
   destNameOnImage: {
     position: "absolute",
-    bottom: 14,
-    left: 14,
+    bottom: 16,
+    left: 16,
   },
   destCityOnImage: {
     color: C.textPrimary,
-    fontSize: 22,
+    fontSize: 28,
     fontFamily: "Chillax-Bold",
-    textShadowColor: "rgba(0,0,0,0.5)",
-    textShadowOffset: { width: 0, height: 1 },
-    textShadowRadius: 8,
+    textShadowColor: "rgba(0,0,0,0.6)",
+    textShadowOffset: { width: 0, height: 2 },
+    textShadowRadius: 10,
+    lineHeight: 34,
   },
   destCountryOnImage: {
-    color: "rgba(255,255,255,0.8)",
-    fontSize: 13,
+    color: "rgba(255,255,255,0.85)",
+    fontSize: 14,
     fontFamily: "Satoshi-Medium",
     textShadowColor: "rgba(0,0,0,0.5)",
     textShadowOffset: { width: 0, height: 1 },
     textShadowRadius: 6,
+    marginTop: 2,
   },
   destInfo: {
-    padding: 16,
-  },
-  destTagline: {
-    color: C.textSecondary,
-    fontSize: 13,
-    fontFamily: "Satoshi-Regular",
-    marginBottom: 10,
+    paddingHorizontal: 16,
+    paddingVertical: 14,
   },
   destMeta: {
     flexDirection: "row",
-    gap: 16,
-    marginBottom: 14,
+    gap: 20,
   },
   destMetaItem: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 4,
+    gap: 5,
   },
   destPrice: {
-    color: C.textTertiary,
-    fontSize: 12,
+    color: C.textSecondary,
+    fontSize: 13,
     fontFamily: "Satoshi-Medium",
-  },
-  destBtn: {
-    height: 40,
-    borderRadius: 20,
-    overflow: "hidden",
-  },
-  destBtnGrad: {
-    flex: 1,
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    gap: 6,
-    borderRadius: 20,
-  },
-  destBtnText: {
-    color: C.textPrimary,
-    fontSize: 14,
-    fontFamily: "Satoshi-Bold",
   },
 
   // ─── Trending Cards ───
   trendCard: {
-    width: 180,
-    height: 240,
-    borderRadius: 16,
+    width: TREND_CARD_W,
+    height: 220,
+    borderRadius: 18,
     overflow: "hidden",
   },
   trendImage: {
@@ -709,20 +705,20 @@ const s = StyleSheet.create({
   },
   trendCity: {
     color: C.textPrimary,
-    fontSize: 18,
+    fontSize: 20,
     fontFamily: "Chillax-Bold",
-    textShadowColor: "rgba(0,0,0,0.5)",
+    textShadowColor: "rgba(0,0,0,0.6)",
     textShadowOffset: { width: 0, height: 1 },
-    textShadowRadius: 6,
+    textShadowRadius: 8,
   },
   trendPriceRow: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 4,
+    gap: 5,
     marginTop: 4,
   },
   trendPrice: {
-    color: "rgba(255,255,255,0.85)",
+    color: "rgba(255,255,255,0.9)",
     fontSize: 13,
     fontFamily: "Satoshi-Medium",
     textShadowColor: "rgba(0,0,0,0.5)",
@@ -734,16 +730,16 @@ const s = StyleSheet.create({
   tipCard: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: C.bgCard,
-    borderWidth: 1,
-    borderColor: C.borderCard,
-    borderRadius: 16,
-    padding: 16,
+    backgroundColor: C.bgCardBright,
+    borderWidth: 1.5,
+    borderColor: C.borderBright,
+    borderRadius: 18,
+    padding: 18,
     gap: 14,
   },
   tipMascot: {
-    width: 50,
-    height: 50,
+    width: 52,
+    height: 52,
   },
   tipContent: {
     flex: 1,
@@ -759,6 +755,6 @@ const s = StyleSheet.create({
     color: C.textSecondary,
     fontSize: 13,
     fontFamily: "Satoshi-Regular",
-    lineHeight: 18,
+    lineHeight: 19,
   },
 });
