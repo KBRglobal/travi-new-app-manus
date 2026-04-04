@@ -1,8 +1,10 @@
 import { useState } from 'react';
 import { View, Text, Pressable, ScrollView } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
+import { ScreenHeader } from '@/components/ui/ScreenHeader';
 import { useRouter } from 'expo-router';
-import { Ionicons } from '@expo/vector-icons';
-import { colors, fonts, fontSizes, radius } from '@/constants/theme';
+import { MaterialIcons, Ionicons } from '@expo/vector-icons';
+import { colors, fonts, fontSizes, radius, typography, spacing, gradients} from '@/constants/theme';
 import { useTripStore } from '@/stores/tripStore';
 import * as Haptics from 'expo-haptics';
 
@@ -58,6 +60,10 @@ export default function FoodPreferencesScreen() {
 
   return (
     <View style={{ flex: 1, backgroundColor: colors.bg.primary }}>
+      {/* Top ambient glow */}
+      <View style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '15%' }}>
+        <LinearGradient colors={['rgba(100,67,244,0.06)', 'transparent']} style={{ flex: 1 }} />
+      </View>
       {/* Header */}
       <View style={{ flexDirection: 'row', alignItems: 'center', paddingHorizontal: 20, paddingTop: 56, paddingBottom: 8 }}>
         <Pressable onPress={() => router.back()} style={{ padding: 8, marginRight: 12 }}>

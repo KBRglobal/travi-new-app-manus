@@ -1,9 +1,12 @@
 import { Skeleton } from '@/components/ui/Skeleton';
 import React, { useState } from 'react';
 import { View, Text, FlatList, TouchableOpacity } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
+import { ScreenHeader } from '@/components/ui/ScreenHeader';
+import { PressableScale } from '@/components/ui/PressableScale';
 import { useRouter } from 'expo-router';
 import { EmptyState } from '@/components/ui/EmptyState';
-import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
+import { colors, fonts, fontSizes, radius, shadows, typography, spacing, gradients} from '@/constants/theme';
 
 const LEADERBOARD = [
  { rank: 1, name: 'Lisa M.', avatar: 'person‍person', points: 45200, tier: 'Platinum' },
@@ -23,15 +26,13 @@ export default function LeaderboardScreen() {
  const [period, setPeriod] = useState<'week' | 'month' | 'all'>('month');
 
  return (
- <View className="flex-1 bg-bg-primary pt-safe">
- <View className="flex-row items-center px-4 py-3">
- <TouchableOpacity onPress={() => router.back()}><Text className="text-white text-lg">←</Text></TouchableOpacity>
- <Text className="text-white text-xl font-bold ml-3">Leaderboard</Text>
+ <View style={{ flex: 1, backgroundColor: colors.bg.primary }} pt-safe">
+ <ScreenHeader title="Leaderboard" />
  </View>
  <View className="flex-row mx-4 mb-4">
  {(['week', 'month', 'all'] as const).map(p => (
- <TouchableOpacity key={p} onPress={() => setPeriod(p)} className={`flex-1 py-2 mx-1 rounded-xl ${period === p ? 'bg-primary' : 'bg-white/[0.05]'}`}>
- <Text className={`text-center text-sm font-bold capitalize ${period === p ? 'text-white' : 'text-white/60'}`}>{p === 'all' ? 'All Time' : `This ${p}`}</Text>
+ <TouchableOpacity key={p} onPress={() => setPeriod(p)} className={`flex-1 py-2 mx-1 rounded-xl ${period === p ? 'bg-[#6443F4]' : 'bg-white/[0.05]'}`}>
+ <Text className={`text-center text-sm font-[Satoshi-Bold] capitalize ${period === p ? 'text-white' : 'text-white/60'}`}>{p === 'all' ? 'All Time' : `This ${p}`}</Text>
  </TouchableOpacity>
  ))}
  </View>
@@ -39,24 +40,24 @@ export default function LeaderboardScreen() {
  {[LEADERBOARD[1], LEADERBOARD[0], LEADERBOARD[2]].map((item, i) => (
  <View key={item.rank} className={`items-center mx-2 ${i === 1 ? 'mb-0' : 'mb-4'}`}>
  <Text className="text-3xl mb-1">{item.avatar}</Text>
- <Text className="text-white text-xs font-bold">{item.name}</Text>
- <Text className="text-primary text-xs">{(item.points / 1000).toFixed(1)}k</Text>
- <View className={`mt-2 rounded-t-xl items-center justify-end ${i === 1 ? 'bg-primary w-20 h-24' : i === 0 ? 'bg-primary/60 w-16 h-16' : 'bg-primary/40 w-16 h-12'}`}>
- <Text className="text-white font-bold text-lg mb-1">{item.rank}</Text>
+ <Text className=" text-xs font-[Satoshi-Bold]" style={{ color: colors.text.primary }}>{item.name}</Text>
+ <Text className="text-[#6443F4] text-xs">{(item.points / 1000).toFixed(1)}k</Text>
+ <View className={`mt-2 rounded-t-xl items-center justify-end ${i === 1 ? 'bg-[#6443F4] w-20 h-24' : i === 0 ? 'bg-[#6443F4]/60 w-16 h-16' : 'bg-[#6443F4]/40 w-16 h-12'}`}>
+ <Text className=" font-[Satoshi-Bold] text-lg mb-1" style={{ color: colors.text.primary }}>{item.rank}</Text>
  </View>
  </View>
  ))}
  </View>
  <FlatList
  ListEmptyComponent={() => <EmptyState stateKey="leaderboard" />} data={LEADERBOARD.slice(3)} keyExtractor={i => i.rank.toString()} renderItem={({ item }) => (
- <View className={`flex-row items-center mx-4 mb-2 p-4 rounded-2xl border ${(item as any).isMe ? 'bg-primary/10 border-primary/30' : 'bg-bg-secondary border-white/[0.08]'}`}>
- <Text className="text-white/40 font-bold w-8">{item.rank}</Text>
+ <View className={`flex-row items-center mx-4 mb-2 p-4 rounded-2xl border ${(item as any).isMe ? 'bg-[#6443F4]/10 border-[#6443F4]/30' : 'bg-[#120824] border-white/[0.08]'}`}>
+ <Text className="/40 font-[Satoshi-Bold] w-8" style={{ color: colors.text.primary }}>{item.rank}</Text>
  <Text className="text-2xl mr-3">{item.avatar}</Text>
  <View className="flex-1">
- <Text className={`font-bold ${(item as any).isMe ? 'text-primary' : 'text-white'}`}>{item.name}</Text>
- <Text className="text-white/40 text-xs">{item.tier}</Text>
+ <Text className={`font-[Satoshi-Bold] ${(item as any).isMe ? 'text-[#6443F4]' : 'text-white'}`}>{item.name}</Text>
+ <Text className="/40 text-xs" style={{ color: colors.text.primary }}>{item.tier}</Text>
  </View>
- <Text className="text-primary font-bold">{item.points.toLocaleString()}</Text>
+ <Text className="text-[#6443F4] font-[Satoshi-Bold]">{item.points.toLocaleString()}</Text>
  </View>
  )} />
  </View>

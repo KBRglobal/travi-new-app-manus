@@ -1,10 +1,12 @@
 import { Skeleton } from '@/components/ui/Skeleton';
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, FlatList } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
+import { PressableScale } from '@/components/ui/PressableScale';
 import { useRouter } from 'expo-router';
 import { useDebouncedCallback } from 'use-debounce';
 import { destinations, activities, hotels } from '../../lib/mockData';
-import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
+import { colors, fonts, fontSizes, radius, shadows, typography, spacing, gradients} from '@/constants/theme';
 
 type SearchResult = { id: string; type: 'destination' | 'activity' | 'hotel'; name: string; subtitle: string; emoji: string };
 
@@ -30,21 +32,21 @@ export default function SearchScreen() {
   };
 
   return (
-    <View className="flex-1 bg-bg-primary pt-safe px-6">
-      <Text className="text-white text-heading-1 mb-4">Search</Text>
-      <View className="bg-bg-card border border-border rounded-input flex-row items-center px-4 mb-6">
+    <View style={{ flex: 1, backgroundColor: colors.bg.primary }} pt-safe px-6">
+      <Text className=" text-[28px] mb-4" style={{ color: colors.text.primary }}>Search</Text>
+      <View className="bg-[#120824] border border-[rgba(255,255,255,0.08)] rounded-input flex-row items-center px-4 mb-6">
         <Ionicons name="search" size={24} color="#FFFFFF" />
-        <TextInput className="flex-1 text-white text-body py-3" placeholder="Search anything..." placeholderTextColor="rgba(255,255,255,0.4)" value={query} onChangeText={(t) => { setQuery(t); debouncedSearch(t); }} autoFocus />
+        <TextInput className="flex-1  text-[15px] py-3" style={{ color: colors.text.primary }} placeholder="Search anything..." placeholderTextColor="rgba(255,255,255,0.4)" value={query} onChangeText={(t) => { setQuery(t); debouncedSearch(t); }} autoFocus />
         {query ? <TouchableOpacity onPress={() => { setQuery(''); setResults([]); }}><Ionicons name="close" size={24} color="#FFFFFF" /></TouchableOpacity> : null}
       </View>
 
       {!query && (
         <View>
-          <Text className="text-text-secondary text-body-sm mb-3">Recent Searches</Text>
+          <Text className="text-[rgba(255,255,255,0.6)] text-[13px] mb-3">Recent Searches</Text>
           {recentSearches.map((s) => (
-            <TouchableOpacity key={s} className="flex-row items-center py-3 border-b border-border" onPress={() => { setQuery(s); debouncedSearch(s); }}>
+            <TouchableOpacity key={s} className="flex-row items-center py-3 border-b border-[rgba(255,255,255,0.08)]" onPress={() => { setQuery(s); debouncedSearch(s); }}>
               <Ionicons name="time" size={24} color="#FFFFFF" />
-              <Text className="text-white text-body">{s}</Text>
+              <Text className=" text-[15px]" style={{ color: colors.text.primary }}>{s}</Text>
             </TouchableOpacity>
           ))}
         </View>
@@ -54,13 +56,13 @@ export default function SearchScreen() {
         data={results}
         keyExtractor={(item) => `${item.type}-${item.id}`}
         renderItem={({ item }) => (
-          <TouchableOpacity className="flex-row items-center py-3 border-b border-border" onPress={() => handlePress(item)}>
+          <TouchableOpacity className="flex-row items-center py-3 border-b border-[rgba(255,255,255,0.08)]" onPress={() => handlePress(item)}>
             <Text className="text-2xl mr-3">{item.emoji}</Text>
             <View className="flex-1">
-              <Text className="text-white text-body">{item.name}</Text>
-              <Text className="text-text-secondary text-body-sm">{item.subtitle}</Text>
+              <Text className=" text-[15px]" style={{ color: colors.text.primary }}>{item.name}</Text>
+              <Text className="text-[rgba(255,255,255,0.6)] text-[13px]">{item.subtitle}</Text>
             </View>
-            <Text className="text-text-muted">›</Text>
+            <Text className="text-[rgba(255,255,255,0.3)]">›</Text>
           </TouchableOpacity>
         )}
       />

@@ -1,9 +1,11 @@
 import { Skeleton } from '@/components/ui/Skeleton';
 import React, { useState, useCallback } from 'react';
 import { View, Text, FlatList, TouchableOpacity, RefreshControl } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
+import { PressableScale } from '@/components/ui/PressableScale';
 import { useRouter } from 'expo-router';
 import { EmptyState } from '@/components/ui/EmptyState';
-import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
+import { colors, fonts, fontSizes, radius, shadows, typography, spacing, gradients} from '@/constants/theme';
 import { CachedImage } from '../../components/ui/CachedImage';
 
 const FEED_POSTS = [
@@ -29,28 +31,28 @@ export default function SocialFeedScreen() {
  };
 
  const renderPost = ({ item }: { item: typeof FEED_POSTS[0] }) => (
- <View className="bg-bg-secondary mx-4 mb-4 rounded-2xl overflow-hidden border border-white/[0.08]">
+ <View className="bg-[#120824] mx-4 mb-4 rounded-2xl overflow-hidden border border-white/[0.08]">
  <TouchableOpacity onPress={() => router.push(`/(social)/profile/${item.id}`)} className="flex-row items-center p-4 pb-2">
  <Text className="text-2xl mr-3">{item.avatar}</Text>
  <View className="flex-1">
- <Text className="text-white font-bold text-base">{item.user}</Text>
- <Text className="text-white/60 text-xs">{item.destination} · {item.timeAgo}</Text>
+ <Text className=" font-[Satoshi-Bold] text-base" style={{ color: colors.text.primary }}>{item.user}</Text>
+ <Text className="/60 text-xs" style={{ color: colors.text.primary }}>{item.destination} · {item.timeAgo}</Text>
  </View>
- <TouchableOpacity><Text className="text-white/40 text-xl">···</Text></TouchableOpacity>
+ <TouchableOpacity><Text className="/40 text-xl" style={{ color: colors.text.primary }}>···</Text></TouchableOpacity>
  </TouchableOpacity>
  <View className="bg-white/[0.05] h-64 items-center justify-center">
  <Text className="text-8xl">{item.image}</Text>
  </View>
  <View className="p-4">
- <Text className="text-white text-sm mb-3">{item.caption}</Text>
+ <Text className=" text-sm mb-3" style={{ color: colors.text.primary }}>{item.caption}</Text>
  <View className="flex-row items-center">
  <TouchableOpacity onPress={() => toggleLike(item.id)} className="flex-row items-center mr-5">
  <Text className="text-lg mr-1">{item.liked ? '' : 'heart-outline'}</Text>
- <Text className="text-white/60 text-sm">{item.likes}</Text>
+ <Text className="/60 text-sm" style={{ color: colors.text.primary }}>{item.likes}</Text>
  </TouchableOpacity>
  <TouchableOpacity onPress={() => {}} className="flex-row items-center mr-5">
  <Ionicons name="chatbubble" size={24} color="#FFFFFF" />
- <Text className="text-white/60 text-sm">{item.comments}</Text>
+ <Text className="/60 text-sm" style={{ color: colors.text.primary }}>{item.comments}</Text>
  </TouchableOpacity>
  <TouchableOpacity onPress={() => {}} className="flex-row items-center">
  <Ionicons name="share" size={24} color="#FFFFFF" />
@@ -63,9 +65,9 @@ export default function SocialFeedScreen() {
  );
 
  return (
- <View className="flex-1 bg-bg-primary pt-safe">
+ <View style={{ flex: 1, backgroundColor: colors.bg.primary }} pt-safe">
  <View className="flex-row items-center justify-between px-4 py-3">
- <Text className="text-white text-2xl font-bold">Feed</Text>
+ <Text className=" text-2xl font-[Satoshi-Bold]" style={{ color: colors.text.primary }}>Feed</Text>
  <View className="flex-row">
  <TouchableOpacity onPress={() => router.push('/(social)/discover')} className="mr-4"><Ionicons name="search" size={24} color="#FFFFFF" /></TouchableOpacity>
  <TouchableOpacity onPress={() => router.push('/(social)/messages')}></TouchableOpacity>

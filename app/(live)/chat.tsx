@@ -3,11 +3,14 @@ import { useRefresh } from '@/hooks/useRefresh';
 import { haptic } from '@/lib/haptics';
 import React, { useState, useRef } from 'react';
 import { View, Text, TouchableOpacity, FlatList, TextInput, KeyboardAvoidingView, Platform } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
+import { ScreenHeader } from '@/components/ui/ScreenHeader';
+import { PressableScale } from '@/components/ui/PressableScale';
 import Animated, { FadeInUp } from 'react-native-reanimated';
 import { useRouter } from 'expo-router';
 import { chatMessages } from '../../lib/mockData';
 import { EmptyState } from '@/components/ui/EmptyState';
-import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
+import { colors, fonts, fontSizes, radius, shadows, typography, spacing, gradients} from '@/constants/theme';
 
 type Message = { id: string; sender: 'user' | 'ai'; text: string; timestamp: string; actions?: string[] };
 
@@ -46,14 +49,14 @@ export default function AIChatScreen() {
   };
 
   return (
-    <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} className="flex-1 bg-bg-primary">
-      <View className="px-6 pt-safe pb-3 flex-row items-center justify-between border-b border-border">
+    <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{ flex: 1, backgroundColor: colors.bg.primary }}">
+      <View className="px-6 pt-safe pb-3 flex-row items-center justify-between border-b border-[rgba(255,255,255,0.08)]">
         <TouchableOpacity onPress={() => router.back()}>
-          <Text className="text-white text-xl">‹ Back</Text>
+          <Text className=" text-xl" style={{ color: colors.text.primary }}>‹ Back</Text>
         </TouchableOpacity>
         <View className="items-center">
-          <Text className="text-white text-heading-3">TRAVI AI</Text>
-          <Text className="text-status-success text-caption">Online</Text>
+          <Text className=" text-[18px]" style={{ color: colors.text.primary }}>TRAVI AI</Text>
+          <Text className="text-[#4ADE80] text-[12px]">Online</Text>
         </View>
         <View className="w-12" />
       </View>
@@ -66,14 +69,14 @@ export default function AIChatScreen() {
         onContentSizeChange={() => flatListRef.current?.scrollToEnd()}
         renderItem={({ item }) => (
           <Animated.View entering={FadeInUp.duration(300)} className={`mb-3 ${item.sender === 'user' ? 'items-end' : 'items-start'}`}>
-            <View className={`max-w-[80%] rounded-2xl p-3 ${item.sender === 'user' ? 'bg-primary rounded-br-sm' : 'bg-bg-card border border-border rounded-bl-sm'}`}>
-              <Text className="text-white text-body">{item.text}</Text>
+            <View className={`max-w-[80%] rounded-2xl p-3 ${item.sender === 'user' ? 'bg-[#6443F4] rounded-br-sm' : 'bg-[#120824] border border-[rgba(255,255,255,0.08)] rounded-bl-sm'}`}>
+              <Text className=" text-[15px]" style={{ color: colors.text.primary }}>{item.text}</Text>
             </View>
             {item.actions && (
               <View className="flex-row flex-wrap mt-2 gap-2">
                 {item.actions.map((action) => (
-                  <TouchableOpacity key={action} className="bg-bg-card border border-primary rounded-full px-3 py-1.5" onPress={() => handleAction(action)}>
-                    <Text className="text-primary text-body-sm">{action}</Text>
+                  <TouchableOpacity key={action} className="bg-[#120824] border border-[#6443F4] rounded-full px-3 py-1.5" onPress={() => handleAction(action)}>
+                    <Text className="text-[#6443F4] text-[13px]">{action}</Text>
                   </TouchableOpacity>
                 ))}
               </View>
@@ -82,17 +85,17 @@ export default function AIChatScreen() {
         )}
       />
 
-      <View className="px-6 py-3 pb-safe border-t border-border flex-row items-center">
+      <View className="px-6 py-3 pb-safe border-t border-[rgba(255,255,255,0.08)] flex-row items-center">
         <TextInput
-          className="flex-1 bg-bg-card border border-border rounded-full text-white text-body px-4 py-3 mr-3"
+          className="flex-1 bg-[#120824] border border-[rgba(255,255,255,0.08)] rounded-full text-white text-[15px] px-4 py-3 mr-3"
           placeholder="Ask TRAVI anything..."
           placeholderTextColor="rgba(255,255,255,0.4)"
           value={input}
           onChangeText={setInput}
           onSubmitEditing={sendMessage}
         />
-        <TouchableOpacity className="bg-primary w-12 h-12 rounded-full items-center justify-center" onPress={sendMessage}>
-          <Text className="text-white text-lg">↑</Text>
+        <TouchableOpacity className="bg-[#6443F4] w-12 h-12 rounded-full items-center justify-center" onPress={sendMessage}>
+          <Text className=" text-lg" style={{ color: colors.text.primary }}>↑</Text>
         </TouchableOpacity>
       </View>
     </KeyboardAvoidingView>

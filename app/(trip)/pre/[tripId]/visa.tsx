@@ -1,9 +1,12 @@
 import { haptic } from '@/lib/haptics';
 import React from 'react';
 import { View, Text, ScrollView, TouchableOpacity, Linking, FlatList} from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
+import { ScreenHeader } from '@/components/ui/ScreenHeader';
+import { PressableScale } from '@/components/ui/PressableScale';
 import { useRouter, useLocalSearchParams } from 'expo-router';
-import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
-import { Ionicons } from '@expo/vector-icons';
+import { colors, fonts, fontSizes, radius, shadows, typography, spacing, gradients} from '@/constants/theme';
+import { MaterialIcons, Ionicons } from '@expo/vector-icons';
 
 export default function VisaPassport() {
  const router = useRouter();
@@ -21,12 +24,12 @@ export default function VisaPassport() {
  const status = statusConfig[visaStatus];
 
  return (
- <View className="flex-1 bg-bg-primary">
+ <View style={{ flex: 1, backgroundColor: colors.bg.primary }}">
  <View className="flex-row items-center px-4 pt-12 pb-4">
  <TouchableOpacity onPress={() => router.back()} className="mr-3">
- <Text className="text-white text-lg">‹ Back</Text>
+ <Text className=" text-lg" style={{ color: colors.text.primary }}>‹ Back</Text>
  </TouchableOpacity>
- <Text className="text-white text-xl font-bold">Visa Requirements</Text>
+ <Text className=" text-xl font-[Satoshi-Bold]" style={{ color: colors.text.primary }}>Visa Requirements</Text>
  </View>
 
  <ScrollView className="flex-1 px-4">
@@ -34,27 +37,27 @@ export default function VisaPassport() {
  <View className="flex-row items-center">
  <Text className="text-2xl mr-2">🇮🇱</Text>
  <View>
- <Text className="text-text-secondary text-sm">Passport</Text>
- <Text className="text-white font-bold">Israeli</Text>
+ <Text className="text-[rgba(255,255,255,0.6)] text-sm">Passport</Text>
+ <Text className=" font-[Satoshi-Bold]" style={{ color: colors.text.primary }}>Israeli</Text>
  </View>
  </View>
- <TouchableOpacity><Text className="text-primary">Change</Text></TouchableOpacity>
+ <TouchableOpacity><Text className="text-[#6443F4]">Change</Text></TouchableOpacity>
  <View className="flex-row items-center">
  <Text className="text-2xl mr-2">🇦🇪</Text>
  <View>
- <Text className="text-text-secondary text-sm">Destination</Text>
- <Text className="text-white font-bold">UAE</Text>
+ <Text className="text-[rgba(255,255,255,0.6)] text-sm">Destination</Text>
+ <Text className=" font-[Satoshi-Bold]" style={{ color: colors.text.primary }}>UAE</Text>
  </View>
  </View>
  </View>
 
- <View className="rounded-card p-4 mb-4 items-center" style={{ backgroundColor: status.color + '15', borderWidth: 1, borderColor: status.color }}>
- <Text style={{ color: status.color }} className="text-xl font-bold">{status.icon} {status.text}</Text>
- <Text className="text-text-secondary mt-1">{status.detail}</Text>
+ <View className="rounded-[16px] p-4 mb-4 items-center" style={{ backgroundColor: status.color + '15', borderWidth: 1, borderColor: status.color }}>
+ <Text style={{ color: status.color }} className="text-xl font-[Satoshi-Bold]">{status.icon} {status.text}</Text>
+ <Text className="text-[rgba(255,255,255,0.6)] mt-1">{status.detail}</Text>
  </View>
 
- <Text className="text-white font-bold text-lg mb-3">Requirements Checklist</Text>
- <View className="bg-bg-card rounded-card p-4 mb-4">
+ <Text className=" font-[Satoshi-Bold] text-lg mb-3" style={{ color: colors.text.primary }}>Requirements Checklist</Text>
+ <View className="bg-[#120824] rounded-[16px] p-4 mb-4">
  {[
  { check: true, text: 'Valid passport (>6 months remaining)' },
  { check: true, text: 'Return ticket' },
@@ -63,27 +66,27 @@ export default function VisaPassport() {
  ].map((req, i) => (
  <View key={i} className="flex-row items-center py-2" style={{ borderBottomWidth: i < 3 ? 1 : 0, borderBottomColor: 'rgba(255,255,255,0.05)' }}>
  <Text className={`mr-3 ${req.check ? 'text-green-400' : 'text-blue-400'}`}>{req.check ? 'checkmark' : 'ℹ'}</Text>
- <Text className="text-white flex-1">{req.text}</Text>
+ <Text className=" flex-1" style={{ color: colors.text.primary }}>{req.text}</Text>
  </View>
  ))}
  </View>
 
- <View className="bg-yellow-900/20 rounded-card p-4 mb-4" style={{ borderWidth: 1, borderColor: '#F59E0B' }}>
- <Text className="text-yellow-400 font-bold mb-1">Passport Expiry Warning</Text>
- <Text className="text-text-secondary">Your passport expires in 8 months. Some countries require 6+ months validity.</Text>
+ <View className="bg-yellow-900/20 rounded-[16px] p-4 mb-4" style={{ borderWidth: 1, borderColor: '#F59E0B' }}>
+ <Text className="text-yellow-400 font-[Satoshi-Bold] mb-1">Passport Expiry Warning</Text>
+ <Text className="text-[rgba(255,255,255,0.6)]">Your passport expires in 8 months. Some countries require 6+ months validity.</Text>
  </View>
 
  {visaStatus === 'evisa' && (
- <TouchableOpacity onPress={() => Linking.openURL('https://example.com')} className="bg-primary rounded-button py-3 items-center mb-4">
- <Text className="text-white font-semibold">Apply for eVisa →</Text>
+ <TouchableOpacity onPress={() => Linking.openURL('https://example.com')} className="bg-[#6443F4] rounded-[12px] py-3 items-center mb-4">
+ <Text className=" font-semibold" style={{ color: colors.text.primary }}>Apply for eVisa →</Text>
  </TouchableOpacity>
  )}
 
- <TouchableOpacity onPress={() => {}} className="bg-bg-card rounded-button py-3 items-center mb-4" style={{ borderWidth: 1, borderColor: 'rgba(255,255,255,0.1)' }}>
- <Text className="text-primary font-semibold">Check Another Country</Text>
+ <TouchableOpacity onPress={() => {}} className="bg-[#120824] rounded-[12px] py-3 items-center mb-4" style={{ borderWidth: 1, borderColor: 'rgba(255,255,255,0.1)' }}>
+ <Text className="text-[#6443F4] font-semibold">Check Another Country</Text>
  </TouchableOpacity>
 
- <Text className="text-text-muted text-center text-xs mb-8">Data from Passport Index, updated April 2026</Text>
+ <Text className="text-[rgba(255,255,255,0.3)] text-center text-xs mb-8">Data from Passport Index, updated April 2026</Text>
  </ScrollView>
  </View>
  );

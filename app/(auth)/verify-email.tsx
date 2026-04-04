@@ -1,8 +1,10 @@
 import { haptic } from '@/lib/haptics';
 import React, { useState, useRef } from 'react';
 import { View, Text, TextInput, TouchableOpacity } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
+import { PressableScale } from '@/components/ui/PressableScale';
 import { useRouter } from 'expo-router';
-import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
+import { colors, fonts, fontSizes, radius, shadows, typography, spacing, gradients} from '@/constants/theme';
 
 export default function VerifyEmailScreen() {
   const router = useRouter();
@@ -26,17 +28,17 @@ export default function VerifyEmailScreen() {
   };
 
   return (
-    <View className="flex-1 bg-bg-primary items-center justify-center px-6">
+    <View style={{ flex: 1, backgroundColor: colors.bg.primary }} items-center justify-center px-6">
       <Ionicons name="mail-open" size={24} color="#FFFFFF" />
-      <Text className="text-white text-heading-2 mb-2">Verify Your Email</Text>
-      <Text className="text-text-secondary text-body text-center mb-8">Enter the 6-digit code we sent to your email</Text>
+      <Text className=" text-[22px] mb-2" style={{ color: colors.text.primary }}>Verify Your Email</Text>
+      <Text className="text-[rgba(255,255,255,0.6)] text-[15px] text-center mb-8">Enter the 6-digit code we sent to your email</Text>
 
       <View className="flex-row gap-3 mb-8">
         {code.map((digit, i) => (
           <TextInput
             key={i}
             ref={(ref) => { inputs.current[i] = ref; }}
-            className="w-12 h-14 bg-bg-card border border-border rounded-input text-white text-heading-3 text-center"
+            className="w-12 h-14 bg-[#120824] border border-[rgba(255,255,255,0.08)] rounded-input text-white text-[18px] text-center"
             maxLength={1}
             keyboardType="number-pad"
             value={digit}
@@ -50,10 +52,10 @@ export default function VerifyEmailScreen() {
         ))}
       </View>
 
-      {loading && <Text className="text-text-secondary text-body">Verifying...</Text>}
+      {loading && <Text className="text-[rgba(255,255,255,0.6)] text-[15px]">Verifying...</Text>}
 
       <TouchableOpacity onPress={() => {}} className="mt-4">
-        <Text className="text-primary text-body-sm">Resend Code</Text>
+        <Text className="text-[#6443F4] text-[13px]">Resend Code</Text>
       </TouchableOpacity>
     </View>
   );

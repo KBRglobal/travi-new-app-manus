@@ -1,10 +1,13 @@
 import { haptic } from '@/lib/haptics';
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, ScrollView, FlatList} from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
+import { ScreenHeader } from '@/components/ui/ScreenHeader';
+import { PressableScale } from '@/components/ui/PressableScale';
 import Animated, { FadeInRight, FadeOutLeft } from 'react-native-reanimated';
 import { useRouter } from 'expo-router';
 import { useDnaStore } from '../../stores/dnaStore';
-import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
+import { colors, fonts, fontSizes, radius, shadows, typography, spacing, gradients} from '@/constants/theme';
 
 const questions = [
   { id: 'q1', question: 'Your ideal morning starts with...', options: ['Sunrise hike', 'Sleeping in', 'Local breakfast spot', 'Yoga on the beach'], dimension: 'adventure' },
@@ -35,28 +38,28 @@ export default function DNAQuestionsScreen() {
   };
 
   return (
-    <View className="flex-1 bg-bg-primary px-6 pt-safe">
+    <View style={{ flex: 1, backgroundColor: colors.bg.primary }} px-6 pt-safe">
       <View className="flex-row items-center justify-between mb-6">
         <TouchableOpacity onPress={() => currentQ > 0 ? setCurrentQ(currentQ - 1) : router.back()}>
-          <Text className="text-white text-xl">‹ Back</Text>
+          <Text className=" text-xl" style={{ color: colors.text.primary }}>‹ Back</Text>
         </TouchableOpacity>
-        <Text className="text-text-secondary text-body-sm">{currentQ + 1} / {questions.length}</Text>
+        <Text className="text-[rgba(255,255,255,0.6)] text-[13px]">{currentQ + 1} / {questions.length}</Text>
       </View>
 
       <View className="h-1 bg-bg-surface rounded-full mb-8">
-        <View className="h-full bg-primary rounded-full" style={{ width: `${((currentQ + 1) / questions.length) * 100}%` }} />
+        <View className="h-full bg-[#6443F4] rounded-full" style={{ width: `${((currentQ + 1) / questions.length) * 100}%` }} />
       </View>
 
       <Animated.View key={question.id} entering={FadeInRight.duration(300)} exiting={FadeOutLeft.duration(200)}>
-        <Text className="text-white text-heading-2 mb-8">{question.question}</Text>
+        <Text className=" text-[22px] mb-8" style={{ color: colors.text.primary }}>{question.question}</Text>
 
         {question.options.map((option, i) => (
           <TouchableOpacity
             key={i}
-            className="bg-bg-card border border-border rounded-card p-4 mb-3 active:border-primary active:bg-primary-light"
+            className="bg-[#120824] border border-[rgba(255,255,255,0.08)] rounded-[16px] p-4 mb-3 active:border-[#6443F4] active:bg-[#6443F4]-light"
             onPress={() => handleAnswer(option)}
           >
-            <Text className="text-white text-body">{option}</Text>
+            <Text className=" text-[15px]" style={{ color: colors.text.primary }}>{option}</Text>
           </TouchableOpacity>
         ))}
       </Animated.View>

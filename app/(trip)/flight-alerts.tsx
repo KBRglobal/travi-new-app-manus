@@ -1,10 +1,13 @@
 import { Skeleton } from '@/components/ui/Skeleton';
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, FlatList, TextInput, Switch } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
+import { ScreenHeader } from '@/components/ui/ScreenHeader';
+import { PressableScale } from '@/components/ui/PressableScale';
 import Animated, { FadeInDown, SlideInRight } from 'react-native-reanimated';
 import { useRouter } from 'expo-router';
 import { EmptyState } from '@/components/ui/EmptyState';
-import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
+import { colors, fonts, fontSizes, radius, shadows, typography, spacing, gradients} from '@/constants/theme';
 
 const mockAlerts = [
  { id: '1', from: 'TLV', to: 'BCN', currentPrice: 120, targetPrice: 100, status: 'active', lastChecked: '2 min ago', trend: 'down' },
@@ -25,11 +28,11 @@ export default function FlightAlertsScreen() {
  const [targetPrice, setTargetPrice] = useState('');
 
  return (
- <View className="flex-1 bg-bg-primary pt-safe">
+ <View style={{ flex: 1, backgroundColor: colors.bg.primary }} pt-safe">
  <View className="px-6 flex-row items-center justify-between mb-4">
- <TouchableOpacity onPress={() => router.back()}><Text className="text-white text-xl">‹ Back</Text></TouchableOpacity>
- <Text className="text-white text-heading-3">Price Alerts</Text>
- <TouchableOpacity onPress={() => setShowCreate(true)}><Text className="text-primary text-body font-bold">+ New</Text></TouchableOpacity>
+ <TouchableOpacity onPress={() => router.back()}><Text className=" text-xl" style={{ color: colors.text.primary }}>‹ Back</Text></TouchableOpacity>
+ <Text className=" text-[18px]" style={{ color: colors.text.primary }}>Price Alerts</Text>
+ <TouchableOpacity onPress={() => setShowCreate(true)}><Text className="text-[#6443F4] text-[15px] font-[Satoshi-Bold]">+ New</Text></TouchableOpacity>
  </View>
 
  <FlatList
@@ -39,34 +42,34 @@ export default function FlightAlertsScreen() {
  contentContainerClassName="px-6 pb-24"
  renderItem={({ item, index }) => (
  <Animated.View entering={FadeInDown.delay(index * 100)}>
- <TouchableOpacity onPress={() => router.push('/_modals/price-alert' as any)} className={`bg-bg-card border rounded-card p-4 mb-3 ${item.status === 'triggered' ? 'border-status-success' : 'border-border'}`}>
+ <TouchableOpacity onPress={() => router.push('/_modals/price-alert' as any)} className={`bg-[#120824] border rounded-[16px] p-4 mb-3 ${item.status === 'triggered' ? 'border-status-success' : 'border-[rgba(255,255,255,0.08)]'}`}>
  <View className="flex-row justify-between items-center mb-2">
  <View className="flex-row items-center">
- <Text className="text-white text-heading-3 font-bold">{item.from}</Text>
- <Text className="text-text-muted mx-2">→</Text>
- <Text className="text-white text-heading-3 font-bold">{item.to}</Text>
+ <Text className=" text-[18px] font-[Satoshi-Bold]" style={{ color: colors.text.primary }}>{item.from}</Text>
+ <Text className="text-[rgba(255,255,255,0.3)] mx-2">→</Text>
+ <Text className=" text-[18px] font-[Satoshi-Bold]" style={{ color: colors.text.primary }}>{item.to}</Text>
  </View>
  {item.status === 'triggered' ? (
- <View className="bg-status-success/20 px-3 py-1 rounded-full"><Text className="text-status-success text-caption font-bold">Price Drop!</Text></View>
+ <View className="bg-[#4ADE80]/20 px-3 py-1 rounded-full"><Text className="text-[#4ADE80] text-[12px] font-[Satoshi-Bold]">Price Drop!</Text></View>
  ) : (
- <View className="bg-primary/20 px-3 py-1 rounded-full"><Text className="text-primary text-caption">Watching</Text></View>
+ <View className="bg-[#6443F4]/20 px-3 py-1 rounded-full"><Text className="text-[#6443F4] text-[12px]">Watching</Text></View>
  )}
  </View>
  <View className="flex-row justify-between items-center">
  <View>
- <Text className="text-text-muted text-caption">Current</Text>
- <Text className={`text-heading-2 font-bold ${item.trend === 'down' ? 'text-status-success' : 'text-status-error'}`}>€{item.currentPrice}</Text>
+ <Text className="text-[rgba(255,255,255,0.3)] text-[12px]">Current</Text>
+ <Text className={`text-[22px] font-[Satoshi-Bold] ${item.trend === 'down' ? 'text-[#4ADE80]' : 'text-[#F87171]'}`}>€{item.currentPrice}</Text>
  </View>
  <Text className="text-2xl">{item.trend === 'down' ? '' : ''}</Text>
  <View className="items-end">
- <Text className="text-text-muted text-caption">Target</Text>
- <Text className="text-white text-heading-2 font-bold">€{item.targetPrice}</Text>
+ <Text className="text-[rgba(255,255,255,0.3)] text-[12px]">Target</Text>
+ <Text className=" text-[22px] font-[Satoshi-Bold]" style={{ color: colors.text.primary }}>€{item.targetPrice}</Text>
  </View>
  </View>
- <Text className="text-text-muted text-caption mt-2">Last checked: {item.lastChecked}</Text>
+ <Text className="text-[rgba(255,255,255,0.3)] text-[12px] mt-2">Last checked: {item.lastChecked}</Text>
  {item.status === 'triggered' && (
- <TouchableOpacity className="bg-status-success py-3 rounded-button items-center mt-3" onPress={() => router.push('/(trip)/flights')}>
- <Text className="text-white text-body font-bold">Book Now!</Text>
+ <TouchableOpacity className="bg-[#4ADE80] py-3 rounded-[12px] items-center mt-3" onPress={() => router.push('/(trip)/flights')}>
+ <Text className=" text-[15px] font-[Satoshi-Bold]" style={{ color: colors.text.primary }}>Book Now!</Text>
  </TouchableOpacity>
  )}
  </TouchableOpacity>
@@ -75,16 +78,16 @@ export default function FlightAlertsScreen() {
  />
 
  {showCreate && (
- <Animated.View entering={SlideInRight} className="absolute bottom-0 left-0 right-0 bg-bg-primary border-t border-border rounded-t-3xl p-6 pb-safe">
+ <Animated.View entering={SlideInRight} className="absolute bottom-0 left-0 right-0 bg-bg-[#6443F4] border-t border-[rgba(255,255,255,0.08)] rounded-t-3xl p-6 pb-safe">
  <View className="flex-row justify-between items-center mb-4">
- <Text className="text-white text-heading-3">New Alert</Text>
+ <Text className=" text-[18px]" style={{ color: colors.text.primary }}>New Alert</Text>
  <TouchableOpacity onPress={() => setShowCreate(false)}><Ionicons name="close" size={24} color="#FFFFFF" /></TouchableOpacity>
  </View>
- <TextInput className="bg-bg-card border border-border rounded-input text-white p-3 mb-3" placeholder="From (e.g. TLV)" placeholderTextColor="rgba(255,255,255,0.3)" value={from} onChangeText={setFrom} />
- <TextInput className="bg-bg-card border border-border rounded-input text-white p-3 mb-3" placeholder="To (e.g. BCN)" placeholderTextColor="rgba(255,255,255,0.3)" value={to} onChangeText={setTo} />
- <TextInput className="bg-bg-card border border-border rounded-input text-white p-3 mb-4" placeholder="Target price (€)" placeholderTextColor="rgba(255,255,255,0.3)" keyboardType="numeric" value={targetPrice} onChangeText={setTargetPrice} />
- <TouchableOpacity className="bg-primary py-4 rounded-button items-center" onPress={() => setShowCreate(false)}>
- <Text className="text-white text-body font-bold">Create Alert</Text>
+ <TextInput className="bg-[#120824] border border-[rgba(255,255,255,0.08)] rounded-input text-white p-3 mb-3" placeholder="From (e.g. TLV)" placeholderTextColor="rgba(255,255,255,0.3)" value={from} onChangeText={setFrom} />
+ <TextInput className="bg-[#120824] border border-[rgba(255,255,255,0.08)] rounded-input text-white p-3 mb-3" placeholder="To (e.g. BCN)" placeholderTextColor="rgba(255,255,255,0.3)" value={to} onChangeText={setTo} />
+ <TextInput className="bg-[#120824] border border-[rgba(255,255,255,0.08)] rounded-input text-white p-3 mb-4" placeholder="Target price (€)" placeholderTextColor="rgba(255,255,255,0.3)" keyboardType="numeric" value={targetPrice} onChangeText={setTargetPrice} />
+ <TouchableOpacity className="bg-[#6443F4] py-4 rounded-[12px] items-center" onPress={() => setShowCreate(false)}>
+ <Text className=" text-[15px] font-[Satoshi-Bold]" style={{ color: colors.text.primary }}>Create Alert</Text>
  </TouchableOpacity>
  </Animated.View>
  )}

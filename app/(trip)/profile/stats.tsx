@@ -1,9 +1,12 @@
 import { Skeleton } from '@/components/ui/Skeleton';
 import React from 'react';
 import { View, Text, ScrollView, TouchableOpacity, FlatList} from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
+import { ScreenHeader } from '@/components/ui/ScreenHeader';
+import { PressableScale } from '@/components/ui/PressableScale';
 import { useRouter } from 'expo-router';
-import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
-import { Ionicons } from '@expo/vector-icons';
+import { colors, fonts, fontSizes, radius, shadows, typography, spacing, gradients} from '@/constants/theme';
+import { MaterialIcons, Ionicons } from '@expo/vector-icons';
 
 export default function StatsScreen() {
  const router = useRouter();
@@ -30,30 +33,28 @@ export default function StatsScreen() {
  ];
 
  return (
- <ScrollView className="flex-1 bg-bg-primary pt-safe">
- <View className="flex-row items-center px-4 py-3">
- <TouchableOpacity onPress={() => router.back()}><Text className="text-white text-lg">←</Text></TouchableOpacity>
- <Text className="text-white text-xl font-bold ml-3">Travel Stats</Text>
+ <ScrollView style={{ flex: 1, backgroundColor: colors.bg.primary }} pt-safe">
+ <ScreenHeader title="Travel Stats" />
  </View>
  <View className="flex-row flex-wrap mx-2 mb-6">
  {stats.map(s => (
  <View key={s.label} className="w-1/3 p-2">
- <View className="bg-bg-secondary rounded-2xl p-4 items-center border border-white/[0.08]">
+ <View className="bg-[#120824] rounded-2xl p-4 items-center border border-white/[0.08]">
  <Text className="text-2xl mb-2">{s.emoji}</Text>
- <Text className="text-white font-bold text-lg">{s.value}</Text>
- <Text className="text-white/40 text-xs text-center">{s.label}</Text>
+ <Text className=" font-[Satoshi-Bold] text-lg" style={{ color: colors.text.primary }}>{s.value}</Text>
+ <Text className="/40 text-xs text-center" style={{ color: colors.text.primary }}>{s.label}</Text>
  </View>
  </View>
  ))}
  </View>
  <View className="mx-4 mb-8">
- <Text className="text-white font-bold text-lg mb-3">Top Destinations</Text>
+ <Text className=" font-[Satoshi-Bold] text-lg mb-3" style={{ color: colors.text.primary }}>Top Destinations</Text>
  {topDestinations.map((d, i) => (
- <View key={d.name} className="flex-row items-center mb-2 p-4 bg-bg-secondary rounded-2xl border border-white/[0.08]">
- <Text className="text-white/40 font-bold text-lg mr-3">#{i + 1}</Text>
+ <View key={d.name} className="flex-row items-center mb-2 p-4 bg-[#120824] rounded-2xl border border-white/[0.08]">
+ <Text className="/40 font-[Satoshi-Bold] text-lg mr-3" style={{ color: colors.text.primary }}>#{i + 1}</Text>
  <Text className="text-2xl mr-3">{d.emoji}</Text>
- <Text className="text-white font-bold flex-1">{d.name}</Text>
- <Text className="text-white/60 text-sm">{d.visits} visits</Text>
+ <Text className=" font-[Satoshi-Bold] flex-1" style={{ color: colors.text.primary }}>{d.name}</Text>
+ <Text className="/60 text-sm" style={{ color: colors.text.primary }}>{d.visits} visits</Text>
  </View>
  ))}
  </View>

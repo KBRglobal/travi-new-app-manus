@@ -1,10 +1,13 @@
 import { Skeleton } from '@/components/ui/Skeleton';
 import React, { useState } from 'react';
 import { View, Text, FlatList, TouchableOpacity } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
+import { ScreenHeader } from '@/components/ui/ScreenHeader';
+import { PressableScale } from '@/components/ui/PressableScale';
 import { useRouter } from 'expo-router';
 import { EmptyState } from '@/components/ui/EmptyState';
-import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
-import { Ionicons } from '@expo/vector-icons';
+import { colors, fonts, fontSizes, radius, shadows, typography, spacing, gradients} from '@/constants/theme';
+import { MaterialIcons, Ionicons } from '@expo/vector-icons';
 
 const CHALLENGES = [
  { id: '1', emoji: '', title: 'Sunrise Seeker', desc: 'Watch 3 sunrises during your trip', reward: 500, progress: 1, total: 3, active: true, expires: '5 days' },
@@ -21,36 +24,34 @@ export default function ChallengesScreen() {
  const displayed = tab === 'active' ? CHALLENGES.filter(c => c.active) : CHALLENGES.filter(c => !c.active);
 
  return (
- <View className="flex-1 bg-bg-primary pt-safe">
- <View className="flex-row items-center px-4 py-3">
- <TouchableOpacity onPress={() => router.back()}><Text className="text-white text-lg">←</Text></TouchableOpacity>
- <Text className="text-white text-xl font-bold ml-3">Challenges</Text>
+ <View style={{ flex: 1, backgroundColor: colors.bg.primary }} pt-safe">
+ <ScreenHeader title="Challenges" />
  </View>
  <View className="flex-row mx-4 mb-3">
- <TouchableOpacity onPress={() => setTab('active')} className={`flex-1 py-2 rounded-xl mr-1 ${tab === 'active' ? 'bg-primary' : 'bg-white/[0.05]'}`}>
- <Text className={`text-center font-bold ${tab === 'active' ? 'text-white' : 'text-white/60'}`}>Active</Text>
+ <TouchableOpacity onPress={() => setTab('active')} className={`flex-1 py-2 rounded-xl mr-1 ${tab === 'active' ? 'bg-[#6443F4]' : 'bg-white/[0.05]'}`}>
+ <Text className={`text-center font-[Satoshi-Bold] ${tab === 'active' ? 'text-white' : 'text-white/60'}`}>Active</Text>
  </TouchableOpacity>
- <TouchableOpacity onPress={() => setTab('completed')} className={`flex-1 py-2 rounded-xl ml-1 ${tab === 'completed' ? 'bg-primary' : 'bg-white/[0.05]'}`}>
- <Text className={`text-center font-bold ${tab === 'completed' ? 'text-white' : 'text-white/60'}`}>Completed</Text>
+ <TouchableOpacity onPress={() => setTab('completed')} className={`flex-1 py-2 rounded-xl ml-1 ${tab === 'completed' ? 'bg-[#6443F4]' : 'bg-white/[0.05]'}`}>
+ <Text className={`text-center font-[Satoshi-Bold] ${tab === 'completed' ? 'text-white' : 'text-white/60'}`}>Completed</Text>
  </TouchableOpacity>
  </View>
  <FlatList
  ListEmptyComponent={() => <EmptyState emoji="" title="No active challenges" description="Check back soon for new challenges!" />} data={displayed} keyExtractor={i => i.id} renderItem={({ item }) => (
- <View className={`mx-4 mb-3 p-4 rounded-2xl border ${item.active ? 'bg-bg-secondary border-white/[0.08]' : 'bg-primary/5 border-primary/20'}`}>
+ <View className={`mx-4 mb-3 p-4 rounded-2xl border ${item.active ? 'bg-[#120824] border-white/[0.08]' : 'bg-[#6443F4]/5 border-[#6443F4]/20'}`}>
  <View className="flex-row items-start mb-3">
  <Text className="text-3xl mr-3">{item.emoji}</Text>
  <View className="flex-1">
- <Text className="text-white font-bold">{item.title}</Text>
- <Text className="text-white/40 text-xs">{item.desc}</Text>
+ <Text className=" font-[Satoshi-Bold]" style={{ color: colors.text.primary }}>{item.title}</Text>
+ <Text className="/40 text-xs" style={{ color: colors.text.primary }}>{item.desc}</Text>
  </View>
- <View className="bg-primary/20 px-2 py-1 rounded-lg"><Text className="text-primary text-xs font-bold">+{item.reward} pts</Text></View>
+ <View className="bg-[#6443F4]/20 px-2 py-1 rounded-lg"><Text className="text-[#6443F4] text-xs font-[Satoshi-Bold]">+{item.reward} pts</Text></View>
  </View>
  <View className="h-2 bg-white/[0.05] rounded-full overflow-hidden mb-2">
- <View className="h-full bg-primary rounded-full" style={{ width: `${(item.progress / item.total) * 100}%` }} />
+ <View className="h-full bg-[#6443F4] rounded-full" style={{ width: `${(item.progress / item.total) * 100}%` }} />
  </View>
  <View className="flex-row justify-between">
- <Text className="text-white/40 text-xs">{item.progress}/{item.total}</Text>
- <Text className="text-white/40 text-xs">{item.expires}</Text>
+ <Text className="/40 text-xs" style={{ color: colors.text.primary }}>{item.progress}/{item.total}</Text>
+ <Text className="/40 text-xs" style={{ color: colors.text.primary }}>{item.expires}</Text>
  </View>
  </View>
  )} />

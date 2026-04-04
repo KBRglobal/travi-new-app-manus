@@ -1,9 +1,12 @@
 import { Skeleton } from '@/components/ui/Skeleton';
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, ScrollView, FlatList} from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
+import { ScreenHeader } from '@/components/ui/ScreenHeader';
+import { PressableScale } from '@/components/ui/PressableScale';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 import { useRouter } from 'expo-router';
-import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
+import { colors, fonts, fontSizes, radius, shadows, typography, spacing, gradients} from '@/constants/theme';
 
 const visitedCountries = ['Spain', 'France', 'Italy', 'Greece', 'Turkey', 'UAE', 'Thailand', 'Japan'];
 const achievements = [
@@ -19,19 +22,19 @@ export default function AdventureLogScreen() {
  const [tab, setTab] = useState<'map' | 'achievements' | 'timeline'>('map');
 
  return (
- <ScrollView className="flex-1 bg-bg-primary" contentContainerClassName="pt-safe pb-24 px-6">
+ <ScrollView style={{ flex: 1, backgroundColor: colors.bg.primary }}" contentContainerClassName="pt-safe pb-24 px-6">
  <View className="flex-row items-center justify-between mb-4">
- <TouchableOpacity onPress={() => router.back()}><Text className="text-white text-xl">‹ Back</Text></TouchableOpacity>
- <Text className="text-white text-heading-3">Adventure Log</Text>
+ <TouchableOpacity onPress={() => router.back()}><Text className=" text-xl" style={{ color: colors.text.primary }}>‹ Back</Text></TouchableOpacity>
+ <Text className=" text-[18px]" style={{ color: colors.text.primary }}>Adventure Log</Text>
  <View className="w-12" />
  </View>
 
  {/* Stats */}
  <View className="flex-row mb-6 gap-2">
  {[{ value: visitedCountries.length, label: 'Countries' }, { value: '52,340', label: 'km Traveled' }, { value: '14', label: 'Trips' }].map((s) => (
- <View key={s.label} className="flex-1 bg-bg-card border border-border rounded-card py-3 items-center">
- <Text className="text-white text-heading-3 font-bold">{s.value}</Text>
- <Text className="text-text-muted text-caption">{s.label}</Text>
+ <View key={s.label} className="flex-1 bg-[#120824] border border-[rgba(255,255,255,0.08)] rounded-[16px] py-3 items-center">
+ <Text className=" text-[18px] font-[Satoshi-Bold]" style={{ color: colors.text.primary }}>{s.value}</Text>
+ <Text className="text-[rgba(255,255,255,0.3)] text-[12px]">{s.label}</Text>
  </View>
  ))}
  </View>
@@ -39,24 +42,24 @@ export default function AdventureLogScreen() {
  {/* Tabs */}
  <View className="flex-row mb-4">
  {(['map', 'achievements', 'timeline'] as const).map((t) => (
- <TouchableOpacity key={t} className={`flex-1 py-3 items-center border-b-2 ${tab === t ? 'border-primary' : 'border-transparent'}`} onPress={() => setTab(t)}>
- <Text className={`text-body-sm ${tab === t ? 'text-primary font-semibold' : 'text-text-secondary'}`}>{t === 'map' ? 'Map' : t === 'achievements' ? 'Badges' : 'calendar Timeline'}</Text>
+ <TouchableOpacity key={t} className={`flex-1 py-3 items-center border-b-2 ${tab === t ? 'border-[#6443F4]' : 'border-transparent'}`} onPress={() => setTab(t)}>
+ <Text className={`text-[13px] ${tab === t ? 'text-[#6443F4] font-semibold' : 'text-[rgba(255,255,255,0.6)]'}`}>{t === 'map' ? 'Map' : t === 'achievements' ? 'Badges' : 'calendar Timeline'}</Text>
  </TouchableOpacity>
  ))}
  </View>
 
  {tab === 'map' && (
  <View>
- <View className="bg-bg-card border border-border rounded-card h-64 items-center justify-center mb-4">
+ <View className="bg-[#120824] border border-[rgba(255,255,255,0.08)] rounded-[16px] h-64 items-center justify-center mb-4">
  <Ionicons name="globe" size={24} color="#FFFFFF" />
- <Text className="text-white text-heading-3">Scratch Map</Text>
- <Text className="text-text-secondary text-body-sm mt-1">{visitedCountries.length} / 195 countries</Text>
- <Text className="text-primary text-caption mt-1">Tap countries to mark as visited</Text>
+ <Text className=" text-[18px]" style={{ color: colors.text.primary }}>Scratch Map</Text>
+ <Text className="text-[rgba(255,255,255,0.6)] text-[13px] mt-1">{visitedCountries.length} / 195 countries</Text>
+ <Text className="text-[#6443F4] text-[12px] mt-1">Tap countries to mark as visited</Text>
  </View>
- <Text className="text-white text-heading-3 mb-3">Visited Countries</Text>
+ <Text className=" text-[18px] mb-3" style={{ color: colors.text.primary }}>Visited Countries</Text>
  <View className="flex-row flex-wrap gap-2">
  {visitedCountries.map((c) => (
- <View key={c} className="bg-primary/20 px-3 py-1.5 rounded-full"><Text className="text-primary text-body-sm">{c}</Text></View>
+ <View key={c} className="bg-[#6443F4]/20 px-3 py-1.5 rounded-full"><Text className="text-[#6443F4] text-[13px]">{c}</Text></View>
  ))}
  </View>
  </View>
@@ -66,11 +69,11 @@ export default function AdventureLogScreen() {
  <View>
  {achievements.map((a, i) => (
  <Animated.View key={a.id} entering={FadeInDown.delay(i * 100)}>
- <View className={`flex-row bg-bg-card border rounded-card p-4 mb-3 items-center ${a.unlocked ? 'border-primary' : 'border-border opacity-50'}`}>
+ <View className={`flex-row bg-[#120824] border rounded-[16px] p-4 mb-3 items-center ${a.unlocked ? 'border-[#6443F4]' : 'border-[rgba(255,255,255,0.08)] opacity-50'}`}>
  <Text className="text-3xl mr-4">{a.emoji}</Text>
  <View className="flex-1">
- <Text className="text-white text-body font-semibold">{a.title}</Text>
- <Text className="text-text-secondary text-body-sm">{a.desc}</Text>
+ <Text className=" text-[15px] font-semibold" style={{ color: colors.text.primary }}>{a.title}</Text>
+ <Text className="text-[rgba(255,255,255,0.6)] text-[13px]">{a.desc}</Text>
  </View>
  {a.unlocked ? <Ionicons name="checkmark" size={24} color="#FFFFFF" /> : <Ionicons name="lock-closed" size={24} color="#FFFFFF" />}
  </View>
@@ -85,13 +88,13 @@ export default function AdventureLogScreen() {
  <Animated.View key={i} entering={FadeInDown.delay(i * 100)}>
  <View className="flex-row mb-4">
  <View className="items-center mr-4">
- <View className="w-4 h-4 bg-primary rounded-full" />
+ <View className="w-4 h-4 bg-[#6443F4] rounded-full" />
  {i < 2 && <View className="w-0.5 h-16 bg-border" />}
  </View>
- <TouchableOpacity onPress={() => {}} className="flex-1 bg-bg-card border border-border rounded-card p-4">
- <Text className="text-text-muted text-caption">{t.date}</Text>
- <Text className="text-white text-body font-semibold">{t.trip}</Text>
- <Text className="text-text-secondary text-body-sm">{t.days} days</Text>
+ <TouchableOpacity onPress={() => {}} className="flex-1 bg-[#120824] border border-[rgba(255,255,255,0.08)] rounded-[16px] p-4">
+ <Text className="text-[rgba(255,255,255,0.3)] text-[12px]">{t.date}</Text>
+ <Text className=" text-[15px] font-semibold" style={{ color: colors.text.primary }}>{t.trip}</Text>
+ <Text className="text-[rgba(255,255,255,0.6)] text-[13px]">{t.days} days</Text>
  </TouchableOpacity>
  </View>
  </Animated.View>

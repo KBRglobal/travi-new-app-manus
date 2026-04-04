@@ -1,9 +1,12 @@
 import { haptic } from '@/lib/haptics';
 import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, ScrollView, ActivityIndicator, FlatList} from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
+import { ScreenHeader } from '@/components/ui/ScreenHeader';
+import { PressableScale } from '@/components/ui/PressableScale';
 import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
 import { useRouter } from 'expo-router';
-import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
+import { colors, fonts, fontSizes, radius, shadows, typography, spacing, gradients} from '@/constants/theme';
 
 const preferences = ['Adventure', 'Culture', 'Food', 'Relaxation', 'Nightlife', 'Nature', 'Shopping', 'Photography'];
 
@@ -36,32 +39,32 @@ export default function AIItineraryScreen() {
 
  if (step === 1) {
  return (
- <ScrollView className="flex-1 bg-bg-primary" contentContainerClassName="pt-safe pb-24 px-6">
+ <ScrollView style={{ flex: 1, backgroundColor: colors.bg.primary }}" contentContainerClassName="pt-safe pb-24 px-6">
  <View className="flex-row items-center justify-between mb-6">
- <TouchableOpacity onPress={() => router.back()}><Text className="text-white text-xl">‹ Back</Text></TouchableOpacity>
- <Text className="text-white text-heading-3">AI Itinerary</Text>
+ <TouchableOpacity onPress={() => router.back()}><Text className=" text-xl" style={{ color: colors.text.primary }}>‹ Back</Text></TouchableOpacity>
+ <Text className=" text-[18px]" style={{ color: colors.text.primary }}>AI Itinerary</Text>
  <View className="w-12" />
  </View>
  <Ionicons name="hardware-chip" size={24} color="#FFFFFF" />
- <Text className="text-white text-heading-2 text-center mb-2">What do you love?</Text>
- <Text className="text-text-secondary text-body text-center mb-6">Select your preferences and I'll create the perfect itinerary</Text>
+ <Text className=" text-[22px] text-center mb-2" style={{ color: colors.text.primary }}>What do you love?</Text>
+ <Text className="text-[rgba(255,255,255,0.6)] text-[15px] text-center mb-6">Select your preferences and I'll create the perfect itinerary</Text>
  <View className="flex-row flex-wrap gap-2 mb-6">
  {preferences.map((p) => (
- <TouchableOpacity key={p} className={`px-4 py-3 rounded-full border ${selectedPrefs.has(p) ? 'bg-primary border-primary' : 'border-border'}`} onPress={() => togglePref(p)}>
- <Text className={`text-body-sm ${selectedPrefs.has(p) ? 'text-white font-semibold' : 'text-text-secondary'}`}>{p}</Text>
+ <TouchableOpacity key={p} className={`px-4 py-3 rounded-full border ${selectedPrefs.has(p) ? 'bg-[#6443F4] border-[#6443F4]' : 'border-[rgba(255,255,255,0.08)]'}`} onPress={() => togglePref(p)}>
+ <Text className={`text-[13px] ${selectedPrefs.has(p) ? 'text-white font-semibold' : 'text-[rgba(255,255,255,0.6)]'}`}>{p}</Text>
  </TouchableOpacity>
  ))}
  </View>
- <Text className="text-white text-heading-3 mb-3">Budget</Text>
+ <Text className=" text-[18px] mb-3" style={{ color: colors.text.primary }}>Budget</Text>
  <View className="flex-row gap-2 mb-8">
  {(['low', 'medium', 'high'] as const).map((b) => (
- <TouchableOpacity key={b} className={`flex-1 py-3 rounded-button items-center ${budget === b ? 'bg-primary' : 'bg-bg-card border border-border'}`} onPress={() => setBudget(b)}>
- <Text className={`text-body-sm font-semibold ${budget === b ? 'text-white' : 'text-text-secondary'}`}>{b === 'low' ? 'Budget' : b === 'medium' ? 'cash Mid' : 'cash Luxury'}</Text>
+ <TouchableOpacity key={b} className={`flex-1 py-3 rounded-[12px] items-center ${budget === b ? 'bg-[#6443F4]' : 'bg-[#120824] border border-[rgba(255,255,255,0.08)]'}`} onPress={() => setBudget(b)}>
+ <Text className={`text-[13px] font-semibold ${budget === b ? 'text-white' : 'text-[rgba(255,255,255,0.6)]'}`}>{b === 'low' ? 'Budget' : b === 'medium' ? 'cash Mid' : 'cash Luxury'}</Text>
  </TouchableOpacity>
  ))}
  </View>
- <TouchableOpacity className="bg-primary py-4 rounded-button items-center" onPress={() => setStep(2)}>
- <Text className="text-white text-body font-bold">Generate Itinerary </Text>
+ <TouchableOpacity className="bg-[#6443F4] py-4 rounded-[12px] items-center" onPress={() => setStep(2)}>
+ <Text className=" text-[15px] font-[Satoshi-Bold]" style={{ color: colors.text.primary }}>Generate Itinerary </Text>
  </TouchableOpacity>
  </ScrollView>
  );
@@ -69,14 +72,14 @@ export default function AIItineraryScreen() {
 
  if (step === 2) {
  return (
- <View className="flex-1 bg-bg-primary items-center justify-center px-6">
+ <View style={{ flex: 1, backgroundColor: colors.bg.primary }} items-center justify-center px-6">
  <ActivityIndicator size="large" color="#6443F4" />
- <Text className="text-white text-heading-3 mt-6 mb-2">Creating your perfect trip...</Text>
- <Text className="text-text-secondary text-body text-center">Analyzing your DNA profile, preferences, and {selectedPrefs.size} interests</Text>
+ <Text className=" text-[18px] mt-6 mb-2" style={{ color: colors.text.primary }}>Creating your perfect trip...</Text>
+ <Text className="text-[rgba(255,255,255,0.6)] text-[15px] text-center">Analyzing your DNA profile, preferences, and {selectedPrefs.size} interests</Text>
  <View className="mt-8 w-full">
  {['Checking weather patterns...', 'Finding hidden gems...', 'Optimizing routes...'].map((t, i) => (
  <Animated.View key={t} entering={FadeInUp.delay(i * 800)}>
- <Text className="text-primary text-body-sm text-center mb-2">{t}</Text>
+ <Text className="text-[#6443F4] text-[13px] text-center mb-2">{t}</Text>
  </Animated.View>
  ))}
  </View>
@@ -85,38 +88,38 @@ export default function AIItineraryScreen() {
  }
 
  return (
- <ScrollView className="flex-1 bg-bg-primary" contentContainerClassName="pt-safe pb-24 px-6">
+ <ScrollView style={{ flex: 1, backgroundColor: colors.bg.primary }}" contentContainerClassName="pt-safe pb-24 px-6">
  <View className="flex-row items-center justify-between mb-6">
- <TouchableOpacity onPress={() => setStep(1)}><Text className="text-white text-xl">‹ Back</Text></TouchableOpacity>
- <Text className="text-white text-heading-3">Your Itinerary</Text>
- <TouchableOpacity onPress={() => router.push('/(trip)/itinerary')}><Text className="text-primary text-body-sm">Edit</Text></TouchableOpacity>
+ <TouchableOpacity onPress={() => setStep(1)}><Text className=" text-xl" style={{ color: colors.text.primary }}>‹ Back</Text></TouchableOpacity>
+ <Text className=" text-[18px]" style={{ color: colors.text.primary }}>Your Itinerary</Text>
+ <TouchableOpacity onPress={() => router.push('/(trip)/itinerary')}><Text className="text-[#6443F4] text-[13px]">Edit</Text></TouchableOpacity>
  </View>
 
- <View className="bg-status-success/20 border border-status-success rounded-card p-3 mb-6">
- <Text className="text-status-success text-body font-semibold">AI-generated based on your DNA profile</Text>
+ <View className="bg-[#4ADE80]/20 border border-status-success rounded-[16px] p-3 mb-6">
+ <Text className="text-[#4ADE80] text-[15px] font-semibold">AI-generated based on your DNA profile</Text>
  </View>
 
  {mockItinerary.map((day, di) => (
  <Animated.View key={day.day} entering={FadeInDown.delay(di * 150)} className="mb-6">
- <Text className="text-white text-heading-3 mb-1">Day {day.day}: {day.title}</Text>
+ <Text className=" text-[18px] mb-1" style={{ color: colors.text.primary }}>Day {day.day}: {day.title}</Text>
  {day.activities.map((act, ai) => (
- <View key={ai} className="flex-row bg-bg-card border border-border rounded-card p-3 mb-2">
+ <View key={ai} className="flex-row bg-[#120824] border border-[rgba(255,255,255,0.08)] rounded-[16px] p-3 mb-2">
  <View className="w-14 items-center mr-3">
- <Text className="text-primary text-body-sm font-bold">{act.time}</Text>
- <Text className="text-text-muted text-caption">{act.duration}</Text>
+ <Text className="text-[#6443F4] text-[13px] font-[Satoshi-Bold]">{act.time}</Text>
+ <Text className="text-[rgba(255,255,255,0.3)] text-[12px]">{act.duration}</Text>
  </View>
- <View className="flex-1"><Text className="text-white text-body">{act.name}</Text></View>
+ <View className="flex-1"><Text className=" text-[15px]" style={{ color: colors.text.primary }}>{act.name}</Text></View>
  </View>
  ))}
  </Animated.View>
  ))}
 
  <View className="flex-row gap-3">
- <TouchableOpacity className="flex-1 bg-bg-card border border-border py-4 rounded-button items-center" onPress={() => setStep(1)}>
- <Text className="text-white text-body-sm">Regenerate</Text>
+ <TouchableOpacity className="flex-1 bg-[#120824] border border-[rgba(255,255,255,0.08)] py-4 rounded-[12px] items-center" onPress={() => setStep(1)}>
+ <Text className=" text-[13px]" style={{ color: colors.text.primary }}>Regenerate</Text>
  </TouchableOpacity>
- <TouchableOpacity className="flex-1 bg-primary py-4 rounded-button items-center" onPress={() => router.push('/(trip)/itinerary')}>
- <Text className="text-white text-body-sm font-bold">Accept</Text>
+ <TouchableOpacity className="flex-1 bg-[#6443F4] py-4 rounded-[12px] items-center" onPress={() => router.push('/(trip)/itinerary')}>
+ <Text className=" text-[13px] font-[Satoshi-Bold]" style={{ color: colors.text.primary }}>Accept</Text>
  </TouchableOpacity>
  </View>
  </ScrollView>

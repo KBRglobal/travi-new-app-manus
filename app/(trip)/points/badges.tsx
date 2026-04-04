@@ -1,10 +1,13 @@
 import { Skeleton } from '@/components/ui/Skeleton';
 import React from 'react';
 import { View, Text, FlatList, TouchableOpacity } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
+import { ScreenHeader } from '@/components/ui/ScreenHeader';
+import { PressableScale } from '@/components/ui/PressableScale';
 import { useRouter } from 'expo-router';
 import { EmptyState } from '@/components/ui/EmptyState';
-import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
-import { Ionicons } from '@expo/vector-icons';
+import { colors, fonts, fontSizes, radius, shadows, typography, spacing, gradients} from '@/constants/theme';
+import { MaterialIcons, Ionicons } from '@expo/vector-icons';
 
 const BADGES = [
   { id: '1', iconName: 'globe', name: 'World Explorer', desc: 'Visit 10 countries', tier: 'gold', unlocked: true },
@@ -25,19 +28,17 @@ export default function BadgesScreen() {
   const unlocked = BADGES.filter(b => b.unlocked).length;
 
   return (
-    <View className="flex-1 bg-bg-primary pt-safe">
-      <View className="flex-row items-center px-4 py-3">
-        <TouchableOpacity onPress={() => router.back()}><Text className="text-white text-lg">←</Text></TouchableOpacity>
-        <Text className="text-white text-xl font-bold ml-3">Badges</Text>
+    <View style={{ flex: 1, backgroundColor: colors.bg.primary }} pt-safe">
+      <ScreenHeader title="Badges" />
         <View className="flex-1" />
-        <Text className="text-primary font-bold">{unlocked}/{BADGES.length}</Text>
+        <Text className="text-[#6443F4] font-[Satoshi-Bold]">{unlocked}/{BADGES.length}</Text>
       </View>
       <FlatList
             ListEmptyComponent={() => <EmptyState stateKey="badges" />} data={BADGES} numColumns={2} keyExtractor={i => i.id} contentContainerStyle={{ padding: 8 }} renderItem={({ item }) => (
-        <View className={`flex-1 m-2 p-4 rounded-2xl border items-center ${item.unlocked ? 'bg-bg-secondary border-white/[0.08]' : 'bg-bg-secondary/50 border-white/[0.04]'}`}>
+        <View className={`flex-1 m-2 p-4 rounded-2xl border items-center ${item.unlocked ? 'bg-[#120824] border-white/[0.08]' : 'bg-[#120824]/50 border-white/[0.04]'}`}>
           <Text className={`text-4xl mb-2 ${item.unlocked ? '' : 'opacity-30'}`}>{item.emoji}</Text>
-          <Text className={`font-bold text-center text-sm ${item.unlocked ? 'text-white' : 'text-white/30'}`}>{item.name}</Text>
-          <Text className="text-white/40 text-xs text-center mt-1">{item.desc}</Text>
+          <Text className={`font-[Satoshi-Bold] text-center text-sm ${item.unlocked ? 'text-white' : 'text-white/30'}`}>{item.name}</Text>
+          <Text className="/40 text-xs text-center mt-1" style={{ color: colors.text.primary }}>{item.desc}</Text>
           <View className={`mt-2 px-2 py-0.5 rounded-full ${tierColors[item.tier]}`}>
             <Text className={`text-xs capitalize ${tierText[item.tier]}`}>{item.tier}</Text>
           </View>

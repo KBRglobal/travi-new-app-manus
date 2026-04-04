@@ -1,8 +1,11 @@
 import { haptic } from '@/lib/haptics';
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
+import { ScreenHeader } from '@/components/ui/ScreenHeader';
+import { PressableScale } from '@/components/ui/PressableScale';
 import { useRouter } from 'expo-router';
-import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
+import { colors, fonts, fontSizes, radius, shadows, typography, spacing, gradients} from '@/constants/theme';
 
 const CARDS = [
  { id: '1', name: 'Sarah K.', avatar: 'person', dna: 'Foodie · Culture', match: 92, bio: 'Love exploring local markets and hidden restaurants', trips: 8 },
@@ -27,36 +30,36 @@ export default function DiscoverSwipeScreen() {
  };
 
  if (!card) return (
- <View className="flex-1 bg-bg-primary items-center justify-center">
+ <View style={{ flex: 1, backgroundColor: colors.bg.primary }} items-center justify-center">
  <Ionicons name="sparkles" size={24} color="#FFFFFF" />
- <Text className="text-white text-xl font-bold">No more travelers</Text>
- <TouchableOpacity onPress={() => router.back()} className="mt-6 bg-primary px-8 py-3 rounded-xl">
- <Text className="text-white font-bold">Go Back</Text>
+ <Text className=" text-xl font-[Satoshi-Bold]" style={{ color: colors.text.primary }}>No more travelers</Text>
+ <TouchableOpacity onPress={() => router.back()} className="mt-6 bg-[#6443F4] px-8 py-3 rounded-xl">
+ <Text className=" font-[Satoshi-Bold]" style={{ color: colors.text.primary }}>Go Back</Text>
  </TouchableOpacity>
  </View>
  );
 
  return (
- <View className="flex-1 bg-bg-primary pt-safe">
+ <View style={{ flex: 1, backgroundColor: colors.bg.primary }} pt-safe">
  <View className="flex-row items-center justify-between px-4 py-3">
- <TouchableOpacity onPress={() => router.back()}><Text className="text-white text-lg">← Back</Text></TouchableOpacity>
- <Text className="text-white/60 text-sm">{currentIndex + 1} / {CARDS.length}</Text>
+ <TouchableOpacity onPress={() => router.back()}><Text className=" text-lg" style={{ color: colors.text.primary }}>← Back</Text></TouchableOpacity>
+ <Text className="/60 text-sm" style={{ color: colors.text.primary }}>{currentIndex + 1} / {CARDS.length}</Text>
  </View>
- <View className="flex-1 mx-4 mb-4 bg-bg-secondary rounded-3xl border border-white/[0.08] overflow-hidden">
+ <View className="flex-1 mx-4 mb-4 bg-[#120824] rounded-3xl border border-white/[0.08] overflow-hidden">
  <View className="flex-1 items-center justify-center p-8">
  <Text className="text-8xl mb-4">{card.avatar}</Text>
- <Text className="text-white text-2xl font-bold mb-1">{card.name}</Text>
- <Text className="text-primary text-lg font-bold mb-2">{card.match}% match</Text>
- <Text className="text-white/60 text-sm mb-4">{card.dna}</Text>
- <Text className="text-white/80 text-center text-base mb-4">{card.bio}</Text>
- <Text className="text-white/40 text-sm">{card.trips} trips completed</Text>
+ <Text className=" text-2xl font-[Satoshi-Bold] mb-1" style={{ color: colors.text.primary }}>{card.name}</Text>
+ <Text className="text-[#6443F4] text-lg font-[Satoshi-Bold] mb-2">{card.match}% match</Text>
+ <Text className="/60 text-sm mb-4" style={{ color: colors.text.primary }}>{card.dna}</Text>
+ <Text className="/80 text-center text-base mb-4" style={{ color: colors.text.primary }}>{card.bio}</Text>
+ <Text className="/40 text-sm" style={{ color: colors.text.primary }}>{card.trips} trips completed</Text>
  </View>
  <View className="flex-row p-6 pt-0">
  <TouchableOpacity onPress={() => handleAction('skip')} className="flex-1 mr-2 bg-white/[0.05] py-4 rounded-2xl items-center">
- <Text className="text-white/60 text-lg">Skip</Text>
+ <Text className="/60 text-lg" style={{ color: colors.text.primary }}>Skip</Text>
  </TouchableOpacity>
- <TouchableOpacity onPress={() => handleAction('connect')} className="flex-1 ml-2 bg-primary py-4 rounded-2xl items-center">
- <Text className="text-white font-bold text-lg">Connect</Text>
+ <TouchableOpacity onPress={() => handleAction('connect')} className="flex-1 ml-2 bg-[#6443F4] py-4 rounded-2xl items-center">
+ <Text className=" font-[Satoshi-Bold] text-lg" style={{ color: colors.text.primary }}>Connect</Text>
  </TouchableOpacity>
  </View>
  </View>

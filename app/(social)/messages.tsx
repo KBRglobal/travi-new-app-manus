@@ -1,9 +1,12 @@
 import { Skeleton } from '@/components/ui/Skeleton';
 import React, { useState } from 'react';
 import { View, Text, FlatList, TouchableOpacity, TextInput } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
+import { ScreenHeader } from '@/components/ui/ScreenHeader';
+import { PressableScale } from '@/components/ui/PressableScale';
 import { useRouter } from 'expo-router';
 import { EmptyState } from '@/components/ui/EmptyState';
-import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
+import { colors, fonts, fontSizes, radius, shadows, typography, spacing, gradients} from '@/constants/theme';
 
 const CONVERSATIONS = [
  { id: '1', name: 'Sarah K.', avatar: 'person', lastMessage: 'See you in Barcelona!', time: '2m', unread: 2, online: true },
@@ -20,11 +23,11 @@ export default function MessagesScreen() {
  const filtered = CONVERSATIONS.filter(c => c.name.toLowerCase().includes(search.toLowerCase()));
 
  return (
- <View className="flex-1 bg-bg-primary pt-safe">
+ <View style={{ flex: 1, backgroundColor: colors.bg.primary }} pt-safe">
  <View className="flex-row items-center justify-between px-4 py-3">
- <TouchableOpacity onPress={() => router.back()}><Text className="text-white text-lg">←</Text></TouchableOpacity>
- <Text className="text-white text-xl font-bold">Messages</Text>
- <TouchableOpacity><Text className="text-primary text-sm">New</Text></TouchableOpacity>
+ <TouchableOpacity onPress={() => router.back()}><Text className=" text-lg" style={{ color: colors.text.primary }}>←</Text></TouchableOpacity>
+ <Text className=" text-xl font-[Satoshi-Bold]" style={{ color: colors.text.primary }}>Messages</Text>
+ <TouchableOpacity><Text className="text-[#6443F4] text-sm">New</Text></TouchableOpacity>
  </View>
  <View className="px-4 mb-3">
  <TextInput className="bg-white/[0.05] rounded-xl px-4 py-3 text-white border border-white/[0.08]" placeholder="Search messages..." placeholderTextColor="rgba(255,255,255,0.3)" value={search} onChangeText={setSearch} />
@@ -34,18 +37,18 @@ export default function MessagesScreen() {
  <TouchableOpacity onPress={() => router.push(`/(social)/chat/${item.id}` as any)} className="flex-row items-center mx-4 mb-1 p-4 rounded-2xl active:bg-white/[0.03]">
  <View className="relative mr-3">
  <Text className="text-3xl">{item.avatar}</Text>
- {item.online && <View className="absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full bg-green-400 border-2 border-bg-primary" />}
+ {item.online && <View className="absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full bg-green-400 border-2 border-bg-[#6443F4]" />}
  </View>
  <View className="flex-1">
  <View className="flex-row items-center justify-between">
- <Text className={`font-bold ${item.unread > 0 ? 'text-white' : 'text-white/80'}`}>{item.name}</Text>
- <Text className="text-white/40 text-xs">{item.time}</Text>
+ <Text className={`font-[Satoshi-Bold] ${item.unread > 0 ? 'text-white' : 'text-white/80'}`}>{item.name}</Text>
+ <Text className="/40 text-xs" style={{ color: colors.text.primary }}>{item.time}</Text>
  </View>
  <Text className={`text-sm mt-0.5 ${item.unread > 0 ? 'text-white/80' : 'text-white/40'}`} numberOfLines={1}>{item.lastMessage}</Text>
  </View>
  {item.unread > 0 && (
- <View className="bg-primary w-5 h-5 rounded-full items-center justify-center ml-2">
- <Text className="text-white text-xs font-bold">{item.unread}</Text>
+ <View className="bg-[#6443F4] w-5 h-5 rounded-full items-center justify-center ml-2">
+ <Text className=" text-xs font-[Satoshi-Bold]" style={{ color: colors.text.primary }}>{item.unread}</Text>
  </View>
  )}
  </TouchableOpacity>

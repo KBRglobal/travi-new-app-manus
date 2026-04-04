@@ -1,5 +1,6 @@
 import { View, Text } from 'react-native';
-import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
+import { LinearGradient } from 'expo-linear-gradient';
+import { colors, fonts, fontSizes, radius, shadows, typography, spacing, gradients} from '@/constants/theme';
 
 // S17 — Wishlist
 export default function WishlistScreen() {

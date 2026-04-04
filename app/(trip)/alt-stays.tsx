@@ -1,10 +1,13 @@
 import { Skeleton } from '@/components/ui/Skeleton';
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, FlatList } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
+import { ScreenHeader } from '@/components/ui/ScreenHeader';
+import { PressableScale } from '@/components/ui/PressableScale';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 import { useRouter } from 'expo-router';
 import { EmptyState } from '@/components/ui/EmptyState';
-import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
+import { colors, fonts, fontSizes, radius, shadows, typography, spacing, gradients} from '@/constants/theme';
 import { CachedImage } from '../../components/ui/CachedImage';
 
 const stays = [
@@ -26,19 +29,19 @@ export default function AltStaysScreen() {
  });
 
  return (
- <View className="flex-1 bg-bg-primary pt-safe">
+ <View style={{ flex: 1, backgroundColor: colors.bg.primary }} pt-safe">
  <View className="px-6 flex-row items-center justify-between mb-4">
- <TouchableOpacity onPress={() => router.back()}><Text className="text-white text-xl">‹ Back</Text></TouchableOpacity>
- <Text className="text-white text-heading-3">Alternative Stays</Text>
+ <TouchableOpacity onPress={() => router.back()}><Text className=" text-xl" style={{ color: colors.text.primary }}>‹ Back</Text></TouchableOpacity>
+ <Text className=" text-[18px]" style={{ color: colors.text.primary }}>Alternative Stays</Text>
  <TouchableOpacity onPress={() => setViewMode(viewMode === 'list' ? 'map' : 'list')}>
- <Text className="text-primary text-body-sm">{viewMode === 'list' ? 'Map' : 'List'}</Text>
+ <Text className="text-[#6443F4] text-[13px]">{viewMode === 'list' ? 'Map' : 'List'}</Text>
  </TouchableOpacity>
  </View>
 
  <View className="flex-row px-6 mb-4">
  {(['all', 'entire', 'private'] as const).map((f) => (
- <TouchableOpacity key={f} className={`mr-2 px-4 py-2 rounded-full border ${filter === f ? 'bg-pink border-pink' : 'border-border'}`} onPress={() => setFilter(f)}>
- <Text className={`text-body-sm ${filter === f ? 'text-white font-semibold' : 'text-text-secondary'}`}>{f === 'all' ? 'All' : f === 'entire' ? 'Entire Place' : 'Private Room'}</Text>
+ <TouchableOpacity key={f} className={`mr-2 px-4 py-2 rounded-full border ${filter === f ? 'bg-pink border-pink' : 'border-[rgba(255,255,255,0.08)]'}`} onPress={() => setFilter(f)}>
+ <Text className={`text-[13px] ${filter === f ? 'text-white font-semibold' : 'text-[rgba(255,255,255,0.6)]'}`}>{f === 'all' ? 'All' : f === 'entire' ? 'Entire Place' : 'Private Room'}</Text>
  </TouchableOpacity>
  ))}
  </View>
@@ -51,20 +54,20 @@ export default function AltStaysScreen() {
  contentContainerClassName="px-6 pb-24"
  renderItem={({ item, index }) => (
  <Animated.View entering={FadeInDown.delay(index * 100)}>
- <TouchableOpacity className="bg-bg-card border border-border rounded-card mb-3 overflow-hidden" onPress={() => router.push(`/(trip)/hotel/${item.id}`)}>
+ <TouchableOpacity className="bg-[#120824] border border-[rgba(255,255,255,0.08)] rounded-[16px] mb-3 overflow-hidden" onPress={() => router.push(`/(trip)/hotel/${item.id}`)}>
  <CachedImage source={{ uri: item.image }} className="w-full h-48" resizeMode="cover" />
  {item.superhost && (
- <View className="absolute top-3 left-3 bg-white px-2 py-1 rounded-full"><Text className="text-bg-primary text-caption font-bold">Superhost</Text></View>
+ <View className="absolute top-3 left-3 bg-white px-2 py-1 rounded-full"><Text className="text-bg-[#6443F4] text-[12px] font-[Satoshi-Bold]">Superhost</Text></View>
  )}
  <View className="p-4">
- <Text className="text-text-muted text-caption">{item.type} · Hosted by {item.host}</Text>
- <Text className="text-white text-body font-semibold mt-1">{item.name}</Text>
+ <Text className="text-[rgba(255,255,255,0.3)] text-[12px]">{item.type} · Hosted by {item.host}</Text>
+ <Text className=" text-[15px] font-semibold mt-1" style={{ color: colors.text.primary }}>{item.name}</Text>
  <View className="flex-row items-center justify-between mt-2">
  <View className="flex-row items-center">
- <Text className="text-primary text-body-sm font-semibold">{item.rating}</Text>
- <Text className="text-text-muted text-caption ml-1">({item.reviews})</Text>
+ <Text className="text-[#6443F4] text-[13px] font-semibold">{item.rating}</Text>
+ <Text className="text-[rgba(255,255,255,0.3)] text-[12px] ml-1">({item.reviews})</Text>
  </View>
- <Text className="text-white text-body font-bold">€{item.price}<Text className="text-text-muted text-caption font-normal">/night</Text></Text>
+ <Text className=" text-[15px] font-[Satoshi-Bold]" style={{ color: colors.text.primary }}>€{item.price}<Text className="text-[rgba(255,255,255,0.3)] text-[12px] font-normal">/night</Text></Text>
  </View>
  </View>
  </TouchableOpacity>
@@ -72,9 +75,9 @@ export default function AltStaysScreen() {
  )}
  />
  ) : (
- <View className="flex-1 bg-bg-secondary items-center justify-center mx-6 rounded-card">
+ <View className="flex-1 bg-[#120824] items-center justify-center mx-6 rounded-[16px]">
  <Ionicons name="map" size={24} color="#FFFFFF" />
- <Text className="text-text-secondary text-body">Map view with stay pins</Text>
+ <Text className="text-[rgba(255,255,255,0.6)] text-[15px]">Map view with stay pins</Text>
  </View>
  )}
  </View>

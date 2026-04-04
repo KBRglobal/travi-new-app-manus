@@ -1,9 +1,12 @@
 import { haptic } from '@/lib/haptics';
 import React from 'react';
 import { View, Text, ScrollView, TouchableOpacity, Linking, FlatList} from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
+import { ScreenHeader } from '@/components/ui/ScreenHeader';
+import { PressableScale } from '@/components/ui/PressableScale';
 import { useRouter } from 'expo-router';
-import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
-import { Ionicons } from '@expo/vector-icons';
+import { colors, fonts, fontSizes, radius, shadows, typography, spacing, gradients} from '@/constants/theme';
+import { MaterialIcons, Ionicons } from '@expo/vector-icons';
 
 const COWORKINGS = [
  { name: 'Hub71 Workspace', price: 15, rating: 4.7, wifi: 95, hours: '08:00-22:00' },
@@ -21,21 +24,21 @@ export default function DigitalNomadHub() {
  const router = useRouter();
 
  return (
- <View className="flex-1 bg-bg-primary">
+ <View style={{ flex: 1, backgroundColor: colors.bg.primary }}">
  <View className="flex-row items-center px-4 pt-12 pb-4">
  <TouchableOpacity onPress={() => router.back()} className="mr-3">
- <Text className="text-white text-lg">‹ Back</Text>
+ <Text className=" text-lg" style={{ color: colors.text.primary }}>‹ Back</Text>
  </TouchableOpacity>
- <Text className="text-white text-xl font-bold flex-1">Digital Nomad Hub</Text>
- <TouchableOpacity><Text className="text-primary">Dubai</Text></TouchableOpacity>
+ <Text className=" text-xl font-[Satoshi-Bold] flex-1" style={{ color: colors.text.primary }}>Digital Nomad Hub</Text>
+ <TouchableOpacity><Text className="text-[#6443F4]">Dubai</Text></TouchableOpacity>
  </View>
 
  <ScrollView className="flex-1 px-4">
- <View className="bg-bg-card rounded-card p-6 mb-4">
- <Text className="text-white text-lg font-bold mb-3">Nomad Score</Text>
+ <View className="bg-[#120824] rounded-[16px] p-6 mb-4">
+ <Text className=" text-lg font-[Satoshi-Bold] mb-3" style={{ color: colors.text.primary }}>Nomad Score</Text>
  <View className="items-center mb-4">
- <Text className="text-primary text-4xl font-bold">8.4</Text>
- <Text className="text-text-secondary">/ 10 — "Great for nomads"</Text>
+ <Text className="text-[#6443F4] text-4xl font-[Satoshi-Bold]">8.4</Text>
+ <Text className="text-[rgba(255,255,255,0.6)]">/ 10 — "Great for nomads"</Text>
  </View>
  {[
  ['Internet', '92 Mbps', ''],
@@ -46,52 +49,52 @@ export default function DigitalNomadHub() {
  ['Safety', '8.1/10', ''],
  ].map(([label, value, icon]) => (
  <View key={label} className="flex-row justify-between py-2" style={{ borderBottomWidth: 1, borderBottomColor: 'rgba(255,255,255,0.05)' }}>
- <Text className="text-text-secondary">{icon} {label}</Text>
- <Text className="text-white font-semibold">{value}</Text>
+ <Text className="text-[rgba(255,255,255,0.6)]">{icon} {label}</Text>
+ <Text className=" font-semibold" style={{ color: colors.text.primary }}>{value}</Text>
  </View>
  ))}
  </View>
 
- <Text className="text-white font-bold text-lg mb-3">Coworking Spaces</Text>
+ <Text className=" font-[Satoshi-Bold] text-lg mb-3" style={{ color: colors.text.primary }}>Coworking Spaces</Text>
  {COWORKINGS.map(cw => (
- <TouchableOpacity onPress={() => {}} key={cw.name} className="bg-bg-card rounded-card p-4 mb-2 flex-row justify-between items-center">
+ <TouchableOpacity onPress={() => {}} key={cw.name} className="bg-[#120824] rounded-[16px] p-4 mb-2 flex-row justify-between items-center">
  <View>
- <Text className="text-white font-bold">{cw.name}</Text>
- <Text className="text-text-muted text-sm">{cw.rating} · WiFi: {cw.wifi}mbps</Text>
- <Text className="text-text-muted text-sm">Open {cw.hours}</Text>
+ <Text className=" font-[Satoshi-Bold]" style={{ color: colors.text.primary }}>{cw.name}</Text>
+ <Text className="text-[rgba(255,255,255,0.3)] text-sm">{cw.rating} · WiFi: {cw.wifi}mbps</Text>
+ <Text className="text-[rgba(255,255,255,0.3)] text-sm">Open {cw.hours}</Text>
  </View>
  <View className="items-end">
- <Text className="text-primary font-bold">€{cw.price}/day</Text>
- <TouchableOpacity onPress={() => {}} className="bg-primary/20 px-3 py-1 rounded-pill mt-1">
- <Text className="text-primary text-sm">Book →</Text>
+ <Text className="text-[#6443F4] font-[Satoshi-Bold]">€{cw.price}/day</Text>
+ <TouchableOpacity onPress={() => {}} className="bg-[#6443F4]/20 px-3 py-1 rounded-full mt-1">
+ <Text className="text-[#6443F4] text-sm">Book →</Text>
  </TouchableOpacity>
  </View>
  </TouchableOpacity>
  ))}
 
- <Text className="text-white font-bold text-lg mt-4 mb-3">Communities</Text>
+ <Text className=" font-[Satoshi-Bold] text-lg mt-4 mb-3" style={{ color: colors.text.primary }}>Communities</Text>
  {COMMUNITIES.map(c => (
- <TouchableOpacity key={c.name} onPress={() => Linking.openURL('https://example.com')} className="bg-bg-card rounded-card p-4 mb-2 flex-row justify-between items-center">
+ <TouchableOpacity key={c.name} onPress={() => Linking.openURL('https://example.com')} className="bg-[#120824] rounded-[16px] p-4 mb-2 flex-row justify-between items-center">
  <View>
- <Text className="text-white font-semibold">{c.name}</Text>
- <Text className="text-text-muted text-sm">{c.platform} · {c.members} members</Text>
+ <Text className=" font-semibold" style={{ color: colors.text.primary }}>{c.name}</Text>
+ <Text className="text-[rgba(255,255,255,0.3)] text-sm">{c.platform} · {c.members} members</Text>
  </View>
- <Text className="text-primary font-semibold">Join →</Text>
+ <Text className="text-[#6443F4] font-semibold">Join →</Text>
  </TouchableOpacity>
  ))}
 
- <Text className="text-white font-bold text-lg mt-4 mb-3">Cost Breakdown</Text>
- <View className="bg-bg-card rounded-card p-4 mb-4">
+ <Text className=" font-[Satoshi-Bold] text-lg mt-4 mb-3" style={{ color: colors.text.primary }}>Cost Breakdown</Text>
+ <View className="bg-[#120824] rounded-[16px] p-4 mb-4">
  {[['Coffee', '€2'], ['Lunch', '€8'], ['Coworking/day', '€15'], ['Apartment/month', '€1,200']].map(([item, price]) => (
  <View key={item} className="flex-row justify-between py-2" style={{ borderBottomWidth: 1, borderBottomColor: 'rgba(255,255,255,0.05)' }}>
- <Text className="text-text-secondary">{item}</Text>
- <Text className="text-white font-semibold">{price}</Text>
+ <Text className="text-[rgba(255,255,255,0.6)]">{item}</Text>
+ <Text className=" font-semibold" style={{ color: colors.text.primary }}>{price}</Text>
  </View>
  ))}
  </View>
 
- <TouchableOpacity onPress={() => {}} className="bg-primary rounded-button py-3 items-center mb-8">
- <Text className="text-white font-semibold">Find Remote Jobs →</Text>
+ <TouchableOpacity onPress={() => {}} className="bg-[#6443F4] rounded-[12px] py-3 items-center mb-8">
+ <Text className=" font-semibold" style={{ color: colors.text.primary }}>Find Remote Jobs →</Text>
  </TouchableOpacity>
  </ScrollView>
  </View>

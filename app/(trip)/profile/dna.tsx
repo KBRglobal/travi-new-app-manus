@@ -1,8 +1,11 @@
 import { haptic } from '@/lib/haptics';
 import React from 'react';
 import { View, Text, ScrollView, TouchableOpacity, FlatList} from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
+import { ScreenHeader } from '@/components/ui/ScreenHeader';
+import { PressableScale } from '@/components/ui/PressableScale';
 import { useRouter } from 'expo-router';
-import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
+import { colors, fonts, fontSizes, radius, shadows, typography, spacing, gradients} from '@/constants/theme';
 
 const DNA_TRAITS = [
   { trait: 'Adventure', score: 85, iconName: 'fitness', color: 'bg-orange-500' },
@@ -19,29 +22,29 @@ export default function DNAProfileScreen() {
   const router = useRouter();
 
   return (
-    <ScrollView className="flex-1 bg-bg-primary pt-safe">
+    <ScrollView style={{ flex: 1, backgroundColor: colors.bg.primary }} pt-safe">
       <View className="flex-row items-center justify-between px-4 py-3">
-        <TouchableOpacity onPress={() => router.back()}><Text className="text-white text-lg">←</Text></TouchableOpacity>
-        <Text className="text-white text-xl font-bold">My Travel DNA</Text>
-        <TouchableOpacity onPress={() => router.push('/(auth)/dna-quiz')}><Text className="text-primary text-sm">Retake</Text></TouchableOpacity>
+        <TouchableOpacity onPress={() => router.back()}><Text className=" text-lg" style={{ color: colors.text.primary }}>←</Text></TouchableOpacity>
+        <Text className=" text-xl font-[Satoshi-Bold]" style={{ color: colors.text.primary }}>My Travel DNA</Text>
+        <TouchableOpacity onPress={() => router.push('/(auth)/dna-quiz')}><Text className="text-[#6443F4] text-sm">Retake</Text></TouchableOpacity>
       </View>
       <View className="items-center py-8">
-        <View className="w-32 h-32 rounded-full bg-primary/20 items-center justify-center mb-4">
+        <View className="w-32 h-32 rounded-full bg-[#6443F4]/20 items-center justify-center mb-4">
           <Ionicons name="flask" size={24} color="#FFFFFF" />
         </View>
-        <Text className="text-white text-xl font-bold">Adventurous Foodie</Text>
-        <Text className="text-white/60 text-sm mt-1">Your travel personality type</Text>
+        <Text className=" text-xl font-[Satoshi-Bold]" style={{ color: colors.text.primary }}>Adventurous Foodie</Text>
+        <Text className="/60 text-sm mt-1" style={{ color: colors.text.primary }}>Your travel personality type</Text>
       </View>
       <View className="mx-4 mb-6">
-        <Text className="text-white font-bold text-lg mb-4">DNA Breakdown</Text>
+        <Text className=" font-[Satoshi-Bold] text-lg mb-4" style={{ color: colors.text.primary }}>DNA Breakdown</Text>
         {DNA_TRAITS.map(item => (
           <View key={item.trait} className="mb-4">
             <View className="flex-row items-center justify-between mb-2">
               <View className="flex-row items-center">
                 <Text className="text-xl mr-2">{item.emoji}</Text>
-                <Text className="text-white font-bold">{item.trait}</Text>
+                <Text className=" font-[Satoshi-Bold]" style={{ color: colors.text.primary }}>{item.trait}</Text>
               </View>
-              <Text className="text-primary font-bold">{item.score}%</Text>
+              <Text className="text-[#6443F4] font-[Satoshi-Bold]">{item.score}%</Text>
             </View>
             <View className="h-2 bg-white/[0.05] rounded-full overflow-hidden">
               <View className={`h-full rounded-full ${item.color}`} style={{ width: `${item.score}%` }} />
@@ -49,9 +52,9 @@ export default function DNAProfileScreen() {
           </View>
         ))}
       </View>
-      <View className="mx-4 mb-8 p-4 bg-bg-secondary rounded-2xl border border-white/[0.08]">
-        <Text className="text-white font-bold mb-2">Top Destinations For You</Text>
-        <Text className="text-white/60 text-sm">Based on your DNA, you'd love: 🇯🇵 Japan, 🇮🇹 Italy, 🇹🇭 Thailand</Text>
+      <View className="mx-4 mb-8 p-4 bg-[#120824] rounded-2xl border border-white/[0.08]">
+        <Text className=" font-[Satoshi-Bold] mb-2" style={{ color: colors.text.primary }}>Top Destinations For You</Text>
+        <Text className="/60 text-sm" style={{ color: colors.text.primary }}>Based on your DNA, you'd love: 🇯🇵 Japan, 🇮🇹 Italy, 🇹🇭 Thailand</Text>
       </View>
     </ScrollView>
   );

@@ -1,9 +1,12 @@
 import { haptic } from '@/lib/haptics';
 import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
+import { ScreenHeader } from '@/components/ui/ScreenHeader';
+import { PressableScale } from '@/components/ui/PressableScale';
 import { useRouter } from 'expo-router';
-import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
-import { Ionicons } from '@expo/vector-icons';
+import { colors, fonts, fontSizes, radius, shadows, typography, spacing, gradients} from '@/constants/theme';
+import { MaterialIcons, Ionicons } from '@expo/vector-icons';
 
 export default function ShareTripModal() {
  const router = useRouter();
@@ -18,24 +21,24 @@ export default function ShareTripModal() {
  ];
 
  return (
- <View className="flex-1 bg-bg-primary pt-safe px-4">
+ <View style={{ flex: 1, backgroundColor: colors.bg.primary }} pt-safe px-4">
  <View className="flex-row items-center justify-between py-3 mb-4">
- <TouchableOpacity onPress={() => router.back()}><Text className="text-white/60">Cancel</Text></TouchableOpacity>
- <Text className="text-white text-xl font-bold">Share Trip</Text>
+ <TouchableOpacity onPress={() => router.back()}><Text className="/60" style={{ color: colors.text.primary }}>Cancel</Text></TouchableOpacity>
+ <Text className=" text-xl font-[Satoshi-Bold]" style={{ color: colors.text.primary }}>Share Trip</Text>
  <View className="w-12" />
  </View>
- <View className="bg-bg-secondary rounded-2xl p-4 mb-6 border border-white/[0.08]">
- <Text className="text-white font-bold text-lg">🇯🇵 Tokyo Adventure</Text>
- <Text className="text-white/40 text-sm">Apr 15 - 22, 2026 • 7 days</Text>
+ <View className="bg-[#120824] rounded-2xl p-4 mb-6 border border-white/[0.08]">
+ <Text className=" font-[Satoshi-Bold] text-lg" style={{ color: colors.text.primary }}>🇯🇵 Tokyo Adventure</Text>
+ <Text className="/40 text-sm" style={{ color: colors.text.primary }}>Apr 15 - 22, 2026 • 7 days</Text>
  </View>
  {shareOptions.map(opt => (
- <TouchableOpacity key={opt.name} onPress={() => router.back()} className="flex-row items-center p-4 mb-2 bg-bg-secondary rounded-2xl border border-white/[0.08]">
+ <TouchableOpacity key={opt.name} onPress={() => router.back()} className="flex-row items-center p-4 mb-2 bg-[#120824] rounded-2xl border border-white/[0.08]">
  <Text className="text-2xl mr-3">{opt.emoji}</Text>
  <View className="flex-1">
- <Text className="text-white font-bold">{opt.name}</Text>
- <Text className="text-white/40 text-xs">{opt.desc}</Text>
+ <Text className=" font-[Satoshi-Bold]" style={{ color: colors.text.primary }}>{opt.name}</Text>
+ <Text className="/40 text-xs" style={{ color: colors.text.primary }}>{opt.desc}</Text>
  </View>
- <Text className="text-white/20">›</Text>
+ <Text className="/20" style={{ color: colors.text.primary }}>›</Text>
  </TouchableOpacity>
  ))}
  </View>

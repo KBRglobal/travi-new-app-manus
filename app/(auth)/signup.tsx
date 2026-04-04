@@ -1,8 +1,10 @@
 import { haptic } from '@/lib/haptics';
 import { useState } from 'react';
 import { View, Text, TextInput, Pressable, ScrollView, KeyboardAvoidingView, Platform } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
+import { ScreenHeader } from '@/components/ui/ScreenHeader';
 import { useRouter, useLocalSearchParams } from 'expo-router';
-import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
+import { colors, fonts, fontSizes, radius, shadows, typography, spacing, gradients} from '@/constants/theme';
 
 // S3 — Sign Up / Login
 export default function SignupScreen() {
@@ -30,7 +32,7 @@ export default function SignupScreen() {
  return (
  <KeyboardAvoidingView
  behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
- className="flex-1 bg-bg-primary"
+ style={{ flex: 1, backgroundColor: colors.bg.primary }}"
  >
  <ScrollView
  keyboardShouldPersistTaps="handled"
@@ -39,9 +41,9 @@ export default function SignupScreen() {
  {/* Header */}
  <View className="flex-row items-center mt-4">
  <Pressable onPress={() => router.back()} className="p-2 -ml-2">
- <Text className="text-white text-2xl">‹</Text>
+ <Text className=" text-2xl" style={{ color: colors.text.primary }}>‹</Text>
  </Pressable>
- <Text className="text-white text-xl md:text-2xl font-bold ml-3">
+ <Text className=" text-xl md:text-2xl font-[Satoshi-Bold] ml-3" style={{ color: colors.text.primary }}>
  {mode === 'create' ? 'Create Account' : 'Sign In'}
  </Text>
  </View>
@@ -73,7 +75,7 @@ export default function SignupScreen() {
  onPress={() => setShowPassword(!showPassword)}
  className="absolute right-4 top-3.5"
  >
- <Text className="text-text-secondary">{showPassword ? '' : ''}</Text>
+ <Text className="text-[rgba(255,255,255,0.6)]">{showPassword ? '' : ''}</Text>
  </Pressable>
  </View>
 
@@ -92,10 +94,10 @@ export default function SignupScreen() {
  {/* Terms (create mode) */}
  {mode === 'create' && (
  <Pressable onPress={() => setAgreed(!agreed)} className="flex-row items-center mb-6">
- <View className={`w-5 h-5 rounded border mr-3 items-center justify-center ${agreed ? 'bg-primary border-primary' : 'border-white/20'}`}>
+ <View className={`w-5 h-5 rounded border mr-3 items-center justify-center ${agreed ? 'bg-[#6443F4] border-[#6443F4]' : 'border-white/20'}`}>
  {agreed && <Ionicons name="checkmark" size={24} color="#FFFFFF" />}
  </View>
- <Text className="text-text-secondary text-sm flex-1">
+ <Text className="text-[rgba(255,255,255,0.6)] text-sm flex-1">
  I agree to the Terms of Service and Privacy Policy
  </Text>
  </Pressable>
@@ -104,7 +106,7 @@ export default function SignupScreen() {
  {/* Forgot Password (login mode) */}
  {mode === 'login' && (
  <Pressable onPress={() => {}} className="mb-6">
- <Text className="text-primary text-sm">Forgot Password?</Text>
+ <Text className="text-[#6443F4] text-sm">Forgot Password?</Text>
  </Pressable>
  )}
 
@@ -112,9 +114,9 @@ export default function SignupScreen() {
  <Pressable
  onPress={handleSubmit}
  disabled={!isValid}
- className={`w-full md:w-auto md:px-8 h-14 rounded-button items-center justify-center ${isValid ? 'bg-primary active:opacity-80' : 'bg-primary opacity-40'}`}
+ className={`w-full md:w-auto md:px-8 h-14 rounded-[12px] items-center justify-center ${isValid ? 'bg-[#6443F4] active:opacity-80' : 'bg-[#6443F4] opacity-40'}`}
  >
- <Text className="text-white text-base md:text-lg font-semibold">
+ <Text className=" text-base md:text-lg font-semibold" style={{ color: colors.text.primary }}>
  {mode === 'create' ? 'Create Account' : 'Sign In'}
  </Text>
  </Pressable>
@@ -122,21 +124,21 @@ export default function SignupScreen() {
  {/* Divider */}
  <View className="flex-row items-center my-6">
  <View className="flex-1 h-px bg-white/10" />
- <Text className="text-text-muted text-sm mx-4">or</Text>
+ <Text className="text-[rgba(255,255,255,0.3)] text-sm mx-4">or</Text>
  <View className="flex-1 h-px bg-white/10" />
  </View>
 
  {/* OAuth */}
- <Pressable onPress={() => {}} className="w-full h-13 bg-white rounded-button items-center justify-center flex-row mb-3">
+ <Pressable onPress={() => {}} className="w-full h-13 bg-white rounded-[12px] items-center justify-center flex-row mb-3">
  <Text className="text-black text-base font-semibold">Google</Text>
  </Pressable>
- <Pressable onPress={() => {}} className="w-full h-13 bg-white rounded-button items-center justify-center flex-row mb-6">
+ <Pressable onPress={() => {}} className="w-full h-13 bg-white rounded-[12px] items-center justify-center flex-row mb-6">
  <Text className="text-black text-base font-semibold">Apple</Text>
  </Pressable>
 
  {/* Switch mode */}
  <Pressable onPress={() => setMode(mode === 'create' ? 'login' : 'create')} className="items-center py-3">
- <Text className="text-text-secondary text-sm">
+ <Text className="text-[rgba(255,255,255,0.6)] text-sm">
  {mode === 'create' ? 'Already have an account? Sign In' : "Don't have an account? Create one"}
  </Text>
  </Pressable>
