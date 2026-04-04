@@ -225,3 +225,8 @@
 - [x] Card 2: Globe/Route Arc — SVG globe lines + flight arc + DNA stats footer
 - [x] Card 3: Typographic Split — white left "WHERE TO?" + dark right with rotating IATA codes
 - [x] Navigation between all 3 designs
+
+### Home Dashboard — Complete Redesign (User: "messy, not compelling")
+- [x] Study top travel apps (Hopper, Kiwi, KAYAK) for clean home screen patterns
+- [x] Rebuild Home Dashboard from scratch — minimal, cinematic, action-driving
+- [x] Remove variant selector clutter
