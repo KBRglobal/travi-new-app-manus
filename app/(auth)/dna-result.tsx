@@ -19,15 +19,12 @@ const dimensions = [
 
 function DNABar({ dimension, index }: { dimension: typeof dimensions[0]; index: number }) {
   const barWidth = useSharedValue(0);
-
   useEffect(() => {
     barWidth.value = withDelay(index * 100, withSpring(dimension.value * 100, { damping: 15 }));
   }, []);
-
   const barStyle = useAnimatedStyle(() => ({
     width: `${barWidth.value}%`,
   }));
-
   return (
     <View className="mb-4">
       <View className="flex-row justify-between mb-1">
@@ -51,7 +48,6 @@ export default function DNAResultScreen() {
   }, []);
 
   const titleStyle = useAnimatedStyle(() => ({ opacity: titleOpacity.value }));
-
   const topDimensions = [...dimensions].sort((a, b) => b.value - a.value).slice(0, 3);
 
   return (
@@ -78,6 +74,7 @@ export default function DNAResultScreen() {
       <TouchableOpacity
         className="bg-primary py-4 rounded-button items-center"
         onPress={() => {
+          haptic.success();
           setHasCompletedDNA(true);
           router.replace('/(tabs)/home');
         }}

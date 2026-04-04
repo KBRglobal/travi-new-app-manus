@@ -5,18 +5,17 @@
  * Includes haptic feedback on pull and simulated data refresh.
  * 
  * Usage:
- *   const { refreshing, onRefresh, refreshProps } = useRefresh(fetchData);
- *   <FlatList {...refreshProps} />
+ *   const { refreshing, onRefresh } = useRefresh(fetchData);
+ *   <FlatList refreshing={refreshing} onRefresh={onRefresh} />
  */
 
 import { useState, useCallback } from 'react';
-import { RefreshControl } from 'react-native';
 import { haptic } from '@/lib/haptics';
 
 export function useRefresh(
   onRefreshFn?: () => Promise<void>,
   options?: {
-    minDuration?: number; // Minimum refresh duration (ms) for UX feel
+    minDuration?: number;
     hapticOnPull?: boolean;
   }
 ) {
@@ -28,7 +27,6 @@ export function useRefresh(
     setRefreshing(true);
 
     try {
-      // Run actual refresh + minimum duration in parallel
       await Promise.all([
         onRefreshFn?.(),
         new Promise((r) => setTimeout(r, minDuration)),
@@ -40,20 +38,5 @@ export function useRefresh(
     }
   }, [onRefreshFn, minDuration, hapticOnPull]);
 
-  // Ready-to-spread props for FlatList/ScrollView
-  const refreshProps = {
-    refreshing,
-    onRefresh,
-    refreshControl: (
-      <RefreshControl
-        refreshing={refreshing}
-        onRefresh={onRefresh}
-        tintColor="rgba(255,255,255,0.6)"
-        colors={['#7C3AED']}
-        progressBackgroundColor="#1A0B32"
-      />
-    ),
-  };
-
-  return { refreshing, onRefresh, refreshProps };
+  return { refreshing, onRefresh };
 }

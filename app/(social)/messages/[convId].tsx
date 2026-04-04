@@ -20,8 +20,7 @@ export default function ChatScreen() {
   const { convId } = useLocalSearchParams();
   const [messages, setMessages] = useState(MESSAGES);
   const [text, setText] = useState('');
-  const flatListRef = useRef<FlatList
-            ListEmptyComponent={() => <EmptyState emoji="💬" title="No messages yet" description="Send the first message!" />}>(null);
+  const flatListRef = useRef<FlatList>(null);
 
   const sendMessage = () => {
     if (!text.trim()) return;

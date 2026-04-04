@@ -7,12 +7,6 @@
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "dark",
     "scheme": "travi",
-    "runtimeVersion": {
-      "policy": "appVersion"
-    },
-    "updates": {
-      "url": "https://u.expo.dev/86764fa4-f420-46ab-869a-5bbefcec9a42"
-    },
     "splash": {
       "backgroundColor": "#0A0514"
     },
@@ -30,8 +24,7 @@
       "expo-router",
       "expo-asset",
       "expo-font",
-      "expo-secure-store",
-      "expo-updates"
+      "expo-secure-store"
     ],
     "extra": {
       "eas": {

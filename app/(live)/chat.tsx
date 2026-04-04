@@ -14,8 +14,7 @@ export default function AIChatScreen() {
   const router = useRouter();
   const [messages, setMessages] = useState<Message[]>(chatMessages as Message[]);
   const [input, setInput] = useState('');
-  const flatListRef = useRef<FlatList
-            ListEmptyComponent={() => <EmptyState emoji="💬" title="No messages yet" description="Start chatting with your AI travel assistant." />}>(null);
+  const flatListRef = useRef<FlatList>(null);
 
   const sendMessage = () => {
     if (!input.trim()) return;
