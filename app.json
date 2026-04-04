@@ -24,7 +24,9 @@
       "expo-router",
       "expo-asset",
       "expo-font",
-      "expo-secure-store"
+      "expo-secure-store",
+      "@sentry/react-native",
+      "@stripe/stripe-react-native"
     ],
     "extra": {
       "eas": {
