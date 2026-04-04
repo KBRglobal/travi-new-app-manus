@@ -17,20 +17,20 @@ const ConnectFlow = () => {
         <Text style={styles.subtitle}>Find your friends on TRAVI to share your travel experiences!</Text>
 
         <BlurView intensity={20} tint="dark" style={styles.card}>
-          <TouchableOpacity style={styles.button} onPress={() => {}}>
+          <TouchableOpacity style={styles.button} onPress={() => router.push('/(social)/discover' as any)}>
             <MaterialIcons name="photo-camera" size={24} color={DS.white} />
             <Text style={styles.buttonText}>Connect Instagram</Text>
           </TouchableOpacity>
         </BlurView>
 
         <BlurView intensity={20} tint="dark" style={styles.card}>
-          <TouchableOpacity style={styles.button} onPress={() => {}}>
+          <TouchableOpacity style={styles.button} onPress={() => router.push('/(social)/discover' as any)}>
             <MaterialIcons name="facebook" size={24} color={DS.white} />
             <Text style={styles.buttonText}>Connect Facebook</Text>
           </TouchableOpacity>
         </BlurView>
 
-        <TouchableOpacity onPress={() => {}} style={styles.skipButton}>
+        <TouchableOpacity onPress={() => router.back()} style={styles.skipButton}>
           <Text style={styles.skipButtonText}>Skip for now</Text>
         </TouchableOpacity>
       </View>

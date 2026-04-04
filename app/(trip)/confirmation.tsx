@@ -42,7 +42,7 @@ const ConfirmationScreen = () => {
           </LinearGradient>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.secondaryButton}>
+        <TouchableOpacity style={styles.secondaryButton} onPress={() => router.replace('/(tabs)/index' as any)}>
           <Text style={styles.secondaryButtonText}>Back to Home</Text>
         </TouchableOpacity>
       </View>

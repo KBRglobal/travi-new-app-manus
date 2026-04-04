@@ -77,7 +77,7 @@ export default function SocialSettingsScreen() {
       {/* Blocked Users */}
       <Text style={s.sectionTitle}>Account</Text>
       <BlurView intensity={15} tint="dark" style={s.group}>
-        <TouchableOpacity style={s.row} activeOpacity={0.75}>
+        <TouchableOpacity style={s.row} activeOpacity={0.75} onPress={() => router.push('/(settings)/privacy-security' as any)}>
           <View style={s.rowInfo}>
             <Text style={s.rowLabel}>Blocked Travelers</Text>
             <Text style={s.rowSub}>Manage who you've blocked</Text>
@@ -85,7 +85,7 @@ export default function SocialSettingsScreen() {
           <MaterialIcons name="chevron-right" size={20} color={DS.muted} />
         </TouchableOpacity>
         <View style={s.divider} />
-        <TouchableOpacity style={s.row} activeOpacity={0.75}>
+        <TouchableOpacity style={s.row} activeOpacity={0.75} onPress={() => router.push('/(settings)/privacy-security' as any)}>
           <View style={s.rowInfo}>
             <Text style={s.rowLabel}>Connected Accounts</Text>
             <Text style={s.rowSub}>Instagram, Facebook</Text>
@@ -93,7 +93,7 @@ export default function SocialSettingsScreen() {
           <MaterialIcons name="chevron-right" size={20} color={DS.muted} />
         </TouchableOpacity>
         <View style={s.divider} />
-        <TouchableOpacity style={[s.row, s.dangerRow]} activeOpacity={0.75}>
+        <TouchableOpacity style={[s.row, s.dangerRow]} activeOpacity={0.75} onPress={() => router.push('/(special)/delete-account' as any)}>
           <View style={s.rowInfo}>
             <Text style={[s.rowLabel, s.dangerText]}>Deactivate Social Profile</Text>
             <Text style={s.rowSub}>Hide your profile from all travelers</Text>

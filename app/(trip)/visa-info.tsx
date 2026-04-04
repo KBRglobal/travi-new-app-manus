@@ -36,7 +36,7 @@ const VisaInfoScreen = () => {
                 <Text style={styles.cardLabel}>{visa.type}</Text>
                 <Text style={styles.cardBody}>Duration: {visa.duration}</Text>
               </View>
-              <TouchableOpacity style={styles.detailsButton}>
+              <TouchableOpacity style={styles.detailsButton} onPress={() => router.push('/(trip)/ai-chat' as any)}>
                 <LinearGradient
                   colors={[DS.purple, DS.pink] as const}
                   start={{ x: 0, y: 0 }}

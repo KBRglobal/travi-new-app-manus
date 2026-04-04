@@ -34,12 +34,12 @@ export default function WalletExchangeScreen() {
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Exchange Options</Text>
         <BlurView intensity={20} tint="dark" style={styles.glassCard}>
-          <TouchableOpacity style={styles.optionButton}>
+          <TouchableOpacity style={styles.optionButton} onPress={() => router.push('/(tabs)/wallet' as any)}>
             <MaterialIcons name="account-balance-wallet" size={20} color={DS.white} />
             <Text style={styles.optionButtonText}>Exchange to EUR</Text>
             <MaterialIcons name="chevron-right" size={20} color={DS.muted} />
           </TouchableOpacity>
-          <TouchableOpacity style={styles.optionButton}>
+          <TouchableOpacity style={styles.optionButton} onPress={() => router.push('/(tabs)/wallet' as any)}>
             <MaterialIcons name="attach-money" size={20} color={DS.white} />
             <Text style={styles.optionButtonText}>Exchange to GBP</Text>
             <MaterialIcons name="chevron-right" size={20} color={DS.muted} />

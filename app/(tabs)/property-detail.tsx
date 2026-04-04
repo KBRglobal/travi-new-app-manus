@@ -75,7 +75,7 @@ const PropertyDetailScreen = () => {
         </BlurView>
 
         {/* Call to Action Button */}
-        <TouchableOpacity style={styles.ctaButtonContainer}>
+        <TouchableOpacity style={styles.ctaButtonContainer} onPress={() => router.push('/(trip)/checkout-payment' as any)}>
           <LinearGradient
             colors={[DS.purple, DS.pink] as const}
             start={{ x: 0, y: 0 }}

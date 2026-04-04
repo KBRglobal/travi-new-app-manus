@@ -56,7 +56,7 @@ export default function EventsScreen() {
               </LinearGradient>
             )}
           </View>
-          <TouchableOpacity style={styles.button}>
+          <TouchableOpacity style={styles.button} onPress={() => router.push('/(tabs)/explore' as any)}>
             <LinearGradient colors={[DS.purple, DS.pink] as const} style={styles.buttonGradient}>
               <Text style={styles.buttonText}>View Details</Text>
               <MaterialIcons name="arrow-forward" size={20} color={DS.white} style={styles.buttonIcon} />

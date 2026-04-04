@@ -44,7 +44,7 @@ const DestinationMapScreen = () => {
               <Text style={styles.destinationName}>{destination.name}</Text>
               <Text style={styles.destinationDistance}>{destination.distance}</Text>
             </View>
-            <TouchableOpacity style={styles.navigateButton}>
+            <TouchableOpacity style={styles.navigateButton} onPress={() => {}}>
               <LinearGradient
                 colors={[DS.purple, DS.pink] as const}
                 start={{ x: 0, y: 0 }}
@@ -58,7 +58,7 @@ const DestinationMapScreen = () => {
         ))}
       </View>
 
-      <TouchableOpacity style={styles.viewAllButton}>
+      <TouchableOpacity style={styles.viewAllButton} onPress={() => router.push('/(live)/map' as any)}>
         <LinearGradient
           colors={[DS.purple, DS.pink] as const}
           start={{ x: 0, y: 0 }}

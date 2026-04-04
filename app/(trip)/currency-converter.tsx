@@ -57,7 +57,7 @@ const CurrencyConverterScreen = () => {
         <View style={styles.currencySelectionContainer}>
           <BlurView intensity={20} tint="dark" style={styles.card}>
             <Text style={styles.label}>From</Text>
-            <TouchableOpacity style={styles.currencyPicker}>
+            <TouchableOpacity style={styles.currencyPicker} onPress={() => {}}>
               <Text style={styles.currencyText}>{fromCurrency.code}</Text>
               <MaterialIcons name="arrow-drop-down" size={24} color={DS.white} />
             </TouchableOpacity>
@@ -69,7 +69,7 @@ const CurrencyConverterScreen = () => {
 
           <BlurView intensity={20} tint="dark" style={styles.card}>
             <Text style={styles.label}>To</Text>
-            <TouchableOpacity style={styles.currencyPicker}>
+            <TouchableOpacity style={styles.currencyPicker} onPress={() => {}}>
               <Text style={styles.currencyText}>{toCurrency.code}</Text>
               <MaterialIcons name="arrow-drop-down" size={24} color={DS.white} />
             </TouchableOpacity>

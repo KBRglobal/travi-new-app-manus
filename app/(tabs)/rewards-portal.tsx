@@ -32,7 +32,7 @@ const RewardsPortalScreen = () => {
                 <Text style={styles.cardDescription}>{reward.description}</Text>
               </View>
             </View>
-            <TouchableOpacity style={styles.redeemButton}>
+            <TouchableOpacity style={styles.redeemButton} onPress={() => router.push('/(points)/redeem' as any)}>
               <LinearGradient
                 colors={[DS.purple, DS.pink] as const}
                 start={{ x: 0, y: 0 }}

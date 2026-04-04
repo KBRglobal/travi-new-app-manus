@@ -44,7 +44,7 @@ const RealEstateGuideScreen = () => {
             <View style={styles.cardContent}>
               <Text style={styles.cardTitle}>{item.title}</Text>
               <Text style={styles.cardDescription}>{item.description}</Text>
-              <TouchableOpacity style={styles.readMoreButton}>
+              <TouchableOpacity style={styles.readMoreButton} onPress={() => router.push('/(tabs)/property-detail' as any)}>
                 <LinearGradient
                   colors={[DS.purple, DS.pink] as const}
                   start={{ x: 0, y: 0 }}

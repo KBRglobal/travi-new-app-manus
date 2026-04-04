@@ -25,7 +25,7 @@ export default function SharedWishlistScreen() {
   return (
     <ScreenWrapper title="Shared Wishlist" scrollable
       headerRight={
-        <TouchableOpacity style={s.addBtn}>
+        <TouchableOpacity style={s.addBtn} onPress={() => {}}>
           <MaterialIcons name="add" size={20} color={DS.purple} />
         </TouchableOpacity>
       }

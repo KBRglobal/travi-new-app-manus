@@ -62,7 +62,7 @@ const CheckoutScreen = () => {
             <Text style={styles.label}>Expiry:</Text>
             <Text style={styles.body}>{paymentDetails.expiry}</Text>
           </View>
-          <TouchableOpacity style={styles.changeButton}>
+          <TouchableOpacity style={styles.changeButton} onPress={() => router.push('/(trip)/payment-modal' as any)}>
             <Text style={styles.changeButtonText}>Change Payment Method</Text>
             <MaterialIcons name="arrow-forward-ios" size={16} color={DS.purple} />
           </TouchableOpacity>

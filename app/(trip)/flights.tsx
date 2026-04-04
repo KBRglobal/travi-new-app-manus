@@ -20,7 +20,7 @@ const FlightsScreen = () => {
             </View>
             <MaterialIcons name="flight-takeoff" size={24} color={DS.purple} />
           </View>
-          <TouchableOpacity style={styles.cardButton}>
+          <TouchableOpacity style={styles.cardButton} onPress={() => router.push('/(trip)/ai-chat' as any)}>
             <Text style={styles.cardButtonText}>View Details</Text>
           </TouchableOpacity>
         </BlurView>
@@ -33,7 +33,7 @@ const FlightsScreen = () => {
             </View>
             <MaterialIcons name="flight-land" size={24} color={DS.pink} />
           </View>
-          <TouchableOpacity style={styles.cardButton}>
+          <TouchableOpacity style={styles.cardButton} onPress={() => router.push('/(trip)/ai-chat' as any)}>
             <Text style={styles.cardButtonText}>View Details</Text>
           </TouchableOpacity>
         </BlurView>

@@ -149,13 +149,13 @@ function MockMap({ destination }: { destination: string }) {
 
         {/* Map controls */}
         <View style={styles.mapControls}>
-          <TouchableOpacity style={styles.mapControlBtn}>
+          <TouchableOpacity style={styles.mapControlBtn} onPress={() => {}}>
             <Text style={styles.mapControlText}>+</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.mapControlBtn}>
+          <TouchableOpacity style={styles.mapControlBtn} onPress={() => {}}>
             <Text style={styles.mapControlText}>−</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.mapControlBtn}>
+          <TouchableOpacity style={styles.mapControlBtn} onPress={() => {}}>
             <IconSymbol name="location.north.fill" size={16} color="#6443F4" />
           </TouchableOpacity>
         </View>
@@ -188,7 +188,7 @@ export default function MapScreen() {
             <Text style={styles.headerSub}> {activeTrip?.destination || "Your Location"}</Text>
           </View>
         </View>
-        <TouchableOpacity style={styles.searchBtn}>
+        <TouchableOpacity style={styles.searchBtn} onPress={() => router.push('/(tabs)/search' as any)}>
           <IconSymbol name="magnifyingglass" size={20} color="#FFFFFF" />
         </TouchableOpacity>
       </LinearGradient>
@@ -284,17 +284,17 @@ export default function MapScreen() {
                       ))}
                     </View>
                     <View style={styles.placeActions}>
-                      <TouchableOpacity style={styles.placeActionBtn}>
+                      <TouchableOpacity style={styles.placeActionBtn} onPress={() => {}}>
                         <LinearGradient colors={["#6443F4", "#F94498"]} style={styles.placeActionGradient}>
                           <IconSymbol name="location.north.fill" size={14} color="#FFFFFF" />
                           <Text style={styles.placeActionText}>Directions</Text>
                         </LinearGradient>
                       </TouchableOpacity>
-                      <TouchableOpacity style={styles.placeActionBtnOutline}>
+                      <TouchableOpacity style={styles.placeActionBtnOutline} onPress={() => {}}>
                         <IconSymbol name="bookmark.fill" size={14} color="#6443F4" />
                         <Text style={styles.placeActionTextOutline}>Save</Text>
                       </TouchableOpacity>
-                      <TouchableOpacity style={styles.placeActionBtnOutline}>
+                      <TouchableOpacity style={styles.placeActionBtnOutline} onPress={() => router.push('/(trip)/ai-chat' as any)}>
                         <IconSymbol name="bubble.left.fill" size={14} color="#6443F4" />
                         <Text style={styles.placeActionTextOutline}>Ask TRAVI</Text>
                       </TouchableOpacity>

@@ -63,7 +63,7 @@ const PostBookingScreen = () => {
           </LinearGradient>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.secondaryCtaButton}>
+        <TouchableOpacity style={styles.secondaryCtaButton} onPress={() => router.push('/(tabs)/explore' as any)}>
           <Text style={styles.secondaryCtaButtonText}>Explore More Destinations</Text>
         </TouchableOpacity>
 

@@ -262,7 +262,7 @@ export default function ScheduleScreen() {
         ))}
 
         {/* Add event button */}
-        <TouchableOpacity style={S.addEventBtn} activeOpacity={0.85}>
+        <TouchableOpacity style={S.addEventBtn} activeOpacity={0.85} onPress={() => router.push('/(live)/itinerary' as any)}>
           <LinearGradient colors={["rgba(100,67,244,0.15)", "rgba(249,68,152,0.08)"]} style={StyleSheet.absoluteFillObject} />
           <IconSymbol name="plus.circle.fill" size={20} color={BRAND.purple} />
           <Text style={S.addEventText}>Add Activity</Text>

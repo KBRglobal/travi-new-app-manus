@@ -53,7 +53,7 @@ const BookScreen = () => {
         </BlurView>
 
         {/* Confirm Booking CTA */}
-        <TouchableOpacity onPress={() => {}} style={styles.ctaButtonContainer}>
+        <TouchableOpacity onPress={() => router.push('/(trip)/checkout-payment' as any)} style={styles.ctaButtonContainer}>
           <LinearGradient
             colors={[DS.purple, DS.pink] as const}
             start={{ x: 0, y: 0 }}

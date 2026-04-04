@@ -74,16 +74,16 @@ const TripShareScreen = () => {
         <View style={styles.socialShareContainer}>
           <Text style={[FontStyles.satoshiMedium, styles.socialShareTitle]}>Share via Social Media</Text>
           <View style={styles.socialIcons}>
-            <TouchableOpacity style={styles.socialIcon}>
+            <TouchableOpacity style={styles.socialIcon} onPress={() => {}}>
               <MaterialIcons name="facebook" size={30} color={DS.white} />
             </TouchableOpacity>
-            <TouchableOpacity style={styles.socialIcon}>
+            <TouchableOpacity style={styles.socialIcon} onPress={() => {}}>
               <MaterialIcons name="chat" size={30} color={DS.white} />
             </TouchableOpacity>
-            <TouchableOpacity style={styles.socialIcon}>
+            <TouchableOpacity style={styles.socialIcon} onPress={() => {}}>
               <MaterialIcons name="mail" size={30} color={DS.white} />
             </TouchableOpacity>
-            <TouchableOpacity style={styles.socialIcon}>
+            <TouchableOpacity style={styles.socialIcon} onPress={() => {}}>
               <MaterialIcons name="more-horiz" size={30} color={DS.white} />
             </TouchableOpacity>
           </View>

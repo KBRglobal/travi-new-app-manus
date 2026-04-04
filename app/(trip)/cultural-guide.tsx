@@ -32,7 +32,7 @@ const CulturalGuideScreen = () => {
         <BlurView intensity={20} tint="dark" style={styles.glassCard}>
           <Text style={styles.cardTitle}>Culinary Journey</Text>
           <Text style={styles.cardBody}>Embark on a gastronomic adventure. From street food delights to fine dining experiences, savor the authentic flavors and culinary heritage of the region.</Text>
-          <TouchableOpacity style={styles.ctaButton}>
+          <TouchableOpacity style={styles.ctaButton} onPress={() => router.push('/(trip)/ai-chat' as any)}>
             <LinearGradient
               colors={[DS.purple, DS.pink] as const}
               start={{ x: 0, y: 0 }}

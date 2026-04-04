@@ -27,7 +27,7 @@ const TripPrepScreen = () => {
           <MaterialIcons name="flight-takeoff" size={24} color={DS.purple} style={styles.cardIcon} />
           <Text style={styles.cardTitle}>Flight Details</Text>
           <Text style={styles.cardBody}>Review your flight itinerary and boarding passes.</Text>
-          <TouchableOpacity style={styles.cardButton}>
+          <TouchableOpacity style={styles.cardButton} onPress={() => router.push('/(trip)/flights' as any)}>
             <Text style={styles.cardButtonText}>View Flights</Text>
           </TouchableOpacity>
         </BlurView>
@@ -36,7 +36,7 @@ const TripPrepScreen = () => {
           <MaterialIcons name="hotel" size={24} color={DS.pink} style={styles.cardIcon} />
           <Text style={styles.cardTitle}>Accommodation</Text>
           <Text style={styles.cardBody}>Confirm your hotel bookings and check-in information.</Text>
-          <TouchableOpacity style={styles.cardButton}>
+          <TouchableOpacity style={styles.cardButton} onPress={() => router.push('/(trip)/hotel-select' as any)}>
             <Text style={styles.cardButtonText}>View Hotels</Text>
           </TouchableOpacity>
         </BlurView>
@@ -45,7 +45,7 @@ const TripPrepScreen = () => {
           <MaterialIcons name="directions-car" size={24} color={DS.success} style={styles.cardIcon} />
           <Text style={styles.cardTitle}>Transportation</Text>
           <Text style={styles.cardBody}>Organize your ground transportation and rentals.</Text>
-          <TouchableOpacity style={styles.cardButton}>
+          <TouchableOpacity style={styles.cardButton} onPress={() => router.push('/(trip)/ai-chat' as any)}>
             <Text style={styles.cardButtonText}>View Transport</Text>
           </TouchableOpacity>
         </BlurView>

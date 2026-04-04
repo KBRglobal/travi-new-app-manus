@@ -61,7 +61,7 @@ export default function ItineraryScreen() {
             {days.length} days · {days.reduce((sum, d) => sum + d.activities.length, 0)} activities
           </Text>
         </View>
-        <TouchableOpacity style={styles.headerBtn}>
+        <TouchableOpacity style={styles.headerBtn} onPress={() => { Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light); }}>
           <IconSymbol name="square.and.arrow.up" size={20} color={BRAND.textSecondary} />
         </TouchableOpacity>
       </LinearGradient>
@@ -139,7 +139,7 @@ export default function ItineraryScreen() {
                     <IconSymbol name={iconName} size={10} color="#fff" />
                   </View>
                 </View>
-                <TouchableOpacity style={styles.stopCard} activeOpacity={0.85}>
+                <TouchableOpacity style={styles.stopCard} activeOpacity={0.85} onPress={() => { Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light); }}>
                   <LinearGradient
                     colors={["rgba(255,255,255,0.06)", "rgba(255,255,255,0.06)"]}
                     style={StyleSheet.absoluteFillObject}
@@ -167,15 +167,15 @@ export default function ItineraryScreen() {
                     )}
                   </View>
                   <View style={styles.stopActions}>
-                    <TouchableOpacity style={styles.stopAction}>
+                    <TouchableOpacity style={styles.stopAction} onPress={() => router.push('/(live)/map' as any)}>
                       <IconSymbol name="map.fill" size={12} color={BRAND.purple} />
                       <Text style={styles.stopActionText}>Map</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.stopAction}>
+                    <TouchableOpacity style={styles.stopAction} onPress={() => { Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light); }}>
                       <IconSymbol name="info.circle.fill" size={12} color={BRAND.purple} />
                       <Text style={styles.stopActionText}>Details</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.stopAction}>
+                    <TouchableOpacity style={styles.stopAction} onPress={() => { Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light); }}>
                       <IconSymbol name="arrow.left.arrow.right" size={12} color={BRAND.purple} />
                       <Text style={styles.stopActionText}>Swap</Text>
                     </TouchableOpacity>
@@ -185,7 +185,7 @@ export default function ItineraryScreen() {
             );
           }}
           ListFooterComponent={
-            <TouchableOpacity style={styles.addBtn} activeOpacity={0.8}>
+            <TouchableOpacity style={styles.addBtn} activeOpacity={0.8} onPress={() => { Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light); }}>
               <LinearGradient
                 colors={["rgba(100,67,244,0.15)", "rgba(100,67,244,0.05)"]}
                 style={StyleSheet.absoluteFillObject}

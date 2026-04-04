@@ -1,10 +1,11 @@
-import { useRouter } from 'expo-router';
 import React, { useState } from "react";
 import { View, Text, StyleSheet, Switch, TouchableOpacity } from "react-native";
 import { ScreenWrapper, DS } from "@/components/screen-wrapper";
 import { BlurView } from "expo-blur";
 import { LinearGradient } from "expo-linear-gradient";
 import { MaterialIcons } from "@expo/vector-icons";
+import { useRouter } from "expo-router";
+import * as Haptics from "expo-haptics";
 
 export default function NotificationsScreen() {
   const router = useRouter();
@@ -92,7 +93,7 @@ export default function NotificationsScreen() {
           </View>
         </BlurView>
 
-        <TouchableOpacity style={styles.saveButtonContainer} activeOpacity={0.8}>
+        <TouchableOpacity style={styles.saveButtonContainer} activeOpacity={0.8} onPress={() => { Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success); router.back(); }}>
           <LinearGradient
             colors={[DS.purple, DS.pink] as const}
             start={{ x: 0, y: 0 }}

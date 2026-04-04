@@ -39,7 +39,7 @@ const EnterpriseScreen = () => {
             <Text style={styles.ctaButtonText}>Create New Trip</Text>
           </LinearGradient>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.ctaButton}>
+        <TouchableOpacity style={styles.ctaButton} onPress={() => router.push('/(tabs)/wallet' as any)}>
           <LinearGradient
             colors={[DS.purple, DS.pink] as const}
             style={styles.gradientBackground}

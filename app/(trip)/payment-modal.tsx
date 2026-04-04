@@ -12,7 +12,7 @@ const PaymentModal = () => {
     <ScreenWrapper title="Payment Options" scrollable={true}>
       <View style={styles.contentContainer}>
         <BlurView intensity={20} tint="dark" style={styles.glassCard}>
-          <TouchableOpacity style={styles.paymentOption}>
+          <TouchableOpacity style={styles.paymentOption} onPress={() => router.push('/(trip)/checkout-payment' as any)}>
             <MaterialIcons name="credit-card" size={24} color={DS.white} />
             <Text style={styles.paymentOptionText}>Credit Card</Text>
             <MaterialIcons name="chevron-right" size={24} color={DS.muted} />
@@ -20,7 +20,7 @@ const PaymentModal = () => {
         </BlurView>
 
         <BlurView intensity={20} tint="dark" style={styles.glassCard}>
-          <TouchableOpacity style={styles.paymentOption}>
+          <TouchableOpacity style={styles.paymentOption} onPress={() => router.push('/(trip)/checkout-payment' as any)}>
             <MaterialIcons name="account-balance-wallet" size={24} color={DS.white} />
             <Text style={styles.paymentOptionText}>PayPal</Text>
             <MaterialIcons name="chevron-right" size={24} color={DS.muted} />
@@ -28,7 +28,7 @@ const PaymentModal = () => {
         </BlurView>
 
         <BlurView intensity={20} tint="dark" style={styles.glassCard}>
-          <TouchableOpacity style={styles.paymentOption}>
+          <TouchableOpacity style={styles.paymentOption} onPress={() => router.push('/(trip)/checkout-payment' as any)}>
             <MaterialIcons name="phone-iphone" size={24} color={DS.white} />
             <Text style={styles.paymentOptionText}>Apple Pay</Text>
             <MaterialIcons name="chevron-right" size={24} color={DS.muted} />

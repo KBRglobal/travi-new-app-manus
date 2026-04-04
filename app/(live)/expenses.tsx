@@ -94,7 +94,7 @@ function ExpenseCard({ item }: { item: Expense }) {
   const theyOwe = item.paidBy === "You" && item.splitWith.length > 0;
 
   return (
-    <TouchableOpacity style={S.expCard} activeOpacity={0.85}>
+    <TouchableOpacity style={S.expCard} activeOpacity={0.85} onPress={() => Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)}>
       <LinearGradient colors={["rgba(255,255,255,0.06)", "rgba(255,255,255,0.06)"]} style={StyleSheet.absoluteFillObject} />
       <View style={[S.expIconWrap, { backgroundColor: catColor + "20" }]}>
         <IconSymbol name={item.icon as any} size={18} color={catColor} />
@@ -312,7 +312,7 @@ export default function ExpensesScreen() {
                       {owes > 0 ? `Owes you $${owes}` : `You owe $${Math.abs(owes)}`}
                     </Text>
                   </View>
-                  <TouchableOpacity style={[S.settleBtn, { borderColor: owes > 0 ? BRAND.green : BRAND.pink }]} activeOpacity={0.8}>
+                  <TouchableOpacity style={[S.settleBtn, { borderColor: owes > 0 ? BRAND.green : BRAND.pink }]} activeOpacity={0.8} onPress={() => Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success)}>
                     <Text style={[S.settleBtnText, { color: owes > 0 ? BRAND.green : BRAND.pink }]}>
                       {owes > 0 ? "Remind" : "Pay"}
                     </Text>

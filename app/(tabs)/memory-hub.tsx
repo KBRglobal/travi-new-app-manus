@@ -44,7 +44,7 @@ const MemoryHubScreen = () => {
                 <Text style={styles.cardDate}>{memory.date}</Text>
                 <Text style={styles.cardDescription}>{memory.description}</Text>
               </View>
-              <TouchableOpacity style={styles.viewDetailsButton}>
+              <TouchableOpacity style={styles.viewDetailsButton} onPress={() => router.push('/(trip)/memories' as any)}>
                 <LinearGradient
                   colors={[DS.purple, DS.pink] as const}
                   start={{ x: 0, y: 0 }}

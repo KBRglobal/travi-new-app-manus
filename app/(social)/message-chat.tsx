@@ -1,14 +1,16 @@
-import { useRouter } from 'expo-router';
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, TextInput, TouchableOpacity, Image } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { BlurView } from 'expo-blur';
 import { MaterialIcons } from '@expo/vector-icons';
 import { ScreenWrapper, DS } from '@/components/screen-wrapper';
+import { useRouter } from 'expo-router';
+import * as Haptics from 'expo-haptics';
 
 
 const MessageChatScreen = () => {
   const router = useRouter();
+  const [inputText, setInputText] = useState('');
   const messages = [
     { id: '1', text: 'Hey, how are you?', sender: 'me', time: '10:00 AM' },
     { id: '2', text: 'I am good, thanks! How about you?', sender: 'other', time: '10:01 AM' },
@@ -35,8 +37,12 @@ const MessageChatScreen = () => {
             style={styles.textInput}
             placeholder="Type a message..."
             placeholderTextColor={DS.placeholder}
+            value={inputText}
+            onChangeText={setInputText}
+            returnKeyType="send"
+            onSubmitEditing={() => { if (inputText.trim()) { Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light); setInputText(''); } }}
           />
-          <TouchableOpacity style={styles.sendButton}>
+          <TouchableOpacity style={styles.sendButton} onPress={() => { if (inputText.trim()) { Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light); setInputText(''); } }}>
             <LinearGradient
               colors={[DS.purple, DS.pink] as const}
               start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}

@@ -28,12 +28,12 @@ const WalletWithdraw = () => {
 
         <BlurView intensity={20} tint="dark" style={styles.card}>
           <Text style={styles.label}>Withdrawal Method</Text>
-          <TouchableOpacity style={styles.methodButton}>
+          <TouchableOpacity style={styles.methodButton} onPress={() => router.push('/(trip)/payment-modal' as any)}>
             <MaterialIcons name="account-balance" size={24} color={DS.white} />
             <Text style={styles.methodText}>Bank Account</Text>
             <MaterialIcons name="chevron-right" size={24} color={DS.muted} />
           </TouchableOpacity>
-          <TouchableOpacity style={styles.methodButton}>
+          <TouchableOpacity style={styles.methodButton} onPress={() => router.push('/(trip)/payment-modal' as any)}>
             <MaterialIcons name="credit-card" size={24} color={DS.white} />
             <Text style={styles.methodText}>Credit/Debit Card</Text>
             <MaterialIcons name="chevron-right" size={24} color={DS.muted} />

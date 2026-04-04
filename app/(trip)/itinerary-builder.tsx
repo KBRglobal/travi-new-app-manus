@@ -28,7 +28,7 @@ const ItineraryBuilder = () => {
               <MaterialIcons name="add-circle-outline" size={24} color={DS.muted} />
               <Text style={styles.inputPlaceholder}>Tap to add a new event or activity</Text>
             </View>
-            <TouchableOpacity style={styles.ctaButton}>
+            <TouchableOpacity style={styles.ctaButton} onPress={() => router.push('/(trip)/checkout' as any)}>
               <LinearGradient
                 colors={[DS.purple, DS.pink] as const}
                 start={{ x: 0, y: 0 }}

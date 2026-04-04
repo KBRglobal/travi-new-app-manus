@@ -1,10 +1,11 @@
-import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, Image, Platform } from 'react-native';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, Image, Platform, Alert } from 'react-native';
 import { BlurView } from 'expo-blur';
 import { LinearGradient } from 'expo-linear-gradient';
 import { MaterialIcons } from '@expo/vector-icons';
 import { ScreenWrapper, DS } from '@/components/screen-wrapper';
+import { useRouter } from 'expo-router';
+import * as Haptics from 'expo-haptics';
 
 const EditProfileScreen = () => {
   const router = useRouter();
@@ -22,7 +23,7 @@ const EditProfileScreen = () => {
           source={{ uri: 'https://via.placeholder.com/100/6443F4/FFFFFF?text=JD' }} // Placeholder avatar
           style={styles.avatar}
         />
-        <TouchableOpacity style={styles.changeAvatarButton}>
+        <TouchableOpacity style={styles.changeAvatarButton} onPress={() => { Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light); Alert.alert('Change Avatar', 'Choose a source', [{ text: 'Camera' }, { text: 'Photo Library' }, { text: 'Cancel', style: 'cancel' }]); }}>
           <MaterialIcons name="edit" size={20} color={DS.purple} />
           <Text style={styles.changeAvatarText}>Change Avatar</Text>
         </TouchableOpacity>
