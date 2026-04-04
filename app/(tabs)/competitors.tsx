@@ -4,19 +4,8 @@ import { ScreenWrapper, DS } from '@/components/screen-wrapper';
 import { BlurView } from 'expo-blur';
 import { LinearGradient } from 'expo-linear-gradient';
 import { MaterialIcons } from '@expo/vector-icons';
-import { useFonts } from 'expo-font';
 
 const CompetitorsScreen = () => {
-  const [fontsLoaded] = useFonts({
-    'Chillax-Bold': require('../../../assets/fonts/Chillax-Bold.ttf'),
-    'Satoshi-Medium': require('../../../assets/fonts/Satoshi-Medium.ttf'),
-    'Satoshi-Regular': require('../../../assets/fonts/Satoshi-Regular.ttf'),
-  });
-
-  if (!fontsLoaded) {
-    return <ActivityIndicator size="large" color={DS.purple} style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: DS.bg }} />;
-  }
-
   const competitors = [
     {
       id: '1',

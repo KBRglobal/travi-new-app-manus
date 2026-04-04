@@ -6,7 +6,6 @@ import { LinearGradient } from 'expo-linear-gradient';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 
 // Assume fonts are loaded globally or via a custom font loader
-// For example: await Font.loadAsync({ 'Chillax-Bold': require('./assets/fonts/Chillax-Bold.ttf'), 'Satoshi-Medium': require('./assets/fonts/Satoshi-Medium.ttf'), 'Satoshi-Regular': require('./assets/fonts/Satoshi-Regular.ttf') });
 
 const LiveDashboard = () => {
   // Dummy data for the live dashboard

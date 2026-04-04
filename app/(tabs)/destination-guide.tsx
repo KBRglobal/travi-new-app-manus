@@ -5,12 +5,6 @@ import { BlurView } from 'expo-blur';
 import { LinearGradient } from 'expo-linear-gradient';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 
-// Placeholder for custom fonts. In a real app, these would be loaded.
-const customFonts = {
-  'Chillax-Bold': require('@/assets/fonts/Chillax-Bold.ttf'),
-  'Satoshi-Medium': require('@/assets/fonts/Satoshi-Medium.ttf'),
-  'Satoshi-Regular': require('@/assets/fonts/Satoshi-Regular.ttf'),
-};
 
 export default function DestinationGuide() {
   const destinations = [
