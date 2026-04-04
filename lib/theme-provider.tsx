@@ -1,0 +1,91 @@
+import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
+import { Appearance, View } from "react-native";
+import { colorScheme as nativewindColorScheme, vars } from "nativewind";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+import { SchemeColors, Colors, type ColorScheme } from "@/constants/theme";
+
+const THEME_STORAGE_KEY = "@travi_theme";
+
+type ThemeContextValue = {
+  colorScheme: ColorScheme;
+  setColorScheme: (scheme: ColorScheme) => void;
+  toggleTheme: () => void;
+};
+
+const ThemeContext = createContext<ThemeContextValue | null>(null);
+
+export function ThemeProvider({ children }: { children: React.ReactNode }) {
+  // Default to dark — TRAVI's primary brand experience
+  const [colorScheme, setColorSchemeState] = useState<ColorScheme>("dark");
+
+  const applyScheme = useCallback((scheme: ColorScheme) => {
+    nativewindColorScheme.set(scheme);
+    Appearance.setColorScheme?.(scheme);
+    if (typeof document !== "undefined") {
+      const root = document.documentElement;
+      root.dataset.theme = scheme;
+      root.classList.toggle("dark", scheme === "dark");
+      const palette = SchemeColors[scheme];
+      Object.entries(palette).forEach(([token, value]) => {
+        root.style.setProperty(`--color-${token}`, value);
+      });
+    }
+  }, []);
+
+  const setColorScheme = useCallback((scheme: ColorScheme) => {
+    setColorSchemeState(scheme);
+    applyScheme(scheme);
+    AsyncStorage.setItem(THEME_STORAGE_KEY, scheme).catch(() => {});
+  }, [applyScheme]);
+
+  const toggleTheme = useCallback(() => {
+    setColorScheme(colorScheme === "dark" ? "light" : "dark");
+  }, [colorScheme, setColorScheme]);
+
+  // Load persisted theme on mount (default dark if not set)
+  useEffect(() => {
+    AsyncStorage.getItem(THEME_STORAGE_KEY).then((saved) => {
+      const scheme: ColorScheme = (saved === "light" || saved === "dark") ? saved : "dark";
+      setColorSchemeState(scheme);
+      applyScheme(scheme);
+    }).catch(() => {
+      applyScheme("dark");
+    });
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const themeVariables = useMemo(
+    () =>
+      vars({
+        "color-primary":    SchemeColors[colorScheme].primary,
+        "color-background": SchemeColors[colorScheme].background,
+        "color-surface":    SchemeColors[colorScheme].surface,
+        "color-foreground": SchemeColors[colorScheme].foreground,
+        "color-muted":      SchemeColors[colorScheme].muted,
+        "color-border":     SchemeColors[colorScheme].border,
+        "color-success":    SchemeColors[colorScheme].success,
+        "color-warning":    SchemeColors[colorScheme].warning,
+        "color-error":      SchemeColors[colorScheme].error,
+        "color-accent":     Colors[colorScheme].accent ?? Colors[colorScheme].primary,
+        "color-tint":       Colors[colorScheme].tint   ?? Colors[colorScheme].primary,
+      }),
+    [colorScheme],
+  );
+
+  const value = useMemo(
+    () => ({ colorScheme, setColorScheme, toggleTheme }),
+    [colorScheme, setColorScheme, toggleTheme],
+  );
+
+  return (
+    <ThemeContext.Provider value={value}>
+      <View style={[{ flex: 1 }, themeVariables]}>{children}</View>
+    </ThemeContext.Provider>
+  );
+}
+
+export function useThemeContext(): ThemeContextValue {
+  const ctx = useContext(ThemeContext);
+  if (!ctx) throw new Error("useThemeContext must be used within ThemeProvider");
+  return ctx;
+}

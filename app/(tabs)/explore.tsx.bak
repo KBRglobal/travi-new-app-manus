@@ -1,0 +1,285 @@
+import React, { useState, useEffect } from "react";
+import {
+  View, Text, TouchableOpacity, StyleSheet, Dimensions,
+  ScrollView, TextInput, FlatList, Platform, StatusBar, Image,
+} from "react-native";
+import { router } from "expo-router";
+import { LinearGradient } from "expo-linear-gradient";
+import { IconSymbol } from "@/components/ui/icon-symbol";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import * as Haptics from "expo-haptics";
+import Animated, {
+  useSharedValue, useAnimatedStyle, withRepeat, withSequence,
+  withTiming, withDelay,
+} from "react-native-reanimated";
+
+const { width } = Dimensions.get("window");
+const CARD_GAP = 12;
+const GRID_CARD_W = (width - 48) / 2;
+
+const C = {
+  bg: "#FFFFFF", bgLight: "#F8F6FF",
+  purple: "#6443F4", purpleDark: "#24103E", purpleLight: "#EDE8FF",
+  pink: "#F94498", pinkLight: "#FEECF4",
+  orange: "#FF9327", green: "#02A65C",
+  text: "#24103E", textSub: "#504065", textMuted: "#A79FB2",
+  border: "#D3CFD8", white: "#FFFFFF",
+};
+
+const TOP_PICKS = [
+  { id: "1", city: "Bali", country: "Indonesia", match: 96, price: "€850", days: "7-10", tags: ["Adventure", "Nature", "Wellness"], desc: "Perfect for adventurous travelers who love nature, temples, rice terraces, and beaches.", image: require("@/assets/destinations/bali.jpg") },
+  { id: "2", city: "Santorini", country: "Greece", match: 91, price: "€1,200", days: "5-7", tags: ["Romance", "Sunsets", "Food"], desc: "Iconic white-washed villages, volcanic beaches, and world-class sunsets.", image: require("@/assets/destinations/santorini.jpg") },
+  { id: "3", city: "Kyoto", country: "Japan", match: 88, price: "€950", days: "7-10", tags: ["Culture", "History", "Zen"], desc: "Ancient temples, bamboo forests, and traditional tea ceremonies.", image: require("@/assets/destinations/kyoto.jpg") },
+];
+
+const TRENDING = [
+  { id: "t1", city: "Dubai", country: "UAE", price: "€650", image: require("@/assets/destinations/dubai.jpg") },
+  { id: "t2", city: "Tokyo", country: "Japan", price: "€1,100", image: require("@/assets/destinations/tokyo.jpg") },
+  { id: "t3", city: "Barcelona", country: "Spain", price: "€720", image: require("@/assets/destinations/barcelona.jpg") },
+  { id: "t4", city: "New York", country: "USA", price: "€890", image: require("@/assets/destinations/newyork.jpg") },
+];
+
+const HIDDEN_GEMS = [
+  { id: "g1", city: "Phuket", country: "Thailand", match: 94, image: require("@/assets/destinations/phuket.jpg") },
+  { id: "g2", city: "Iceland", country: "Iceland", match: 89, image: require("@/assets/destinations/iceland.jpg") },
+  { id: "g3", city: "Machu Picchu", country: "Peru", match: 86, image: require("@/assets/destinations/machupicchu.jpg") },
+  { id: "g4", city: "Maldives", country: "Maldives", match: 83, image: require("@/assets/destinations/maldives.jpg") },
+];
+
+const FILTER_CHIPS = ["All", "Beach", "Mountains", "City", "Food", "Culture", "Nature", "Hidden Gems"];
+
+function AgentFAB({ bottomOffset }: { bottomOffset: number }) {
+  const bounce = useSharedValue(0);
+  useEffect(() => {
+    bounce.value = withDelay(2500, withRepeat(withSequence(withTiming(-6, { duration: 350 }), withTiming(0, { duration: 350 })), -1, true));
+  }, []);
+  const animStyle = useAnimatedStyle(() => ({ transform: [{ translateY: bounce.value }] }));
+  return (
+    <Animated.View style={[S.fab, { bottom: bottomOffset }, animStyle]}>
+      <TouchableOpacity
+        onPress={() => {
+          if (Platform.OS !== "web") Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+          router.push("/(agent)/chat" as never);
+        }}
+        activeOpacity={0.88}
+        style={S.fabInner}
+      >
+        <LinearGradient colors={[C.purple, C.pink]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={StyleSheet.absoluteFillObject} />
+        <Image source={require("@/assets/images/mascot-dark.png")} style={S.fabMascot} resizeMode="contain" />
+      </TouchableOpacity>
+    </Animated.View>
+  );
+}
+
+export default function ExploreScreen() {
+  const insets = useSafeAreaInsets();
+  const [search, setSearch] = useState("");
+  const [activeFilter, setActiveFilter] = useState("All");
+  const [saved, setSaved] = useState<string[]>([]);
+  const tabBarOffset = 60 + Math.max(insets.bottom, 8) + 16;
+
+  return (
+    <View style={S.root}>
+      <StatusBar barStyle="light-content" backgroundColor={C.pink} />
+
+      {/* Header */}
+      <LinearGradient
+        colors={[C.pink, "#C2185B", C.purple]}
+        start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}
+        style={[S.header, { paddingTop: insets.top + 12 }]}
+      >
+        <TouchableOpacity onPress={() => router.back()} activeOpacity={0.85}>
+          <IconSymbol name="chevron.left" size={24} color={C.white} />
+        </TouchableOpacity>
+        <Text style={S.headerTitle}>Explore</Text>
+        <TouchableOpacity activeOpacity={0.85}>
+          <IconSymbol name="slider.horizontal.3" size={24} color={C.white} />
+        </TouchableOpacity>
+      </LinearGradient>
+
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ paddingBottom: tabBarOffset + 32 }}
+        stickyHeaderIndices={[0]}
+      >
+        {/* Search Bar (sticky) */}
+        <View style={S.searchWrap}>
+          <View style={S.searchBar}>
+            <IconSymbol name="magnifyingglass" size={20} color={C.purple} />
+            <TextInput
+              style={S.searchInput}
+              placeholder="Where do you want to go?"
+              placeholderTextColor={C.textMuted}
+              value={search}
+              onChangeText={setSearch}
+              returnKeyType="search"
+            />
+            {search.length > 0 && (
+              <TouchableOpacity onPress={() => setSearch("")}>
+                <IconSymbol name="xmark.circle.fill" size={18} color={C.textMuted} />
+              </TouchableOpacity>
+            )}
+          </View>
+        </View>
+
+        {/* Filter Chips */}
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={S.chipsScroll}
+          style={{ backgroundColor: C.bg, paddingVertical: 4 }}
+        >
+          {FILTER_CHIPS.map(chip => (
+            <TouchableOpacity
+              key={chip}
+              style={[S.chip, activeFilter === chip && S.chipActive]}
+              onPress={() => setActiveFilter(chip)}
+              activeOpacity={0.85}
+            >
+              <Text style={[S.chipText, activeFilter === chip && S.chipTextActive]}>{chip}</Text>
+            </TouchableOpacity>
+          ))}
+        </ScrollView>
+
+        {/* Top Picks */}
+        <View style={S.section}>
+          <Text style={S.sectionTitle}>Top Picks for You 🎯</Text>
+          {TOP_PICKS.map(item => (
+            <View key={item.id} style={S.largeCard}>
+              <View style={S.largeImageWrap}>
+                <Image source={item.image} style={S.largeImage} resizeMode="cover" />
+                <LinearGradient colors={["transparent", "rgba(0,0,0,0.30)"]} style={StyleSheet.absoluteFillObject} />
+                <View style={S.dnaBadge}>
+                  <Text style={S.dnaBadgeText}>🧬 {item.match}% DNA Match</Text>
+                </View>
+              </View>
+              <View style={S.largeContent}>
+                <Text style={S.largeCityName}>{item.city}, {item.country}</Text>
+                <View style={S.tagsRow}>
+                  {item.tags.map(t => (
+                    <View key={t} style={S.tag}><Text style={S.tagText}>{t}</Text></View>
+                  ))}
+                </View>
+                <Text style={S.largeDesc} numberOfLines={2}>{item.desc}</Text>
+                <Text style={S.largePrice}>From {item.price} · {item.days} days</Text>
+                <View style={S.largeCTA}>
+                  <TouchableOpacity style={S.planBtn} onPress={() => router.push("/(trip)/plan" as never)} activeOpacity={0.85}>
+                    <Text style={S.planBtnText}>Plan Trip →</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={[S.saveBtn, saved.includes(item.id) && S.saveBtnActive]}
+                    onPress={() => setSaved(s => s.includes(item.id) ? s.filter(x => x !== item.id) : [...s, item.id])}
+                    activeOpacity={0.85}
+                  >
+                    <Text style={[S.saveBtnText, saved.includes(item.id) && { color: C.white }]}>
+                      {saved.includes(item.id) ? "Saved" : "Save"}
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </View>
+          ))}
+        </View>
+
+        {/* Swirl Divider */}
+        <LinearGradient
+          colors={[C.purple, "#9B3FD4", C.pink]}
+          start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
+          style={S.swirlDivider}
+        />
+
+        {/* Trending Now */}
+        <View style={S.section}>
+          <Text style={S.sectionTitle}>Trending Now 🔥</Text>
+          <FlatList
+            data={TRENDING}
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            keyExtractor={i => i.id}
+            contentContainerStyle={{ paddingHorizontal: 16, gap: 12 }}
+            renderItem={({ item }) => (
+              <TouchableOpacity style={S.trendCard} onPress={() => router.push("/(trip)/plan" as never)} activeOpacity={0.88}>
+                <Image source={item.image} style={S.trendImage} resizeMode="cover" />
+                <LinearGradient colors={["transparent", "rgba(0,0,0,0.65)"]} style={StyleSheet.absoluteFillObject} />
+                <View style={S.trendBadge}><Text style={S.trendBadgeText}>Trending</Text></View>
+                <View style={S.trendBottom}>
+                  <Text style={S.trendCity}>{item.city}</Text>
+                  <Text style={S.trendPrice}>From {item.price}</Text>
+                </View>
+              </TouchableOpacity>
+            )}
+            scrollEnabled
+          />
+        </View>
+
+        {/* Hidden Gems */}
+        <View style={S.section}>
+          <Text style={S.sectionTitle}>Hidden Gems 💎</Text>
+          <View style={S.gemGrid}>
+            {HIDDEN_GEMS.map(item => (
+              <TouchableOpacity key={item.id} style={S.gemCard} onPress={() => router.push("/(trip)/plan" as never)} activeOpacity={0.88}>
+                <Image source={item.image} style={S.gemImage} resizeMode="cover" />
+                <LinearGradient colors={["transparent", "rgba(0,0,0,0.55)"]} style={StyleSheet.absoluteFillObject} />
+                <View style={S.gemDnaBadge}><Text style={S.gemDnaBadgeText}>🧬 {item.match}%</Text></View>
+                <Text style={S.gemCity}>{item.city}</Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+        </View>
+      </ScrollView>
+
+      <AgentFAB bottomOffset={tabBarOffset} />
+    </View>
+  );
+}
+
+const S = StyleSheet.create({
+  root: { flex: 1, backgroundColor: C.bg },
+  header: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 20, paddingBottom: 16 },
+  headerTitle: { color: C.white, fontSize: 20, fontWeight: "700", fontFamily: "Chillax-Bold" },
+  searchWrap: { backgroundColor: C.bg, paddingHorizontal: 16, paddingVertical: 12, shadowColor: "#000", shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.06, shadowRadius: 8, elevation: 3 },
+  searchBar: { flexDirection: "row", alignItems: "center", backgroundColor: C.white, borderRadius: 24, paddingHorizontal: 16, height: 48, gap: 10, shadowColor: "#000", shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.08, shadowRadius: 8, elevation: 3, borderWidth: 1, borderColor: C.border },
+  searchInput: { flex: 1, fontSize: 15, fontFamily: "Satoshi-Regular", color: C.text },
+  chipsScroll: { paddingHorizontal: 16, paddingVertical: 8, gap: 8 },
+  chip: { height: 36, paddingHorizontal: 16, borderRadius: 18, backgroundColor: C.white, borderWidth: 2, borderColor: C.pink, alignItems: "center", justifyContent: "center" },
+  chipActive: { backgroundColor: C.pink, borderColor: C.pink },
+  chipText: { color: C.pink, fontSize: 13, fontFamily: "Satoshi-Medium" },
+  chipTextActive: { color: C.white },
+  section: { paddingTop: 24, gap: 14 },
+  sectionTitle: { color: C.text, fontSize: 20, fontWeight: "700", fontFamily: "Chillax-Bold", paddingHorizontal: 16 },
+  largeCard: { marginHorizontal: 16, borderRadius: 20, backgroundColor: C.white, shadowColor: "#000", shadowOffset: { width: 0, height: 6 }, shadowOpacity: 0.12, shadowRadius: 16, elevation: 6, overflow: "hidden" },
+  largeImageWrap: { width: "100%", aspectRatio: 16 / 9, position: "relative" },
+  largeImage: { width: "100%", height: "100%" },
+  dnaBadge: { position: "absolute", top: 14, left: 14, backgroundColor: C.green, borderRadius: 14, paddingHorizontal: 14, paddingVertical: 7 },
+  dnaBadgeText: { color: C.white, fontSize: 12, fontWeight: "700", fontFamily: "Satoshi-Bold" },
+  largeContent: { padding: 16, gap: 8 },
+  largeCityName: { color: C.text, fontSize: 22, fontWeight: "700", fontFamily: "Chillax-Bold" },
+  tagsRow: { flexDirection: "row", flexWrap: "wrap", gap: 6 },
+  tag: { backgroundColor: C.pinkLight, borderRadius: 12, paddingHorizontal: 10, paddingVertical: 3 },
+  tagText: { color: C.pink, fontSize: 11, fontFamily: "Satoshi-Medium" },
+  largeDesc: { color: C.textSub, fontSize: 13, fontFamily: "Satoshi-Regular", lineHeight: 19 },
+  largePrice: { color: C.purple, fontSize: 15, fontWeight: "700", fontFamily: "Satoshi-Bold" },
+  largeCTA: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginTop: 4 },
+  planBtn: { backgroundColor: C.pink, borderRadius: 24, paddingHorizontal: 22, paddingVertical: 11 },
+  planBtnText: { color: C.white, fontSize: 14, fontWeight: "700", fontFamily: "Satoshi-Bold" },
+  saveBtn: { backgroundColor: C.white, borderRadius: 24, paddingHorizontal: 18, paddingVertical: 11, borderWidth: 2, borderColor: C.pink },
+  saveBtnActive: { backgroundColor: C.pink },
+  saveBtnText: { color: C.pink, fontSize: 14, fontWeight: "700", fontFamily: "Satoshi-Bold" },
+  swirlDivider: { height: 60, marginTop: 24 },
+  trendCard: { width: 220, height: 280, borderRadius: 16, overflow: "hidden", backgroundColor: C.white, shadowColor: "#000", shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.10, shadowRadius: 12, elevation: 5 },
+  trendImage: { width: 220, height: 280, position: "absolute" },
+  trendBadge: { position: "absolute", top: 12, right: 12, backgroundColor: C.orange, borderRadius: 8, paddingHorizontal: 8, paddingVertical: 4 },
+  trendBadgeText: { color: C.white, fontSize: 10, fontWeight: "700", fontFamily: "Satoshi-Bold" },
+  trendBottom: { position: "absolute", bottom: 0, left: 0, right: 0, padding: 14 },
+  trendCity: { color: C.white, fontSize: 16, fontWeight: "800", fontFamily: "Chillax-Bold" },
+  trendPrice: { color: "rgba(255,255,255,0.80)", fontSize: 13, fontFamily: "Satoshi-Bold", marginTop: 2 },
+  gemGrid: { flexDirection: "row", flexWrap: "wrap", paddingHorizontal: 16, gap: CARD_GAP },
+  gemCard: { width: GRID_CARD_W, height: 200, borderRadius: 12, overflow: "hidden", backgroundColor: C.white, shadowColor: "#000", shadowOffset: { width: 0, height: 3 }, shadowOpacity: 0.08, shadowRadius: 8, elevation: 4 },
+  gemImage: { width: "100%", height: "100%", position: "absolute" },
+  gemDnaBadge: { position: "absolute", top: 8, left: 8, backgroundColor: "rgba(2,166,92,0.75)", borderRadius: 8, paddingHorizontal: 8, paddingVertical: 3 },
+  gemDnaBadgeText: { color: C.white, fontSize: 10, fontWeight: "700", fontFamily: "Satoshi-Bold" },
+  gemCity: { position: "absolute", bottom: 10, left: 10, color: C.white, fontSize: 14, fontWeight: "800", fontFamily: "Chillax-Bold" },
+  fab: { position: "absolute", right: 20, zIndex: 100 },
+  fabInner: { width: 64, height: 64, borderRadius: 32, alignItems: "center", justifyContent: "center", overflow: "hidden", shadowColor: C.purple, shadowOffset: { width: 0, height: 8 }, shadowOpacity: 0.40, shadowRadius: 24, elevation: 12 },
+  fabMascot: { width: 40, height: 40 },
+});

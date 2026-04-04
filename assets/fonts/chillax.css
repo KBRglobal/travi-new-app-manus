@@ -1,0 +1,38 @@
+@font-face {
+    font-family: 'Chillax';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Chillax'), url('https://fonts.cdnfonts.com/s/85273/Chillax-Regular.woff') format('woff');
+}
+@font-face {
+    font-family: 'Chillax';
+    font-style: normal;
+    font-weight: 200;
+    src: local('Chillax'), url('https://fonts.cdnfonts.com/s/85273/Chillax-Extralight.woff') format('woff');
+}
+@font-face {
+    font-family: 'Chillax';
+    font-style: normal;
+    font-weight: 300;
+    src: local('Chillax'), url('https://fonts.cdnfonts.com/s/85273/Chillax-Light.woff') format('woff');
+}
+@font-face {
+    font-family: 'Chillax';
+    font-style: normal;
+    font-weight: 500;
+    src: local('Chillax'), url('https://fonts.cdnfonts.com/s/85273/Chillax-Medium.woff') format('woff');
+}
+@font-face {
+    font-family: 'Chillax';
+    font-style: normal;
+    font-weight: 600;
+    src: local('Chillax'), url('https://fonts.cdnfonts.com/s/85273/Chillax-Semibold.woff') format('woff');
+}
+@font-face {
+    font-family: 'Chillax';
+    font-style: normal;
+    font-weight: 700;
+    src: local('Chillax'), url('https://fonts.cdnfonts.com/s/85273/Chillax-Bold.woff') format('woff');
+}
+
+
