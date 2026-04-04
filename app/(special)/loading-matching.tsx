@@ -1,13 +1,17 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, Text, StyleSheet, ActivityIndicator, TouchableOpacity } from 'react-native';
 import { ScreenWrapper, DS } from '@/components/screen-wrapper';
 import { BlurView } from 'expo-blur';
 import { LinearGradient } from 'expo-linear-gradient';
 import { MaterialIcons } from '@expo/vector-icons';
-
-// DS object exported from ScreenWrapper.tsx (for reference, assuming ScreenWrapper provides it)
+import { useRouter } from 'expo-router';
 
 const LoadingMatchingScreen = () => {
+  const router = useRouter();
+  useEffect(() => {
+    const t = setTimeout(() => router.replace('/(social)/discover' as any), 3000);
+    return () => clearTimeout(t);
+  }, []);
   return (
     <ScreenWrapper title="Finding Your Match" scrollable={false}>
       <View style={styles.container}>
@@ -18,7 +22,7 @@ const LoadingMatchingScreen = () => {
         </BlurView>
 
         {/* Example of a CTA with LinearGradient, typically not on a loading screen but for demonstration */}
-        <TouchableOpacity style={styles.ctaButton}>
+        <TouchableOpacity style={styles.ctaButton} onPress={() => router.back()}>
           <LinearGradient
             colors={[DS.purple, DS.pink] as const}
             start={{ x: 0, y: 0 }}

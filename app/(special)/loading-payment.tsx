@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, Text, ActivityIndicator, StyleSheet } from 'react-native';
 import { ScreenWrapper } from "@/components/screen-wrapper";
 import { BlurView } from "expo-blur";
 import { LinearGradient } from "expo-linear-gradient";
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import { useRouter } from 'expo-router';
 
 // DS object as provided in the prompt
 const DS = {
@@ -15,6 +16,11 @@ const DS = {
 };
 
 const LoadingPaymentScreen = () => {
+  const router = useRouter();
+  useEffect(() => {
+    const t = setTimeout(() => router.replace('/(special)/first-booking-success' as any), 2500);
+    return () => clearTimeout(t);
+  }, []);
   return (
     <ScreenWrapper title="Payment Processing" scrollable={true}>
       <View style={styles.container}>

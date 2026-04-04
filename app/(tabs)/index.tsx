@@ -144,7 +144,7 @@ function StarField() {
 // ═══════════════════════════════════════════════════
 // HERO — Full-screen DNA match card (70% viewport)
 // ═══════════════════════════════════════════════════
-function HeroSection({ onExplore, insetTop }: { onExplore: () => void; insetTop: number }) {
+function HeroSection({ onExplore, insetTop, onProfile, onNotifications }: { onExplore: () => void; insetTop: number; onProfile: () => void; onNotifications: () => void }) {
   const pulseBadge = useRef(new Animated.Value(1)).current;
   const glowOpacity = useRef(new Animated.Value(0.3)).current;
 
@@ -201,9 +201,14 @@ function HeroSection({ onExplore, insetTop }: { onExplore: () => void; insetTop:
             style={heroS.logo}
             resizeMode="contain"
           />
-          <Pressable style={heroS.avatarBtn}>
-            <Text style={heroS.avatarText}>D</Text>
-          </Pressable>
+          <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
+            <Pressable style={heroS.bellBtn} onPress={onNotifications}>
+              <MaterialIcons name="notifications-none" size={22} color={C.white} />
+            </Pressable>
+            <Pressable style={heroS.avatarBtn} onPress={onProfile}>
+              <Text style={heroS.avatarText}>D</Text>
+            </Pressable>
+          </View>
         </View>
 
         {/* Greeting */}
@@ -295,6 +300,16 @@ const heroS = StyleSheet.create({
     zIndex: 10,
   },
   logo: { width: 80, height: 28 },
+  bellBtn: {
+    width: 38,
+    height: 38,
+    borderRadius: 19,
+    backgroundColor: C.w10,
+    borderWidth: 1,
+    borderColor: C.w20,
+    alignItems: "center",
+    justifyContent: "center",
+  },
   avatarBtn: {
     width: 38,
     height: 38,
@@ -882,6 +897,8 @@ export default function HomeScreen() {
         <HeroSection
           onExplore={() => router.push({ pathname: "/(tabs)/destination-guide", params: { id: "bali" } } as any)} // S14 Destination Detail
           insetTop={insets.top}
+          onProfile={() => router.push("/(tabs)/profile" as any)}
+          onNotifications={() => router.push("/(tabs)/notifications" as any)}
         />
 
         {/* ═══ 4-ACTION GRID ═══ */}
@@ -916,11 +933,41 @@ export default function HomeScreen() {
             ))}
           </View>
         </View>
-      </ScrollView>
+       </ScrollView>
+      {/* ═══ FAB — AI Chat ═══ */}
+      <Pressable
+        style={({ pressed }) => [fabS.fab, pressed && { transform: [{ scale: 0.93 }], opacity: 0.9 }]}
+        onPress={() => { haptic(Haptics.ImpactFeedbackStyle.Medium); router.push("/(trip)/ai-chat" as any); }}
+      >
+        <LinearGradient colors={[C.purple, C.pink]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={fabS.fabGradient}>
+          <MaterialIcons name="auto-awesome" size={26} color={C.white} />
+        </LinearGradient>
+      </Pressable>
     </View>
   );
 }
-
+const fabS = StyleSheet.create({
+  fab: {
+    position: "absolute",
+    bottom: 100,
+    right: 20,
+    width: 58,
+    height: 58,
+    borderRadius: 29,
+    shadowColor: C.purple,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.5,
+    shadowRadius: 12,
+    elevation: 8,
+  },
+  fabGradient: {
+    width: 58,
+    height: 58,
+    borderRadius: 29,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+});
 const s = StyleSheet.create({
   root: { flex: 1, backgroundColor: C.bg },
   glowPurple: {

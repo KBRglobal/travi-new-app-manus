@@ -25,7 +25,7 @@ const FirstBookingSuccess = () => {
           <MaterialIcons name="check-circle" size={80} color={DS.success} style={styles.icon} />
           <Text style={styles.title}>Booking Successful!</Text>
           <Text style={styles.message}>Your booking has been confirmed and details sent to your email.</Text>
-          <TouchableOpacity style={styles.buttonContainer}>
+          <TouchableOpacity style={styles.buttonContainer} onPress={() => router.replace('/(trip)/pre-trip-dashboard' as any)}>
             <LinearGradient
               colors={[DS.purple, DS.pink] as const}
               start={{ x: 0, y: 0 }}

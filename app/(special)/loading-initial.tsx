@@ -1,11 +1,17 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, Text, ActivityIndicator, StyleSheet } from 'react-native';
 import { BlurView } from 'expo-blur';
 import { LinearGradient } from 'expo-linear-gradient';
 import { ScreenWrapper, DS } from '@/components/screen-wrapper';
 import { MaterialIcons } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
 
 const LoadingInitialScreen = () => {
+  const router = useRouter();
+  useEffect(() => {
+    const t = setTimeout(() => router.replace('/(tabs)' as any), 2000);
+    return () => clearTimeout(t);
+  }, []);
   return (
     <ScreenWrapper title="Loading" scrollable={false}>
       <View style={styles.container}>

@@ -56,6 +56,10 @@ export default function LiveHomeScreen() {
             { icon: "chat", label: "AI Chat", route: "/(live)/chat" },
             { icon: "account-balance-wallet", label: "Expenses", route: "/(live)/expenses" },
             { icon: "photo-camera", label: "Memories", route: "/(trip)/memories" },
+            { icon: "event-note", label: "Timeline", route: "/(live)/itinerary" },
+            { icon: "schedule", label: "Schedule", route: "/(live)/schedule" },
+            { icon: "split-screen", label: "Split", route: "/(live)/split" },
+            { icon: "trip-origin", label: "Trip End", route: "/(trip)/post-trip-celebration" },
           ].map(a => (
             <Pressable key={a.label} style={({ pressed }) => [s.actionBtn, pressed && { opacity: 0.7 }]} onPress={() => router.push(a.route as any)}>
               <View style={s.actionIcon}>

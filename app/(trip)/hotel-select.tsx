@@ -46,7 +46,7 @@ const HotelSelectScreen = () => {
             </View>
             <View style={styles.hotelActions}>
               <Text style={styles.hotelPrice}>{hotel.price}</Text>
-              <TouchableOpacity style={styles.selectButton}>
+              <TouchableOpacity style={styles.selectButton} onPress={() => router.push('/(trip)/swipe' as any)}>
                 <LinearGradient
                   colors={[DS.purple, DS.pink] as const}
                   start={{ x: 0, y: 0 }}

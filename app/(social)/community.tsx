@@ -38,26 +38,26 @@ const CommunityScreen = () => {
               </TouchableOpacity>
             </BlurView>
             <BlurView intensity={20} tint="dark" style={styles.glassCard}>
-              <TouchableOpacity style={styles.cardContent}>
+              <TouchableOpacity style={styles.cardContent} onPress={() => router.push('/(social)/discover' as any)}>
                 <MaterialIcons name="event" size={30} color={DS.pink} />
-                <SatoshiMedium style={styles.cardTitle}>Events</SatoshiMedium>
-                <SatoshiRegular style={styles.cardDescription}>Discover upcoming events</SatoshiRegular>
+                <SatoshiMedium style={styles.cardTitle}>Discover</SatoshiMedium>
+                <SatoshiRegular style={styles.cardDescription}>Find travel companions</SatoshiRegular>
               </TouchableOpacity>
             </BlurView>
           </View>
           <View style={styles.cardRow}>
             <BlurView intensity={20} tint="dark" style={styles.glassCard}>
-              <TouchableOpacity style={styles.cardContent}>
+              <TouchableOpacity style={styles.cardContent} onPress={() => router.push('/(social)/messages' as any)}>
                 <MaterialIcons name="chat" size={30} color={DS.success} />
-                <SatoshiMedium style={styles.cardTitle}>Chat</SatoshiMedium>
-                <SatoshiRegular style={styles.cardDescription}>Instant messaging</SatoshiRegular>
+                <SatoshiMedium style={styles.cardTitle}>Messages</SatoshiMedium>
+                <SatoshiRegular style={styles.cardDescription}>Chat with travelers</SatoshiRegular>
               </TouchableOpacity>
             </BlurView>
             <BlurView intensity={20} tint="dark" style={styles.glassCard}>
-              <TouchableOpacity style={styles.cardContent}>
-                <MaterialIcons name="photo-library" size={30} color={DS.warning} />
-                <SatoshiMedium style={styles.cardTitle}>Gallery</SatoshiMedium>
-                <SatoshiRegular style={styles.cardDescription}>Share your travel photos</SatoshiRegular>
+              <TouchableOpacity style={styles.cardContent} onPress={() => router.push('/(social)/buddies' as any)}>
+                <MaterialIcons name="people" size={30} color={DS.warning} />
+                <SatoshiMedium style={styles.cardTitle}>Buddies</SatoshiMedium>
+                <SatoshiRegular style={styles.cardDescription}>Your travel friends</SatoshiRegular>
               </TouchableOpacity>
             </BlurView>
           </View>

@@ -46,7 +46,7 @@ const CheckoutPaymentScreen = () => {
         </BlurView>
 
         {/* Confirm Payment CTA */}
-        <TouchableOpacity onPress={() => router.push('/(trip)/confirmation' as any)} style={styles.ctaButton}>
+        <TouchableOpacity onPress={() => router.push('/(special)/loading-payment' as any)} style={styles.ctaButton}>
           <LinearGradient
             colors={[DS.purple, DS.pink] as const}
             start={{ x: 0, y: 0 }}
