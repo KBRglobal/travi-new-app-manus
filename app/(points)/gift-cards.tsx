@@ -22,7 +22,7 @@ const GiftCardsScreen = () => {
               <Text style={styles.cardSubtitle}>Balance: $500.00</Text>
             </View>
           </View>
-          <TouchableOpacity activeOpacity={0.8}>
+          <TouchableOpacity activeOpacity={0.8} onPress={() => router.push('/(points)/redeem-confirm' as any)}>
             <LinearGradient
               colors={[DS.purple, DS.pink] as const}
               start={{ x: 0, y: 0 }}
@@ -42,7 +42,7 @@ const GiftCardsScreen = () => {
               <Text style={styles.cardSubtitle}>Balance: $100.00</Text>
             </View>
           </View>
-          <TouchableOpacity activeOpacity={0.8}>
+          <TouchableOpacity activeOpacity={0.8} onPress={() => router.push('/(points)/redeem-confirm' as any)}>
             <LinearGradient
               colors={[DS.purple, DS.pink] as const}
               start={{ x: 0, y: 0 }}

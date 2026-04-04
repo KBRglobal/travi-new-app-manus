@@ -20,7 +20,7 @@ const ReferralsScreen = () => {
           <MaterialIcons name="card-giftcard" size={30} color={DS.purple} />
           <Text style={styles.cardTitle}>Your Referral Code</Text>
           <Text style={styles.referralCode}>TRAVIREF123</Text>
-          <TouchableOpacity onPress={() => {}}>
+          <TouchableOpacity onPress={() => router.push('/(social)/discover' as any)}>
             <LinearGradient
               colors={[DS.purple, DS.pink] as const}
               start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}

@@ -22,7 +22,8 @@ export default function DestinationGuide() {
         <Text style={styles.headerText}>Explore Top Destinations</Text>
 
         {destinations.map((destination) => (
-          <BlurView key={destination.id} intensity={20} style={styles.glassCard}>
+          <TouchableOpacity key={destination.id} activeOpacity={0.8} onPress={() => router.push('/(tabs)/plan-trip' as any)}>
+          <BlurView intensity={20} style={styles.glassCard}>
             <View style={styles.cardContent}>
               <MaterialIcons name={destination.icon as any} size={24} color={DS.purple} style={styles.cardIcon} />
               <View style={styles.cardTextContainer}>
@@ -32,9 +33,10 @@ export default function DestinationGuide() {
               <MaterialIcons name="arrow-forward-ios" size={18} color={DS.muted} />
             </View>
           </BlurView>
+          </TouchableOpacity>
         ))}
 
-        <TouchableOpacity activeOpacity={0.8} style={styles.ctaButton}>
+        <TouchableOpacity activeOpacity={0.8} style={styles.ctaButton} onPress={() => router.push('/(tabs)/plan-trip' as any)}>
           <LinearGradient
             colors={[DS.purple, DS.pink] as const}
             start={{ x: 0, y: 0 }}

@@ -17,7 +17,7 @@ const RedeemConfirm = () => {
           <Text style={styles.message}>You are about to redeem your points for a reward. Please confirm your selection.</Text>
           
           <View style={styles.buttonContainer}>
-            <TouchableOpacity style={styles.button} onPress={() => { /* Handle confirmation */ }}>
+            <TouchableOpacity style={styles.button} onPress={() => router.replace('/(points)/dashboard' as any)}>
               <LinearGradient
                 colors={[DS.purple, DS.pink] as const}
                 start={{ x: 0, y: 0 }}
@@ -27,7 +27,7 @@ const RedeemConfirm = () => {
                 <Text style={styles.buttonText}>Confirm</Text>
               </LinearGradient>
             </TouchableOpacity>
-            <TouchableOpacity style={[styles.button, styles.cancelButton]} onPress={() => { /* Handle cancellation */ }}>
+            <TouchableOpacity style={[styles.button, styles.cancelButton]} onPress={() => router.back()}>
               <Text style={styles.cancelButtonText}>Cancel</Text>
             </TouchableOpacity>
           </View>

@@ -62,7 +62,7 @@ export default function MembershipScreen() {
               </View>
             ))}
             {!plan.current && (
-              <Pressable style={{ marginTop: 16 }}>
+              <Pressable style={{ marginTop: 16 }} onPress={() => router.push('/(trip)/checkout' as any)}>
                 <LinearGradient colors={[DS.purple, DS.pink] as const} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={s.upgradeBtn}>
                   <Text style={s.upgradeBtnText}>Upgrade to {plan.name}</Text>
                 </LinearGradient>

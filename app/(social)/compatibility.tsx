@@ -33,7 +33,7 @@ const CompatibilityScreen = () => {
             <Text style={styles.cardBody}>
               Your current compatibility score is 85%. Explore profiles to see detailed breakdowns.
             </Text>
-            <TouchableOpacity style={styles.button}>
+            <TouchableOpacity style={styles.button} onPress={() => router.push('/(social)/discover' as any)}>
               <LinearGradient
                 colors={[DS.purple, DS.pink] as const}
                 start={{ x: 0, y: 0 }}
@@ -55,7 +55,7 @@ const CompatibilityScreen = () => {
           </Text>
         </View>
 
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity style={styles.button} onPress={() => router.back()}>
           <LinearGradient
             colors={[DS.purple, DS.pink] as const}
             start={{ x: 0, y: 0 }}

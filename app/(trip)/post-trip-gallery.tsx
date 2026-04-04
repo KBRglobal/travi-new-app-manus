@@ -34,7 +34,7 @@ const PostTripGallery = () => {
           </BlurView>
         ))}
       </View>
-      <TouchableOpacity style={styles.button}>
+      <TouchableOpacity style={styles.button} onPress={() => router.replace('/(tabs)/trips' as any)}>
         <LinearGradient
           colors={[DS.purple, DS.pink] as const}
           start={{ x: 0, y: 0 }}
