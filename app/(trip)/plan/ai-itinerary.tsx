@@ -25,7 +25,7 @@ export default function AIItinerary() {
  <Text className="text-white text-xl font-bold">AI Itinerary Generator</Text>
  </View>
 
- <ScrollView removeClippedSubviews={true} className="flex-1 px-4">
+ <ScrollView className="flex-1 px-4">
  {step === 1 && (
  <View>
  <View className="items-center py-8">

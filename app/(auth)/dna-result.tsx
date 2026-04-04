@@ -52,7 +52,7 @@ export default function DNAResultScreen() {
  const topDimensions = [...dimensions].sort((a, b) => b.value - a.value).slice(0, 3);
 
  return (
- <ScrollView removeClippedSubviews={true} className="flex-1 bg-bg-primary px-6" contentContainerClassName="pt-safe pb-8">
+ <ScrollView className="flex-1 bg-bg-primary px-6" contentContainerClassName="pt-safe pb-8">
  <Animated.View style={titleStyle} className="items-center mb-8">
  <Ionicons name="flask" size={24} color="#FFFFFF" />
  <Text className="text-white text-heading-1 text-center mb-2">Your Travel DNA</Text>

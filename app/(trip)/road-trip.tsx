@@ -40,7 +40,7 @@ export default function RoadTripScreen() {
  </TouchableOpacity>
 
  {/* Stops list */}
- <ScrollView removeClippedSubviews={true} className="flex-1" contentContainerClassName="px-6 py-4 pb-24">
+ <ScrollView className="flex-1" contentContainerClassName="px-6 py-4 pb-24">
  <Text className="text-white text-heading-3 mb-4">Stops</Text>
  {stops.map((stop, i) => (
  <Animated.View key={stop.id} entering={FadeInDown.delay(i * 100)}>

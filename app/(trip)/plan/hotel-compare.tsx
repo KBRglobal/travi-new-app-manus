@@ -39,7 +39,7 @@ export default function HotelCompare() {
  <Text className="text-white text-xl font-bold">Compare Hotels (3)</Text>
  </View>
 
- <ScrollView removeClippedSubviews={true} className="flex-1 px-4" horizontal={false}>
+ <ScrollView className="flex-1 px-4" horizontal={false}>
  <ScrollView horizontal showsHorizontalScrollIndicator={false}>
  <View>
  <View className="flex-row mb-2">

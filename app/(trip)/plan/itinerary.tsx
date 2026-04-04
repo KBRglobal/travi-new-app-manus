@@ -35,7 +35,7 @@ export default function ItineraryBuilder() {
         </TouchableOpacity>
       </View>
 
-      <ScrollView removeClippedSubviews={true} className="flex-1 px-4">
+      <ScrollView className="flex-1 px-4">
         {DAYS.map(day => (
           <View key={day.day} className="mb-4">
             <Text className="text-white font-bold text-lg mb-2">Day {day.day} — {day.title}</Text>

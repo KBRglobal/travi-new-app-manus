@@ -44,7 +44,7 @@ function Sidebar() {
           TRAVI
         </Text>
       </View>
-      <ScrollView removeClippedSubviews={true} className="flex-1">
+      <ScrollView className="flex-1">
         {menuItems.map((item) => (
           <TouchableOpacity
             key={item.route}

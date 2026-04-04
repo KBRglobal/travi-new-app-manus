@@ -21,7 +21,7 @@ export default function ProfileScreen() {
 
  return (
  <View className="flex-1 bg-bg-primary">
- <ScrollView removeClippedSubviews={true} className="flex-1 px-4 pt-12">
+ <ScrollView className="flex-1 px-4 pt-12">
  <View className="items-center mb-6">
  <View className="w-20 h-20 bg-primary rounded-full items-center justify-center mb-3">
  <Text className="text-white text-3xl font-bold">U</Text>

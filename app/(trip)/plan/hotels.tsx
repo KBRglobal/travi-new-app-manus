@@ -36,7 +36,7 @@ export default function HotelSelect() {
 
  {selectMode && <Text className="text-text-secondary text-center mb-2">Long press to select, then compare</Text>}
 
- <ScrollView removeClippedSubviews={true} className="flex-1 px-4">
+ <ScrollView className="flex-1 px-4">
  {HOTELS.map(hotel => (
  <TouchableOpacity
  key={hotel.id}

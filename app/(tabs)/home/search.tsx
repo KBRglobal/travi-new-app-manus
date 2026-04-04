@@ -29,7 +29,7 @@ export default function SearchScreen() {
         />
       </View>
 
-      <ScrollView removeClippedSubviews={true} contentContainerClassName="px-4 md:px-6 mt-6">
+      <ScrollView contentContainerClassName="px-4 md:px-6 mt-6">
         {/* Recent */}
         <Text className="text-text-secondary text-sm font-semibold mb-3">Recent</Text>
         {RECENT.map((item) => (

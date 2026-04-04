@@ -95,7 +95,7 @@ export default function DestinationSelect() {
       </View>
 
       {/* Suggestions */}
-      <ScrollView removeClippedSubviews={true} style={{ flex: 1, paddingHorizontal: 16, marginTop: 16 }} contentContainerStyle={{ paddingBottom: 32 }}>
+      <ScrollView style={{ flex: 1, paddingHorizontal: 16, marginTop: 16 }} contentContainerStyle={{ paddingBottom: 32 }}>
         <Text style={{ fontFamily: fonts.bold, fontSize: fontSizes.bodyLg, color: colors.text.primary, marginBottom: 12 }}>AI Suggestions for You</Text>
         {SUGGESTIONS.map((dest) => (
           <TouchableOpacity

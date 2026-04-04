@@ -34,7 +34,7 @@ export default function HotelCompareScreen() {
  };
 
  return (
- <ScrollView removeClippedSubviews={true} className="flex-1 bg-bg-primary" contentContainerClassName="pt-safe pb-24">
+ <ScrollView className="flex-1 bg-bg-primary" contentContainerClassName="pt-safe pb-24">
  <View className="px-6 flex-row items-center justify-between mb-6">
  <TouchableOpacity onPress={() => router.back()}><Text className="text-white text-xl">‹ Back</Text></TouchableOpacity>
  <Text className="text-white text-heading-3">Compare Hotels</Text>

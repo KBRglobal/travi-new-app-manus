@@ -14,7 +14,7 @@ export default function KYCScreen() {
   const steps = ['Identity', 'Document', 'Verify'];
 
   return (
-    <ScrollView removeClippedSubviews={true} className="flex-1 bg-bg-primary pt-safe">
+    <ScrollView className="flex-1 bg-bg-primary pt-safe">
       <View className="flex-row items-center px-4 py-3">
         <TouchableOpacity onPress={() => step > 1 ? setStep(step - 1) : router.back()}><Text className="text-white text-lg">←</Text></TouchableOpacity>
         <Text className="text-white text-xl font-bold ml-3">Identity Verification</Text>

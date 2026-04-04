@@ -23,7 +23,7 @@ export default function ExploreScreen() {
  <TextInput className="bg-bg-card rounded-input p-3 text-white mb-4" placeholder="Search destinations..." placeholderTextColor="rgba(255,255,255,0.3)" />
  </View>
 
- <ScrollView removeClippedSubviews={true} horizontal showsHorizontalScrollIndicator={false} className="px-4 mb-4" style={{ maxHeight: 40 }}>
+ <ScrollView horizontal showsHorizontalScrollIndicator={false} className="px-4 mb-4" style={{ maxHeight: 40 }}>
  {FILTERS.map(f => (
  <TouchableOpacity
  key={f}

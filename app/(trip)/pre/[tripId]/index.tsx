@@ -24,7 +24,7 @@ export default function PreTripDashboard() {
  <Text className="text-white text-xl font-bold">Pre-Trip Dashboard</Text>
  </View>
 
- <ScrollView removeClippedSubviews={true} className="flex-1 px-4">
+ <ScrollView className="flex-1 px-4">
  <View className="bg-bg-card rounded-card p-6 mb-4">
  <Text className="text-white text-2xl font-bold mb-1">Dubai Adventure</Text>
  <Text className="text-primary">Departing in 5 days</Text>

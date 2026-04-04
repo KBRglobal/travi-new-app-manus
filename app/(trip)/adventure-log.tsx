@@ -19,7 +19,7 @@ export default function AdventureLogScreen() {
  const [tab, setTab] = useState<'map' | 'achievements' | 'timeline'>('map');
 
  return (
- <ScrollView removeClippedSubviews={true} className="flex-1 bg-bg-primary" contentContainerClassName="pt-safe pb-24 px-6">
+ <ScrollView className="flex-1 bg-bg-primary" contentContainerClassName="pt-safe pb-24 px-6">
  <View className="flex-row items-center justify-between mb-4">
  <TouchableOpacity onPress={() => router.back()}><Text className="text-white text-xl">‹ Back</Text></TouchableOpacity>
  <Text className="text-white text-heading-3">Adventure Log</Text>

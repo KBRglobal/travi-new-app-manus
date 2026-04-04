@@ -47,7 +47,7 @@ export default function CollabPlanning() {
  </View>
  </View>
 
- <ScrollView removeClippedSubviews={true} className="flex-1 px-4">
+ <ScrollView className="flex-1 px-4">
  {ACTIVITIES.map((act, i) => (
  <View key={act.name} className="bg-bg-card rounded-card p-4 mb-3" style={{ opacity: act.locked ? 0.7 : 1 }}>
  <View className="flex-row items-center justify-between">

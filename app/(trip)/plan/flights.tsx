@@ -30,7 +30,7 @@ export default function FlightSelect() {
  </TouchableOpacity>
  </View>
 
- <ScrollView removeClippedSubviews={true} horizontal showsHorizontalScrollIndicator={false} className="px-4 mb-3" style={{ maxHeight: 40 }}>
+ <ScrollView horizontal showsHorizontalScrollIndicator={false} className="px-4 mb-3" style={{ maxHeight: 40 }}>
  {SORT_TABS.map(tab => (
  <TouchableOpacity
  key={tab}

@@ -60,7 +60,7 @@ export default function InterestsScreen() {
       </View>
       <Text style={{ paddingHorizontal: 20, fontFamily: fonts.body, fontSize: fontSizes.caption, color: colors.text.muted, marginBottom: 8 }}>Step 4 of 7</Text>
 
-      <ScrollView removeClippedSubviews={true} contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 120 }}>
+      <ScrollView contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 120 }}>
         <Text style={{ fontFamily: fonts.heading, fontSize: fontSizes.h1, color: colors.text.primary, marginTop: 8 }}>
           What do you want to do in {destination}?
         </Text>

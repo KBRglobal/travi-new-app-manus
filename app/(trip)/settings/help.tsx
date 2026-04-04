@@ -17,7 +17,7 @@ export default function HelpScreen() {
   const [expanded, setExpanded] = React.useState<string | null>(null);
 
   return (
-    <ScrollView removeClippedSubviews={true} className="flex-1 bg-bg-primary pt-safe">
+    <ScrollView className="flex-1 bg-bg-primary pt-safe">
       <View className="flex-row items-center px-4 py-3 mb-2">
         <TouchableOpacity onPress={() => router.back()}><Text className="text-white text-lg">←</Text></TouchableOpacity>
         <Text className="text-white text-xl font-bold ml-3">Help & FAQ</Text>

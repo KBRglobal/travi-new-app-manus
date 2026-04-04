@@ -29,7 +29,7 @@ export default function SettingsScreen() {
  <Pressable onPress={() => router.back()} className="p-2 -ml-2"><Text className="text-white text-2xl">‹</Text></Pressable>
  <Text className="text-white text-xl font-bold ml-3">Settings</Text>
  </View>
- <ScrollView removeClippedSubviews={true} contentContainerClassName="px-4 md:px-6 py-6 pb-24">
+ <ScrollView contentContainerClassName="px-4 md:px-6 py-6 pb-24">
  {sections.map((section) => (
  <View key={section.title} className="w-full max-w-md mx-auto mb-6">
  <Text className="text-text-secondary text-sm font-semibold mb-3">{section.title}</Text>

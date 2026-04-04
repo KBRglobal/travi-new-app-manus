@@ -25,7 +25,7 @@ export default function ProfileScreen() {
  ];
 
  return (
- <ScrollView removeClippedSubviews={true} className="flex-1 bg-bg-primary" contentContainerClassName="pt-safe pb-24">
+ <ScrollView className="flex-1 bg-bg-primary" contentContainerClassName="pt-safe pb-24">
  {/* Profile Header */}
  <Animated.View entering={FadeInDown} className="items-center px-6 mb-6">
  <CachedImage source={{ uri: currentUser.avatar }} className="w-24 h-24 rounded-full mb-3 border-2 border-primary" />

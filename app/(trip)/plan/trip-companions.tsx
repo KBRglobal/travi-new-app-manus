@@ -70,7 +70,7 @@ export default function TripCompanionsScreen() {
         </View>
       </View>
 
-      <ScrollView removeClippedSubviews={true} contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 120 }}>
+      <ScrollView contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 120 }}>
         {/* All Confirmed Banner */}
         {allConfirmed && (
           <View style={{ marginBottom: 16, padding: 16, backgroundColor: 'rgba(74,222,128,0.15)', borderRadius: radius.card, flexDirection: 'row', alignItems: 'center', gap: 12 }}>

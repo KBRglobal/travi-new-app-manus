@@ -25,7 +25,7 @@ export default function Expenses() {
         <Text className="text-white text-xl font-bold">Expenses</Text>
       </View>
 
-      <ScrollView removeClippedSubviews={true} className="flex-1 px-4">
+      <ScrollView className="flex-1 px-4">
         <View className="bg-bg-card rounded-card p-4 mb-2">
           <View className="flex-row justify-between mb-2">
             <Text className="text-text-secondary">Budget: €1,500</Text>

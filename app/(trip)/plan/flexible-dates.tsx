@@ -30,7 +30,7 @@ export default function FlexibleDates() {
         <Text className="text-white text-xl font-bold">Cheapest Days to Fly</Text>
       </View>
 
-      <ScrollView removeClippedSubviews={true} className="flex-1 px-4">
+      <ScrollView className="flex-1 px-4">
         <View className="flex-row justify-between items-center mb-4">
           <TouchableOpacity><Text className="text-primary text-lg">← Prev</Text></TouchableOpacity>
           <Text className="text-white text-lg font-bold">{month}</Text>

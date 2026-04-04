@@ -30,7 +30,7 @@ export default function DigitalNomadHub() {
  <TouchableOpacity><Text className="text-primary">Dubai</Text></TouchableOpacity>
  </View>
 
- <ScrollView removeClippedSubviews={true} className="flex-1 px-4">
+ <ScrollView className="flex-1 px-4">
  <View className="bg-bg-card rounded-card p-6 mb-4">
  <Text className="text-white text-lg font-bold mb-3">Nomad Score</Text>
  <View className="items-center mb-4">

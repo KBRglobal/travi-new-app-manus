@@ -24,7 +24,7 @@ export default function FlightStatusLive() {
         <Text className="text-white text-xl font-bold flex-1">Flight Status</Text>
       </View>
 
-      <ScrollView removeClippedSubviews={true} className="flex-1 px-4">
+      <ScrollView className="flex-1 px-4">
         <Text className="text-white text-2xl font-bold mb-2">EK001 · Dubai → London</Text>
 
         <View className="rounded-card p-4 mb-4 items-center" style={{ backgroundColor: STATUS_COLORS[status] + '20', borderWidth: 1, borderColor: STATUS_COLORS[status] }}>

@@ -151,7 +151,7 @@ export default function PackingListScreen() {
       )}
 
       {/* Categories */}
-      <ScrollView removeClippedSubviews={true} contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 120 }}>
+      <ScrollView contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 120 }}>
         {CATEGORIES.map((cat) => {
           const items = itemsByCategory[cat.id];
           const isExpanded = expandedCategories.includes(cat.id);

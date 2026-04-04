@@ -8,7 +8,7 @@ export default function CelebrationScreen() {
  const router = useRouter();
 
  return (
- <ScrollView removeClippedSubviews={true} className="flex-1 bg-bg-primary" contentContainerStyle={{ alignItems: 'center', paddingVertical: 60 }}>
+ <ScrollView className="flex-1 bg-bg-primary" contentContainerStyle={{ alignItems: 'center', paddingVertical: 60 }}>
  <Ionicons name="sparkles" size={24} color="#FFFFFF" />
  <Text className="text-white text-3xl font-bold mb-2">Trip Complete!</Text>
  <Text className="text-white/60 text-center px-8 mb-8">What an amazing journey to Tokyo! Here are your trip highlights.</Text>

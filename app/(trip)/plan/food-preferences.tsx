@@ -73,7 +73,7 @@ export default function FoodPreferencesScreen() {
       </View>
       <Text style={{ paddingHorizontal: 20, fontFamily: fonts.body, fontSize: fontSizes.caption, color: colors.text.muted, marginBottom: 8 }}>Step 3 of 7</Text>
 
-      <ScrollView removeClippedSubviews={true} contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 120 }}>
+      <ScrollView contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 120 }}>
         <Text style={{ fontFamily: fonts.heading, fontSize: fontSizes.h1, color: colors.text.primary, marginTop: 8 }}>What do you eat?</Text>
         <Text style={{ fontFamily: fonts.body, fontSize: fontSizes.bodySm, color: colors.text.secondary, marginTop: 4, marginBottom: 24 }}>We'll find the best restaurants in {destination}</Text>
 

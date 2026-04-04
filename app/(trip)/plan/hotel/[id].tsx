@@ -13,7 +13,7 @@ export default function HotelDetailScreen() {
  <Text className="text-white text-xl">‹</Text>
  </Pressable>
  </View>
- <ScrollView removeClippedSubviews={true} contentContainerClassName="px-4 md:px-6 pb-32">
+ <ScrollView contentContainerClassName="px-4 md:px-6 pb-32">
  <Text className="text-2xl md:text-3xl font-bold text-white mt-4">Hotel {id}</Text>
  <Text className="text-text-secondary text-sm mt-1">⭐⭐⭐⭐ · 4.5 rating</Text>
  <Text className="text-primary text-lg font-bold mt-2">€120/night</Text>

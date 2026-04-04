@@ -29,7 +29,7 @@ export default function VisaPassport() {
  <Text className="text-white text-xl font-bold">Visa Requirements</Text>
  </View>
 
- <ScrollView removeClippedSubviews={true} className="flex-1 px-4">
+ <ScrollView className="flex-1 px-4">
  <View className="flex-row justify-between mb-4">
  <View className="flex-row items-center">
  <Text className="text-2xl mr-2">🇮🇱</Text>

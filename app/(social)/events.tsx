@@ -32,7 +32,7 @@ export default function EventsScreen() {
  <Text className="text-white text-xl font-bold">Events</Text>
  <TouchableOpacity><Text className="text-primary text-sm">Create</Text></TouchableOpacity>
  </View>
- <ScrollView removeClippedSubviews={true} horizontal showsHorizontalScrollIndicator={false} className="px-4 mb-3" contentContainerStyle={{ gap: 8 }}>
+ <ScrollView horizontal showsHorizontalScrollIndicator={false} className="px-4 mb-3" contentContainerStyle={{ gap: 8 }}>
  {['all', 'going', 'meetup', 'food', 'adventure', 'culture'].map(f => (
  <TouchableOpacity key={f} onPress={() => setFilter(f)} className={`px-4 py-2 rounded-full ${filter === f ? 'bg-primary' : 'bg-white/[0.05]'}`}>
  <Text className={`text-sm capitalize ${filter === f ? 'text-white font-bold' : 'text-white/60'}`}>{f}</Text>

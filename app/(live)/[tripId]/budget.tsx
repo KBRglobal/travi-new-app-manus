@@ -36,7 +36,7 @@ export default function BudgetManager() {
  <TouchableOpacity><Text className="text-primary">Edit</Text></TouchableOpacity>
  </View>
 
- <ScrollView removeClippedSubviews={true} className="flex-1 px-4">
+ <ScrollView className="flex-1 px-4">
  <View className="bg-bg-card rounded-card p-6 mb-4">
  <Text className="text-text-secondary mb-1">Total Budget</Text>
  <Text className="text-white text-3xl font-bold mb-2">€{totalBudget.toLocaleString()}</Text>

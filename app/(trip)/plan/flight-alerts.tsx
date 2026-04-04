@@ -34,7 +34,7 @@ export default function FlightPriceAlerts() {
  </TouchableOpacity>
  </View>
 
- <ScrollView removeClippedSubviews={true} className="flex-1 px-4">
+ <ScrollView className="flex-1 px-4">
  {MOCK_ALERTS.map((alert) => {
  const style = STATUS_STYLES[alert.status] || STATUS_STYLES.watching;
  return (

@@ -41,7 +41,7 @@ export default function DNACategoriesScreen() {
  </View>
  </View>
 
- <ScrollView removeClippedSubviews={true} contentContainerClassName="px-6 md:px-12 pb-32">
+ <ScrollView contentContainerClassName="px-6 md:px-12 pb-32">
  <Text className="text-2xl md:text-3xl font-bold text-white mt-6">What do you love?</Text>
  <Text className="text-sm md:text-base text-text-secondary mt-2">
  Pick everything that speaks to you

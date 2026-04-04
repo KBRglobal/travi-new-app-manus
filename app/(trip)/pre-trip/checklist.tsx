@@ -39,7 +39,7 @@ export default function ChecklistScreen() {
   const doneItems = categories.reduce((sum, c) => sum + c.items.filter(i => i.done).length, 0);
 
   return (
-    <ScrollView removeClippedSubviews={true} className="flex-1 bg-bg-primary pt-safe">
+    <ScrollView className="flex-1 bg-bg-primary pt-safe">
       <View className="flex-row items-center px-4 py-3">
         <TouchableOpacity onPress={() => router.back()}><Text className="text-white text-lg">←</Text></TouchableOpacity>
         <Text className="text-white text-xl font-bold ml-3">Pre-Trip Checklist</Text>

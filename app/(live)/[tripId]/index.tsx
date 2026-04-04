@@ -28,7 +28,7 @@ export default function LiveDashboard() {
  <Text className="text-primary">Day 3 of 7</Text>
  </View>
 
- <ScrollView removeClippedSubviews={true} className="flex-1 px-4">
+ <ScrollView className="flex-1 px-4">
  <View className="bg-bg-card rounded-card p-4 mb-4">
  <Text className="text-white font-bold mb-2">Next Up</Text>
  <Text className="text-primary text-lg font-bold">Desert Safari — 2:00 PM</Text>

@@ -18,7 +18,7 @@ export default function TripSummary() {
         <Text className="text-white text-xl font-bold">Trip Summary</Text>
       </View>
 
-      <ScrollView removeClippedSubviews={true} className="flex-1 px-4">
+      <ScrollView className="flex-1 px-4">
         <View className="bg-bg-card rounded-card p-6 mb-4 items-center">
           <Text className="text-white text-2xl font-bold mb-1">Dubai Adventure</Text>
           <Text className="text-primary text-lg">April 10 - 17, 2026</Text>

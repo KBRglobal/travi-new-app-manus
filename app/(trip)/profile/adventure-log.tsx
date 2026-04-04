@@ -37,7 +37,7 @@ export default function AdventureLog() {
  </TouchableOpacity>
  </View>
 
- <ScrollView removeClippedSubviews={true} className="flex-1 px-4">
+ <ScrollView className="flex-1 px-4">
  <View className="bg-bg-card rounded-card items-center justify-center mb-4" style={{ height: 200 }}>
  <Text className="text-text-muted">{scratchMode ? '[ Scratch Map — reveal countries ]' : '[ Interactive World Map ]'}</Text>
  <Text className="text-primary mt-2">23 countries visited</Text>

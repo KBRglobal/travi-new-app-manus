@@ -13,7 +13,7 @@ export default function UserProfileScreen() {
  const user = { name: 'Sarah K.', avatar: 'person', bio: 'Foodie traveler exploring the world one bite at a time', trips: 8, countries: 12, reviews: 23, dna: ['Food 95%', 'Culture 88%', 'Adventure 72%'], badges: ['Top Reviewer', 'Globe Trotter', 'Foodie Master'] };
 
  return (
- <ScrollView removeClippedSubviews={true} className="flex-1 bg-bg-primary pt-safe">
+ <ScrollView className="flex-1 bg-bg-primary pt-safe">
  <View className="flex-row items-center justify-between px-4 py-3">
  <TouchableOpacity onPress={() => router.back()}><Text className="text-white text-lg">←</Text></TouchableOpacity>
  <TouchableOpacity><Text className="text-white/40 text-xl">···</Text></TouchableOpacity>

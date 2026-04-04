@@ -11,7 +11,7 @@ export default function HomeScreen() {
 
  return (
  <View className="flex-1" style={{ backgroundColor: colors.bg.primary }}>
- <ScrollView removeClippedSubviews={true} className="flex-1 px-4 pt-12">
+ <ScrollView className="flex-1 px-4 pt-12">
  {/* Header */}
  <View className="flex-row justify-between items-center mb-6">
  <View>
@@ -139,7 +139,7 @@ export default function HomeScreen() {
  borderColor: colors.border.default,
  }}
  >
- <Text style={{ fontSize: 24, marginBottom: 4 }}>{action.icon}</Text>
+ <Ionicons name={action.iconName as any} size={24} color={colors.primary} style={{ marginBottom: 4 }} />
  <Text style={{ fontFamily: fonts.bold, fontSize: fontSizes.bodySm, color: colors.text.primary }}>{action.label}</Text>
  </TouchableOpacity>
  ))}

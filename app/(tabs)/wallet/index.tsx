@@ -15,7 +15,7 @@ export default function WalletScreen() {
 
  return (
  <View className="flex-1 bg-bg-primary">
- <ScrollView removeClippedSubviews={true} className="flex-1 px-4 pt-12">
+ <ScrollView className="flex-1 px-4 pt-12">
  <Text className="text-white text-2xl font-bold mb-6">Wallet</Text>
 
  <View className="bg-primary rounded-card p-6 mb-6">

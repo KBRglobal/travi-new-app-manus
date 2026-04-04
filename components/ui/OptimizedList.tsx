@@ -57,7 +57,6 @@ export function OptimizedList<T extends Record<string, any>>({
       renderItem={memoizedRenderItem}
       keyExtractor={keyExtractor}
       getItemLayout={getItemLayout}
-      removeClippedSubviews={true}
       maxToRenderPerBatch={10}
       windowSize={5}
       initialNumToRender={10}
@@ -101,7 +100,6 @@ export function OptimizedHorizontalList<T extends Record<string, any>>({
       keyExtractor={keyExtractor}
       horizontal
       showsHorizontalScrollIndicator={false}
-      removeClippedSubviews={true}
       maxToRenderPerBatch={5}
       windowSize={3}
       {...rest}

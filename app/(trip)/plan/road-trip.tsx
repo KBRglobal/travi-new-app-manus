@@ -36,7 +36,7 @@ export default function RoadTrip() {
  <Text className="text-text-secondary">Est. drive: 4h 20min</Text>
  </View>
 
- <ScrollView removeClippedSubviews={true} className="flex-1 px-4">
+ <ScrollView className="flex-1 px-4">
  {STOPS.map((stop, i) => (
  <View key={stop.num}>
  <TouchableOpacity className="bg-bg-card rounded-card p-4 mb-1">

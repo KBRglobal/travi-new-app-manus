@@ -23,7 +23,7 @@ export default function LiveDashboardScreen() {
  const minutesUntilNext = 45;
 
  return (
- <ScrollView removeClippedSubviews={true} className="flex-1 bg-bg-primary" contentContainerClassName="pt-safe pb-24">
+ <ScrollView className="flex-1 bg-bg-primary" contentContainerClassName="pt-safe pb-24">
  {/* Live indicator */}
  <View className="px-6 flex-row items-center justify-between mb-6">
  <View className="flex-row items-center">

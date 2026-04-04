@@ -1,7 +1,7 @@
 import { Tabs, Redirect } from 'expo-router';
-import { Text } from 'react-native';
 import { useResponsive } from '@/hooks/useResponsive';
-import { colors, fonts, fontSizes } from '@/constants/theme';
+import { colors, fonts } from '@/constants/theme';
+import { Ionicons } from '@expo/vector-icons';
 
 // Main App: 6 Bottom Tabs (mobile) / Redirect to drawer (tablet+)
 export default function TabsLayout() {
@@ -35,42 +35,42 @@ export default function TabsLayout() {
         name="home"
         options={{
           title: 'Home',
-          tabBarIcon: ({ color }) => <Text style={{ color, fontSize: 22 }}><Ionicons name="home" size={16} color="#FFFFFF" /></Text>,
+          tabBarIcon: ({ color, size }) => <Ionicons name="home" size={size} color={color} />,
         }}
       />
       <Tabs.Screen
         name="trips"
         options={{
           title: 'Trips',
-          tabBarIcon: ({ color }) => <Text style={{ color, fontSize: 22 }}><Ionicons name="airplane" size={16} color="#FFFFFF" /></Text>,
+          tabBarIcon: ({ color, size }) => <Ionicons name="airplane" size={size} color={color} />,
         }}
       />
       <Tabs.Screen
         name="wallet"
         options={{
           title: 'Wallet',
-          tabBarIcon: ({ color }) => <Text style={{ color, fontSize: 22 }}><Ionicons name="card" size={16} color="#FFFFFF" /></Text>,
+          tabBarIcon: ({ color, size }) => <Ionicons name="card" size={size} color={color} />,
         }}
       />
       <Tabs.Screen
         name="explore"
         options={{
           title: 'Explore',
-          tabBarIcon: ({ color }) => <Text style={{ color, fontSize: 22 }}><Ionicons name="compass" size={16} color="#FFFFFF" /></Text>,
+          tabBarIcon: ({ color, size }) => <Ionicons name="compass" size={size} color={color} />,
         }}
       />
       <Tabs.Screen
         name="points"
         options={{
           title: 'Points',
-          tabBarIcon: ({ color }) => <Text style={{ color, fontSize: 22 }}><Ionicons name="star" size={16} color="#FFFFFF" /></Text>,
+          tabBarIcon: ({ color, size }) => <Ionicons name="star" size={size} color={color} />,
         }}
       />
       <Tabs.Screen
         name="social"
         options={{
           title: 'Social',
-          tabBarIcon: ({ color }) => <Text style={{ color, fontSize: 22 }}><Ionicons name="people" size={16} color="#FFFFFF" /></Text>,
+          tabBarIcon: ({ color, size }) => <Ionicons name="people" size={size} color={color} />,
         }}
       />
     </Tabs>

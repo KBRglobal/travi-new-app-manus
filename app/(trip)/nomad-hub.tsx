@@ -18,7 +18,7 @@ export default function NomadHubScreen() {
   const [tab, setTab] = useState<'cities' | 'coworking' | 'communities'>('cities');
 
   return (
-    <ScrollView removeClippedSubviews={true} className="flex-1 bg-bg-primary" contentContainerClassName="pt-safe pb-24 px-6">
+    <ScrollView className="flex-1 bg-bg-primary" contentContainerClassName="pt-safe pb-24 px-6">
       <View className="flex-row items-center justify-between mb-4">
         <TouchableOpacity onPress={() => router.back()}><Text className="text-white text-xl">‹ Back</Text></TouchableOpacity>
         <Text className="text-white text-heading-3">Nomad Hub</Text>

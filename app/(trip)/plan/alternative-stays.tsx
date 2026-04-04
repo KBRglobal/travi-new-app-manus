@@ -29,7 +29,7 @@ export default function AlternativeStays() {
  </TouchableOpacity>
  </View>
 
- <ScrollView removeClippedSubviews={true} horizontal showsHorizontalScrollIndicator={false} className="px-4 mb-3" style={{ maxHeight: 40 }}>
+ <ScrollView horizontal showsHorizontalScrollIndicator={false} className="px-4 mb-3" style={{ maxHeight: 40 }}>
  {FILTERS.map(f => (
  <TouchableOpacity key={f} onPress={() => setActiveFilter(f)} className={`px-4 py-2 rounded-pill mr-2 ${activeFilter === f ? 'bg-primary' : 'bg-bg-card'}`}>
  <Text className={activeFilter === f ? 'text-white font-semibold' : 'text-text-secondary'}>{f}</Text>

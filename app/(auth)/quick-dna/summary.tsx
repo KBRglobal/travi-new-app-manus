@@ -25,7 +25,7 @@ export default function DNASummaryScreen() {
         <Ionicons name="checkmark" size={24} color="#FFFFFF" />
       </View>
 
-      <ScrollView removeClippedSubviews={true} contentContainerClassName="px-6 md:px-12 pb-32">
+      <ScrollView contentContainerClassName="px-6 md:px-12 pb-32">
         {/* Persona Card */}
         <View className="w-full max-w-md mx-auto mt-8 bg-primary rounded-xl p-6 md:p-8 items-center">
           <Ionicons name="globe" size={24} color="#FFFFFF" />

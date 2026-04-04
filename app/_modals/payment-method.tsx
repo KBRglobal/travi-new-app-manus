@@ -17,7 +17,7 @@ export default function PaymentMethodModal() {
       <View className="bg-bg-card rounded-t-3xl px-6 md:px-12 pt-6 pb-safe">
         <View className="w-10 h-1 bg-white/20 rounded-full self-center mb-6" />
         <Text className="text-white text-xl font-bold">Payment Method</Text>
-        <ScrollView removeClippedSubviews={true} className="mt-4">
+        <ScrollView className="mt-4">
           {methods.map((m) => (
             <Pressable key={m.label} onPress={() => router.back()} className="flex-row items-center py-4 border-b border-white/5 active:opacity-80">
               <Text className="text-2xl mr-3">{m.icon}</Text>
