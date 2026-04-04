@@ -200,3 +200,11 @@
 
 ### Home Dashboard — Ambient Background
 - [x] Apply radial gradient ambient background (purple/pink/blue orbs) to Home Dashboard
+
+### Plan a Trip Card — 5 Variants for User Selection
+- [x] Variant 1: Holographic Portal (animated gradient + plane trail)
+- [x] Variant 2: Glassmorphism + Particles (glass card + floating dots)
+- [x] Variant 3: Gradient Mesh + 3D Icon (mesh bg + large icon)
+- [x] Variant 4: Neon Outline (pulsing neon border + text glow)
+- [x] Variant 5: Animated Map Lines (flight paths + compass)
+- [x] Navigation buttons to switch between variants

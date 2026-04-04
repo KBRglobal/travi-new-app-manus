@@ -19,6 +19,7 @@ import { useRouter } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
 import { Image as ExpoImage } from "expo-image";
 import { IconSymbol } from "@/components/ui/icon-symbol";
+import { PlanTripVariantSelector } from "@/components/plan-trip-variants";
 import * as Haptics from "expo-haptics";
 
 const { width: W } = Dimensions.get("window");
@@ -135,33 +136,9 @@ export default function HomeScreen() {
           </View>
         </View>
 
-        {/* ═══════════════ PLAN A TRIP — HERO ═══════════════ */}
+        {/* ═══════════════ PLAN A TRIP — VARIANT SELECTOR ═══════════════ */}
         <View style={s.section}>
-          <Pressable
-            onPress={() => { haptic(); router.push("/(tabs)/plan-trip" as any); }}
-            style={({ pressed }) => [s.heroCard, pressed && { opacity: 0.93, transform: [{ scale: 0.985 }] }]}
-          >
-            <ExpoImage
-              source={DEST_IMAGES.bali}
-              style={s.heroImage}
-              contentFit="cover"
-              transition={400}
-            />
-            <LinearGradient
-              colors={["transparent", "rgba(8,4,18,0.4)", "rgba(8,4,18,0.92)"]}
-              locations={[0.1, 0.45, 1]}
-              style={s.heroOverlay}
-            />
-            {/* AI frosted pill */}
-            <View style={s.aiPill}>
-              <Text style={s.aiPillText}>AI ✦</Text>
-            </View>
-            {/* Text */}
-            <View style={s.heroTextWrap}>
-              <Text style={s.heroTitle}>Plan a Trip</Text>
-              <Text style={s.heroSub}>Personalized itinerary in minutes</Text>
-            </View>
-          </Pressable>
+          <PlanTripVariantSelector onPress={() => { haptic(); router.push("/(tabs)/plan-trip" as any); }} />
         </View>
 
         {/* ═══════════════ SECONDARY CARDS ═══════════════ */}
