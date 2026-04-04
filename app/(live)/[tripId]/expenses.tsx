@@ -1,11 +1,19 @@
-import { View, Text } from 'react-native';
+import { View, Text, Pressable, ScrollView } from 'react-native';
+import { useRouter } from 'expo-router';
 
-// S39 — Expenses
-export default function ExpensesScreen() {
+export default function Screen() {
+  const router = useRouter();
   return (
-    <View style={{ flex: 1, backgroundColor: '#0A0514', justifyContent: 'center', alignItems: 'center' }}>
-      <Text style={{ color: '#FFFFFF', fontSize: 20, fontWeight: 'bold' }}>S39</Text>
-      <Text style={{ color: 'rgba(255,255,255,0.6)', fontSize: 14, marginTop: 8 }}>Expenses</Text>
+    <View className="flex-1 bg-bg-primary pt-safe">
+      <View className="flex-row items-center px-4 md:px-6 mt-4">
+        <Pressable onPress={() => router.back()} className="p-2 -ml-2">
+          <Text className="text-white text-2xl">‹</Text>
+        </Pressable>
+        <Text className="text-white text-xl md:text-2xl font-bold ml-3">Expenses</Text>
+      </View>
+      <ScrollView contentContainerClassName="px-4 md:px-6 py-6 items-center">
+        
+      </ScrollView>
     </View>
   );
 }

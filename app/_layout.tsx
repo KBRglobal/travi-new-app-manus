@@ -1,10 +1,12 @@
+import '../global.css';
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 // Root Layout: SafeArea + Auth guard
 export default function RootLayout() {
   return (
-    <>
+    <SafeAreaProvider>
       <StatusBar style="light" translucent backgroundColor="transparent" />
       <Stack
         screenOptions={{
@@ -13,28 +15,13 @@ export default function RootLayout() {
           animation: 'fade',
         }}
       >
-        {/* S1 — Splash (entry point) */}
         <Stack.Screen name="index" />
-
-        {/* Auth Flow */}
         <Stack.Screen name="(auth)" />
-
-        {/* Main App — Tabs */}
         <Stack.Screen name="(tabs)" />
-
-        {/* Trip Group — hides tab bar */}
         <Stack.Screen name="(trip)" />
-
-        {/* Live Mode — hides tab bar */}
         <Stack.Screen name="(live)" />
-
-        {/* Social */}
         <Stack.Screen name="(social)" />
-
-        {/* Drawer — tablet+ */}
         <Stack.Screen name="(drawer)" />
-
-        {/* Global Modals */}
         <Stack.Screen
           name="_modals"
           options={{
@@ -43,6 +30,6 @@ export default function RootLayout() {
           }}
         />
       </Stack>
-    </>
+    </SafeAreaProvider>
   );
 }

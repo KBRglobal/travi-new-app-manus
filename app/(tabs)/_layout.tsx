@@ -1,8 +1,15 @@
-import { Tabs } from 'expo-router';
+import { Tabs, Redirect } from 'expo-router';
 import { Text } from 'react-native';
+import { useResponsive } from '@/hooks/useResponsive';
 
-// Main App: 6 Bottom Tabs
+// Main App: 6 Bottom Tabs (mobile) / Redirect to drawer (tablet+)
 export default function TabsLayout() {
+  const { isPhone } = useResponsive();
+
+  if (!isPhone) {
+    return <Redirect href="/(drawer)" />;
+  }
+
   return (
     <Tabs
       screenOptions={{

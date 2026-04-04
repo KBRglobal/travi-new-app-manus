@@ -1,11 +1,30 @@
-import { View, Text } from 'react-native';
+import { View, Text, Pressable, ScrollView } from 'react-native';
+import { useRouter } from 'expo-router';
 
-// S99 — Referrals
 export default function ReferralsScreen() {
+  const router = useRouter();
   return (
-    <View style={{ flex: 1, backgroundColor: '#0A0514', justifyContent: 'center', alignItems: 'center' }}>
-      <Text style={{ color: '#FFFFFF', fontSize: 20, fontWeight: 'bold' }}>S99</Text>
-      <Text style={{ color: 'rgba(255,255,255,0.6)', fontSize: 14, marginTop: 8 }}>Referrals</Text>
+    <View className="flex-1 bg-bg-primary pt-safe">
+      <View className="flex-row items-center px-4 md:px-6 mt-4">
+        <Pressable onPress={() => router.back()} className="p-2 -ml-2"><Text className="text-white text-2xl">‹</Text></Pressable>
+        <Text className="text-white text-xl font-bold ml-3">Invite Friends</Text>
+      </View>
+      <ScrollView contentContainerClassName="px-4 md:px-6 py-6 items-center">
+        <View className="w-full max-w-md items-center">
+          <Text className="text-5xl">👥</Text>
+          <Text className="text-2xl font-bold text-white mt-4">Earn 500 Points</Text>
+          <Text className="text-text-secondary text-sm mt-2 text-center">For every friend who joins and completes their first trip</Text>
+          <View className="w-full bg-white/5 rounded-card p-4 mt-6 items-center">
+            <Text className="text-text-secondary text-xs">Your referral code</Text>
+            <Text className="text-white text-2xl font-bold mt-1 tracking-widest">TRAVI2024</Text>
+          </View>
+          <Pressable className="w-full h-14 bg-primary rounded-button items-center justify-center mt-6 active:opacity-80">
+            <Text className="text-white text-base font-semibold">Share Invite Link</Text>
+          </Pressable>
+          <Text className="text-lg font-bold text-white mt-8 self-start">Your Referrals</Text>
+          <Text className="text-text-secondary text-sm mt-2 self-start">No referrals yet</Text>
+        </View>
+      </ScrollView>
     </View>
   );
 }

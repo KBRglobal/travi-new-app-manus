@@ -1,11 +1,60 @@
-import { View, Text } from 'react-native';
+import { useState } from 'react';
+import { View, Text, TextInput, Pressable, ScrollView } from 'react-native';
+import { useRouter } from 'expo-router';
+
+const RECENT = ['Paris', 'Tokyo', 'Barcelona', 'Bali'];
+const TRENDING = ['Iceland', 'Morocco', 'New Zealand', 'Portugal'];
 
 // S13 — Search
 export default function SearchScreen() {
+  const router = useRouter();
+  const [query, setQuery] = useState('');
+
   return (
-    <View style={{ flex: 1, backgroundColor: '#0A0514', justifyContent: 'center', alignItems: 'center' }}>
-      <Text style={{ color: '#FFFFFF', fontSize: 20, fontWeight: 'bold' }}>S13</Text>
-      <Text style={{ color: 'rgba(255,255,255,0.6)', fontSize: 14, marginTop: 8 }}>Search</Text>
+    <View className="flex-1 bg-bg-primary pt-safe">
+      {/* Search bar */}
+      <View className="flex-row items-center px-4 md:px-6 mt-4 gap-3">
+        <Pressable onPress={() => router.back()} className="p-2">
+          <Text className="text-white text-2xl">‹</Text>
+        </Pressable>
+        <TextInput
+          value={query}
+          onChangeText={setQuery}
+          placeholder="Search destinations..."
+          placeholderTextColor="rgba(255,255,255,0.3)"
+          autoFocus
+          onSubmitEditing={() => router.push({ pathname: '/(tabs)/home/search-results', params: { q: query } })}
+          className="flex-1 h-12 px-4 bg-white/5 border border-white/10 rounded-pill text-white text-base"
+        />
+      </View>
+
+      <ScrollView contentContainerClassName="px-4 md:px-6 mt-6">
+        {/* Recent */}
+        <Text className="text-text-secondary text-sm font-semibold mb-3">Recent</Text>
+        {RECENT.map((item) => (
+          <Pressable
+            key={item}
+            onPress={() => router.push({ pathname: '/(tabs)/home/search-results', params: { q: item } })}
+            className="flex-row items-center py-3 border-b border-white/5"
+          >
+            <Text className="text-text-secondary mr-3">🕐</Text>
+            <Text className="text-white text-base">{item}</Text>
+          </Pressable>
+        ))}
+
+        {/* Trending */}
+        <Text className="text-text-secondary text-sm font-semibold mt-6 mb-3">Trending</Text>
+        {TRENDING.map((item) => (
+          <Pressable
+            key={item}
+            onPress={() => router.push({ pathname: '/(tabs)/home/search-results', params: { q: item } })}
+            className="flex-row items-center py-3 border-b border-white/5"
+          >
+            <Text className="text-text-secondary mr-3">🔥</Text>
+            <Text className="text-white text-base">{item}</Text>
+          </Pressable>
+        ))}
+      </ScrollView>
     </View>
   );
 }

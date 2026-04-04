@@ -1,11 +1,48 @@
-import { View, Text } from 'react-native';
+import { View, Text, Pressable, ScrollView } from 'react-native';
+import { useRouter } from 'expo-router';
 
-// S55 — Settings
 export default function SettingsScreen() {
+  const router = useRouter();
+  const sections = [
+    { title: 'Account', items: [
+      { icon: '👤', label: 'Personal Info', route: '/(trip)/settings/personal' },
+      { icon: '🔒', label: 'Privacy & Security', route: '/(trip)/settings/privacy' },
+      { icon: '🔔', label: 'Notifications', route: '/(trip)/settings/notifications' },
+    ]},
+    { title: 'Preferences', items: [
+      { icon: '🌍', label: 'Language', route: '/(trip)/settings/language' },
+      { icon: '💱', label: 'Currency', route: '/(trip)/settings/currency' },
+      { icon: '🎨', label: 'Appearance', route: '/(trip)/settings/appearance' },
+    ]},
+    { title: 'Support', items: [
+      { icon: '❓', label: 'Help Center', route: '/(trip)/settings/help' },
+      { icon: '📝', label: 'Feedback', route: '/(trip)/settings/feedback' },
+      { icon: '📜', label: 'Terms & Privacy', route: '/(trip)/settings/terms' },
+    ]},
+  ];
   return (
-    <View style={{ flex: 1, backgroundColor: '#0A0514', justifyContent: 'center', alignItems: 'center' }}>
-      <Text style={{ color: '#FFFFFF', fontSize: 20, fontWeight: 'bold' }}>S55</Text>
-      <Text style={{ color: 'rgba(255,255,255,0.6)', fontSize: 14, marginTop: 8 }}>Settings</Text>
+    <View className="flex-1 bg-bg-primary pt-safe">
+      <View className="flex-row items-center px-4 md:px-6 mt-4">
+        <Pressable onPress={() => router.back()} className="p-2 -ml-2"><Text className="text-white text-2xl">‹</Text></Pressable>
+        <Text className="text-white text-xl font-bold ml-3">Settings</Text>
+      </View>
+      <ScrollView contentContainerClassName="px-4 md:px-6 py-6 pb-24">
+        {sections.map((section) => (
+          <View key={section.title} className="w-full max-w-md mx-auto mb-6">
+            <Text className="text-text-secondary text-sm font-semibold mb-3">{section.title}</Text>
+            {section.items.map((item) => (
+              <Pressable key={item.label} onPress={() => router.push(item.route as any)} className="bg-bg-card rounded-card p-4 flex-row items-center mb-2 active:opacity-80">
+                <Text className="text-xl mr-3">{item.icon}</Text>
+                <Text className="text-white text-base flex-1">{item.label}</Text>
+                <Text className="text-text-secondary">›</Text>
+              </Pressable>
+            ))}
+          </View>
+        ))}
+        <Pressable onPress={() => router.replace('/(auth)/welcome')} className="w-full max-w-md mx-auto mt-4 py-3 items-center">
+          <Text className="text-red-400 text-sm">Log Out</Text>
+        </Pressable>
+      </ScrollView>
     </View>
   );
 }
