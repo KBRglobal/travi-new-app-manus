@@ -1,0 +1,31 @@
+[33m› [1m[@sentry/react-native/expo][22m Missing config for [1morganization, project[22m. Environment variables will be used as a fallback during the build. https://docs.sentry.io/platforms/react-native/manual-setup/[0m
+Starting Metro Bundler
+
+Web node_modules/.pnpm/expo-router@55.0.10_@expo+log-box@55.0.10_@expo+metro-runtime@55.0.9_@types+react@19.2._a93b39242cd0e56e5fdeaa3f8f6906ca/node_modules/expo-router/entry.js ░░░░░░░░░░░░░░░░  0.0% (0/1)
+Web node_modules/.pnpm/expo-router@55.0.10_@expo+log-box@55.0.10_@expo+metro-runtime@55.0.9_@types+react@19.2._a93b39242cd0e56e5fdeaa3f8f6906ca/node_modules/expo-router/entry.js ▓▓▓▓▓▓░░░░░░░░░░ 42.5% ( 19/113)
+Web node_modules/.pnpm/expo-router@55.0.10_@expo+log-box@55.0.10_@expo+metro-runtime@55.0.9_@types+react@19.2._a93b39242cd0e56e5fdeaa3f8f6906ca/node_modules/expo-router/entry.js ▓▓▓▓▓▓░░░░░░░░░░ 42.5% (223/465)
+Web node_modules/.pnpm/expo-router@55.0.10_@expo+log-box@55.0.10_@expo+metro-runtime@55.0.9_@types+react@19.2._a93b39242cd0e56e5fdeaa3f8f6906ca/node_modules/expo-router/entry.js ▓▓▓▓▓▓▓░░░░░░░░░ 47.9% (510/782)
+| [33m› [1m[@sentry/react-native/expo][22m Missing config for [1morganization, project[22m. Environment variables will be used as a fallback during the build. https://docs.sentry.io/platforms/react-native/manual-setup/[0m
+Web node_modules/.pnpm/expo-router@55.0.10_@expo+log-box@55.0.10_@expo+metro-runtime@55.0.9_@types+react@19.2._a93b39242cd0e56e5fdeaa3f8f6906ca/node_modules/expo-router/entry.js ▓▓▓▓▓▓▓▓░░░░░░░░ 53.3% ( 742/1094)
+Web node_modules/.pnpm/expo-router@55.0.10_@expo+log-box@55.0.10_@expo+metro-runtime@55.0.9_@types+react@19.2._a93b39242cd0e56e5fdeaa3f8f6906ca/node_modules/expo-router/entry.js ▓▓▓▓▓▓▓▓▓░░░░░░░ 60.6% (1012/1336)
+Web node_modules/.pnpm/expo-router@55.0.10_@expo+log-box@55.0.10_@expo+metro-runtime@55.0.9_@types+react@19.2._a93b39242cd0e56e5fdeaa3f8f6906ca/node_modules/expo-router/entry.js ▓▓▓▓▓▓▓▓▓▓▓░░░░░ 73.7% (1264/1472)
+Web node_modules/.pnpm/expo-router@55.0.10_@expo+log-box@55.0.10_@expo+metro-runtime@55.0.9_@types+react@19.2._a93b39242cd0e56e5fdeaa3f8f6906ca/node_modules/expo-router/entry.js ▓▓▓▓▓▓▓▓▓▓▓▓▓░░░ 84.8% (1611/1749)
+Web Bundling failed 26338ms node_modules/.pnpm/expo-router@55.0.10_@expo+log-box@55.0.10_@expo+metro-runtime@55.0.9_@types+react@19.2._a93b39242cd0e56e5fdeaa3f8f6906ca/node_modules/expo-router/entry.js (1905 modules)
+
+Error: Unable to resolve module @/assets/Mascot_for_Dark_Background.png from /home/ubuntu/travi-superapp/app/(drawer)/_layout.tsx: @/assets/Mascot_for_Dark_Background.png could not be found within the project or in these directories:
+  node_modules
+[0m [90m 30 |[39m       [33m<[39m[33mView[39m className[33m=[39m[32m"p-4 md:p-6 flex-row items-center"[39m[33m>[39m
+ [90m 31 |[39m         [33m<[39m[33mImage[39m
+[31m[1m>[22m[39m[90m 32 |[39m           source[33m=[39m{require([32m'@/assets/Mascot_for_Dark_Background.png'[39m)}
+ [90m    |[39m                            [31m[1m^[22m[39m
+ [90m 33 |[39m           style[33m=[39m{{ width[33m:[39m [35m32[39m[33m,[39m height[33m:[39m [35m32[39m[33m,[39m marginRight[33m:[39m [35m8[39m }}
+ [90m 34 |[39m           resizeMode[33m=[39m[32m"contain"[39m
+ [90m 35 |[39m         [33m/[39m[33m>[39m[0m
+
+Import stack:
+
+ app/(drawer)/_layout.tsx
+ | import "@/assets/Mascot_for_Dark_Background.png"
+
+ app (require.context)
+

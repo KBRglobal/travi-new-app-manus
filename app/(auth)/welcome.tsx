@@ -44,7 +44,7 @@ export default function WelcomeScreen() {
       {/* Mascot at top */}
       <View className="items-center pt-safe mt-8">
         <Image
-          source={require('@/assets/Mascot_for_Dark_Background.png')}
+          source={require('@/assets/images/Mascot_for_Dark_Background.png')}
           style={{ width: 80, height: 80 }}
           resizeMode="contain"
         />

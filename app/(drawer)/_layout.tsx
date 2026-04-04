@@ -29,7 +29,7 @@ function Sidebar() {
     >
       <View className="p-4 md:p-6 flex-row items-center">
         <Image
-          source={require('@/assets/Mascot_for_Dark_Background.png')}
+          source={require('@/assets/images/Mascot_for_Dark_Background.png')}
           style={{ width: 32, height: 32, marginRight: 8 }}
           resizeMode="contain"
         />

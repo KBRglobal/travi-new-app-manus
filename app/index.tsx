@@ -64,7 +64,7 @@ export default function SplashScreen() {
     >
       <Animated.View style={mascotStyle} className="items-center">
         <Image
-          source={require('../assets/Mascot_for_Dark_Background.png')}
+          source={require('../assets/images/Mascot_for_Dark_Background.png')}
           style={{ width: 120, height: 120 }}
           resizeMode="contain"
         />
@@ -72,7 +72,7 @@ export default function SplashScreen() {
 
       <Animated.View style={titleStyle} className="items-center mt-4">
         <Image
-          source={require('../assets/Logotype_for_Dark_Background.webp')}
+          source={require('../assets/images/Logotype_for_Dark_Background.webp')}
           style={{ width: 160, height: 48 }}
           resizeMode="contain"
         />
