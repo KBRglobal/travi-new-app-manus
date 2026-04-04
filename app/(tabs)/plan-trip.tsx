@@ -1,4 +1,5 @@
 import React from 'react';
+import { useRouter } from 'expo-router';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { BlurView } from 'expo-blur';
@@ -6,6 +7,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { ScreenWrapper, DS } from '@/components/screen-wrapper';
 
 const PlanTripScreen = () => {
+  const router = useRouter();
   return (
     <ScreenWrapper title="Plan Your Next Adventure" scrollable={true}>
       <View style={styles.contentContainer}>
@@ -35,7 +37,7 @@ const PlanTripScreen = () => {
           </View>
         </BlurView>
 
-        <TouchableOpacity activeOpacity={0.8}>
+        <TouchableOpacity activeOpacity={0.8} onPress={() => router.push('/(trip)/plan' as any)}>
           <LinearGradient
             colors={[DS.purple, DS.pink] as const}
             start={{ x: 0, y: 0 }}

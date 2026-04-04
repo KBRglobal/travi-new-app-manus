@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router';
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import { ScreenWrapper, DS } from '@/components/screen-wrapper';
@@ -6,6 +7,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { MaterialIcons } from '@expo/vector-icons';
 
 const FlightsScreen = () => {
+  const router = useRouter();
   return (
     <ScreenWrapper title="Your Flights" scrollable={true}>
       <View style={styles.section}>
@@ -45,7 +47,7 @@ const FlightsScreen = () => {
           end={{ x: 1, y: 1 }}
           style={styles.ctaButton}
         >
-          <TouchableOpacity style={styles.ctaButtonInner}>
+          <TouchableOpacity style={styles.ctaButtonInner} onPress={() => router.push('/(trip)/hotels' as any)}>
             <MaterialIcons name="search" size={24} color={DS.white} />
             <Text style={styles.ctaButtonText}>Search Flights</Text>
           </TouchableOpacity>

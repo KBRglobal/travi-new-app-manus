@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useRouter } from 'expo-router';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { ScreenWrapper, DS } from '@/components/screen-wrapper';
 import { BlurView } from 'expo-blur';
@@ -6,6 +7,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { MaterialIcons } from '@expo/vector-icons';
 
 const DatesTravelersScreen = () => {
+  const router = useRouter();
   const [selectedDates, setSelectedDates] = useState('Select Dates');
   const [travelers, setTravelers] = useState(1);
 
@@ -43,7 +45,7 @@ const DatesTravelersScreen = () => {
         </BlurView>
       </View>
 
-      <TouchableOpacity style={styles.ctaButton}>
+      <TouchableOpacity style={styles.ctaButton} onPress={() => router.push('/(trip)/flights' as any)}>
         <LinearGradient
           colors={[DS.purple, DS.pink] as const}
           start={{ x: 0, y: 0 }}

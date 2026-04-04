@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router';
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -7,6 +8,7 @@ import { ScreenWrapper, DS } from '@/components/screen-wrapper';
 
 
 const ConfirmationScreen = () => {
+  const router = useRouter();
   return (
     <ScreenWrapper title="Trip Confirmation" scrollable={true}>
       <View style={styles.contentContainer}>
@@ -29,7 +31,7 @@ const ConfirmationScreen = () => {
           </View>
         </BlurView>
 
-        <TouchableOpacity style={styles.ctaButton}>
+        <TouchableOpacity style={styles.ctaButton} onPress={() => router.replace('/(tabs)/trips' as any)}>
           <LinearGradient
             colors={[DS.purple, DS.pink] as const}
             start={{ x: 0, y: 0 }}

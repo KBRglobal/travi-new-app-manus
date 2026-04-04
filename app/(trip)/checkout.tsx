@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router';
 import React from 'react';
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -8,6 +9,7 @@ import { ScreenWrapper, DS } from '@/components/screen-wrapper';
 // DS object exported from ScreenWrapper.tsx
 
 const CheckoutScreen = () => {
+  const router = useRouter();
   const tripDetails = {
     destination: "Paris, France",
     dates: "Oct 26 - Nov 02, 2024",
@@ -67,7 +69,7 @@ const CheckoutScreen = () => {
         </BlurView>
 
         {/* CTA Button */}
-        <TouchableOpacity activeOpacity={0.8} style={styles.ctaButtonContainer}>
+        <TouchableOpacity activeOpacity={0.8} style={styles.ctaButtonContainer} onPress={() => router.push('/(trip)/checkout-payment' as any)}>
           <LinearGradient
             colors={[DS.purple, DS.pink] as const}
             start={{ x: 0, y: 0 }}

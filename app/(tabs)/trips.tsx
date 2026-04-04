@@ -196,7 +196,20 @@ export default function TripsScreen() {
         ))}
       </View>
       <ScrollView contentContainerStyle={{ paddingHorizontal: 16, paddingTop: 16, paddingBottom: insets.bottom + 110 }} showsVerticalScrollIndicator={false}>
-        {trips.map((trip, i) => <TripCard key={trip.id} trip={trip} index={i} onPress={() => router.push("/(tabs)/trip-hub" as any)} />)}
+        {trips.map((trip, i) => {
+          const isLiveTrip = trip.status === "Confirmed" && trip.daysUntil !== null && trip.daysUntil <= 1;
+          const isPastTrip = trip.status === "Completed";
+          const isDraftTrip = trip.status === "Draft";
+          const isPlanningTrip = trip.status === "Planning";
+          const tripRoute = isLiveTrip
+            ? "/(live)/home"
+            : isPastTrip
+            ? "/(trip)/post-trip-celebration"
+            : isDraftTrip || isPlanningTrip
+            ? "/(trip)/plan"
+            : "/(trip)/pre-trip-dashboard";
+          return <TripCard key={trip.id} trip={trip} index={i} onPress={() => router.push(tripRoute as any)} />;
+        })}
         {trips.length === 0 && (
           <View style={s.empty}>
             <MaterialIcons name="luggage" size={48} color="rgba(255,255,255,0.15)" />

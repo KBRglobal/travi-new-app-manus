@@ -52,7 +52,8 @@ export default function TabLayout() {
         },
       }}
     >
-      {/* ── 5 visible tabs ── */}
+      {/* ── 6 visible tabs per navigation map ── */}
+      {/* Tab 1: Home */}
       <Tabs.Screen
         name="index"
         options={{
@@ -60,6 +61,7 @@ export default function TabLayout() {
           tabBarIcon: ({ focused }) => <TabIcon name="home" label="Home" focused={focused} />,
         }}
       />
+      {/* Tab 2: Trips */}
       <Tabs.Screen
         name="trips"
         options={{
@@ -67,6 +69,7 @@ export default function TabLayout() {
           tabBarIcon: ({ focused }) => <TabIcon name="flight" label="Trips" focused={focused} />,
         }}
       />
+      {/* Tab 3: Wallet */}
       <Tabs.Screen
         name="wallet"
         options={{
@@ -74,6 +77,7 @@ export default function TabLayout() {
           tabBarIcon: ({ focused }) => <TabIcon name="account-balance-wallet" label="Wallet" focused={focused} />,
         }}
       />
+      {/* Tab 4: Explore */}
       <Tabs.Screen
         name="explore"
         options={{
@@ -81,13 +85,25 @@ export default function TabLayout() {
           tabBarIcon: ({ focused }) => <TabIcon name="explore" label="Explore" focused={focused} />,
         }}
       />
+      {/* Tab 5: Points — root is /(points)/dashboard, bridged via points.tsx redirect */}
       <Tabs.Screen
-        name="profile"
+        name="points"
         options={{
-          title: "Profile",
-          tabBarIcon: ({ focused }) => <TabIcon name="person" label="Profile" focused={focused} />,
+          title: "Points",
+          tabBarIcon: ({ focused }) => <TabIcon name="stars" label="Points" focused={focused} />,
         }}
       />
+      {/* Tab 6: Social — root is /(social)/community, bridged via social.tsx redirect */}
+      <Tabs.Screen
+        name="social"
+        options={{
+          title: "Social",
+          tabBarIcon: ({ focused }) => <TabIcon name="people" label="Social" focused={focused} />,
+        }}
+      />
+
+      {/* ── Profile: accessible via avatar tap, not tab ── */}
+      <Tabs.Screen name="profile" options={{ href: null }} />
 
       {/* ── All other screens hidden from tab bar ── */}
       <Tabs.Screen name="add-funds" options={{ href: null }} />
@@ -142,16 +158,16 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     gap: 3,
     paddingVertical: 6,
-    paddingHorizontal: 14,
+    paddingHorizontal: 10,
     borderRadius: 16,
-    minWidth: 52,
+    minWidth: 48,
   },
   tabItemActive: {
     backgroundColor: T.activeBg,
-    paddingHorizontal: 16,
+    paddingHorizontal: 12,
   },
   tabLabel: {
-    fontSize: 10,
+    fontSize: 9,
     fontFamily: "Satoshi-Medium",
     letterSpacing: 0.2,
   },

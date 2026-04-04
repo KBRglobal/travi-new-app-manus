@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router';
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { ScreenWrapper, DS } from '@/components/screen-wrapper';
@@ -6,6 +7,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { MaterialIcons } from '@expo/vector-icons';
 
 const TripSummary = () => {
+  const router = useRouter();
   // Placeholder data for the trip summary
   const tripData = {
     destination: 'Paris, France',

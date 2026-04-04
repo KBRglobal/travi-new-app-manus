@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router';
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -6,6 +7,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { ScreenWrapper, DS } from '@/components/screen-wrapper';
 
 const CheckoutPaymentScreen = () => {
+  const router = useRouter();
   return (
     <ScreenWrapper title="Checkout & Payment" scrollable={true}>
       <View style={styles.contentContainer}>
@@ -44,7 +46,7 @@ const CheckoutPaymentScreen = () => {
         </BlurView>
 
         {/* Confirm Payment CTA */}
-        <TouchableOpacity onPress={() => {}} style={styles.ctaButton}>
+        <TouchableOpacity onPress={() => router.push('/(trip)/confirmation' as any)} style={styles.ctaButton}>
           <LinearGradient
             colors={[DS.purple, DS.pink] as const}
             start={{ x: 0, y: 0 }}

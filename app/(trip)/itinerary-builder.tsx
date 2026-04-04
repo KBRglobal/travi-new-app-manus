@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router';
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import { BlurView } from 'expo-blur';
@@ -8,6 +9,7 @@ import { ScreenWrapper, DS } from '@/components/screen-wrapper';
 // DS object exported from ScreenWrapper.tsx (for reference and direct use)
 
 const ItineraryBuilder = () => {
+  const router = useRouter();
   // Dummy data for itinerary items
   const itineraryItems = [
     { id: '1', title: 'Flight to Paris', time: '10:00 AM', location: 'CDG Airport' },
@@ -58,7 +60,7 @@ const ItineraryBuilder = () => {
         ))}
 
         {/* Final CTA */}
-        <TouchableOpacity style={styles.bottomCtaButton}>
+        <TouchableOpacity style={styles.bottomCtaButton} onPress={() => router.push('/(trip)/cart' as any)}>
           <LinearGradient
             colors={[DS.purple, DS.pink] as const}
             start={{ x: 0, y: 0 }}

@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, TextInput, ScrollView } from 'react-native';
 import { BlurView } from 'expo-blur';
@@ -8,6 +9,7 @@ import { ScreenWrapper, DS } from '@/components/screen-wrapper';
 // DS object exported from ScreenWrapper.tsx (included here for self-containment as per prompt)
 
 const RateReviewScreen = () => {
+  const router = useRouter();
   const [rating, setRating] = useState(0);
   const [reviewText, setReviewText] = useState('');
 

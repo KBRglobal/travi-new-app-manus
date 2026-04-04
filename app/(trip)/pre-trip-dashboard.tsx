@@ -1,4 +1,5 @@
 import React from "react";
+import { useRouter } from "expo-router";
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from "react-native";
 import { ScreenWrapper, DS } from "@/components/screen-wrapper";
 import { BlurView } from "expo-blur";
@@ -6,6 +7,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { MaterialIcons } from "@expo/vector-icons";
 
 const PreTripDashboard = () => {
+  const router = useRouter();
   const tripData = {
     destination: "Paris, France",
     dates: "Oct 26 - Nov 02",
@@ -58,7 +60,7 @@ const PreTripDashboard = () => {
                 <Text style={styles.body}>{activity.name}</Text>
               </View>
             ))}
-            <TouchableOpacity style={styles.ctaButton}>
+            <TouchableOpacity style={styles.ctaButton} onPress={() => router.push("/(trip)/pre-trip-checklist" as any)}>
               <LinearGradient colors={[DS.purple, DS.pink] as const} style={styles.gradientButton}>
                 <Text style={styles.ctaText}>View All Activities</Text>
               </LinearGradient>
@@ -80,7 +82,7 @@ const PreTripDashboard = () => {
                 <Text style={styles.body}>{doc.name}</Text>
               </View>
             ))}
-            <TouchableOpacity style={styles.ctaButton}>
+            <TouchableOpacity style={styles.ctaButton} onPress={() => router.push("/(trip)/pre-trip-documents" as any)}>
               <LinearGradient colors={[DS.purple, DS.pink] as const} style={styles.gradientButton}>
                 <Text style={styles.ctaText}>Manage Documents</Text>
               </LinearGradient>

@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router';
 import React from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
 import { ScreenWrapper, DS } from '@/components/screen-wrapper';
@@ -45,6 +46,7 @@ const scheduleData: ScheduleItem[] = [
 ];
 
 const ScheduleScreen = () => {
+  const router = useRouter();
   const renderScheduleItem = ({ item }: { item: ScheduleItem }) => (
     <BlurView intensity={20} style={styles.card}>
       <View style={styles.cardContent}>
@@ -66,7 +68,7 @@ const ScheduleScreen = () => {
         keyExtractor={(item) => item.id}
         contentContainerStyle={styles.listContent}
       />
-      <TouchableOpacity activeOpacity={0.8} style={styles.ctaButton}>
+      <TouchableOpacity style={styles.ctaButton} onPress={() => router.push("/(dna)/summary" as any)}>
         <LinearGradient
           colors={[DS.purple, DS.pink] as const}
           start={{ x: 0, y: 0 }}

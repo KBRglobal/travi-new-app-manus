@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { useRouter } from 'expo-router';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { BlurView } from 'expo-blur';
@@ -12,6 +13,7 @@ const SatoshiMedium = (props: any) => <Text style={{ fontFamily: 'Satoshi-Medium
 const SatoshiRegular = (props: any) => <Text style={{ fontFamily: 'Satoshi-Regular', color: DS.white, ...props.style }}>{props.children}</Text>;
 
 const CommunityScreen = () => {
+  const router = useRouter();
   return (
     <ScreenWrapper title="Community" scrollable={true}>
       <View style={styles.container}>
@@ -29,7 +31,7 @@ const CommunityScreen = () => {
           <SatoshiMedium style={styles.sectionHeader}>Quick Actions</SatoshiMedium>
           <View style={styles.cardRow}>
             <BlurView intensity={20} tint="dark" style={styles.glassCard}>
-              <TouchableOpacity style={styles.cardContent}>
+              <TouchableOpacity style={styles.cardContent} onPress={() => router.push('/(social)/traveler-profile' as any)}>
                 <MaterialIcons name="group" size={30} color={DS.purple} />
                 <SatoshiMedium style={styles.cardTitle}>Find Groups</SatoshiMedium>
                 <SatoshiRegular style={styles.cardDescription}>Join discussions & meetups</SatoshiRegular>
@@ -64,7 +66,7 @@ const CommunityScreen = () => {
         {/* Section 3: Call to Action */}
         <View style={styles.section}>
           <SatoshiMedium style={styles.sectionHeader}>Ready to Connect?</SatoshiMedium>
-          <TouchableOpacity style={styles.ctaButton}>
+          <TouchableOpacity style={styles.ctaButton} onPress={() => router.push('/(social)/discover' as any)}>
             <LinearGradient
               colors={[DS.purple, DS.pink] as const}
               start={{ x: 0, y: 0 }}

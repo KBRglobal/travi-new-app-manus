@@ -12,6 +12,8 @@ export default function LiveLayout() {
       <Stack.Screen name="expenses" options={{ animation: "slide_from_right" }} />
       <Stack.Screen name="schedule" options={{ animation: "slide_from_right" }} />
       <Stack.Screen name="trip-summary" options={{ animation: "slide_from_bottom" }} />
+      <Stack.Screen name="expense-tracker" options={{ animation: "slide_from_right" }} />
+      <Stack.Screen name="trip-review" options={{ animation: "slide_from_bottom" }} />
     </Stack>
   );
 }

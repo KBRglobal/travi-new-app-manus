@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useRouter } from 'expo-router';
 import { View, Text, TextInput, TouchableOpacity, FlatList, StyleSheet } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { BlurView } from 'expo-blur';
@@ -20,6 +21,7 @@ const dummyDestinations: Destination[] = [
 ];
 
 const DestinationSelectScreen = () => {
+  const router = useRouter();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedDestination, setSelectedDestination] = useState<Destination | null>(null);
 
@@ -68,7 +70,7 @@ const DestinationSelectScreen = () => {
 
         <TouchableOpacity
           style={styles.ctaButton}
-          onPress={() => console.log('Proceed with:', selectedDestination?.name)}
+          onPress={() => router.push('/(trip)/dates-travelers' as any)}
           disabled={!selectedDestination}
         >
           <LinearGradient

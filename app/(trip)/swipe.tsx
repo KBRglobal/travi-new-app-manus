@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
 import { ScreenWrapper, DS } from '@/components/screen-wrapper';
@@ -36,6 +37,7 @@ const tripData: TripCardProps[] = [
 ];
 
 const SwipeScreen = () => {
+  const router = useRouter();
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const handleSwipe = (direction: 'left' | 'right') => {
@@ -84,6 +86,19 @@ const SwipeScreen = () => {
           </TouchableOpacity>
         </View>
       </View>
+      <TouchableOpacity
+        style={{ marginTop: 24, marginHorizontal: 20, borderRadius: 16, overflow: 'hidden' }}
+        onPress={() => router.push('/(trip)/itinerary-builder' as any)}
+      >
+        <LinearGradient
+          colors={[DS.purple, DS.pink] as const}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 1 }}
+          style={{ padding: 18, alignItems: 'center' }}
+        >
+          <Text style={{ fontFamily: 'Chillax-Bold', fontSize: 18, color: DS.white }}>Build My Itinerary →</Text>
+        </LinearGradient>
+      </TouchableOpacity>
     </ScreenWrapper>
   );
 };

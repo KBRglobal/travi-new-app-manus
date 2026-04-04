@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router';
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { ScreenWrapper, DS } from '@/components/screen-wrapper';
@@ -8,6 +9,7 @@ import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 // DS object exported from ScreenWrapper.tsx (as per prompt)
 
 const SummaryScreen = () => {
+  const router = useRouter();
   // Dummy data for demonstration
   const tripSummary = {
     destination: "Paris, France",

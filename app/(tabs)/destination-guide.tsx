@@ -1,4 +1,5 @@
 import React from 'react';
+import { useRouter } from 'expo-router';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { ScreenWrapper, DS } from '@/components/screen-wrapper';
 import { BlurView } from 'expo-blur';
@@ -7,6 +8,7 @@ import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 
 
 export default function DestinationGuide() {
+  const router = useRouter();
   const destinations = [
     { id: '1', name: 'Paris, France', description: 'The City of Love', icon: 'location-city' },
     { id: '2', name: 'Kyoto, Japan', description: 'Ancient Traditions', icon: 'temple-Buddhist' },

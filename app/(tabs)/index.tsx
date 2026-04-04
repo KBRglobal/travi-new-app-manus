@@ -21,6 +21,7 @@ import { Image as ExpoImage } from "expo-image";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import * as Haptics from "expo-haptics";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { DS } from "@/components/screen-wrapper";
 
 const { width: W, height: H } = Dimensions.get("window");
 

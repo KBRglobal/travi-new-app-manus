@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { ScreenWrapper } from '@/components/screen-wrapper';
@@ -43,6 +44,7 @@ const initialCards: CardData[] = [
 ];
 
 export default function QuickSwipeScreen() {
+  const router = useRouter();
   const [cards, setCards] = useState<CardData[]>(initialCards);
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -52,9 +54,8 @@ export default function QuickSwipeScreen() {
     if (currentIndex < cards.length - 1) {
       setCurrentIndex(currentIndex + 1);
     } else {
-      // For demo, reset or load more cards
-      setCurrentIndex(0);
-      // In a real app, you might fetch more data here
+      // All cards swiped - navigate to schedule
+      router.push('/(dna)/schedule' as any);
     }
   };
 

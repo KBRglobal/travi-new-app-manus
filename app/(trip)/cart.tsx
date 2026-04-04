@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router';
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { BlurView } from 'expo-blur';
@@ -6,6 +7,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { ScreenWrapper, DS } from '@/components/screen-wrapper';
 
 const CartScreen = () => {
+  const router = useRouter();
   // Placeholder data for cart items
   const cartItems = [
     { id: '1', name: 'Flight to Paris', price: 1200, quantity: 1 },
@@ -49,7 +51,7 @@ const CartScreen = () => {
           </View>
         </BlurView>
 
-        <TouchableOpacity activeOpacity={0.8} style={styles.checkoutButton}>
+        <TouchableOpacity activeOpacity={0.8} style={styles.checkoutButton} onPress={() => router.push('/(trip)/checkout' as any)}>
           <LinearGradient
             colors={[DS.purple, DS.pink] as const}
             start={{ x: 0, y: 0 }}

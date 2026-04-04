@@ -121,10 +121,10 @@
 - [x] Screen 84 — Messages List
 - [x] Screen 85 — Chat Screen
 - [x] Screen 86 — Travel Buddies
-- [ ] Screen 87 — Group Trip Invite (/social/group-invite)
-- [ ] Screen 88 — Group Trip View (/social/group/:id)
-- [ ] Screen 89 — Shared Wishlist (/social/shared-wishlist)
-- [ ] Screen 90 — Social Settings (/social/settings)
+- [x] Screen 87 — Group Trip Invite (/social/group-invite)
+- [x] Screen 88 — Group Trip View (/social/group/:id)
+- [x] Screen 89 — Shared Wishlist (/social/shared-wishlist)
+- [x] Screen 90 — Social Settings (/social/settings)
 
 ## Phase 10 — TRAVI Points (Screens 91–100)
 - [x] Screen 91 — Points Dashboard
@@ -137,6 +137,19 @@
 - [x] Screen 98 — Membership Perks
 - [x] Screen 99 — Referrals
 - [x] Screen 100 — Redeem Confirmation
+
+---
+
+## Navigation Fixes (Completed)
+- [x] Fixed trip planning funnel navigation (destination-select → dates-travelers → flights → hotels → swipe → itinerary-builder → cart → checkout → checkout-payment → confirmation → trips)
+- [x] Fixed DNA flow navigation (quick-swipe → schedule → summary → tabs)
+- [x] Fixed post-trip flow navigation (post-trip-celebration → rate-review → trip-summary → trips)
+- [x] Fixed social community navigation (community → discover, traveler-profile)
+- [x] Fixed pre-trip dashboard navigation (pre-trip-checklist, pre-trip-documents)
+- [x] Fixed plan-trip → /(trip)/plan navigation
+- [x] Updated trip layout to register all 50+ screens
+- [x] Updated live layout to register expense-tracker and trip-review
+- [x] Fixed all TypeScript errors (0 errors)
 
 ---
 
