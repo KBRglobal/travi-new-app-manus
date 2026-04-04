@@ -18,7 +18,7 @@ export default function ConnectFlowModal() {
       </View>
       {step === 1 ? (
         <View className="items-center py-8">
-          <View className="w-20 h-20 rounded-full bg-primary/20 items-center justify-center mb-4"><Text className="text-4xl">🤝</Text></View>
+          <View className="w-20 h-20 rounded-full bg-primary/20 items-center justify-center mb-4"><Ionicons name="people" size={24} color="#FFFFFF" /></View>
           <Text className="text-white text-xl font-bold mb-2">Connect with Sarah</Text>
           <Text className="text-white/60 text-center mb-6">85% travel compatibility match!</Text>
           <TextInput className="w-full bg-bg-secondary rounded-xl px-4 py-3 text-white border border-white/[0.08] mb-4" value={message} onChangeText={setMessage} multiline />
@@ -28,7 +28,7 @@ export default function ConnectFlowModal() {
         </View>
       ) : (
         <View className="items-center py-12">
-          <Text className="text-5xl mb-4">✅</Text>
+          <Ionicons name="checkmark-circle" size={24} color="#FFFFFF" />
           <Text className="text-white text-xl font-bold mb-2">Request Sent!</Text>
           <Text className="text-white/60 text-center mb-6">Sarah will be notified. You'll get a notification when she responds.</Text>
           <TouchableOpacity onPress={() => router.back()} className="bg-primary px-8 py-3 rounded-xl"><Text className="text-white font-bold">Done</Text></TouchableOpacity>

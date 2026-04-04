@@ -1,6 +1,6 @@
 import { haptic } from '@/lib/haptics';
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, ScrollView, TextInput } from 'react-native';
+import { View, Text, TouchableOpacity, ScrollView, TextInput, FlatList} from 'react-native';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 import { useRouter } from 'expo-router';
 import { exchangeRates } from '../../lib/mockData';
@@ -20,7 +20,7 @@ export default function CurrencyScreen() {
   const currencies = ['EUR', 'USD', 'GBP', 'ILS', 'AED', 'THB', 'JPY'];
 
   return (
-    <ScrollView className="flex-1 bg-bg-primary" contentContainerClassName="pt-safe pb-24 px-6">
+    <ScrollView removeClippedSubviews={true} className="flex-1 bg-bg-primary" contentContainerClassName="pt-safe pb-24 px-6">
       <View className="flex-row items-center justify-between mb-6">
         <TouchableOpacity onPress={() => router.back()}><Text className="text-white text-xl">‹ Back</Text></TouchableOpacity>
         <Text className="text-white text-heading-3">Currency</Text>

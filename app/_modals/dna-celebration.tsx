@@ -9,7 +9,7 @@ export default function DNACelebrationModal() {
 
   return (
     <View className="flex-1 bg-bg-primary items-center justify-center px-8">
-      <Text className="text-6xl mb-4">🧬</Text>
+      <Ionicons name="flask" size={24} color="#FFFFFF" />
       <Text className="text-white text-3xl font-bold mb-2">Your Travel DNA!</Text>
       <Text className="text-primary text-2xl font-bold mb-4">Adventurous Foodie</Text>
       <Text className="text-white/60 text-center mb-8">You love exploring new cuisines and seeking thrilling experiences. Your perfect trip combines street food tours with outdoor adventures.</Text>

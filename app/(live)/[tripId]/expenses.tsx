@@ -1,14 +1,15 @@
 import { haptic } from '@/lib/haptics';
 import React from 'react';
-import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, FlatList} from 'react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
+import { Ionicons } from '@expo/vector-icons';
 
 const EXPENSES = [
-  { name: 'Hotel check-in', amount: 445, cat: '🏨', time: 'Today' },
-  { name: 'Lunch at Souk', amount: 32, cat: '🍜', time: 'Today' },
-  { name: 'Taxi to Mall', amount: 15, cat: '🚗', time: 'Today' },
-  { name: 'Museum tickets', amount: 25, cat: '🎯', time: 'Yesterday' },
+  { name: 'Hotel check-in', amount: 445, cat: 'bed', time: 'Today' },
+  { name: 'Lunch at Souk', amount: 32, cat: 'restaurant', time: 'Today' },
+  { name: 'Taxi to Mall', amount: 15, cat: 'car', time: 'Today' },
+  { name: 'Museum tickets', amount: 25, cat: 'flag', time: 'Yesterday' },
 ];
 
 export default function Expenses() {
@@ -24,7 +25,7 @@ export default function Expenses() {
         <Text className="text-white text-xl font-bold">Expenses</Text>
       </View>
 
-      <ScrollView className="flex-1 px-4">
+      <ScrollView removeClippedSubviews={true} className="flex-1 px-4">
         <View className="bg-bg-card rounded-card p-4 mb-2">
           <View className="flex-row justify-between mb-2">
             <Text className="text-text-secondary">Budget: €1,500</Text>

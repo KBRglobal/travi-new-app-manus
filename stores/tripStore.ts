@@ -1,4 +1,6 @@
 import { create } from 'zustand';
+import { persist, createJSONStorage } from 'zustand/middleware';
+import { asyncStorageAdapter } from '../lib/storage';
 
 interface Destination {
   id: string;
@@ -85,21 +87,34 @@ const emptyTrip: TripPlan = {
   status: 'planning',
 };
 
-export const useTripStore = create<TripState>((set) => ({
-  currentTrip: null,
-  trips: [],
-  activeTripId: null,
+export const useTripStore = create<TripState>()(
+  persist(
+    (set) => ({
+      currentTrip: null,
+      trips: [],
+      activeTripId: null,
 
-  createTrip: () => set({ currentTrip: { ...emptyTrip, id: Date.now().toString() } }),
-  setDestination: (destination) => set((s) => ({ currentTrip: s.currentTrip ? { ...s.currentTrip, destination } : null })),
-  setDates: (dates) => set((s) => ({ currentTrip: s.currentTrip ? { ...s.currentTrip, dates } : null })),
-  setTravelers: (count) => set((s) => ({ currentTrip: s.currentTrip ? { ...s.currentTrip, travelers: count } : null })),
-  addFlight: (flight) => set((s) => ({ currentTrip: s.currentTrip ? { ...s.currentTrip, flights: [...s.currentTrip.flights, flight] } : null })),
-  addHotel: (hotel) => set((s) => ({ currentTrip: s.currentTrip ? { ...s.currentTrip, hotels: [...s.currentTrip.hotels, hotel] } : null })),
-  addActivity: (activity) => set((s) => ({ currentTrip: s.currentTrip ? { ...s.currentTrip, activities: [...s.currentTrip.activities, activity] } : null })),
-  addToCart: (item) => set((s) => ({ currentTrip: s.currentTrip ? { ...s.currentTrip, cart: [...s.currentTrip.cart, item] } : null })),
-  removeFromCart: (index) => set((s) => ({ currentTrip: s.currentTrip ? { ...s.currentTrip, cart: s.currentTrip.cart.filter((_, i) => i !== index) } : null })),
-  setStatus: (status) => set((s) => ({ currentTrip: s.currentTrip ? { ...s.currentTrip, status } : null })),
-  setActiveTripId: (id) => set({ activeTripId: id }),
-  reset: () => set({ currentTrip: null }),
-}));
+      createTrip: () => set({ currentTrip: { ...emptyTrip, id: Date.now().toString() } }),
+      setDestination: (destination) => set((s) => ({ currentTrip: s.currentTrip ? { ...s.currentTrip, destination } : null })),
+      setDates: (dates) => set((s) => ({ currentTrip: s.currentTrip ? { ...s.currentTrip, dates } : null })),
+      setTravelers: (count) => set((s) => ({ currentTrip: s.currentTrip ? { ...s.currentTrip, travelers: count } : null })),
+      addFlight: (flight) => set((s) => ({ currentTrip: s.currentTrip ? { ...s.currentTrip, flights: [...s.currentTrip.flights, flight] } : null })),
+      addHotel: (hotel) => set((s) => ({ currentTrip: s.currentTrip ? { ...s.currentTrip, hotels: [...s.currentTrip.hotels, hotel] } : null })),
+      addActivity: (activity) => set((s) => ({ currentTrip: s.currentTrip ? { ...s.currentTrip, activities: [...s.currentTrip.activities, activity] } : null })),
+      addToCart: (item) => set((s) => ({ currentTrip: s.currentTrip ? { ...s.currentTrip, cart: [...s.currentTrip.cart, item] } : null })),
+      removeFromCart: (index) => set((s) => ({ currentTrip: s.currentTrip ? { ...s.currentTrip, cart: s.currentTrip.cart.filter((_, i) => i !== index) } : null })),
+      setStatus: (status) => set((s) => ({ currentTrip: s.currentTrip ? { ...s.currentTrip, status } : null })),
+      setActiveTripId: (id) => set({ activeTripId: id }),
+      reset: () => set({ currentTrip: null }),
+    }),
+    {
+      name: 'travi-trips',
+      storage: createJSONStorage(() => asyncStorageAdapter),
+      partialize: (state) => ({
+        currentTrip: state.currentTrip,
+        trips: state.trips,
+        activeTripId: state.activeTripId,
+      }),
+    }
+  )
+);

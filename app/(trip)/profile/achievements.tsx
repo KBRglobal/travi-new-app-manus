@@ -1,18 +1,18 @@
 import { Skeleton } from '@/components/ui/Skeleton';
 import React from 'react';
-import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, FlatList} from 'react-native';
 import { useRouter } from 'expo-router';
 import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
 
 const ACHIEVEMENTS = [
-  { id: '1', emoji: '🌍', title: 'Globe Trotter', desc: 'Visit 10 countries', progress: 8, total: 10, unlocked: false },
-  { id: '2', emoji: '🍜', title: 'Foodie Master', desc: 'Try 50 local restaurants', progress: 50, total: 50, unlocked: true },
-  { id: '3', emoji: '🏔️', title: 'Summit Seeker', desc: 'Complete 5 hiking trips', progress: 3, total: 5, unlocked: false },
-  { id: '4', emoji: '📸', title: 'Photographer', desc: 'Upload 100 travel photos', progress: 100, total: 100, unlocked: true },
-  { id: '5', emoji: '✈️', title: 'Frequent Flyer', desc: 'Take 20 flights', progress: 14, total: 20, unlocked: false },
-  { id: '6', emoji: '⭐', title: 'Top Reviewer', desc: 'Write 25 reviews', progress: 25, total: 25, unlocked: true },
-  { id: '7', emoji: '🤝', title: 'Social Butterfly', desc: 'Connect with 50 travelers', progress: 32, total: 50, unlocked: false },
-  { id: '8', emoji: '💎', title: 'VIP Traveler', desc: 'Reach Platinum tier', progress: 0, total: 1, unlocked: false },
+  { id: '1', iconName: 'globe', title: 'Globe Trotter', desc: 'Visit 10 countries', progress: 8, total: 10, unlocked: false },
+  { id: '2', iconName: 'restaurant', title: 'Foodie Master', desc: 'Try 50 local restaurants', progress: 50, total: 50, unlocked: true },
+  { id: '3', iconName: 'snow', title: 'Summit Seeker', desc: 'Complete 5 hiking trips', progress: 3, total: 5, unlocked: false },
+  { id: '4', iconName: 'camera', title: 'Photographer', desc: 'Upload 100 travel photos', progress: 100, total: 100, unlocked: true },
+  { id: '5', iconName: 'airplane', title: 'Frequent Flyer', desc: 'Take 20 flights', progress: 14, total: 20, unlocked: false },
+  { id: '6', iconName: 'star', title: 'Top Reviewer', desc: 'Write 25 reviews', progress: 25, total: 25, unlocked: true },
+  { id: '7', iconName: 'people', title: 'Social Butterfly', desc: 'Connect with 50 travelers', progress: 32, total: 50, unlocked: false },
+  { id: '8', iconName: 'diamond', title: 'VIP Traveler', desc: 'Reach Platinum tier', progress: 0, total: 1, unlocked: false },
 ];
 
 export default function AchievementsScreen() {
@@ -20,7 +20,7 @@ export default function AchievementsScreen() {
   const unlocked = ACHIEVEMENTS.filter(a => a.unlocked).length;
 
   return (
-    <ScrollView className="flex-1 bg-bg-primary pt-safe">
+    <ScrollView removeClippedSubviews={true} className="flex-1 bg-bg-primary pt-safe">
       <View className="flex-row items-center px-4 py-3">
         <TouchableOpacity onPress={() => router.back()}><Text className="text-white text-lg">←</Text></TouchableOpacity>
         <Text className="text-white text-xl font-bold ml-3">Achievements</Text>
@@ -40,7 +40,7 @@ export default function AchievementsScreen() {
             </View>
             <Text className="text-white/30 text-xs mt-1">{item.progress}/{item.total}</Text>
           </View>
-          {item.unlocked && <Text className="text-primary text-xl ml-2">✓</Text>}
+          {item.unlocked && <Ionicons name="checkmark" size={24} color="#FFFFFF" />}
         </View>
       ))}
     </ScrollView>

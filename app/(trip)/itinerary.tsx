@@ -1,11 +1,13 @@
 import { Skeleton } from '@/components/ui/Skeleton';
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, Image } from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
 import DraggableFlatList, { ScaleDecorator, RenderItemParams } from 'react-native-draggable-flatlist';
 import { useRouter } from 'expo-router';
 import { activities, itineraryDays } from '../../lib/mockData';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
+import { Ionicons } from '@expo/vector-icons';
+import { CachedImage } from '../../components/ui/CachedImage';
 
 type ItineraryItem = typeof activities[0] & { dayId: string };
 
@@ -27,7 +29,7 @@ export default function ItineraryScreen() {
         <View className="w-8 h-8 bg-primary rounded-full items-center justify-center mr-3">
           <Text className="text-white text-body-sm font-bold">{items.indexOf(item) + 1}</Text>
         </View>
-        <Image source={{ uri: item.image }} className="w-14 h-14 rounded-lg mr-3" />
+        <CachedImage source={{ uri: item.image }} className="w-14 h-14 rounded-lg mr-3" />
         <View className="flex-1 justify-center">
           <Text className="text-white text-body font-semibold">{item.name}</Text>
           <Text className="text-text-secondary text-body-sm">{item.time} · {item.duration}</Text>
@@ -47,7 +49,7 @@ export default function ItineraryScreen() {
         </TouchableOpacity>
         <Text className="text-white text-heading-3">Itinerary</Text>
         <TouchableOpacity onPress={() => router.push('/(trip)/collab-planning')}>
-          <Text className="text-primary text-body-sm">👥 Collab</Text>
+          <Text className="text-primary text-body-sm">Collab</Text>
         </TouchableOpacity>
       </View>
 
@@ -84,7 +86,7 @@ export default function ItineraryScreen() {
             <Text className="text-white text-body-sm">+ Add Activity</Text>
           </TouchableOpacity>
           <TouchableOpacity className="flex-1 bg-bg-card border border-border py-3 rounded-button items-center" onPress={() => router.push('/(trip)/ai-itinerary')}>
-            <Text className="text-primary text-body-sm">🤖 AI Suggest</Text>
+            <Text className="text-primary text-body-sm">AI Suggest</Text>
           </TouchableOpacity>
         </View>
         <TouchableOpacity className="bg-primary py-4 rounded-button items-center mt-3" onPress={() => router.push('/(trip)/cart')}>

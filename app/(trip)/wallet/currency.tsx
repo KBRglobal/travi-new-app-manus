@@ -1,6 +1,6 @@
 import { haptic } from '@/lib/haptics';
 import React, { useState } from 'react';
-import { View, Text, ScrollView, TouchableOpacity, TextInput } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, TextInput, FlatList} from 'react-native';
 import { useRouter } from 'expo-router';
 import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
 
@@ -28,7 +28,7 @@ export default function CurrencyConverter() {
         <Text className="text-white text-xl font-bold">Currency Converter</Text>
       </View>
 
-      <ScrollView className="flex-1 px-4">
+      <ScrollView removeClippedSubviews={true} className="flex-1 px-4">
         <View className="bg-bg-card rounded-card p-6 mb-4">
           <View className="flex-row items-center justify-between mb-4">
             <TouchableOpacity className="flex-row items-center">

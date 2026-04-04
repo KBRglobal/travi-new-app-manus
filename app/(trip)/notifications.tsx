@@ -4,14 +4,15 @@ import { View, Text, FlatList, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
+import { Ionicons } from '@expo/vector-icons';
 
 const NOTIFICATIONS = [
-  { id: '1', emoji: '📉', title: 'Price Drop Alert', desc: 'NYC→Tokyo flight dropped to $890', time: '2m ago', read: false, action: '/(trip)/flights' },
-  { id: '2', emoji: '🔥', title: 'Streak Bonus', desc: 'You earned +50 streak points!', time: '1h ago', read: false, action: '/(trip)/points/transactions' },
-  { id: '3', emoji: '🤝', title: 'New Connection', desc: 'Sarah accepted your request', time: '3h ago', read: true, action: '/(social)/buddies' },
-  { id: '4', emoji: '✈️', title: 'Check-in Open', desc: 'Your flight AA123 check-in is open', time: '5h ago', read: true, action: '/(trip)/pre-trip/documents' },
-  { id: '5', emoji: '⭐', title: 'Review Reminder', desc: 'How was your stay at Hotel Shinjuku?', time: '1d ago', read: true, action: '/(trip)/post-trip/review' },
-  { id: '6', emoji: '🏆', title: 'Challenge Complete', desc: 'You completed the Foodie challenge!', time: '2d ago', read: true, action: '/(trip)/points/challenges' },
+  { id: '1', iconName: 'trending-down', title: 'Price Drop Alert', desc: 'NYC→Tokyo flight dropped to $890', time: '2m ago', read: false, action: '/(trip)/flights' },
+  { id: '2', iconName: 'flame', title: 'Streak Bonus', desc: 'You earned +50 streak points!', time: '1h ago', read: false, action: '/(trip)/points/transactions' },
+  { id: '3', iconName: 'people', title: 'New Connection', desc: 'Sarah accepted your request', time: '3h ago', read: true, action: '/(social)/buddies' },
+  { id: '4', iconName: 'airplane', title: 'Check-in Open', desc: 'Your flight AA123 check-in is open', time: '5h ago', read: true, action: '/(trip)/pre-trip/documents' },
+  { id: '5', iconName: 'star', title: 'Review Reminder', desc: 'How was your stay at Hotel Shinjuku?', time: '1d ago', read: true, action: '/(trip)/post-trip/review' },
+  { id: '6', iconName: 'trophy', title: 'Challenge Complete', desc: 'You completed the Foodie challenge!', time: '2d ago', read: true, action: '/(trip)/points/challenges' },
 ];
 
 export default function NotificationsScreen() {

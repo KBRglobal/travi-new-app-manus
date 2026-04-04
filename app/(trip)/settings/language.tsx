@@ -40,7 +40,7 @@ export default function LanguageScreen() {
             <Text className="text-white font-bold">{item.name}</Text>
             <Text className="text-white/40 text-xs">{item.native}</Text>
           </View>
-          {selected === item.code && <Text className="text-primary">✓</Text>}
+          {selected === item.code && <Ionicons name="checkmark" size={24} color="#FFFFFF" />}
         </TouchableOpacity>
       )} />
     </View>

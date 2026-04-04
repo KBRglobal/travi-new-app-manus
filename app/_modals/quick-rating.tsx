@@ -15,7 +15,7 @@ export default function QuickRatingModal() {
         <View className="flex-row justify-center gap-4 mt-6">
           {[1,2,3,4,5].map((star) => (
             <Pressable key={star} onPress={() => setRating(star)}>
-              <Text className={`text-3xl ${star <= rating ? 'opacity-100' : 'opacity-30'}`}>⭐</Text>
+              <Text className={`text-3xl ${star <= rating ? 'opacity-100' : 'opacity-30'}`}><Ionicons name="star" size={16} color="#FFFFFF" /></Text>
             </Pressable>
           ))}
         </View>

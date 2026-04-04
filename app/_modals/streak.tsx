@@ -10,7 +10,7 @@ export default function StreakModal() {
 
   return (
     <View className="flex-1 bg-bg-primary items-center justify-center px-8">
-      <Text className="text-6xl mb-4">🔥</Text>
+      <Ionicons name="flame" size={24} color="#FFFFFF" />
       <Text className="text-white text-3xl font-bold mb-2">5 Day Streak!</Text>
       <Text className="text-white/60 text-center mb-6">You've checked in 5 days in a row. Keep it up for bonus points!</Text>
       <View className="flex-row mb-6">
@@ -19,7 +19,7 @@ export default function StreakModal() {
             <View className={`w-10 h-10 rounded-full items-center justify-center ${days[i] ? 'bg-primary' : 'bg-white/[0.05]'}`}>
               <Text className={`font-bold ${days[i] ? 'text-white' : 'text-white/30'}`}>{d}</Text>
             </View>
-            {days[i] && <Text className="text-primary text-xs mt-1">✓</Text>}
+            {days[i] && <Ionicons name="checkmark" size={24} color="#FFFFFF" />}
           </View>
         ))}
       </View>

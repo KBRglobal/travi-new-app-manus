@@ -9,7 +9,7 @@ export default function PaymentFailedScreen() {
 
   return (
     <View className="flex-1 bg-bg-primary items-center justify-center px-8">
-      <Text className="text-5xl mb-4">❌</Text>
+      <Ionicons name="close-circle" size={24} color="#FFFFFF" />
       <Text className="text-white text-2xl font-bold mb-2">Payment Failed</Text>
       <Text className="text-white/60 text-center mb-8">Your payment could not be processed. Please try again or use a different payment method.</Text>
       <TouchableOpacity onPress={() => router.replace('/(trip)/plan/payment')} className="bg-primary px-8 py-4 rounded-2xl w-full items-center mb-3">

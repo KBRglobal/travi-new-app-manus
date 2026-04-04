@@ -40,7 +40,7 @@ export default function DNASwipeScreen() {
       {/* Card stack */}
       <View className="flex-1 items-center justify-center px-6">
         <View className="w-full max-w-sm aspect-[3/4] bg-bg-card rounded-card items-center justify-center border border-white/10">
-          <Text className="text-5xl mb-4">🏝️</Text>
+          <Ionicons name="sunny" size={24} color="#FFFFFF" />
           <Text className="text-2xl md:text-3xl font-bold text-white">{current?.name}</Text>
           <Text className="text-sm text-text-secondary mt-2">{current?.country}</Text>
         </View>
@@ -52,13 +52,13 @@ export default function DNASwipeScreen() {
           onPress={() => handleAction('reject')}
           className="w-16 h-16 rounded-full bg-white/10 border border-white/20 items-center justify-center active:scale-95"
         >
-          <Text className="text-white text-2xl">✕</Text>
+          <Ionicons name="close" size={24} color="#FFFFFF" />
         </Pressable>
         <Pressable
           onPress={() => handleAction('like')}
           className="w-18 h-18 rounded-full bg-pink-500 items-center justify-center active:scale-95"
         >
-          <Text className="text-white text-3xl">♥</Text>
+          <Ionicons name="heart" size={24} color="#FFFFFF" />
         </Pressable>
       </View>
     </View>

@@ -1,6 +1,6 @@
 import { haptic } from '@/lib/haptics';
 import React, { useState } from 'react';
-import { View, Text, ScrollView, TouchableOpacity, Switch } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, Switch, FlatList} from 'react-native';
 import { useRouter } from 'expo-router';
 import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
 
@@ -30,7 +30,7 @@ export default function NotificationSettingsScreen() {
   );
 
   return (
-    <ScrollView className="flex-1 bg-bg-primary pt-safe">
+    <ScrollView removeClippedSubviews={true} className="flex-1 bg-bg-primary pt-safe">
       <View className="flex-row items-center px-4 py-3 mb-2">
         <TouchableOpacity onPress={() => router.back()}><Text className="text-white text-lg">←</Text></TouchableOpacity>
         <Text className="text-white text-xl font-bold ml-3">Notifications</Text>

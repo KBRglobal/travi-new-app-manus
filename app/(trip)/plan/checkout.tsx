@@ -19,11 +19,11 @@ export default function PlanCheckoutScreen() {
           </View>
           <Text className="text-text-secondary text-sm mb-4">Payment Method</Text>
           <Pressable onPress={() => router.push('/_modals/payment-method')} className="bg-bg-card rounded-card p-4 flex-row items-center justify-between mb-4 active:opacity-80">
-            <Text className="text-white text-base">💳 Select payment method</Text>
+            <Text className="text-white text-base">Select payment method</Text>
             <Text className="text-text-secondary">›</Text>
           </Pressable>
           <Pressable className="flex-row items-center mb-4">
-            <View className="w-5 h-5 rounded border border-white/20 mr-3 items-center justify-center"><Text className="text-white text-xs">✓</Text></View>
+            <View className="w-5 h-5 rounded border border-white/20 mr-3 items-center justify-center"><Ionicons name="checkmark" size={24} color="#FFFFFF" /></View>
             <Text className="text-text-secondary text-sm">Use 2,000 points (€20 discount)</Text>
           </Pressable>
         </View>

@@ -28,7 +28,7 @@ export default function ForgotPasswordScreen() {
   if (sent) {
     return (
       <View className="flex-1 bg-bg-primary items-center justify-center px-6">
-        <Text className="text-4xl mb-4">📧</Text>
+        <Ionicons name="mail" size={24} color="#FFFFFF" />
         <Text className="text-white text-heading-2 text-center mb-2">Check Your Email</Text>
         <Text className="text-text-secondary text-body text-center mb-8">We sent a password reset link to your email</Text>
         <TouchableOpacity className="bg-primary py-4 px-8 rounded-button" onPress={() => router.replace('/(auth)/login')}>

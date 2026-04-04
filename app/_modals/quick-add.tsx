@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, TextInput } from 'react-native';
 import { useRouter } from 'expo-router';
 import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
+import { Ionicons } from '@expo/vector-icons';
 
 export default function QuickAddModal() {
   const router = useRouter();
@@ -11,10 +12,10 @@ export default function QuickAddModal() {
   const [note, setNote] = useState('');
 
   const types = [
-    { id: 'expense', emoji: '💸', name: 'Expense' },
-    { id: 'memory', emoji: '📸', name: 'Memory' },
-    { id: 'note', emoji: '📝', name: 'Note' },
-    { id: 'checklist', emoji: '✅', name: 'Checklist Item' },
+    { id: 'expense', iconName: 'cash', name: 'Expense' },
+    { id: 'memory', iconName: 'camera', name: 'Memory' },
+    { id: 'note', iconName: 'create', name: 'Note' },
+    { id: 'checklist', iconName: 'checkmark-circle', name: 'Checklist Item' },
   ];
 
   return (

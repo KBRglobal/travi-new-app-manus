@@ -69,7 +69,7 @@ export default function MyTripsScreen() {
         onPress={() => router.push('/_modals/ai-chat')}
         className="absolute bottom-24 right-5 w-14 h-14 bg-primary rounded-full items-center justify-center"
       >
-        <Text className="text-2xl">🤖</Text>
+        <Ionicons name="hardware-chip" size={24} color="#FFFFFF" />
       </Pressable>
     </View>
   );

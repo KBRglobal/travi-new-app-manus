@@ -21,7 +21,7 @@ export default function WelcomeTraviScreen() {
       {/* Top: Mascot */}
       <View className="flex-1 items-center justify-center">
         <View className="w-60 h-60 md:w-72 md:h-72 items-center justify-center">
-          <Text className="text-8xl">🦊</Text>
+          <Ionicons name="paw" size={24} color="#FFFFFF" />
         </View>
       </View>
 

@@ -9,7 +9,7 @@ export default function FirstBookingModal() {
 
   return (
     <View className="flex-1 bg-bg-primary items-center justify-center px-8">
-      <Text className="text-6xl mb-4">🎉</Text>
+      <Ionicons name="sparkles" size={24} color="#FFFFFF" />
       <Text className="text-white text-3xl font-bold mb-2">First Booking!</Text>
       <Text className="text-white/60 text-center mb-6">Congratulations on your first trip with TRAVI! Here's a special welcome bonus.</Text>
       <View className="w-full p-4 bg-primary/10 rounded-2xl border border-primary/20 items-center mb-6">

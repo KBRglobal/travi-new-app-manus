@@ -13,7 +13,7 @@ export default function ActivityDetailScreen() {
       </View>
       <ScrollView contentContainerClassName="px-4 md:px-6 py-6">
         <View className="w-full max-w-md mx-auto">
-          <View className="w-full h-48 bg-white/5 rounded-card items-center justify-center mb-4"><Text className="text-5xl">🎯</Text></View>
+          <View className="w-full h-48 bg-white/5 rounded-card items-center justify-center mb-4"><Ionicons name="flag" size={24} color="#FFFFFF" /></View>
           <Text className="text-white text-2xl font-bold">Activity Details</Text>
           <Text className="text-text-secondary text-sm mt-2">Time: 10:00 AM - 12:00 PM</Text>
           <Text className="text-text-secondary text-sm mt-4 leading-6">Enjoy this amazing activity during your trip. Don't forget to take photos!</Text>

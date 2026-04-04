@@ -1,6 +1,6 @@
 import { haptic } from '@/lib/haptics';
 import React, { useState, useRef } from 'react';
-import { View, Text, TouchableOpacity, Image, Dimensions } from 'react-native';
+import { View, Text, TouchableOpacity, Dimensions } from 'react-native';
 import Animated, { useSharedValue, useAnimatedStyle, withSpring, withTiming, runOnJS } from 'react-native-reanimated';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import { useRouter } from 'expo-router';
@@ -8,6 +8,7 @@ import { dnaCards } from '../../lib/mockData';
 import { logSwipeLike, logSwipeReject } from '../../lib/dnaSignals';
 import { useDnaStore } from '../../stores/dnaStore';
 import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
+import { CachedImage } from '../../components/ui/CachedImage';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 const SWIPE_THRESHOLD = SCREEN_WIDTH * 0.3;
@@ -61,7 +62,7 @@ function SwipeCard({ card, onSwipeLeft, onSwipeRight, isTop }: any) {
   if (!isTop) {
     return (
       <View className="absolute w-full h-full rounded-card bg-bg-card overflow-hidden" style={{ transform: [{ scale: 0.95 }] }}>
-        <Image source={{ uri: card.image }} className="w-full h-full" resizeMode="cover" />
+        <CachedImage source={{ uri: card.image }} className="w-full h-full" resizeMode="cover" />
       </View>
     );
   }
@@ -69,7 +70,7 @@ function SwipeCard({ card, onSwipeLeft, onSwipeRight, isTop }: any) {
   return (
     <GestureDetector gesture={gesture}>
       <Animated.View style={cardStyle} className="absolute w-full h-full rounded-card bg-bg-card overflow-hidden shadow-card">
-        <Image source={{ uri: card.image }} className="w-full h-full" resizeMode="cover" />
+        <CachedImage source={{ uri: card.image }} className="w-full h-full" resizeMode="cover" />
         <View className="absolute bottom-0 left-0 right-0 p-6 bg-bg-overlay">
           <Text className="text-white text-heading-2 mb-1">{card.title}</Text>
           <Text className="text-text-secondary text-body">{card.category}</Text>

@@ -1,4 +1,5 @@
 import '../global.css';
+import '../i18n'; // Initialize i18n before anything else
 import { useEffect, useState, useCallback } from 'react';
 import { Stack, useRouter, useSegments, SplashScreen } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
@@ -30,24 +31,33 @@ const queryClient = new QueryClient({
 });
 
 // Auth guard — redirects based on auth state
+// Supports: authenticated users, guest mode, and unauthenticated visitors
 function useProtectedRoute() {
-  const { isAuthenticated, isLoading, onboardingComplete } = useAuthStore();
+  const { isAuthenticated, isGuest, isLoading, onboardingComplete, _hasHydrated } = useAuthStore();
   const segments = useSegments();
   const router = useRouter();
 
   useEffect(() => {
-    if (isLoading) return;
+    // Wait for both loading to finish and store to rehydrate from SecureStore
+    if (isLoading || !_hasHydrated) return;
 
     const inAuthGroup = segments[0] === '(auth)';
+    const inSplash = segments.length === 0 || (segments.length === 1 && segments[0] === 'index');
+
+    // Skip redirect if on splash screen (it handles its own navigation)
+    if (inSplash) return;
 
     if (!isAuthenticated && !inAuthGroup) {
+      // Not logged in and trying to access protected route → redirect to welcome
       router.replace('/(auth)/welcome');
-    } else if (isAuthenticated && !onboardingComplete && !inAuthGroup) {
+    } else if (isAuthenticated && !isGuest && !onboardingComplete && !inAuthGroup) {
+      // Logged in but hasn't completed onboarding (skip for guests)
       router.replace('/(auth)/quick-dna');
     } else if (isAuthenticated && onboardingComplete && inAuthGroup) {
+      // Already authenticated and trying to access auth screens → go to home
       router.replace('/(tabs)/home');
     }
-  }, [isAuthenticated, isLoading, onboardingComplete, segments]);
+  }, [isAuthenticated, isGuest, isLoading, onboardingComplete, _hasHydrated, segments]);
 }
 
 // Offline detection hook
@@ -82,8 +92,8 @@ export default function RootLayout() {
     }
   }, [fontsLoaded, fontError]);
 
-  // Disable auth guard for now (prototype mode — free navigation)
-  // useProtectedRoute();
+  // Auth guard — redirects based on auth state (supports guest mode)
+  useProtectedRoute();
   const isOffline = useOfflineDetection();
 
   if (!fontsLoaded && !fontError) {

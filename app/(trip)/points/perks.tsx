@@ -1,25 +1,25 @@
 import { haptic } from '@/lib/haptics';
 import React from 'react';
-import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, FlatList} from 'react-native';
 import { useRouter } from 'expo-router';
 import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
 
 const PERKS = [
-  { emoji: '✈️', title: 'Priority Boarding', desc: 'Skip the line at the gate', tier: 'Silver', unlocked: true },
-  { emoji: '🧳', title: 'Extra Luggage', desc: '+10kg baggage allowance', tier: 'Silver', unlocked: true },
-  { emoji: '🏨', title: 'Room Upgrade', desc: 'Free room upgrade when available', tier: 'Gold', unlocked: true },
-  { emoji: '🍽️', title: 'Airport Lounge', desc: '2 free lounge visits/month', tier: 'Gold', unlocked: true },
-  { emoji: '🚗', title: 'Free Airport Transfer', desc: 'Complimentary car service', tier: 'Platinum', unlocked: false },
-  { emoji: '🎁', title: 'Welcome Gift', desc: 'Special gift at check-in', tier: 'Platinum', unlocked: false },
-  { emoji: '💎', title: 'Concierge Service', desc: '24/7 personal travel concierge', tier: 'Platinum', unlocked: false },
-  { emoji: '🌟', title: 'Exclusive Events', desc: 'VIP access to travel events', tier: 'Platinum', unlocked: false },
+  { iconName: 'airplane', title: 'Priority Boarding', desc: 'Skip the line at the gate', tier: 'Silver', unlocked: true },
+  { iconName: 'briefcase', title: 'Extra Luggage', desc: '+10kg baggage allowance', tier: 'Silver', unlocked: true },
+  { iconName: 'bed', title: 'Room Upgrade', desc: 'Free room upgrade when available', tier: 'Gold', unlocked: true },
+  { iconName: 'restaurant', title: 'Airport Lounge', desc: '2 free lounge visits/month', tier: 'Gold', unlocked: true },
+  { iconName: 'car', title: 'Free Airport Transfer', desc: 'Complimentary car service', tier: 'Platinum', unlocked: false },
+  { iconName: 'gift', title: 'Welcome Gift', desc: 'Special gift at check-in', tier: 'Platinum', unlocked: false },
+  { iconName: 'diamond', title: 'Concierge Service', desc: '24/7 personal travel concierge', tier: 'Platinum', unlocked: false },
+  { iconName: 'star', title: 'Exclusive Events', desc: 'VIP access to travel events', tier: 'Platinum', unlocked: false },
 ];
 
 export default function PerksScreen() {
   const router = useRouter();
 
   return (
-    <ScrollView className="flex-1 bg-bg-primary pt-safe">
+    <ScrollView removeClippedSubviews={true} className="flex-1 bg-bg-primary pt-safe">
       <View className="flex-row items-center px-4 py-3">
         <TouchableOpacity onPress={() => router.back()}><Text className="text-white text-lg">←</Text></TouchableOpacity>
         <Text className="text-white text-xl font-bold ml-3">My Perks</Text>
@@ -43,7 +43,7 @@ export default function PerksScreen() {
                   <Text className={`font-bold ${item.unlocked ? 'text-white' : 'text-white/30'}`}>{item.title}</Text>
                   <Text className={`text-xs ${item.unlocked ? 'text-white/40' : 'text-white/20'}`}>{item.desc}</Text>
                 </View>
-                {item.unlocked ? <Text className="text-green-400">✓</Text> : <Text className="text-white/20">🔒</Text>}
+                {item.unlocked ? <Ionicons name="checkmark" size={24} color="#FFFFFF" /> : <Ionicons name="lock-closed" size={24} color="#FFFFFF" />}
               </View>
             ))}
           </View>

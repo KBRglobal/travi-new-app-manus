@@ -1,4 +1,4 @@
-import { View, Text, Pressable, ScrollView } from 'react-native';
+import { View, Text, Pressable, ScrollView, FlatList} from 'react-native';
 import { useRouter } from 'expo-router';
 import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
 
@@ -22,13 +22,13 @@ export default function DNASummaryScreen() {
         <View className="flex-1 h-1 bg-white/10 rounded-full ml-4">
           <View className="w-full h-full bg-primary rounded-full" />
         </View>
-        <Text className="text-primary text-sm ml-4">✓</Text>
+        <Ionicons name="checkmark" size={24} color="#FFFFFF" />
       </View>
 
-      <ScrollView contentContainerClassName="px-6 md:px-12 pb-32">
+      <ScrollView removeClippedSubviews={true} contentContainerClassName="px-6 md:px-12 pb-32">
         {/* Persona Card */}
         <View className="w-full max-w-md mx-auto mt-8 bg-primary rounded-xl p-6 md:p-8 items-center">
-          <Text className="text-5xl">🌍</Text>
+          <Ionicons name="globe" size={24} color="#FFFFFF" />
           <Text className="text-text-secondary text-sm mt-4">You're a</Text>
           <Text className="text-3xl md:text-4xl font-bold text-white mt-1">Explorer</Text>
           <Text className="text-text-secondary text-sm text-center mt-2 px-4">

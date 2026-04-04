@@ -9,7 +9,7 @@ export default function ConfirmationScreen() {
 
   return (
     <ScrollView className="flex-1 bg-bg-primary pt-safe" contentContainerStyle={{ alignItems: 'center', paddingVertical: 40 }}>
-      <Text className="text-6xl mb-4">🎉</Text>
+      <Ionicons name="sparkles" size={24} color="#FFFFFF" />
       <Text className="text-white text-2xl font-bold mb-2">Booking Confirmed!</Text>
       <Text className="text-white/60 text-center mb-8 px-8">Your trip to Tokyo is booked. Get ready for an amazing adventure!</Text>
       <View className="w-full px-4 mb-6">
@@ -22,7 +22,7 @@ export default function ConfirmationScreen() {
         </View>
       </View>
       <View className="w-full px-4 mb-4 p-4 bg-primary/10 rounded-2xl mx-4 border border-primary/20">
-        <Text className="text-primary text-center font-bold">📧 Confirmation email sent to john@example.com</Text>
+        <Text className="text-primary text-center font-bold">Confirmation email sent to john@example.com</Text>
       </View>
       <View className="w-full px-4">
         <TouchableOpacity onPress={() => router.push('/(trip)/pre-trip/checklist')} className="bg-primary py-4 rounded-2xl items-center mb-3">

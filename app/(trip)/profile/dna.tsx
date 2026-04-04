@@ -1,25 +1,25 @@
 import { haptic } from '@/lib/haptics';
 import React from 'react';
-import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, FlatList} from 'react-native';
 import { useRouter } from 'expo-router';
 import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
 
 const DNA_TRAITS = [
-  { trait: 'Adventure', score: 85, emoji: '🧗', color: 'bg-orange-500' },
-  { trait: 'Food & Dining', score: 95, emoji: '🍜', color: 'bg-red-500' },
-  { trait: 'Culture', score: 72, emoji: '🏛️', color: 'bg-blue-500' },
-  { trait: 'Nature', score: 80, emoji: '🌿', color: 'bg-green-500' },
-  { trait: 'Luxury', score: 45, emoji: '💎', color: 'bg-purple-500' },
-  { trait: 'Social', score: 65, emoji: '🎉', color: 'bg-pink-500' },
-  { trait: 'Wellness', score: 50, emoji: '🧘', color: 'bg-teal-500' },
-  { trait: 'Budget', score: 70, emoji: '💰', color: 'bg-yellow-500' },
+  { trait: 'Adventure', score: 85, iconName: 'fitness', color: 'bg-orange-500' },
+  { trait: 'Food & Dining', score: 95, iconName: 'restaurant', color: 'bg-red-500' },
+  { trait: 'Culture', score: 72, iconName: 'business', color: 'bg-blue-500' },
+  { trait: 'Nature', score: 80, iconName: 'leaf', color: 'bg-green-500' },
+  { trait: 'Luxury', score: 45, iconName: 'diamond', color: 'bg-purple-500' },
+  { trait: 'Social', score: 65, iconName: 'sparkles', color: 'bg-pink-500' },
+  { trait: 'Wellness', score: 50, iconName: 'body', color: 'bg-teal-500' },
+  { trait: 'Budget', score: 70, iconName: 'cash', color: 'bg-yellow-500' },
 ];
 
 export default function DNAProfileScreen() {
   const router = useRouter();
 
   return (
-    <ScrollView className="flex-1 bg-bg-primary pt-safe">
+    <ScrollView removeClippedSubviews={true} className="flex-1 bg-bg-primary pt-safe">
       <View className="flex-row items-center justify-between px-4 py-3">
         <TouchableOpacity onPress={() => router.back()}><Text className="text-white text-lg">←</Text></TouchableOpacity>
         <Text className="text-white text-xl font-bold">My Travel DNA</Text>
@@ -27,7 +27,7 @@ export default function DNAProfileScreen() {
       </View>
       <View className="items-center py-8">
         <View className="w-32 h-32 rounded-full bg-primary/20 items-center justify-center mb-4">
-          <Text className="text-6xl">🧬</Text>
+          <Ionicons name="flask" size={24} color="#FFFFFF" />
         </View>
         <Text className="text-white text-xl font-bold">Adventurous Foodie</Text>
         <Text className="text-white/60 text-sm mt-1">Your travel personality type</Text>

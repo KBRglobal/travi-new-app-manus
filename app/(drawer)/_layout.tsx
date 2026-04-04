@@ -1,19 +1,20 @@
 import { Stack } from 'expo-router';
-import { View, Text, TouchableOpacity, ScrollView, Image } from 'react-native';
+import { View, Text, TouchableOpacity, ScrollView, Image, FlatList} from 'react-native';
 import { useRouter } from 'expo-router';
 import { colors, fonts, fontSizes } from '@/constants/theme';
+import { Ionicons } from '@expo/vector-icons';
 
 // Drawer: permanent sidebar for tablet+ / desktop
 function Sidebar() {
   const router = useRouter();
 
   const menuItems = [
-    { label: '🏠 Home', route: '/(tabs)/home' },
-    { label: '✈️ Trips', route: '/(tabs)/trips' },
-    { label: '💳 Wallet', route: '/(tabs)/wallet' },
-    { label: '🧭 Explore', route: '/(tabs)/explore' },
-    { label: '⭐ Points', route: '/(tabs)/points' },
-    { label: '👥 Social', route: '/(tabs)/social' },
+    { label: 'Home', route: '/(tabs)/home' },
+    { label: 'Trips', route: '/(tabs)/trips' },
+    { label: 'Wallet', route: '/(tabs)/wallet' },
+    { label: 'Explore', route: '/(tabs)/explore' },
+    { label: 'Points', route: '/(tabs)/points' },
+    { label: 'Social', route: '/(tabs)/social' },
   ];
 
   return (
@@ -43,7 +44,7 @@ function Sidebar() {
           TRAVI
         </Text>
       </View>
-      <ScrollView className="flex-1">
+      <ScrollView removeClippedSubviews={true} className="flex-1">
         {menuItems.map((item) => (
           <TouchableOpacity
             key={item.route}

@@ -4,16 +4,17 @@ import { View, Text, FlatList, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
+import { Ionicons } from '@expo/vector-icons';
 
 const BADGES = [
-  { id: '1', emoji: '🌍', name: 'World Explorer', desc: 'Visit 10 countries', tier: 'gold', unlocked: true },
-  { id: '2', emoji: '🍜', name: 'Foodie', desc: 'Rate 20 restaurants', tier: 'gold', unlocked: true },
-  { id: '3', emoji: '📸', name: 'Photographer', desc: 'Upload 100 photos', tier: 'silver', unlocked: true },
-  { id: '4', emoji: '✈️', name: 'Jet Setter', desc: 'Take 15 flights', tier: 'silver', unlocked: false },
-  { id: '5', emoji: '🏨', name: 'Hotel Critic', desc: 'Review 10 hotels', tier: 'bronze', unlocked: true },
-  { id: '6', emoji: '🧗', name: 'Adventurer', desc: 'Complete 10 activities', tier: 'bronze', unlocked: false },
-  { id: '7', emoji: '💎', name: 'VIP', desc: 'Reach Platinum tier', tier: 'platinum', unlocked: false },
-  { id: '8', emoji: '🤝', name: 'Connector', desc: 'Make 25 travel buddies', tier: 'silver', unlocked: false },
+  { id: '1', iconName: 'globe', name: 'World Explorer', desc: 'Visit 10 countries', tier: 'gold', unlocked: true },
+  { id: '2', iconName: 'restaurant', name: 'Foodie', desc: 'Rate 20 restaurants', tier: 'gold', unlocked: true },
+  { id: '3', iconName: 'camera', name: 'Photographer', desc: 'Upload 100 photos', tier: 'silver', unlocked: true },
+  { id: '4', iconName: 'airplane', name: 'Jet Setter', desc: 'Take 15 flights', tier: 'silver', unlocked: false },
+  { id: '5', iconName: 'bed', name: 'Hotel Critic', desc: 'Review 10 hotels', tier: 'bronze', unlocked: true },
+  { id: '6', iconName: 'fitness', name: 'Adventurer', desc: 'Complete 10 activities', tier: 'bronze', unlocked: false },
+  { id: '7', iconName: 'diamond', name: 'VIP', desc: 'Reach Platinum tier', tier: 'platinum', unlocked: false },
+  { id: '8', iconName: 'people', name: 'Connector', desc: 'Make 25 travel buddies', tier: 'silver', unlocked: false },
 ];
 
 const tierColors: Record<string, string> = { platinum: 'bg-purple-500/20', gold: 'bg-yellow-500/20', silver: 'bg-gray-400/20', bronze: 'bg-orange-600/20' };

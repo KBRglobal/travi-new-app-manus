@@ -19,7 +19,7 @@ export default function DeleteAccountScreen() {
       {step === 1 ? (
         <View className="px-4">
           <View className="items-center py-6">
-            <Text className="text-5xl mb-4">⚠️</Text>
+            <Ionicons name="warning" size={24} color="#FFFFFF" />
             <Text className="text-white text-xl font-bold mb-2">Are you sure?</Text>
             <Text className="text-white/60 text-center text-sm">This action is permanent and cannot be undone. All your data will be deleted.</Text>
           </View>
@@ -45,7 +45,7 @@ export default function DeleteAccountScreen() {
       ) : (
         <View className="px-4">
           <View className="items-center py-6">
-            <Text className="text-5xl mb-4">🗑️</Text>
+            <Ionicons name="trash" size={24} color="#FFFFFF" />
             <Text className="text-white text-xl font-bold mb-2">Final Confirmation</Text>
             <Text className="text-white/60 text-center text-sm">Type "DELETE" to confirm account deletion</Text>
           </View>

@@ -1,6 +1,6 @@
 import { haptic } from '@/lib/haptics';
 import React, { useState } from 'react';
-import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, FlatList} from 'react-native';
 import { useRouter } from 'expo-router';
 import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
 
@@ -39,7 +39,7 @@ export default function ChecklistScreen() {
   const doneItems = categories.reduce((sum, c) => sum + c.items.filter(i => i.done).length, 0);
 
   return (
-    <ScrollView className="flex-1 bg-bg-primary pt-safe">
+    <ScrollView removeClippedSubviews={true} className="flex-1 bg-bg-primary pt-safe">
       <View className="flex-row items-center px-4 py-3">
         <TouchableOpacity onPress={() => router.back()}><Text className="text-white text-lg">←</Text></TouchableOpacity>
         <Text className="text-white text-xl font-bold ml-3">Pre-Trip Checklist</Text>
@@ -59,7 +59,7 @@ export default function ChecklistScreen() {
           {cat.items.map(item => (
             <TouchableOpacity key={item.id} onPress={() => toggleItem(cat.id, item.id)} className="flex-row items-center p-4 mb-1 bg-bg-secondary rounded-xl border border-white/[0.08]">
               <View className={`w-5 h-5 rounded-md mr-3 items-center justify-center ${item.done ? 'bg-primary' : 'border border-white/20'}`}>
-                {item.done && <Text className="text-white text-xs">✓</Text>}
+                {item.done && <Ionicons name="checkmark" size={24} color="#FFFFFF" />}
               </View>
               <Text className={`flex-1 ${item.done ? 'text-white/40 line-through' : 'text-white'}`}>{item.text}</Text>
             </TouchableOpacity>

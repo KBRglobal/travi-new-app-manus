@@ -1,10 +1,12 @@
 import { haptic } from '@/lib/haptics';
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, ScrollView, TextInput, Image } from 'react-native';
+import { View, Text, TouchableOpacity, ScrollView, TextInput, Image, FlatList} from 'react-native';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 import { useRouter } from 'expo-router';
 import { travelers, activities } from '../../lib/mockData';
 import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
+import { Ionicons } from '@expo/vector-icons';
+import { CachedImage } from '../../components/ui/CachedImage';
 
 export default function CollabPlanningScreen() {
   const router = useRouter();
@@ -18,7 +20,7 @@ export default function CollabPlanningScreen() {
   }));
 
   return (
-    <ScrollView className="flex-1 bg-bg-primary" contentContainerClassName="pt-safe pb-24 px-6">
+    <ScrollView removeClippedSubviews={true} className="flex-1 bg-bg-primary" contentContainerClassName="pt-safe pb-24 px-6">
       <View className="flex-row items-center justify-between mb-4">
         <TouchableOpacity onPress={() => router.back()}><Text className="text-white text-xl">‹ Back</Text></TouchableOpacity>
         <Text className="text-white text-heading-3">Plan Together</Text>
@@ -29,7 +31,7 @@ export default function CollabPlanningScreen() {
       <View className="flex-row items-center mb-6">
         {onlineMembers.map((m, i) => (
           <View key={m.id} className="relative" style={{ marginLeft: i > 0 ? -8 : 0 }}>
-            <Image source={{ uri: m.avatar }} className="w-10 h-10 rounded-full border-2 border-bg-primary" />
+            <CachedImage source={{ uri: m.avatar }} className="w-10 h-10 rounded-full border-2 border-bg-primary" />
             <View className="absolute bottom-0 right-0 w-3 h-3 bg-status-success rounded-full border border-bg-primary" />
           </View>
         ))}
@@ -45,7 +47,7 @@ export default function CollabPlanningScreen() {
               <Text className="text-white text-body font-semibold">{act.name}</Text>
               <View className="flex-row items-center">
                 <Text className="text-primary text-body font-bold mr-2">{act.votes}</Text>
-                <TouchableOpacity className="bg-primary/20 px-3 py-1 rounded-full"><Text className="text-primary text-body-sm">👍 Vote</Text></TouchableOpacity>
+                <TouchableOpacity className="bg-primary/20 px-3 py-1 rounded-full"><Text className="text-primary text-body-sm">Vote</Text></TouchableOpacity>
               </View>
             </View>
             <Text className="text-text-secondary text-body-sm">{act.duration} · €{act.price}</Text>
@@ -66,7 +68,7 @@ export default function CollabPlanningScreen() {
           { user: travelers[1], text: 'Agreed! And maybe the museum after?' },
         ].map((msg, i) => (
           <View key={i} className="flex-row mb-3">
-            <Image source={{ uri: msg.user.avatar }} className="w-8 h-8 rounded-full mr-2" />
+            <CachedImage source={{ uri: msg.user.avatar }} className="w-8 h-8 rounded-full mr-2" />
             <View className="bg-bg-surface rounded-2xl p-2 px-3 flex-1">
               <Text className="text-primary text-caption font-semibold">{msg.user.name.split(' ')[0]}</Text>
               <Text className="text-white text-body-sm">{msg.text}</Text>

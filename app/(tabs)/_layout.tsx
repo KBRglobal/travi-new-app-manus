@@ -35,42 +35,42 @@ export default function TabsLayout() {
         name="home"
         options={{
           title: 'Home',
-          tabBarIcon: ({ color }) => <Text style={{ color, fontSize: 22 }}>🏠</Text>,
+          tabBarIcon: ({ color }) => <Text style={{ color, fontSize: 22 }}><Ionicons name="home" size={16} color="#FFFFFF" /></Text>,
         }}
       />
       <Tabs.Screen
         name="trips"
         options={{
           title: 'Trips',
-          tabBarIcon: ({ color }) => <Text style={{ color, fontSize: 22 }}>✈️</Text>,
+          tabBarIcon: ({ color }) => <Text style={{ color, fontSize: 22 }}><Ionicons name="airplane" size={16} color="#FFFFFF" /></Text>,
         }}
       />
       <Tabs.Screen
         name="wallet"
         options={{
           title: 'Wallet',
-          tabBarIcon: ({ color }) => <Text style={{ color, fontSize: 22 }}>💳</Text>,
+          tabBarIcon: ({ color }) => <Text style={{ color, fontSize: 22 }}><Ionicons name="card" size={16} color="#FFFFFF" /></Text>,
         }}
       />
       <Tabs.Screen
         name="explore"
         options={{
           title: 'Explore',
-          tabBarIcon: ({ color }) => <Text style={{ color, fontSize: 22 }}>🧭</Text>,
+          tabBarIcon: ({ color }) => <Text style={{ color, fontSize: 22 }}><Ionicons name="compass" size={16} color="#FFFFFF" /></Text>,
         }}
       />
       <Tabs.Screen
         name="points"
         options={{
           title: 'Points',
-          tabBarIcon: ({ color }) => <Text style={{ color, fontSize: 22 }}>⭐</Text>,
+          tabBarIcon: ({ color }) => <Text style={{ color, fontSize: 22 }}><Ionicons name="star" size={16} color="#FFFFFF" /></Text>,
         }}
       />
       <Tabs.Screen
         name="social"
         options={{
           title: 'Social',
-          tabBarIcon: ({ color }) => <Text style={{ color, fontSize: 22 }}>👥</Text>,
+          tabBarIcon: ({ color }) => <Text style={{ color, fontSize: 22 }}><Ionicons name="people" size={16} color="#FFFFFF" /></Text>,
         }}
       />
     </Tabs>

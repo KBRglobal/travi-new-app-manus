@@ -11,18 +11,21 @@ import Animated, {
 } from 'react-native-reanimated';
 import { useRouter } from 'expo-router';
 import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
+import { useAuthStore } from '@/stores/authStore';
+import { Ionicons } from '@expo/vector-icons';
 
 const { width } = Dimensions.get('window');
 
 const slides = [
-  { id: '1', emoji: '🌍', title: 'Discover Your Travel DNA', subtitle: 'We learn what you love — so every trip feels personal' },
-  { id: '2', emoji: '✈️', title: 'Plan Smarter', subtitle: 'AI-powered itineraries, real-time prices, one-tap booking' },
-  { id: '3', emoji: '🗺️', title: 'Live Travel Mode', subtitle: 'Real-time guidance, auto check-ins, instant expense tracking' },
-  { id: '4', emoji: '💰', title: 'Earn While You Travel', subtitle: 'Cashback on every booking, points that actually matter' },
+  { id: '1', iconName: 'globe', title: 'Discover Your Travel DNA', subtitle: 'We learn what you love — so every trip feels personal' },
+  { id: '2', iconName: 'airplane', title: 'Plan Smarter', subtitle: 'AI-powered itineraries, real-time prices, one-tap booking' },
+  { id: '3', iconName: 'map', title: 'Live Travel Mode', subtitle: 'Real-time guidance, auto check-ins, instant expense tracking' },
+  { id: '4', iconName: 'cash', title: 'Earn While You Travel', subtitle: 'Cashback on every booking, points that actually matter' },
 ];
 
 export default function WelcomeScreen() {
   const router = useRouter();
+  const { loginAsGuest } = useAuthStore();
   const scrollX = useSharedValue(0);
   const [currentIndex, setCurrentIndex] = useState(0);
   const flatListRef = useRef<FlatList>(null);
@@ -151,6 +154,30 @@ export default function WelcomeScreen() {
             }}
           >
             I already have an account
+          </Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={{
+            paddingVertical: 12,
+            borderRadius: radius.button,
+            alignItems: 'center',
+            marginTop: 4,
+          }}
+          onPress={() => {
+            haptic.light();
+            loginAsGuest();
+            router.replace('/(tabs)/home');
+          }}
+        >
+          <Text
+            style={{
+              fontFamily: fonts.body,
+              fontSize: fontSizes.bodySm,
+              color: colors.text.muted,
+            }}
+          >
+            Continue as Guest
           </Text>
         </TouchableOpacity>
       </View>

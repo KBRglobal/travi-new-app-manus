@@ -1,6 +1,6 @@
 import { Skeleton } from '@/components/ui/Skeleton';
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, TouchableOpacity, ScrollView, FlatList} from 'react-native';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 import { useRouter } from 'expo-router';
 import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
@@ -43,7 +43,7 @@ export default function VisaPassportScreen() {
   };
 
   return (
-    <ScrollView className="flex-1 bg-bg-primary" contentContainerClassName="pt-safe pb-24 px-6">
+    <ScrollView removeClippedSubviews={true} className="flex-1 bg-bg-primary" contentContainerClassName="pt-safe pb-24 px-6">
       <View className="flex-row items-center justify-between mb-6">
         <TouchableOpacity onPress={() => router.back()}><Text className="text-white text-xl">‹ Back</Text></TouchableOpacity>
         <Text className="text-white text-heading-3">Visa & Passport</Text>
@@ -52,7 +52,7 @@ export default function VisaPassportScreen() {
 
       {/* Passport warning */}
       <Animated.View entering={FadeInDown} className="bg-status-warning/20 border border-status-warning rounded-card p-4 mb-6">
-        <Text className="text-status-warning text-body font-semibold mb-1">⚠️ Passport Expiry Warning</Text>
+        <Text className="text-status-warning text-body font-semibold mb-1">Passport Expiry Warning</Text>
         <Text className="text-white text-body-sm">Your passport expires in 8 months. Some countries require 6+ months validity.</Text>
       </Animated.View>
 
@@ -79,7 +79,7 @@ export default function VisaPassportScreen() {
         <Animated.View key={item.id} entering={FadeInDown.delay(400 + i * 80)}>
           <TouchableOpacity className="flex-row bg-bg-card border border-border rounded-card p-4 mb-2 items-center" onPress={() => toggleItem(item.id)}>
             <View className={`w-6 h-6 rounded-md mr-3 items-center justify-center ${item.done ? 'bg-status-success' : 'border border-border'}`}>
-              {item.done && <Text className="text-white text-caption">✓</Text>}
+              {item.done && <Ionicons name="checkmark" size={24} color="#FFFFFF" />}
             </View>
             <Text className={`text-body flex-1 ${item.done ? 'text-text-muted line-through' : 'text-white'}`}>{item.task}</Text>
           </TouchableOpacity>

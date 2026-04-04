@@ -1,6 +1,6 @@
 import { haptic } from '@/lib/haptics';
 import React from 'react';
-import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, FlatList} from 'react-native';
 import { useRouter } from 'expo-router';
 import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
 
@@ -17,13 +17,13 @@ export default function HelpScreen() {
   const [expanded, setExpanded] = React.useState<string | null>(null);
 
   return (
-    <ScrollView className="flex-1 bg-bg-primary pt-safe">
+    <ScrollView removeClippedSubviews={true} className="flex-1 bg-bg-primary pt-safe">
       <View className="flex-row items-center px-4 py-3 mb-2">
         <TouchableOpacity onPress={() => router.back()}><Text className="text-white text-lg">←</Text></TouchableOpacity>
         <Text className="text-white text-xl font-bold ml-3">Help & FAQ</Text>
       </View>
       <TouchableOpacity onPress={() => router.push('/(trip)/settings/support')} className="mx-4 mb-6 p-5 bg-primary rounded-2xl items-center">
-        <Text className="text-3xl mb-2">💬</Text>
+        <Ionicons name="chatbubble" size={24} color="#FFFFFF" />
         <Text className="text-white font-bold text-lg">Contact Support</Text>
         <Text className="text-white/60 text-sm">We typically reply within 2 hours</Text>
       </TouchableOpacity>

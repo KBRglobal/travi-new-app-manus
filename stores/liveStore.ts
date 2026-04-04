@@ -1,4 +1,6 @@
 import { create } from 'zustand';
+import { persist, createJSONStorage } from 'zustand/middleware';
+import { asyncStorageAdapter } from '../lib/storage';
 
 interface TimelineEvent {
   id: string;
@@ -49,21 +51,36 @@ interface LiveState {
   reset: () => void;
 }
 
-export const useLiveStore = create<LiveState>((set) => ({
-  tripId: null,
-  timeline: [],
-  expenses: [],
-  taxReceipts: [],
-  currentEventIndex: 0,
-  weather: null,
-  emergencyMode: false,
+export const useLiveStore = create<LiveState>()(
+  persist(
+    (set) => ({
+      tripId: null,
+      timeline: [],
+      expenses: [],
+      taxReceipts: [],
+      currentEventIndex: 0,
+      weather: null,
+      emergencyMode: false,
 
-  setTripId: (id) => set({ tripId: id }),
-  setTimeline: (events) => set({ timeline: events }),
-  addExpense: (expense) => set((s) => ({ expenses: [...s.expenses, expense] })),
-  addTaxReceipt: (receipt) => set((s) => ({ taxReceipts: [...s.taxReceipts, receipt] })),
-  setCurrentEvent: (index) => set({ currentEventIndex: index }),
-  setWeather: (weather) => set({ weather }),
-  setEmergencyMode: (mode) => set({ emergencyMode: mode }),
-  reset: () => set({ tripId: null, timeline: [], expenses: [], taxReceipts: [], currentEventIndex: 0, weather: null, emergencyMode: false }),
-}));
+      setTripId: (id) => set({ tripId: id }),
+      setTimeline: (events) => set({ timeline: events }),
+      addExpense: (expense) => set((s) => ({ expenses: [...s.expenses, expense] })),
+      addTaxReceipt: (receipt) => set((s) => ({ taxReceipts: [...s.taxReceipts, receipt] })),
+      setCurrentEvent: (index) => set({ currentEventIndex: index }),
+      setWeather: (weather) => set({ weather }),
+      setEmergencyMode: (mode) => set({ emergencyMode: mode }),
+      reset: () => set({ tripId: null, timeline: [], expenses: [], taxReceipts: [], currentEventIndex: 0, weather: null, emergencyMode: false }),
+    }),
+    {
+      name: 'travi-live',
+      storage: createJSONStorage(() => asyncStorageAdapter),
+      partialize: (state) => ({
+        tripId: state.tripId,
+        timeline: state.timeline,
+        expenses: state.expenses,
+        taxReceipts: state.taxReceipts,
+        currentEventIndex: state.currentEventIndex,
+      }),
+    }
+  )
+);

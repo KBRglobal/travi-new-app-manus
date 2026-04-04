@@ -9,10 +9,10 @@ export default function PriceAlertModal() {
 
   return (
     <View className="flex-1 bg-bg-primary items-center justify-center px-8">
-      <Text className="text-6xl mb-4">📉</Text>
+      <Ionicons name="trending-down" size={24} color="#FFFFFF" />
       <Text className="text-white text-3xl font-bold mb-2">Price Drop!</Text>
       <View className="w-full p-4 bg-bg-secondary rounded-2xl border border-white/[0.08] mb-6">
-        <Text className="text-white font-bold text-lg mb-1">✈️ NYC → Tokyo</Text>
+        <Text className="text-white font-bold text-lg mb-1">NYC → Tokyo</Text>
         <View className="flex-row items-center mb-2">
           <Text className="text-white/40 line-through mr-2">$1,200</Text>
           <Text className="text-green-400 text-2xl font-bold">$890</Text>

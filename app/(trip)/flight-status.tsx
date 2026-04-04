@@ -1,6 +1,6 @@
 import { haptic } from '@/lib/haptics';
 import React from 'react';
-import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, TouchableOpacity, ScrollView, FlatList} from 'react-native';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 import { useRouter } from 'expo-router';
 import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
@@ -15,7 +15,7 @@ export default function FlightStatusScreen() {
   ];
 
   return (
-    <ScrollView className="flex-1 bg-bg-primary" contentContainerClassName="pt-safe pb-24 px-6">
+    <ScrollView removeClippedSubviews={true} className="flex-1 bg-bg-primary" contentContainerClassName="pt-safe pb-24 px-6">
       <View className="flex-row items-center justify-between mb-6">
         <TouchableOpacity onPress={() => router.back()}><Text className="text-white text-xl">‹ Back</Text></TouchableOpacity>
         <Text className="text-white text-heading-3">Flight Status</Text>
@@ -30,14 +30,14 @@ export default function FlightStatusScreen() {
         </View>
         <View className="flex-row justify-between items-center">
           <View><Text className="text-white text-3xl font-bold">TLV</Text><Text className="text-text-secondary text-body-sm">Tel Aviv</Text><Text className="text-white text-heading-3">09:00</Text></View>
-          <View className="flex-1 mx-4 items-center"><Text className="text-text-muted text-body-sm">3h 30m</Text><View className="w-full h-px bg-border mt-1"><View className="w-1/2 h-full bg-primary" /></View><Text className="text-primary text-caption mt-1">✈️ In flight</Text></View>
+          <View className="flex-1 mx-4 items-center"><Text className="text-text-muted text-body-sm">3h 30m</Text><View className="w-full h-px bg-border mt-1"><View className="w-1/2 h-full bg-primary" /></View><Text className="text-primary text-caption mt-1">In flight</Text></View>
           <View className="items-end"><Text className="text-white text-3xl font-bold">BCN</Text><Text className="text-text-secondary text-body-sm">Barcelona</Text><Text className="text-white text-heading-3">12:30</Text></View>
         </View>
       </Animated.View>
 
       {/* Map placeholder */}
       <Animated.View entering={FadeInDown.delay(100)} className="bg-bg-card border border-border rounded-card h-48 items-center justify-center mb-6">
-        <Text className="text-4xl mb-2">🗺️</Text>
+        <Ionicons name="map" size={24} color="#FFFFFF" />
         <Text className="text-text-secondary text-body-sm">Live flight tracking map</Text>
         <Text className="text-primary text-caption mt-1">Currently over Mediterranean Sea</Text>
       </Animated.View>

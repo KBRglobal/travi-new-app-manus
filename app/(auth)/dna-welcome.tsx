@@ -25,7 +25,7 @@ export default function DNAWelcomeScreen() {
   return (
     <View className="flex-1 bg-bg-primary items-center justify-center px-8">
       <Animated.View style={dnaStyle}>
-        <Text className="text-8xl mb-6">🧬</Text>
+        <Ionicons name="flask" size={24} color="#FFFFFF" />
       </Animated.View>
 
       <Animated.View style={textStyle} className="items-center">

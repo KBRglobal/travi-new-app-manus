@@ -12,7 +12,7 @@ export default function ReferralsScreen() {
       </View>
       <ScrollView contentContainerClassName="px-4 md:px-6 py-6 items-center">
         <View className="w-full max-w-md items-center">
-          <Text className="text-5xl">👥</Text>
+          <Ionicons name="people" size={24} color="#FFFFFF" />
           <Text className="text-2xl font-bold text-white mt-4">Earn 500 Points</Text>
           <Text className="text-text-secondary text-sm mt-2 text-center">For every friend who joins and completes their first trip</Text>
           <View className="w-full bg-white/5 rounded-card p-4 mt-6 items-center">

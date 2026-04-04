@@ -18,7 +18,7 @@ export default function NomadHubScreen() {
   const [tab, setTab] = useState<'cities' | 'coworking' | 'communities'>('cities');
 
   return (
-    <ScrollView className="flex-1 bg-bg-primary" contentContainerClassName="pt-safe pb-24 px-6">
+    <ScrollView removeClippedSubviews={true} className="flex-1 bg-bg-primary" contentContainerClassName="pt-safe pb-24 px-6">
       <View className="flex-row items-center justify-between mb-4">
         <TouchableOpacity onPress={() => router.back()}><Text className="text-white text-xl">‹ Back</Text></TouchableOpacity>
         <Text className="text-white text-heading-3">Nomad Hub</Text>
@@ -29,7 +29,7 @@ export default function NomadHubScreen() {
       <View className="flex-row mb-6">
         {(['cities', 'coworking', 'communities'] as const).map((t) => (
           <TouchableOpacity key={t} className={`flex-1 py-3 items-center border-b-2 ${tab === t ? 'border-primary' : 'border-transparent'}`} onPress={() => setTab(t)}>
-            <Text className={`text-body-sm ${tab === t ? 'text-primary font-semibold' : 'text-text-secondary'}`}>{t === 'cities' ? '🌍 Cities' : t === 'coworking' ? '💻 Cowork' : '👥 Community'}</Text>
+            <Text className={`text-body-sm ${tab === t ? 'text-primary font-semibold' : 'text-text-secondary'}`}>{t === 'cities' ? 'Cities' : t === 'coworking' ? 'Cowork' : 'Community'}</Text>
           </TouchableOpacity>
         ))}
       </View>
@@ -60,7 +60,7 @@ export default function NomadHubScreen() {
 
       {tab === 'coworking' && (
         <View className="items-center py-12">
-          <Text className="text-4xl mb-4">💻</Text>
+          <Ionicons name="laptop" size={24} color="#FFFFFF" />
           <Text className="text-white text-heading-3">Coworking Spaces</Text>
           <Text className="text-text-secondary text-body-sm mt-2">150+ spaces in your destination</Text>
         </View>
@@ -68,7 +68,7 @@ export default function NomadHubScreen() {
 
       {tab === 'communities' && (
         <View className="items-center py-12">
-          <Text className="text-4xl mb-4">👥</Text>
+          <Ionicons name="people" size={24} color="#FFFFFF" />
           <Text className="text-white text-heading-3">Nomad Communities</Text>
           <Text className="text-text-secondary text-body-sm mt-2">Connect with fellow nomads</Text>
         </View>

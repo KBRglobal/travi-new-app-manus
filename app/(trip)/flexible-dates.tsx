@@ -1,9 +1,10 @@
 import { haptic } from '@/lib/haptics';
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, ScrollView, Switch } from 'react-native';
+import { View, Text, TouchableOpacity, ScrollView, Switch, FlatList} from 'react-native';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 import { useRouter } from 'expo-router';
 import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
+import { Ionicons } from '@expo/vector-icons';
 
 const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 const priceData = months.map((m, i) => ({ month: m, price: Math.floor(80 + Math.random() * 200), cheapest: i === 1 || i === 10 }));
@@ -23,7 +24,7 @@ export default function FlexibleDatesScreen() {
   };
 
   return (
-    <ScrollView className="flex-1 bg-bg-primary" contentContainerClassName="pt-safe pb-24 px-6">
+    <ScrollView removeClippedSubviews={true} className="flex-1 bg-bg-primary" contentContainerClassName="pt-safe pb-24 px-6">
       <View className="flex-row items-center justify-between mb-6">
         <TouchableOpacity onPress={() => router.back()}><Text className="text-white text-xl">‹ Back</Text></TouchableOpacity>
         <Text className="text-white text-heading-3">Flexible Dates</Text>
@@ -59,7 +60,7 @@ export default function FlexibleDatesScreen() {
             <TouchableOpacity className={`w-[30%] ${getColor(d.price)} rounded-card p-4 items-center`} onPress={() => router.push('/(trip)/dates')}>
               <Text className="text-white text-body-sm font-semibold">{d.month}</Text>
               <Text className="text-white text-heading-3 font-bold">€{d.price}</Text>
-              {d.cheapest && <Text className="text-white text-caption mt-1">⭐ Best</Text>}
+              {d.cheapest && <Text className="text-white text-caption mt-1">Best</Text>}
             </TouchableOpacity>
           </Animated.View>
         ))}
@@ -67,7 +68,7 @@ export default function FlexibleDatesScreen() {
 
       {/* Best deal */}
       <TouchableOpacity className="bg-status-success/20 border border-status-success rounded-card p-4" onPress={() => router.push('/(trip)/flights')}>
-        <Text className="text-status-success text-body font-bold mb-1">💡 Best Deal Found!</Text>
+        <Text className="text-status-success text-body font-bold mb-1">Best Deal Found!</Text>
         <Text className="text-white text-body">Feb 15-22 · €{cheapest} round trip</Text>
         <Text className="text-text-secondary text-body-sm mt-1">Save €{expensive - cheapest} compared to peak season</Text>
       </TouchableOpacity>

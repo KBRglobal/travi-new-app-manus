@@ -1,6 +1,6 @@
 import { haptic } from '@/lib/haptics';
 import React from 'react';
-import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, FlatList} from 'react-native';
 import { useRouter } from 'expo-router';
 import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
 
@@ -21,14 +21,14 @@ export default function ItineraryBuilder() {
         </TouchableOpacity>
         <Text className="text-white text-xl font-bold flex-1">Itinerary</Text>
         <TouchableOpacity onPress={() => router.push('/(trip)/plan/ai-itinerary')} className="mr-2">
-          <Text className="text-2xl">🤖</Text>
+          <Ionicons name="hardware-chip" size={24} color="#FFFFFF" />
         </TouchableOpacity>
         <TouchableOpacity onPress={() => router.push('/(trip)/plan/collab/tripId')}>
-          <Text className="text-2xl">👥</Text>
+          <Ionicons name="people" size={24} color="#FFFFFF" />
         </TouchableOpacity>
       </View>
 
-      <ScrollView className="flex-1 px-4">
+      <ScrollView removeClippedSubviews={true} className="flex-1 px-4">
         {DAYS.map(day => (
           <View key={day.day} className="mb-4">
             <Text className="text-white font-bold text-lg mb-2">Day {day.day} — {day.title}</Text>
@@ -51,7 +51,7 @@ export default function ItineraryBuilder() {
 
       <View className="px-4 pb-6">
         <TouchableOpacity onPress={() => router.push('/(trip)/plan/road-trip')} className="bg-bg-card rounded-button py-3 items-center mb-2" style={{ borderWidth: 1, borderColor: colors.pink }}>
-          <Text className="text-pink font-semibold">🚗 Road Trip Mode NEW</Text>
+          <Text className="text-pink font-semibold">Road Trip Mode NEW</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => router.push('/(trip)/plan/cart')} className="bg-primary rounded-button py-4 items-center">
           <Text className="text-white font-bold text-lg">Review Cart →</Text>

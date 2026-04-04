@@ -4,16 +4,17 @@ import { View, Text, FlatList, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
+import { Ionicons } from '@expo/vector-icons';
 
 const TRANSACTIONS = [
-  { id: '1', type: 'credit', title: 'Cashback - Hotel', amount: 12.50, date: 'Apr 3, 2026', emoji: '🏨', status: 'completed' },
-  { id: '2', type: 'debit', title: 'Flight Booking', amount: -89.00, date: 'Apr 2, 2026', emoji: '✈️', status: 'completed' },
-  { id: '3', type: 'credit', title: 'Added Funds', amount: 100.00, date: 'Apr 1, 2026', emoji: '💳', status: 'completed' },
-  { id: '4', type: 'credit', title: 'Refund - Activity', amount: 35.00, date: 'Mar 28, 2026', emoji: '🔄', status: 'completed' },
-  { id: '5', type: 'credit', title: 'Cashback - Flight', amount: 22.30, date: 'Mar 25, 2026', emoji: '✈️', status: 'pending' },
-  { id: '6', type: 'debit', title: 'Restaurant Split', amount: -15.00, date: 'Mar 22, 2026', emoji: '🍽️', status: 'completed' },
-  { id: '7', type: 'debit', title: 'Activity Booking', amount: -45.00, date: 'Mar 20, 2026', emoji: '🎯', status: 'completed' },
-  { id: '8', type: 'credit', title: 'Points Conversion', amount: 25.00, date: 'Mar 15, 2026', emoji: '🏆', status: 'completed' },
+  { id: '1', type: 'credit', title: 'Cashback - Hotel', amount: 12.50, date: 'Apr 3, 2026', iconName: 'bed', status: 'completed' },
+  { id: '2', type: 'debit', title: 'Flight Booking', amount: -89.00, date: 'Apr 2, 2026', iconName: 'airplane', status: 'completed' },
+  { id: '3', type: 'credit', title: 'Added Funds', amount: 100.00, date: 'Apr 1, 2026', iconName: 'card', status: 'completed' },
+  { id: '4', type: 'credit', title: 'Refund - Activity', amount: 35.00, date: 'Mar 28, 2026', iconName: 'refresh', status: 'completed' },
+  { id: '5', type: 'credit', title: 'Cashback - Flight', amount: 22.30, date: 'Mar 25, 2026', iconName: 'airplane', status: 'pending' },
+  { id: '6', type: 'debit', title: 'Restaurant Split', amount: -15.00, date: 'Mar 22, 2026', iconName: 'restaurant', status: 'completed' },
+  { id: '7', type: 'debit', title: 'Activity Booking', amount: -45.00, date: 'Mar 20, 2026', iconName: 'flag', status: 'completed' },
+  { id: '8', type: 'credit', title: 'Points Conversion', amount: 25.00, date: 'Mar 15, 2026', iconName: 'trophy', status: 'completed' },
 ];
 
 export default function WalletTransactionsScreen() {

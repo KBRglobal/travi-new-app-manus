@@ -1,6 +1,6 @@
 import { haptic } from '@/lib/haptics';
 import React, { useState } from 'react';
-import { View, Text, ScrollView, TouchableOpacity, TextInput } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, TextInput, FlatList} from 'react-native';
 import { useRouter } from 'expo-router';
 import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
 
@@ -15,7 +15,7 @@ export default function GiftPointsScreen() {
 
   if (sent) return (
     <View className="flex-1 bg-bg-primary items-center justify-center px-8">
-      <Text className="text-5xl mb-4">🎁</Text>
+      <Ionicons name="gift" size={24} color="#FFFFFF" />
       <Text className="text-white text-2xl font-bold mb-2">Points Sent!</Text>
       <Text className="text-white/60 text-center mb-6">{amount} points sent to {recipient}</Text>
       <TouchableOpacity onPress={() => router.back()} className="bg-primary px-8 py-3 rounded-xl"><Text className="text-white font-bold">Done</Text></TouchableOpacity>
@@ -23,7 +23,7 @@ export default function GiftPointsScreen() {
   );
 
   return (
-    <ScrollView className="flex-1 bg-bg-primary pt-safe">
+    <ScrollView removeClippedSubviews={true} className="flex-1 bg-bg-primary pt-safe">
       <View className="flex-row items-center px-4 py-3">
         <TouchableOpacity onPress={() => router.back()}><Text className="text-white text-lg">←</Text></TouchableOpacity>
         <Text className="text-white text-xl font-bold ml-3">Gift Points</Text>

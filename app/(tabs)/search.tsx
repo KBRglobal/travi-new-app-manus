@@ -17,9 +17,9 @@ export default function SearchScreen() {
   const debouncedSearch = useDebouncedCallback((text: string) => {
     if (!text) { setResults([]); return; }
     const q = text.toLowerCase();
-    const destResults: SearchResult[] = destinations.filter((d) => d.name.toLowerCase().includes(q) || d.country.toLowerCase().includes(q)).map((d) => ({ id: d.id, type: 'destination', name: d.name, subtitle: d.country, emoji: '🌍' }));
-    const actResults: SearchResult[] = activities.filter((a) => a.name.toLowerCase().includes(q)).map((a) => ({ id: a.id, type: 'activity', name: a.name, subtitle: `€${a.price} · ${a.duration}`, emoji: '🎯' }));
-    const hotelResults: SearchResult[] = hotels.filter((h) => h.name.toLowerCase().includes(q)).map((h) => ({ id: h.id, type: 'hotel', name: h.name, subtitle: `€${h.price}/night · ⭐${h.rating}`, emoji: '🏨' }));
+    const destResults: SearchResult[] = destinations.filter((d) => d.name.toLowerCase().includes(q) || d.country.toLowerCase().includes(q)).map((d) => ({ id: d.id, type: 'destination', name: d.name, subtitle: d.country, iconName: 'globe' }));
+    const actResults: SearchResult[] = activities.filter((a) => a.name.toLowerCase().includes(q)).map((a) => ({ id: a.id, type: 'activity', name: a.name, subtitle: `€${a.price} · ${a.duration}`, iconName: 'flag' }));
+    const hotelResults: SearchResult[] = hotels.filter((h) => h.name.toLowerCase().includes(q)).map((h) => ({ id: h.id, type: 'hotel', name: h.name, subtitle: `€${h.price}/night · ⭐${h.rating}`, iconName: 'bed' }));
     setResults([...destResults, ...actResults, ...hotelResults]);
   }, 300);
 
@@ -33,9 +33,9 @@ export default function SearchScreen() {
     <View className="flex-1 bg-bg-primary pt-safe px-6">
       <Text className="text-white text-heading-1 mb-4">Search</Text>
       <View className="bg-bg-card border border-border rounded-input flex-row items-center px-4 mb-6">
-        <Text className="text-text-muted mr-2">🔍</Text>
+        <Ionicons name="search" size={24} color="#FFFFFF" />
         <TextInput className="flex-1 text-white text-body py-3" placeholder="Search anything..." placeholderTextColor="rgba(255,255,255,0.4)" value={query} onChangeText={(t) => { setQuery(t); debouncedSearch(t); }} autoFocus />
-        {query ? <TouchableOpacity onPress={() => { setQuery(''); setResults([]); }}><Text className="text-text-muted text-lg">✕</Text></TouchableOpacity> : null}
+        {query ? <TouchableOpacity onPress={() => { setQuery(''); setResults([]); }}><Ionicons name="close" size={24} color="#FFFFFF" /></TouchableOpacity> : null}
       </View>
 
       {!query && (
@@ -43,7 +43,7 @@ export default function SearchScreen() {
           <Text className="text-text-secondary text-body-sm mb-3">Recent Searches</Text>
           {recentSearches.map((s) => (
             <TouchableOpacity key={s} className="flex-row items-center py-3 border-b border-border" onPress={() => { setQuery(s); debouncedSearch(s); }}>
-              <Text className="text-text-muted mr-3">🕐</Text>
+              <Ionicons name="time" size={24} color="#FFFFFF" />
               <Text className="text-white text-body">{s}</Text>
             </TouchableOpacity>
           ))}

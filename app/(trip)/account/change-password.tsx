@@ -15,7 +15,7 @@ export default function ChangePasswordScreen() {
 
   if (done) return (
     <View className="flex-1 bg-bg-primary items-center justify-center px-8">
-      <Text className="text-5xl mb-4">🔒</Text>
+      <Ionicons name="lock-closed" size={24} color="#FFFFFF" />
       <Text className="text-white text-2xl font-bold mb-2">Password Updated</Text>
       <Text className="text-white/60 text-center mb-6">Your password has been changed successfully.</Text>
       <TouchableOpacity onPress={() => router.back()} className="bg-primary px-8 py-3 rounded-xl"><Text className="text-white font-bold">Done</Text></TouchableOpacity>

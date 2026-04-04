@@ -27,7 +27,7 @@ export default function VerifyEmailScreen() {
 
   return (
     <View className="flex-1 bg-bg-primary items-center justify-center px-6">
-      <Text className="text-4xl mb-4">📬</Text>
+      <Ionicons name="mail-open" size={24} color="#FFFFFF" />
       <Text className="text-white text-heading-2 mb-2">Verify Your Email</Text>
       <Text className="text-text-secondary text-body text-center mb-8">Enter the 6-digit code we sent to your email</Text>
 

@@ -1,14 +1,15 @@
 import { haptic } from '@/lib/haptics';
 import React from 'react';
-import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, FlatList} from 'react-native';
 import { useRouter } from 'expo-router';
 import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
+import { Ionicons } from '@expo/vector-icons';
 
 export default function PlanSummaryScreen() {
   const router = useRouter();
 
   return (
-    <ScrollView className="flex-1 bg-bg-primary pt-safe">
+    <ScrollView removeClippedSubviews={true} className="flex-1 bg-bg-primary pt-safe">
       <View className="flex-row items-center px-4 py-3">
         <TouchableOpacity onPress={() => router.back()}><Text className="text-white text-lg">←</Text></TouchableOpacity>
         <Text className="text-white text-xl font-bold ml-3">Trip Summary</Text>
@@ -20,10 +21,10 @@ export default function PlanSummaryScreen() {
       <View className="mx-4 mb-4">
         <Text className="text-white/60 text-xs uppercase mb-3 ml-1">Bookings</Text>
         {[
-          { emoji: '✈️', title: 'Round-trip Flight', detail: 'NYC → TYO • Economy', price: '$890' },
-          { emoji: '🏨', title: 'Hotel Shinjuku', detail: '7 nights • Deluxe Room', price: '$1,260' },
-          { emoji: '🎯', title: 'Activities (3)', detail: 'Tea ceremony, Sushi class, Mt. Fuji', price: '$340' },
-          { emoji: '🚗', title: 'Airport Transfer', detail: 'Round-trip private car', price: '$120' },
+          { iconName: 'airplane', title: 'Round-trip Flight', detail: 'NYC → TYO • Economy', price: '$890' },
+          { iconName: 'bed', title: 'Hotel Shinjuku', detail: '7 nights • Deluxe Room', price: '$1,260' },
+          { iconName: 'flag', title: 'Activities (3)', detail: 'Tea ceremony, Sushi class, Mt. Fuji', price: '$340' },
+          { iconName: 'car', title: 'Airport Transfer', detail: 'Round-trip private car', price: '$120' },
         ].map(item => (
           <View key={item.title} className="flex-row items-center p-4 mb-2 bg-bg-secondary rounded-2xl border border-white/[0.08]">
             <Text className="text-2xl mr-3">{item.emoji}</Text>
@@ -43,7 +44,7 @@ export default function PlanSummaryScreen() {
         <View className="flex-row justify-between"><Text className="text-white font-bold text-lg">Total</Text><Text className="text-white font-bold text-lg">$2,745</Text></View>
       </View>
       <View className="mx-4 mb-2 p-3 bg-primary/10 rounded-xl border border-primary/20">
-        <Text className="text-primary text-sm text-center">🏆 You'll earn 274 points with this booking!</Text>
+        <Text className="text-primary text-sm text-center">You'll earn 274 points with this booking!</Text>
       </View>
       <TouchableOpacity onPress={() => router.push('/(trip)/plan/payment')} className="mx-4 mb-8 bg-primary py-4 rounded-2xl items-center">
         <Text className="text-white font-bold text-lg">Proceed to Payment</Text>

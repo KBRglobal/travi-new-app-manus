@@ -1,4 +1,4 @@
-import { View, Text, Pressable, ScrollView } from 'react-native';
+import { View, Text, Pressable, ScrollView, FlatList} from 'react-native';
 import { useRouter } from 'expo-router';
 import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
 
@@ -11,7 +11,7 @@ export default function PlanCartScreen() {
         <Pressable onPress={() => router.back()} className="p-2 -ml-2"><Text className="text-white text-2xl">‹</Text></Pressable>
         <Text className="text-white text-xl font-bold ml-3">Your Cart</Text>
       </View>
-      <ScrollView contentContainerClassName="px-4 md:px-6 py-4 pb-32">
+      <ScrollView removeClippedSubviews={true} contentContainerClassName="px-4 md:px-6 py-4 pb-32">
         <View className="w-full max-w-md mx-auto">
           {items.map((item, i) => (
             <View key={i} className="flex-row justify-between py-4 border-b border-white/5">

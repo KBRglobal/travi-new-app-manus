@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { View, Text, TextInput, Pressable, ScrollView } from 'react-native';
+import { useState, useCallback} from 'react';
+import { View, Text, TextInput, Pressable, ScrollView, FlatList} from 'react-native';
 import { useRouter } from 'expo-router';
 import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
 
@@ -29,7 +29,7 @@ export default function SearchScreen() {
         />
       </View>
 
-      <ScrollView contentContainerClassName="px-4 md:px-6 mt-6">
+      <ScrollView removeClippedSubviews={true} contentContainerClassName="px-4 md:px-6 mt-6">
         {/* Recent */}
         <Text className="text-text-secondary text-sm font-semibold mb-3">Recent</Text>
         {RECENT.map((item) => (
@@ -38,7 +38,7 @@ export default function SearchScreen() {
             onPress={() => router.push({ pathname: '/(tabs)/home/search-results', params: { q: item } })}
             className="flex-row items-center py-3 border-b border-white/5"
           >
-            <Text className="text-text-secondary mr-3">🕐</Text>
+            <Ionicons name="time" size={24} color="#FFFFFF" />
             <Text className="text-white text-base">{item}</Text>
           </Pressable>
         ))}
@@ -51,7 +51,7 @@ export default function SearchScreen() {
             onPress={() => router.push({ pathname: '/(tabs)/home/search-results', params: { q: item } })}
             className="flex-row items-center py-3 border-b border-white/5"
           >
-            <Text className="text-text-secondary mr-3">🔥</Text>
+            <Ionicons name="flame" size={24} color="#FFFFFF" />
             <Text className="text-white text-base">{item}</Text>
           </Pressable>
         ))}

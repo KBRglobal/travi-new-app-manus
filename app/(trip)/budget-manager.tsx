@@ -1,17 +1,18 @@
 import { Skeleton } from '@/components/ui/Skeleton';
 import React from 'react';
-import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, TouchableOpacity, ScrollView, FlatList} from 'react-native';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 import { useRouter } from 'expo-router';
 import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
+import { Ionicons } from '@expo/vector-icons';
 
 const categories = [
-  { name: 'Flights', spent: 480, budget: 500, emoji: '✈️', color: 'bg-primary' },
-  { name: 'Hotels', spent: 620, budget: 700, emoji: '🏨', color: 'bg-pink' },
-  { name: 'Food', spent: 180, budget: 300, emoji: '🍽️', color: 'bg-status-success' },
-  { name: 'Activities', spent: 150, budget: 200, emoji: '🎯', color: 'bg-status-warning' },
-  { name: 'Transport', spent: 85, budget: 100, emoji: '🚕', color: 'bg-trip-adventure' },
-  { name: 'Shopping', spent: 120, budget: 150, emoji: '🛍️', color: 'bg-trip-culture' },
+  { name: 'Flights', spent: 480, budget: 500, iconName: 'airplane', color: 'bg-primary' },
+  { name: 'Hotels', spent: 620, budget: 700, iconName: 'bed', color: 'bg-pink' },
+  { name: 'Food', spent: 180, budget: 300, iconName: 'restaurant', color: 'bg-status-success' },
+  { name: 'Activities', spent: 150, budget: 200, iconName: 'flag', color: 'bg-status-warning' },
+  { name: 'Transport', spent: 85, budget: 100, iconName: 'car', color: 'bg-trip-adventure' },
+  { name: 'Shopping', spent: 120, budget: 150, iconName: 'bag', color: 'bg-trip-culture' },
 ];
 
 const dailySpending = [
@@ -26,7 +27,7 @@ export default function BudgetManagerScreen() {
   const maxDaily = Math.max(...dailySpending.map((d) => d.amount));
 
   return (
-    <ScrollView className="flex-1 bg-bg-primary" contentContainerClassName="pt-safe pb-24 px-6">
+    <ScrollView removeClippedSubviews={true} className="flex-1 bg-bg-primary" contentContainerClassName="pt-safe pb-24 px-6">
       <View className="flex-row items-center justify-between mb-6">
         <TouchableOpacity onPress={() => router.back()}><Text className="text-white text-xl">‹ Back</Text></TouchableOpacity>
         <Text className="text-white text-heading-3">Budget</Text>

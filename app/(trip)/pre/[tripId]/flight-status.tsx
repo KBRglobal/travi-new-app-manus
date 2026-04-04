@@ -1,8 +1,9 @@
 import { haptic } from '@/lib/haptics';
 import React from 'react';
-import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, FlatList} from 'react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
+import { Ionicons } from '@expo/vector-icons';
 
 const STATUS_COLORS: Record<string, string> = {
   'On Time': '#22C55E', 'Delayed': '#F59E0B', 'Boarding': '#3B82F6',
@@ -23,11 +24,11 @@ export default function FlightStatusLive() {
         <Text className="text-white text-xl font-bold flex-1">Flight Status</Text>
       </View>
 
-      <ScrollView className="flex-1 px-4">
+      <ScrollView removeClippedSubviews={true} className="flex-1 px-4">
         <Text className="text-white text-2xl font-bold mb-2">EK001 · Dubai → London</Text>
 
         <View className="rounded-card p-4 mb-4 items-center" style={{ backgroundColor: STATUS_COLORS[status] + '20', borderWidth: 1, borderColor: STATUS_COLORS[status] }}>
-          <Text style={{ color: STATUS_COLORS[status] }} className="text-xl font-bold">✈️ {status}</Text>
+          <Text style={{ color: STATUS_COLORS[status] }} className="text-xl font-bold">{status}</Text>
         </View>
 
         <View className="bg-bg-card rounded-card p-4 mb-4" style={{ height: 200, justifyContent: 'center', alignItems: 'center' }}>

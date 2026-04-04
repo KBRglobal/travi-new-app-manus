@@ -1,13 +1,13 @@
-import { useState } from 'react';
-import { View, Text, Pressable, ScrollView } from 'react-native';
+import { useState, useCallback} from 'react';
+import { View, Text, Pressable, ScrollView, FlatList} from 'react-native';
 import { useRouter } from 'expo-router';
 import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
 
 const OPTIONS = [
-  { id: 'detailed', icon: '📋', title: 'Detailed itinerary', subtitle: 'Planned hour by hour' },
-  { id: 'rough', icon: '🗺️', title: 'Rough plan', subtitle: 'Key stops, flexible timing' },
-  { id: 'spontaneous', icon: '🎲', title: 'Spontaneous', subtitle: 'Figure it out there' },
-  { id: 'flow', icon: '🌊', title: 'Go with the flow', subtitle: 'Pure adventure' },
+  { id: 'detailed', iconName: 'clipboard', title: 'Detailed itinerary', subtitle: 'Planned hour by hour' },
+  { id: 'rough', iconName: 'map', title: 'Rough plan', subtitle: 'Key stops, flexible timing' },
+  { id: 'spontaneous', iconName: 'dice', title: 'Spontaneous', subtitle: 'Figure it out there' },
+  { id: 'flow', iconName: 'water', title: 'Go with the flow', subtitle: 'Pure adventure' },
 ];
 
 // S9 — DNA Schedule
@@ -27,7 +27,7 @@ export default function DNAScheduleScreen() {
         </View>
       </View>
 
-      <ScrollView contentContainerClassName="px-6 md:px-12 pb-32">
+      <ScrollView removeClippedSubviews={true} contentContainerClassName="px-6 md:px-12 pb-32">
         <Text className="text-2xl md:text-3xl font-bold text-white mt-6">How do you plan?</Text>
         <Text className="text-sm md:text-base text-text-secondary mt-2">There's no wrong answer</Text>
 
@@ -49,7 +49,7 @@ export default function DNAScheduleScreen() {
               </View>
               {selected === opt.id && (
                 <View className="w-5 h-5 rounded-full bg-primary items-center justify-center">
-                  <Text className="text-white text-xs">✓</Text>
+                  <Ionicons name="checkmark" size={24} color="#FFFFFF" />
                 </View>
               )}
             </Pressable>

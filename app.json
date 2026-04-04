@@ -12,13 +12,42 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.travi.superapp"
+      "bundleIdentifier": "com.travi.superapp",
+      "associatedDomains": [
+        "applinks:travi.app",
+        "applinks:*.travi.app"
+      ]
     },
     "android": {
       "adaptiveIcon": {
         "backgroundColor": "#0A0514"
       },
-      "package": "com.travi.superapp"
+      "package": "com.travi.superapp",
+      "intentFilters": [
+        {
+          "action": "VIEW",
+          "autoVerify": true,
+          "data": [
+            {
+              "scheme": "https",
+              "host": "*.travi.app",
+              "pathPrefix": "/"
+            },
+            {
+              "scheme": "travi"
+            }
+          ],
+          "category": [
+            "BROWSABLE",
+            "DEFAULT"
+          ]
+        }
+      ],
+      "permissions": [
+        "RECEIVE_BOOT_COMPLETED",
+        "VIBRATE",
+        "WAKE_LOCK"
+      ]
     },
     "plugins": [
       "expo-router",
@@ -32,7 +61,17 @@
           "merchantIdentifier": "merchant.com.travi.app",
           "enableGooglePay": true
         }
-      ]
+      ],
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/images/notification-icon.png",
+          "color": "#6443F4",
+          "sounds": [],
+          "defaultChannel": "default"
+        }
+      ],
+      "expo-linking"
     ],
     "extra": {
       "eas": {

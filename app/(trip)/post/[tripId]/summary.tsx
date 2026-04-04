@@ -1,8 +1,9 @@
 import { haptic } from '@/lib/haptics';
 import React from 'react';
-import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, FlatList} from 'react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
+import { Ionicons } from '@expo/vector-icons';
 
 export default function TripSummary() {
   const router = useRouter();
@@ -17,7 +18,7 @@ export default function TripSummary() {
         <Text className="text-white text-xl font-bold">Trip Summary</Text>
       </View>
 
-      <ScrollView className="flex-1 px-4">
+      <ScrollView removeClippedSubviews={true} className="flex-1 px-4">
         <View className="bg-bg-card rounded-card p-6 mb-4 items-center">
           <Text className="text-white text-2xl font-bold mb-1">Dubai Adventure</Text>
           <Text className="text-primary text-lg">April 10 - 17, 2026</Text>
@@ -40,7 +41,7 @@ export default function TripSummary() {
         <TouchableOpacity onPress={() => router.push('/(trip)/profile/adventure-log')} className="bg-primary/10 rounded-card p-4 mb-4" style={{ borderWidth: 1, borderColor: '#6443F4' }}>
           <View className="flex-row justify-between items-center">
             <View>
-              <Text className="text-white font-bold">🌍 Your Journey So Far</Text>
+              <Text className="text-white font-bold">Your Journey So Far</Text>
               <Text className="text-text-secondary mt-1">23 countries total · +1 new this trip</Text>
             </View>
             <Text className="text-primary font-semibold">Adventure Log →</Text>

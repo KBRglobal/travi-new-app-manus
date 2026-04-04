@@ -1,4 +1,6 @@
 import { create } from 'zustand';
+import { persist, createJSONStorage } from 'zustand/middleware';
+import { asyncStorageAdapter } from '../lib/storage';
 import type { DNAProfile } from '../lib/dnaSignals';
 
 interface DNAAnswer {
@@ -41,33 +43,49 @@ interface DNAState {
 }
 
 // Alias for both naming conventions
-export const useDnaStore = create<DNAState>((set) => ({
-  answers: [],
-  currentStep: 0,
-  totalSteps: 8,
-  dna: null,
-  isComplete: false,
-  dnaProfile: null,
-  signalCount: 0,
+export const useDnaStore = create<DNAState>()(
+  persist(
+    (set) => ({
+      answers: [],
+      currentStep: 0,
+      totalSteps: 8,
+      dna: null,
+      isComplete: false,
+      dnaProfile: null,
+      signalCount: 0,
 
-  addAnswer: (answer) => set((state) => ({
-    answers: [...state.answers, answer],
-    currentStep: state.currentStep + 1,
-  })),
-  setStep: (step) => set({ currentStep: step }),
-  setDNA: (dna) => set({ dna, isComplete: true }),
-  setComplete: (complete) => set({ isComplete: complete }),
-  setDNAProfile: (profile) => set({ dnaProfile: profile }),
-  setSignalCount: (count) => set({ signalCount: count }),
-  reset: () => set({
-    answers: [],
-    currentStep: 0,
-    dna: null,
-    isComplete: false,
-    dnaProfile: null,
-    signalCount: 0,
-  }),
-}));
+      addAnswer: (answer) => set((state) => ({
+        answers: [...state.answers, answer],
+        currentStep: state.currentStep + 1,
+      })),
+      setStep: (step) => set({ currentStep: step }),
+      setDNA: (dna) => set({ dna, isComplete: true }),
+      setComplete: (complete) => set({ isComplete: complete }),
+      setDNAProfile: (profile) => set({ dnaProfile: profile }),
+      setSignalCount: (count) => set({ signalCount: count }),
+      reset: () => set({
+        answers: [],
+        currentStep: 0,
+        dna: null,
+        isComplete: false,
+        dnaProfile: null,
+        signalCount: 0,
+      }),
+    }),
+    {
+      name: 'travi-dna',
+      storage: createJSONStorage(() => asyncStorageAdapter),
+      partialize: (state) => ({
+        answers: state.answers,
+        currentStep: state.currentStep,
+        dna: state.dna,
+        isComplete: state.isComplete,
+        dnaProfile: state.dnaProfile,
+        signalCount: state.signalCount,
+      }),
+    }
+  )
+);
 
 // Export with both naming conventions for compatibility
 export const useDNAStore = useDnaStore;

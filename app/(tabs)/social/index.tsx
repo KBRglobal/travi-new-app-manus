@@ -17,7 +17,7 @@ export default function SocialHubScreen() {
           className="w-full bg-primary/10 border border-primary/30 rounded-card p-5 mt-4 flex-row items-center active:opacity-80"
         >
           <View className="w-12 h-12 bg-primary/20 rounded-full items-center justify-center mr-4">
-            <Text className="text-2xl">🌍</Text>
+            <Ionicons name="globe" size={24} color="#FFFFFF" />
           </View>
           <View className="flex-1">
             <Text className="text-white text-lg font-bold">Discover Travelers</Text>
@@ -32,7 +32,7 @@ export default function SocialHubScreen() {
           className="w-full bg-white/5 border border-white/8 rounded-card p-5 mt-3 flex-row items-center active:opacity-80"
         >
           <View className="w-12 h-12 bg-white/10 rounded-full items-center justify-center mr-4">
-            <Text className="text-2xl">💬</Text>
+            <Ionicons name="chatbubble" size={24} color="#FFFFFF" />
           </View>
           <View className="flex-1">
             <Text className="text-white text-lg font-bold">Messages</Text>
@@ -49,7 +49,7 @@ export default function SocialHubScreen() {
           className="w-full bg-white/5 border border-white/8 rounded-card p-5 mt-3 flex-row items-center active:opacity-80"
         >
           <View className="w-12 h-12 bg-white/10 rounded-full items-center justify-center mr-4">
-            <Text className="text-2xl">👥</Text>
+            <Ionicons name="people" size={24} color="#FFFFFF" />
           </View>
           <View className="flex-1">
             <Text className="text-white text-lg font-bold">Travel Buddies</Text>

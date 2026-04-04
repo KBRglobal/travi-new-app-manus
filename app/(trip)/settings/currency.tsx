@@ -41,7 +41,7 @@ export default function CurrencySettingsScreen() {
             <Text className="text-white/40 text-xs">{item.name}</Text>
           </View>
           <Text className="text-white/60 mr-2">{item.symbol}</Text>
-          {selected === item.code && <Text className="text-primary">✓</Text>}
+          {selected === item.code && <Ionicons name="checkmark" size={24} color="#FFFFFF" />}
         </TouchableOpacity>
       )} />
     </View>

@@ -13,7 +13,7 @@ export default function ChangeEmailScreen() {
 
   if (sent) return (
     <View className="flex-1 bg-bg-primary items-center justify-center px-8">
-      <Text className="text-5xl mb-4">📧</Text>
+      <Ionicons name="mail" size={24} color="#FFFFFF" />
       <Text className="text-white text-2xl font-bold mb-2">Verification Sent</Text>
       <Text className="text-white/60 text-center mb-6">We sent a verification link to {newEmail}. Please check your inbox.</Text>
       <TouchableOpacity onPress={() => router.back()} className="bg-primary px-8 py-3 rounded-xl"><Text className="text-white font-bold">Done</Text></TouchableOpacity>
