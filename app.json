@@ -1,0 +1,25 @@
+{
+  "expo": {
+    "name": "TRAVI",
+    "slug": "travi-superapp",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "dark",
+    "scheme": "travi",
+    "splash": {
+      "backgroundColor": "#0A0514"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.travi.superapp"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#0A0514"
+      },
+      "package": "com.travi.superapp"
+    },
+    "plugins": ["expo-router"]
+  }
+}
