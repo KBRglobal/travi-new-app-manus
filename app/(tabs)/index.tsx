@@ -22,6 +22,7 @@ import { BlurView } from "expo-blur";
 import { Image as ExpoImage } from "expo-image";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import * as Haptics from "expo-haptics";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const { width: W, height: H } = Dimensions.get("window");
 
@@ -304,13 +305,13 @@ const heroS = StyleSheet.create({
   },
   card: {
     width: "100%" as any,
-    height: 380,
+    height: 300,
     borderRadius: 24,
     overflow: "hidden",
   },
   content: {
     flex: 1,
-    padding: 24,
+    padding: 18,
   },
   topRow: {
     flexDirection: "row",
@@ -332,14 +333,14 @@ const heroS = StyleSheet.create({
     letterSpacing: 0.5,
   },
   textBlock: {
-    marginBottom: 20,
+    marginBottom: 12,
   },
   headline: {
-    fontSize: 38,
+    fontSize: 28,
     fontFamily: "Chillax-Bold",
     color: C.white,
-    lineHeight: 44,
-    letterSpacing: -1,
+    lineHeight: 34,
+    letterSpacing: -0.5,
   },
   headlineAccent: {
     color: C.pink,
@@ -365,11 +366,11 @@ const heroS = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     gap: 12,
-    paddingVertical: 18,
+    paddingVertical: 13,
     overflow: "hidden",
   },
   ctaText: {
-    fontSize: 17,
+    fontSize: 15,
     fontFamily: "Satoshi-Bold",
     color: C.white,
     letterSpacing: 0.3,
@@ -441,8 +442,8 @@ const catS = StyleSheet.create({
 // ═══════════════════════════════════════════════════
 // RECOMMENDED CARD — tall cinematic
 // ═══════════════════════════════════════════════════
-const REC_W = W * 0.6;
-const REC_H = 320;
+const REC_W = W * 0.55;
+const REC_H = 220;
 
 function RecCard({ item, onPress }: { item: typeof RECOMMENDED[0]; onPress: () => void }) {
   return (
@@ -495,12 +496,12 @@ const recS = StyleSheet.create({
     shadowRadius: 8,
   },
   badgeText: { fontSize: 12, fontFamily: "Satoshi-Bold", color: C.white },
-  nameWrap: { position: "absolute", bottom: 20, left: 18 },
+  nameWrap: { position: "absolute", bottom: 14, left: 14 },
   city: {
-    fontSize: 26,
+    fontSize: 20,
     fontFamily: "Chillax-Bold",
     color: C.white,
-    lineHeight: 30,
+    lineHeight: 24,
     textShadowColor: "rgba(0,0,0,0.8)",
     textShadowOffset: { width: 0, height: 2 },
     textShadowRadius: 16,
@@ -521,6 +522,7 @@ const recS = StyleSheet.create({
 // ═══════════════════════════════════════════════════
 export default function HomeScreen() {
   const router = useRouter();
+  const insets = useSafeAreaInsets();
   const livePulse = useRef(new Animated.Value(0.3)).current;
 
   useEffect(() => {
@@ -549,7 +551,7 @@ export default function HomeScreen() {
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 110 }}>
 
         {/* ═══ HEADER ═══ */}
-        <View style={s.header}>
+        <View style={[s.header, { paddingTop: insets.top + 8 }]}>
           <Image source={require("@/assets/images/logotype-dark.webp")} style={s.logo} resizeMode="contain" />
           <Pressable
             onPress={() => { haptic(); router.push("/(settings)/profile" as any); }}
@@ -730,7 +732,7 @@ const s = StyleSheet.create({
   // ─── Header ───
   header: {
     paddingHorizontal: 20,
-    paddingTop: 58,
+    paddingTop: 12,
     paddingBottom: 4,
     flexDirection: "row",
     justifyContent: "space-between",
@@ -750,8 +752,8 @@ const s = StyleSheet.create({
   avatarText: { color: C.white, fontSize: 15, fontFamily: "Satoshi-Bold" },
 
   // ─── Greeting ───
-  greeting: { paddingHorizontal: 20, paddingTop: 20, paddingBottom: 4 },
-  greetLine: { fontSize: 28, lineHeight: 34 },
+  greeting: { paddingHorizontal: 20, paddingTop: 14, paddingBottom: 4 },
+  greetLine: { fontSize: 22, lineHeight: 28 },
   greetMuted: { fontFamily: "Satoshi-Regular", color: C.w40 },
   greetName: { fontFamily: "Chillax-Bold", color: C.white },
   dnaPill: {
@@ -775,8 +777,8 @@ const s = StyleSheet.create({
   dnaLabel: { color: C.purpleLight, fontSize: 12, fontFamily: "Satoshi-Bold", letterSpacing: 0.3 },
 
   // ─── Sections ───
-  section: { paddingHorizontal: 20, marginTop: 28 },
-  sectionFull: { marginTop: 32 },
+  section: { paddingHorizontal: 20, marginTop: 18 },
+  sectionFull: { marginTop: 22 },
   sectionHeader: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -786,7 +788,7 @@ const s = StyleSheet.create({
   },
   sectionTitle: {
     color: C.white,
-    fontSize: 22,
+    fontSize: 18,
     fontFamily: "Chillax-Bold",
   },
   seeAll: {
@@ -875,21 +877,21 @@ const s = StyleSheet.create({
   // ─── Quick Actions ───
   quickRow: { flexDirection: "row", gap: 10 },
   quickInner: {
-    paddingVertical: 20,
-    paddingHorizontal: 12,
+    paddingVertical: 14,
+    paddingHorizontal: 10,
     alignItems: "center",
-    gap: 10,
+    gap: 7,
   },
   quickIcon: {
-    width: 48,
-    height: 48,
-    borderRadius: 24,
+    width: 40,
+    height: 40,
+    borderRadius: 20,
     justifyContent: "center",
     alignItems: "center",
     borderWidth: 1,
   },
-  quickLabel: { color: C.w40, fontSize: 11, fontFamily: "Satoshi-Medium" },
-  quickValue: { color: C.white, fontSize: 20, fontFamily: "Chillax-Bold" },
+  quickLabel: { color: C.w40, fontSize: 10, fontFamily: "Satoshi-Medium" },
+  quickValue: { color: C.white, fontSize: 16, fontFamily: "Chillax-Bold" },
 
   // ─── Tip ───
   tipInner: {

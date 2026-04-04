@@ -10,6 +10,14 @@ export default function SocialLayout() {
       <Stack.Screen name="messages" />
       <Stack.Screen name="message-chat" />
       <Stack.Screen name="community" />
+      <Stack.Screen name="buddies" />
+      <Stack.Screen name="connect-flow" />
+      <Stack.Screen name="swipe-travelers" />
+      <Stack.Screen name="traveler-profile" />
+      <Stack.Screen name="group-invite" />
+      <Stack.Screen name="group" />
+      <Stack.Screen name="shared-wishlist" />
+      <Stack.Screen name="settings" />
     </Stack>
   );
 }
