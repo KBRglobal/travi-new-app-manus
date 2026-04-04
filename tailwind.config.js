@@ -18,11 +18,18 @@ module.exports = {
           light: 'rgba(100,67,244,0.2)',
           dark: '#4A2FD4',
         },
+        // Pink — second most important color
+        pink: {
+          DEFAULT: '#F94498',
+          light: 'rgba(249,68,152,0.15)',
+          dark: '#D42E78',
+        },
         // Backgrounds
         bg: {
           primary: '#0A0514',
           secondary: '#1A0B32',
           card: '#1A0B32',
+          surface: 'rgba(255,255,255,0.05)',
           overlay: 'rgba(0,0,0,0.85)',
         },
         // Text
@@ -32,11 +39,16 @@ module.exports = {
           tertiary: 'rgba(255,255,255,0.4)',
           muted: 'rgba(255,255,255,0.3)',
         },
+        // Borders
+        border: {
+          DEFAULT: 'rgba(255,255,255,0.08)',
+          strong: 'rgba(255,255,255,0.15)',
+        },
         // Status
         status: {
-          success: '#22C55E',
-          warning: '#F59E0B',
-          error: '#EF4444',
+          success: '#4ADE80',
+          warning: '#FBBF24',
+          error: '#F87171',
           info: '#3B82F6',
         },
         // Trip statuses
@@ -49,10 +61,8 @@ module.exports = {
           cancelled: '#EF4444',
         },
       },
-      // Spacing scale
+      // Spacing scale (no env() — NativeWind v4 has pb-safe, pt-safe built in)
       spacing: {
-        'safe': 'env(safe-area-inset-top)',
-        'safe-bottom': 'env(safe-area-inset-bottom)',
         '18': '4.5rem',
         '88': '22rem',
       },
