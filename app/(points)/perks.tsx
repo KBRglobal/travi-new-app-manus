@@ -54,7 +54,7 @@ const PerksScreen = () => {
                 <Text style={styles.perkDescription}>{perk.description}</Text>
               </View>
             </View>
-            <TouchableOpacity activeOpacity={0.8}>
+            <TouchableOpacity activeOpacity={0.8} onPress={() => router.push('/(trip)/plan' as any)}>
               <LinearGradient
                 colors={[DS.purple, DS.pink] as const}
                 start={{ x: 0, y: 0 }}

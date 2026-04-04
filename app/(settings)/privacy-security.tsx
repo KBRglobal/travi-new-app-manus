@@ -1,4 +1,5 @@
 import React from 'react';
+import { useRouter } from 'expo-router';
 import { View, Text, StyleSheet, Switch } from 'react-native';
 import { ScreenWrapper, DS } from '@/components/screen-wrapper';
 import { BlurView } from 'expo-blur';
@@ -71,6 +72,7 @@ const PrivacySecurityScreen = () => {
       </View>
 
       <View style={styles.section}>
+        <TouchableOpacity onPress={() => router.back()} activeOpacity={0.85}>
         <LinearGradient
           colors={[DS.purple, DS.pink] as const}
           start={{ x: 0, y: 0 }}
@@ -79,6 +81,7 @@ const PrivacySecurityScreen = () => {
         >
           <Text style={styles.ctaButtonText}>Save Changes</Text>
         </LinearGradient>
+        </TouchableOpacity>
       </View>
     </ScreenWrapper>
   );

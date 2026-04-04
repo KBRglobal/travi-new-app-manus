@@ -18,8 +18,7 @@ const RateReviewScreen = () => {
   };
 
   const handleSubmit = () => {
-    console.log('Rating:', rating, 'Review:', reviewText);
-    // Implement actual submission logic here
+    router.replace('/(trip)/trip-summary' as any);
   };
 
   return (

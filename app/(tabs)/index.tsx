@@ -431,10 +431,10 @@ const heroS = StyleSheet.create({
 // 4-ACTION GRID
 // ═══════════════════════════════════════════════════
 const ACTIONS = [
-  { icon: "luggage" as const, label: "Plan Trip", sub: "AI-powered", color: C.purple, route: "/(tabs)/plan-trip" },
+  { icon: "luggage" as const, label: "Plan Trip", sub: "AI-powered", color: C.purple, route: "/(trip)/plan" },
   { icon: "explore" as const, label: "Explore Places", sub: "12 new matches", color: C.pink, route: "/(tabs)/explore" },
-  { icon: "auto-awesome" as const, label: "Surprise Me", sub: "Random pick", color: C.gold, route: "/(tabs)/explore" },
-  { icon: "biotech" as const, label: "Update DNA", sub: "67% complete", color: C.purpleLight, route: "/(dna)/profile" },
+  { icon: "account-balance-wallet" as const, label: "Wallet", sub: "Cashback ready", color: C.gold, route: "/(tabs)/wallet" },
+  { icon: "biotech" as const, label: "Update DNA", sub: "67% complete", color: C.purpleLight, route: "/(dna)/categories" },
 ];
 
 function ActionGrid({ router }: { router: ReturnType<typeof useRouter> }) {
@@ -534,7 +534,7 @@ function DNABanner({ router }: { router: ReturnType<typeof useRouter> }) {
 
   return (
     <Pressable
-      onPress={() => { haptic(Haptics.ImpactFeedbackStyle.Medium); router.push("/(dna)/profile" as any); }}
+      onPress={() => { haptic(Haptics.ImpactFeedbackStyle.Medium); router.push("/(dna)/categories" as any); }}
       style={({ pressed }) => [pressed && { opacity: 0.88 }]}
     >
       <Animated.View style={[dnaB.card, { transform: [{ scale: pulseAnim }] }]}>
@@ -784,7 +784,7 @@ function LiveTripBanner({ router }: { router: ReturnType<typeof useRouter> }) {
 
   return (
     <Pressable
-      onPress={() => { haptic(); router.push("/(live)/home" as any); }}
+      onPress={() => { haptic(); router.push("/(live)/home" as any); }} // S35 Live Dashboard
       style={({ pressed }) => [pressed && { opacity: 0.85 }]}
     >
       <View style={liveS.card}>
@@ -880,7 +880,7 @@ export default function HomeScreen() {
       >
         {/* ═══ HERO (70% viewport, DNA match centerpiece) ═══ */}
         <HeroSection
-          onExplore={() => router.push({ pathname: "/(tabs)/destination-guide", params: { id: "bali" } } as any)}
+          onExplore={() => router.push({ pathname: "/(tabs)/destination-guide", params: { id: "bali" } } as any)} // S14 Destination Detail
           insetTop={insets.top}
         />
 
@@ -911,7 +911,7 @@ export default function HomeScreen() {
                 key={item.id}
                 item={item}
                 index={i}
-                onPress={() => router.push({ pathname: "/(tabs)/destination-guide", params: { id: item.key } } as any)}
+                onPress={() => router.push({ pathname: "/(tabs)/destination-guide", params: { id: item.key } } as any)} // S14 Destination Detail
               />
             ))}
           </View>

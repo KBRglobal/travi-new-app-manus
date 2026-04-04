@@ -1,11 +1,13 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { BlurView } from 'expo-blur';
 import { MaterialIcons } from '@expo/vector-icons';
 import { ScreenWrapper, DS } from '@/components/screen-wrapper';
+import { useRouter } from 'expo-router';
 
 const EarnGuideScreen = () => {
+  const router = useRouter();
   return (
     <ScreenWrapper title="Earn Points Guide" scrollable={true}>
       <View style={styles.container}>
@@ -30,15 +32,17 @@ const EarnGuideScreen = () => {
         </BlurView>
 
         <View style={styles.ctaContainer}>
-          <LinearGradient
-            colors={[DS.purple, DS.pink] as const}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 1 }}
-            style={styles.ctaButton}
-          >
-            <Text style={styles.ctaButtonText}>Start Earning Now</Text>
-            <MaterialIcons name="arrow-forward" size={20} color={DS.white} />
-          </LinearGradient>
+          <TouchableOpacity onPress={() => router.push('/(trip)/plan' as any)} activeOpacity={0.85}>
+            <LinearGradient
+              colors={[DS.purple, DS.pink] as const}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              style={styles.ctaButton}
+            >
+              <Text style={styles.ctaButtonText}>Start Earning Now</Text>
+              <MaterialIcons name="arrow-forward" size={20} color={DS.white} />
+            </LinearGradient>
+          </TouchableOpacity>
         </View>
       </View>
     </ScreenWrapper>

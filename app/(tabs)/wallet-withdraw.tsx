@@ -46,7 +46,7 @@ const WalletWithdraw = () => {
           end={{ x: 1, y: 1 }}
           style={styles.ctaButton}
         >
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => router.replace('/(tabs)/wallet' as any)}>
             <Text style={styles.ctaButtonText}>Withdraw Now</Text>
           </TouchableOpacity>
         </LinearGradient>

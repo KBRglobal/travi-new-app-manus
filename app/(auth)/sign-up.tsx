@@ -199,11 +199,11 @@ export default function SignUpScreen() {
 
           {/* Social auth */}
           <View style={s.socialRow}>
-            <Pressable style={({ pressed }) => [s.socialBtn, pressed && { opacity: 0.7 }]}>
+            <Pressable style={({ pressed }) => [s.socialBtn, pressed && { opacity: 0.7 }]} onPress={() => router.replace('/(tabs)' as any)}>
               <Text style={s.socialLetter}>G</Text>
               <Text style={s.socialLabel}>Google</Text>
             </Pressable>
-            <Pressable style={({ pressed }) => [s.socialBtn, pressed && { opacity: 0.7 }]}>
+            <Pressable style={({ pressed }) => [s.socialBtn, pressed && { opacity: 0.7 }]} onPress={() => router.replace('/(tabs)' as any)}>
               <MaterialIcons name="apple" size={20} color={C.white} />
               <Text style={s.socialLabel}>Apple</Text>
             </Pressable>

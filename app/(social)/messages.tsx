@@ -20,7 +20,7 @@ const messagesData = [
 const MessagesScreen = () => {
   const router = useRouter();
   const renderItem = ({ item }: { item: any }) => (
-    <TouchableOpacity style={styles.messageItemContainer}>
+    <TouchableOpacity style={styles.messageItemContainer} onPress={() => router.push('/(social)/message-chat' as any)}>
       <BlurView intensity={20} tint="dark" style={styles.glassCard}>
         <Image source={{ uri: item.avatar }} style={styles.avatar} />
         <View style={styles.messageContent}>
@@ -42,7 +42,7 @@ const MessagesScreen = () => {
         contentContainerStyle={styles.listContentContainer}
       />
       <LinearGradient colors={[DS.purple, DS.pink] as const} style={styles.ctaButton}>
-        <TouchableOpacity style={styles.ctaButtonInner}>
+        <TouchableOpacity style={styles.ctaButtonInner} onPress={() => router.push('/(social)/message-chat' as any)}>
           <MaterialIcons name="add-comment" size={24} color={DS.white} />
           <Text style={styles.ctaButtonText}>New Message</Text>
         </TouchableOpacity>

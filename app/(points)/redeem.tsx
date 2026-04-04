@@ -42,7 +42,7 @@ const RedeemScreen = () => {
               </View>
               <TouchableOpacity
                 style={styles.redeemButton}
-                onPress={() => console.log(`Redeem ${reward.name}`)}
+                onPress={() => router.push('/(points)/redeem-confirm' as any)}
                 disabled={currentPoints < reward.points}
               >
                 <LinearGradient

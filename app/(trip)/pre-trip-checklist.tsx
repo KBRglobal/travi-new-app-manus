@@ -38,7 +38,7 @@ const PreTripChecklist = () => {
           </BlurView>
         ))}
 
-        <TouchableOpacity activeOpacity={0.8} style={styles.ctaButton}>
+        <TouchableOpacity activeOpacity={0.8} style={styles.ctaButton} onPress={() => router.back()}>
           <LinearGradient
             colors={[DS.purple, DS.pink] as const}
             start={{ x: 0, y: 0 }}

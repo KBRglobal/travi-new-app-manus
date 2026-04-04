@@ -20,13 +20,11 @@ const TravelerProfile = () => {
   };
 
   const handleEditProfile = () => {
-    console.log('Edit Profile Pressed');
-    // Navigation to edit profile screen
+    router.push('/(social)/compatibility' as any);
   };
 
   const handleShareProfile = () => {
-    console.log('Share Profile Pressed');
-    // Share functionality
+    router.push('/(social)/message-chat' as any);
   };
 
   return (

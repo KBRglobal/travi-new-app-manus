@@ -12,8 +12,7 @@ const EditProfileScreen = () => {
   const [email, setEmail] = useState('john.doe@example.com');
 
   const handleSaveChanges = () => {
-    console.log('Saving changes:', { name, email });
-    // Add actual save logic here
+    router.back();
   };
 
   return (

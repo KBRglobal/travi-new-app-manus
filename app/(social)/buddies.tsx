@@ -21,7 +21,7 @@ export default function BuddiesScreen() {
   return (
     <ScreenWrapper title="My Buddies" scrollable={true}>
       <View style={styles.container}>
-        <TouchableOpacity style={styles.addBuddyButton}>
+        <TouchableOpacity style={styles.addBuddyButton} onPress={() => router.push('/(social)/discover' as any)}>
           <LinearGradient
             colors={[DS.purple, DS.pink] as const}
             start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}
@@ -39,7 +39,7 @@ export default function BuddiesScreen() {
             <Image source={{ uri: buddy.avatar }} style={styles.avatar} />
             <View style={styles.buddyInfo}>
               <Text style={styles.buddyName}>{buddy.name}</Text>
-              <TouchableOpacity style={styles.messageButton}>
+              <TouchableOpacity style={styles.messageButton} onPress={() => router.push('/(social)/message-chat' as any)}>
                 <LinearGradient
                   colors={[DS.purple, DS.pink] as const}
                   start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}

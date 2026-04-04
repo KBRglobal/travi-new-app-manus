@@ -68,7 +68,7 @@ export default function AddFundsScreen() {
       ))}
 
       {/* CTA */}
-      <Pressable onPress={() => router.back()} style={{ marginTop: 8 }}>
+      <Pressable onPress={() => router.replace("/(tabs)/wallet" as any)} style={{ marginTop: 8 }}>
         <LinearGradient colors={[DS.purple, DS.pink] as const} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={s.cta}>
           <MaterialIcons name="add" size={20} color="#FFF" />
           <Text style={s.ctaText}>Add €{amount || "0"}</Text>

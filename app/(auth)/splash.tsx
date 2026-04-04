@@ -5,6 +5,7 @@
 import { useEffect, useRef } from "react";
 import { View, StyleSheet, Animated, Easing, Dimensions, Image } from "react-native";
 import { useRouter } from "expo-router";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { LinearGradient } from "expo-linear-gradient";
 import Svg, { Path } from "react-native-svg";
 
@@ -152,9 +153,21 @@ export default function SplashScreen() {
     barPulse(bar4, 450);
     barPulse(bar5, 600);
 
-    // Navigate after 4.5s
-    const timer = setTimeout(() => {
-      router.replace("/(auth)/welcome");
+    // Navigate after 4.5s — check token + activeTripId
+    const timer = setTimeout(async () => {
+      try {
+        const token = await AsyncStorage.getItem("auth_token");
+        const activeTripId = await AsyncStorage.getItem("active_trip_id");
+        if (token && activeTripId) {
+          router.replace(`/(live)/${activeTripId}` as any);
+        } else if (token) {
+          router.replace("/(tabs)" as any);
+        } else {
+          router.replace("/(auth)/welcome");
+        }
+      } catch {
+        router.replace("/(auth)/welcome");
+      }
     }, 4500);
 
     return () => clearTimeout(timer);
