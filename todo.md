@@ -216,3 +216,12 @@
 - [x] V4: Nebula Drift — layered nebula clouds + floating light particles
 - [x] V5: Prism Refraction — rainbow light bands sweeping across + diamond sparkle
 - [x] Navigation between all 5 variations
+
+### Plan a Trip — Final Selection
+- [ ] Keep Aurora Borealis only, remove variant selector and all other variants
+
+### Plan a Trip — User Reference Designs
+- [x] Card 1: Boarding Pass — dark top (YOU→???) + light bottom (passenger fields + barcode + CTA)
+- [x] Card 2: Globe/Route Arc — SVG globe lines + flight arc + DNA stats footer
+- [x] Card 3: Typographic Split — white left "WHERE TO?" + dark right with rotating IATA codes
+- [x] Navigation between all 3 designs

@@ -1,7 +1,7 @@
-// Plan a Trip — 5 Holographic Portal Variations
-// User picks one, then we keep only that variant
+// Plan a Trip — 3 Reference Designs from user
+// Boarding Pass | Globe Route Arc | Typographic Split
 
-import { useRef, useEffect, useState } from "react";
+import { useRef, useEffect, useState, useCallback } from "react";
 import {
   View,
   Text,
@@ -14,17 +14,19 @@ import {
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import Svg, { Ellipse, Path, Circle, G, Text as SvgText, Line } from "react-native-svg";
 import * as Haptics from "expo-haptics";
 
 const { width: W } = Dimensions.get("window");
-const CARD_W = W - 32;
 
 const C = {
   purple: "#6443F4",
+  purpleLight: "#9B7EFF",
   pink: "#F94498",
-  cyan: "#01BEFF",
   white: "#FFFFFF",
-  muted: "rgba(255,255,255,0.6)",
+  dark: "#140930",
+  darkBg: "#0D0820",
+  muted: "rgba(255,255,255,0.3)",
   frosted: "rgba(255,255,255,0.12)",
 };
 
@@ -32,581 +34,545 @@ function haptic() {
   if (Platform.OS !== "web") Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
 }
 
-// ─── Shared sub-components ───
-function AIPill() {
-  return (
-    <View style={sh.aiPill}>
-      <Text style={sh.aiPillText}>AI ✦</Text>
-    </View>
-  );
-}
-
-function CardText() {
-  return (
-    <View style={sh.textWrap}>
-      <Text style={sh.title}>Plan a Trip</Text>
-      <Text style={sh.sub}>Personalized itinerary in minutes</Text>
-    </View>
-  );
-}
-
 // ═══════════════════════════════════════════════════
-// V1 — Aurora Borealis
-// Slow-moving aurora waves + twinkling star sparkles
+// 1 — BOARDING PASS
+// Dark top: YOU → ??? with plane + AI MATCHED badge
+// Perforated line divider
+// Light bottom: passenger fields + barcode + CTA
 // ═══════════════════════════════════════════════════
-function AuroraBorealis({ onPress }: { onPress: () => void }) {
-  const wave1 = useRef(new Animated.Value(0)).current;
-  const wave2 = useRef(new Animated.Value(0)).current;
-  const stars = useRef(
-    Array.from({ length: 8 }, (_, i) => ({
-      id: i,
-      x: 10 + Math.random() * 80,
-      y: 10 + Math.random() * 60,
-      anim: new Animated.Value(Math.random()),
-      delay: Math.random() * 1500,
-    }))
-  ).current;
-
-  useEffect(() => {
-    Animated.loop(
-      Animated.timing(wave1, { toValue: 1, duration: 6000, easing: Easing.inOut(Easing.sin), useNativeDriver: true })
-    ).start();
-    Animated.loop(
-      Animated.timing(wave2, { toValue: 1, duration: 8000, easing: Easing.inOut(Easing.sin), useNativeDriver: true })
-    ).start();
-    stars.forEach((s) => {
-      Animated.loop(
-        Animated.sequence([
-          Animated.delay(s.delay),
-          Animated.timing(s.anim, { toValue: 1, duration: 800, useNativeDriver: true }),
-          Animated.timing(s.anim, { toValue: 0.1, duration: 1200, useNativeDriver: true }),
-        ])
-      ).start();
-    });
-  }, []);
-
-  const w1X = wave1.interpolate({ inputRange: [0, 1], outputRange: [-60, 60] });
-  const w2X = wave2.interpolate({ inputRange: [0, 1], outputRange: [40, -40] });
-
-  return (
-    <Pressable
-      onPress={() => { haptic(); onPress(); }}
-      style={({ pressed }) => [sh.card, pressed && { opacity: 0.93, transform: [{ scale: 0.985 }] }]}
-    >
-      <LinearGradient
-        colors={["#0D0221", "#1A0B3E", "#0D0221"]}
-        style={StyleSheet.absoluteFillObject}
-      />
-      {/* Aurora wave 1 */}
-      <Animated.View style={[v1.wave, { backgroundColor: "rgba(100,67,244,0.2)", transform: [{ translateX: w1X }, { rotate: "-8deg" }] }]} />
-      {/* Aurora wave 2 */}
-      <Animated.View style={[v1.wave, v1.wave2, { backgroundColor: "rgba(1,190,255,0.12)", transform: [{ translateX: w2X }, { rotate: "5deg" }] }]} />
-      {/* Aurora wave 3 (pink) */}
-      <Animated.View style={[v1.wave, v1.wave3, { backgroundColor: "rgba(249,68,152,0.1)", transform: [{ translateX: w1X }, { rotate: "12deg" }] }]} />
-      {/* Stars */}
-      {stars.map((s) => (
-        <Animated.View
-          key={s.id}
-          style={[v1.star, { left: `${s.x}%` as any, top: `${s.y}%` as any, opacity: s.anim, transform: [{ scale: s.anim }] }]}
-        />
-      ))}
-      <AIPill />
-      <CardText />
-    </Pressable>
-  );
-}
-
-const v1 = StyleSheet.create({
-  wave: {
-    position: "absolute",
-    width: "120%" as any,
-    height: 50,
-    top: 30,
-    left: "-10%" as any,
-    borderRadius: 30,
-  },
-  wave2: { top: 55, height: 40 },
-  wave3: { top: 75, height: 35 },
-  star: {
-    position: "absolute",
-    width: 3,
-    height: 3,
-    borderRadius: 1.5,
-    backgroundColor: "#fff",
-  },
-});
-
-// ═══════════════════════════════════════════════════
-// V2 — Cosmic Warp
-// Radial pulse from center + speed-line streaks
-// ═══════════════════════════════════════════════════
-function CosmicWarp({ onPress }: { onPress: () => void }) {
-  const pulse = useRef(new Animated.Value(0)).current;
-  const streaks = useRef(
-    Array.from({ length: 6 }, (_, i) => ({
-      id: i,
-      angle: i * 60,
-      anim: new Animated.Value(0),
-      delay: i * 200,
-    }))
-  ).current;
+function BoardingPass({ onPress }: { onPress: () => void }) {
+  const planeX = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
     Animated.loop(
       Animated.sequence([
-        Animated.timing(pulse, { toValue: 1, duration: 2000, easing: Easing.out(Easing.ease), useNativeDriver: true }),
-        Animated.timing(pulse, { toValue: 0, duration: 0, useNativeDriver: true }),
-      ])
-    ).start();
-    streaks.forEach((s) => {
-      Animated.loop(
-        Animated.sequence([
-          Animated.delay(s.delay),
-          Animated.timing(s.anim, { toValue: 1, duration: 1200, useNativeDriver: true }),
-          Animated.timing(s.anim, { toValue: 0, duration: 600, useNativeDriver: true }),
-        ])
-      ).start();
-    });
-  }, []);
-
-  const pulseScale = pulse.interpolate({ inputRange: [0, 1], outputRange: [0.3, 3] });
-  const pulseOpacity = pulse.interpolate({ inputRange: [0, 0.5, 1], outputRange: [0.6, 0.2, 0] });
-
-  return (
-    <Pressable
-      onPress={() => { haptic(); onPress(); }}
-      style={({ pressed }) => [sh.card, pressed && { opacity: 0.93, transform: [{ scale: 0.985 }] }]}
-    >
-      <LinearGradient
-        colors={["#0D0221", "#16092C", "#0D0221"]}
-        style={StyleSheet.absoluteFillObject}
-      />
-      {/* Radial pulse */}
-      <Animated.View style={[v2.pulseRing, { transform: [{ scale: pulseScale }], opacity: pulseOpacity }]} />
-      {/* Speed streaks */}
-      {streaks.map((s) => {
-        const len = s.anim.interpolate({ inputRange: [0, 1], outputRange: [0, 1] });
-        return (
-          <Animated.View
-            key={s.id}
-            style={[
-              v2.streak,
-              {
-                transform: [
-                  { rotate: `${s.angle}deg` },
-                  { scaleX: len },
-                ],
-                opacity: s.anim.interpolate({ inputRange: [0, 0.5, 1], outputRange: [0, 0.8, 0] }),
-              },
-            ]}
-          />
-        );
-      })}
-      {/* Center glow dot */}
-      <View style={v2.centerDot} />
-      <AIPill />
-      <CardText />
-    </Pressable>
-  );
-}
-
-const v2 = StyleSheet.create({
-  pulseRing: {
-    position: "absolute",
-    width: 80,
-    height: 80,
-    borderRadius: 40,
-    borderWidth: 2,
-    borderColor: "rgba(100,67,244,0.5)",
-    top: "50%" as any,
-    left: "50%" as any,
-    marginTop: -40,
-    marginLeft: -40,
-  },
-  streak: {
-    position: "absolute",
-    width: 100,
-    height: 2,
-    backgroundColor: "rgba(249,68,152,0.4)",
-    top: "50%" as any,
-    left: "50%" as any,
-    borderRadius: 1,
-    transformOrigin: "left center",
-  },
-  centerDot: {
-    position: "absolute",
-    width: 8,
-    height: 8,
-    borderRadius: 4,
-    backgroundColor: C.pink,
-    top: "50%" as any,
-    left: "50%" as any,
-    marginTop: -4,
-    marginLeft: -4,
-    shadowColor: C.pink,
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.8,
-    shadowRadius: 12,
-  },
-});
-
-// ═══════════════════════════════════════════════════
-// V3 — Liquid Chrome
-// Metallic liquid morph + iridescent shimmer sweep
-// ═══════════════════════════════════════════════════
-function LiquidChrome({ onPress }: { onPress: () => void }) {
-  const morph1 = useRef(new Animated.Value(0)).current;
-  const morph2 = useRef(new Animated.Value(0)).current;
-  const shimmerX = useRef(new Animated.Value(-CARD_W)).current;
-
-  useEffect(() => {
-    Animated.loop(
-      Animated.sequence([
-        Animated.timing(morph1, { toValue: 1, duration: 4000, easing: Easing.inOut(Easing.sin), useNativeDriver: true }),
-        Animated.timing(morph1, { toValue: 0, duration: 4000, easing: Easing.inOut(Easing.sin), useNativeDriver: true }),
-      ])
-    ).start();
-    Animated.loop(
-      Animated.sequence([
-        Animated.timing(morph2, { toValue: 1, duration: 5000, easing: Easing.inOut(Easing.sin), useNativeDriver: true }),
-        Animated.timing(morph2, { toValue: 0, duration: 5000, easing: Easing.inOut(Easing.sin), useNativeDriver: true }),
-      ])
-    ).start();
-    Animated.loop(
-      Animated.sequence([
-        Animated.timing(shimmerX, { toValue: CARD_W, duration: 3000, easing: Easing.inOut(Easing.ease), useNativeDriver: true }),
-        Animated.delay(1500),
-        Animated.timing(shimmerX, { toValue: -CARD_W, duration: 0, useNativeDriver: true }),
+        Animated.timing(planeX, { toValue: 6, duration: 1500, easing: Easing.inOut(Easing.sin), useNativeDriver: true }),
+        Animated.timing(planeX, { toValue: -6, duration: 1500, easing: Easing.inOut(Easing.sin), useNativeDriver: true }),
       ])
     ).start();
   }, []);
 
-  const m1X = morph1.interpolate({ inputRange: [0, 1], outputRange: [-20, 30] });
-  const m1Y = morph1.interpolate({ inputRange: [0, 1], outputRange: [0, 20] });
-  const m2X = morph2.interpolate({ inputRange: [0, 1], outputRange: [20, -30] });
-  const m2Y = morph2.interpolate({ inputRange: [0, 1], outputRange: [10, -15] });
+  // Generate barcode heights
+  const barHeights = [28,20,28,16,24,28,14,28,20,16,28,24,20,28,16,28,14,24,28,20,16,28];
 
   return (
     <Pressable
       onPress={() => { haptic(); onPress(); }}
-      style={({ pressed }) => [sh.card, pressed && { opacity: 0.93, transform: [{ scale: 0.985 }] }]}
+      style={({ pressed }) => [pressed && { opacity: 0.93, transform: [{ scale: 0.985 }] }]}
     >
-      <LinearGradient
-        colors={["#0D0221", "#1A0B3E", "#16092C"]}
-        style={StyleSheet.absoluteFillObject}
-      />
-      {/* Chrome blob 1 */}
-      <Animated.View style={[v3.blob, { transform: [{ translateX: m1X }, { translateY: m1Y }] }]}>
-        <LinearGradient
-          colors={["rgba(100,67,244,0.3)", "rgba(249,68,152,0.2)", "rgba(1,190,255,0.15)"]}
-          start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 1 }}
-          style={v3.blobInner}
-        />
-      </Animated.View>
-      {/* Chrome blob 2 */}
-      <Animated.View style={[v3.blob, v3.blob2, { transform: [{ translateX: m2X }, { translateY: m2Y }] }]}>
-        <LinearGradient
-          colors={["rgba(249,68,152,0.25)", "rgba(1,190,255,0.2)", "rgba(100,67,244,0.15)"]}
-          start={{ x: 1, y: 0 }}
-          end={{ x: 0, y: 1 }}
-          style={v3.blobInner}
-        />
-      </Animated.View>
-      {/* Shimmer sweep */}
-      <Animated.View style={[v3.shimmer, { transform: [{ translateX: shimmerX }] }]}>
-        <LinearGradient
-          colors={["transparent", "rgba(255,255,255,0.08)", "rgba(255,255,255,0.15)", "rgba(255,255,255,0.08)", "transparent"]}
-          start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 0 }}
-          style={{ width: 120, height: "100%" as any }}
-        />
-      </Animated.View>
-      <AIPill />
-      <CardText />
-    </Pressable>
-  );
-}
+      <View style={bp.card}>
+        {/* ── DARK TOP ── */}
+        <View style={bp.darkSection}>
+          <View style={bp.header}>
+            <Text style={bp.brand}>TR<Text style={bp.brandAccent}>AVI</Text></Text>
+            <Text style={bp.type}>BOARDING PASS</Text>
+          </View>
+          <View style={bp.route}>
+            {/* Origin */}
+            <View style={bp.cityBlock}>
+              <Text style={bp.iata}>YOU</Text>
+              <Text style={bp.cityName}>RIGHT HERE</Text>
+            </View>
+            {/* Middle: line + plane + badge */}
+            <View style={bp.mid}>
+              <View style={bp.flightLine}>
+                <View style={bp.lineSeg} />
+                <Animated.View style={{ transform: [{ translateX: planeX }] }}>
+                  <MaterialIcons name="flight" size={18} color="rgba(255,255,255,0.4)" style={{ transform: [{ rotate: "90deg" }] }} />
+                </Animated.View>
+                <View style={bp.lineSeg} />
+              </View>
+              <View style={bp.aiBadge}>
+                <Text style={bp.aiBadgeText}>✦ AI MATCHED</Text>
+              </View>
+            </View>
+            {/* Destination */}
+            <View style={bp.cityBlock}>
+              <Text style={[bp.iata, bp.iataDest]}>???</Text>
+              <Text style={bp.cityName}>YOUR DREAM</Text>
+            </View>
+          </View>
+        </View>
 
-const v3 = StyleSheet.create({
-  blob: {
-    position: "absolute",
-    width: 180,
-    height: 180,
-    borderRadius: 90,
-    top: -30,
-    left: -20,
-    overflow: "hidden",
-  },
-  blob2: {
-    top: 10,
-    left: "auto" as any,
-    right: -40,
-    width: 160,
-    height: 160,
-    borderRadius: 80,
-  },
-  blobInner: {
-    width: "100%",
-    height: "100%",
-    borderRadius: 90,
-  },
-  shimmer: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    height: "100%" as any,
-    width: 120,
-  },
-});
+        {/* ── PERFORATION ── */}
+        <View style={bp.perforation}>
+          <View style={bp.perfLeft} />
+          <View style={bp.perfLine} />
+          <View style={bp.perfRight} />
+        </View>
 
-// ═══════════════════════════════════════════════════
-// V4 — Nebula Drift
-// Layered nebula clouds + floating light particles
-// ═══════════════════════════════════════════════════
-function NebulaDrift({ onPress }: { onPress: () => void }) {
-  const drift1 = useRef(new Animated.Value(0)).current;
-  const drift2 = useRef(new Animated.Value(0)).current;
-  const particles = useRef(
-    Array.from({ length: 10 }, (_, i) => ({
-      id: i,
-      x: Math.random() * 90,
-      y: Math.random() * 80,
-      size: 2 + Math.random() * 4,
-      anim: new Animated.Value(Math.random()),
-      dur: 1500 + Math.random() * 2000,
-    }))
-  ).current;
-
-  useEffect(() => {
-    Animated.loop(
-      Animated.sequence([
-        Animated.timing(drift1, { toValue: 1, duration: 7000, easing: Easing.inOut(Easing.sin), useNativeDriver: true }),
-        Animated.timing(drift1, { toValue: 0, duration: 7000, easing: Easing.inOut(Easing.sin), useNativeDriver: true }),
-      ])
-    ).start();
-    Animated.loop(
-      Animated.sequence([
-        Animated.timing(drift2, { toValue: 1, duration: 9000, easing: Easing.inOut(Easing.sin), useNativeDriver: true }),
-        Animated.timing(drift2, { toValue: 0, duration: 9000, easing: Easing.inOut(Easing.sin), useNativeDriver: true }),
-      ])
-    ).start();
-    particles.forEach((p) => {
-      Animated.loop(
-        Animated.sequence([
-          Animated.timing(p.anim, { toValue: 1, duration: p.dur, useNativeDriver: true }),
-          Animated.timing(p.anim, { toValue: 0.1, duration: p.dur * 0.8, useNativeDriver: true }),
-        ])
-      ).start();
-    });
-  }, []);
-
-  const d1X = drift1.interpolate({ inputRange: [0, 1], outputRange: [-15, 25] });
-  const d1Y = drift1.interpolate({ inputRange: [0, 1], outputRange: [0, -10] });
-  const d2X = drift2.interpolate({ inputRange: [0, 1], outputRange: [10, -20] });
-
-  return (
-    <Pressable
-      onPress={() => { haptic(); onPress(); }}
-      style={({ pressed }) => [sh.card, pressed && { opacity: 0.93, transform: [{ scale: 0.985 }] }]}
-    >
-      <LinearGradient
-        colors={["#0D0221", "#120830", "#0D0221"]}
-        style={StyleSheet.absoluteFillObject}
-      />
-      {/* Nebula cloud 1 */}
-      <Animated.View style={[v4.cloud, { transform: [{ translateX: d1X }, { translateY: d1Y }] }]} />
-      {/* Nebula cloud 2 */}
-      <Animated.View style={[v4.cloud, v4.cloud2, { transform: [{ translateX: d2X }] }]} />
-      {/* Nebula cloud 3 */}
-      <Animated.View style={[v4.cloud, v4.cloud3, { transform: [{ translateX: d1X }] }]} />
-      {/* Floating particles */}
-      {particles.map((p) => (
-        <Animated.View
-          key={p.id}
-          style={[
-            v4.particle,
-            {
-              left: `${p.x}%` as any,
-              top: `${p.y}%` as any,
-              width: p.size,
-              height: p.size,
-              borderRadius: p.size / 2,
-              opacity: p.anim,
-              transform: [
-                { translateY: p.anim.interpolate({ inputRange: [0, 1], outputRange: [5, -5] }) },
-                { scale: p.anim.interpolate({ inputRange: [0, 1], outputRange: [0.6, 1.3] }) },
-              ],
-            },
-          ]}
-        />
-      ))}
-      <AIPill />
-      <CardText />
-    </Pressable>
-  );
-}
-
-const v4 = StyleSheet.create({
-  cloud: {
-    position: "absolute",
-    width: 200,
-    height: 100,
-    borderRadius: 50,
-    backgroundColor: "rgba(100,67,244,0.12)",
-    top: 10,
-    left: -30,
-  },
-  cloud2: {
-    backgroundColor: "rgba(249,68,152,0.08)",
-    width: 180,
-    height: 90,
-    top: 50,
-    left: "auto" as any,
-    right: -40,
-    borderRadius: 45,
-  },
-  cloud3: {
-    backgroundColor: "rgba(1,190,255,0.07)",
-    width: 150,
-    height: 80,
-    top: 70,
-    left: 60,
-    borderRadius: 40,
-  },
-  particle: {
-    position: "absolute",
-    backgroundColor: "rgba(200,180,255,0.8)",
-    shadowColor: "#C4B5FD",
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.8,
-    shadowRadius: 4,
-  },
-});
-
-// ═══════════════════════════════════════════════════
-// V5 — Prism Refraction
-// Rainbow light bands sweeping + diamond sparkle
-// ═══════════════════════════════════════════════════
-function PrismRefraction({ onPress }: { onPress: () => void }) {
-  const sweep = useRef(new Animated.Value(0)).current;
-  const sparkle = useRef(new Animated.Value(0)).current;
-  const bands = [
-    { color: "rgba(100,67,244,0.2)", offset: 0 },
-    { color: "rgba(1,190,255,0.15)", offset: 15 },
-    { color: "rgba(0,201,107,0.1)", offset: 30 },
-    { color: "rgba(253,205,10,0.1)", offset: 45 },
-    { color: "rgba(249,68,152,0.15)", offset: 60 },
-  ];
-
-  useEffect(() => {
-    Animated.loop(
-      Animated.timing(sweep, { toValue: 1, duration: 5000, easing: Easing.inOut(Easing.ease), useNativeDriver: true })
-    ).start();
-    Animated.loop(
-      Animated.sequence([
-        Animated.timing(sparkle, { toValue: 1, duration: 600, useNativeDriver: true }),
-        Animated.timing(sparkle, { toValue: 0.2, duration: 900, useNativeDriver: true }),
-        Animated.delay(800),
-      ])
-    ).start();
-  }, []);
-
-  const sweepX = sweep.interpolate({ inputRange: [0, 1], outputRange: [-CARD_W, CARD_W] });
-
-  return (
-    <Pressable
-      onPress={() => { haptic(); onPress(); }}
-      style={({ pressed }) => [sh.card, pressed && { opacity: 0.93, transform: [{ scale: 0.985 }] }]}
-    >
-      <LinearGradient
-        colors={["#0D0221", "#16092C", "#0D0221"]}
-        style={StyleSheet.absoluteFillObject}
-      />
-      {/* Rainbow bands sweeping */}
-      <Animated.View style={[v5.bandsWrap, { transform: [{ translateX: sweepX }] }]}>
-        {bands.map((b, i) => (
-          <View key={i} style={[v5.band, { backgroundColor: b.color, top: 20 + b.offset }]} />
-        ))}
-      </Animated.View>
-      {/* Diamond sparkle */}
-      <Animated.View style={[v5.diamond, { opacity: sparkle, transform: [{ scale: sparkle.interpolate({ inputRange: [0.2, 1], outputRange: [0.8, 1.2] }) }, { rotate: "45deg" }] }]} />
-      {/* Prism triangle hint */}
-      <View style={v5.prism}>
-        <View style={v5.prismInner} />
+        {/* ── LIGHT BOTTOM ── */}
+        <View style={bp.lightSection}>
+          <View style={bp.fields}>
+            <View style={bp.field}>
+              <Text style={bp.fieldLabel}>PASSENGER</Text>
+              <Text style={bp.fieldValue}>David ✦</Text>
+            </View>
+            <View style={bp.field}>
+              <Text style={bp.fieldLabel}>CLASS</Text>
+              <Text style={bp.fieldValue}>Explorer DNA</Text>
+            </View>
+            <View style={bp.field}>
+              <Text style={bp.fieldLabel}>DEPARTS</Text>
+              <Text style={bp.fieldValue}>Anytime</Text>
+            </View>
+          </View>
+          <View style={bp.bottomRow}>
+            {/* Barcode */}
+            <View style={bp.barcode}>
+              {barHeights.map((h, i) => (
+                <View key={i} style={[bp.bar, { height: h }]} />
+              ))}
+            </View>
+            {/* CTA */}
+            <Pressable
+              onPress={() => { haptic(); onPress(); }}
+              style={({ pressed }) => [bp.cta, pressed && { opacity: 0.85 }]}
+            >
+              <Text style={bp.ctaText}>Plan Trip</Text>
+              <MaterialIcons name="arrow-forward" size={14} color="#fff" />
+            </Pressable>
+          </View>
+        </View>
       </View>
-      <AIPill />
-      <CardText />
     </Pressable>
   );
 }
 
-const v5 = StyleSheet.create({
-  bandsWrap: {
-    position: "absolute",
-    width: CARD_W,
-    height: "100%" as any,
+const bp = StyleSheet.create({
+  card: {
+    borderRadius: 22,
+    overflow: "hidden",
+    shadowColor: C.purple,
+    shadowOffset: { width: 0, height: 20 },
+    shadowOpacity: 0.25,
+    shadowRadius: 60,
+    elevation: 16,
   },
-  band: {
+  darkSection: {
+    backgroundColor: C.dark,
+    paddingHorizontal: 22,
+    paddingTop: 20,
+    paddingBottom: 16,
+  },
+  header: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginBottom: 18,
+  },
+  brand: { fontSize: 13, fontFamily: "Chillax-Bold", color: C.white, letterSpacing: -0.5 },
+  brandAccent: { color: C.purpleLight },
+  type: { fontSize: 9, fontFamily: "Satoshi-Bold", letterSpacing: 3, color: "rgba(255,255,255,0.25)" },
+  route: { flexDirection: "row", alignItems: "center", justifyContent: "space-between" },
+  cityBlock: { alignItems: "center", width: 80 },
+  iata: { fontSize: 36, fontFamily: "Chillax-Bold", color: C.white, letterSpacing: -2, lineHeight: 40 },
+  iataDest: { color: C.pink },
+  cityName: { fontSize: 9, fontFamily: "Satoshi-Medium", color: "rgba(255,255,255,0.3)", marginTop: 3, letterSpacing: 0.8 },
+  mid: { flex: 1, alignItems: "center", gap: 6 },
+  flightLine: { flexDirection: "row", alignItems: "center", width: "100%" as any },
+  lineSeg: { flex: 1, height: 1, backgroundColor: "rgba(255,255,255,0.15)" },
+  aiBadge: {
+    backgroundColor: "rgba(100,67,244,0.2)",
+    borderWidth: 1,
+    borderColor: "rgba(100,67,244,0.4)",
+    borderRadius: 20,
+    paddingHorizontal: 9,
+    paddingVertical: 3,
+  },
+  aiBadgeText: { fontSize: 9, fontFamily: "Satoshi-Bold", color: C.purpleLight, letterSpacing: 0.5 },
+  // Perforation
+  perforation: {
+    flexDirection: "row",
+    alignItems: "center",
+    height: 1,
+    backgroundColor: "#F7F4FF",
+    position: "relative",
+  },
+  perfLeft: {
     position: "absolute",
-    width: 80,
-    height: 3,
-    left: 0,
+    left: -8,
+    top: -8,
+    width: 16,
+    height: 16,
+    borderRadius: 8,
+    backgroundColor: "#08030F",
+    zIndex: 2,
+  },
+  perfRight: {
+    position: "absolute",
+    right: -8,
+    top: -8,
+    width: 16,
+    height: 16,
+    borderRadius: 8,
+    backgroundColor: "#08030F",
+    zIndex: 2,
+  },
+  perfLine: {
+    flex: 1,
+    height: 1,
+    borderStyle: "dashed",
+    borderWidth: 1,
+    borderColor: "rgba(0,0,0,0.08)",
+    marginHorizontal: 12,
+  },
+  // Light section
+  lightSection: {
+    backgroundColor: "#F7F4FF",
+    paddingHorizontal: 22,
+    paddingTop: 14,
+    paddingBottom: 18,
+  },
+  fields: { flexDirection: "row", gap: 20, marginBottom: 14 },
+  field: {},
+  fieldLabel: { fontSize: 9, fontFamily: "Satoshi-Bold", letterSpacing: 1.5, color: C.purpleLight, marginBottom: 3 },
+  fieldValue: { fontSize: 14, fontFamily: "Chillax-Bold", color: "#1A0B32" },
+  bottomRow: { flexDirection: "row", alignItems: "center", justifyContent: "space-between" },
+  barcode: { flexDirection: "row", gap: 2, alignItems: "flex-end", height: 28 },
+  bar: { width: 2, backgroundColor: "#1A0B32", borderRadius: 1 },
+  cta: {
+    backgroundColor: C.purple,
+    borderRadius: 14,
+    paddingHorizontal: 20,
+    paddingVertical: 11,
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
+  },
+  ctaText: { fontSize: 13, fontFamily: "Satoshi-Bold", color: C.white },
+});
+
+// ═══════════════════════════════════════════════════
+// 2 — GLOBE / ROUTE ARC
+// SVG globe lines + flight arc + DNA stats footer
+// ═══════════════════════════════════════════════════
+function GlobeRouteArc({ onPress }: { onPress: () => void }) {
+  const dotPulse = useRef(new Animated.Value(0.3)).current;
+
+  useEffect(() => {
+    Animated.loop(
+      Animated.sequence([
+        Animated.timing(dotPulse, { toValue: 1, duration: 1000, useNativeDriver: true }),
+        Animated.timing(dotPulse, { toValue: 0.3, duration: 1000, useNativeDriver: true }),
+      ])
+    ).start();
+  }, []);
+
+  return (
+    <Pressable
+      onPress={() => { haptic(); onPress(); }}
+      style={({ pressed }) => [pressed && { opacity: 0.93, transform: [{ scale: 0.985 }] }]}
+    >
+      <View style={gc.card}>
+        {/* Header */}
+        <View style={gc.head}>
+          <View>
+            <Text style={gc.label}>WHERE NEXT?</Text>
+            <Text style={gc.title}>Plan a Trip</Text>
+            <Text style={gc.sub}>AI-matched to your DNA</Text>
+          </View>
+          <Animated.View style={[gc.pill, { opacity: dotPulse.interpolate({ inputRange: [0.3, 1], outputRange: [0.7, 1] }) }]}>
+            <View style={gc.pillDot} />
+            <Text style={gc.pillText}>DNA Active</Text>
+          </Animated.View>
+        </View>
+
+        {/* SVG Map */}
+        <View style={gc.map}>
+          <Svg width="100%" height={130} viewBox="0 0 380 130">
+            {/* Globe ellipses */}
+            <Ellipse cx={190} cy={155} rx={195} ry={105} stroke="rgba(100,67,244,0.07)" strokeWidth={1} fill="none" />
+            <Ellipse cx={190} cy={155} rx={155} ry={83} stroke="rgba(100,67,244,0.07)" strokeWidth={1} fill="none" />
+            <Ellipse cx={190} cy={155} rx={115} ry={62} stroke="rgba(100,67,244,0.07)" strokeWidth={1} fill="none" />
+            {/* Flight arc */}
+            <Path d="M 55 108 C 90 30, 290 30, 325 88" stroke="rgba(100,67,244,0.3)" strokeWidth={1} fill="none" strokeDasharray="6 4" />
+            {/* Origin dot */}
+            <Circle cx={55} cy={108} r={17} fill="rgba(100,67,244,0.08)" />
+            <Circle cx={55} cy={108} r={11} fill="rgba(100,67,244,0.2)" />
+            <Circle cx={55} cy={108} r={6} fill={C.purple} />
+            <SvgText x={55} y={132} fill="rgba(255,255,255,0.4)" fontSize={9} textAnchor="middle" fontWeight="700">YOU</SvgText>
+            {/* Destination dot */}
+            <Circle cx={325} cy={88} r={17} fill="rgba(249,68,152,0.08)" />
+            <Circle cx={325} cy={88} r={11} fill="rgba(249,68,152,0.2)" />
+            <Circle cx={325} cy={88} r={6} fill={C.pink} />
+            <SvgText x={325} y={112} fill="rgba(255,255,255,0.4)" fontSize={9} textAnchor="middle" fontWeight="700">???</SvgText>
+            {/* Star midpoint */}
+            <G transform="translate(186,38) rotate(-8)">
+              <Path d="M12 2L15.5 8.5L22 9.3L17 14.2L18.2 21L12 17.7L5.8 21L7 14.2L2 9.3L8.5 8.5Z" fill="rgba(255,255,255,0.7)" />
+            </G>
+          </Svg>
+        </View>
+
+        {/* Footer */}
+        <View style={gc.footer}>
+          <View style={gc.info}>
+            <View>
+              <Text style={gc.statNum}>96%</Text>
+              <Text style={gc.statLbl}>DNA Match</Text>
+            </View>
+            <View>
+              <Text style={gc.statNum}>2 min</Text>
+              <Text style={gc.statLbl}>To build</Text>
+            </View>
+            <View>
+              <Text style={gc.statNum}>AI ✦</Text>
+              <Text style={gc.statLbl}>Powered</Text>
+            </View>
+          </View>
+          <Pressable
+            onPress={() => { haptic(); onPress(); }}
+            style={({ pressed }) => [gc.goBtn, pressed && { opacity: 0.85 }]}
+          >
+            <MaterialIcons name="arrow-forward" size={18} color="#fff" />
+          </Pressable>
+        </View>
+      </View>
+    </Pressable>
+  );
+}
+
+const gc = StyleSheet.create({
+  card: {
+    backgroundColor: C.darkBg,
+    borderRadius: 22,
+    overflow: "hidden",
+    borderWidth: 1,
+    borderColor: "rgba(100,67,244,0.18)",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 20 },
+    shadowOpacity: 0.5,
+    shadowRadius: 60,
+    elevation: 16,
+  },
+  head: {
+    paddingHorizontal: 22,
+    paddingTop: 20,
+    paddingBottom: 12,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "flex-start",
+  },
+  label: { fontSize: 10, fontFamily: "Satoshi-Bold", letterSpacing: 2.5, color: "rgba(155,126,255,0.45)", marginBottom: 6 },
+  title: { fontSize: 28, fontFamily: "Chillax-Bold", color: C.white, letterSpacing: -1, lineHeight: 32 },
+  sub: { fontSize: 12, fontFamily: "Satoshi-Regular", color: "rgba(155,126,255,0.55)", marginTop: 4 },
+  pill: {
+    backgroundColor: "rgba(249,68,152,0.12)",
+    borderWidth: 1,
+    borderColor: "rgba(249,68,152,0.25)",
+    borderRadius: 20,
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 5,
+  },
+  pillDot: { width: 6, height: 6, borderRadius: 3, backgroundColor: C.pink },
+  pillText: { fontSize: 10, fontFamily: "Satoshi-Bold", color: C.pink },
+  map: { height: 130 },
+  footer: {
+    paddingHorizontal: 22,
+    paddingTop: 12,
+    paddingBottom: 18,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+  info: { flexDirection: "row", gap: 16 },
+  statNum: { fontSize: 18, fontFamily: "Chillax-Bold", color: C.white, letterSpacing: -0.5 },
+  statLbl: { fontSize: 10, fontFamily: "Satoshi-Regular", color: "rgba(255,255,255,0.3)", marginTop: 1 },
+  goBtn: {
+    width: 44,
+    height: 44,
+    backgroundColor: C.purple,
+    borderRadius: 14,
+    justifyContent: "center",
+    alignItems: "center",
+    shadowColor: C.purple,
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.4,
+    shadowRadius: 20,
+  },
+});
+
+// ═══════════════════════════════════════════════════
+// 3 — TYPOGRAPHIC SPLIT
+// White left: "WHERE TO?" + CTA
+// Dark right: rotating IATA codes + DNA badge + dots
+// ═══════════════════════════════════════════════════
+const IATA_CODES = ["DXB", "BKK", "CDG", "NRT", "LHR", "SYD", "JFK", "MXP", "IST"];
+
+function TypographicSplit({ onPress }: { onPress: () => void }) {
+  const [codeIdx, setCodeIdx] = useState(0);
+  const fadeAnim = useRef(new Animated.Value(1)).current;
+  const slideAnim = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      // Fade out + slide up
+      Animated.parallel([
+        Animated.timing(fadeAnim, { toValue: 0, duration: 200, useNativeDriver: true }),
+        Animated.timing(slideAnim, { toValue: -8, duration: 200, useNativeDriver: true }),
+      ]).start(() => {
+        setCodeIdx((prev) => (prev + 1) % IATA_CODES.length);
+        slideAnim.setValue(8);
+        // Fade in + slide down
+        Animated.parallel([
+          Animated.timing(fadeAnim, { toValue: 1, duration: 200, useNativeDriver: true }),
+          Animated.timing(slideAnim, { toValue: 0, duration: 200, useNativeDriver: true }),
+        ]).start();
+      });
+    }, 2000);
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <Pressable
+      onPress={() => { haptic(); onPress(); }}
+      style={({ pressed }) => [pressed && { opacity: 0.93, transform: [{ scale: 0.985 }] }]}
+    >
+      <View style={tc.card}>
+        {/* ── LEFT (white) ── */}
+        <View style={tc.left}>
+          <View>
+            <Text style={tc.question}>WHERE{"\n"}TO<Text style={tc.questionAccent}>?</Text></Text>
+            <View style={tc.rule} />
+            <Text style={tc.sub}>Your DNA picks the destination. AI builds the plan.</Text>
+          </View>
+          <Pressable
+            onPress={() => { haptic(); onPress(); }}
+            style={({ pressed }) => [tc.btn, pressed && { opacity: 0.85 }]}
+          >
+            <Text style={tc.btnText}>Plan a Trip</Text>
+            <MaterialIcons name="arrow-forward" size={14} color="#fff" />
+          </Pressable>
+        </View>
+
+        {/* ── RIGHT (dark) ── */}
+        <View style={tc.right}>
+          <View style={tc.destWrap}>
+            <Animated.Text style={[tc.destCode, { opacity: fadeAnim, transform: [{ translateY: slideAnim }] }]}>
+              {IATA_CODES[codeIdx]}
+            </Animated.Text>
+            <Text style={tc.destLabel}>NEXT STOP</Text>
+          </View>
+          <View style={tc.dnaBadge}>
+            <Text style={tc.dnaText}>Explorer DNA</Text>
+            <Text style={tc.dnaSub}>96% match</Text>
+          </View>
+          <View style={tc.dots}>
+            <View style={[tc.dot, { backgroundColor: C.purple }]} />
+            <View style={[tc.dot, { backgroundColor: C.pink }]} />
+            <View style={[tc.dot, { backgroundColor: "#FF9327", opacity: 0.5 }]} />
+          </View>
+        </View>
+      </View>
+    </Pressable>
+  );
+}
+
+const tc = StyleSheet.create({
+  card: {
+    borderRadius: 22,
+    overflow: "hidden",
+    flexDirection: "row",
+    minHeight: 150,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 20 },
+    shadowOpacity: 0.5,
+    shadowRadius: 60,
+    elevation: 16,
+  },
+  left: {
+    flex: 1.1,
+    backgroundColor: C.white,
+    padding: 22,
+    justifyContent: "space-between",
+  },
+  question: {
+    fontSize: 38,
+    fontFamily: "Chillax-Bold",
+    color: "#0E0618",
+    letterSpacing: -2,
+    lineHeight: 38,
+  },
+  questionAccent: { color: C.purple },
+  rule: {
+    width: 32,
+    height: 4,
+    backgroundColor: C.purple,
     borderRadius: 2,
-    transform: [{ rotate: "-25deg" }],
+    marginTop: 12,
+    marginBottom: 10,
   },
-  diamond: {
-    position: "absolute",
-    width: 12,
-    height: 12,
-    backgroundColor: "rgba(255,255,255,0.7)",
-    top: 35,
-    right: 60,
-    shadowColor: "#fff",
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.9,
-    shadowRadius: 10,
+  sub: {
+    fontSize: 11,
+    fontFamily: "Satoshi-Regular",
+    color: "#999",
+    lineHeight: 16,
+    maxWidth: 150,
   },
-  prism: {
-    position: "absolute",
-    top: 25,
-    right: 40,
-    width: 0,
-    height: 0,
-    borderLeftWidth: 20,
-    borderRightWidth: 20,
-    borderBottomWidth: 35,
-    borderLeftColor: "transparent",
-    borderRightColor: "transparent",
-    borderBottomColor: "rgba(255,255,255,0.06)",
+  btn: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
+    backgroundColor: "#0E0618",
+    borderRadius: 12,
+    paddingHorizontal: 16,
+    paddingVertical: 10,
+    alignSelf: "flex-start",
+    marginTop: 14,
   },
-  prismInner: {
-    position: "absolute",
-    top: 6,
-    left: -14,
-    width: 0,
-    height: 0,
-    borderLeftWidth: 14,
-    borderRightWidth: 14,
-    borderBottomWidth: 24,
-    borderLeftColor: "transparent",
-    borderRightColor: "transparent",
-    borderBottomColor: "rgba(13,2,33,0.6)",
+  btnText: { fontSize: 12, fontFamily: "Satoshi-Bold", color: C.white },
+  right: {
+    width: 130,
+    backgroundColor: "#1A0B32",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 14,
+    paddingVertical: 20,
+    paddingHorizontal: 12,
   },
+  destWrap: { alignItems: "center" },
+  destCode: {
+    fontSize: 28,
+    fontFamily: "Chillax-Bold",
+    color: C.white,
+    letterSpacing: -2,
+    lineHeight: 32,
+  },
+  destLabel: {
+    fontSize: 8,
+    fontFamily: "Satoshi-Bold",
+    letterSpacing: 2,
+    color: "rgba(255,255,255,0.25)",
+    marginTop: 2,
+  },
+  dnaBadge: {
+    backgroundColor: "rgba(100,67,244,0.2)",
+    borderWidth: 1,
+    borderColor: "rgba(100,67,244,0.35)",
+    borderRadius: 16,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    alignItems: "center",
+  },
+  dnaText: { fontSize: 10, fontFamily: "Satoshi-Bold", color: C.purpleLight },
+  dnaSub: { fontSize: 9, fontFamily: "Satoshi-Regular", color: "rgba(155,126,255,0.5)", marginTop: 1 },
+  dots: { flexDirection: "row", gap: 5 },
+  dot: { width: 7, height: 7, borderRadius: 3.5 },
 });
 
 // ═══════════════════════════════════════════════════
 // VARIANT SELECTOR — arrows + dots + label
 // ═══════════════════════════════════════════════════
 const VARIANT_NAMES = [
-  "Aurora Borealis",
-  "Cosmic Warp",
-  "Liquid Chrome",
-  "Nebula Drift",
-  "Prism Refraction",
+  "Boarding Pass",
+  "Route Arc",
+  "Typographic Split",
 ];
 
-const VARIANTS = [AuroraBorealis, CosmicWarp, LiquidChrome, NebulaDrift, PrismRefraction];
+const VARIANTS = [BoardingPass, GlobeRouteArc, TypographicSplit];
 
 export function PlanTripVariantSelector({ onPress }: { onPress: () => void }) {
   const [idx, setIdx] = useState(0);
@@ -637,65 +603,10 @@ export function PlanTripVariantSelector({ onPress }: { onPress: () => void }) {
           <MaterialIcons name="chevron-right" size={24} color={C.white} />
         </Pressable>
       </View>
-      <Text style={ns.variantLabel}>{idx + 1}/5 — {VARIANT_NAMES[idx]}</Text>
+      <Text style={ns.variantLabel}>{idx + 1}/3 — {VARIANT_NAMES[idx]}</Text>
     </View>
   );
 }
-
-// ═══════════════════════════════════════════════════
-// SHARED STYLES
-// ═══════════════════════════════════════════════════
-const sh = StyleSheet.create({
-  card: {
-    width: "100%" as any,
-    height: 160,
-    borderRadius: 20,
-    overflow: "hidden",
-    backgroundColor: "#16092C",
-    shadowColor: C.purple,
-    shadowOffset: { width: 0, height: 8 },
-    shadowOpacity: 0.3,
-    shadowRadius: 32,
-    elevation: 12,
-  },
-  aiPill: {
-    position: "absolute",
-    top: 14,
-    right: 14,
-    backgroundColor: C.frosted,
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-    borderRadius: 10,
-    zIndex: 10,
-  },
-  aiPillText: {
-    color: C.white,
-    fontSize: 12,
-    fontFamily: "Satoshi-Bold",
-    letterSpacing: 0.5,
-  },
-  textWrap: {
-    position: "absolute",
-    bottom: 18,
-    left: 18,
-    zIndex: 10,
-  },
-  title: {
-    color: C.white,
-    fontSize: 24,
-    fontFamily: "Chillax-Bold",
-    lineHeight: 30,
-    textShadowColor: "rgba(0,0,0,0.5)",
-    textShadowOffset: { width: 0, height: 2 },
-    textShadowRadius: 8,
-  },
-  sub: {
-    color: C.muted,
-    fontSize: 13,
-    fontFamily: "Satoshi-Regular",
-    marginTop: 3,
-  },
-});
 
 const ns = StyleSheet.create({
   navRow: {
