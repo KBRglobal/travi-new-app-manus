@@ -197,3 +197,6 @@
 - [x] Live Trip strip: #0D1F18 bg, green pulsing dot, 56px
 - [x] Recommended cards: 220x280, green match badge #00C96B, Chillax Bold 22px
 - [x] Tab Bar: #120824 bg, active pill rgba(249,68,152,0.15), 5 tabs
+
+### Home Dashboard — Ambient Background
+- [x] Apply radial gradient ambient background (purple/pink/blue orbs) to Home Dashboard

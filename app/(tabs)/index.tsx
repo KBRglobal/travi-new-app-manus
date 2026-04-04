@@ -25,7 +25,7 @@ const { width: W } = Dimensions.get("window");
 
 // ─── Figma Palette ───
 const C = {
-  bg: "#0E0618",
+  bg: "#0D0221",
   cardBg: "#16092C",
   dnaBg: "#1A0A30",
   liveBg: "#0D1F18",
@@ -91,6 +91,13 @@ export default function HomeScreen() {
 
   return (
     <View style={s.root}>
+      {/* Ambient radial gradient orbs */}
+      <View style={s.ambientBg}>
+        <View style={s.orbPurple} />
+        <View style={s.orbLavender} />
+        <View style={s.orbPink} />
+        <View style={s.orbCyan} />
+      </View>
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 100 }}>
 
         {/* ═══════════════ HEADER ═══════════════ */}
@@ -294,6 +301,48 @@ export default function HomeScreen() {
 // ═══════════════════════════════════════════════════
 const s = StyleSheet.create({
   root: { flex: 1, backgroundColor: C.bg },
+
+  // ─── Ambient Background Orbs ───
+  ambientBg: {
+    ...StyleSheet.absoluteFillObject,
+    overflow: "hidden",
+  },
+  orbPurple: {
+    position: "absolute",
+    width: 400,
+    height: 400,
+    borderRadius: 200,
+    backgroundColor: "rgba(100,67,244,0.15)",
+    top: "-10%",
+    left: "-10%",
+  },
+  orbLavender: {
+    position: "absolute",
+    width: 350,
+    height: 350,
+    borderRadius: 175,
+    backgroundColor: "rgba(123,92,246,0.10)",
+    top: "5%",
+    right: "-15%",
+  },
+  orbPink: {
+    position: "absolute",
+    width: 450,
+    height: 450,
+    borderRadius: 225,
+    backgroundColor: "rgba(249,68,152,0.08)",
+    top: "50%",
+    left: "10%",
+  },
+  orbCyan: {
+    position: "absolute",
+    width: 300,
+    height: 300,
+    borderRadius: 150,
+    backgroundColor: "rgba(1,190,255,0.06)",
+    bottom: "5%",
+    left: "-10%",
+  },
 
   // ─── Header ───
   header: {
