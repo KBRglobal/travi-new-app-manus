@@ -64,14 +64,14 @@ export default function SettingsScreen() {
             {section.items.map((item) => (
               <Pressable key={item.label} style={s.row}>
                 <Text style={s.rowLabel}>{item.label}</Text>
-                {item.toggle ? (
-                  <View style={[s.toggle, item.on && s.toggleOn]}>
-                    <View style={[s.toggleKnob, item.on && s.toggleKnobOn]} />
+              {(item as any).toggle ? (
+                  <View style={[s.toggle, (item as any).on && s.toggleOn]}>
+                    <View style={[s.toggleKnob, (item as any).on && s.toggleKnobOn]} />
                   </View>
                 ) : (
                   <View style={s.rowRight}>
-                    {item.value && <Text style={s.rowValue}>{item.value}</Text>}
-                    {item.arrow && <Text style={s.rowArrow}>{">"}</Text>}
+                    {(item as any).value && <Text style={s.rowValue}>{(item as any).value}</Text>}
+                    {(item as any).arrow && <Text style={s.rowArrow}>{">"}  </Text>}
                   </View>
                 )}
               </Pressable>

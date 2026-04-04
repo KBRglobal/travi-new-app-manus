@@ -25,7 +25,7 @@ export default function DnaCelebrationScreen() {
             <Text style={s.dimIcon}>{d.icon}</Text>
             <View style={{ flex: 1 }}>
               <Text style={s.dimLabel}>{d.label}</Text>
-              <View style={s.dimBar}><View style={[s.dimFill, { width: d.score }]} /></View>
+              <View style={s.dimBar}><View style={[s.dimFill, { width: d.score as any }]} /></View>
             </View>
             <Text style={s.dimScore}>{d.score}</Text>
           </View>

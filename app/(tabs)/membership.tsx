@@ -97,6 +97,7 @@ const s = StyleSheet.create({
   tableRow: { flexDirection: "row", borderBottomWidth: 1, borderBottomColor: "#222" },
   tableCell: { flex: 1, padding: 10, alignItems: "center", justifyContent: "center" },
   tableCellCurrent: { backgroundColor: "#222" },
+  tableCellText: { color: "#888", fontSize: 12 },
   tierName: { color: "#888", fontSize: 13, fontWeight: "700" },
   tierPrice: { color: "#666", fontSize: 11, marginTop: 2 },
   featLabel: { color: "#888", fontSize: 12, textAlign: "left" },

@@ -63,9 +63,9 @@ export default function ProfileScreen() {
                 <Pressable key={item.label} style={[s.menuRow, i < section.items.length - 1 && s.menuRowBorder]}>
                   <Text style={s.menuIcon}>{item.icon}</Text>
                   <Text style={s.menuLabel}>{item.label}</Text>
-                  {item.detail && <Text style={s.menuDetail}>{item.detail}</Text>}
-                  {item.toggle && <Switch value={item.value} trackColor={{ false: "#333", true: "#555" }} thumbColor="#FFF" />}
-                  {item.chevron && <Text style={s.chevron}>›</Text>}
+                  {(item as any).detail && <Text style={s.menuDetail}>{(item as any).detail}</Text>}
+                  {(item as any).toggle && <Switch value={(item as any).value} trackColor={{ false: "#333", true: "#555" }} thumbColor="#FFF" />}
+                  {(item as any).chevron && <Text style={s.chevron}>›</Text>}
                 </Pressable>
               ))}
             </View>

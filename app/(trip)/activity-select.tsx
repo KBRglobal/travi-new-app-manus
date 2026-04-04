@@ -88,6 +88,7 @@ const s = StyleSheet.create({
   cardStack: { flex: 1, alignItems: "center", justifyContent: "center", paddingHorizontal: 20 },
   card: { position: "absolute", width: "90%", height: "85%", borderRadius: 20, backgroundColor: "#1A1A1A", borderWidth: 1, borderColor: "#333", overflow: "hidden" },
   cardBg2: { transform: [{ scale: 0.92 }, { translateY: -16 }], opacity: 0.4 },
+  cardPlaceholder: { color: "#666", fontSize: 14, textAlign: "center" as const, padding: 20 },
   cardBg1: { transform: [{ scale: 0.96 }, { translateY: -8 }], opacity: 0.6 },
   cardFront: { position: "relative", width: "90%", height: "85%" },
   cardImage: { height: "55%", backgroundColor: "#222", justifyContent: "center", alignItems: "center" },
