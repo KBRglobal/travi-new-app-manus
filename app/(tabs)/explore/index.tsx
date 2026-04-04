@@ -1,74 +1,60 @@
-import { View, Text, Pressable, FlatList } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, ScrollView, TouchableOpacity, TextInput } from 'react-native';
 import { useRouter } from 'expo-router';
 
-const FILTERS = ['All', 'Adventure', 'Culture', 'Beach', 'City', 'Nature'];
-const DESTINATIONS = Array.from({ length: 12 }, (_, i) => ({
-  id: `explore-${i + 1}`,
-  name: `Place ${i + 1}`,
-  country: `Country ${i + 1}`,
-  match: Math.floor(Math.random() * 30) + 70,
-}));
+const FILTERS = ['All', 'Beaches', 'Cities', 'Mountains', 'Culture', 'Food', 'Nomad'];
+const DESTINATIONS = [
+  { name: 'Dubai', country: '🇦🇪 UAE', match: 92, category: 'Cities' },
+  { name: 'Bali', country: '🇮🇩 Indonesia', match: 88, category: 'Beaches' },
+  { name: 'Tokyo', country: '🇯🇵 Japan', match: 85, category: 'Culture' },
+  { name: 'Swiss Alps', country: '🇨🇭 Switzerland', match: 78, category: 'Mountains' },
+];
 
-// S12 — Explore
 export default function ExploreScreen() {
   const router = useRouter();
+  const [activeFilter, setActiveFilter] = useState('All');
 
   return (
-    <View className="flex-1 bg-bg-primary pt-safe">
-      <Text className="text-2xl md:text-3xl font-bold text-white px-4 md:px-6 mt-4">Explore</Text>
+    <View className="flex-1 bg-bg-primary">
+      <View className="px-4 pt-12 pb-4">
+        <Text className="text-white text-2xl font-bold mb-4">Explore</Text>
+        <TextInput className="bg-bg-card rounded-input p-3 text-white mb-4" placeholder="Search destinations..." placeholderTextColor="rgba(255,255,255,0.3)" />
+      </View>
 
-      {/* Search bar (tap to navigate) */}
-      <Pressable
-        onPress={() => router.push('/(tabs)/home/search')}
-        className="mx-4 md:mx-6 mt-4 h-12 bg-white/5 border border-white/10 rounded-pill flex-row items-center px-4"
-      >
-        <Text className="text-text-muted text-base">🔍 Search destinations...</Text>
-      </Pressable>
-
-      {/* Filter chips */}
-      <FlatList
-        data={FILTERS}
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        keyExtractor={(item) => item}
-        contentContainerClassName="px-4 md:px-6 mt-4 gap-2"
-        renderItem={({ item, index }) => (
-          <Pressable className={`h-9 px-4 rounded-pill items-center justify-center ${index === 0 ? 'bg-primary' : 'bg-white/5 border border-white/10'}`}>
-            <Text className={`text-sm font-semibold ${index === 0 ? 'text-white' : 'text-text-secondary'}`}>{item}</Text>
-          </Pressable>
-        )}
-      />
-
-      {/* Top Picks */}
-      <Text className="text-lg font-bold text-white px-4 md:px-6 mt-6 mb-3">Top Picks</Text>
-      <FlatList
-        data={DESTINATIONS}
-        keyExtractor={(item) => item.id}
-        contentContainerClassName="px-4 md:px-6 pb-24 gap-3"
-        renderItem={({ item }) => (
-          <Pressable
-            onPress={() => router.push(`/(tabs)/explore/destination/${item.id}`)}
-            className="w-full md:w-[calc(50%-6px)] bg-bg-card rounded-card p-4 flex-row items-center active:opacity-80"
+      <ScrollView horizontal showsHorizontalScrollIndicator={false} className="px-4 mb-4" style={{ maxHeight: 40 }}>
+        {FILTERS.map(f => (
+          <TouchableOpacity
+            key={f}
+            onPress={() => {
+              if (f === 'Nomad') { router.push('/(tabs)/explore/nomad'); return; }
+              setActiveFilter(f);
+            }}
+            className={`px-4 py-2 rounded-pill mr-2 ${activeFilter === f ? 'bg-primary' : 'bg-bg-card'}`}
+            style={f === 'Nomad' ? { borderWidth: 1, borderColor: '#F94498' } : {}}
           >
-            <View className="w-16 h-16 bg-white/5 rounded-button items-center justify-center mr-4">
-              <Text className="text-2xl">🏝️</Text>
-            </View>
-            <View className="flex-1">
-              <Text className="text-white text-base font-bold">{item.name}</Text>
-              <Text className="text-text-secondary text-xs">{item.country}</Text>
-            </View>
-            <Text className="text-primary text-sm font-bold">{item.match}%</Text>
-          </Pressable>
-        )}
-      />
+            <Text className={activeFilter === f ? 'text-white font-semibold' : f === 'Nomad' ? 'text-pink font-semibold' : 'text-text-secondary'}>
+              {f}{f === 'Nomad' ? ' NEW' : ''}
+            </Text>
+          </TouchableOpacity>
+        ))}
+      </ScrollView>
 
-      {/* FAB */}
-      <Pressable
-        onPress={() => router.push('/_modals/ai-chat')}
-        className="absolute bottom-24 right-5 w-14 h-14 bg-primary rounded-full items-center justify-center"
-      >
-        <Text className="text-2xl">🤖</Text>
-      </Pressable>
+      <ScrollView className="flex-1 px-4">
+        {DESTINATIONS.filter(d => activeFilter === 'All' || d.category === activeFilter).map(dest => (
+          <TouchableOpacity key={dest.name} onPress={() => router.push('/(trip)/plan/destination')} className="bg-bg-card rounded-card p-4 mb-3">
+            <View className="flex-row justify-between items-center">
+              <View>
+                <Text className="text-white font-bold text-lg">{dest.name}</Text>
+                <Text className="text-text-secondary">{dest.country}</Text>
+              </View>
+              <View className="items-end">
+                <Text className="text-primary font-bold">✦ {dest.match}%</Text>
+                <Text className="text-text-muted text-xs">DNA Match</Text>
+              </View>
+            </View>
+          </TouchableOpacity>
+        ))}
+      </ScrollView>
     </View>
   );
 }

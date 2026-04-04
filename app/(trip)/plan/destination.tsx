@@ -1,25 +1,55 @@
-import { View, Text, Pressable, FlatList, TextInput } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, ScrollView, TouchableOpacity, TextInput } from 'react-native';
 import { useRouter } from 'expo-router';
-const DESTS = Array.from({ length: 15 }, (_, i) => ({ id: `d-${i+1}`, name: `Destination ${i+1}`, country: `Country ${i+1}` }));
 
-export default function PlanDestinationScreen() {
+const SUGGESTIONS = [
+  { name: 'Dubai', flag: '🇦🇪', match: 92 },
+  { name: 'Tokyo', flag: '🇯🇵', match: 85 },
+  { name: 'Barcelona', flag: '🇪🇸', match: 88 },
+  { name: 'Bali', flag: '🇮🇩', match: 81 },
+];
+
+export default function DestinationSelect() {
   const router = useRouter();
+  const [mode, setMode] = useState<'city' | 'road'>('city');
+
   return (
-    <View className="flex-1 bg-bg-primary pt-safe">
-      <View className="flex-row items-center px-4 md:px-6 mt-4">
-        <Pressable onPress={() => router.back()} className="p-2 -ml-2"><Text className="text-white text-2xl">‹</Text></Pressable>
-        <Text className="text-white text-xl font-bold ml-3">Choose Destination</Text>
+    <View className="flex-1 bg-bg-primary">
+      <View className="flex-row items-center px-4 pt-12 pb-4">
+        <TouchableOpacity onPress={() => router.back()} className="mr-3">
+          <Text className="text-white text-lg">‹ Back</Text>
+        </TouchableOpacity>
+        <Text className="text-white text-xl font-bold">Where to?</Text>
       </View>
-      <TextInput placeholder="Search..." placeholderTextColor="rgba(255,255,255,0.3)" className="mx-4 md:mx-6 mt-4 h-12 px-4 bg-white/5 border border-white/10 rounded-pill text-white text-base" />
-      <FlatList data={DESTS} keyExtractor={(i) => i.id} contentContainerClassName="px-4 md:px-6 py-4 gap-3"
-        renderItem={({ item }) => (
-          <Pressable onPress={() => router.push('/(trip)/plan/dates')} className="w-full md:w-[calc(50%-6px)] bg-bg-card rounded-card p-4 flex-row items-center active:opacity-80">
-            <View className="w-12 h-12 bg-white/5 rounded-button items-center justify-center mr-3"><Text className="text-2xl">🏝️</Text></View>
-            <View className="flex-1"><Text className="text-white text-base font-bold">{item.name}</Text><Text className="text-text-secondary text-xs">{item.country}</Text></View>
-            <Text className="text-text-secondary">›</Text>
-          </Pressable>
-        )}
-      />
+
+      <View className="flex-row mx-4 mb-4 bg-bg-card rounded-pill p-1">
+        <TouchableOpacity onPress={() => setMode('city')} className={`flex-1 py-2 rounded-pill items-center ${mode === 'city' ? 'bg-primary' : ''}`}>
+          <Text className={mode === 'city' ? 'text-white font-semibold' : 'text-text-secondary'}>✈️ City Trip</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => { setMode('road'); router.push('/(trip)/plan/road-trip'); }} className={`flex-1 py-2 rounded-pill items-center ${mode === 'road' ? 'bg-primary' : ''}`} style={{ borderWidth: mode !== 'road' ? 1 : 0, borderColor: '#F94498' }}>
+          <Text className={mode === 'road' ? 'text-white font-semibold' : 'text-pink font-semibold'}>🚗 Road Trip {mode !== 'road' ? 'NEW' : ''}</Text>
+        </TouchableOpacity>
+      </View>
+
+      <View className="px-4">
+        <TextInput className="bg-bg-card rounded-input p-3 text-white mb-4" placeholder="Search destinations..." placeholderTextColor="rgba(255,255,255,0.3)" />
+      </View>
+
+      <ScrollView className="flex-1 px-4">
+        <Text className="text-white font-bold text-lg mb-3">AI Suggestions for You</Text>
+        {SUGGESTIONS.map(dest => (
+          <TouchableOpacity key={dest.name} onPress={() => router.push('/(trip)/plan/dates')} className="bg-bg-card rounded-card p-4 mb-3 flex-row items-center justify-between">
+            <View className="flex-row items-center">
+              <Text className="text-2xl mr-3">{dest.flag}</Text>
+              <Text className="text-white font-bold text-lg">{dest.name}</Text>
+            </View>
+            <View className="items-end">
+              <Text className="text-primary font-bold">✦ {dest.match}%</Text>
+              <Text className="text-text-muted text-xs">DNA Match</Text>
+            </View>
+          </TouchableOpacity>
+        ))}
+      </ScrollView>
     </View>
   );
 }

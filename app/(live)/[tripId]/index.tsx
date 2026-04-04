@@ -1,58 +1,67 @@
-import { View, Text, Pressable, ScrollView } from 'react-native';
+import React from 'react';
+import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 
-export default function LiveDashboardScreen() {
+export default function LiveDashboard() {
   const router = useRouter();
-  const { tripId } = useLocalSearchParams<{ tripId: string }>();
-  const actions = [
-    { icon: '📋', label: 'Timeline', route: `/(live)/${tripId}/timeline` },
+  const { tripId } = useLocalSearchParams();
+
+  const quickActions = [
+    { icon: '🗓️', label: 'Timeline', route: `/(live)/${tripId}/timeline` },
     { icon: '🗺️', label: 'Map', route: `/(live)/${tripId}/map` },
     { icon: '💰', label: 'Expenses', route: `/(live)/${tripId}/expenses` },
     { icon: '📸', label: 'Memories', route: `/(live)/${tripId}/memories` },
     { icon: '🆘', label: 'Emergency', route: `/(live)/${tripId}/emergency` },
-    { icon: '⚙️', label: 'Settings', route: `/(live)/${tripId}/settings` },
-    { icon: '🧾', label: 'Tax Refund', route: `/(live)/${tripId}/tax` },
+    { icon: '💳', label: 'Tax', route: `/(live)/${tripId}/tax` },
+    { icon: '📊', label: 'Budget', route: `/(live)/${tripId}/budget`, isNew: true },
+    { icon: '⚙️', label: 'Settings', route: '/(trip)/settings' },
   ];
+
   return (
-    <View className="flex-1 bg-bg-primary pt-safe">
-      <View className="flex-row items-center justify-between px-4 md:px-6 mt-4">
-        <View>
-          <Text className="text-text-secondary text-sm">Live Trip</Text>
-          <Text className="text-white text-xl font-bold">Barcelona · Day 3</Text>
-        </View>
-        <View className="flex-row items-center"><View className="w-2 h-2 rounded-full bg-green-500 mr-2" /><Text className="text-green-400 text-sm">Active</Text></View>
+    <View className="flex-1 bg-bg-primary">
+      <View className="px-4 pt-12 pb-4">
+        <Text className="text-text-secondary">Currently in</Text>
+        <Text className="text-white text-2xl font-bold">Dubai 🇦🇪</Text>
+        <Text className="text-primary">Day 3 of 7</Text>
       </View>
-      <ScrollView contentContainerClassName="px-4 md:px-6 py-4 pb-24">
-        {/* Next event */}
-        <View className="w-full max-w-md bg-primary/10 border border-primary/30 rounded-card p-4 mb-4">
-          <Text className="text-text-secondary text-xs">Next up in 45 min</Text>
-          <Text className="text-white text-lg font-bold mt-1">Sagrada Familia Tour</Text>
+
+      <ScrollView className="flex-1 px-4">
+        <View className="bg-bg-card rounded-card p-4 mb-4">
+          <Text className="text-white font-bold mb-2">Next Up</Text>
+          <Text className="text-primary text-lg font-bold">Desert Safari — 2:00 PM</Text>
+          <Text className="text-text-secondary">In 3 hours · Pickup from hotel</Text>
         </View>
-        {/* Weather */}
-        <View className="w-full max-w-md bg-white/5 rounded-card p-4 mb-4 flex-row items-center">
-          <Text className="text-3xl mr-3">☀️</Text><View><Text className="text-white text-lg font-bold">25°C</Text><Text className="text-text-secondary text-xs">Sunny, Barcelona</Text></View>
+
+        <View className="bg-bg-card rounded-card p-4 mb-4 flex-row justify-between items-center">
+          <View>
+            <Text className="text-text-secondary text-sm">Weather</Text>
+            <Text className="text-white text-xl font-bold">34°C ☀️</Text>
+          </View>
+          <View>
+            <Text className="text-text-secondary text-sm">Spent today</Text>
+            <Text className="text-white text-xl font-bold">€127</Text>
+          </View>
+          <View>
+            <Text className="text-text-secondary text-sm">Steps</Text>
+            <Text className="text-white text-xl font-bold">8,432</Text>
+          </View>
         </View>
-        {/* Quick Actions */}
-        <View className="flex-row flex-wrap gap-3">
-          {actions.map((a) => (
-            <Pressable key={a.label} onPress={() => router.push(a.route as any)} className="w-[calc(50%-6px)] md:w-[calc(33.333%-8px)] bg-bg-card rounded-card p-4 items-center active:opacity-80">
-              <Text className="text-2xl">{a.icon}</Text>
-              <Text className="text-white text-sm mt-2">{a.label}</Text>
-            </Pressable>
+
+        <Text className="text-white font-bold text-lg mb-3">Quick Actions</Text>
+        <View className="flex-row flex-wrap mb-8">
+          {quickActions.map(action => (
+            <TouchableOpacity key={action.label} onPress={() => router.push(action.route as any)} className="bg-bg-card rounded-card p-4 items-center" style={{ width: '48%', marginRight: '2%', marginBottom: 8 }}>
+              <Text className="text-2xl mb-1">{action.icon}</Text>
+              <Text className="text-white font-semibold text-sm">{action.label}</Text>
+              {action.isNew && (
+                <View className="bg-pink px-2 py-0.5 rounded-pill mt-1">
+                  <Text className="text-white text-xs font-bold">NEW</Text>
+                </View>
+              )}
+            </TouchableOpacity>
           ))}
         </View>
-        {/* Activity */}
-        <Text className="text-lg font-bold text-white mt-6 mb-3">Today's Activities</Text>
-        {['Morning Walk', 'Sagrada Familia', 'Lunch at La Boqueria'].map((act, i) => (
-          <Pressable key={i} onPress={() => router.push(`/(live)/${tripId}/activity/act-${i+1}`)} className="bg-bg-card rounded-card p-4 mb-2 flex-row items-center active:opacity-80">
-            <View className="w-8 h-8 bg-primary/20 rounded-full items-center justify-center mr-3"><Text className="text-primary text-xs font-bold">{i+1}</Text></View>
-            <Text className="text-white text-base flex-1">{act}</Text><Text className="text-text-secondary">›</Text>
-          </Pressable>
-        ))}
       </ScrollView>
-      <Pressable onPress={() => router.push('/_modals/ai-chat')} className="absolute bottom-6 right-5 w-14 h-14 bg-primary rounded-full items-center justify-center">
-        <Text className="text-2xl">🤖</Text>
-      </Pressable>
     </View>
   );
 }
