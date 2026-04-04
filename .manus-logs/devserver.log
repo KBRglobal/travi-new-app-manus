@@ -77,3 +77,23 @@
 [2026-04-04T21:11:09.986Z] 
 [2026-04-04T21:11:09.986Z] Command "dev" not found.
 [2026-04-04T21:11:10.009Z] Dev server exited with code 1
+[2026-04-04T21:12:56.257Z] Starting dev server with command: pnpm run dev
+[2026-04-04T21:12:56.670Z] 
+[2026-04-04T21:12:56.670Z] > travi-superapp@1.0.0 dev /home/ubuntu/travi-app
+[2026-04-04T21:12:56.671Z] > cross-env EXPO_USE_METRO_WORKSPACE_ROOT=1 npx expo start --web --port ${EXPO_PORT:-8081}
+[2026-04-04T21:12:56.671Z] 
+[2026-04-04T21:12:57.670Z] Starting project at /home/ubuntu/travi-app
+[2026-04-04T21:12:58.092Z] PluginError: Failed to resolve plugin for module "expo-audio" relative to "/home/ubuntu/travi-app". Do you have node modules installed?
+[2026-04-04T21:12:58.092Z] PluginError: Failed to resolve plugin for module "expo-audio" relative to "/home/ubuntu/travi-app". Do you have node modules installed?
+[2026-04-04T21:12:58.093Z] at resolvePluginForModule (/home/ubuntu/travi-app/node_modules/@expo/config-plugins/build/utils/plugin-resolver.js:96:9)
+[2026-04-04T21:12:58.093Z] at resolveConfigPluginFunctionWithInfo (/home/ubuntu/travi-app/node_modules/@expo/config-plugins/build/utils/plugin-resolver.js:145:7)
+[2026-04-04T21:12:58.093Z] at resolveConfigPluginFunction (/home/ubuntu/travi-app/node_modules/@expo/config-plugins/build/utils/plugin-resolver.js:136:7)
+[2026-04-04T21:12:58.094Z] at withStaticPlugin (/home/ubuntu/travi-app/node_modules/@expo/config-plugins/build/plugins/withStaticPlugin.js:85:70)
+[2026-04-04T21:12:58.094Z] at /home/ubuntu/travi-app/node_modules/@expo/config-plugins/build/plugins/withPlugins.js:30:84
+[2026-04-04T21:12:58.094Z] at Array.reduce (<anonymous>)
+[2026-04-04T21:12:58.095Z] at withPlugins (/home/ubuntu/travi-app/node_modules/@expo/config-plugins/build/plugins/withPlugins.js:30:18)
+[2026-04-04T21:12:58.095Z] at withConfigPlugins (/home/ubuntu/travi-app/node_modules/@expo/config/build/plugins/withConfigPlugins.js:35:47)
+[2026-04-04T21:12:58.095Z] at fillAndReturnConfig (/home/ubuntu/travi-app/node_modules/@expo/config/build/Config.js:236:78)
+[2026-04-04T21:12:58.096Z] at getConfig (/home/ubuntu/travi-app/node_modules/@expo/config/build/Config.js:289:12)
+[2026-04-04T21:12:58.142Z] ELIFECYCLE  Command failed with exit code 1.
+[2026-04-04T21:12:58.166Z] Dev server exited with code 1
