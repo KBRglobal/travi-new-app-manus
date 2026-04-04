@@ -123,6 +123,35 @@ const SECTIONS = [
       { label: "77. Delete Account", route: "/(special)/delete-account" },
     ],
   },
+  {
+    title: "J — Social Layer",
+    data: [
+      { label: "78. Community Feed", route: "/(social)/community" },
+      { label: "79. Discover Travelers", route: "/(social)/discover" },
+      { label: "80. Compatibility Score", route: "/(social)/compatibility" },
+      { label: "81. Traveler Card Swipe", route: "/(social)/swipe-travelers" },
+      { label: "82. Traveler Profile", route: "/(social)/traveler-profile" },
+      { label: "83. Connect Flow", route: "/(social)/connect-flow" },
+      { label: "84. Messages List", route: "/(social)/messages" },
+      { label: "85. Chat Screen", route: "/(social)/message-chat" },
+      { label: "86. Travel Buddies", route: "/(social)/buddies" },
+    ],
+  },
+  {
+    title: "K — TRAVI Points",
+    data: [
+      { label: "91. Points Dashboard", route: "/(points)/dashboard" },
+      { label: "92. Redeem Hub", route: "/(points)/redeem" },
+      { label: "93. Airline Miles", route: "/(points)/airline-miles" },
+      { label: "94. Partner Detail", route: "/(points)/partner-detail" },
+      { label: "95. Gift Cards", route: "/(points)/gift-cards" },
+      { label: "96. Earn Guide", route: "/(points)/earn-guide" },
+      { label: "97. Points Transactions", route: "/(points)/transactions" },
+      { label: "98. Membership Perks", route: "/(points)/perks" },
+      { label: "99. Referrals", route: "/(points)/referrals" },
+      { label: "100. Redeem Confirmation", route: "/(points)/redeem-confirm" },
+    ],
+  },
 ];
 
 export default function ScreenNavigator() {
@@ -130,7 +159,7 @@ export default function ScreenNavigator() {
     <View style={s.root}>
       <View style={s.header}>
         <Text style={s.headerTitle}>TRAVI Wireframes</Text>
-        <Text style={s.headerSub}>77 Screens — Tap to preview</Text>
+        <Text style={s.headerSub}>96 Screens — Tap to preview</Text>
       </View>
       <SectionList
         sections={SECTIONS}

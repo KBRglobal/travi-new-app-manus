@@ -1,244 +1,205 @@
-import { useState } from "react";
-import {
-  View, Text, TouchableOpacity, StyleSheet, FlatList,
-  Image, Platform
-} from "react-native";
-import { router } from "expo-router";
-import { LinearGradient } from "expo-linear-gradient";
-import { IconSymbol } from "@/components/ui/icon-symbol";
-import { BRAND, TYPE, RADIUS } from "@/constants/brand";
-import * as Haptics from "expo-haptics";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
+// Screen 78 — Community Feed (Static Wireframe)
+// Route: /social/feed | Mode: Discovery (Social tab)
+// Zones: Header 80px, Stories Row 100px, Tabs 48px, Body (posts scroll)
 
-type PostCategory = "all" | "tips" | "stories" | "questions" | "photos";
+import { ScrollView, Text, View, StyleSheet } from "react-native";
+import { ScreenContainer } from "@/components/screen-container";
 
-interface Post {
-  id: string;
-  author: string;
-  authorAvatar: string;
-  authorDNA: string;
-  authorDNAColor: string;
-  category: Exclude<PostCategory, "all">;
-  destination: string;
-  content: string;
-  image?: string;
-  likes: number;
-  comments: number;
-  time: string;
-  liked: boolean;
-  tags: string[];
-}
+const STORIES = [
+  { id: "you", name: "Your Story", hasStory: false },
+  { id: "1", name: "Sarah M.", hasStory: true },
+  { id: "2", name: "Marco R.", hasStory: true },
+  { id: "3", name: "Yuki T.", hasStory: true },
+  { id: "4", name: "Elena K.", hasStory: true },
+  { id: "5", name: "James L.", hasStory: true },
+];
 
-const POSTS: Post[] = [
+const POSTS = [
   {
-    id: "1", author: "Maya Rosen", authorDNA: "Explorer", authorDNAColor: BRAND.purple,
-    authorAvatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200",
-    category: "tips", destination: "Tokyo", time: "2h ago",
-    content: "Pro tip for Tokyo: The best ramen is NOT in the tourist areas. Head to Shimokitazawa for the real deal. Look for places with a line of locals - that's your sign!",
-    image: "https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=400",
-    likes: 47, comments: 12, liked: false,
-    tags: ["Tokyo", "Food", "Local Tips"],
+    id: "1",
+    author: "Sarah Mitchell",
+    location: "Barcelona, Spain",
+    dnaMatch: 92,
+    caption: "Found the most amazing hidden tapas bar in El Born! The patatas bravas here are unreal.",
+    likes: 47,
+    comments: 12,
+    timeAgo: "2h ago",
+    category: "Food & Culture",
   },
   {
-    id: "2", author: "Lior Cohen", authorDNA: "Adventurer", authorDNAColor: BRAND.orange,
-    authorAvatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200",
-    category: "stories", destination: "Kyoto", time: "5h ago",
-    content: "Just hiked the Fushimi Inari trail at 5am before the crowds arrived. Had the entire path to myself for 20 minutes. One of the most magical experiences of my life. Worth every early alarm!",
-    image: "https://images.unsplash.com/photo-1478436127897-769e1b3f0f36?w=400",
-    likes: 89, comments: 23, liked: true,
-    tags: ["Kyoto", "Hiking", "Sunrise"],
+    id: "2",
+    author: "Marco Rossi",
+    location: "Kyoto, Japan",
+    dnaMatch: 78,
+    caption: "Golden hour at Fushimi Inari. Arrived at 5am to have the gates all to myself.",
+    likes: 123,
+    comments: 34,
+    timeAgo: "5h ago",
+    category: "Adventure",
   },
   {
-    id: "3", author: "Noa Levy", authorDNA: "Culturalist", authorDNAColor: BRAND.cyan,
-    authorAvatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=200",
-    category: "questions", destination: "Istanbul", time: "1d ago",
-    content: "Planning 5 days in Istanbul next month. Beyond Hagia Sophia and Blue Mosque - what are the hidden gems that most tourists miss? Looking for authentic local experiences!",
-    likes: 31, comments: 18, liked: false,
-    tags: ["Istanbul", "History", "Question"],
-  },
-  {
-    id: "4", author: "Avi Shapiro", authorDNA: "Foodie", authorDNAColor: BRAND.pink,
-    authorAvatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200",
-    category: "photos", destination: "Bangkok", time: "2d ago",
-    content: "Street food paradise. This pad thai from a 70-year-old family stall near Khao San Road changed my life. The secret? They still use the original recipe from 1952.",
-    image: "https://images.unsplash.com/photo-1559314809-0d155014e29e?w=400",
-    likes: 124, comments: 34, liked: false,
-    tags: ["Bangkok", "Street Food", "Thailand"],
+    id: "3",
+    author: "Elena Kowalski",
+    location: "Santorini, Greece",
+    dnaMatch: 85,
+    caption: "Sunset from Oia never gets old. Third visit and still speechless every time.",
+    likes: 89,
+    comments: 21,
+    timeAgo: "1d ago",
+    category: "Relaxation",
   },
 ];
 
-const CATEGORIES: { key: PostCategory; label: string }[] = [
-  { key: "all", label: "All" },
-  { key: "tips", label: "Tips" },
-  { key: "stories", label: "Stories" },
-  { key: "questions", label: "Questions" },
-  { key: "photos", label: "Photos" },
-];
-
-function PostCard({ post, onLike }: { post: Post; onLike: (id: string) => void }) {
-  const categoryColor = post.category === "tips" ? BRAND.green
-    : post.category === "stories" ? BRAND.purple
-    : post.category === "questions" ? BRAND.orange
-    : BRAND.pink;
-
+export default function CommunityFeedScreen() {
   return (
-    <View style={styles.postCard}>
-      <LinearGradient
-        colors={["rgba(58,31,92,0.85)", "rgba(26,10,48,0.92)"]}
-        style={StyleSheet.absoluteFillObject}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 1 }}
-      />
-      <View style={styles.authorRow}>
-        <Image source={{ uri: post.authorAvatar }} style={styles.authorAvatar} />
-        <View style={styles.authorInfo}>
-          <Text style={styles.authorName}>{post.author}</Text>
-          <View style={styles.authorMeta}>
-            <View style={[styles.dnaPill, { borderColor: post.authorDNAColor + "50" }]}>
-              <Text style={[styles.dnaText, { color: post.authorDNAColor }]}>{post.authorDNA}</Text>
+    <ScreenContainer>
+      <View style={s.container}>
+        {/* Header — 80px */}
+        <View style={s.header}>
+          <Text style={s.headerTitle}>TRAVI Community</Text>
+          <View style={s.iconBtn}>
+            <Text style={s.iconText}>🔔</Text>
+          </View>
+        </View>
+
+        <ScrollView showsVerticalScrollIndicator={false}>
+          {/* Stories Row — 100px */}
+          <View style={s.storiesSection}>
+            <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={s.storiesRow}>
+              {STORIES.map((story) => (
+                <View key={story.id} style={s.storyItem}>
+                  <View style={[s.storyAvatar, story.hasStory && s.storyAvatarActive]}>
+                    {story.id === "you" ? (
+                      <Text style={s.storyPlus}>+</Text>
+                    ) : (
+                      <Text style={s.storyInitial}>{story.name[0]}</Text>
+                    )}
+                  </View>
+                  <Text style={s.storyName} numberOfLines={1}>{story.name}</Text>
+                </View>
+              ))}
+            </ScrollView>
+          </View>
+
+          {/* Tabs — 48px */}
+          <View style={s.tabsRow}>
+            <View style={[s.tab, s.tabActive]}>
+              <Text style={[s.tabText, s.tabTextActive]}>Traveler Network</Text>
             </View>
-            <Text style={styles.timeText}>{post.time}</Text>
+            <View style={s.tab}>
+              <Text style={s.tabText}>Travel Buddies</Text>
+            </View>
           </View>
-        </View>
-        <View style={[styles.categoryBadge, { backgroundColor: categoryColor + "20", borderColor: categoryColor + "40" }]}>
-          <Text style={[styles.categoryText, { color: categoryColor }]}>
-            {post.category.charAt(0).toUpperCase() + post.category.slice(1)}
-          </Text>
-        </View>
+
+          {/* Posts */}
+          {POSTS.map((post) => (
+            <View key={post.id} style={s.postCard}>
+              {/* Author Row */}
+              <View style={s.postAuthorRow}>
+                <View style={s.postAvatar}>
+                  <Text style={s.postAvatarText}>{post.author[0]}</Text>
+                </View>
+                <View style={s.postAuthorInfo}>
+                  <Text style={s.postAuthorName}>{post.author}</Text>
+                  <Text style={s.postAuthorLocation}>{post.location}</Text>
+                </View>
+                <View style={s.dnaBadge}>
+                  <Text style={s.dnaBadgeText}>{post.dnaMatch}% Match</Text>
+                </View>
+              </View>
+
+              {/* Image Placeholder */}
+              <View style={s.postImage}>
+                <View style={s.categoryTag}>
+                  <Text style={s.categoryTagText}>{post.category}</Text>
+                </View>
+                <View style={s.postLocationBadge}>
+                  <Text style={s.postLocationText}>{post.location}</Text>
+                </View>
+              </View>
+
+              {/* Caption */}
+              <Text style={s.postCaption}>{post.caption}</Text>
+
+              {/* Actions Row */}
+              <View style={s.postActions}>
+                <View style={s.actionBtn}>
+                  <Text style={s.actionIcon}>♡</Text>
+                  <Text style={s.actionCount}>{post.likes}</Text>
+                </View>
+                <View style={s.actionBtn}>
+                  <Text style={s.actionIcon}>💬</Text>
+                  <Text style={s.actionCount}>{post.comments}</Text>
+                </View>
+                <View style={s.actionBtn}>
+                  <Text style={s.actionIcon}>↗</Text>
+                </View>
+                <View style={s.actionBtn}>
+                  <Text style={s.actionIcon}>🔖</Text>
+                </View>
+                <View style={{ flex: 1 }} />
+                <Text style={s.postTime}>{post.timeAgo}</Text>
+              </View>
+            </View>
+          ))}
+
+          <View style={{ height: 100 }} />
+        </ScrollView>
       </View>
-      <View style={styles.destinationRow}>
-        <IconSymbol name="location.fill" size={12} color={BRAND.textMuted} />
-        <Text style={styles.destinationText}>{post.destination}</Text>
-      </View>
-      <Text style={styles.postContent}>{post.content}</Text>
-      {post.image ? (
-        <Image source={{ uri: post.image }} style={styles.postImage} resizeMode="cover" />
-      ) : null}
-      <View style={styles.tagsRow}>
-        {post.tags.map((tag, i) => (
-          <View key={i} style={styles.tag}>
-            <Text style={styles.tagText}>#{tag}</Text>
-          </View>
-        ))}
-      </View>
-      <View style={styles.actionsRow}>
-        <TouchableOpacity
-          style={styles.actionBtn}
-          onPress={() => {
-            if (Platform.OS !== "web") Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-            onLike(post.id);
-          }}
-        >
-          <IconSymbol
-            name={post.liked ? "heart.fill" : "heart"}
-            size={18}
-            color={post.liked ? BRAND.pink : BRAND.textSecondary}
-          />
-          <Text style={[styles.actionText, post.liked ? { color: BRAND.pink } : undefined]}>
-            {post.likes + (post.liked ? 1 : 0)}
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.actionBtn}>
-          <IconSymbol name="bubble.left.fill" size={18} color={BRAND.textSecondary} />
-          <Text style={styles.actionText}>{post.comments}</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.actionBtn}>
-          <IconSymbol name="paperplane.fill" size={18} color={BRAND.textSecondary} />
-          <Text style={styles.actionText}>Share</Text>
-        </TouchableOpacity>
-      </View>
-    </View>
+    </ScreenContainer>
   );
 }
 
-export default function CommunityScreen() {
-  const insets = useSafeAreaInsets();
-  const [activeCategory, setActiveCategory] = useState<PostCategory>("all");
-  const [posts, setPosts] = useState(POSTS);
+const N = "#111";
+const N2 = "#1a1a1a";
+const N3 = "#222";
+const W = "#fff";
+const G = "#888";
+const ACCENT = "#666";
 
-  const filtered = activeCategory === "all"
-    ? posts
-    : posts.filter(p => p.category === activeCategory);
+const s = StyleSheet.create({
+  container: { flex: 1, backgroundColor: N },
+  header: { height: 80, flexDirection: "row", alignItems: "flex-end", justifyContent: "space-between", paddingHorizontal: 16, paddingBottom: 12 },
+  headerTitle: { fontSize: 28, fontWeight: "700", color: W },
+  iconBtn: { width: 44, height: 44, borderRadius: 12, backgroundColor: N2, alignItems: "center", justifyContent: "center" },
+  iconText: { fontSize: 20 },
 
-  const handleLike = (id: string) => {
-    setPosts(prev => prev.map(p => p.id === id ? { ...p, liked: !p.liked } : p));
-  };
+  storiesSection: { height: 100, borderBottomWidth: 1, borderBottomColor: N3 },
+  storiesRow: { paddingHorizontal: 16, gap: 16, alignItems: "center", height: 100 },
+  storyItem: { alignItems: "center", width: 64 },
+  storyAvatar: { width: 56, height: 56, borderRadius: 14, backgroundColor: N2, borderWidth: 2, borderColor: N3, alignItems: "center", justifyContent: "center" },
+  storyAvatarActive: { borderColor: ACCENT, borderWidth: 3 },
+  storyPlus: { fontSize: 24, color: ACCENT, fontWeight: "600" },
+  storyInitial: { fontSize: 20, fontWeight: "600", color: W },
+  storyName: { fontSize: 11, color: G, marginTop: 4 },
 
-  return (
-    <View style={[styles.container, { paddingTop: insets.top }]}>
-      <LinearGradient colors={[BRAND.bgDeep, BRAND.bgOverlay]} style={StyleSheet.absoluteFillObject} />
-      <View style={styles.header}>
-        <TouchableOpacity onPress={() => router.back()} style={styles.backBtn}>
-          <IconSymbol name="chevron.left" size={24} color={BRAND.textPrimary} />
-        </TouchableOpacity>
-        <View>
-          <Text style={styles.headerTitle}>Community</Text>
-          <Text style={styles.headerSub}>Travel stories and tips</Text>
-        </View>
-        <TouchableOpacity style={styles.writeBtn}>
-          <IconSymbol name="plus.circle.fill" size={22} color={BRAND.purple} />
-        </TouchableOpacity>
-      </View>
-      <View style={styles.filterRow}>
-        {CATEGORIES.map(cat => (
-          <TouchableOpacity
-            key={cat.key}
-            style={[styles.filterChip, activeCategory === cat.key && styles.filterChipActive]}
-            onPress={() => {
-              if (Platform.OS !== "web") Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-              setActiveCategory(cat.key);
-            }}
-          >
-            <Text style={[styles.filterText, activeCategory === cat.key && styles.filterTextActive]}>
-              {cat.label}
-            </Text>
-          </TouchableOpacity>
-        ))}
-      </View>
-      <FlatList
-        data={filtered}
-        keyExtractor={item => item.id}
-        renderItem={({ item }) => <PostCard post={item} onLike={handleLike} />}
-        contentContainerStyle={styles.listContent}
-        showsVerticalScrollIndicator={false}
-        ItemSeparatorComponent={() => <View style={{ height: 12 }} />}
-      />
-    </View>
-  );
-}
+  tabsRow: { flexDirection: "row", paddingHorizontal: 16, paddingVertical: 12, gap: 8 },
+  tab: { paddingHorizontal: 16, paddingVertical: 8, borderRadius: 20, backgroundColor: N2 },
+  tabActive: { backgroundColor: "#333" },
+  tabText: { fontSize: 14, color: G, fontWeight: "500" },
+  tabTextActive: { color: W },
 
-const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: BRAND.bgDeep },
-  header: { flexDirection: "row", alignItems: "center", gap: 12, paddingHorizontal: 20, paddingVertical: 16 },
-  backBtn: { padding: 4 },
-  headerTitle: { ...TYPE.h2, color: BRAND.textPrimary },
-  headerSub: { ...TYPE.small, color: BRAND.textSecondary, marginTop: 1 },
-  writeBtn: { marginLeft: "auto", width: 40, height: 40, borderRadius: 20, backgroundColor: BRAND.purple + "20", alignItems: "center", justifyContent: "center" },
-  filterRow: { flexDirection: "row", gap: 8, paddingHorizontal: 20, marginBottom: 16 },
-  filterChip: { paddingHorizontal: 14, paddingVertical: 7, borderRadius: 20, backgroundColor: "rgba(255,255,255,0.06)", borderWidth: 1, borderColor: BRAND.border },
-  filterChipActive: { backgroundColor: BRAND.purple, borderColor: BRAND.purple },
-  filterText: { ...TYPE.small, color: BRAND.textSecondary },
-  filterTextActive: { color: "#fff", fontFamily: "Satoshi-Bold" },
-  listContent: { paddingHorizontal: 20, paddingBottom: 130 },
-  postCard: { borderRadius: RADIUS.lg, overflow: "hidden", borderWidth: 1, borderColor: BRAND.border, padding: 16, gap: 10 },
-  authorRow: { flexDirection: "row", alignItems: "flex-start", gap: 10 },
-  authorAvatar: { width: 42, height: 42, borderRadius: 21, backgroundColor: BRAND.bgCard },
-  authorInfo: { flex: 1, gap: 4 },
-  authorName: { ...TYPE.bodyMed, color: BRAND.textPrimary },
-  authorMeta: { flexDirection: "row", alignItems: "center", gap: 8 },
-  dnaPill: { paddingHorizontal: 8, paddingVertical: 2, borderRadius: 8, borderWidth: 1 },
-  dnaText: { ...TYPE.caption },
-  timeText: { ...TYPE.caption, color: BRAND.textMuted },
-  categoryBadge: { paddingHorizontal: 10, paddingVertical: 4, borderRadius: 10, borderWidth: 1 },
-  categoryText: { ...TYPE.caption, fontFamily: "Satoshi-Bold" },
-  destinationRow: { flexDirection: "row", alignItems: "center", gap: 4 },
-  destinationText: { ...TYPE.caption, color: BRAND.textMuted },
-  postContent: { ...TYPE.body, color: BRAND.textSecondary },
-  postImage: { width: "100%", height: 200, borderRadius: RADIUS.md, backgroundColor: BRAND.bgCard },
-  tagsRow: { flexDirection: "row", flexWrap: "wrap", gap: 6 },
-  tag: { paddingHorizontal: 8, paddingVertical: 3, borderRadius: 8, backgroundColor: "rgba(255,255,255,0.06)" },
-  tagText: { ...TYPE.caption, color: BRAND.textMuted },
-  actionsRow: { flexDirection: "row", gap: 20, paddingTop: 4, borderTopWidth: 1, borderTopColor: BRAND.border },
-  actionBtn: { flexDirection: "row", alignItems: "center", gap: 6 },
-  actionText: { ...TYPE.small, color: BRAND.textSecondary },
+  postCard: { marginHorizontal: 16, marginTop: 16, backgroundColor: N2, borderRadius: 20, borderWidth: 1, borderColor: N3, overflow: "hidden" },
+  postAuthorRow: { flexDirection: "row", alignItems: "center", padding: 12, gap: 10 },
+  postAvatar: { width: 40, height: 40, borderRadius: 10, backgroundColor: N3, alignItems: "center", justifyContent: "center" },
+  postAvatarText: { fontSize: 16, fontWeight: "600", color: W },
+  postAuthorInfo: { flex: 1 },
+  postAuthorName: { fontSize: 16, fontWeight: "600", color: W },
+  postAuthorLocation: { fontSize: 12, color: G },
+  dnaBadge: { paddingHorizontal: 8, paddingVertical: 4, borderRadius: 12, backgroundColor: "#1a3a1a" },
+  dnaBadgeText: { fontSize: 12, fontWeight: "600", color: "#4a4" },
+
+  postImage: { height: 240, backgroundColor: N3, justifyContent: "flex-end", padding: 12 },
+  categoryTag: { position: "absolute", top: 12, left: 12, paddingHorizontal: 8, paddingVertical: 4, borderRadius: 8, backgroundColor: "rgba(255,255,255,0.15)" },
+  categoryTagText: { fontSize: 12, color: W, fontWeight: "500" },
+  postLocationBadge: { alignSelf: "flex-start", paddingHorizontal: 8, paddingVertical: 4, borderRadius: 12, backgroundColor: "rgba(0,0,0,0.5)" },
+  postLocationText: { fontSize: 12, color: W },
+
+  postCaption: { fontSize: 14, color: "#ccc", lineHeight: 20, paddingHorizontal: 12, paddingTop: 12 },
+
+  postActions: { flexDirection: "row", alignItems: "center", paddingHorizontal: 12, paddingVertical: 12, gap: 16 },
+  actionBtn: { flexDirection: "row", alignItems: "center", gap: 4 },
+  actionIcon: { fontSize: 20 },
+  actionCount: { fontSize: 14, color: G },
+  postTime: { fontSize: 12, color: G },
 });

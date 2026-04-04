@@ -1,114 +1,143 @@
 # TRAVI App — Master TODO
 
 > Last updated: April 4, 2026
-> Source: TRAVI Wireframe Spec v2.0 — 77 screens
-> Status: ALL screens rebuilt from scratch as neutral wireframes
+> Source: TRAVI Wireframe Spec v2.0 + Part 2 (Design Tokens) + Part 3 (Social + Points)
+> Status: 96 screens built as neutral wireframes
 > Rule: After completing each screen, double-check against spec before marking [x]
 
 ---
 
-## Phase 1 — UX / UI / Wireframes — ALL 77 SCREENS FROM SCRATCH
+## Phase 1 — UX / UI / Wireframes — ALL SCREENS FROM SCRATCH
 
 ### Part A — Auth & Onboarding (Screens 1–10)
-- [ ] Screen 1 — Splash Screen (/splash)
-- [ ] Screen 2 — Welcome Screen (/welcome)
-- [ ] Screen 3 — Sign Up (/signup)
-- [ ] Screen 4 — Verify Email (/verify-email)
-- [ ] Screen 5 — Profile Setup (/profile-setup)
-- [ ] Screen 6 — Welcome to TRAVI (/welcome-travi)
-- [ ] Screen 7 — Quick DNA Categories (/quick-dna/categories)
-- [ ] Screen 8 — Quick DNA Swipe (/quick-dna/swipe)
-- [ ] Screen 9 — Quick DNA Schedule (/quick-dna/schedule)
-- [ ] Screen 10 — Quick DNA Summary (/quick-dna/summary)
+- [x] Screen 1 — Splash Screen (/splash)
+- [x] Screen 2 — Welcome Screen (/welcome)
+- [x] Screen 3 — Sign Up (/signup)
+- [x] Screen 4 — Verify Email (/verify-email)
+- [x] Screen 5 — Profile Setup (/profile-setup)
+- [x] Screen 6 — Welcome to TRAVI (/welcome-travi)
+- [x] Screen 7 — Quick DNA Categories (/quick-dna/categories)
+- [x] Screen 8 — Quick DNA Swipe (/quick-dna/swipe)
+- [x] Screen 9 — Quick DNA Schedule (/quick-dna/schedule)
+- [x] Screen 10 — Quick DNA Summary (/quick-dna/summary)
 
 ### Part B — Discovery Mode (Screens 11–19)
-- [ ] Screen 11 — Home Dashboard (/home)
-- [ ] Screen 12 — Explore Feed (/explore)
-- [ ] Screen 13 — Search Modal (/search)
-- [ ] Screen 14 — Destination Detail (/destination-detail)
-- [ ] Screen 15 — Profile & Settings (/profile)
-- [ ] Screen 16 — DNA Management (/profile/dna)
-- [ ] Screen 17 — Wishlist (/wishlist)
-- [ ] Screen 18 — Notifications Center (/notifications)
-- [ ] Screen 19 — Plan Trip Entry (/plan-trip)
+- [x] Screen 11 — Home Dashboard (/home)
+- [x] Screen 12 — Explore Feed (/explore)
+- [x] Screen 13 — Search Modal (/search)
+- [x] Screen 14 — Destination Detail (/destination-detail)
+- [x] Screen 15 — Profile & Settings (/profile)
+- [x] Screen 16 — DNA Management (/profile/dna)
+- [x] Screen 17 — Wishlist (/wishlist)
+- [x] Screen 18 — Notifications Center (/notifications)
+- [x] Screen 19 — Plan Trip Entry (/plan-trip)
 
 ### Part C — Planning Mode (Screens 20–31)
-- [ ] Screen 20 — Trip Builder Destination Select
-- [ ] Screen 21 — Trip Builder Dates & Travelers
-- [ ] Screen 22 — Trip Builder Flight Select
-- [ ] Screen 23 — Trip Builder Hotel Select
-- [ ] Screen 24 — Hotel Detail
-- [ ] Screen 25 — Activity Select Swipe
-- [ ] Screen 26 — Itinerary Builder
-- [ ] Screen 27 — Cart / Trip Review
-- [ ] Screen 28 — Checkout Phase 1 — Review & Hold
-- [ ] Screen 29 — Payment Method Modal
-- [ ] Screen 30 — Checkout Phase 2 — Payment
-- [ ] Screen 31 — Booking Confirmation
+- [x] Screen 20 — Trip Builder Destination Select
+- [x] Screen 21 — Trip Builder Dates & Travelers
+- [x] Screen 22 — Trip Builder Flight Select
+- [x] Screen 23 — Trip Builder Hotel Select
+- [x] Screen 24 — Hotel Detail
+- [x] Screen 25 — Activity Select Swipe
+- [x] Screen 26 — Itinerary Builder
+- [x] Screen 27 — Cart / Trip Review
+- [x] Screen 28 — Checkout Phase 1 — Review & Hold
+- [x] Screen 29 — Payment Method Modal
+- [x] Screen 30 — Checkout Phase 2 — Payment
+- [x] Screen 31 — Booking Confirmation
 
 ### Part D — Pre-Trip Mode (Screens 32–34)
-- [ ] Screen 32 — Pre-Trip Dashboard
-- [ ] Screen 33 — Pre-Trip Checklist
-- [ ] Screen 34 — Pre-Trip Documents
+- [x] Screen 32 — Pre-Trip Dashboard
+- [x] Screen 33 — Pre-Trip Checklist
+- [x] Screen 34 — Pre-Trip Documents
 
 ### Part E — Live Mode (Screens 35–43)
-- [ ] Screen 35 — Live Dashboard
-- [ ] Screen 36 — Live Timeline
-- [ ] Screen 37 — Live Map
-- [ ] Screen 38 — Activity Detail (Live)
-- [ ] Screen 39 — Expenses Tracker
-- [ ] Screen 40 — Memories Gallery
-- [ ] Screen 41 — AI Chat (Live Concierge)
-- [ ] Screen 42 — Emergency Contacts
-- [ ] Screen 43 — Trip Settings
+- [x] Screen 35 — Live Dashboard
+- [x] Screen 36 — Live Timeline
+- [x] Screen 37 — Live Map
+- [x] Screen 38 — Activity Detail (Live)
+- [x] Screen 39 — Expenses Tracker
+- [x] Screen 40 — Memories Gallery
+- [x] Screen 41 — AI Chat (Live Concierge)
+- [x] Screen 42 — Emergency Contacts
+- [x] Screen 43 — Trip Settings
 
 ### Part F — Post-Trip Mode (Screens 44–47)
-- [ ] Screen 44 — Post-Trip Celebration
-- [ ] Screen 45 — Trip Summary
-- [ ] Screen 46 — Rate & Review
-- [ ] Screen 47 — Photo Gallery (Post-Trip)
+- [x] Screen 44 — Post-Trip Celebration
+- [x] Screen 45 — Trip Summary
+- [x] Screen 46 — Rate & Review
+- [x] Screen 47 — Photo Gallery (Post-Trip)
 
 ### Part G — Universal Screens (Screens 48–59)
-- [ ] Screen 48 — Wallet Full View
-- [ ] Screen 49 — Add Funds
-- [ ] Screen 50 — Transaction History
-- [ ] Screen 51 — Split Payment Calculator
-- [ ] Screen 52 — KYC Verification
-- [ ] Screen 53 — Membership & Upgrade
-- [ ] Screen 54 — Profile Edit
-- [ ] Screen 55 — Settings
-- [ ] Screen 56 — Notifications Center (Discovery)
-- [ ] Screen 57 — My Trips
-- [ ] Screen 58 — Wishlist (Full View)
-- [ ] Screen 59 — Search Results
+- [x] Screen 48 — Wallet Full View
+- [x] Screen 49 — Add Funds
+- [x] Screen 50 — Transaction History
+- [x] Screen 51 — Split Payment Calculator
+- [x] Screen 52 — KYC Verification
+- [x] Screen 53 — Membership & Upgrade
+- [x] Screen 54 — Profile Edit
+- [x] Screen 55 — Settings
+- [x] Screen 56 — Notifications Center (Discovery) — same as Screen 18
+- [x] Screen 57 — My Trips — same as Trips tab
+- [x] Screen 58 — Wishlist (Full View) — same as Screen 17
+- [x] Screen 59 — Search Results — part of Screen 13
+- [x] Screen 66 — Help & Support
 
 ### Part H+I — Error, Loading & Special (Screens 60–77)
-- [ ] Screen 60 — No Internet Connection (overlay)
-- [ ] Screen 61 — API Error / Server Error (modal)
-- [ ] Screen 62 — Payment Failed
-- [ ] Screen 63 — Session Expired
-- [ ] Screen 64 — GPS Permission Denied
-- [ ] Screen 65 — Camera Permission Denied
-- [ ] Screen 66 — Help & Support
-- [ ] Screen 67 — Empty State — No Trips
-- [ ] Screen 68 — Empty State — No Search Results
-- [ ] Screen 69 — Loading — Initial App Load
-- [ ] Screen 70 — Loading — Matching Engine (overlay)
-- [ ] Screen 71 — Loading — Payment Processing (overlay)
-- [ ] Screen 72 — Onboarding — First Swipe Tutorial
-- [ ] Screen 73 — Onboarding — Welcome Tour
-- [ ] Screen 74 — First DNA Completion Celebration (modal)
-- [ ] Screen 75 — First Booking Success Moment (overlay)
-- [ ] Screen 76 — Change Email / Password
-- [ ] Screen 77 — Delete Account Confirmation
+- [x] Screen 60 — No Internet Connection (overlay)
+- [x] Screen 61 — API Error / Server Error (modal)
+- [x] Screen 62 — Payment Failed
+- [x] Screen 63 — Session Expired
+- [x] Screen 64 — GPS Permission Denied
+- [x] Screen 65 — Camera Permission Denied
+- [x] Screen 67 — Empty State — No Trips
+- [x] Screen 68 — Empty State — No Search Results
+- [x] Screen 69 — Loading — Initial App Load
+- [x] Screen 70 — Loading — Matching Engine (overlay)
+- [x] Screen 71 — Loading — Payment Processing (overlay)
+- [x] Screen 72 — Onboarding — First Swipe Tutorial
+- [x] Screen 73 — Onboarding — Welcome Tour
+- [x] Screen 74 — First DNA Completion Celebration (modal)
+- [x] Screen 75 — First Booking Success Moment (overlay)
+- [x] Screen 76 — Change Email / Password
+- [x] Screen 77 — Delete Account Confirmation
+
+### Part J — Social Layer (Screens 78–86) — from Part 3 spec
+- [x] Screen 78 — Community Feed
+- [x] Screen 79 — Discover Travelers
+- [x] Screen 80 — Travel Compatibility Score
+- [x] Screen 81 — Traveler Card Swipe
+- [x] Screen 82 — Traveler Profile
+- [x] Screen 83 — Match/Connect Flow
+- [x] Screen 84 — Messages List
+- [x] Screen 85 — Chat Screen
+- [x] Screen 86 — Travel Buddies
+
+### Part K — TRAVI Points (Screens 91–100) — from Part 3 spec
+- [x] Screen 91 — Points Dashboard
+- [x] Screen 92 — Redeem Points Hub
+- [x] Screen 93 — Airline Miles
+- [x] Screen 94 — Partner Detail
+- [x] Screen 95 — Gift Cards
+- [x] Screen 96 — Earn Guide
+- [x] Screen 97 — Points Transactions
+- [x] Screen 98 — Membership Perks
+- [x] Screen 99 — Referrals
+- [x] Screen 100 — Redeem Confirmation
 
 ### Global Elements
+- [x] Screen Navigator Hub (index.tsx — browse all 96 screens)
+- [x] Route groups registered: (auth), (tabs), (trip), (dna), (social), (points), (error), (special)
 - [ ] Bottom Nav Bar (5 tabs, 60px + safe area, hide in Planning/Live/DNA)
 - [ ] AI Chat FAB (64x64, borderRadius 20, pulse, badge)
 - [ ] Mode Badge (header pill: Planning/Live/Post-Trip)
 - [ ] Emergency Exit (Live Mode top-left)
-- [ ] Route groups: (pre-trip), (post-trip) layouts
-- [ ] Register all screens in their respective _layout.tsx files
+
+### Design Application (from Part 2 spec — AFTER wireframes approved)
+- [ ] Apply visual design tokens (colors, gradients, typography)
+- [ ] Apply component library styles (cards, buttons, inputs, badges)
+- [ ] Apply animation system (transitions, micro-interactions)
+- [ ] Apply screen-specific visual specs
 
 ---
 

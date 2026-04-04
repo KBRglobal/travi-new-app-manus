@@ -1,250 +1,151 @@
-import { useState } from "react";
-import {
-  View, Text, TouchableOpacity, StyleSheet, FlatList,
-  TextInput, Image, Platform
-} from "react-native";
-import { router } from "expo-router";
-import { LinearGradient } from "expo-linear-gradient";
-import { IconSymbol } from "@/components/ui/icon-symbol";
-import { BRAND, TYPE, RADIUS } from "@/constants/brand";
-import * as Haptics from "expo-haptics";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
+// Screen 79 — Discover Travelers (Static Wireframe)
+// Route: /social/discover | Mode: Discovery (Social)
+// Zones: Header 60px, Filter Chips 48px, Body (2-col masonry grid)
 
-// ─── Types ────────────────────────────────────────────────────────────────────
-interface Traveler {
-  id: string;
-  name: string;
-  age: number;
-  location: string;
-  avatar: string;
-  dnaType: string;
-  dnaColor: string;
-  destinations: string[];
-  dates: string;
-  bio: string;
-  mutual: number;
-  verified: boolean;
-  connected: boolean;
-  dnaMatch: number;
-}
+import { ScrollView, Text, View, StyleSheet } from "react-native";
+import { ScreenContainer } from "@/components/screen-container";
 
-// ─── Mock Data ────────────────────────────────────────────────────────────────
-const TRAVELERS: Traveler[] = [
-  {
-    id: "1", name: "Maya Rosen", age: 28, location: "Tel Aviv",
-    dnaType: "Explorer", dnaColor: BRAND.purple,
-    avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200",
-    destinations: ["Tokyo", "Bali", "Lisbon"], dates: "Mar 15–30",
-    bio: "Solo traveler obsessed with street food and hidden gems.",
-    mutual: 3, verified: true, connected: false, dnaMatch: 94,
-  },
-  {
-    id: "2", name: "Lior Cohen", age: 31, location: "Haifa",
-    dnaType: "Adventurer", dnaColor: BRAND.orange,
-    avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200",
-    destinations: ["Barcelona", "Kyoto", "NYC"], dates: "Apr 1–15",
-    bio: "Photographer and hiker. Love off-the-beaten-path adventures.",
-    mutual: 1, verified: false, connected: false, dnaMatch: 87,
-  },
-  {
-    id: "3", name: "Noa Levy", age: 25, location: "Jerusalem",
-    dnaType: "Culturalist", dnaColor: BRAND.cyan,
-    avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=200",
-    destinations: ["Rome", "Athens", "Istanbul"], dates: "May 5–20",
-    bio: "History buff and museum lover. Always seeking cultural depth.",
-    mutual: 5, verified: true, connected: true, dnaMatch: 82,
-  },
-  {
-    id: "4", name: "Avi Shapiro", age: 34, location: "Beer Sheva",
-    dnaType: "Foodie", dnaColor: BRAND.pink,
-    avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200",
-    destinations: ["Paris", "Bangkok", "NYC"], dates: "Jun 10–25",
-    bio: "Michelin stars and street stalls — I eat it all. Food is culture.",
-    mutual: 2, verified: true, connected: false, dnaMatch: 79,
-  },
-  {
-    id: "5", name: "Tamar Ben-David", age: 29, location: "Eilat",
-    dnaType: "Relaxer", dnaColor: BRAND.green,
-    avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=200",
-    destinations: ["Maldives", "Bali", "Santorini"], dates: "Jul 1–14",
-    bio: "Beach lover and wellness seeker. Yoga at sunrise, cocktails at sunset.",
-    mutual: 0, verified: false, connected: false, dnaMatch: 71,
-  },
+const FILTERS = ["All", "Near Me", "Same DNA", "Online Now", "Verified"];
+
+const TRAVELERS = [
+  { id: "1", name: "Sarah M.", age: 28, dnaMatch: 92, location: "Barcelona", interests: ["Food", "Culture"], verified: true, online: true },
+  { id: "2", name: "Marco R.", age: 31, dnaMatch: 78, location: "Rome", interests: ["Adventure", "Hiking"], verified: true, online: false },
+  { id: "3", name: "Yuki T.", age: 26, dnaMatch: 85, location: "Tokyo", interests: ["Photography", "Temples"], verified: false, online: true },
+  { id: "4", name: "Elena K.", age: 29, dnaMatch: 88, location: "Athens", interests: ["History", "Beaches"], verified: true, online: false },
+  { id: "5", name: "James L.", age: 34, dnaMatch: 71, location: "London", interests: ["Nightlife", "Music"], verified: false, online: true },
+  { id: "6", name: "Priya S.", age: 27, dnaMatch: 94, location: "Mumbai", interests: ["Yoga", "Wellness"], verified: true, online: false },
 ];
 
-// ─── DNA Match Badge ──────────────────────────────────────────────────────────
-function MatchBadge({ score }: { score: number }) {
-  const color = score >= 90 ? BRAND.green : score >= 75 ? BRAND.orange : BRAND.textSecondary;
-  return (
-    <View style={[styles.matchBadge, { borderColor: color + "40" }]}>
-      <Text style={[styles.matchText, { color }]}>{score}% match</Text>
-    </View>
-  );
-}
+export default function DiscoverTravelersScreen() {
+  const col1 = TRAVELERS.filter((_, i) => i % 2 === 0);
+  const col2 = TRAVELERS.filter((_, i) => i % 2 === 1);
 
-// ─── Traveler Card ────────────────────────────────────────────────────────────
-function TravelerCard({ traveler, onConnect }: { traveler: Traveler; onConnect: (id: string) => void }) {
   return (
-    <TouchableOpacity
-      style={styles.card}
-      onPress={() => router.push({ pathname: "/(social)/compatibility", params: { travelerId: traveler.id } })}
-      activeOpacity={0.85}
-    >
-      <LinearGradient
-        colors={["rgba(58,31,92,0.9)", "rgba(26,10,48,0.95)"]}
-        style={StyleSheet.absoluteFillObject}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 1 }}
-      />
-      <View style={styles.cardContent}>
-        <View style={styles.avatarContainer}>
-          <Image source={{ uri: traveler.avatar }} style={styles.avatar} />
-          {traveler.verified && (
-            <View style={styles.verifiedBadge}>
-              <IconSymbol name="checkmark" size={8} color="#fff" />
-            </View>
-          )}
+    <ScreenContainer>
+      <View style={s.container}>
+        {/* Header */}
+        <View style={s.header}>
+          <Text style={s.backArrow}>←</Text>
+          <Text style={s.headerTitle}>Discover Travelers</Text>
+          <Text style={s.headerIcon}>🔍</Text>
         </View>
-        <View style={styles.cardInfo}>
-          <View style={styles.cardHeader}>
-            <Text style={styles.travelerName}>{traveler.name}, {traveler.age}</Text>
-            <MatchBadge score={traveler.dnaMatch} />
-          </View>
-          <View style={styles.locationRow}>
-            <IconSymbol name="location.fill" size={12} color={BRAND.textSecondary} />
-            <Text style={styles.locationText}>{traveler.location}</Text>
-            <View style={[styles.dnaPill, { backgroundColor: traveler.dnaColor + "25", borderColor: traveler.dnaColor + "50" }]}>
-              <Text style={[styles.dnaText, { color: traveler.dnaColor }]}>{traveler.dnaType}</Text>
+
+        {/* Filter Chips */}
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={s.filtersRow}>
+          {FILTERS.map((f, i) => (
+            <View key={f} style={[s.chip, i === 0 && s.chipActive]}>
+              <Text style={[s.chipText, i === 0 && s.chipTextActive]}>{f}</Text>
             </View>
-          </View>
-          <Text style={styles.bioText} numberOfLines={2}>{traveler.bio}</Text>
-          <View style={styles.destinationsRow}>
-            {traveler.destinations.slice(0, 3).map((d, i) => (
-              <View key={i} style={styles.destChip}>
-                <Text style={styles.destText}>{d}</Text>
+          ))}
+        </ScrollView>
+
+        {/* 2-Column Masonry Grid */}
+        <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={s.gridContainer}>
+          <View style={s.column}>
+            {col1.map((t, i) => (
+              <View key={t.id} style={[s.card, { height: i % 2 === 0 ? 220 : 260 }]}>
+                <View style={s.cardImage}>
+                  {t.online && <View style={s.onlineDot} />}
+                  {t.verified && (
+                    <View style={s.verifiedBadge}><Text style={s.verifiedText}>✓</Text></View>
+                  )}
+                  <Text style={s.cardInitial}>{t.name[0]}</Text>
+                </View>
+                <View style={s.cardInfo}>
+                  <Text style={s.cardName}>{t.name}, {t.age}</Text>
+                  <Text style={s.cardLocation}>{t.location}</Text>
+                  <View style={s.matchRow}>
+                    <View style={s.matchBar}>
+                      <View style={[s.matchFill, { width: `${t.dnaMatch}%` }]} />
+                    </View>
+                    <Text style={s.matchText}>{t.dnaMatch}%</Text>
+                  </View>
+                  <View style={s.interestsRow}>
+                    {t.interests.map((int) => (
+                      <View key={int} style={s.interestPill}>
+                        <Text style={s.interestText}>{int}</Text>
+                      </View>
+                    ))}
+                  </View>
+                  <View style={s.connectBtn}>
+                    <Text style={s.connectText}>Connect</Text>
+                  </View>
+                </View>
               </View>
             ))}
           </View>
-        </View>
+          <View style={s.column}>
+            {col2.map((t, i) => (
+              <View key={t.id} style={[s.card, { height: i % 2 === 0 ? 260 : 220 }]}>
+                <View style={s.cardImage}>
+                  {t.online && <View style={s.onlineDot} />}
+                  {t.verified && (
+                    <View style={s.verifiedBadge}><Text style={s.verifiedText}>✓</Text></View>
+                  )}
+                  <Text style={s.cardInitial}>{t.name[0]}</Text>
+                </View>
+                <View style={s.cardInfo}>
+                  <Text style={s.cardName}>{t.name}, {t.age}</Text>
+                  <Text style={s.cardLocation}>{t.location}</Text>
+                  <View style={s.matchRow}>
+                    <View style={s.matchBar}>
+                      <View style={[s.matchFill, { width: `${t.dnaMatch}%` }]} />
+                    </View>
+                    <Text style={s.matchText}>{t.dnaMatch}%</Text>
+                  </View>
+                  <View style={s.interestsRow}>
+                    {t.interests.map((int) => (
+                      <View key={int} style={s.interestPill}>
+                        <Text style={s.interestText}>{int}</Text>
+                      </View>
+                    ))}
+                  </View>
+                  <View style={s.connectBtn}>
+                    <Text style={s.connectText}>Connect</Text>
+                  </View>
+                </View>
+              </View>
+            ))}
+          </View>
+        </ScrollView>
       </View>
-      <View style={styles.cardFooter}>
-        <Text style={styles.datesText}>{traveler.dates}</Text>
-        {traveler.mutual > 0 && (
-          <Text style={styles.mutualText}>{traveler.mutual} mutual</Text>
-        )}
-        <TouchableOpacity
-          style={[styles.connectBtn, traveler.connected && styles.connectedBtn]}
-          onPress={() => {
-            if (Platform.OS !== "web") Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-            onConnect(traveler.id);
-          }}
-        >
-          <Text style={[styles.connectBtnText, traveler.connected && styles.connectedBtnText]}>
-            {traveler.connected ? "Connected" : "Connect"}
-          </Text>
-        </TouchableOpacity>
-      </View>
-    </TouchableOpacity>
+    </ScreenContainer>
   );
 }
 
-// ─── Main Screen ──────────────────────────────────────────────────────────────
-export default function DiscoverScreen() {
-  const insets = useSafeAreaInsets();
-  const [search, setSearch] = useState("");
-  const [travelers, setTravelers] = useState(TRAVELERS);
+const N = "#111"; const N2 = "#1a1a1a"; const N3 = "#222"; const W = "#fff"; const G = "#888";
 
-  const filtered = travelers.filter(t =>
-    t.name.toLowerCase().includes(search.toLowerCase()) ||
-    t.dnaType.toLowerCase().includes(search.toLowerCase()) ||
-    t.destinations.some(d => d.toLowerCase().includes(search.toLowerCase()))
-  );
+const s = StyleSheet.create({
+  container: { flex: 1, backgroundColor: N },
+  header: { height: 60, flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 16 },
+  backArrow: { fontSize: 24, color: W },
+  headerTitle: { fontSize: 20, fontWeight: "700", color: W },
+  headerIcon: { fontSize: 20 },
 
-  const handleConnect = (id: string) => {
-    setTravelers(prev => prev.map(t => t.id === id ? { ...t, connected: !t.connected } : t));
-  };
+  filtersRow: { paddingHorizontal: 16, gap: 8, height: 48, alignItems: "center" },
+  chip: { paddingHorizontal: 14, paddingVertical: 8, borderRadius: 20, backgroundColor: N2, borderWidth: 1, borderColor: N3 },
+  chipActive: { backgroundColor: "#333", borderColor: "#555" },
+  chipText: { fontSize: 14, color: G },
+  chipTextActive: { color: W },
 
-  return (
-    <View style={[styles.container, { paddingTop: insets.top }]}>
-      <LinearGradient colors={[BRAND.bgDeep, BRAND.bgOverlay]} style={StyleSheet.absoluteFillObject} />
-      <View style={styles.header}>
-        <TouchableOpacity onPress={() => router.back()} style={styles.backBtn}>
-          <IconSymbol name="chevron.left" size={24} color={BRAND.textPrimary} />
-        </TouchableOpacity>
-        <View>
-          <Text style={styles.headerTitle}>Discover Travelers</Text>
-          <Text style={styles.headerSub}>Find your perfect travel companion</Text>
-        </View>
-        <TouchableOpacity
-          style={styles.filterBtn}
-          onPress={() => { if (Platform.OS !== "web") Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light); }}
-        >
-          <IconSymbol name="gearshape.fill" size={20} color={BRAND.purple} />
-        </TouchableOpacity>
-      </View>
-      <View style={styles.searchContainer}>
-        <IconSymbol name="magnifyingglass" size={16} color={BRAND.textSecondary} />
-        <TextInput
-          style={styles.searchInput}
-          placeholder="Search by name, DNA type, destination..."
-          placeholderTextColor={BRAND.textMuted}
-          value={search}
-          onChangeText={setSearch}
-        />
-        {search.length > 0 && (
-          <TouchableOpacity onPress={() => setSearch("")}>
-            <IconSymbol name="xmark.circle.fill" size={16} color={BRAND.textSecondary} />
-          </TouchableOpacity>
-        )}
-      </View>
-      <Text style={styles.countText}>{filtered.length} travelers found</Text>
-      <FlatList
-        data={filtered}
-        keyExtractor={item => item.id}
-        renderItem={({ item }) => <TravelerCard traveler={item} onConnect={handleConnect} />}
-        contentContainerStyle={styles.listContent}
-        showsVerticalScrollIndicator={false}
-        ItemSeparatorComponent={() => <View style={{ height: 12 }} />}
-      />
-    </View>
-  );
-}
-
-// ─── Styles ───────────────────────────────────────────────────────────────────
-const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: BRAND.bgDeep },
-  header: { flexDirection: "row", alignItems: "center", gap: 12, paddingHorizontal: 20, paddingVertical: 16 },
-  backBtn: { padding: 4 },
-  headerTitle: { ...TYPE.h2, color: BRAND.textPrimary },
-  headerSub: { ...TYPE.small, color: BRAND.textSecondary, marginTop: 1 },
-  filterBtn: { marginLeft: "auto", width: 40, height: 40, borderRadius: 20, backgroundColor: BRAND.purple + "20", alignItems: "center", justifyContent: "center" },
-  searchContainer: { flexDirection: "row", alignItems: "center", gap: 10, marginHorizontal: 20, marginBottom: 12, backgroundColor: "rgba(255,255,255,0.06)", borderRadius: RADIUS.md, paddingHorizontal: 14, paddingVertical: 10, borderWidth: 1, borderColor: BRAND.border },
-  searchInput: { flex: 1, ...TYPE.body, color: BRAND.textPrimary },
-  countText: { ...TYPE.caption, color: BRAND.textSecondary, paddingHorizontal: 20, marginBottom: 8 },
-  listContent: { paddingHorizontal: 20, paddingBottom: 130 },
-  card: { borderRadius: RADIUS.lg, overflow: "hidden", borderWidth: 1, borderColor: BRAND.border },
-  cardContent: { flexDirection: "row", gap: 14, padding: 18 },
-  avatarContainer: { position: "relative" },
-  avatar: { width: 64, height: 64, borderRadius: 32, backgroundColor: BRAND.bgCard },
-  verifiedBadge: { position: "absolute", bottom: 0, right: 0, width: 18, height: 18, borderRadius: 9, backgroundColor: BRAND.purple, alignItems: "center", justifyContent: "center", borderWidth: 2, borderColor: BRAND.bgDeep },
-  cardInfo: { flex: 1, gap: 5 },
-  cardHeader: { flexDirection: "row", alignItems: "center", justifyContent: "space-between" },
-  travelerName: { ...TYPE.bodyMed, color: BRAND.textPrimary },
-  matchBadge: { paddingHorizontal: 8, paddingVertical: 3, borderRadius: 10, borderWidth: 1, backgroundColor: "transparent" },
-  matchText: { ...TYPE.caption, fontFamily: "Satoshi-Bold" },
-  locationRow: { flexDirection: "row", alignItems: "center", gap: 4 },
-  locationText: { ...TYPE.caption, color: BRAND.textSecondary, flex: 1 },
-  dnaPill: { paddingHorizontal: 8, paddingVertical: 2, borderRadius: 8, borderWidth: 1 },
-  dnaText: { ...TYPE.caption, fontFamily: "Satoshi-Bold" },
-  bioText: { ...TYPE.small, color: BRAND.textSecondary },
-  destinationsRow: { flexDirection: "row", gap: 6, flexWrap: "wrap" },
-  destChip: { paddingHorizontal: 8, paddingVertical: 3, borderRadius: 8, backgroundColor: "rgba(255,255,255,0.06)" },
-  destText: { ...TYPE.caption, color: BRAND.textSecondary },
-  cardFooter: { flexDirection: "row", alignItems: "center", gap: 8, paddingHorizontal: 14, paddingBottom: 130, paddingTop: 4 },
-  datesText: { ...TYPE.caption, color: BRAND.textMuted, flex: 1 },
-  mutualText: { ...TYPE.caption, color: BRAND.textSecondary },
-  connectBtn: { paddingHorizontal: 14, paddingVertical: 6, borderRadius: 12, backgroundColor: BRAND.purple },
-  connectedBtn: { backgroundColor: "transparent", borderWidth: 1, borderColor: BRAND.border },
-  connectBtnText: { ...TYPE.label, color: "#fff" },
-  connectedBtnText: { color: BRAND.textSecondary },
+  gridContainer: { flexDirection: "row", paddingHorizontal: 12, gap: 12, paddingBottom: 100 },
+  column: { flex: 1, gap: 12 },
+  card: { backgroundColor: N2, borderRadius: 16, borderWidth: 1, borderColor: N3, overflow: "hidden" },
+  cardImage: { flex: 1, backgroundColor: N3, alignItems: "center", justifyContent: "center" },
+  onlineDot: { position: "absolute", top: 8, right: 8, width: 10, height: 10, borderRadius: 5, backgroundColor: "#4a4" },
+  verifiedBadge: { position: "absolute", top: 8, left: 8, width: 20, height: 20, borderRadius: 10, backgroundColor: "#369", alignItems: "center", justifyContent: "center" },
+  verifiedText: { fontSize: 10, color: W, fontWeight: "700" },
+  cardInitial: { fontSize: 32, fontWeight: "700", color: "#444" },
+  cardInfo: { padding: 10, gap: 4 },
+  cardName: { fontSize: 15, fontWeight: "600", color: W },
+  cardLocation: { fontSize: 12, color: G },
+  matchRow: { flexDirection: "row", alignItems: "center", gap: 6, marginTop: 2 },
+  matchBar: { flex: 1, height: 4, borderRadius: 2, backgroundColor: N3 },
+  matchFill: { height: 4, borderRadius: 2, backgroundColor: "#555" },
+  matchText: { fontSize: 12, fontWeight: "600", color: G },
+  interestsRow: { flexDirection: "row", gap: 4, flexWrap: "wrap", marginTop: 4 },
+  interestPill: { paddingHorizontal: 6, paddingVertical: 2, borderRadius: 8, backgroundColor: N3 },
+  interestText: { fontSize: 10, color: G },
+  connectBtn: { marginTop: 6, paddingVertical: 6, borderRadius: 12, backgroundColor: "#333", alignItems: "center" },
+  connectText: { fontSize: 13, fontWeight: "600", color: W },
 });

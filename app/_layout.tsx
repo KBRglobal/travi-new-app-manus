@@ -169,6 +169,7 @@ export default function RootLayout() {
             <Stack.Screen name="(settings)" />
             <Stack.Screen name="(social)" />
             <Stack.Screen name="(agent)" />
+            <Stack.Screen name="(points)" />
             <Stack.Screen name="(error)" />
             <Stack.Screen name="(special)" />
             <Stack.Screen name="oauth/callback" />
