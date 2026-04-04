@@ -187,3 +187,13 @@
 - [ ] Surprise Me algorithm
 - [ ] Multi-traveler DNA merge
 - [ ] Cashback calculation engine
+
+### Home Dashboard — Figma Prompt Redesign
+- [x] Background #0E0618 (very dark purple-black)
+- [x] Header: Travi wordmark + avatar + greeting 26px bold + Explorer DNA pill with glow
+- [x] Plan a Trip hero: real photo bg, gradient overlay, frosted AI pill, cinematic glow shadow
+- [x] Secondary cards: #16092C bg, gold/compass icons, proper sizing
+- [x] DNA banner: accent bar 4px left, #1A0A30 bg
+- [x] Live Trip strip: #0D1F18 bg, green pulsing dot, 56px
+- [x] Recommended cards: 220x280, green match badge #00C96B, Chillax Bold 22px
+- [x] Tab Bar: #120824 bg, active pill rgba(249,68,152,0.15), 5 tabs
