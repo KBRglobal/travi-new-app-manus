@@ -336,21 +336,21 @@ const heroS = StyleSheet.create({
     marginBottom: 12,
   },
   headline: {
-    fontSize: 28,
+    fontSize: 24,
     fontFamily: "Chillax-Bold",
     color: C.white,
-    lineHeight: 34,
+    lineHeight: 30,
     letterSpacing: -0.5,
   },
   headlineAccent: {
     color: C.pink,
   },
   sub: {
-    fontSize: 14,
+    fontSize: 13,
     fontFamily: "Satoshi-Regular",
     color: C.w60,
-    marginTop: 10,
-    lineHeight: 20,
+    marginTop: 6,
+    lineHeight: 18,
   },
   ctaWrap: {
     borderRadius: 20,
@@ -364,9 +364,9 @@ const heroS = StyleSheet.create({
   ctaGradient: {
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "center",
-    gap: 12,
-    paddingVertical: 13,
+    paddingVertical: 14,
+    paddingLeft: 18,
+    paddingRight: 14,
     overflow: "hidden",
   },
   ctaText: {
@@ -375,6 +375,7 @@ const heroS = StyleSheet.create({
     color: C.white,
     letterSpacing: 0.3,
     flex: 1,
+    marginLeft: 10,
   },
   ctaArrow: {
     width: 32,
