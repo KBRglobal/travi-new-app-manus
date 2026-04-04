@@ -1,12 +1,13 @@
 import React from 'react';
 import { useRouter } from 'expo-router';
-import { View, Text, StyleSheet, Switch } from 'react-native';
+import { View, Text, StyleSheet, Switch, TouchableOpacity } from 'react-native';
 import { ScreenWrapper, DS } from '@/components/screen-wrapper';
 import { BlurView } from 'expo-blur';
 import { LinearGradient } from 'expo-linear-gradient';
 import { MaterialIcons } from '@expo/vector-icons';
 
 const PrivacySecurityScreen = () => {
+  const router = useRouter();
   const [faceIdEnabled, setFaceIdEnabled] = React.useState(false);
   const [twoFactorEnabled, setTwoFactorEnabled] = React.useState(true);
   const [locationSharing, setLocationSharing] = React.useState(false);
