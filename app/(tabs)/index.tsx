@@ -1,7 +1,8 @@
 // Home Dashboard — TRAVI
-// Design DNA: #0A0514 bg, dot grid, purple/pink glows, Apple glassmorphism, Chillax+Satoshi
+// Reference-level: dramatic depth, glass cards, particles, glowing elements
+// Brand palette only: #0A0514 bg, #6443F4 purple, #F94498 pink, #9B7EFF lavender
 
-import { useRef, useEffect, useState } from "react";
+import { useRef, useEffect, useState, useMemo } from "react";
 import {
   View,
   Text,
@@ -22,26 +23,37 @@ import { Image as ExpoImage } from "expo-image";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import * as Haptics from "expo-haptics";
 
-const { width: W } = Dimensions.get("window");
+const { width: W, height: H } = Dimensions.get("window");
 
-// ─── Design DNA Palette ───
+// ─── TRAVI Brand Palette ───
 const C = {
   bg: "#0A0514",
-  glass: "rgba(255,255,255,0.06)",
-  glassBorder: "rgba(255,255,255,0.1)",
-  glassLight: "rgba(255,255,255,0.09)",
   purple: "#6443F4",
   purpleLight: "#9B7EFF",
-  purpleGlow: "rgba(100,67,244,0.22)",
+  purpleDark: "#3D2494",
   pink: "#F94498",
-  pinkGlow: "rgba(249,68,152,0.14)",
+  pinkLight: "#FF6BB5",
+  white: "#FFFFFF",
   green: "#00C96B",
   gold: "#FDCD0A",
-  white: "#FFFFFF",
-  muted70: "rgba(255,255,255,0.7)",
-  muted50: "rgba(255,255,255,0.5)",
-  muted30: "rgba(255,255,255,0.3)",
-  muted15: "rgba(255,255,255,0.15)",
+  // Opacity variants
+  w80: "rgba(255,255,255,0.8)",
+  w60: "rgba(255,255,255,0.6)",
+  w40: "rgba(255,255,255,0.4)",
+  w20: "rgba(255,255,255,0.2)",
+  w10: "rgba(255,255,255,0.1)",
+  w06: "rgba(255,255,255,0.06)",
+  w03: "rgba(255,255,255,0.03)",
+  // Glass
+  glassBg: "rgba(255,255,255,0.05)",
+  glassBorder: "rgba(255,255,255,0.08)",
+  glassHighlight: "rgba(255,255,255,0.12)",
+  // Glow
+  purpleGlow15: "rgba(100,67,244,0.15)",
+  purpleGlow25: "rgba(100,67,244,0.25)",
+  purpleGlow40: "rgba(100,67,244,0.4)",
+  pinkGlow12: "rgba(249,68,152,0.12)",
+  pinkGlow30: "rgba(249,68,152,0.3)",
 };
 
 // ─── Destination images ───
@@ -62,22 +74,76 @@ const RECOMMENDED = [
   { id: "4", key: "paris" as keyof typeof DEST, city: "Paris", country: "France", match: 85 },
 ];
 
-const IATA = ["DXB", "BKK", "CDG", "NRT", "LHR", "SYD", "JFK", "IST"];
-
 function haptic() {
   if (Platform.OS !== "web") Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
 }
 
 // ═══════════════════════════════════════════════════
-// GLASS CARD WRAPPER — Apple-style frosted glass
+// STAR PARTICLES — floating dots like a night sky
 // ═══════════════════════════════════════════════════
-function GlassCard({ children, style, onPress }: { children: React.ReactNode; style?: any; onPress?: () => void }) {
+function StarField() {
+  const stars = useMemo(() => {
+    const result = [];
+    for (let i = 0; i < 60; i++) {
+      result.push({
+        id: i,
+        left: Math.random() * W,
+        top: Math.random() * 1600,
+        size: Math.random() * 2 + 0.5,
+        opacity: Math.random() * 0.4 + 0.05,
+      });
+    }
+    return result;
+  }, []);
+
+  return (
+    <View style={StyleSheet.absoluteFill} pointerEvents="none">
+      {stars.map((s) => (
+        <View
+          key={s.id}
+          style={{
+            position: "absolute",
+            left: s.left,
+            top: s.top,
+            width: s.size,
+            height: s.size,
+            borderRadius: s.size / 2,
+            backgroundColor: `rgba(255,255,255,${s.opacity})`,
+          }}
+        />
+      ))}
+    </View>
+  );
+}
+
+// ═══════════════════════════════════════════════════
+// GLASS CARD — deep frosted glass with glowing border
+// ═══════════════════════════════════════════════════
+function GlassCard({
+  children,
+  style,
+  onPress,
+  glowColor,
+}: {
+  children: React.ReactNode;
+  style?: any;
+  onPress?: () => void;
+  glowColor?: string;
+}) {
+  const borderColor = glowColor
+    ? glowColor.replace(/[\d.]+\)$/, "0.2)")
+    : C.glassBorder;
+
   const content = (
-    <View style={[glass.card, style]}>
-      {Platform.OS !== "web" ? (
-        <BlurView intensity={25} tint="dark" style={StyleSheet.absoluteFill} />
-      ) : null}
-      <View style={glass.inner}>{children}</View>
+    <View style={[glassS.outer, glowColor && { shadowColor: glowColor }, style]}>
+      <View style={[glassS.card, { borderColor }]}>
+        {Platform.OS !== "web" ? (
+          <BlurView intensity={40} tint="dark" style={StyleSheet.absoluteFill} />
+        ) : (
+          <View style={[StyleSheet.absoluteFill, { backgroundColor: "rgba(20,10,50,0.7)" }]} />
+        )}
+        {children}
+      </View>
     </View>
   );
 
@@ -94,51 +160,52 @@ function GlassCard({ children, style, onPress }: { children: React.ReactNode; st
   return content;
 }
 
-const glass = StyleSheet.create({
+const glassS = StyleSheet.create({
+  outer: {
+    shadowColor: C.purple,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.15,
+    shadowRadius: 16,
+    elevation: 8,
+  },
   card: {
-    borderRadius: 20,
+    borderRadius: 22,
     overflow: "hidden",
-    backgroundColor: C.glass,
+    backgroundColor: C.glassBg,
     borderWidth: 1,
     borderColor: C.glassBorder,
-  },
-  inner: {
-    // Content sits above blur
   },
 });
 
 // ═══════════════════════════════════════════════════
-// HERO — "Where will you go next?"
-// Full-width cinematic card with destination photo, gradient, and CTA
+// HERO — Cinematic destination card
 // ═══════════════════════════════════════════════════
 function HeroCard({ onPress }: { onPress: () => void }) {
   const shimmer = useRef(new Animated.Value(-1)).current;
-  const [destIdx, setDestIdx] = useState(0);
-  const destFade = useRef(new Animated.Value(1)).current;
+  const glowPulse = useRef(new Animated.Value(0.3)).current;
 
   useEffect(() => {
-    // Shimmer sweep across CTA
+    // Shimmer sweep on CTA
     Animated.loop(
       Animated.sequence([
-        Animated.timing(shimmer, { toValue: 1, duration: 2400, easing: Easing.inOut(Easing.ease), useNativeDriver: true }),
-        Animated.delay(1200),
+        Animated.timing(shimmer, { toValue: 1, duration: 2800, easing: Easing.inOut(Easing.ease), useNativeDriver: true }),
+        Animated.delay(1500),
         Animated.timing(shimmer, { toValue: -1, duration: 0, useNativeDriver: true }),
       ])
     ).start();
 
-    // Rotating destination text
-    const interval = setInterval(() => {
-      Animated.timing(destFade, { toValue: 0, duration: 200, useNativeDriver: true }).start(() => {
-        setDestIdx((i) => (i + 1) % IATA.length);
-        Animated.timing(destFade, { toValue: 1, duration: 200, useNativeDriver: true }).start();
-      });
-    }, 2500);
-    return () => clearInterval(interval);
+    // Glow pulse on card border
+    Animated.loop(
+      Animated.sequence([
+        Animated.timing(glowPulse, { toValue: 0.6, duration: 2000, easing: Easing.inOut(Easing.sin), useNativeDriver: true }),
+        Animated.timing(glowPulse, { toValue: 0.2, duration: 2000, easing: Easing.inOut(Easing.sin), useNativeDriver: true }),
+      ])
+    ).start();
   }, []);
 
-  const shimmerTranslate = shimmer.interpolate({
+  const shimmerX = shimmer.interpolate({
     inputRange: [-1, 1],
-    outputRange: [-200, 200],
+    outputRange: [-250, W + 50],
   });
 
   return (
@@ -146,61 +213,71 @@ function HeroCard({ onPress }: { onPress: () => void }) {
       onPress={() => { haptic(); onPress(); }}
       style={({ pressed }) => [pressed && { transform: [{ scale: 0.98 }] }]}
     >
-      <View style={heroS.card}>
-        {/* Background destination image */}
-        <ExpoImage
-          source={DEST.bali}
-          style={StyleSheet.absoluteFill}
-          contentFit="cover"
-          transition={400}
-        />
-        {/* Dark gradient overlay */}
-        <LinearGradient
-          colors={["rgba(10,5,20,0.3)", "rgba(10,5,20,0.6)", "rgba(10,5,20,0.92)"]}
-          locations={[0, 0.4, 1]}
-          style={StyleSheet.absoluteFill}
-        />
+      <View style={heroS.wrapper}>
+        {/* Outer glow ring */}
+        <Animated.View style={[heroS.glowRing, { opacity: glowPulse }]} />
 
-        {/* Content */}
-        <View style={heroS.content}>
-          {/* Top row */}
-          <View style={heroS.topRow}>
-            <View style={heroS.aiBadge}>
-              <Text style={heroS.aiBadgeText}>✦ AI-Powered</Text>
+        <View style={heroS.card}>
+          {/* Background photo */}
+          <ExpoImage source={DEST.bali} style={StyleSheet.absoluteFill} contentFit="cover" transition={400} />
+
+          {/* Gradient overlays — dramatic cinematic */}
+          <LinearGradient
+            colors={["rgba(10,5,20,0.2)", "rgba(10,5,20,0.5)", "rgba(10,5,20,0.95)"]}
+            locations={[0, 0.45, 1]}
+            style={StyleSheet.absoluteFill}
+          />
+          {/* Purple tint overlay for brand feel */}
+          <LinearGradient
+            colors={["rgba(100,67,244,0.15)", "transparent", "rgba(249,68,152,0.1)"]}
+            locations={[0, 0.5, 1]}
+            style={StyleSheet.absoluteFill}
+          />
+
+          {/* Content */}
+          <View style={heroS.content}>
+            {/* Top badge */}
+            <View style={heroS.topRow}>
+              <View style={heroS.aiBadge}>
+                <Text style={heroS.aiBadgeText}>✦ AI-Powered</Text>
+              </View>
             </View>
-            <Animated.Text style={[heroS.rotating, { opacity: destFade }]}>
-              Next stop: {IATA[destIdx]}
-            </Animated.Text>
-          </View>
 
-          {/* Main text */}
-          <View style={heroS.textBlock}>
-            <Text style={heroS.headline}>Where will{"\n"}you go next?</Text>
-            <Text style={heroS.sub}>
-              Your AI travel agent builds the perfect trip{"\n"}matched to your personality
-            </Text>
-          </View>
+            {/* Spacer */}
+            <View style={{ flex: 1 }} />
 
-          {/* CTA Button */}
-          <Pressable
-            onPress={() => { haptic(); onPress(); }}
-            style={({ pressed }) => [heroS.cta, pressed && { opacity: 0.9 }]}
-          >
-            <LinearGradient
-              colors={[C.purple, "#8B5CF6", C.pink]}
-              start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 0 }}
-              style={heroS.ctaGradient}
-            >
-              {/* Shimmer overlay */}
-              <Animated.View
-                style={[heroS.shimmer, { transform: [{ translateX: shimmerTranslate }] }]}
-              />
-              <MaterialIcons name="flight-takeoff" size={18} color="#fff" />
-              <Text style={heroS.ctaText}>Plan My Trip</Text>
-              <MaterialIcons name="arrow-forward" size={16} color="rgba(255,255,255,0.7)" />
-            </LinearGradient>
-          </Pressable>
+            {/* Bottom text */}
+            <View style={heroS.textBlock}>
+              <Text style={heroS.headline}>
+                Where will{"\n"}
+                <Text style={heroS.headlineAccent}>AI</Text> take you{"\n"}
+                next?
+              </Text>
+              <Text style={heroS.sub}>
+                Personalized trips matched to your DNA
+              </Text>
+            </View>
+
+            {/* CTA */}
+            <View style={heroS.ctaWrap}>
+              <LinearGradient
+                colors={[C.purple, "#7B5CF6", C.pink]}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 0 }}
+                style={heroS.ctaGradient}
+              >
+                {/* Shimmer */}
+                <Animated.View
+                  style={[heroS.shimmer, { transform: [{ translateX: shimmerX }] }]}
+                />
+                <MaterialIcons name="flight-takeoff" size={20} color="#fff" />
+                <Text style={heroS.ctaText}>Plan My Trip</Text>
+                <View style={heroS.ctaArrow}>
+                  <MaterialIcons name="arrow-forward" size={16} color={C.purple} />
+                </View>
+              </LinearGradient>
+            </View>
+          </View>
         </View>
       </View>
     </Pressable>
@@ -208,104 +285,164 @@ function HeroCard({ onPress }: { onPress: () => void }) {
 }
 
 const heroS = StyleSheet.create({
+  wrapper: {
+    position: "relative",
+  },
+  glowRing: {
+    position: "absolute",
+    top: -3,
+    left: -3,
+    right: -3,
+    bottom: -3,
+    borderRadius: 27,
+    borderWidth: 1.5,
+    borderColor: C.purpleLight,
+    shadowColor: C.purple,
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.6,
+    shadowRadius: 20,
+  },
   card: {
     width: "100%" as any,
-    height: 340,
+    height: 380,
     borderRadius: 24,
     overflow: "hidden",
-    // Glow shadow
-    shadowColor: C.purple,
-    shadowOffset: { width: 0, height: 12 },
-    shadowOpacity: 0.4,
-    shadowRadius: 36,
-    elevation: 20,
   },
   content: {
     flex: 1,
-    justifyContent: "space-between",
-    padding: 22,
+    padding: 24,
   },
   topRow: {
     flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
+    justifyContent: "flex-start",
   },
   aiBadge: {
-    backgroundColor: "rgba(255,255,255,0.12)",
+    backgroundColor: "rgba(255,255,255,0.1)",
     borderWidth: 1,
     borderColor: "rgba(255,255,255,0.15)",
     borderRadius: 20,
-    paddingHorizontal: 12,
-    paddingVertical: 5,
+    paddingHorizontal: 14,
+    paddingVertical: 6,
+    backdropFilter: "blur(10px)",
   },
   aiBadgeText: {
-    fontSize: 11,
+    fontSize: 12,
     fontFamily: "Satoshi-Bold",
     color: C.white,
-    letterSpacing: 0.3,
-  },
-  rotating: {
-    fontSize: 12,
-    fontFamily: "Satoshi-Medium",
-    color: C.muted50,
+    letterSpacing: 0.5,
   },
   textBlock: {
-    gap: 10,
+    marginBottom: 20,
   },
   headline: {
-    fontSize: 34,
+    fontSize: 38,
     fontFamily: "Chillax-Bold",
     color: C.white,
-    lineHeight: 40,
-    letterSpacing: -0.5,
+    lineHeight: 44,
+    letterSpacing: -1,
+  },
+  headlineAccent: {
+    color: C.pink,
   },
   sub: {
     fontSize: 14,
     fontFamily: "Satoshi-Regular",
-    color: C.muted70,
+    color: C.w60,
+    marginTop: 10,
     lineHeight: 20,
   },
-  cta: {
-    alignSelf: "stretch",
-    borderRadius: 18,
+  ctaWrap: {
+    borderRadius: 20,
     overflow: "hidden",
-    // CTA glow
     shadowColor: C.pink,
     shadowOffset: { width: 0, height: 8 },
     shadowOpacity: 0.5,
     shadowRadius: 24,
-    elevation: 12,
+    elevation: 16,
   },
   ctaGradient: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    gap: 10,
-    paddingVertical: 16,
-    borderRadius: 18,
+    gap: 12,
+    paddingVertical: 18,
     overflow: "hidden",
   },
   ctaText: {
-    fontSize: 16,
+    fontSize: 17,
     fontFamily: "Satoshi-Bold",
     color: C.white,
     letterSpacing: 0.3,
+    flex: 1,
+  },
+  ctaArrow: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    backgroundColor: "rgba(255,255,255,0.2)",
+    justifyContent: "center",
+    alignItems: "center",
   },
   shimmer: {
     position: "absolute",
     top: 0,
     bottom: 0,
-    width: 80,
-    backgroundColor: "rgba(255,255,255,0.12)",
+    width: 100,
+    backgroundColor: "rgba(255,255,255,0.08)",
     transform: [{ skewX: "-20deg" }],
   },
 });
 
 // ═══════════════════════════════════════════════════
-// RECOMMENDED CARD
+// CATEGORY PILLS — quick access with glowing icons
 // ═══════════════════════════════════════════════════
-const REC_W = W * 0.58;
-const REC_H = 300;
+const CATEGORIES = [
+  { id: "1", icon: "beach-access" as const, label: "Beach", color: C.pink },
+  { id: "2", icon: "landscape" as const, label: "Nature", color: C.green },
+  { id: "3", icon: "location-city" as const, label: "City", color: C.purpleLight },
+  { id: "4", icon: "restaurant" as const, label: "Food", color: C.gold },
+  { id: "5", icon: "nightlife" as const, label: "Nightlife", color: C.pinkLight },
+];
+
+function CategoryPills() {
+  const router = useRouter();
+  return (
+    <View style={catS.row}>
+      {CATEGORIES.map((cat) => (
+        <Pressable
+          key={cat.id}
+          onPress={() => { haptic(); router.push("/(tabs)/explore" as any); }}
+          style={({ pressed }) => [catS.pill, pressed && { opacity: 0.8, transform: [{ scale: 0.95 }] }]}
+        >
+          <View style={[catS.iconCircle, { backgroundColor: cat.color + "18", borderColor: cat.color + "30" }]}>
+            <MaterialIcons name={cat.icon} size={20} color={cat.color} />
+          </View>
+          <Text style={catS.label}>{cat.label}</Text>
+        </Pressable>
+      ))}
+    </View>
+  );
+}
+
+const catS = StyleSheet.create({
+  row: { flexDirection: "row", justifyContent: "space-between" },
+  pill: { alignItems: "center", gap: 8, flex: 1 },
+  iconCircle: {
+    width: 52,
+    height: 52,
+    borderRadius: 26,
+    justifyContent: "center",
+    alignItems: "center",
+    borderWidth: 1,
+  },
+  label: { fontSize: 11, fontFamily: "Satoshi-Medium", color: C.w60 },
+});
+
+// ═══════════════════════════════════════════════════
+// RECOMMENDED CARD — tall cinematic
+// ═══════════════════════════════════════════════════
+const REC_W = W * 0.6;
+const REC_H = 320;
 
 function RecCard({ item, onPress }: { item: typeof RECOMMENDED[0]; onPress: () => void }) {
   return (
@@ -313,35 +450,35 @@ function RecCard({ item, onPress }: { item: typeof RECOMMENDED[0]; onPress: () =
       onPress={() => { haptic(); onPress(); }}
       style={({ pressed }) => [pressed && { opacity: 0.93, transform: [{ scale: 0.97 }] }]}
     >
-      <View style={rec.card}>
-        <ExpoImage source={DEST[item.key]} style={rec.image} contentFit="cover" transition={300} />
+      <View style={recS.card}>
+        <ExpoImage source={DEST[item.key]} style={recS.image} contentFit="cover" transition={300} />
         <LinearGradient
-          colors={["transparent", "rgba(0,0,0,0.15)", "rgba(0,0,0,0.88)"]}
-          locations={[0.3, 0.5, 1]}
+          colors={["transparent", "rgba(10,5,20,0.2)", "rgba(10,5,20,0.92)"]}
+          locations={[0.25, 0.5, 1]}
           style={StyleSheet.absoluteFill}
         />
-        {/* Match badge — glass style */}
-        <View style={rec.badge}>
-          <Text style={rec.badgeText}>✦ {item.match}%</Text>
+        {/* Match badge */}
+        <View style={recS.badge}>
+          <Text style={recS.badgeText}>✦ {item.match}%</Text>
         </View>
         {/* Name */}
-        <View style={rec.nameWrap}>
-          <Text style={rec.city}>{item.city}</Text>
-          <Text style={rec.country}>{item.country}</Text>
+        <View style={recS.nameWrap}>
+          <Text style={recS.city}>{item.city}</Text>
+          <Text style={recS.country}>{item.country}</Text>
         </View>
       </View>
     </Pressable>
   );
 }
 
-const rec = StyleSheet.create({
+const recS = StyleSheet.create({
   card: {
     width: REC_W,
     height: REC_H,
-    borderRadius: 22,
+    borderRadius: 24,
     overflow: "hidden",
     borderWidth: 1,
-    borderColor: "rgba(255,255,255,0.08)",
+    borderColor: C.w10,
   },
   image: { width: "100%", height: "100%" },
   badge: {
@@ -352,58 +489,32 @@ const rec = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 5,
     borderRadius: 10,
+    shadowColor: C.green,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.4,
+    shadowRadius: 8,
   },
   badgeText: { fontSize: 12, fontFamily: "Satoshi-Bold", color: C.white },
-  nameWrap: { position: "absolute", bottom: 18, left: 18 },
+  nameWrap: { position: "absolute", bottom: 20, left: 18 },
   city: {
-    fontSize: 24,
+    fontSize: 26,
     fontFamily: "Chillax-Bold",
     color: C.white,
-    lineHeight: 28,
-    textShadowColor: "rgba(0,0,0,0.7)",
+    lineHeight: 30,
+    textShadowColor: "rgba(0,0,0,0.8)",
     textShadowOffset: { width: 0, height: 2 },
-    textShadowRadius: 12,
+    textShadowRadius: 16,
   },
   country: {
     fontSize: 13,
     fontFamily: "Satoshi-Medium",
-    color: "rgba(255,255,255,0.7)",
-    marginTop: 3,
-    textShadowColor: "rgba(0,0,0,0.5)",
+    color: C.w60,
+    marginTop: 4,
+    textShadowColor: "rgba(0,0,0,0.6)",
     textShadowOffset: { width: 0, height: 1 },
-    textShadowRadius: 6,
+    textShadowRadius: 8,
   },
 });
-
-// ═══════════════════════════════════════════════════
-// DOT GRID BACKGROUND LAYER
-// ═══════════════════════════════════════════════════
-function DotGrid() {
-  // Create a grid of dots to simulate the CSS radial-gradient dot pattern
-  const dots = [];
-  const spacing = 28;
-  const cols = Math.ceil(W / spacing) + 1;
-  const rows = 35; // enough to cover scrollable content
-  for (let r = 0; r < rows; r++) {
-    for (let c = 0; c < cols; c++) {
-      dots.push(
-        <View
-          key={`${r}-${c}`}
-          style={{
-            position: "absolute",
-            left: c * spacing,
-            top: r * spacing,
-            width: 2,
-            height: 2,
-            borderRadius: 1,
-            backgroundColor: "rgba(255,255,255,0.035)",
-          }}
-        />
-      );
-    }
-  }
-  return <View style={StyleSheet.absoluteFill} pointerEvents="none">{dots}</View>;
-}
 
 // ═══════════════════════════════════════════════════
 // MAIN SCREEN
@@ -415,8 +526,8 @@ export default function HomeScreen() {
   useEffect(() => {
     Animated.loop(
       Animated.sequence([
-        Animated.timing(livePulse, { toValue: 1, duration: 1000, useNativeDriver: true }),
-        Animated.timing(livePulse, { toValue: 0.3, duration: 1000, useNativeDriver: true }),
+        Animated.timing(livePulse, { toValue: 1, duration: 1200, useNativeDriver: true }),
+        Animated.timing(livePulse, { toValue: 0.3, duration: 1200, useNativeDriver: true }),
       ])
     ).start();
   }, []);
@@ -425,12 +536,20 @@ export default function HomeScreen() {
     <View style={s.root}>
       {/* ═══ BACKGROUND LAYERS ═══ */}
       <View style={StyleSheet.absoluteFill} pointerEvents="none">
-        {/* Dot grid */}
-        <DotGrid />
+        {/* Gradient base — deep purple atmosphere */}
+        <LinearGradient
+          colors={["#0A0514", "#120828", "#0E0620", "#0A0514"]}
+          locations={[0, 0.3, 0.7, 1]}
+          style={StyleSheet.absoluteFill}
+        />
+        {/* Star particles */}
+        <StarField />
         {/* Center purple glow */}
         <View style={s.glowPurple} />
         {/* Bottom pink glow */}
         <View style={s.glowPink} />
+        {/* Top-right subtle purple orb */}
+        <View style={s.glowTopRight} />
       </View>
 
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 110 }}>
@@ -448,8 +567,10 @@ export default function HomeScreen() {
 
         {/* ═══ GREETING ═══ */}
         <View style={s.greeting}>
-          <Text style={s.greetText}>Good morning,</Text>
-          <Text style={s.greetName}>David</Text>
+          <Text style={s.greetLine}>
+            <Text style={s.greetMuted}>Good morning, </Text>
+            <Text style={s.greetName}>David</Text>
+          </Text>
           <View style={s.dnaPill}>
             <Text style={s.dnaIcon}>✦</Text>
             <Text style={s.dnaLabel}>Explorer DNA</Text>
@@ -461,9 +582,14 @@ export default function HomeScreen() {
           <HeroCard onPress={() => router.push("/(tabs)/plan-trip" as any)} />
         </View>
 
+        {/* ═══ CATEGORIES ═══ */}
+        <View style={s.section}>
+          <CategoryPills />
+        </View>
+
         {/* ═══ LIVE TRIP ═══ */}
         <View style={s.section}>
-          <GlassCard onPress={() => router.push("/(live)/home" as any)}>
+          <GlassCard glowColor={C.green} onPress={() => router.push("/(live)/home" as any)}>
             <View style={s.liveInner}>
               <View style={s.liveDotWrap}>
                 <Animated.View style={[s.liveDotOuter, { opacity: livePulse }]} />
@@ -473,31 +599,46 @@ export default function HomeScreen() {
                 <Text style={s.liveLabel}>LIVE TRIP</Text>
                 <Text style={s.liveDest}>Bali, Indonesia</Text>
               </View>
-              <MaterialIcons name="chevron-right" size={20} color={C.muted30} />
+              <View style={s.liveArrow}>
+                <MaterialIcons name="chevron-right" size={18} color={C.green} />
+              </View>
             </View>
           </GlassCard>
         </View>
 
         {/* ═══ DNA COMPLETION ═══ */}
         <View style={s.section}>
-          <GlassCard onPress={() => router.push("/(dna)/profile" as any)}>
+          <GlassCard glowColor={C.purple} onPress={() => router.push("/(dna)/profile" as any)}>
             <View style={s.dnaInner}>
               <View style={s.dnaAccent} />
               <View style={s.dnaIconWrap}>
-                <MaterialIcons name="auto-awesome" size={20} color={C.purpleLight} />
+                <MaterialIcons name="auto-awesome" size={22} color={C.purpleLight} />
               </View>
               <View style={{ flex: 1 }}>
-                <Text style={s.dnaTitle}>Complete Your Travel DNA</Text>
+                <Text style={s.dnaTitle}>Complete Your <Text style={{ color: C.purpleLight }}>Travel DNA</Text></Text>
                 <Text style={s.dnaSub}>Unlock personalized matches</Text>
+                {/* Progress bar */}
+                <View style={s.dnaProgress}>
+                  <View style={s.dnaProgressFill} />
+                </View>
               </View>
-              <MaterialIcons name="chevron-right" size={20} color={C.muted30} />
+              <View style={s.dnaArrow}>
+                <MaterialIcons name="chevron-right" size={18} color={C.purpleLight} />
+              </View>
             </View>
           </GlassCard>
         </View>
 
         {/* ═══ RECOMMENDED ═══ */}
         <View style={s.sectionFull}>
-          <Text style={s.sectionTitle}>Recommended for You</Text>
+          <View style={s.sectionHeader}>
+            <Text style={s.sectionTitle}>
+              <Text style={{ color: C.pink }}>Recommended</Text> for You
+            </Text>
+            <Pressable onPress={() => { haptic(); router.push("/(tabs)/explore" as any); }}>
+              <Text style={s.seeAll}>See all</Text>
+            </Pressable>
+          </View>
           <FlatList
             data={RECOMMENDED}
             horizontal
@@ -518,45 +659,41 @@ export default function HomeScreen() {
         {/* ═══ QUICK ACTIONS ═══ */}
         <View style={s.section}>
           <View style={s.quickRow}>
-            <GlassCard style={s.quickCardStyle} onPress={() => router.push("/(points)/wallet" as any)}>
-              <View style={s.quickInner}>
-                <View style={s.quickIconWrap}>
-                  <MaterialIcons name="account-balance-wallet" size={22} color={C.gold} />
+            {[
+              { icon: "account-balance-wallet" as const, label: "Wallet", value: "€45", color: C.gold },
+              { icon: "explore" as const, label: "Explore", value: "12 new", color: C.purpleLight },
+              { icon: "luggage" as const, label: "Trips", value: "3", color: C.pink },
+            ].map((q, i) => (
+              <GlassCard
+                key={i}
+                style={{ flex: 1 }}
+                onPress={() => {
+                  if (i === 0) router.push("/(points)/wallet" as any);
+                  else if (i === 1) router.push("/(tabs)/explore" as any);
+                  else router.push("/(tabs)/trips" as any);
+                }}
+              >
+                <View style={s.quickInner}>
+                  <View style={[s.quickIcon, { backgroundColor: q.color + "15", borderColor: q.color + "25" }]}>
+                    <MaterialIcons name={q.icon} size={22} color={q.color} />
+                  </View>
+                  <Text style={s.quickLabel}>{q.label}</Text>
+                  <Text style={s.quickValue}>{q.value}</Text>
                 </View>
-                <Text style={s.quickLabel}>Wallet</Text>
-                <Text style={s.quickValue}>€45</Text>
-              </View>
-            </GlassCard>
-            <GlassCard style={s.quickCardStyle} onPress={() => router.push("/(tabs)/explore" as any)}>
-              <View style={s.quickInner}>
-                <View style={s.quickIconWrap}>
-                  <MaterialIcons name="explore" size={22} color={C.purpleLight} />
-                </View>
-                <Text style={s.quickLabel}>Explore</Text>
-                <Text style={s.quickValue}>12 new</Text>
-              </View>
-            </GlassCard>
-            <GlassCard style={s.quickCardStyle} onPress={() => router.push("/(tabs)/trips" as any)}>
-              <View style={s.quickInner}>
-                <View style={s.quickIconWrap}>
-                  <MaterialIcons name="luggage" size={22} color={C.pink} />
-                </View>
-                <Text style={s.quickLabel}>Trips</Text>
-                <Text style={s.quickValue}>3</Text>
-              </View>
-            </GlassCard>
+              </GlassCard>
+            ))}
           </View>
         </View>
 
         {/* ═══ TRAVI TIP ═══ */}
         <View style={s.section}>
-          <GlassCard>
+          <GlassCard glowColor={C.purple}>
             <View style={s.tipInner}>
               <Image source={require("@/assets/images/mascot-dark.png")} style={s.tipMascot} resizeMode="contain" />
               <View style={{ flex: 1 }}>
                 <Text style={s.tipTitle}>TRAVI says</Text>
                 <Text style={s.tipText}>
-                  Bali is trending this season — 96% match with your Explorer DNA. Ready to go?
+                  Bali is <Text style={{ color: C.pink, fontFamily: "Satoshi-Bold" }}>trending</Text> this season — 96% match with your Explorer DNA.
                 </Text>
               </View>
             </View>
@@ -577,24 +714,32 @@ const s = StyleSheet.create({
   // ─── Background Glows ───
   glowPurple: {
     position: "absolute",
-    top: "50%",
+    top: "35%",
     left: "50%",
-    marginTop: -180,
-    marginLeft: -180,
-    width: 360,
-    height: 360,
-    borderRadius: 180,
-    backgroundColor: C.purpleGlow,
+    marginLeft: -200,
+    width: 400,
+    height: 400,
+    borderRadius: 200,
+    backgroundColor: C.purpleGlow15,
   },
   glowPink: {
     position: "absolute",
-    bottom: -40,
+    bottom: -60,
     left: "50%",
-    marginLeft: -150,
-    width: 300,
-    height: 200,
-    borderRadius: 150,
-    backgroundColor: C.pinkGlow,
+    marginLeft: -180,
+    width: 360,
+    height: 250,
+    borderRadius: 180,
+    backgroundColor: C.pinkGlow12,
+  },
+  glowTopRight: {
+    position: "absolute",
+    top: -50,
+    right: -80,
+    width: 250,
+    height: 250,
+    borderRadius: 125,
+    backgroundColor: "rgba(100,67,244,0.08)",
   },
 
   // ─── Header ───
@@ -608,119 +753,167 @@ const s = StyleSheet.create({
   },
   logo: { width: 80, height: 28 },
   avatar: {
-    width: 38,
-    height: 38,
-    borderRadius: 19,
-    backgroundColor: C.glass,
-    borderWidth: 1,
-    borderColor: C.glassBorder,
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: C.glassBg,
+    borderWidth: 1.5,
+    borderColor: C.purpleGlow25,
     justifyContent: "center",
     alignItems: "center",
   },
   avatarText: { color: C.white, fontSize: 15, fontFamily: "Satoshi-Bold" },
 
   // ─── Greeting ───
-  greeting: { paddingHorizontal: 20, paddingTop: 24, paddingBottom: 4 },
-  greetText: { fontSize: 16, fontFamily: "Satoshi-Regular", color: C.muted50 },
-  greetName: { fontSize: 32, fontFamily: "Chillax-Bold", color: C.white, marginTop: 2, lineHeight: 38 },
+  greeting: { paddingHorizontal: 20, paddingTop: 20, paddingBottom: 4 },
+  greetLine: { fontSize: 28, lineHeight: 34 },
+  greetMuted: { fontFamily: "Satoshi-Regular", color: C.w40 },
+  greetName: { fontFamily: "Chillax-Bold", color: C.white },
   dnaPill: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 5,
-    marginTop: 10,
-    backgroundColor: "rgba(100,67,244,0.12)",
+    gap: 6,
+    marginTop: 12,
+    backgroundColor: C.purpleGlow15,
     borderWidth: 1,
-    borderColor: "rgba(100,67,244,0.2)",
-    paddingHorizontal: 12,
-    paddingVertical: 5,
-    borderRadius: 14,
+    borderColor: C.purpleGlow25,
+    paddingHorizontal: 14,
+    paddingVertical: 6,
+    borderRadius: 16,
     alignSelf: "flex-start",
+    shadowColor: C.purple,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
   },
-  dnaIcon: { color: C.purpleLight, fontSize: 12 },
-  dnaLabel: { color: C.purpleLight, fontSize: 12, fontFamily: "Satoshi-Medium" },
+  dnaIcon: { color: C.purpleLight, fontSize: 13 },
+  dnaLabel: { color: C.purpleLight, fontSize: 12, fontFamily: "Satoshi-Bold", letterSpacing: 0.3 },
 
   // ─── Sections ───
-  section: { paddingHorizontal: 20, marginTop: 24 },
-  sectionFull: { marginTop: 28 },
+  section: { paddingHorizontal: 20, marginTop: 28 },
+  sectionFull: { marginTop: 32 },
+  sectionHeader: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingHorizontal: 20,
+    marginBottom: 16,
+  },
   sectionTitle: {
     color: C.white,
-    fontSize: 20,
+    fontSize: 22,
     fontFamily: "Chillax-Bold",
-    marginBottom: 16,
-    paddingHorizontal: 20,
+  },
+  seeAll: {
+    color: C.purpleLight,
+    fontSize: 13,
+    fontFamily: "Satoshi-Bold",
   },
 
   // ─── Live Trip ───
   liveInner: {
     flexDirection: "row",
     alignItems: "center",
-    paddingVertical: 14,
-    paddingHorizontal: 16,
+    paddingVertical: 16,
+    paddingHorizontal: 18,
   },
-  liveDotWrap: { width: 20, height: 20, justifyContent: "center", alignItems: "center" },
-  liveDotOuter: { position: "absolute", width: 20, height: 20, borderRadius: 10, backgroundColor: C.green },
+  liveDotWrap: { width: 22, height: 22, justifyContent: "center", alignItems: "center" },
+  liveDotOuter: { position: "absolute", width: 22, height: 22, borderRadius: 11, backgroundColor: C.green },
   liveDotInner: { width: 8, height: 8, borderRadius: 4, backgroundColor: C.green },
-  liveLabel: { color: C.green, fontSize: 10, fontFamily: "Satoshi-Bold", letterSpacing: 1.2 },
-  liveDest: { color: C.white, fontSize: 15, fontFamily: "Chillax-Bold", marginTop: 1 },
+  liveLabel: { color: C.green, fontSize: 10, fontFamily: "Satoshi-Bold", letterSpacing: 1.5 },
+  liveDest: { color: C.white, fontSize: 16, fontFamily: "Chillax-Bold", marginTop: 2 },
+  liveArrow: {
+    width: 30,
+    height: 30,
+    borderRadius: 15,
+    backgroundColor: "rgba(0,201,107,0.12)",
+    justifyContent: "center",
+    alignItems: "center",
+  },
 
   // ─── DNA Card ───
   dnaInner: {
     flexDirection: "row",
     alignItems: "center",
-    paddingVertical: 16,
+    paddingVertical: 18,
     paddingHorizontal: 18,
-    paddingLeft: 14,
+    paddingLeft: 16,
   },
   dnaAccent: {
     position: "absolute",
     left: 0,
-    top: 0,
-    bottom: 0,
+    top: 8,
+    bottom: 8,
     width: 3,
     backgroundColor: C.purple,
-    borderTopLeftRadius: 20,
-    borderBottomLeftRadius: 20,
+    borderRadius: 2,
   },
   dnaIconWrap: {
-    width: 40,
-    height: 40,
-    borderRadius: 12,
-    backgroundColor: "rgba(100,67,244,0.15)",
+    width: 46,
+    height: 46,
+    borderRadius: 23,
+    backgroundColor: C.purpleGlow15,
+    borderWidth: 1,
+    borderColor: C.purpleGlow25,
     justifyContent: "center",
     alignItems: "center",
     marginRight: 14,
+    shadowColor: C.purple,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
   },
   dnaTitle: { color: C.white, fontSize: 15, fontFamily: "Satoshi-Bold" },
-  dnaSub: { color: C.muted50, fontSize: 12, fontFamily: "Satoshi-Regular", marginTop: 2 },
-
-  // ─── Quick Actions ───
-  quickRow: { flexDirection: "row", gap: 10 },
-  quickCardStyle: { flex: 1 },
-  quickInner: {
-    paddingVertical: 18,
-    paddingHorizontal: 12,
-    alignItems: "center",
-    gap: 8,
+  dnaSub: { color: C.w40, fontSize: 12, fontFamily: "Satoshi-Regular", marginTop: 3 },
+  dnaProgress: {
+    height: 4,
+    backgroundColor: C.w06,
+    borderRadius: 2,
+    marginTop: 8,
+    width: "80%" as any,
   },
-  quickIconWrap: {
-    width: 44,
-    height: 44,
-    borderRadius: 14,
-    backgroundColor: "rgba(255,255,255,0.06)",
+  dnaProgressFill: {
+    height: 4,
+    width: "40%" as any,
+    borderRadius: 2,
+    backgroundColor: C.purple,
+  },
+  dnaArrow: {
+    width: 30,
+    height: 30,
+    borderRadius: 15,
+    backgroundColor: C.purpleGlow15,
     justifyContent: "center",
     alignItems: "center",
   },
-  quickLabel: { color: C.muted50, fontSize: 11, fontFamily: "Satoshi-Medium" },
-  quickValue: { color: C.white, fontSize: 18, fontFamily: "Chillax-Bold" },
+
+  // ─── Quick Actions ───
+  quickRow: { flexDirection: "row", gap: 10 },
+  quickInner: {
+    paddingVertical: 20,
+    paddingHorizontal: 12,
+    alignItems: "center",
+    gap: 10,
+  },
+  quickIcon: {
+    width: 48,
+    height: 48,
+    borderRadius: 24,
+    justifyContent: "center",
+    alignItems: "center",
+    borderWidth: 1,
+  },
+  quickLabel: { color: C.w40, fontSize: 11, fontFamily: "Satoshi-Medium" },
+  quickValue: { color: C.white, fontSize: 20, fontFamily: "Chillax-Bold" },
 
   // ─── Tip ───
   tipInner: {
     flexDirection: "row",
     alignItems: "center",
-    padding: 16,
+    padding: 18,
     gap: 14,
   },
-  tipMascot: { width: 44, height: 44 },
+  tipMascot: { width: 48, height: 48 },
   tipTitle: { color: C.purpleLight, fontSize: 12, fontFamily: "Satoshi-Bold", letterSpacing: 0.5, marginBottom: 4 },
-  tipText: { color: C.muted50, fontSize: 13, fontFamily: "Satoshi-Regular", lineHeight: 19 },
+  tipText: { color: C.w60, fontSize: 13, fontFamily: "Satoshi-Regular", lineHeight: 20 },
 });

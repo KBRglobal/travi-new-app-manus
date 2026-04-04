@@ -244,3 +244,11 @@
 - [x] Compelling hero card — cinematic photo bg, gradient, "Where will you go next?" headline
 - [x] Strong CTA button — gradient purple→pink with shimmer sweep, glow shadow
 - [x] All cards converted to Apple-style glassmorphism (BlurView + transparency + subtle border)
+
+### Home Dashboard — Reference-Level Redesign
+- [x] Dramatic purple-pink gradient background with depth, glow orbs, and star particles
+- [x] Deep glass cards with BlurView intensity 40 + glowing border colors
+- [x] CTA gradient purple→pink with shimmer sweep, pink glow shadow, arrow circle
+- [x] Glowing circular icons with colored borders, hero card with pulsing glow ring
+- [x] Dramatic typography — 38px headline with "AI" in pink, section titles with accent words
+- [x] Overall feel: cinematic, alive, premium fintech-level with star field + category pills
