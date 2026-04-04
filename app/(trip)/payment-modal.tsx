@@ -1,4 +1,4 @@
-// Screen 29 — Payment Method Modal — STATIC WIREFRAME
+// Screen 29 — Payment Method Modal — STATIC 
 // 75% bottom sheet, Saved cards + Add new form + Social payments, Radio selection
 import { View, Text, StyleSheet, Pressable, ScrollView } from "react-native";
 

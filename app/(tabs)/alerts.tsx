@@ -25,7 +25,7 @@ const DESTINATIONS = [
   { code: "TLV", city: "Tel Aviv", country: "Israel", emoji: "IL", gradient: ["#1a0a2e", "#6B21A8"] as const },
   { code: "CDG", city: "Paris", country: "France", emoji: "FR", gradient: ["#1a0a2e", "#6443F4"] as const },
   { code: "JFK", city: "New York", country: "USA", emoji: "US", gradient: ["#1a0a2e", "#6443F4"] as const },
-  { code: "NRT", city: "Tokyo", country: "Japan", emoji: "JP", gradient: ["#1a0a2e", "#DB2777"] as const },
+  { code: "NRT", city: "Tokyo", country: "Japan", emoji: "JP", gradient: ["#1a0a2e", "#F94498"] as const },
   { code: "DXB", city: "Dubai", country: "UAE", emoji: "AE", gradient: ["#1a0a2e", "#D97706"] as const },
   { code: "BCN", city: "Barcelona", country: "Spain", emoji: "ES", gradient: ["#1a0a2e", "#DC2626"] as const },
   { code: "BKK", city: "Bangkok", country: "Thailand", emoji: "TH", gradient: ["#1a0a2e", "#059669"] as const },
@@ -278,7 +278,7 @@ export default function AlertsScreen() {
           </View>
           <View style={styles.statCard}>
             <LinearGradient colors={["#F9449822", "#F9449811"]} style={styles.statGradient}>
-              <IconSymbol name="bolt.fill" size={20} color="#F472B6" />
+              <IconSymbol name="bolt.fill" size={20} color="#F94498" />
               <Text style={styles.statNum}>{triggeredAlerts.length}</Text>
               <Text style={styles.statLabel}>Triggered</Text>
             </LinearGradient>
@@ -299,7 +299,7 @@ export default function AlertsScreen() {
           <View style={styles.section}>
             <View style={styles.sectionHeader}>
               <Animated.View style={{ transform: [{ scale: pulseAnim }] }}>
-                <IconSymbol name="bolt.fill" size={18} color="#F472B6" />
+                <IconSymbol name="bolt.fill" size={18} color="#F94498" />
               </Animated.View>
               <Text style={styles.sectionTitle}>Price Dropped!</Text>
             </View>

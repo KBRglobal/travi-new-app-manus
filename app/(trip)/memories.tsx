@@ -1,4 +1,4 @@
-// Screen 40 — Memories Gallery — STATIC WIREFRAME
+// Screen 40 — Memories Gallery — STATIC 
 // Summary 100px, 3-col grid, Group by Day toggle, Long-press multi-select, Full-screen viewer
 import { View, Text, StyleSheet, Pressable, ScrollView } from "react-native";
 

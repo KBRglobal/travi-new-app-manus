@@ -1,4 +1,4 @@
-// Screen 37 — Live Map — STATIC WIREFRAME
+// Screen 37 — Live Map — STATIC 
 // Full screen map placeholder, Floating header, Map pins legend, Draggable bottom sheet
 import { View, Text, StyleSheet, Pressable, ScrollView } from "react-native";
 

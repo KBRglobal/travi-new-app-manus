@@ -1,4 +1,4 @@
-// Screen 19 — Plan Trip Entry — STATIC WIREFRAME
+// Screen 19 — Plan Trip Entry — STATIC 
 // Route: /(tabs)/plan-trip | Mode: Planning
 // Spec: Header 60px, Hero 240px gradient, 3 entry method cards (140px each), Drafts + Recent sections
 

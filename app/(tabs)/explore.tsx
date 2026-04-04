@@ -1,171 +1,121 @@
-// Screen 12 — Explore Feed — STATIC WIREFRAME
-// Route: /(tabs)/explore | Mode: Discovery
-// Spec: Header 120px + search bar 48px, Filter chips horizontal,
-//       Top Picks (full-width 220px) + Trending (180x240 horizontal) + Hidden Gems (2-col)
+// Screen 12 — Explore Feed
+import React, { useState } from "react";
+import { View, Text, StyleSheet, Pressable, ScrollView, TextInput, FlatList, Image } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
+import { MaterialIcons } from "@expo/vector-icons";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useRouter } from "expo-router";
 
-import { View, Text, StyleSheet, Pressable, ScrollView, FlatList, TextInput } from "react-native";
+const DS = { bg: "#0A0514", surface: "rgba(36,16,62,0.55)", surfaceHigh: "rgba(50,20,80,0.7)", border: "rgba(123,68,230,0.22)", borderStrong: "rgba(100,67,244,0.4)", purple: "#6443F4", pink: "#F94498", success: "#02A65C", warning: "#FF9327", error: "#FF6B6B", info: "#01BEFF", white: "#FFFFFF", secondary: "#D3CFD8", muted: "#A79FB2", placeholder: "#7B6A94" };
 
 const FILTERS = ["All", "Beach", "City", "Mountain", "Culture", "Adventure", "Food"];
-
-const TOP_PICKS = [
-  { id: "1", city: "Bali", country: "Indonesia", match: 96, price: "€850" },
-  { id: "2", city: "Santorini", country: "Greece", match: 91, price: "€1,200" },
-];
-
-const TRENDING = [
-  { id: "t1", city: "Dubai", price: "€650" },
-  { id: "t2", city: "Tokyo", price: "€1,100" },
-  { id: "t3", city: "Barcelona", price: "€720" },
-  { id: "t4", city: "New York", price: "€890" },
-];
-
-const HIDDEN_GEMS = [
-  { id: "h1", city: "Luang Prabang", country: "Laos", price: "€420" },
-  { id: "h2", city: "Kotor", country: "Montenegro", price: "€380" },
-  { id: "h3", city: "Oaxaca", country: "Mexico", price: "€550" },
-  { id: "h4", city: "Tbilisi", country: "Georgia", price: "€310" },
+const DESTINATIONS = [
+  { id: "1", name: "Bali", country: "Indonesia", match: 96, img: "https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=600&q=80", tag: "Beach" },
+  { id: "2", name: "Santorini", country: "Greece", match: 91, img: "https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?w=600&q=80", tag: "City" },
+  { id: "3", name: "Kyoto", country: "Japan", match: 88, img: "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=600&q=80", tag: "Culture" },
+  { id: "4", name: "Patagonia", country: "Argentina", match: 85, img: "https://images.unsplash.com/photo-1501854140801-50d01698950b?w=600&q=80", tag: "Mountain" },
+  { id: "5", name: "Tokyo", country: "Japan", match: 82, img: "https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=600&q=80", tag: "City" },
+  { id: "6", name: "Maldives", country: "Maldives", match: 79, img: "https://images.unsplash.com/photo-1514282401047-d79a71a590e8?w=600&q=80", tag: "Beach" },
 ];
 
 export default function ExploreScreen() {
+  const insets = useSafeAreaInsets();
+  const router = useRouter();
+  const [activeFilter, setActiveFilter] = useState("All");
+  const [query, setQuery] = useState("");
+
+  const filtered = DESTINATIONS.filter(d =>
+    (activeFilter === "All" || d.tag === activeFilter) &&
+    (query === "" || d.name.toLowerCase().includes(query.toLowerCase()))
+  );
+
   return (
-    <View style={s.root}>
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 100 }}>
-        {/* Header — 120px */}
-        <View style={s.header}>
-          <Text style={s.headerTitle}>Explore</Text>
-          <Text style={s.headerSub}>Discover your next adventure</Text>
-        </View>
-
-        {/* Search bar — 48px */}
-        <View style={s.searchWrap}>
-          <View style={s.searchBar}>
-            <Text style={s.searchIcon}>🔍</Text>
-            <TextInput style={s.searchInput} placeholder="Search destinations..." placeholderTextColor="#666" editable={false} />
-          </View>
-        </View>
-
-        {/* Filter chips */}
-        <ScrollView horizontal showsHorizontalScrollIndicator={false} style={s.filterScroll} contentContainerStyle={s.filterContent}>
-          {FILTERS.map((f, i) => (
-            <Pressable key={f} style={[s.chip, i === 0 && s.chipActive]}>
-              <Text style={[s.chipText, i === 0 && s.chipTextActive]}>{f}</Text>
-            </Pressable>
-          ))}
-        </ScrollView>
-
-        {/* Top Picks — full-width 220px */}
-        <View style={s.section}>
-          <Text style={s.sectionTitle}>Top Picks for You</Text>
-          {TOP_PICKS.map((item) => (
-            <Pressable key={item.id} style={s.topPickCard}>
-              <View style={s.topPickImage}>
-                <Text style={s.imgText}>{item.city}</Text>
-                <View style={s.matchBadge}><Text style={s.matchText}>{item.match}% Match</Text></View>
-              </View>
-              <View style={s.topPickInfo}>
-                <Text style={s.topPickCity}>{item.city}, {item.country}</Text>
-                <Text style={s.topPickPrice}>From {item.price}</Text>
-              </View>
-            </Pressable>
-          ))}
-        </View>
-
-        {/* Trending — 180x240 horizontal */}
-        <View style={s.section}>
-          <Text style={s.sectionTitle}>Trending Now</Text>
-          <FlatList
-            data={TRENDING}
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            keyExtractor={(i) => i.id}
-            contentContainerStyle={{ paddingHorizontal: 20, gap: 12 }}
-            renderItem={({ item }) => (
-              <Pressable style={s.trendCard}>
-                <View style={s.trendImage}><Text style={s.imgTextSm}>{item.city}</Text></View>
-                <Text style={s.trendCity}>{item.city}</Text>
-                <Text style={s.trendPrice}>From {item.price}</Text>
-              </Pressable>
-            )}
+    <View style={[s.root, { paddingTop: insets.top }]}>
+      {/* Header */}
+      <View style={s.header}>
+        <View style={s.searchBar}>
+          <MaterialIcons name="search" size={20} color={DS.placeholder} />
+          <TextInput
+            style={s.searchInput}
+            placeholder="Search destinations..."
+            placeholderTextColor={DS.placeholder}
+            value={query}
+            onChangeText={setQuery}
           />
+          {query.length > 0 && (
+            <Pressable onPress={() => setQuery("")}>
+              <MaterialIcons name="close" size={18} color={DS.muted} />
+            </Pressable>
+          )}
         </View>
+        <Pressable style={s.filterBtn} onPress={() => {}}>
+          <MaterialIcons name="tune" size={20} color={DS.white} />
+        </Pressable>
+      </View>
 
-        {/* Hidden Gems — 2-col */}
-        <View style={s.section}>
-          <Text style={s.sectionTitle}>Hidden Gems</Text>
-          <View style={s.gemGrid}>
-            {HIDDEN_GEMS.map((item) => (
-              <Pressable key={item.id} style={s.gemCard}>
-                <View style={s.gemImage}><Text style={s.imgTextSm}>{item.city}</Text></View>
-                <Text style={s.gemCity}>{item.city}</Text>
-                <Text style={s.gemCountry}>{item.country}</Text>
-                <Text style={s.gemPrice}>From {item.price}</Text>
-              </Pressable>
-            ))}
-          </View>
-        </View>
+      {/* Filter chips */}
+      <ScrollView horizontal showsHorizontalScrollIndicator={false} style={s.filtersScroll} contentContainerStyle={s.filtersContent}>
+        {FILTERS.map(f => (
+          <Pressable key={f} style={[s.chip, activeFilter === f && s.chipActive]} onPress={() => setActiveFilter(f)}>
+            <Text style={[s.chipText, activeFilter === f && s.chipTextActive]}>{f}</Text>
+          </Pressable>
+        ))}
       </ScrollView>
+
+      {/* Results */}
+      <FlatList
+        data={filtered}
+        keyExtractor={i => i.id}
+        numColumns={2}
+        columnWrapperStyle={s.row}
+        contentContainerStyle={[s.listContent, { paddingBottom: insets.bottom + 100 }]}
+        showsVerticalScrollIndicator={false}
+        renderItem={({ item }) => (
+          <Pressable style={({ pressed }) => [s.card, pressed && { opacity: 0.85, transform: [{ scale: 0.97 }] }]} onPress={() => router.push("/(trip)/destination-detail" as any)}>
+            <Image source={{ uri: item.img }} style={s.cardImg} />
+            <LinearGradient colors={["transparent", "rgba(10,5,20,0.9)"]} style={s.cardOverlay} />
+            <View style={s.matchBadge}>
+              <Text style={s.matchText}>✦ {item.match}%</Text>
+            </View>
+            <View style={s.cardInfo}>
+              <Text style={s.cardName}>{item.name}</Text>
+              <Text style={s.cardCountry}>{item.country}</Text>
+            </View>
+          </Pressable>
+        )}
+        ListHeaderComponent={
+          <Text style={s.sectionTitle}>
+            {filtered.length} Destinations <Text style={{ color: DS.purple }}>for You</Text>
+          </Text>
+        }
+      />
     </View>
   );
 }
 
+const CARD_W = (360 - 48 - 12) / 2;
+
 const s = StyleSheet.create({
-  root: { flex: 1, backgroundColor: "#111" },
-  header: {
-    height: 120, paddingHorizontal: 20, paddingTop: 56,
-    justifyContent: "flex-end", paddingBottom: 12,
-    backgroundColor: "#1A1A1A", borderBottomWidth: 1, borderBottomColor: "#222",
-  },
-  headerTitle: { color: "#FFF", fontSize: 28, fontWeight: "800" },
-  headerSub: { color: "#888", fontSize: 14, marginTop: 4 },
-  searchWrap: { paddingHorizontal: 20, paddingVertical: 12 },
-  searchBar: {
-    height: 48, borderRadius: 12, backgroundColor: "#1A1A1A",
-    borderWidth: 1, borderColor: "#333", flexDirection: "row",
-    alignItems: "center", paddingHorizontal: 16, gap: 8,
-  },
-  searchIcon: { fontSize: 16 },
-  searchInput: { flex: 1, color: "#FFF", fontSize: 15 },
-  filterScroll: { marginBottom: 8 },
-  filterContent: { paddingHorizontal: 20, gap: 8 },
-  chip: {
-    paddingHorizontal: 16, paddingVertical: 8, borderRadius: 20,
-    backgroundColor: "#1A1A1A", borderWidth: 1, borderColor: "#333",
-  },
-  chipActive: { backgroundColor: "#333", borderColor: "#666" },
-  chipText: { color: "#888", fontSize: 13, fontWeight: "500" },
-  chipTextActive: { color: "#FFF" },
-  section: { marginTop: 24, paddingHorizontal: 20 },
-  sectionTitle: { color: "#FFF", fontSize: 18, fontWeight: "700", marginBottom: 12 },
-  topPickCard: {
-    height: 220, borderRadius: 16, backgroundColor: "#1A1A1A",
-    borderWidth: 1, borderColor: "#333", overflow: "hidden", marginBottom: 12,
-  },
-  topPickImage: { flex: 1, backgroundColor: "#222", justifyContent: "flex-end", padding: 12 },
-  imgText: { color: "#555", fontSize: 18, fontWeight: "600" },
-  matchBadge: {
-    position: "absolute", top: 12, right: 12,
-    paddingHorizontal: 10, paddingVertical: 4, borderRadius: 12,
-    backgroundColor: "rgba(0,0,0,0.6)",
-  },
-  matchText: { color: "#FFF", fontSize: 12, fontWeight: "600" },
-  topPickInfo: { padding: 12 },
-  topPickCity: { color: "#FFF", fontSize: 16, fontWeight: "600" },
-  topPickPrice: { color: "#888", fontSize: 13, marginTop: 4 },
-  trendCard: {
-    width: 180, borderRadius: 16, backgroundColor: "#1A1A1A",
-    borderWidth: 1, borderColor: "#333", overflow: "hidden",
-  },
-  trendImage: { height: 160, backgroundColor: "#222", justifyContent: "center", alignItems: "center" },
-  imgTextSm: { color: "#555", fontSize: 14 },
-  trendCity: { color: "#FFF", fontSize: 14, fontWeight: "600", paddingHorizontal: 12, paddingTop: 10 },
-  trendPrice: { color: "#888", fontSize: 12, paddingHorizontal: 12, paddingTop: 4, paddingBottom: 12 },
-  gemGrid: { flexDirection: "row", flexWrap: "wrap", gap: 12 },
-  gemCard: {
-    width: "47%", borderRadius: 16, backgroundColor: "#1A1A1A",
-    borderWidth: 1, borderColor: "#333", overflow: "hidden",
-  },
-  gemImage: { height: 120, backgroundColor: "#222", justifyContent: "center", alignItems: "center" },
-  gemCity: { color: "#FFF", fontSize: 14, fontWeight: "600", paddingHorizontal: 12, paddingTop: 10 },
-  gemCountry: { color: "#888", fontSize: 12, paddingHorizontal: 12, paddingTop: 2 },
-  gemPrice: { color: "#999", fontSize: 12, paddingHorizontal: 12, paddingTop: 4, paddingBottom: 12 },
+  root: { flex: 1, backgroundColor: DS.bg },
+  header: { flexDirection: "row", alignItems: "center", paddingHorizontal: 16, paddingBottom: 12, gap: 10 },
+  searchBar: { flex: 1, flexDirection: "row", alignItems: "center", backgroundColor: DS.surface, borderWidth: 1, borderColor: DS.border, borderRadius: 14, paddingHorizontal: 12, height: 44, gap: 8 },
+  searchInput: { flex: 1, fontSize: 14, fontFamily: "Satoshi-Regular", color: DS.white },
+  filterBtn: { width: 44, height: 44, borderRadius: 12, backgroundColor: DS.surface, borderWidth: 1, borderColor: DS.border, justifyContent: "center", alignItems: "center" },
+  filtersScroll: { maxHeight: 48 },
+  filtersContent: { paddingHorizontal: 16, gap: 8, alignItems: "center" },
+  chip: { paddingHorizontal: 14, paddingVertical: 6, borderRadius: 20, backgroundColor: DS.surface, borderWidth: 1, borderColor: DS.border },
+  chipActive: { backgroundColor: "rgba(100,67,244,0.2)", borderColor: DS.purple },
+  chipText: { fontSize: 13, fontFamily: "Satoshi-Medium", color: DS.muted },
+  chipTextActive: { color: DS.white },
+  listContent: { paddingHorizontal: 16, paddingTop: 16 },
+  sectionTitle: { fontSize: 18, fontFamily: "Chillax-Bold", color: DS.white, marginBottom: 16 },
+  row: { justifyContent: "space-between", marginBottom: 12 },
+  card: { width: CARD_W, height: CARD_W * 1.3, borderRadius: 16, overflow: "hidden", backgroundColor: DS.surface },
+  cardImg: { ...StyleSheet.absoluteFillObject },
+  cardOverlay: { ...StyleSheet.absoluteFillObject },
+  matchBadge: { position: "absolute", top: 10, right: 10, backgroundColor: "#02A65C", paddingHorizontal: 8, paddingVertical: 4, borderRadius: 10 },
+  matchText: { fontSize: 11, fontFamily: "Satoshi-Bold", color: DS.white },
+  cardInfo: { position: "absolute", bottom: 12, left: 12 },
+  cardName: { fontSize: 16, fontFamily: "Chillax-Bold", color: DS.white },
+  cardCountry: { fontSize: 12, fontFamily: "Satoshi-Regular", color: "rgba(255,255,255,0.7)" },
 });

@@ -206,7 +206,7 @@ export default function AgentChatScreen() {
     <View style={[styles.container, { paddingTop: insets.top }]}>
       {/* Header */}
       <LinearGradient
-        colors={["#1A0533", "#0D0221"]}
+        colors={["#1A0533", "#0A0514"]}
         style={styles.header}
       >
         <TouchableOpacity
@@ -339,7 +339,7 @@ export default function AgentChatScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#1A0B2E",
+    backgroundColor: "#0A0514",
   },
   flex: {
     flex: 1,
@@ -395,7 +395,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     backgroundColor: "#22C55E",
     borderWidth: 2,
-    borderColor: "#1A0B2E",
+    borderColor: "#0A0514",
   },
   headerName: {
     fontSize: 16,

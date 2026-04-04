@@ -1,17 +1,26 @@
 # TRAVI App — Master TODO
 
-> Last updated: April 4, 2026
-> Source: TRAVI Wireframe Spec v2.0 + Part 2 (Design Tokens) + Part 3 (Social + Points)
-> Status: 96 screens built as neutral wireframes
-> Rule: After completing each screen, double-check against spec before marking [x]
+> Design DNA: Home Dashboard (approved) is the visual reference for all screens.
+> Design System: constants/design-system.ts — single source of truth.
+> Rule: Background #0A0514 solid. Glass cards. Chillax-Bold headings. Satoshi body. No emoji.
 
 ---
 
-## Phase 1 — UX / UI / Wireframes — ALL SCREENS FROM SCRATCH
+## Global Components
+- [x] Design system constants (constants/design-system.ts)
+- [x] Home Dashboard — approved visual DNA
+- [x] Tab Bar — 6 tabs (Home/Explore/Trips/Social/Points/Profile), #120824, active pink pill
+- [ ] GlassCard reusable component
+- [ ] GradientButton component
+- [ ] ScreenHeader component (per-mode gradient)
+- [ ] AI Chat FAB (64×64 rounded-square, gradient)
+- [ ] EmptyState component (mascot + CTA)
 
-### Part A — Auth & Onboarding (Screens 1–10)
-- [x] Screen 1 — Splash Screen (/splash)
-- [x] Screen 2 — Welcome Screen (/welcome)
+---
+
+## Phase 1 — Auth & Onboarding (Screens 1–10)
+- [x] Screen 1 — Splash (/splash)
+- [x] Screen 2 — Welcome (/welcome)
 - [x] Screen 3 — Sign Up (/signup)
 - [x] Screen 4 — Verify Email (/verify-email)
 - [x] Screen 5 — Profile Setup (/profile-setup)
@@ -21,8 +30,8 @@
 - [x] Screen 9 — Quick DNA Schedule (/quick-dna/schedule)
 - [x] Screen 10 — Quick DNA Summary (/quick-dna/summary)
 
-### Part B — Discovery Mode (Screens 11–19)
-- [x] Screen 11 — Home Dashboard (/home)
+## Phase 2 — Discovery Mode (Screens 11–19)
+- [x] Screen 11 — Home Dashboard (/home) — APPROVED VISUAL DNA
 - [x] Screen 12 — Explore Feed (/explore)
 - [x] Screen 13 — Search Modal (/search)
 - [x] Screen 14 — Destination Detail (/destination-detail)
@@ -32,43 +41,43 @@
 - [x] Screen 18 — Notifications Center (/notifications)
 - [x] Screen 19 — Plan Trip Entry (/plan-trip)
 
-### Part C — Planning Mode (Screens 20–31)
-- [x] Screen 20 — Trip Builder Destination Select
-- [x] Screen 21 — Trip Builder Dates & Travelers
-- [x] Screen 22 — Trip Builder Flight Select
-- [x] Screen 23 — Trip Builder Hotel Select
+## Phase 3 — Planning Mode (Screens 20–31)
+- [x] Screen 20 — Trip Builder: Destination Select
+- [x] Screen 21 — Trip Builder: Dates & Travelers
+- [x] Screen 22 — Trip Builder: Flight Select
+- [x] Screen 23 — Trip Builder: Hotel Select
 - [x] Screen 24 — Hotel Detail
 - [x] Screen 25 — Activity Select Swipe
 - [x] Screen 26 — Itinerary Builder
 - [x] Screen 27 — Cart / Trip Review
-- [x] Screen 28 — Checkout Phase 1 — Review & Hold
+- [x] Screen 28 — Checkout Phase 1
 - [x] Screen 29 — Payment Method Modal
-- [x] Screen 30 — Checkout Phase 2 — Payment
+- [x] Screen 30 — Checkout Phase 2 Payment
 - [x] Screen 31 — Booking Confirmation
 
-### Part D — Pre-Trip Mode (Screens 32–34)
+## Phase 4 — Pre-Trip Mode (Screens 32–34)
 - [x] Screen 32 — Pre-Trip Dashboard
 - [x] Screen 33 — Pre-Trip Checklist
 - [x] Screen 34 — Pre-Trip Documents
 
-### Part E — Live Mode (Screens 35–43)
+## Phase 5 — Live Mode (Screens 35–43)
 - [x] Screen 35 — Live Dashboard
 - [x] Screen 36 — Live Timeline
 - [x] Screen 37 — Live Map
-- [x] Screen 38 — Activity Detail (Live)
+- [x] Screen 38 — Activity Detail Live
 - [x] Screen 39 — Expenses Tracker
 - [x] Screen 40 — Memories Gallery
-- [x] Screen 41 — AI Chat (Live Concierge)
+- [x] Screen 41 — AI Chat Live Concierge
 - [x] Screen 42 — Emergency Contacts
 - [x] Screen 43 — Trip Settings
 
-### Part F — Post-Trip Mode (Screens 44–47)
+## Phase 6 — Post-Trip Mode (Screens 44–47)
 - [x] Screen 44 — Post-Trip Celebration
 - [x] Screen 45 — Trip Summary
 - [x] Screen 46 — Rate & Review
-- [x] Screen 47 — Photo Gallery (Post-Trip)
+- [x] Screen 47 — Photo Gallery Post-Trip
 
-### Part G — Universal Screens (Screens 48–59)
+## Phase 7 — Universal Screens (Screens 48–59)
 - [x] Screen 48 — Wallet Full View
 - [x] Screen 49 — Add Funds
 - [x] Screen 50 — Transaction History
@@ -77,32 +86,32 @@
 - [x] Screen 53 — Membership & Upgrade
 - [x] Screen 54 — Profile Edit
 - [x] Screen 55 — Settings
-- [x] Screen 56 — Notifications Center (Discovery) — same as Screen 18
-- [x] Screen 57 — My Trips — same as Trips tab
-- [x] Screen 58 — Wishlist (Full View) — same as Screen 17
-- [x] Screen 59 — Search Results — part of Screen 13
+- [x] Screen 56 — Notifications Center
+- [x] Screen 57 — My Trips
+- [x] Screen 58 — Wishlist Full View
+- [x] Screen 59 — Search Results
 - [x] Screen 66 — Help & Support
 
-### Part H+I — Error, Loading & Special (Screens 60–77)
-- [x] Screen 60 — No Internet Connection (overlay)
-- [x] Screen 61 — API Error / Server Error (modal)
+## Phase 8 — Error, Loading & Special (Screens 60–77)
+- [x] Screen 60 — No Internet Connection
+- [x] Screen 61 — API Error / Server Error
 - [x] Screen 62 — Payment Failed
 - [x] Screen 63 — Session Expired
 - [x] Screen 64 — GPS Permission Denied
 - [x] Screen 65 — Camera Permission Denied
-- [x] Screen 67 — Empty State — No Trips
-- [x] Screen 68 — Empty State — No Search Results
-- [x] Screen 69 — Loading — Initial App Load
-- [x] Screen 70 — Loading — Matching Engine (overlay)
-- [x] Screen 71 — Loading — Payment Processing (overlay)
-- [x] Screen 72 — Onboarding — First Swipe Tutorial
-- [x] Screen 73 — Onboarding — Welcome Tour
-- [x] Screen 74 — First DNA Completion Celebration (modal)
-- [x] Screen 75 — First Booking Success Moment (overlay)
-- [x] Screen 76 — Change Email / Password
+- [x] Screen 67 — Empty State: No Trips
+- [x] Screen 68 — Empty State: No Search Results
+- [x] Screen 69 — Loading: Initial App Load
+- [x] Screen 70 — Loading: Matching Engine
+- [x] Screen 71 — Loading: Payment Processing
+- [x] Screen 72 — Onboarding: First Swipe Tutorial
+- [x] Screen 73 — Onboarding: Welcome Tour
+- [x] Screen 74 — First DNA Completion Celebration
+- [x] Screen 75 — First Booking Success Moment
+- [x] Screen 76 — Change Email/Password
 - [x] Screen 77 — Delete Account Confirmation
 
-### Part J — Social Layer (Screens 78–86) — from Part 3 spec
+## Phase 9 — Social Layer (Screens 78–90)
 - [x] Screen 78 — Community Feed
 - [x] Screen 79 — Discover Travelers
 - [x] Screen 80 — Travel Compatibility Score
@@ -112,8 +121,12 @@
 - [x] Screen 84 — Messages List
 - [x] Screen 85 — Chat Screen
 - [x] Screen 86 — Travel Buddies
+- [ ] Screen 87 — Group Trip Invite (/social/group-invite)
+- [ ] Screen 88 — Group Trip View (/social/group/:id)
+- [ ] Screen 89 — Shared Wishlist (/social/shared-wishlist)
+- [ ] Screen 90 — Social Settings (/social/settings)
 
-### Part K — TRAVI Points (Screens 91–100) — from Part 3 spec
+## Phase 10 — TRAVI Points (Screens 91–100)
 - [x] Screen 91 — Points Dashboard
 - [x] Screen 92 — Redeem Points Hub
 - [x] Screen 93 — Airline Miles
@@ -125,130 +138,29 @@
 - [x] Screen 99 — Referrals
 - [x] Screen 100 — Redeem Confirmation
 
-### Global Elements
-- [x] Screen Navigator Hub (index.tsx — browse all 96 screens)
-- [x] Route groups registered: (auth), (tabs), (trip), (dna), (social), (points), (error), (special)
-- [ ] Bottom Nav Bar (5 tabs, 60px + safe area, hide in Planning/Live/DNA)
-- [ ] AI Chat FAB (64x64, borderRadius 20, pulse, badge)
-- [ ] Mode Badge (header pill: Planning/Live/Post-Trip)
-- [ ] Emergency Exit (Live Mode top-left)
+---
 
-### Design Application (from Part 2 spec — AFTER wireframes approved)
-- [ ] Apply visual design tokens (colors, gradients, typography)
-- [ ] Apply component library styles (cards, buttons, inputs, badges)
-- [ ] Apply animation system (transitions, micro-interactions)
-- [ ] Apply screen-specific visual specs
+## Design Rollout — Apply Approved Visual DNA to All Screens
+> Priority: Apply design system from constants/design-system.ts to every screen
+> Reference: Home Dashboard (Screen 11) is the approved visual template
 
-### Home Dashboard Design Fixes (User Feedback)
-- [x] Fix Bottom Tab Bar — rebuild with 5 clean simple icons, remove broken triangle shapes
-- [x] Fix Recommended cards — proper horizontal scroll with snap, 2 visible edges
-- [x] Redesign DNA card — glass card with subtle border, not gradient banner
-- [x] Keep Explorer DNA badge as-is
-- [x] Increase breathing room — 24px spacing between sections
-- [x] Plan a Trip card — hero card 160px, bigger text, strong pink glow shadow
-- [x] Cashback + Explore cards — brighter bg + thicker brighter border
-- [x] Recommended cards — 240px image, strong gradient overlay, 28px city name
-- [x] Typography — Chillax fonts loaded, Chillax-Bold on all headings
-- [x] Spacing — 24px between all sections
+- [ ] Apply design DNA to Auth screens (1–10)
+- [ ] Apply design DNA to Discovery screens (12–19) — Explore, Search, Destination, Profile, DNA, Wishlist, Notifications, Plan Entry
+- [ ] Apply design DNA to Planning screens (20–31)
+- [ ] Apply design DNA to Pre-Trip screens (32–34)
+- [ ] Apply design DNA to Live screens (35–43)
+- [ ] Apply design DNA to Post-Trip screens (44–47)
+- [ ] Apply design DNA to Universal screens (48–59, 66)
+- [ ] Apply design DNA to Error/Loading screens (60–77)
+- [ ] Apply design DNA to Social screens (78–90)
+- [ ] Apply design DNA to Points screens (91–100)
 
 ---
 
-## Phase 2 — Backend / Infra / Logic (LATER — DO NOT TOUCH NOW)
-
-### Security
-- [ ] Monitor minimatch@9.0.5 — ReDoS
-- [ ] Monitor brace-expansion@2.0.2 — Infinite Loop
-
-### Auth
-- [ ] Email verification OTP (needs API key)
-
-### DB Connections
-- [ ] DNA screens → PostgreSQL
-- [ ] Enterprise screens → PostgreSQL
-- [ ] Notifications → PostgreSQL
-
-### Real-time
-- [ ] Server-side Socket.IO
-- [ ] Trip group chat
-- [ ] Server-side push notifications
-- [ ] Price alert triggers
-- [ ] Trip reminders
-
-### Payments
-- [ ] react-native-iap setup
-- [ ] App Store subscription products
-- [ ] Google Play subscription products
-- [ ] IAP purchase flow
-- [ ] Receipt validation
-- [ ] Restore purchases
-
-### Backend Logic
-- [ ] DNA 8-dimension scoring
-- [ ] Surprise Me algorithm
-- [ ] Multi-traveler DNA merge
-- [ ] Cashback calculation engine
-
-### Home Dashboard — Figma Prompt Redesign
-- [x] Background #0E0618 (very dark purple-black)
-- [x] Header: Travi wordmark + avatar + greeting 26px bold + Explorer DNA pill with glow
-- [x] Plan a Trip hero: real photo bg, gradient overlay, frosted AI pill, cinematic glow shadow
-- [x] Secondary cards: #16092C bg, gold/compass icons, proper sizing
-- [x] DNA banner: accent bar 4px left, #1A0A30 bg
-- [x] Live Trip strip: #0D1F18 bg, green pulsing dot, 56px
-- [x] Recommended cards: 220x280, green match badge #00C96B, Chillax Bold 22px
-- [x] Tab Bar: #120824 bg, active pill rgba(249,68,152,0.15), 5 tabs
-
-### Home Dashboard — Ambient Background
-- [x] Apply radial gradient ambient background (purple/pink/blue orbs) to Home Dashboard
-
-### Plan a Trip Card — 5 Variants for User Selection
-- [x] Variant 1: Holographic Portal (animated gradient + plane trail)
-- [x] Variant 2: Glassmorphism + Particles (glass card + floating dots)
-- [x] Variant 3: Gradient Mesh + 3D Icon (mesh bg + large icon)
-- [x] Variant 4: Neon Outline (pulsing neon border + text glow)
-- [x] Variant 5: Animated Map Lines (flight paths + compass)
-- [x] Navigation buttons to switch between variants
-
-### Plan a Trip — Holographic Portal Variations
-- [x] V1: Aurora Borealis — slow-moving aurora waves + star sparkles
-- [x] V2: Cosmic Warp — radial pulse from center + speed-line streaks
-- [x] V3: Liquid Chrome — metallic liquid morph + iridescent shimmer
-- [x] V4: Nebula Drift — layered nebula clouds + floating light particles
-- [x] V5: Prism Refraction — rainbow light bands sweeping across + diamond sparkle
-- [x] Navigation between all 5 variations
-
-### Plan a Trip — Final Selection
-- [ ] Keep Aurora Borealis only, remove variant selector and all other variants
-
-### Plan a Trip — User Reference Designs
-- [x] Card 1: Boarding Pass — dark top (YOU→???) + light bottom (passenger fields + barcode + CTA)
-- [x] Card 2: Globe/Route Arc — SVG globe lines + flight arc + DNA stats footer
-- [x] Card 3: Typographic Split — white left "WHERE TO?" + dark right with rotating IATA codes
-- [x] Navigation between all 3 designs
-
-### Home Dashboard — Complete Redesign (User: "messy, not compelling")
-- [x] Study top travel apps (Hopper, Kiwi, KAYAK) for clean home screen patterns
-- [x] Rebuild Home Dashboard from scratch — minimal, cinematic, action-driving
-- [x] Remove variant selector clutter
-
-### Home Dashboard — New Background + Glassmorphism
-- [ ] Change base bg to #0A0514
-- [ ] Add dot grid texture (rgba(255,255,255,0.04) dots at 28px spacing)
-- [ ] Add center purple glow (rgba(100,67,244,0.18))
-- [ ] Add bottom pink glow ellipse (rgba(249,68,152,0.12))
-- [ ] Add subtle ring decorations (rgba(100,67,244,0.1))
-- [ ] Convert all cards to Apple-style glassmorphism (blur, transparency, subtle border)
-
-### Home Dashboard — Final Design DNA
-- [x] New background: #0A0514 + dot grid + purple center glow + pink bottom glow
-- [x] Compelling hero card — cinematic photo bg, gradient, "Where will you go next?" headline
-- [x] Strong CTA button — gradient purple→pink with shimmer sweep, glow shadow
-- [x] All cards converted to Apple-style glassmorphism (BlurView + transparency + subtle border)
-
-### Home Dashboard — Reference-Level Redesign
-- [x] Dramatic purple-pink gradient background with depth, glow orbs, and star particles
-- [x] Deep glass cards with BlurView intensity 40 + glowing border colors
-- [x] CTA gradient purple→pink with shimmer sweep, pink glow shadow, arrow circle
-- [x] Glowing circular icons with colored borders, hero card with pulsing glow ring
-- [x] Dramatic typography — 38px headline with "AI" in pink, section titles with accent words
-- [x] Overall feel: cinematic, alive, premium fintech-level with star field + category pills
+## Backend / Infra (Phase 2 — DO NOT TOUCH NOW)
+- [ ] Email OTP verification
+- [ ] DNA scoring algorithm
+- [ ] PostgreSQL connections
+- [ ] Real-time Socket.IO
+- [ ] In-app purchases (IAP)
+- [ ] Push notifications

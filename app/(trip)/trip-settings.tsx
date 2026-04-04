@@ -1,4 +1,4 @@
-// Screen 43 — Trip Settings — STATIC WIREFRAME
+// Screen 43 — Trip Settings — STATIC 
 // Toggle rows 56px, Preference selectors, Trip Management buttons, Danger Zone
 import { View, Text, StyleSheet, Pressable, ScrollView } from "react-native";
 

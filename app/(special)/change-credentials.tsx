@@ -1,4 +1,4 @@
-// Screen 76 — Change Email/Password — STATIC WIREFRAME
+// Screen 76 — Change Email/Password — STATIC 
 // Email: 3 fields + verify code | Password: 3 fields + requirements checklist
 import { View, Text, StyleSheet, Pressable, ScrollView } from "react-native";
 

@@ -1,4 +1,4 @@
-// Screen 39 — Expenses Tracker — STATIC WIREFRAME
+// Screen 39 — Expenses Tracker — STATIC 
 // Summary 140px + budget bar, Filter tabs, Date-grouped rows 88px, Add expense modal, Split button
 import { View, Text, StyleSheet, Pressable, ScrollView } from "react-native";
 

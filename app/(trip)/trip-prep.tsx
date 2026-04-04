@@ -80,7 +80,7 @@ const SERVICES: ServiceItem[] = [
   { id: "esim", icon: "📱", title: "UAE eSIM", subtitle: "10GB data, 30 days — no roaming fees", cashback: "$3 back", price: "$18", color: "#6443F4", booked: false },
   { id: "taxi", icon: "🚖", title: "Airport Transfer", subtitle: "Private taxi from DXB to your hotel", cashback: "$8 back", price: "$45", color: "#F59E0B", booked: false },
   { id: "currency", icon: "💱", title: "Currency Exchange", subtitle: "Best rate — delivered to your door", cashback: "$5 back", price: "0% fee", color: "#F94498", booked: false },
-  { id: "lounge", icon: "🛋️", title: "Airport Lounge", subtitle: "Priority Pass — unlimited access", cashback: "$10 back", price: "$35", color: "#8B5CF6", booked: false },
+  { id: "lounge", icon: "🛋️", title: "Airport Lounge", subtitle: "Priority Pass — unlimited access", cashback: "$10 back", price: "$35", color: "#6443F4", booked: false },
   { id: "fasttrack", icon: "⚡", title: "Fast Track Security", subtitle: "Skip the queue at DXB Terminal 3", cashback: "$4 back", price: "$22", color: "#0EA5E9", booked: false },
 ];
 

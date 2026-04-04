@@ -110,8 +110,8 @@ function formatDestinationName(dest: string): string {
 
 function buildSectionsFromAI(aiData: Record<string, unknown>): CulturalSection[] {
   const SECTION_DEFS = [
-    { id: "religion", key: "religion", icon: "moon.stars.fill", title: "Religion & Customs", color: "#8B5CF6", gradient: ["#8B5CF6", "#6D28D9"] as [string, string] },
-    { id: "dress", key: "dress", icon: "tshirt.fill", title: "Dress Code", color: "#EC4899", gradient: ["#EC4899", "#BE185D"] as [string, string] },
+    { id: "religion", key: "religion", icon: "moon.stars.fill", title: "Religion & Customs", color: "#6443F4", gradient: ["#6443F4", "#6443F4"] as [string, string] },
+    { id: "dress", key: "dress", icon: "tshirt.fill", title: "Dress Code", color: "#F94498", gradient: ["#F94498", "#F94498"] as [string, string] },
     { id: "food", key: "food", icon: "fork.knife", title: "Food & Drink", color: "#F59E0B", gradient: ["#F59E0B", "#D97706"] as [string, string] },
     { id: "laws", key: "laws", icon: "shield.fill", title: "Laws & Rules", color: "#EF4444", gradient: ["#EF4444", "#B91C1C"] as [string, string] },
     { id: "etiquette", key: "etiquette", icon: "hand.raised.fill", title: "Etiquette & Tips", color: "#10B981", gradient: ["#10B981", "#059669"] as [string, string] },

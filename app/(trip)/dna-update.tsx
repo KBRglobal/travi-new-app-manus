@@ -37,7 +37,7 @@ const TRAIT_META: Record<string, { label: string; icon: string; color: string }>
   adventureLevel:   { label: "Adventure Spirit",   icon: "🧗", color: "#EF4444" },
   culturalDepth:    { label: "Cultural Depth",      icon: "🏛️", color: "#A855F7" },
   foodieness:       { label: "Foodie Soul",          icon: "🍜", color: "#F59E0B" },
-  socialEnergy:     { label: "Social Energy",        icon: "🎉", color: "#EC4899" },
+  socialEnergy:     { label: "Social Energy",        icon: "🎉", color: "#F94498" },
   luxuryAffinity:   { label: "Luxury Taste",         icon: "👑", color: "#D97706" },
   natureConnection: { label: "Nature Connection",   icon: "🌿", color: "#22C55E" },
 };
@@ -194,7 +194,7 @@ export default function DnaUpdateScreen() {
           {/* Hero */}
           <View style={styles.hero}>
             <LinearGradient
-              colors={["#7C3AED22", "#F9449822"]}
+              colors={["#6443F422", "#F9449822"]}
               style={styles.heroBg}
             />
             <Text style={styles.heroEmoji}>🧬</Text>
@@ -206,7 +206,7 @@ export default function DnaUpdateScreen() {
 
           {/* Traveler Type */}
           <View style={styles.typeCard}>
-            <LinearGradient colors={["#7C3AED", "#F94498"]} style={styles.typeGradient} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}>
+            <LinearGradient colors={["#6443F4", "#F94498"]} style={styles.typeGradient} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}>
               <Text style={styles.typeLabel}>You are</Text>
               <Text style={styles.typeName}>{travelerType}</Text>
               <Text style={styles.typeDesc}>
@@ -234,7 +234,7 @@ export default function DnaUpdateScreen() {
               <View style={styles.interestPills}>
                 {topInterests.map((interest) => (
                   <View key={interest} style={styles.interestPill}>
-                    <LinearGradient colors={["#7C3AED33", "#F9449833"]} style={styles.pillGrad} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}>
+                    <LinearGradient colors={["#6443F433", "#F9449833"]} style={styles.pillGrad} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}>
                       <Text style={styles.pillText}>{interest}</Text>
                     </LinearGradient>
                   </View>
@@ -267,7 +267,7 @@ export default function DnaUpdateScreen() {
       <View style={[styles.ctaWrap, { paddingBottom: insets.bottom + 16 }]}>
         <TouchableOpacity style={styles.cta} onPress={handleContinue} activeOpacity={0.85}>
           <LinearGradient
-            colors={["#F94498", "#7C3AED"]}
+            colors={["#F94498", "#6443F4"]}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 0 }}
             style={styles.ctaGradient}

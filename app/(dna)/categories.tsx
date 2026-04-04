@@ -1,4 +1,4 @@
-// Screen 7 — Quick DNA: Categories — STATIC WIREFRAME
+// Screen 7 — Quick DNA: Categories — STATIC 
 // Route: /dna/categories | Mode: Onboarding Step 3/3
 // Spec: 8 category cards, 2-col grid, multi-select (min 3), Continue with count
 

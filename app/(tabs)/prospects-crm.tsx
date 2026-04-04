@@ -47,7 +47,7 @@ const STAGE_COLORS: Record<DealStage, string> = {
   Lead: "#6B7280",
   Contacted: "#3B82F6",
   Proposal: "#F59E0B",
-  Negotiation: "#8B5CF6",
+  Negotiation: "#6443F4",
   Closed: "#22C55E",
 };
 

@@ -1,4 +1,4 @@
-// Screen 77 — Delete Account — STATIC WIREFRAME
+// Screen 77 — Delete Account — STATIC 
 // Warning card, wallet/trips blockers, type DELETE, reason dropdown, final confirm
 import { View, Text, StyleSheet, Pressable, ScrollView } from "react-native";
 

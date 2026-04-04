@@ -1,4 +1,4 @@
-// Screen 33 — Pre-Trip Checklist — STATIC WIREFRAME
+// Screen 33 — Pre-Trip Checklist — STATIC 
 // Progress card 100px, Accordion sections, Checkbox items 28x28, Add custom item
 import { View, Text, StyleSheet, Pressable, ScrollView } from "react-native";
 

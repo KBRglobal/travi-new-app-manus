@@ -1,4 +1,4 @@
-// Screen 35 — Live Dashboard — STATIC WIREFRAME
+// Screen 35 — Live Dashboard — STATIC 
 // Header 120px, 2x3 quick actions 88px, Today's Schedule 240px, AI Proactive 140px, Emergency card
 import { View, Text, StyleSheet, Pressable, ScrollView } from "react-native";
 

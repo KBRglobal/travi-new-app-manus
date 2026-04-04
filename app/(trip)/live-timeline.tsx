@@ -1,4 +1,4 @@
-// Screen 36 — Live Timeline — STATIC WIREFRAME
+// Screen 36 — Live Timeline — STATIC 
 // Date selector chips, Daily summary, Activity cards 140px with status, Travel time indicators, Rate button
 import { View, Text, StyleSheet, Pressable, ScrollView } from "react-native";
 

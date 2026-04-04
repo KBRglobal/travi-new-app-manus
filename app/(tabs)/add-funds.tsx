@@ -1,4 +1,4 @@
-// Screen 49 — Add Funds — STATIC WIREFRAME
+// Screen 49 — Add Funds — STATIC 
 // Balance display, Large amount input, Quick chips (€20/50/100/200), Fee notice
 import { View, Text, StyleSheet, Pressable, ScrollView } from "react-native";
 

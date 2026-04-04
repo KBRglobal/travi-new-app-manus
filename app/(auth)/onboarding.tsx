@@ -137,7 +137,7 @@ export default function OnboardingScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#1A0B2E" },
+  container: { flex: 1, backgroundColor: "#0A0514" },
   skipBtn: { position: "absolute", top: 60, right: 24, zIndex: 10, paddingHorizontal: 16, paddingVertical: 8, borderRadius: 20, backgroundColor: "rgba(255,255,255,0.06)" },
   skipText: { color: "rgba(255,255,255,0.7)", fontSize: 14, fontWeight: "600", fontFamily: "Satoshi-Medium" },
   scrollView: { flex: 1 },

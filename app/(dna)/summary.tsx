@@ -1,4 +1,4 @@
-// Screen 10 — Quick DNA: Summary — STATIC WIREFRAME
+// Screen 10 — Quick DNA: Summary — STATIC 
 // Route: /dna/summary | Mode: Onboarding
 // Spec: Top 3 DNA dimensions with bars, Share card, See Recommendations CTA
 
@@ -8,8 +8,8 @@ const DNA_RESULTS = [
   { label: "Adventurer", score: 87, color: "#EF4444" },
   { label: "Explorer", score: 74, color: "#3B82F6" },
   { label: "Foodie", score: 68, color: "#F59E0B" },
-  { label: "Culturalist", score: 55, color: "#8B5CF6" },
-  { label: "Photographer", score: 48, color: "#EC4899" },
+  { label: "Culturalist", score: 55, color: "#6443F4" },
+  { label: "Photographer", score: 48, color: "#F94498" },
   { label: "Naturalist", score: 42, color: "#22C55E" },
   { label: "Relaxer", score: 35, color: "#06B6D4" },
   { label: "Historian", score: 28, color: "#78350F" },

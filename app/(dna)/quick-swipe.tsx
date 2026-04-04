@@ -1,4 +1,4 @@
-// Screen 8 — Quick DNA: Swipe — STATIC WIREFRAME
+// Screen 8 — Quick DNA: Swipe — STATIC 
 // Route: /dna/quick-swipe | Mode: Onboarding
 // Spec: Full-screen card, swipe left/right indicators, progress bar,
 // Category badge, Like/Dislike/Undo buttons bottom

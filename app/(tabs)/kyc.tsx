@@ -1,4 +1,4 @@
-// Screen 52 — KYC Verification — STATIC WIREFRAME
+// Screen 52 — KYC Verification — STATIC 
 // Why card 140px, 4-step timeline 200px, Upload area 180px with camera guide
 import { View, Text, StyleSheet, Pressable, ScrollView } from "react-native";
 

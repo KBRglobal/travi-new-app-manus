@@ -1,98 +1,91 @@
-// Screen 18 — Notifications — STATIC WIREFRAME
-// Route: /(tabs)/notifications | Mode: Universal
-// Spec: Header 60px + Mark All Read, Filter tabs, Date-grouped rows (88px min), Swipe-to-delete
+// Screen 18 — Notifications
+import React, { useState } from "react";
+import { View, Text, StyleSheet, Pressable, FlatList } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
+import { MaterialIcons } from "@expo/vector-icons";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import { View, Text, StyleSheet, Pressable, ScrollView } from "react-native";
+const DS = { bg: "#0A0514", surface: "rgba(36,16,62,0.55)", surfaceHigh: "rgba(50,20,80,0.7)", border: "rgba(123,68,230,0.22)", borderStrong: "rgba(100,67,244,0.4)", purple: "#6443F4", pink: "#F94498", success: "#02A65C", warning: "#FF9327", error: "#FF6B6B", info: "#01BEFF", white: "#FFFFFF", secondary: "#D3CFD8", muted: "#A79FB2", placeholder: "#7B6A94" };
 
 const FILTERS = ["All", "Trips", "Deals", "Social", "System"];
-
-const NOTIFICATIONS = {
-  "Today": [
-    { id: "1", icon: "✈️", title: "Trip to Bali starts in 3 days!", body: "Don't forget to check your packing list", time: "2h ago", unread: true },
-    { id: "2", icon: "💰", title: "Flash Sale: 30% off Tokyo flights", body: "Book before midnight to save €360", time: "4h ago", unread: true },
-  ],
-  "Yesterday": [
-    { id: "3", icon: "🧬", title: "New DNA match found", body: "Santorini is a 94% match for your profile", time: "1d ago", unread: false },
-    { id: "4", icon: "⭐", title: "Rate your Dubai trip", body: "Share your experience to earn 50 points", time: "1d ago", unread: false },
-  ],
-  "This Week": [
-    { id: "5", icon: "🎉", title: "Welcome to Gold tier!", body: "You've unlocked exclusive perks and cashback", time: "3d ago", unread: false },
-    { id: "6", icon: "📋", title: "Checklist reminder", body: "3 items still pending for your Bali trip", time: "4d ago", unread: false },
-    { id: "7", icon: "👥", title: "Sarah joined your trip", body: "Your Paris group trip now has 4 travelers", time: "5d ago", unread: false },
-  ],
-};
+const NOTIFS = [
+  { id: "1", type: "trip", icon: "flight-takeoff", title: "Your Bali trip starts tomorrow!", body: "Check your itinerary and packing list.", time: "2h ago", unread: true, color: DS.purple },
+  { id: "2", type: "deal", icon: "local-offer", title: "Flash Deal: Tokyo -40%", body: "Limited seats available. Book now.", time: "5h ago", unread: true, color: DS.pink },
+  { id: "3", type: "social", icon: "people", title: "Sarah joined your trip", body: "Sarah Cohen accepted your invite to Santorini.", time: "1d ago", unread: false, color: DS.success },
+  { id: "4", type: "system", icon: "verified", title: "Identity Verified", body: "Your KYC verification was approved.", time: "2d ago", unread: false, color: DS.info },
+  { id: "5", type: "trip", icon: "hotel", title: "Hotel Confirmed", body: "Alaya Resort Ubud — Check-in Mar 15", time: "3d ago", unread: false, color: DS.purple },
+  { id: "6", type: "deal", icon: "star", title: "New destinations match your DNA", body: "6 new places added to your Explore feed.", time: "4d ago", unread: false, color: DS.warning },
+];
 
 export default function NotificationsScreen() {
+  const insets = useSafeAreaInsets();
+  const [activeFilter, setActiveFilter] = useState("All");
+
+  const filtered = NOTIFS.filter(n => activeFilter === "All" || n.type === activeFilter.toLowerCase());
+
   return (
-    <View style={s.root}>
-      {/* Header — 60px */}
+    <View style={[s.root, { paddingTop: insets.top }]}>
+      {/* Header */}
       <View style={s.header}>
-        <Pressable style={s.backBtn}><Text style={s.backText}>‹</Text></Pressable>
-        <Text style={s.headerTitle}>Notifications</Text>
-        <Pressable><Text style={s.markAllText}>Mark All Read</Text></Pressable>
+        <Text style={s.title}>Notifications</Text>
+        <Pressable style={s.markAllBtn}>
+          <Text style={s.markAllText}>Mark All Read</Text>
+        </Pressable>
       </View>
 
-      {/* Filter tabs */}
-      <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={s.filterRow}>
-        {FILTERS.map((f, i) => (
-          <Pressable key={f} style={[s.filterChip, i === 0 && s.filterActive]}>
-            <Text style={[s.filterText, i === 0 && s.filterTextActive]}>{f}</Text>
+      {/* Filters */}
+      <View style={s.filtersWrap}>
+        {FILTERS.map(f => (
+          <Pressable key={f} style={[s.chip, activeFilter === f && s.chipActive]} onPress={() => setActiveFilter(f)}>
+            <Text style={[s.chipText, activeFilter === f && s.chipTextActive]}>{f}</Text>
           </Pressable>
         ))}
-      </ScrollView>
+      </View>
 
-      {/* Date-grouped rows */}
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 100 }}>
-        {Object.entries(NOTIFICATIONS).map(([date, items]) => (
-          <View key={date}>
-            <Text style={s.dateLabel}>{date}</Text>
-            {items.map((n) => (
-              <Pressable key={n.id} style={[s.notifRow, n.unread && s.notifUnread]}>
-                <View style={s.notifIcon}><Text style={{ fontSize: 22 }}>{n.icon}</Text></View>
-                <View style={{ flex: 1 }}>
-                  <Text style={s.notifTitle}>{n.title}</Text>
-                  <Text style={s.notifBody} numberOfLines={1}>{n.body}</Text>
-                </View>
-                <View style={s.notifRight}>
-                  <Text style={s.notifTime}>{n.time}</Text>
-                  {n.unread && <View style={s.unreadDot} />}
-                </View>
-              </Pressable>
-            ))}
-          </View>
-        ))}
-      </ScrollView>
+      {/* List */}
+      <FlatList
+        data={filtered}
+        keyExtractor={i => i.id}
+        contentContainerStyle={{ paddingHorizontal: 16, paddingTop: 8, paddingBottom: insets.bottom + 100 }}
+        showsVerticalScrollIndicator={false}
+        renderItem={({ item }) => (
+          <Pressable style={({ pressed }) => [s.notifRow, item.unread && s.notifUnread, pressed && { opacity: 0.8 }]}>
+            <View style={[s.iconWrap, { backgroundColor: item.color + "22", borderColor: item.color + "44" }]}>
+              <MaterialIcons name={item.icon as any} size={20} color={item.color} />
+            </View>
+            <View style={{ flex: 1 }}>
+              <View style={s.notifHeader}>
+                <Text style={s.notifTitle} numberOfLines={1}>{item.title}</Text>
+                {item.unread && <View style={s.unreadDot} />}
+              </View>
+              <Text style={s.notifBody} numberOfLines={2}>{item.body}</Text>
+              <Text style={s.notifTime}>{item.time}</Text>
+            </View>
+          </Pressable>
+        )}
+        ItemSeparatorComponent={() => <View style={{ height: 8 }} />}
+      />
     </View>
   );
 }
 
 const s = StyleSheet.create({
-  root: { flex: 1, backgroundColor: "#111" },
-  header: {
-    height: 60, flexDirection: "row", alignItems: "center",
-    paddingHorizontal: 16, gap: 12, marginTop: 48,
-    borderBottomWidth: 1, borderBottomColor: "#222",
-  },
-  backBtn: { width: 32, height: 32, justifyContent: "center", alignItems: "center" },
-  backText: { color: "#FFF", fontSize: 24 },
-  headerTitle: { flex: 1, color: "#FFF", fontSize: 18, fontWeight: "600" },
-  markAllText: { color: "#888", fontSize: 13 },
-  filterRow: { paddingHorizontal: 20, paddingVertical: 12, gap: 8 },
-  filterChip: { paddingHorizontal: 16, paddingVertical: 8, borderRadius: 16, backgroundColor: "#1A1A1A", borderWidth: 1, borderColor: "#333" },
-  filterActive: { backgroundColor: "#333", borderColor: "#666" },
-  filterText: { color: "#888", fontSize: 13 },
-  filterTextActive: { color: "#FFF", fontWeight: "600" },
-  dateLabel: { color: "#666", fontSize: 12, fontWeight: "600", letterSpacing: 1, paddingHorizontal: 20, paddingTop: 16, paddingBottom: 8 },
-  notifRow: {
-    flexDirection: "row", alignItems: "center", gap: 12,
-    paddingHorizontal: 20, paddingVertical: 14, minHeight: 88,
-    borderBottomWidth: 1, borderBottomColor: "#1A1A1A",
-  },
-  notifUnread: { backgroundColor: "rgba(255,255,255,0.03)" },
-  notifIcon: { width: 44, height: 44, borderRadius: 12, backgroundColor: "#1A1A1A", justifyContent: "center", alignItems: "center" },
-  notifTitle: { color: "#FFF", fontSize: 15, fontWeight: "600" },
-  notifBody: { color: "#888", fontSize: 13, marginTop: 2 },
-  notifRight: { alignItems: "flex-end", gap: 6 },
-  notifTime: { color: "#666", fontSize: 11 },
-  unreadDot: { width: 8, height: 8, borderRadius: 4, backgroundColor: "#3B82F6" },
+  root: { flex: 1, backgroundColor: DS.bg },
+  header: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 20, paddingBottom: 12 },
+  title: { fontSize: 24, fontFamily: "Chillax-Bold", color: DS.white },
+  markAllBtn: { paddingVertical: 6, paddingHorizontal: 12 },
+  markAllText: { fontSize: 13, fontFamily: "Satoshi-Medium", color: DS.purple },
+  filtersWrap: { flexDirection: "row", paddingHorizontal: 16, gap: 8, marginBottom: 8 },
+  chip: { paddingHorizontal: 14, paddingVertical: 6, borderRadius: 20, backgroundColor: DS.surface, borderWidth: 1, borderColor: DS.border },
+  chipActive: { backgroundColor: "rgba(100,67,244,0.2)", borderColor: DS.purple },
+  chipText: { fontSize: 12, fontFamily: "Satoshi-Medium", color: DS.muted },
+  chipTextActive: { color: DS.white },
+  notifRow: { flexDirection: "row", alignItems: "flex-start", gap: 12, padding: 14, borderRadius: 16, backgroundColor: DS.surface, borderWidth: 1, borderColor: DS.border },
+  notifUnread: { borderColor: "rgba(100,67,244,0.35)", backgroundColor: "rgba(100,67,244,0.08)" },
+  iconWrap: { width: 44, height: 44, borderRadius: 12, justifyContent: "center", alignItems: "center", borderWidth: 1 },
+  notifHeader: { flexDirection: "row", alignItems: "center", gap: 6, marginBottom: 3 },
+  notifTitle: { flex: 1, fontSize: 14, fontFamily: "Satoshi-Bold", color: DS.white },
+  unreadDot: { width: 8, height: 8, borderRadius: 4, backgroundColor: DS.pink },
+  notifBody: { fontSize: 13, fontFamily: "Satoshi-Regular", color: DS.muted, lineHeight: 18, marginBottom: 4 },
+  notifTime: { fontSize: 11, fontFamily: "Satoshi-Regular", color: DS.placeholder },
 });

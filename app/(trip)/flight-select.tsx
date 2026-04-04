@@ -1,4 +1,4 @@
-// Screen 22 — Flight Select — STATIC WIREFRAME
+// Screen 22 — Flight Select — STATIC 
 // Route: /(trip)/flight-select | Mode: Planning
 // Spec: Flight type tabs, Origin/Dest swap, Class chips, Flight cards 160px, Skip link
 

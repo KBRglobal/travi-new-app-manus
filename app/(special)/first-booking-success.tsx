@@ -1,4 +1,4 @@
-// Screen 75 — First Booking Success — STATIC WIREFRAME
+// Screen 75 — First Booking Success — STATIC 
 // Confetti, trip card 180px, achievement badge, auto-dismiss 5s
 import { View, Text, StyleSheet, Pressable } from "react-native";
 

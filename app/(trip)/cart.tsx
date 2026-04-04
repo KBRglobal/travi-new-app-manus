@@ -1,4 +1,4 @@
-// Screen 27 — Cart / Trip Review — STATIC WIREFRAME
+// Screen 27 — Cart / Trip Review — STATIC 
 import { View, Text, StyleSheet, Pressable, ScrollView } from "react-native";
 
 const FLIGHTS = [

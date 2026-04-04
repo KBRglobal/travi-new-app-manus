@@ -1,4 +1,4 @@
-// Screen 74 — DNA Completion Celebration — STATIC WIREFRAME
+// Screen 74 — DNA Completion Celebration — STATIC 
 // Confetti, DNA badge 160px, top 3 dimensions, auto-enable CTA 3s
 import { View, Text, StyleSheet, Pressable } from "react-native";
 

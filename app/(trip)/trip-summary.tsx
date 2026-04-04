@@ -1,4 +1,4 @@
-// Screen 45 — Trip Summary — STATIC WIREFRAME
+// Screen 45 — Trip Summary — STATIC 
 // Hero 200px photo collage, Highlights scroll 300px, Map summary 220px, Expenses donut 200px, DNA Impact 160px
 import { View, Text, StyleSheet, Pressable, ScrollView } from "react-native";
 

@@ -85,7 +85,7 @@ const UPSELLS: UpsellItem[] = [
     subtitle: "Upgrade to Deluxe Sea View — only 2 left",
     cashback: "$25 back",
     price: "$120",
-    color: "#EC4899",
+    color: "#F94498",
     booked: false,
   },
   {
@@ -461,7 +461,7 @@ export default function TripHubScreen() {
               activeOpacity={0.85}
             >
               <LinearGradient
-                colors={["#8B5CF6", "#EC4899"]}
+                colors={["#6443F4", "#F94498"]}
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 0 }}
                 style={styles.itineraryBtnGradient}

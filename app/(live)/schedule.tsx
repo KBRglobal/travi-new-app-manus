@@ -198,7 +198,7 @@ export default function ScheduleScreen() {
 
   return (
     <View style={[S.container, { paddingTop: insets.top }]}>
-      <LinearGradient colors={["#24103E", "#1A0A30", "#1A0A3D"]} style={StyleSheet.absoluteFillObject} />
+      <LinearGradient colors={["#24103E", "rgba(36,16,62,0.55)", "#1A0A3D"]} style={StyleSheet.absoluteFillObject} />
       <View style={S.orb1} />
 
       {/* Header */}

@@ -300,7 +300,7 @@ export default function MemoryHubScreen() {
           {[
             { mood: "🤩 Amazed", pct: 45, color: "#F59E0B" },
             { mood: "😍 In Love", pct: 30, color: "#F94498" },
-            { mood: "🤯 Mind-Blown", pct: 15, color: "#8B5CF6" },
+            { mood: "🤯 Mind-Blown", pct: 15, color: "#6443F4" },
             { mood: "😌 Relaxed", pct: 10, color: "#22C55E" },
           ].map((m, i) => (
             <View key={i} style={styles.moodRow}>

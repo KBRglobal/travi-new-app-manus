@@ -1,4 +1,4 @@
-// Screen 50 — Transaction History — STATIC WIREFRAME
+// Screen 50 — Transaction History — STATIC 
 // Summary row 80px, Filter chips, Month-grouped rows 96px
 import { View, Text, StyleSheet, Pressable, ScrollView } from "react-native";
 

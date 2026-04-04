@@ -1,4 +1,4 @@
-// Screen 70 — Loading Matching Engine — STATIC WIREFRAME
+// Screen 70 — Loading Matching Engine — STATIC 
 // Mascot with magnifier, rotating subtext, progress bar, 30s timeout
 import { View, Text, StyleSheet } from "react-native";
 

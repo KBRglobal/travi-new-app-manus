@@ -40,7 +40,7 @@ const DESTINATIONS: Destination[] = [
     name: "Dubai",
     country: "UAE",
     image: require("@/assets/destinations/dubai.jpg"),
-    gradient: ["#F94498", "#7C3AED"],
+    gradient: ["#F94498", "#6443F4"],
     vibe: "Luxury & Skyline",
   },
   {
@@ -64,7 +64,7 @@ const DESTINATIONS: Destination[] = [
     name: "Barcelona",
     country: "Spain",
     image: require("@/assets/destinations/barcelona.jpg"),
-    gradient: ["#A855F7", "#EC4899"],
+    gradient: ["#A855F7", "#F94498"],
     vibe: "Art & Nightlife",
   },
   {
@@ -80,7 +80,7 @@ const DESTINATIONS: Destination[] = [
     name: "Tokyo",
     country: "Japan",
     image: require("@/assets/destinations/tokyo.jpg"),
-    gradient: ["#8B5CF6", "#EC4899"],
+    gradient: ["#6443F4", "#F94498"],
     vibe: "Future & Food",
   },
   {
@@ -213,7 +213,7 @@ export default function DestinationPickScreen() {
           disabled={!selected}
         >
           <LinearGradient
-            colors={selected ? ["#F94498", "#7C3AED"] : ["#2A2A3A", "#2A2A3A"]}
+            colors={selected ? ["#F94498", "#6443F4"] : ["#2A2A3A", "#2A2A3A"]}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 0 }}
             style={styles.ctaGradient}

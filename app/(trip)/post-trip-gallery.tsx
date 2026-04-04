@@ -1,4 +1,4 @@
-// Screen 47 — Photo Gallery Post-Trip — STATIC WIREFRAME
+// Screen 47 — Photo Gallery Post-Trip — STATIC 
 // Album info 100px, Sorting tabs, 3-col grid, Highlight Video, Multi-select
 import { View, Text, StyleSheet, Pressable, ScrollView } from "react-native";
 

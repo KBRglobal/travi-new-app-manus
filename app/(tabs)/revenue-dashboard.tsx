@@ -349,7 +349,7 @@ const styles = StyleSheet.create({
   },
   kpiCard: {
     width: (width - 42) / 2,
-    backgroundColor: "#1e2022", borderRadius: 16, padding: 14,
+    backgroundColor: "rgba(36,16,62,0.55)", borderRadius: 16, padding: 14,
     borderWidth: 1, borderColor: "rgba(255,255,255,0.12)",
   },
   kpiIconBox: {
@@ -361,7 +361,7 @@ const styles = StyleSheet.create({
   kpiChange: { fontSize: 12, fontFamily: "Chillax-Semibold", fontWeight: "700", marginTop: 4 },
 
   chartCard: {
-    backgroundColor: "#1e2022", borderRadius: 16, padding: 16,
+    backgroundColor: "rgba(36,16,62,0.55)", borderRadius: 16, padding: 16,
     borderWidth: 1, borderColor: "rgba(255,255,255,0.12)",
   },
   chartTitle: { fontSize: 16, fontFamily: "Chillax-Semibold", fontWeight: "700", color: "#ECEDEE" },
@@ -379,7 +379,7 @@ const styles = StyleSheet.create({
 
   summaryRow: { flexDirection: "row", gap: 8 },
   summaryCard: {
-    flex: 1, backgroundColor: "#1e2022", borderRadius: 14, padding: 12,
+    flex: 1, backgroundColor: "rgba(36,16,62,0.55)", borderRadius: 14, padding: 12,
     borderWidth: 1, borderColor: "rgba(100,67,244,0.2)", alignItems: "center",
   },
   summaryValue: { fontSize: 16, fontFamily: "Chillax-Bold", fontWeight: "800", color: "#6443F4" },
@@ -433,7 +433,7 @@ const styles = StyleSheet.create({
   destBar: { height: 2, borderRadius: 1 },
 
   geoCard: {
-    backgroundColor: "#1e2022", borderRadius: 16, padding: 16,
+    backgroundColor: "rgba(36,16,62,0.55)", borderRadius: 16, padding: 16,
     borderWidth: 1, borderColor: "rgba(255,255,255,0.12)",
   },
   geoRow: { flexDirection: "row", justifyContent: "space-around", marginTop: 16 },

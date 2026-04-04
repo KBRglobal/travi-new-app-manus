@@ -54,7 +54,7 @@ const CATEGORY_COLORS: Record<string, string> = {
   beach: "#4ECDC4",
   food: "#FFD93D",
   culture: "#A78BFA",
-  shopping: "#F472B6",
+  shopping: "#F94498",
   nature: "#34D399",
 };
 

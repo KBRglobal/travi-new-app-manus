@@ -1,4 +1,4 @@
-// Screen 53 — Membership — STATIC WIREFRAME
+// Screen 53 — Membership — STATIC 
 // Current tier 160px, 3-col comparison table, FAQ accordion, Cancel link
 import { View, Text, StyleSheet, Pressable, ScrollView } from "react-native";
 

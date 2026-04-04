@@ -132,7 +132,7 @@ const SAMPLE_ITINERARY: DayPlan[] = [
       { mode: "boat", duration: "10 min", distance: "Dubai Creek", cost: "$1" } as Transfer,
       {
         id: "s9", time: "19:00", name: "Al Fahidi Historic District", type: "History",
-        duration: "1 hr", image: require("@/assets/destinations/rome.jpg"), color: "#8B5CF6",
+        duration: "1 hr", image: require("@/assets/destinations/rome.jpg"), color: "#6443F4",
         notes: "Wind towers and art galleries. Free entry.",
       },
     ],
@@ -168,7 +168,7 @@ const SAMPLE_ITINERARY: DayPlan[] = [
       { mode: "metro", duration: "18 min", distance: "8 km", cost: "$2" } as Transfer,
       {
         id: "s14", time: "20:00", name: "Dubai Marina Night Walk", type: "Nightlife",
-        duration: "2 hrs", image: require("@/assets/destinations/tokyo.jpg"), color: "#8B5CF6",
+        duration: "2 hrs", image: require("@/assets/destinations/tokyo.jpg"), color: "#6443F4",
         notes: "Yacht-lined waterfront. Dozens of restaurants.",
       },
     ],

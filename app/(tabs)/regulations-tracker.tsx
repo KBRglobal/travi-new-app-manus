@@ -441,7 +441,7 @@ const styles = StyleSheet.create({
     flexDirection: "row", paddingHorizontal: 16, paddingVertical: 12, gap: 8,
   },
   statCard: {
-    flex: 1, backgroundColor: "#1e2022", borderRadius: 12, padding: 10,
+    flex: 1, backgroundColor: "rgba(36,16,62,0.55)", borderRadius: 12, padding: 10,
     alignItems: "center", borderWidth: 1, borderColor: "rgba(255,255,255,0.12)",
   },
   statCount: { fontSize: 20, fontFamily: "Chillax-Bold", fontWeight: "800" },
@@ -450,7 +450,7 @@ const styles = StyleSheet.create({
   searchRow: {
     flexDirection: "row", alignItems: "center", gap: 10,
     marginHorizontal: 16, marginBottom: 8,
-    backgroundColor: "#1e2022", borderRadius: 12, paddingHorizontal: 14, paddingVertical: 10,
+    backgroundColor: "rgba(36,16,62,0.55)", borderRadius: 12, paddingHorizontal: 14, paddingVertical: 10,
     borderWidth: 1, borderColor: "rgba(255,255,255,0.12)",
   },
   searchInput: { flex: 1, fontSize: 14, fontFamily: "Satoshi-Regular", color: "#ECEDEE" },
@@ -471,7 +471,7 @@ const styles = StyleSheet.create({
   cardList: { paddingHorizontal: 16, gap: 10 },
 
   regCard: {
-    backgroundColor: "#1e2022", borderRadius: 16, padding: 14,
+    backgroundColor: "rgba(36,16,62,0.55)", borderRadius: 16, padding: 14,
     borderWidth: 1, borderColor: "rgba(255,255,255,0.12)",
   },
   regCardCritical: { borderColor: "rgba(239,68,68,0.3)" },

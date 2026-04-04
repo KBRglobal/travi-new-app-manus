@@ -1,109 +1,106 @@
-// Screen 55 — Settings — STATIC WIREFRAME
-// Header 60px, Sections: Account / Notifications / Privacy / App Prefs / AI Settings / Storage / Support / Logout
-import { View, Text, StyleSheet, Pressable, ScrollView } from "react-native";
+// Screen 55 — Settings
+import React from "react";
+import { View, Text, StyleSheet, Pressable, ScrollView, Switch } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
+import { MaterialIcons } from "@expo/vector-icons";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useRouter } from "expo-router";
+import { useState } from "react";
+
+const DS = { bg: "#0A0514", surface: "rgba(36,16,62,0.55)", surfaceHigh: "rgba(50,20,80,0.7)", border: "rgba(123,68,230,0.22)", borderStrong: "rgba(100,67,244,0.4)", purple: "#6443F4", pink: "#F94498", success: "#02A65C", warning: "#FF9327", error: "#FF6B6B", info: "#01BEFF", white: "#FFFFFF", secondary: "#D3CFD8", muted: "#A79FB2", placeholder: "#7B6A94" };
 
 const SECTIONS = [
   { title: "Account", items: [
-    { label: "Change Email", arrow: true },
-    { label: "Change Password", arrow: true },
-    { label: "Two-Factor Authentication", toggle: true, on: false },
-    { label: "Connected Accounts", arrow: true },
+    { label: "Change Email", icon: "email", route: "/(settings)/edit-profile" },
+    { label: "Change Password", icon: "lock-outline", route: "/(settings)/change-password" },
+    { label: "Privacy & Security", icon: "security", route: "/(settings)/privacy-security" },
   ]},
   { title: "Notifications", items: [
-    { label: "Push Notifications", toggle: true, on: true },
-    { label: "Email Notifications", toggle: true, on: true },
-    { label: "Trip Reminders", toggle: true, on: true },
-    { label: "Price Alerts", toggle: true, on: false },
-    { label: "Marketing", toggle: true, on: false },
-  ]},
-  { title: "Privacy", items: [
-    { label: "Location Services", arrow: true },
-    { label: "Data Sharing", toggle: true, on: false },
-    { label: "Analytics", toggle: true, on: true },
-    { label: "Download My Data", arrow: true },
+    { label: "Push Notifications", icon: "notifications-none", route: "/(settings)/notifications" },
+    { label: "Email Alerts", icon: "mail-outline", route: "/(settings)/notifications" },
   ]},
   { title: "App Preferences", items: [
-    { label: "Language", value: "English", arrow: true },
-    { label: "Currency", value: "EUR (E)", arrow: true },
-    { label: "Temperature", value: "Celsius", arrow: true },
-    { label: "Dark Mode", value: "Auto", arrow: true },
+    { label: "Language", icon: "language", route: "/(settings)/language-selector" },
+    { label: "Currency", icon: "attach-money", route: "/(settings)/currency-selector" },
   ]},
   { title: "AI Settings", items: [
-    { label: "AI Recommendations", toggle: true, on: true },
-    { label: "Personalization Level", value: "High", arrow: true },
-    { label: "Voice Assistant", toggle: true, on: false },
-  ]},
-  { title: "Storage", items: [
-    { label: "Cache Size", value: "124 MB", arrow: true },
-    { label: "Clear Cache", arrow: true },
-    { label: "Offline Maps", value: "2 maps", arrow: true },
+    { label: "Travel DNA", icon: "science", route: "/(tabs)/dna-management" },
+    { label: "AI Recommendations", icon: "auto-awesome", route: "/(tabs)/dna-management" },
   ]},
   { title: "Support", items: [
-    { label: "Help Center", arrow: true },
-    { label: "Contact Us", arrow: true },
-    { label: "Report a Bug", arrow: true },
-    { label: "Rate the App", arrow: true },
-    { label: "Terms of Service", arrow: true },
-    { label: "Privacy Policy", arrow: true },
+    { label: "Help Center", icon: "help-outline", route: "/(tabs)/help" },
+    { label: "Contact Support", icon: "support-agent", route: "/(tabs)/support" },
+    { label: "Rate TRAVI", icon: "star-outline", route: "/(tabs)/support" },
   ]},
 ];
 
 export default function SettingsScreen() {
+  const insets = useSafeAreaInsets();
+  const router = useRouter();
+  const [notifications, setNotifications] = useState(true);
+  const [aiSuggestions, setAiSuggestions] = useState(true);
+
   return (
-    <View style={s.root}>
-      <View style={s.header}>
-        <Pressable style={s.backBtn}><Text style={s.backText}>{"<"}</Text></Pressable>
-        <Text style={s.headerTitle}>Settings</Text>
-        <View style={{ width: 32 }} />
+    <ScrollView style={{ flex: 1, backgroundColor: DS.bg }} contentContainerStyle={{ paddingBottom: insets.bottom + 100 }} showsVerticalScrollIndicator={false}>
+      <View style={[s.header, { paddingTop: insets.top + 8 }]}>
+        <Text style={s.title}>Settings</Text>
       </View>
 
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 60 }}>
+      <View style={{ paddingHorizontal: 16 }}>
         {SECTIONS.map((section) => (
           <View key={section.title} style={s.section}>
-            <Text style={s.sectionTitle}>{section.title}</Text>
-            {section.items.map((item) => (
-              <Pressable key={item.label} style={s.row}>
-                <Text style={s.rowLabel}>{item.label}</Text>
-              {(item as any).toggle ? (
-                  <View style={[s.toggle, (item as any).on && s.toggleOn]}>
-                    <View style={[s.toggleKnob, (item as any).on && s.toggleKnobOn]} />
+            <Text style={s.sectionLabel}>{section.title}</Text>
+            <View style={s.sectionCard}>
+              {section.items.map((item, idx) => (
+                <Pressable key={item.label} style={({ pressed }) => [s.row, idx < section.items.length - 1 && s.rowBorder, pressed && { opacity: 0.7 }]} onPress={() => router.push(item.route as any)}>
+                  <View style={s.iconWrap}>
+                    <MaterialIcons name={item.icon as any} size={18} color={DS.purple} />
                   </View>
-                ) : (
-                  <View style={s.rowRight}>
-                    {(item as any).value && <Text style={s.rowValue}>{(item as any).value}</Text>}
-                    {(item as any).arrow && <Text style={s.rowArrow}>{">"}  </Text>}
-                  </View>
-                )}
-              </Pressable>
-            ))}
+                  <Text style={s.rowLabel}>{item.label}</Text>
+                  <MaterialIcons name="chevron-right" size={20} color={DS.muted} />
+                </Pressable>
+              ))}
+            </View>
           </View>
         ))}
 
-        <Pressable style={s.logoutBtn}><Text style={s.logoutText}>Log Out</Text></Pressable>
-        <Text style={s.version}>TRAVI v1.0.0 | Build 2026.04</Text>
-      </ScrollView>
-    </View>
+        {/* Toggles */}
+        <View style={s.section}>
+          <Text style={s.sectionLabel}>Quick Toggles</Text>
+          <View style={s.sectionCard}>
+            <View style={[s.row, s.rowBorder]}>
+              <View style={s.iconWrap}><MaterialIcons name="notifications" size={18} color={DS.purple} /></View>
+              <Text style={s.rowLabel}>Push Notifications</Text>
+              <Switch value={notifications} onValueChange={setNotifications} trackColor={{ false: DS.surface, true: DS.purple }} thumbColor={DS.white} />
+            </View>
+            <View style={s.row}>
+              <View style={s.iconWrap}><MaterialIcons name="auto-awesome" size={18} color={DS.purple} /></View>
+              <Text style={s.rowLabel}>AI Suggestions</Text>
+              <Switch value={aiSuggestions} onValueChange={setAiSuggestions} trackColor={{ false: DS.surface, true: DS.purple }} thumbColor={DS.white} />
+            </View>
+          </View>
+        </View>
+
+        {/* Logout */}
+        <Pressable style={({ pressed }) => [s.logoutBtn, pressed && { opacity: 0.7 }]} onPress={() => router.replace("/(auth)/sign-up" as any)}>
+          <MaterialIcons name="logout" size={18} color={DS.error} style={{ marginRight: 8 }} />
+          <Text style={s.logoutText}>Sign Out</Text>
+        </Pressable>
+      </View>
+    </ScrollView>
   );
 }
 
 const s = StyleSheet.create({
-  root: { flex: 1, backgroundColor: "#111" },
-  header: { height: 60, flexDirection: "row", alignItems: "center", paddingHorizontal: 16, gap: 12, marginTop: 48, borderBottomWidth: 1, borderBottomColor: "#222" },
-  backBtn: { width: 32, height: 32, justifyContent: "center", alignItems: "center" },
-  backText: { color: "#FFF", fontSize: 24 },
-  headerTitle: { flex: 1, color: "#FFF", fontSize: 18, fontWeight: "600", textAlign: "center" },
-  section: { paddingHorizontal: 20, marginTop: 24 },
-  sectionTitle: { color: "#FFF", fontSize: 16, fontWeight: "700", marginBottom: 8 },
-  row: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", height: 48, borderBottomWidth: 1, borderBottomColor: "#1A1A1A" },
-  rowLabel: { color: "#FFF", fontSize: 15 },
-  rowRight: { flexDirection: "row", alignItems: "center", gap: 6 },
-  rowValue: { color: "#888", fontSize: 14 },
-  rowArrow: { color: "#555", fontSize: 14 },
-  toggle: { width: 48, height: 28, borderRadius: 14, backgroundColor: "#333", justifyContent: "center", paddingHorizontal: 2 },
-  toggleOn: { backgroundColor: "#555" },
-  toggleKnob: { width: 24, height: 24, borderRadius: 12, backgroundColor: "#666" },
-  toggleKnobOn: { backgroundColor: "#FFF", alignSelf: "flex-end" },
-  logoutBtn: { alignSelf: "center", marginTop: 28, paddingHorizontal: 24, paddingVertical: 12, borderRadius: 12, borderWidth: 1, borderColor: "#F8717140" },
-  logoutText: { color: "#F87171", fontSize: 15, fontWeight: "600" },
-  version: { color: "#555", fontSize: 11, textAlign: "center", marginTop: 16 },
+  header: { paddingHorizontal: 20, paddingBottom: 16 },
+  title: { fontSize: 28, fontFamily: "Chillax-Bold", color: DS.white },
+  section: { marginBottom: 20 },
+  sectionLabel: { fontSize: 12, fontFamily: "Satoshi-Medium", color: DS.muted, marginBottom: 8, marginLeft: 4, textTransform: "uppercase", letterSpacing: 0.8 },
+  sectionCard: { backgroundColor: DS.surface, borderWidth: 1, borderColor: DS.border, borderRadius: 16, overflow: "hidden" },
+  row: { flexDirection: "row", alignItems: "center", paddingHorizontal: 16, paddingVertical: 14, gap: 12 },
+  rowBorder: { borderBottomWidth: 1, borderBottomColor: DS.border },
+  iconWrap: { width: 32, height: 32, borderRadius: 8, backgroundColor: "rgba(100,67,244,0.12)", justifyContent: "center", alignItems: "center" },
+  rowLabel: { flex: 1, fontSize: 15, fontFamily: "Satoshi-Medium", color: DS.white },
+  logoutBtn: { flexDirection: "row", alignItems: "center", justifyContent: "center", height: 52, borderRadius: 16, borderWidth: 1, borderColor: "rgba(255,107,107,0.25)", backgroundColor: "rgba(255,107,107,0.08)", marginBottom: 16 },
+  logoutText: { fontSize: 15, fontFamily: "Satoshi-Bold", color: DS.error },
 });

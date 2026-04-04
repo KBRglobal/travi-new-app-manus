@@ -27,8 +27,8 @@ interface Expense {
 const CATEGORIES = [
   { id: "food", label: "Food", icon: "🍜", color: "#F59E0B" },
   { id: "transport", label: "Transport", icon: "🚕", color: "#3B82F6" },
-  { id: "activity", label: "Activity", icon: "🎡", color: "#8B5CF6" },
-  { id: "hotel", label: "Hotel", icon: "🏨", color: "#EC4899" },
+  { id: "activity", label: "Activity", icon: "🎡", color: "#6443F4" },
+  { id: "hotel", label: "Hotel", icon: "🏨", color: "#F94498" },
   { id: "shopping", label: "Shopping", icon: "🛍️", color: "#10B981" },
   { id: "other", label: "Other", icon: "💳", color: "#6B7280" },
 ];

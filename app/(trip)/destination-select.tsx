@@ -1,4 +1,4 @@
-// Screen 20 — Destination Select — STATIC WIREFRAME
+// Screen 20 — Destination Select — STATIC 
 // Route: /(trip)/destination-select | Mode: Planning
 // Spec: Gradient header + search, 2-col grid (4:5 ratio), Selection bar slides up on pick
 

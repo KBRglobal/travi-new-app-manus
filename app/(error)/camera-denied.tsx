@@ -1,40 +1,46 @@
-// Screen 65 — Camera Denied — STATIC WIREFRAME
-// Inline in KYC context
+// Screen 65 — Camera Denied
 import { View, Text, StyleSheet, Pressable } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
+import { MaterialIcons } from "@expo/vector-icons";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useRouter } from "expo-router";
+
+const DS = { bg: "#0A0514", surface: "rgba(36,16,62,0.55)", border: "rgba(123,68,230,0.22)", purple: "#6443F4", pink: "#F94498", success: "#02A65C", warning: "#FF9327", error: "#FF6B6B", info: "#01BEFF", white: "#FFFFFF", secondary: "#D3CFD8", muted: "#A79FB2" };
 
 export default function CameraDeniedScreen() {
+  const insets = useSafeAreaInsets();
+  const router = useRouter();
   return (
-    <View style={s.root}>
-      <View style={s.header}>
-        <Pressable style={s.backBtn}><Text style={s.backText}>{"<"}</Text></Pressable>
-        <Text style={s.headerTitle}>Verify Identity</Text>
-        <View style={{ width: 32 }} />
+    <View style={[s.root, { paddingTop: insets.top, paddingBottom: insets.bottom + 24 }]}>
+      <View style={s.iconWrap}>
+        <LinearGradient colors={["rgba(249,68,152,0.2)", "rgba(249,68,152,0.05)"]} style={s.iconGrad}>
+          <MaterialIcons name="no-photography" size={56} color={DS.pink} />
+        </LinearGradient>
       </View>
-      <View style={s.content}>
-        <View style={s.iconWrap}><Text style={s.icon}>📷</Text><Text style={s.iconX}>✕</Text></View>
-        <Text style={s.title}>Camera Access Required</Text>
-        <Text style={s.body}>We need camera access to scan your ID document. Please enable it in your device settings.</Text>
-        <Pressable style={s.settingsBtn}><Text style={s.settingsText}>Open Settings</Text></Pressable>
-        <Pressable style={s.uploadBtn}><Text style={s.uploadText}>Upload from Gallery Instead</Text></Pressable>
-      </View>
+      <Text style={s.title}>Camera Access Denied</Text>
+      <Text style={s.body}>TRAVI needs camera access for document verification.{'\n'}Please enable it in your device settings.</Text>
+      <Pressable style={({ pressed }) => [s.primaryBtn, pressed && { opacity: 0.8, transform: [{ scale: 0.97 }] }]} onPress={() => router.back()}>
+        <LinearGradient colors={[DS.purple, DS.pink]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={s.btnGrad}>
+          <MaterialIcons name="settings" size={18} color={DS.white} style={{ marginRight: 8 }} />
+          <Text style={s.btnText}>Open Settings</Text>
+        </LinearGradient>
+      </Pressable>
+      <Pressable style={s.secondaryBtn} onPress={() => router.back()}>
+        <Text style={s.secondaryText}>Skip for Now</Text>
+      </Pressable>
     </View>
   );
 }
 
 const s = StyleSheet.create({
-  root: { flex: 1, backgroundColor: "#111" },
-  header: { height: 60, flexDirection: "row", alignItems: "center", paddingHorizontal: 16, gap: 12, marginTop: 48, borderBottomWidth: 1, borderBottomColor: "#222" },
-  backBtn: { width: 32, height: 32, justifyContent: "center", alignItems: "center" },
-  backText: { color: "#FFF", fontSize: 24 },
-  headerTitle: { flex: 1, color: "#FFF", fontSize: 18, fontWeight: "600", textAlign: "center" },
-  content: { flex: 1, justifyContent: "center", alignItems: "center", padding: 40 },
-  iconWrap: { width: 120, height: 120, borderRadius: 30, backgroundColor: "#1A1A1A", borderWidth: 1, borderColor: "#333", justifyContent: "center", alignItems: "center", marginBottom: 24 },
-  icon: { fontSize: 48 },
-  iconX: { position: "absolute", bottom: 20, right: 28, color: "#F87171", fontSize: 20 },
-  title: { color: "#FFF", fontSize: 20, fontWeight: "800", textAlign: "center" },
-  body: { color: "#888", fontSize: 14, textAlign: "center", lineHeight: 22, marginTop: 8 },
-  settingsBtn: { marginTop: 24, height: 48, paddingHorizontal: 32, borderRadius: 24, backgroundColor: "#333", borderWidth: 1, borderColor: "#555", justifyContent: "center", alignItems: "center" },
-  settingsText: { color: "#FFF", fontSize: 15, fontWeight: "600" },
-  uploadBtn: { marginTop: 12 },
-  uploadText: { color: "#888", fontSize: 14 },
+  root: { flex: 1, backgroundColor: DS.bg, justifyContent: "center", alignItems: "center", paddingHorizontal: 40 },
+  iconWrap: { marginBottom: 28 },
+  iconGrad: { width: 120, height: 120, borderRadius: 30, justifyContent: "center", alignItems: "center", borderWidth: 1, borderColor: "rgba(249,68,152,0.25)" },
+  title: { fontSize: 26, fontFamily: "Chillax-Bold", color: DS.white, marginBottom: 12, textAlign: "center" },
+  body: { fontSize: 15, fontFamily: "Satoshi-Regular", color: DS.muted, textAlign: "center", lineHeight: 22, marginBottom: 32 },
+  primaryBtn: { height: 52, paddingHorizontal: 40, borderRadius: 26, overflow: "hidden", shadowColor: DS.pink, shadowOffset: { width: 0, height: 6 }, shadowOpacity: 0.25, shadowRadius: 12, elevation: 6, marginBottom: 12 },
+  btnGrad: { flex: 1, flexDirection: "row", justifyContent: "center", alignItems: "center" },
+  btnText: { fontSize: 15, fontFamily: "Satoshi-Bold", color: DS.white },
+  secondaryBtn: { paddingVertical: 12, paddingHorizontal: 24 },
+  secondaryText: { fontSize: 14, fontFamily: "Satoshi-Regular", color: DS.muted },
 });

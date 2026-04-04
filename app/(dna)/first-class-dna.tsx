@@ -215,7 +215,7 @@ const MODULES: Module[] = [
     name: "Visual",
     subtitle: "Aesthetic preferences",
     icon: "🎨",
-    color: "#EC4899",
+    color: "#F94498",
     questions: [
       {
         id: "vi1",
@@ -342,7 +342,7 @@ const MODULES: Module[] = [
     name: "Sensory",
     subtitle: "Food, music & tactile preferences",
     icon: "🎵",
-    color: "#8B5CF6",
+    color: "#6443F4",
     questions: [
       {
         id: "se1",
@@ -618,7 +618,7 @@ function ResultScreen({ scores }: { scores: DNAScores }) {
     adventurer:   { label: "Adventurer",   icon: "⚡", color: "#EF4444" },
     culturalist:  { label: "Culturalist",  icon: "🏛️", color: "#A855F7" },
     foodie:       { label: "Foodie",       icon: "🍜", color: "#F59E0B" },
-    photographer: { label: "Photographer", icon: "📸", color: "#EC4899" },
+    photographer: { label: "Photographer", icon: "📸", color: "#F94498" },
     historian:    { label: "Historian",    icon: "📜", color: "#D97706" },
     naturalist:   { label: "Naturalist",   icon: "🌿", color: "#10B981" },
   };

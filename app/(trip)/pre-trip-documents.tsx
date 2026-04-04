@@ -1,4 +1,4 @@
-// Screen 34 — Pre-Trip Documents — STATIC WIREFRAME
+// Screen 34 — Pre-Trip Documents — STATIC 
 // Status card 100px, Document cards 100px, Status badges, Export PDF
 import { View, Text, StyleSheet, Pressable, ScrollView } from "react-native";
 

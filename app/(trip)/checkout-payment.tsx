@@ -1,4 +1,4 @@
-// Screen 30 — Checkout Phase 2 — STATIC WIREFRAME
+// Screen 30 — Checkout Phase 2 — STATIC 
 // Progress step 2, Billing address, Terms, Pay Now button + processing overlay
 import { View, Text, StyleSheet, Pressable, ScrollView } from "react-native";
 

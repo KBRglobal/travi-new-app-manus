@@ -41,7 +41,7 @@ interface Badge {
 const RARITY_COLORS = {
   Common: "#6B7280",
   Rare: "#3B82F6",
-  Epic: "#8B5CF6",
+  Epic: "#6443F4",
   Legendary: "#F59E0B",
 };
 

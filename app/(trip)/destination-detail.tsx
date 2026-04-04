@@ -1,174 +1,134 @@
-// Screen 14 — Destination Detail — STATIC WIREFRAME
-// Route: /(trip)/destination-detail | Mode: Discovery
-// Spec: Hero 50% parallax, Floating header, DNA badge, stats row
-//       Sections: Why This For You, Tags, Overview, Photo Gallery (3-col),
-//       Best Time (month chips), Top Attractions, Price, Similar Destinations
-//       Fixed bottom: price + Plan Your Trip CTA
+// Screen — Destination Detail
+import React from "react";
+import { View, Text, StyleSheet, Pressable, ScrollView, Image } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
+import { MaterialIcons } from "@expo/vector-icons";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useRouter } from "expo-router";
 
-import { View, Text, StyleSheet, Pressable, ScrollView } from "react-native";
+const DS = { bg: "#0A0514", surface: "rgba(36,16,62,0.55)", surfaceHigh: "rgba(50,20,80,0.7)", border: "rgba(123,68,230,0.22)", borderStrong: "rgba(100,67,244,0.4)", purple: "#6443F4", pink: "#F94498", success: "#02A65C", warning: "#FF9327", error: "#FF6B6B", info: "#01BEFF", white: "#FFFFFF", secondary: "#D3CFD8", muted: "#A79FB2", placeholder: "#7B6A94" };
 
-const TAGS = ["Adventure", "Nature", "Culture", "Beach"];
-const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-const BEST_MONTHS = [3, 4, 5, 8, 9];
-
-const ATTRACTIONS = [
-  { name: "Ubud Rice Terraces", type: "Nature", rating: 4.8 },
-  { name: "Tanah Lot Temple", type: "Culture", rating: 4.7 },
-  { name: "Mount Batur Sunrise", type: "Adventure", rating: 4.9 },
-  { name: "Seminyak Beach", type: "Beach", rating: 4.5 },
+const HIGHLIGHTS = [
+  { icon: "wb-sunny", label: "Best Season", value: "Apr–Oct" },
+  { icon: "attach-money", label: "Avg Budget", value: "$120/day" },
+  { icon: "language", label: "Language", value: "Balinese" },
+  { icon: "access-time", label: "Timezone", value: "UTC+8" },
 ];
 
-const SIMILAR = [
-  { city: "Lombok", country: "Indonesia", match: 89 },
-  { city: "Phuket", country: "Thailand", match: 84 },
-  { city: "Sri Lanka", country: "Sri Lanka", match: 81 },
+const ACTIVITIES = [
+  { id: "1", name: "Tanah Lot Temple", type: "Culture", img: "https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=300&q=80", match: 94 },
+  { id: "2", name: "Tegalalang Rice", type: "Nature", img: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=300&q=80", match: 88 },
+  { id: "3", name: "Seminyak Beach", type: "Beach", img: "https://images.unsplash.com/photo-1520454974749-611d7d931571?w=300&q=80", match: 91 },
 ];
 
 export default function DestinationDetailScreen() {
+  const insets = useSafeAreaInsets();
+  const router = useRouter();
+
   return (
-    <View style={s.root}>
-      <View style={s.floatingHeader}>
-        <Pressable style={s.headerBtn}><Text style={s.headerBtnText}>‹</Text></Pressable>
-        <Text style={s.headerTitle}>Bali</Text>
-        <Pressable style={s.headerBtn}><Text style={s.headerBtnText}>♡</Text></Pressable>
-      </View>
-
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 100 }}>
-        <View style={s.hero}>
-          <Text style={s.heroText}>Bali, Indonesia</Text>
-          <View style={s.dnaBadge}><Text style={s.dnaBadgeText}>96% DNA Match</Text></View>
-        </View>
-
-        <View style={s.statsRow}>
-          <View style={s.stat}><Text style={s.statValue}>€850</Text><Text style={s.statLabel}>From</Text></View>
-          <View style={s.statDivider} />
-          <View style={s.stat}><Text style={s.statValue}>7-10</Text><Text style={s.statLabel}>Days</Text></View>
-          <View style={s.statDivider} />
-          <View style={s.stat}><Text style={s.statValue}>4.8</Text><Text style={s.statLabel}>Rating</Text></View>
-          <View style={s.statDivider} />
-          <View style={s.stat}><Text style={s.statValue}>28°C</Text><Text style={s.statLabel}>Avg Temp</Text></View>
-        </View>
-
-        <View style={s.section}>
-          <Text style={s.sectionTitle}>Why This For You</Text>
-          <View style={s.card}>
-            <Text style={s.cardText}>Based on your DNA profile as an Explorer, Bali matches your love for adventure, nature, and cultural discovery.</Text>
+    <View style={{ flex: 1, backgroundColor: DS.bg }}>
+      <ScrollView contentContainerStyle={{ paddingBottom: insets.bottom + 100 }} showsVerticalScrollIndicator={false}>
+        {/* Hero */}
+        <View style={s.heroWrap}>
+          <Image source={{ uri: "https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=800&q=80" }} style={s.heroImg} />
+          <LinearGradient colors={["rgba(10,5,20,0.3)", "transparent", "rgba(10,5,20,0.95)"]} style={StyleSheet.absoluteFillObject} />
+          <View style={[s.heroHeader, { paddingTop: insets.top + 8 }]}>
+            <Pressable style={s.backBtn} onPress={() => router.back()}>
+              <MaterialIcons name="arrow-back" size={22} color={DS.white} />
+            </Pressable>
+            <Pressable style={s.heartBtn}>
+              <MaterialIcons name="favorite-border" size={22} color={DS.white} />
+            </Pressable>
+          </View>
+          <View style={s.heroContent}>
+            <View style={s.matchBadge}>
+              <Text style={s.matchText}>✦ 96% DNA Match</Text>
+            </View>
+            <Text style={s.heroTitle}>Bali, Indonesia</Text>
+            <View style={s.heroMeta}>
+              <MaterialIcons name="star" size={14} color={DS.warning} />
+              <Text style={s.heroRating}>4.9</Text>
+              <Text style={s.heroDot}>·</Text>
+              <Text style={s.heroReviews}>2,847 reviews</Text>
+            </View>
           </View>
         </View>
 
-        <View style={s.section}>
-          <View style={s.tagRow}>
-            {TAGS.map((t) => (<View key={t} style={s.tag}><Text style={s.tagText}>{t}</Text></View>))}
-          </View>
-        </View>
-
-        <View style={s.section}>
-          <Text style={s.sectionTitle}>Overview</Text>
-          <Text style={s.bodyText}>Bali is an Indonesian island known for its forested volcanic mountains, iconic rice paddies, beaches and coral reefs.</Text>
-        </View>
-
-        <View style={s.section}>
-          <Text style={s.sectionTitle}>Photo Gallery</Text>
-          <View style={s.photoGrid}>
-            {[1, 2, 3, 4, 5, 6].map((i) => (<View key={i} style={s.photoCell}><Text style={s.photoText}>{i}</Text></View>))}
-          </View>
-        </View>
-
-        <View style={s.section}>
-          <Text style={s.sectionTitle}>Best Time to Visit</Text>
-          <View style={s.monthRow}>
-            {MONTHS.map((m, i) => (
-              <View key={m} style={[s.monthChip, BEST_MONTHS.includes(i) && s.monthBest]}>
-                <Text style={[s.monthText, BEST_MONTHS.includes(i) && s.monthTextBest]}>{m}</Text>
+        <View style={{ paddingHorizontal: 16, paddingTop: 20 }}>
+          {/* Highlights */}
+          <View style={s.highlightsRow}>
+            {HIGHLIGHTS.map(h => (
+              <View key={h.label} style={s.highlightCard}>
+                <MaterialIcons name={h.icon as any} size={18} color={DS.purple} />
+                <Text style={s.highlightValue}>{h.value}</Text>
+                <Text style={s.highlightLabel}>{h.label}</Text>
               </View>
             ))}
           </View>
-        </View>
 
-        <View style={s.section}>
-          <Text style={s.sectionTitle}>Top Attractions</Text>
-          {ATTRACTIONS.map((a) => (
-            <View key={a.name} style={s.attractionRow}>
-              <View style={s.attractionIcon}><Text style={{ fontSize: 18 }}>📍</Text></View>
-              <View style={{ flex: 1 }}>
-                <Text style={s.attractionName}>{a.name}</Text>
-                <Text style={s.attractionType}>{a.type}</Text>
-              </View>
-              <Text style={s.attractionRating}>⭐ {a.rating}</Text>
-            </View>
-          ))}
-        </View>
+          {/* About */}
+          <Text style={s.sectionTitle}>About</Text>
+          <Text style={s.aboutText}>Bali is a living postcard, an Indonesian paradise that feels like a fantasy. Immerse yourself in the island's rich culture, stunning rice terraces, and pristine beaches.</Text>
 
-        <View style={s.section}>
-          <Text style={s.sectionTitle}>Similar Destinations</Text>
-          <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: 12 }}>
-            {SIMILAR.map((d) => (
-              <Pressable key={d.city} style={s.similarCard}>
-                <View style={s.similarImage}><Text style={s.imgText}>{d.city}</Text></View>
-                <Text style={s.similarCity}>{d.city}</Text>
-                <Text style={s.similarMatch}>{d.match}% Match</Text>
+          {/* Top Activities */}
+          <Text style={[s.sectionTitle, { marginTop: 24 }]}>Top Activities</Text>
+          <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginHorizontal: -16 }} contentContainerStyle={{ paddingHorizontal: 16, gap: 12 }}>
+            {ACTIVITIES.map(a => (
+              <Pressable key={a.id} style={s.actCard}>
+                <Image source={{ uri: a.img }} style={s.actImg} />
+                <LinearGradient colors={["transparent", "rgba(10,5,20,0.9)"]} style={StyleSheet.absoluteFillObject} />
+                <View style={s.actMatchBadge}>
+                  <Text style={s.actMatchText}>{a.match}%</Text>
+                </View>
+                <Text style={s.actName}>{a.name}</Text>
+                <Text style={s.actType}>{a.type}</Text>
               </Pressable>
             ))}
           </ScrollView>
         </View>
       </ScrollView>
 
-      <View style={s.bottomBar}>
-        <View><Text style={s.bottomLabel}>From</Text><Text style={s.bottomPrice}>€850</Text></View>
-        <Pressable style={s.ctaBtn}><Text style={s.ctaText}>Plan Your Trip</Text></Pressable>
+      {/* CTA */}
+      <View style={[s.ctaWrap, { paddingBottom: insets.bottom + 16 }]}>
+        <Pressable style={({ pressed }) => [s.ctaBtn, pressed && { opacity: 0.85, transform: [{ scale: 0.97 }] }]} onPress={() => router.push("/(trip)/dates-travelers" as any)}>
+          <LinearGradient colors={[DS.purple, DS.pink]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={s.ctaGrad}>
+            <Text style={s.ctaText}>Plan This Trip</Text>
+            <MaterialIcons name="arrow-forward" size={18} color={DS.white} style={{ marginLeft: 8 }} />
+          </LinearGradient>
+        </Pressable>
       </View>
     </View>
   );
 }
 
 const s = StyleSheet.create({
-  root: { flex: 1, backgroundColor: "#111" },
-  floatingHeader: {
-    position: "absolute", top: 0, left: 0, right: 0, zIndex: 10,
-    height: 100, flexDirection: "row", alignItems: "flex-end",
-    paddingHorizontal: 16, paddingBottom: 8, gap: 12,
-  },
-  headerBtn: { width: 36, height: 36, borderRadius: 18, backgroundColor: "rgba(0,0,0,0.4)", justifyContent: "center", alignItems: "center" },
-  headerBtnText: { color: "#FFF", fontSize: 20 },
-  headerTitle: { flex: 1, color: "#FFF", fontSize: 17, fontWeight: "600", textAlign: "center" },
-  hero: { height: 380, backgroundColor: "#222", justifyContent: "flex-end", padding: 20, paddingBottom: 24 },
-  heroText: { color: "#FFF", fontSize: 28, fontWeight: "800" },
-  dnaBadge: { alignSelf: "flex-start", marginTop: 8, paddingHorizontal: 12, paddingVertical: 6, borderRadius: 12, backgroundColor: "rgba(0,0,0,0.5)" },
-  dnaBadgeText: { color: "#FFF", fontSize: 13, fontWeight: "600" },
-  statsRow: { flexDirection: "row", alignItems: "center", justifyContent: "space-around", paddingVertical: 16, marginHorizontal: 20, marginTop: 12, borderRadius: 12, backgroundColor: "#1A1A1A", borderWidth: 1, borderColor: "#333" },
-  stat: { alignItems: "center" },
-  statValue: { color: "#FFF", fontSize: 16, fontWeight: "700" },
-  statLabel: { color: "#888", fontSize: 11, marginTop: 2 },
-  statDivider: { width: 1, height: 28, backgroundColor: "#333" },
-  section: { paddingHorizontal: 20, marginTop: 24 },
-  sectionTitle: { color: "#FFF", fontSize: 18, fontWeight: "700", marginBottom: 12 },
-  card: { padding: 16, borderRadius: 12, backgroundColor: "#1A1A1A", borderWidth: 1, borderColor: "#333" },
-  cardText: { color: "#CCC", fontSize: 14, lineHeight: 20 },
-  tagRow: { flexDirection: "row", flexWrap: "wrap", gap: 8 },
-  tag: { paddingHorizontal: 14, paddingVertical: 6, borderRadius: 16, backgroundColor: "#1A1A1A", borderWidth: 1, borderColor: "#333" },
-  tagText: { color: "#CCC", fontSize: 13 },
-  bodyText: { color: "#CCC", fontSize: 14, lineHeight: 20 },
-  photoGrid: { flexDirection: "row", flexWrap: "wrap", gap: 4 },
-  photoCell: { width: "32%", aspectRatio: 1, backgroundColor: "#222", borderRadius: 8, justifyContent: "center", alignItems: "center" },
-  photoText: { color: "#555", fontSize: 14 },
-  monthRow: { flexDirection: "row", flexWrap: "wrap", gap: 6 },
-  monthChip: { paddingHorizontal: 12, paddingVertical: 6, borderRadius: 12, backgroundColor: "#1A1A1A", borderWidth: 1, borderColor: "#333" },
-  monthBest: { backgroundColor: "#333", borderColor: "#666" },
-  monthText: { color: "#666", fontSize: 12 },
-  monthTextBest: { color: "#FFF", fontWeight: "600" },
-  attractionRow: { flexDirection: "row", alignItems: "center", gap: 12, paddingVertical: 12, borderBottomWidth: 1, borderBottomColor: "#1A1A1A" },
-  attractionIcon: { width: 40, height: 40, borderRadius: 10, backgroundColor: "#1A1A1A", justifyContent: "center", alignItems: "center" },
-  attractionName: { color: "#FFF", fontSize: 15, fontWeight: "600" },
-  attractionType: { color: "#888", fontSize: 12, marginTop: 2 },
-  attractionRating: { color: "#FFF", fontSize: 13 },
-  similarCard: { width: 140, borderRadius: 12, backgroundColor: "#1A1A1A", borderWidth: 1, borderColor: "#333", overflow: "hidden" },
-  similarImage: { height: 100, backgroundColor: "#222", justifyContent: "center", alignItems: "center" },
-  imgText: { color: "#555", fontSize: 12 },
-  similarCity: { color: "#FFF", fontSize: 14, fontWeight: "600", paddingHorizontal: 10, paddingTop: 8 },
-  similarMatch: { color: "#888", fontSize: 12, paddingHorizontal: 10, paddingTop: 2, paddingBottom: 10 },
-  bottomBar: { position: "absolute", bottom: 0, left: 0, right: 0, flexDirection: "row", alignItems: "center", justifyContent: "space-between", padding: 20, paddingBottom: 36, backgroundColor: "#111", borderTopWidth: 1, borderTopColor: "#222" },
-  bottomLabel: { color: "#888", fontSize: 12 },
-  bottomPrice: { color: "#FFF", fontSize: 22, fontWeight: "800" },
-  ctaBtn: { height: 52, paddingHorizontal: 32, borderRadius: 26, backgroundColor: "#333", borderWidth: 1, borderColor: "#555", justifyContent: "center", alignItems: "center" },
-  ctaText: { color: "#FFF", fontSize: 16, fontWeight: "600" },
+  heroWrap: { height: 340, position: "relative" },
+  heroImg: { ...StyleSheet.absoluteFillObject },
+  heroHeader: { position: "absolute", top: 0, left: 0, right: 0, flexDirection: "row", justifyContent: "space-between", paddingHorizontal: 16 },
+  backBtn: { width: 40, height: 40, borderRadius: 12, backgroundColor: "rgba(10,5,20,0.5)", justifyContent: "center", alignItems: "center" },
+  heartBtn: { width: 40, height: 40, borderRadius: 12, backgroundColor: "rgba(10,5,20,0.5)", justifyContent: "center", alignItems: "center" },
+  heroContent: { position: "absolute", bottom: 20, left: 16 },
+  matchBadge: { backgroundColor: "#02A65C", paddingHorizontal: 10, paddingVertical: 4, borderRadius: 10, alignSelf: "flex-start", marginBottom: 8 },
+  matchText: { fontSize: 12, fontFamily: "Satoshi-Bold", color: DS.white },
+  heroTitle: { fontSize: 32, fontFamily: "Chillax-Bold", color: DS.white, marginBottom: 6 },
+  heroMeta: { flexDirection: "row", alignItems: "center", gap: 4 },
+  heroRating: { fontSize: 14, fontFamily: "Satoshi-Bold", color: DS.white },
+  heroDot: { fontSize: 14, color: DS.muted },
+  heroReviews: { fontSize: 13, fontFamily: "Satoshi-Regular", color: DS.muted },
+  highlightsRow: { flexDirection: "row", gap: 8, marginBottom: 20 },
+  highlightCard: { flex: 1, alignItems: "center", padding: 12, backgroundColor: DS.surface, borderWidth: 1, borderColor: DS.border, borderRadius: 14, gap: 4 },
+  highlightValue: { fontSize: 13, fontFamily: "Satoshi-Bold", color: DS.white },
+  highlightLabel: { fontSize: 11, fontFamily: "Satoshi-Regular", color: DS.muted },
+  sectionTitle: { fontSize: 18, fontFamily: "Chillax-Bold", color: DS.white, marginBottom: 10 },
+  aboutText: { fontSize: 14, fontFamily: "Satoshi-Regular", color: DS.secondary, lineHeight: 22 },
+  actCard: { width: 160, height: 200, borderRadius: 16, overflow: "hidden", backgroundColor: DS.surface },
+  actImg: { ...StyleSheet.absoluteFillObject },
+  actMatchBadge: { position: "absolute", top: 10, right: 10, backgroundColor: "#02A65C", paddingHorizontal: 8, paddingVertical: 3, borderRadius: 8 },
+  actMatchText: { fontSize: 11, fontFamily: "Satoshi-Bold", color: DS.white },
+  actName: { position: "absolute", bottom: 28, left: 12, right: 12, fontSize: 14, fontFamily: "Chillax-Bold", color: DS.white },
+  actType: { position: "absolute", bottom: 12, left: 12, fontSize: 12, fontFamily: "Satoshi-Regular", color: "rgba(255,255,255,0.7)" },
+  ctaWrap: { paddingHorizontal: 16, paddingTop: 12, backgroundColor: DS.bg, borderTopWidth: 1, borderTopColor: DS.border },
+  ctaBtn: { height: 56, borderRadius: 28, overflow: "hidden", shadowColor: DS.pink, shadowOffset: { width: 0, height: 8 }, shadowOpacity: 0.3, shadowRadius: 16, elevation: 8 },
+  ctaGrad: { flex: 1, flexDirection: "row", justifyContent: "center", alignItems: "center" },
+  ctaText: { fontSize: 16, fontFamily: "Satoshi-Bold", color: DS.white },
 });

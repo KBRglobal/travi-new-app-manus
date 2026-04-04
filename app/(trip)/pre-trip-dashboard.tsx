@@ -1,4 +1,4 @@
-// Screen 32 — Pre-Trip Dashboard — STATIC WIREFRAME
+// Screen 32 — Pre-Trip Dashboard — STATIC 
 // Header 80px gradient, Countdown 140px (progress ring), 2x2 quick actions 160px, Live Mode card
 import { View, Text, StyleSheet, Pressable, ScrollView } from "react-native";
 

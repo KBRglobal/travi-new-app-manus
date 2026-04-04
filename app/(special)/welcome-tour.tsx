@@ -1,4 +1,4 @@
-// Screen 73 — Welcome Tour — STATIC WIREFRAME
+// Screen 73 — Welcome Tour — STATIC 
 // 3 slides horizontal swipe, auto-advance 10s, progress dots
 import { View, Text, StyleSheet, Pressable } from "react-native";
 

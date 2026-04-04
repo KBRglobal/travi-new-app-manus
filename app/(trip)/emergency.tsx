@@ -1,4 +1,4 @@
-// Screen 42 — Emergency Contacts — STATIC WIREFRAME
+// Screen 42 — Emergency Contacts — STATIC 
 // Alert banner 100px red, Contact cards 88px (Call + Message), Share Location card 120px
 import { View, Text, StyleSheet, Pressable, ScrollView } from "react-native";
 

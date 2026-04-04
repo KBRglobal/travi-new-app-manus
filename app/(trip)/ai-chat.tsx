@@ -1,4 +1,4 @@
-// Screen 41 — AI Chat — STATIC WIREFRAME
+// Screen 41 — AI Chat — STATIC 
 // Swipe handle + title, Message bubbles (AI left 40px avatar, User right), Quick chips, Input 72px + mic + send
 import { View, Text, StyleSheet, Pressable, ScrollView } from "react-native";
 

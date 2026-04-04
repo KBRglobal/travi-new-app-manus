@@ -1,4 +1,4 @@
-// Screen 24 — Hotel Detail — STATIC WIREFRAME
+// Screen 24 — Hotel Detail — STATIC 
 // Route: /(trip)/hotel-detail | Mode: Planning
 // Spec: Hero 60% swipe gallery, Quick info 80px (4 cols), Room types, Policies accordion, Fixed CTA
 

@@ -1,151 +1,90 @@
-// Screen 79 — Discover Travelers (Static Wireframe)
-// Route: /social/discover | Mode: Discovery (Social)
-// Zones: Header 60px, Filter Chips 48px, Body (2-col masonry grid)
+// Social Discover Screen
+import React, { useState } from "react";
+import { View, Text, StyleSheet, Pressable, FlatList, Image } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
+import { MaterialIcons } from "@expo/vector-icons";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useRouter } from "expo-router";
 
-import { ScrollView, Text, View, StyleSheet } from "react-native";
-import { ScreenContainer } from "@/components/screen-container";
-
-const FILTERS = ["All", "Near Me", "Same DNA", "Online Now", "Verified"];
+const DS = { bg: "#0A0514", surface: "rgba(36,16,62,0.55)", surfaceHigh: "rgba(50,20,80,0.7)", border: "rgba(123,68,230,0.22)", borderStrong: "rgba(100,67,244,0.4)", purple: "#6443F4", pink: "#F94498", success: "#02A65C", warning: "#FF9327", error: "#FF6B6B", info: "#01BEFF", white: "#FFFFFF", secondary: "#D3CFD8", muted: "#A79FB2", placeholder: "#7B6A94" };
 
 const TRAVELERS = [
-  { id: "1", name: "Sarah M.", age: 28, dnaMatch: 92, location: "Barcelona", interests: ["Food", "Culture"], verified: true, online: true },
-  { id: "2", name: "Marco R.", age: 31, dnaMatch: 78, location: "Rome", interests: ["Adventure", "Hiking"], verified: true, online: false },
-  { id: "3", name: "Yuki T.", age: 26, dnaMatch: 85, location: "Tokyo", interests: ["Photography", "Temples"], verified: false, online: true },
-  { id: "4", name: "Elena K.", age: 29, dnaMatch: 88, location: "Athens", interests: ["History", "Beaches"], verified: true, online: false },
-  { id: "5", name: "James L.", age: 34, dnaMatch: 71, location: "London", interests: ["Nightlife", "Music"], verified: false, online: true },
-  { id: "6", name: "Priya S.", age: 27, dnaMatch: 94, location: "Mumbai", interests: ["Yoga", "Wellness"], verified: true, online: false },
+  { id: "1", name: "Sarah K.", dna: "Explorer", match: 94, trips: 23, img: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&q=80", dest: "Bali" },
+  { id: "2", name: "Mike R.", dna: "Adventurer", match: 88, trips: 31, img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&q=80", dest: "Patagonia" },
+  { id: "3", name: "Emma L.", dna: "Culture Seeker", match: 85, trips: 18, img: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=200&q=80", dest: "Kyoto" },
+  { id: "4", name: "Alex T.", dna: "Foodie", match: 82, trips: 15, img: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=200&q=80", dest: "Tokyo" },
 ];
 
-export default function DiscoverTravelersScreen() {
-  const col1 = TRAVELERS.filter((_, i) => i % 2 === 0);
-  const col2 = TRAVELERS.filter((_, i) => i % 2 === 1);
+export default function SocialDiscoverScreen() {
+  const insets = useSafeAreaInsets();
+  const router = useRouter();
 
   return (
-    <ScreenContainer>
-      <View style={s.container}>
-        {/* Header */}
-        <View style={s.header}>
-          <Text style={s.backArrow}>←</Text>
-          <Text style={s.headerTitle}>Discover Travelers</Text>
-          <Text style={s.headerIcon}>🔍</Text>
-        </View>
-
-        {/* Filter Chips */}
-        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={s.filtersRow}>
-          {FILTERS.map((f, i) => (
-            <View key={f} style={[s.chip, i === 0 && s.chipActive]}>
-              <Text style={[s.chipText, i === 0 && s.chipTextActive]}>{f}</Text>
-            </View>
-          ))}
-        </ScrollView>
-
-        {/* 2-Column Masonry Grid */}
-        <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={s.gridContainer}>
-          <View style={s.column}>
-            {col1.map((t, i) => (
-              <View key={t.id} style={[s.card, { height: i % 2 === 0 ? 220 : 260 }]}>
-                <View style={s.cardImage}>
-                  {t.online && <View style={s.onlineDot} />}
-                  {t.verified && (
-                    <View style={s.verifiedBadge}><Text style={s.verifiedText}>✓</Text></View>
-                  )}
-                  <Text style={s.cardInitial}>{t.name[0]}</Text>
-                </View>
-                <View style={s.cardInfo}>
-                  <Text style={s.cardName}>{t.name}, {t.age}</Text>
-                  <Text style={s.cardLocation}>{t.location}</Text>
-                  <View style={s.matchRow}>
-                    <View style={s.matchBar}>
-                      <View style={[s.matchFill, { width: `${t.dnaMatch}%` }]} />
-                    </View>
-                    <Text style={s.matchText}>{t.dnaMatch}%</Text>
-                  </View>
-                  <View style={s.interestsRow}>
-                    {t.interests.map((int) => (
-                      <View key={int} style={s.interestPill}>
-                        <Text style={s.interestText}>{int}</Text>
-                      </View>
-                    ))}
-                  </View>
-                  <View style={s.connectBtn}>
-                    <Text style={s.connectText}>Connect</Text>
-                  </View>
-                </View>
-              </View>
-            ))}
-          </View>
-          <View style={s.column}>
-            {col2.map((t, i) => (
-              <View key={t.id} style={[s.card, { height: i % 2 === 0 ? 260 : 220 }]}>
-                <View style={s.cardImage}>
-                  {t.online && <View style={s.onlineDot} />}
-                  {t.verified && (
-                    <View style={s.verifiedBadge}><Text style={s.verifiedText}>✓</Text></View>
-                  )}
-                  <Text style={s.cardInitial}>{t.name[0]}</Text>
-                </View>
-                <View style={s.cardInfo}>
-                  <Text style={s.cardName}>{t.name}, {t.age}</Text>
-                  <Text style={s.cardLocation}>{t.location}</Text>
-                  <View style={s.matchRow}>
-                    <View style={s.matchBar}>
-                      <View style={[s.matchFill, { width: `${t.dnaMatch}%` }]} />
-                    </View>
-                    <Text style={s.matchText}>{t.dnaMatch}%</Text>
-                  </View>
-                  <View style={s.interestsRow}>
-                    {t.interests.map((int) => (
-                      <View key={int} style={s.interestPill}>
-                        <Text style={s.interestText}>{int}</Text>
-                      </View>
-                    ))}
-                  </View>
-                  <View style={s.connectBtn}>
-                    <Text style={s.connectText}>Connect</Text>
-                  </View>
-                </View>
-              </View>
-            ))}
-          </View>
-        </ScrollView>
+    <View style={[s.root, { paddingTop: insets.top }]}>
+      <View style={s.header}>
+        <Text style={s.title}>Discover <Text style={{ color: DS.purple }}>Travelers</Text></Text>
+        <Pressable style={s.filterBtn}>
+          <MaterialIcons name="tune" size={20} color={DS.white} />
+        </Pressable>
       </View>
-    </ScreenContainer>
+
+      <FlatList
+        data={TRAVELERS}
+        keyExtractor={i => i.id}
+        contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: insets.bottom + 100 }}
+        showsVerticalScrollIndicator={false}
+        renderItem={({ item }) => (
+          <Pressable style={({ pressed }) => [s.card, pressed && { opacity: 0.85, transform: [{ scale: 0.98 }] }]} onPress={() => router.push("/(social)/traveler-profile" as any)}>
+            <Image source={{ uri: item.img }} style={s.avatar} />
+            <View style={{ flex: 1 }}>
+              <View style={s.nameRow}>
+                <Text style={s.name}>{item.name}</Text>
+                <View style={s.matchBadge}>
+                  <Text style={s.matchText}>✦ {item.match}%</Text>
+                </View>
+              </View>
+              <Text style={s.dnaText}>{item.dna} · {item.trips} trips</Text>
+              <View style={s.destRow}>
+                <MaterialIcons name="flight-takeoff" size={12} color={DS.muted} />
+                <Text style={s.destText}>Next: {item.dest}</Text>
+              </View>
+            </View>
+            <Pressable style={({ pressed }) => [s.connectBtn, pressed && { opacity: 0.8 }]} onPress={() => router.push("/(social)/connect-flow" as any)}>
+              <Text style={s.connectText}>Connect</Text>
+            </Pressable>
+          </Pressable>
+        )}
+        ItemSeparatorComponent={() => <View style={{ height: 10 }} />}
+        ListHeaderComponent={
+          <Pressable style={s.swipeBtn} onPress={() => router.push("/(social)/swipe-travelers" as any)}>
+            <LinearGradient colors={[DS.purple, DS.pink]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={s.swipeGrad}>
+              <MaterialIcons name="swipe" size={18} color={DS.white} style={{ marginRight: 8 }} />
+              <Text style={s.swipeText}>Swipe to Match Travelers</Text>
+            </LinearGradient>
+          </Pressable>
+        }
+      />
+    </View>
   );
 }
 
-const N = "#111"; const N2 = "#1a1a1a"; const N3 = "#222"; const W = "#fff"; const G = "#888";
-
 const s = StyleSheet.create({
-  container: { flex: 1, backgroundColor: N },
-  header: { height: 60, flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 16 },
-  backArrow: { fontSize: 24, color: W },
-  headerTitle: { fontSize: 20, fontWeight: "700", color: W },
-  headerIcon: { fontSize: 20 },
-
-  filtersRow: { paddingHorizontal: 16, gap: 8, height: 48, alignItems: "center" },
-  chip: { paddingHorizontal: 14, paddingVertical: 8, borderRadius: 20, backgroundColor: N2, borderWidth: 1, borderColor: N3 },
-  chipActive: { backgroundColor: "#333", borderColor: "#555" },
-  chipText: { fontSize: 14, color: G },
-  chipTextActive: { color: W },
-
-  gridContainer: { flexDirection: "row", paddingHorizontal: 12, gap: 12, paddingBottom: 100 },
-  column: { flex: 1, gap: 12 },
-  card: { backgroundColor: N2, borderRadius: 16, borderWidth: 1, borderColor: N3, overflow: "hidden" },
-  cardImage: { flex: 1, backgroundColor: N3, alignItems: "center", justifyContent: "center" },
-  onlineDot: { position: "absolute", top: 8, right: 8, width: 10, height: 10, borderRadius: 5, backgroundColor: "#4a4" },
-  verifiedBadge: { position: "absolute", top: 8, left: 8, width: 20, height: 20, borderRadius: 10, backgroundColor: "#369", alignItems: "center", justifyContent: "center" },
-  verifiedText: { fontSize: 10, color: W, fontWeight: "700" },
-  cardInitial: { fontSize: 32, fontWeight: "700", color: "#444" },
-  cardInfo: { padding: 10, gap: 4 },
-  cardName: { fontSize: 15, fontWeight: "600", color: W },
-  cardLocation: { fontSize: 12, color: G },
-  matchRow: { flexDirection: "row", alignItems: "center", gap: 6, marginTop: 2 },
-  matchBar: { flex: 1, height: 4, borderRadius: 2, backgroundColor: N3 },
-  matchFill: { height: 4, borderRadius: 2, backgroundColor: "#555" },
-  matchText: { fontSize: 12, fontWeight: "600", color: G },
-  interestsRow: { flexDirection: "row", gap: 4, flexWrap: "wrap", marginTop: 4 },
-  interestPill: { paddingHorizontal: 6, paddingVertical: 2, borderRadius: 8, backgroundColor: N3 },
-  interestText: { fontSize: 10, color: G },
-  connectBtn: { marginTop: 6, paddingVertical: 6, borderRadius: 12, backgroundColor: "#333", alignItems: "center" },
-  connectText: { fontSize: 13, fontWeight: "600", color: W },
+  root: { flex: 1, backgroundColor: DS.bg },
+  header: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 20, paddingBottom: 16 },
+  title: { fontSize: 24, fontFamily: "Chillax-Bold", color: DS.white },
+  filterBtn: { width: 40, height: 40, borderRadius: 12, backgroundColor: DS.surface, borderWidth: 1, borderColor: DS.border, justifyContent: "center", alignItems: "center" },
+  swipeBtn: { height: 52, borderRadius: 26, overflow: "hidden", marginBottom: 16, shadowColor: DS.pink, shadowOffset: { width: 0, height: 6 }, shadowOpacity: 0.25, shadowRadius: 12, elevation: 6 },
+  swipeGrad: { flex: 1, flexDirection: "row", justifyContent: "center", alignItems: "center" },
+  swipeText: { fontSize: 15, fontFamily: "Satoshi-Bold", color: DS.white },
+  card: { flexDirection: "row", alignItems: "center", gap: 12, padding: 14, backgroundColor: DS.surface, borderWidth: 1, borderColor: DS.border, borderRadius: 16 },
+  avatar: { width: 52, height: 52, borderRadius: 26, backgroundColor: DS.surface },
+  nameRow: { flexDirection: "row", alignItems: "center", gap: 8, marginBottom: 3 },
+  name: { fontSize: 15, fontFamily: "Satoshi-Bold", color: DS.white },
+  matchBadge: { backgroundColor: "#02A65C", paddingHorizontal: 7, paddingVertical: 2, borderRadius: 8 },
+  matchText: { fontSize: 11, fontFamily: "Satoshi-Bold", color: DS.white },
+  dnaText: { fontSize: 13, fontFamily: "Satoshi-Regular", color: DS.muted, marginBottom: 4 },
+  destRow: { flexDirection: "row", alignItems: "center", gap: 4 },
+  destText: { fontSize: 12, fontFamily: "Satoshi-Regular", color: DS.muted },
+  connectBtn: { paddingHorizontal: 14, paddingVertical: 8, borderRadius: 20, borderWidth: 1, borderColor: DS.purple, backgroundColor: "rgba(100,67,244,0.12)" },
+  connectText: { fontSize: 13, fontFamily: "Satoshi-Medium", color: DS.purple },
 });

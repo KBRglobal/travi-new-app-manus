@@ -1,4 +1,4 @@
-// Screen 69 — Loading Initial — STATIC WIREFRAME
+// Screen 69 — Loading Initial — STATIC 
 // Mascot 180px + 3 loading dots
 import { View, Text, StyleSheet } from "react-native";
 

@@ -1,4 +1,4 @@
-// Screen 51 — Split Payment — STATIC WIREFRAME
+// Screen 51 — Split Payment — STATIC 
 // Total amount 140px, People section, Equal/Custom toggle, Summary card 100px, Send Requests
 import { View, Text, StyleSheet, Pressable, ScrollView } from "react-native";
 

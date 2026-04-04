@@ -1,4 +1,4 @@
-// Screen 46 — Rate & Review — STATIC WIREFRAME
+// Screen 46 — Rate & Review — STATIC 
 // 5 large stars 48px each, 5 aspect sliders, Text area 120px (500 chars), Submit
 import { View, Text, StyleSheet, Pressable, ScrollView } from "react-native";
 

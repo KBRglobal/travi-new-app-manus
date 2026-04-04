@@ -31,7 +31,7 @@ const TRAIT_META: Record<string, { label: string; icon: string; color: string }>
   adventureLevel:   { label: "Adventure",   icon: "🧗", color: "#EF4444" },
   culturalDepth:    { label: "Culture",     icon: "🏛️", color: "#A855F7" },
   foodieness:       { label: "Foodie",      icon: "🍜", color: "#F59E0B" },
-  socialEnergy:     { label: "Social",      icon: "🎉", color: "#EC4899" },
+  socialEnergy:     { label: "Social",      icon: "🎉", color: "#F94498" },
   luxuryAffinity:   { label: "Luxury",      icon: "👑", color: "#D97706" },
   natureConnection: { label: "Nature",      icon: "🌿", color: "#22C55E" },
 };
@@ -217,7 +217,7 @@ export default function DNAEvolutionScreen() {
 
   return (
     <View style={[S.container, { paddingTop: insets.top }]}>
-      <LinearGradient colors={["#24103E", "#1A0A30", "#1A0A3D"]} style={StyleSheet.absoluteFillObject} />
+      <LinearGradient colors={["#24103E", "rgba(36,16,62,0.55)", "#1A0A3D"]} style={StyleSheet.absoluteFillObject} />
       <View style={S.orb1} />
       <View style={S.orb2} />
 

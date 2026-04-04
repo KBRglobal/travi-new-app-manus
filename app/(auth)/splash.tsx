@@ -170,7 +170,7 @@ export default function SplashScreen() {
       {/* Sunset gradient background */}
       <Animated.View style={[s.sunsetBg, { opacity: bgOpacity }]}>
         <LinearGradient
-          colors={["#0D0221", "#1A0D3D", "#3D1480", "#6443F4", "#F94498", "#FF9327", "#FDCD0A", "#FF9327", "#1A0D3D"]}
+          colors={["#0A0514", "#1A0D3D", "#3D1480", "#6443F4", "#F94498", "#FF9327", "#FDCD0A", "#FF9327", "#1A0D3D"]}
           locations={[0, 0.2, 0.35, 0.48, 0.58, 0.68, 0.78, 0.88, 1]}
           style={StyleSheet.absoluteFill}
         />

@@ -1,4 +1,4 @@
-// Screen 25 — Activity Select Swipe — STATIC WIREFRAME
+// Screen 25 — Activity Select Swipe — STATIC 
 // Route: /(trip)/activity-select | Mode: Planning
 // Spec: Progress 8px, Card stack 90%x65%, Skip/Info/Love buttons (56/48/56px), 30 cards, Undo max 3
 

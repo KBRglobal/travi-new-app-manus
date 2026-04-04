@@ -1,4 +1,4 @@
-// Screen 38 — Activity Detail Live — STATIC WIREFRAME
+// Screen 38 — Activity Detail Live — STATIC 
 // Hero 50%, Quick Actions + Booking Details + What to Know + Photos + Nearby
 // Context button: Mark as Done / I'm Here / Rate Experience
 import { View, Text, StyleSheet, Pressable, ScrollView } from "react-native";

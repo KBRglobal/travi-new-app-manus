@@ -1,121 +1,93 @@
-// Screen 16 — DNA Management — STATIC WIREFRAME
-// Route: /(tabs)/dna-management (or /profile/dna) | Mode: Universal
-// Spec: Header 60px, Hero 200px gradient, 8 dimension cards (120px each, progress bars), Retake section
-
+// Screen 16 — DNA Management
+import React from "react";
 import { View, Text, StyleSheet, Pressable, ScrollView } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
+import { MaterialIcons } from "@expo/vector-icons";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useRouter } from "expo-router";
+
+const DS = { bg: "#0A0514", surface: "rgba(36,16,62,0.55)", surfaceHigh: "rgba(50,20,80,0.7)", border: "rgba(123,68,230,0.22)", borderStrong: "rgba(100,67,244,0.4)", purple: "#6443F4", pink: "#F94498", success: "#02A65C", warning: "#FF9327", error: "#FF6B6B", info: "#01BEFF", white: "#FFFFFF", secondary: "#D3CFD8", muted: "#A79FB2", placeholder: "#7B6A94" };
 
 const DIMENSIONS = [
-  { label: "Adventurer", score: 87, emoji: "🪂", color: "#EF4444" },
-  { label: "Explorer", score: 74, emoji: "🧭", color: "#3B82F6" },
-  { label: "Foodie", score: 68, emoji: "🍜", color: "#F59E0B" },
-  { label: "Culturalist", score: 55, emoji: "🏛️", color: "#8B5CF6" },
-  { label: "Photographer", score: 48, emoji: "📸", color: "#EC4899" },
-  { label: "Naturalist", score: 42, emoji: "🌿", color: "#22C55E" },
-  { label: "Relaxer", score: 35, emoji: "🧘", color: "#06B6D4" },
-  { label: "Historian", score: 28, emoji: "📜", color: "#78350F" },
+  { label: "Adventurer", score: 87, icon: "terrain", color: "#EF4444" },
+  { label: "Culture Seeker", score: 74, icon: "museum", color: DS.purple },
+  { label: "Foodie", score: 91, icon: "restaurant", color: DS.warning },
+  { label: "Nature Lover", score: 68, icon: "forest", color: DS.success },
+  { label: "Luxury Traveler", score: 55, icon: "hotel", color: DS.pink },
+  { label: "Budget Conscious", score: 42, icon: "savings", color: DS.info },
+  { label: "Solo Explorer", score: 79, icon: "person", color: "#A78BFA" },
+  { label: "Social Butterfly", score: 63, icon: "people", color: "#FB923C" },
 ];
 
-export default function DNAManagementScreen() {
+export default function DnaManagementScreen() {
+  const insets = useSafeAreaInsets();
+  const router = useRouter();
+
   return (
-    <View style={s.root}>
-      {/* Header — 60px */}
-      <View style={s.header}>
-        <Pressable style={s.backBtn}><Text style={s.backText}>‹</Text></Pressable>
-        <Text style={s.headerTitle}>My Travel DNA</Text>
-        <View style={{ width: 32 }} />
-      </View>
-
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 100 }}>
-        {/* Hero — 200px */}
-        <View style={s.hero}>
-          <Text style={s.heroEmoji}>🧬</Text>
-          <Text style={s.heroTitle}>Your Travel DNA</Text>
-          <Text style={s.heroSub}>Based on 20 preferences analyzed</Text>
-          <View style={s.heroBadge}><Text style={s.heroBadgeText}>Explorer Type</Text></View>
+    <ScrollView style={{ flex: 1, backgroundColor: DS.bg }} contentContainerStyle={{ paddingBottom: insets.bottom + 100 }} showsVerticalScrollIndicator={false}>
+      {/* Hero */}
+      <LinearGradient colors={["rgba(100,67,244,0.35)", "rgba(249,68,152,0.15)", "rgba(10,5,20,0)"]} style={[s.hero, { paddingTop: insets.top + 16 }]}>
+        <View style={s.dnaIconWrap}>
+          <LinearGradient colors={[DS.purple, DS.pink]} style={s.dnaIcon}>
+            <MaterialIcons name="science" size={32} color={DS.white} />
+          </LinearGradient>
         </View>
+        <Text style={s.heroTitle}>Your Travel DNA</Text>
+        <Text style={s.heroSub}>Based on 47 interactions and 3 trips</Text>
+        <View style={s.typeBadge}>
+          <Text style={s.typeText}>✦ Explorer Archetype</Text>
+        </View>
+      </LinearGradient>
 
-        {/* 8 Dimension Cards — 120px each */}
-        <View style={s.section}>
-          <Text style={s.sectionTitle}>All Dimensions</Text>
-          {DIMENSIONS.map((dim) => (
-            <View key={dim.label} style={s.dimCard}>
+      {/* Dimensions */}
+      <View style={{ paddingHorizontal: 16, paddingTop: 8 }}>
+        <Text style={s.sectionTitle}>DNA Dimensions</Text>
+        {DIMENSIONS.map((dim) => (
+          <View key={dim.label} style={s.dimCard}>
+            <View style={[s.dimIcon, { backgroundColor: dim.color + "22", borderColor: dim.color + "44" }]}>
+              <MaterialIcons name={dim.icon as any} size={20} color={dim.color} />
+            </View>
+            <View style={{ flex: 1 }}>
               <View style={s.dimHeader}>
-                <Text style={s.dimEmoji}>{dim.emoji}</Text>
-                <View style={{ flex: 1 }}>
-                  <Text style={s.dimLabel}>{dim.label}</Text>
-                  <View style={s.barTrack}>
-                    <View style={[s.barFill, { width: `${dim.score}%`, backgroundColor: dim.color }]} />
-                  </View>
-                </View>
+                <Text style={s.dimLabel}>{dim.label}</Text>
                 <Text style={[s.dimScore, { color: dim.color }]}>{dim.score}%</Text>
               </View>
+              <View style={s.barBg}>
+                <View style={[s.barFill, { width: `${dim.score}%` as any, backgroundColor: dim.color }]} />
+              </View>
             </View>
-          ))}
-        </View>
-
-        {/* Retake section */}
-        <View style={s.section}>
-          <View style={s.retakeCard}>
-            <Text style={s.retakeTitle}>Want to update your DNA?</Text>
-            <Text style={s.retakeSub}>Retake the quiz to get fresh recommendations</Text>
-            <Pressable style={s.retakeBtn}>
-              <Text style={s.retakeBtnText}>Retake DNA Quiz</Text>
-            </Pressable>
           </View>
-        </View>
+        ))}
 
-        {/* Last updated */}
-        <Text style={s.lastUpdated}>Last updated: March 15, 2026</Text>
-      </ScrollView>
-    </View>
+        {/* Retake */}
+        <Pressable style={({ pressed }) => [s.retakeBtn, pressed && { opacity: 0.8, transform: [{ scale: 0.97 }] }]} onPress={() => router.push("/(auth)/quiz" as any)}>
+          <LinearGradient colors={[DS.purple, DS.pink]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={s.retakeGrad}>
+            <MaterialIcons name="refresh" size={18} color={DS.white} style={{ marginRight: 8 }} />
+            <Text style={s.retakeText}>Retake DNA Quiz</Text>
+          </LinearGradient>
+        </Pressable>
+      </View>
+    </ScrollView>
   );
 }
 
 const s = StyleSheet.create({
-  root: { flex: 1, backgroundColor: "#111" },
-  header: {
-    height: 60, flexDirection: "row", alignItems: "center",
-    paddingHorizontal: 16, borderBottomWidth: 1, borderBottomColor: "#222", marginTop: 48,
-  },
-  backBtn: { width: 32, height: 32, justifyContent: "center", alignItems: "center" },
-  backText: { color: "#FFF", fontSize: 24 },
-  headerTitle: { flex: 1, color: "#FFF", fontSize: 18, fontWeight: "600", textAlign: "center" },
-  hero: {
-    height: 200, backgroundColor: "#1A1A1A", alignItems: "center",
-    justifyContent: "center", gap: 8,
-    borderBottomWidth: 1, borderBottomColor: "#222",
-  },
-  heroEmoji: { fontSize: 48 },
-  heroTitle: { color: "#FFF", fontSize: 22, fontWeight: "700" },
-  heroSub: { color: "#888", fontSize: 14 },
-  heroBadge: {
-    paddingHorizontal: 16, paddingVertical: 6, borderRadius: 16,
-    backgroundColor: "#333", borderWidth: 1, borderColor: "#555",
-  },
-  heroBadgeText: { color: "#FFF", fontSize: 13, fontWeight: "600" },
-  section: { paddingHorizontal: 20, marginTop: 24 },
-  sectionTitle: { color: "#FFF", fontSize: 18, fontWeight: "700", marginBottom: 12 },
-  dimCard: {
-    height: 72, borderRadius: 12, backgroundColor: "#1A1A1A",
-    borderWidth: 1, borderColor: "#333", paddingHorizontal: 16,
-    justifyContent: "center", marginBottom: 8,
-  },
-  dimHeader: { flexDirection: "row", alignItems: "center", gap: 12 },
-  dimEmoji: { fontSize: 24 },
-  dimLabel: { color: "#FFF", fontSize: 15, fontWeight: "600", marginBottom: 6 },
-  barTrack: { height: 6, borderRadius: 3, backgroundColor: "#222" },
+  hero: { alignItems: "center", paddingBottom: 28, paddingHorizontal: 24 },
+  dnaIconWrap: { marginBottom: 12 },
+  dnaIcon: { width: 72, height: 72, borderRadius: 20, justifyContent: "center", alignItems: "center" },
+  heroTitle: { fontSize: 26, fontFamily: "Chillax-Bold", color: DS.white, marginBottom: 6 },
+  heroSub: { fontSize: 14, fontFamily: "Satoshi-Regular", color: DS.muted, marginBottom: 14 },
+  typeBadge: { paddingHorizontal: 16, paddingVertical: 6, borderRadius: 20, backgroundColor: "rgba(100,67,244,0.2)", borderWidth: 1, borderColor: "rgba(100,67,244,0.4)" },
+  typeText: { fontSize: 13, fontFamily: "Satoshi-Bold", color: DS.purple },
+  sectionTitle: { fontSize: 18, fontFamily: "Chillax-Bold", color: DS.white, marginBottom: 14 },
+  dimCard: { flexDirection: "row", alignItems: "center", gap: 12, marginBottom: 12, padding: 14, backgroundColor: DS.surface, borderWidth: 1, borderColor: DS.border, borderRadius: 14 },
+  dimIcon: { width: 44, height: 44, borderRadius: 12, justifyContent: "center", alignItems: "center", borderWidth: 1 },
+  dimHeader: { flexDirection: "row", justifyContent: "space-between", marginBottom: 6 },
+  dimLabel: { fontSize: 14, fontFamily: "Satoshi-Medium", color: DS.white },
+  dimScore: { fontSize: 14, fontFamily: "Satoshi-Bold" },
+  barBg: { height: 6, borderRadius: 3, backgroundColor: "rgba(255,255,255,0.08)" },
   barFill: { height: 6, borderRadius: 3 },
-  dimScore: { fontSize: 16, fontWeight: "700", width: 44, textAlign: "right" },
-  retakeCard: {
-    padding: 20, borderRadius: 16, backgroundColor: "#1A1A1A",
-    borderWidth: 1, borderColor: "#333", alignItems: "center", gap: 8,
-  },
-  retakeTitle: { color: "#FFF", fontSize: 16, fontWeight: "600" },
-  retakeSub: { color: "#888", fontSize: 13, textAlign: "center" },
-  retakeBtn: {
-    marginTop: 8, paddingHorizontal: 24, paddingVertical: 12,
-    borderRadius: 20, backgroundColor: "#333", borderWidth: 1, borderColor: "#555",
-  },
-  retakeBtnText: { color: "#FFF", fontSize: 14, fontWeight: "600" },
-  lastUpdated: { color: "#555", fontSize: 12, textAlign: "center", marginTop: 24 },
+  retakeBtn: { marginTop: 8, height: 52, borderRadius: 26, overflow: "hidden", shadowColor: DS.pink, shadowOffset: { width: 0, height: 6 }, shadowOpacity: 0.25, shadowRadius: 12, elevation: 6 },
+  retakeGrad: { flex: 1, flexDirection: "row", justifyContent: "center", alignItems: "center" },
+  retakeText: { fontSize: 15, fontFamily: "Satoshi-Bold", color: DS.white },
 });

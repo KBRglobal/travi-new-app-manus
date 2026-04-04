@@ -1,4 +1,4 @@
-// Screen 31 — Booking Confirmation — STATIC WIREFRAME
+// Screen 31 — Booking Confirmation — STATIC 
 // Hero 320px gradient + confetti, Confirmation number, What's Next timeline, No back button
 import { View, Text, StyleSheet, Pressable, ScrollView } from "react-native";
 

@@ -1,4 +1,4 @@
-// Screen 28 — Checkout Phase 1 — STATIC WIREFRAME
+// Screen 28 — Checkout Phase 1 — STATIC 
 import { View, Text, StyleSheet, Pressable, ScrollView } from "react-native";
 
 const STEPS = ["Review", "Payment", "Confirm"];

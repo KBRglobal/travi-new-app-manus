@@ -121,7 +121,7 @@ export default function SummaryScreen() {
               <LinearGradient colors={["rgba(255,255,255,0.06)", "rgba(255,255,255,0.06)"]} style={StyleSheet.absoluteFillObject} />
               <View style={styles.sectionHeader}>
                 <View style={styles.sectionIconWrap}>
-                  <LinearGradient colors={["#6443F4", "#5B21B6"]} style={styles.sectionIconGradient}>
+                  <LinearGradient colors={["#6443F4", "#6443F4"]} style={styles.sectionIconGradient}>
                     <IconSymbol name="airplane" size={18} color="#FFFFFF" />
                   </LinearGradient>
                 </View>

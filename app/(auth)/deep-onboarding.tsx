@@ -169,7 +169,7 @@ const STEPS = [
     title: "Trip preferences?",
     subtitle: "What types of trips do you typically take?",
     icon: "🌍",
-    color: "#8B5CF6",
+    color: "#6443F4",
     type: "multi" as const,
     options: [
       { id: "short_haul", icon: "🛫", label: "Short Haul", sub: "Under 4 hours flight" },

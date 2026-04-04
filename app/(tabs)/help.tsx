@@ -1,4 +1,4 @@
-// Screen 66 — Help & Support — STATIC WIREFRAME
+// Screen 66 — Help & Support — STATIC 
 // Search + 2x2 quick actions + popular topics + contact form
 import { View, Text, StyleSheet, Pressable, ScrollView } from "react-native";
 

@@ -1,4 +1,4 @@
-// Screen 9 — Quick DNA: Schedule — STATIC WIREFRAME
+// Screen 9 — Quick DNA: Schedule — STATIC 
 // Route: /dna/schedule | Mode: Onboarding
 // Spec: 4 radio options for travel timeline, Continue CTA
 

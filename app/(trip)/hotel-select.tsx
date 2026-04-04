@@ -1,4 +1,4 @@
-// Screen 23 — Hotel Select — STATIC WIREFRAME
+// Screen 23 — Hotel Select — STATIC 
 // Route: /(trip)/hotel-select | Mode: Planning
 // Spec: Filter chips, Sort + Map toggle, Hotel cards 240px, Skip link
 

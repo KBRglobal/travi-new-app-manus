@@ -534,22 +534,16 @@ export default function HomeScreen() {
 
   return (
     <View style={s.root}>
-      {/* ═══ BACKGROUND LAYERS ═══ */}
+        {/* ═══ BACKGROUND LAYERS ═══ */}
       <View style={StyleSheet.absoluteFill} pointerEvents="none">
-        {/* Gradient base — deep purple atmosphere */}
-        <LinearGradient
-          colors={["#0A0514", "#120828", "#0E0620", "#0A0514"]}
-          locations={[0, 0.3, 0.7, 1]}
-          style={StyleSheet.absoluteFill}
-        />
+        {/* Solid black base */}
+        <View style={[StyleSheet.absoluteFill, { backgroundColor: "#0A0514" }]} />
         {/* Star particles */}
         <StarField />
-        {/* Center purple glow */}
+        {/* Very subtle center purple glow */}
         <View style={s.glowPurple} />
-        {/* Bottom pink glow */}
+        {/* Very subtle bottom pink glow */}
         <View style={s.glowPink} />
-        {/* Top-right subtle purple orb */}
-        <View style={s.glowTopRight} />
       </View>
 
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 110 }}>
@@ -720,7 +714,7 @@ const s = StyleSheet.create({
     width: 400,
     height: 400,
     borderRadius: 200,
-    backgroundColor: C.purpleGlow15,
+    backgroundColor: "rgba(100,67,244,0.06)",
   },
   glowPink: {
     position: "absolute",
@@ -730,16 +724,7 @@ const s = StyleSheet.create({
     width: 360,
     height: 250,
     borderRadius: 180,
-    backgroundColor: C.pinkGlow12,
-  },
-  glowTopRight: {
-    position: "absolute",
-    top: -50,
-    right: -80,
-    width: 250,
-    height: 250,
-    borderRadius: 125,
-    backgroundColor: "rgba(100,67,244,0.08)",
+    backgroundColor: "rgba(249,68,152,0.05)",
   },
 
   // ─── Header ───

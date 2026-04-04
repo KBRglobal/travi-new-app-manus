@@ -1,4 +1,4 @@
-// Screen 44 — Post-Trip Celebration — STATIC WIREFRAME
+// Screen 44 — Post-Trip Celebration — STATIC 
 // Full screen, Confetti 2s, Stats 2x2, Cashback card 140px, 5 star rating
 import { View, Text, StyleSheet, Pressable } from "react-native";
 

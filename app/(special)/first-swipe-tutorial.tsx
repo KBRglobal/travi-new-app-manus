@@ -1,4 +1,4 @@
-// Screen 72 — First Swipe Tutorial — STATIC WIREFRAME
+// Screen 72 — First Swipe Tutorial — STATIC 
 // 4 steps, spotlight, progress dots, skip
 import { View, Text, StyleSheet, Pressable } from "react-native";
 

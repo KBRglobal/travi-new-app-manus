@@ -1,4 +1,4 @@
-// Screen 21 — Dates & Travelers — STATIC WIREFRAME
+// Screen 21 — Dates & Travelers — STATIC 
 // Route: /(trip)/dates-travelers | Mode: Planning
 // Spec: Destination summary 80px, Date cards side-by-side 120px, Travelers card 72px, Flexible toggle
 

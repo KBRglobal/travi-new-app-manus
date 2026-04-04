@@ -1,4 +1,4 @@
-// Screen 71 — Loading Payment — STATIC WIREFRAME
+// Screen 71 — Loading Payment — STATIC 
 // Mascot credit card, security badge, 90s timeout
 import { View, Text, StyleSheet } from "react-native";
 

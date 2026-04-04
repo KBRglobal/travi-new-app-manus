@@ -1,4 +1,4 @@
-// Screen 26 — Itinerary Builder — STATIC WIREFRAME
+// Screen 26 — Itinerary Builder — STATIC 
 import { View, Text, StyleSheet, Pressable, ScrollView } from "react-native";
 
 const DAYS = [

@@ -1,4 +1,4 @@
-// Screen 54 — Profile Edit — STATIC WIREFRAME
+// Screen 54 — Profile Edit — STATIC 
 // Header 60px (back + Save), Avatar 120px + Change Photo, Personal Info + Location + Travel Prefs + Emergency + About + Privacy + Delete
 import { View, Text, StyleSheet, Pressable, ScrollView } from "react-native";
 

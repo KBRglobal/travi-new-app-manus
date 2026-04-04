@@ -63,7 +63,7 @@ function generatePackingList(destination: string, activities: string[]): PackSec
     {
       title: "Toiletries",
       icon: "🧴",
-      color: "#EC4899",
+      color: "#F94498",
       data: [
         { id: "t1", label: "Toothbrush & toothpaste", checked: false, essential: true },
         { id: "t2", label: isBeach ? "SPF 50+ sunscreen" : "Sunscreen SPF 30", checked: false, essential: false },
