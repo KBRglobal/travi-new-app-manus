@@ -1,3 +1,4 @@
+content = """\
 // Screen 12 — Explore Feed — REDESIGNED v2
 import React, { useState, useRef, useEffect, useCallback } from "react";
 import { View, Text, StyleSheet, Pressable, ScrollView, TextInput, Animated, Dimensions, Platform } from "react-native";
@@ -343,3 +344,8 @@ const s = StyleSheet.create({
   matchCount: { fontSize: 12, fontFamily: "Satoshi-Medium", color: C.muted },
   grid: { flexDirection: "row", flexWrap: "wrap", gap: 10, paddingHorizontal: 16 },
 });
+"""
+
+with open("/home/ubuntu/travi-app/app/(tabs)/explore.tsx", "w") as f:
+    f.write(content)
+print("OK:", len(content))
