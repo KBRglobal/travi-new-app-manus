@@ -208,3 +208,11 @@
 - [x] Variant 4: Neon Outline (pulsing neon border + text glow)
 - [x] Variant 5: Animated Map Lines (flight paths + compass)
 - [x] Navigation buttons to switch between variants
+
+### Plan a Trip — Holographic Portal Variations
+- [x] V1: Aurora Borealis — slow-moving aurora waves + star sparkles
+- [x] V2: Cosmic Warp — radial pulse from center + speed-line streaks
+- [x] V3: Liquid Chrome — metallic liquid morph + iridescent shimmer
+- [x] V4: Nebula Drift — layered nebula clouds + floating light particles
+- [x] V5: Prism Refraction — rainbow light bands sweeping across + diamond sparkle
+- [x] Navigation between all 5 variations
