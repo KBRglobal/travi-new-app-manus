@@ -1,6 +1,5 @@
-// Home Dashboard — TRAVI
-// Reference-level: dramatic depth, glass cards, particles, glowing elements
-// Brand palette only: #0A0514 bg, #6443F4 purple, #F94498 pink, #9B7EFF lavender
+// Home Dashboard — TRAVI v2
+// Design: DNA-first, full-screen hero, 4-action grid, full-width rec cards
 
 import { useRef, useEffect, useState, useMemo } from "react";
 import {
@@ -9,7 +8,6 @@ import {
   StyleSheet,
   Pressable,
   ScrollView,
-  FlatList,
   Dimensions,
   Animated,
   Platform,
@@ -26,7 +24,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const { width: W, height: H } = Dimensions.get("window");
 
-// ─── TRAVI Brand Palette ───
+// ─── Brand Palette ───
 const C = {
   bg: "#0A0514",
   purple: "#6443F4",
@@ -37,19 +35,15 @@ const C = {
   white: "#FFFFFF",
   green: "#00C96B",
   gold: "#FDCD0A",
-  // Opacity variants
+  orange: "#FF9327",
   w80: "rgba(255,255,255,0.8)",
   w60: "rgba(255,255,255,0.6)",
   w40: "rgba(255,255,255,0.4)",
   w20: "rgba(255,255,255,0.2)",
   w10: "rgba(255,255,255,0.1)",
   w06: "rgba(255,255,255,0.06)",
-  w03: "rgba(255,255,255,0.03)",
-  // Glass
   glassBg: "rgba(255,255,255,0.05)",
   glassBorder: "rgba(255,255,255,0.08)",
-  glassHighlight: "rgba(255,255,255,0.12)",
-  // Glow
   purpleGlow15: "rgba(100,67,244,0.15)",
   purpleGlow25: "rgba(100,67,244,0.25)",
   purpleGlow40: "rgba(100,67,244,0.4)",
@@ -69,34 +63,63 @@ const DEST = {
 };
 
 const RECOMMENDED = [
-  { id: "1", key: "bali" as keyof typeof DEST, city: "Bali", country: "Indonesia", match: 96 },
-  { id: "2", key: "santorini" as keyof typeof DEST, city: "Santorini", country: "Greece", match: 91 },
-  { id: "3", key: "kyoto" as keyof typeof DEST, city: "Kyoto", country: "Japan", match: 88 },
-  { id: "4", key: "paris" as keyof typeof DEST, city: "Paris", country: "France", match: 85 },
+  {
+    id: "1",
+    key: "bali" as keyof typeof DEST,
+    city: "Bali",
+    country: "Indonesia",
+    match: 96,
+    hook: "Temples, yoga & rice terraces made for you",
+    tags: ["Culturalist", "Relaxation"],
+  },
+  {
+    id: "2",
+    key: "santorini" as keyof typeof DEST,
+    city: "Santorini",
+    country: "Greece",
+    match: 91,
+    hook: "Sunsets & white villages for the romantic in you",
+    tags: ["Culturalist", "Romantic"],
+  },
+  {
+    id: "3",
+    key: "kyoto" as keyof typeof DEST,
+    city: "Kyoto",
+    country: "Japan",
+    match: 88,
+    hook: "Ancient temples & cherry blossoms await",
+    tags: ["Culturalist", "Adventurer"],
+  },
+  {
+    id: "4",
+    key: "paris" as keyof typeof DEST,
+    city: "Paris",
+    country: "France",
+    match: 85,
+    hook: "Art, cuisine & boulevards for the explorer",
+    tags: ["Foodie", "Culturalist"],
+  },
 ];
 
-function haptic() {
-  if (Platform.OS !== "web") Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+function haptic(style: Haptics.ImpactFeedbackStyle = Haptics.ImpactFeedbackStyle.Light) {
+  if (Platform.OS !== "web") Haptics.impactAsync(style);
 }
 
-// ═══════════════════════════════════════════════════
-// STAR PARTICLES — floating dots like a night sky
-// ═══════════════════════════════════════════════════
+// ─── Star particles ───
 function StarField() {
   const stars = useMemo(() => {
     const result = [];
-    for (let i = 0; i < 60; i++) {
+    for (let i = 0; i < 50; i++) {
       result.push({
         id: i,
         left: Math.random() * W,
-        top: Math.random() * 1600,
-        size: Math.random() * 2 + 0.5,
-        opacity: Math.random() * 0.4 + 0.05,
+        top: Math.random() * 2000,
+        size: Math.random() * 1.5 + 0.5,
+        opacity: Math.random() * 0.3 + 0.05,
       });
     }
     return result;
   }, []);
-
   return (
     <View style={StyleSheet.absoluteFill} pointerEvents="none">
       {stars.map((s) => (
@@ -118,166 +141,139 @@ function StarField() {
 }
 
 // ═══════════════════════════════════════════════════
-// GLASS CARD — deep frosted glass with glowing border
+// HERO — Full-screen DNA match card (70% viewport)
 // ═══════════════════════════════════════════════════
-function GlassCard({
-  children,
-  style,
-  onPress,
-  glowColor,
-}: {
-  children: React.ReactNode;
-  style?: any;
-  onPress?: () => void;
-  glowColor?: string;
-}) {
-  const borderColor = glowColor
-    ? glowColor.replace(/[\d.]+\)$/, "0.2)")
-    : C.glassBorder;
-
-  const content = (
-    <View style={[glassS.outer, glowColor && { shadowColor: glowColor }, style]}>
-      <View style={[glassS.card, { borderColor }]}>
-        {Platform.OS !== "web" ? (
-          <BlurView intensity={40} tint="dark" style={StyleSheet.absoluteFill} />
-        ) : (
-          <View style={[StyleSheet.absoluteFill, { backgroundColor: "rgba(20,10,50,0.7)" }]} />
-        )}
-        {children}
-      </View>
-    </View>
-  );
-
-  if (onPress) {
-    return (
-      <Pressable
-        onPress={() => { haptic(); onPress(); }}
-        style={({ pressed }) => [pressed && { opacity: 0.88, transform: [{ scale: 0.98 }] }]}
-      >
-        {content}
-      </Pressable>
-    );
-  }
-  return content;
-}
-
-const glassS = StyleSheet.create({
-  outer: {
-    shadowColor: C.purple,
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.15,
-    shadowRadius: 16,
-    elevation: 8,
-  },
-  card: {
-    borderRadius: 22,
-    overflow: "hidden",
-    backgroundColor: C.glassBg,
-    borderWidth: 1,
-    borderColor: C.glassBorder,
-  },
-});
-
-// ═══════════════════════════════════════════════════
-// HERO — Cinematic destination card
-// ═══════════════════════════════════════════════════
-function HeroCard({ onPress }: { onPress: () => void }) {
-  const shimmer = useRef(new Animated.Value(-1)).current;
-  const glowPulse = useRef(new Animated.Value(0.3)).current;
+function HeroSection({ onExplore, insetTop }: { onExplore: () => void; insetTop: number }) {
+  const pulseBadge = useRef(new Animated.Value(1)).current;
+  const glowOpacity = useRef(new Animated.Value(0.3)).current;
 
   useEffect(() => {
-    // Shimmer sweep on CTA
+    // Badge pulse
     Animated.loop(
       Animated.sequence([
-        Animated.timing(shimmer, { toValue: 1, duration: 2800, easing: Easing.inOut(Easing.ease), useNativeDriver: true }),
-        Animated.delay(1500),
-        Animated.timing(shimmer, { toValue: -1, duration: 0, useNativeDriver: true }),
+        Animated.timing(pulseBadge, { toValue: 1.08, duration: 1000, easing: Easing.inOut(Easing.ease), useNativeDriver: true }),
+        Animated.timing(pulseBadge, { toValue: 1.0, duration: 1000, easing: Easing.inOut(Easing.ease), useNativeDriver: true }),
       ])
     ).start();
-
-    // Glow pulse on card border
+    // Border glow
     Animated.loop(
       Animated.sequence([
-        Animated.timing(glowPulse, { toValue: 0.6, duration: 2000, easing: Easing.inOut(Easing.sin), useNativeDriver: true }),
-        Animated.timing(glowPulse, { toValue: 0.2, duration: 2000, easing: Easing.inOut(Easing.sin), useNativeDriver: true }),
+        Animated.timing(glowOpacity, { toValue: 0.7, duration: 2000, easing: Easing.inOut(Easing.sin), useNativeDriver: true }),
+        Animated.timing(glowOpacity, { toValue: 0.2, duration: 2000, easing: Easing.inOut(Easing.sin), useNativeDriver: true }),
       ])
     ).start();
   }, []);
 
-  const shimmerX = shimmer.interpolate({
-    inputRange: [-1, 1],
-    outputRange: [-250, W + 50],
-  });
+  const HERO_H = H * 0.68;
 
   return (
     <Pressable
-      onPress={() => { haptic(); onPress(); }}
-      style={({ pressed }) => [pressed && { transform: [{ scale: 0.98 }] }]}
+      onPress={() => { haptic(); onExplore(); }}
+      style={({ pressed }) => [pressed && { opacity: 0.95, transform: [{ scale: 0.995 }] }]}
     >
-      <View style={heroS.wrapper}>
-        {/* Outer glow ring */}
-        <Animated.View style={[heroS.glowRing, { opacity: glowPulse }]} />
+      <View style={{ height: HERO_H, position: "relative" }}>
+        {/* Full-screen image */}
+        <ExpoImage
+          source={DEST.bali}
+          style={[StyleSheet.absoluteFill, { borderRadius: 0 }]}
+          contentFit="cover"
+          transition={400}
+        />
 
-        <View style={heroS.card}>
-          {/* Background photo */}
-          <ExpoImage source={DEST.bali} style={StyleSheet.absoluteFill} contentFit="cover" transition={400} />
+        {/* Very light overlay — let the image breathe */}
+        <LinearGradient
+          colors={["rgba(10,5,20,0.1)", "rgba(10,5,20,0.15)", "rgba(10,5,20,0.9)"]}
+          locations={[0, 0.4, 1]}
+          style={StyleSheet.absoluteFill}
+        />
+        {/* Subtle brand tint */}
+        <LinearGradient
+          colors={["rgba(100,67,244,0.08)", "transparent", "rgba(249,68,152,0.06)"]}
+          locations={[0, 0.5, 1]}
+          style={StyleSheet.absoluteFill}
+        />
 
-          {/* Gradient overlays — dramatic cinematic */}
-          <LinearGradient
-            colors={["rgba(10,5,20,0.2)", "rgba(10,5,20,0.5)", "rgba(10,5,20,0.95)"]}
-            locations={[0, 0.45, 1]}
-            style={StyleSheet.absoluteFill}
+        {/* Header row inside hero */}
+        <View style={[heroS.headerRow, { paddingTop: insetTop + 10 }]}>
+          <Image
+            source={require("@/assets/images/logotype-dark.webp")}
+            style={heroS.logo}
+            resizeMode="contain"
           />
-          {/* Purple tint overlay for brand feel */}
-          <LinearGradient
-            colors={["rgba(100,67,244,0.15)", "transparent", "rgba(249,68,152,0.1)"]}
-            locations={[0, 0.5, 1]}
-            style={StyleSheet.absoluteFill}
-          />
+          <Pressable style={heroS.avatarBtn}>
+            <Text style={heroS.avatarText}>D</Text>
+          </Pressable>
+        </View>
 
-          {/* Content */}
-          <View style={heroS.content}>
-            {/* Top badge */}
-            <View style={heroS.topRow}>
-              <View style={heroS.aiBadge}>
-                <Text style={heroS.aiBadgeText}>✦ AI-Powered</Text>
+        {/* Greeting */}
+        <View style={heroS.greetWrap}>
+          <Text style={heroS.greetLine}>
+            <Text style={heroS.greetMuted}>Good morning, </Text>
+            <Text style={heroS.greetName}>David</Text>
+          </Text>
+        </View>
+
+        {/* DNA Match Glass Card — bottom of hero */}
+        <View style={heroS.dnaCard}>
+          {Platform.OS !== "web" ? (
+            <BlurView intensity={60} tint="dark" style={StyleSheet.absoluteFill} />
+          ) : (
+            <View style={[StyleSheet.absoluteFill, { backgroundColor: "rgba(10,5,20,0.82)" }]} />
+          )}
+          <Animated.View style={[heroS.glowBorder, { opacity: glowOpacity }]} />
+
+          <View style={heroS.dnaCardContent}>
+            {/* Label */}
+            <View style={heroS.dnaLabelRow}>
+              <MaterialIcons name="biotech" size={14} color={C.purpleLight} />
+              <Text style={heroS.dnaLabelText}>YOUR TOP DNA MATCH</Text>
+            </View>
+
+            {/* Big percentage */}
+            <View style={heroS.matchRow}>
+              <View style={heroS.matchNumWrap}>
+                <Animated.View style={{ transform: [{ scale: pulseBadge }] }}>
+                  <LinearGradient
+                    colors={[C.purple, C.pink] as [string, string]}
+                    start={{ x: 0, y: 0 }}
+                    end={{ x: 1, y: 1 }}
+                    style={heroS.matchBadge}
+                  >
+                    <Text style={heroS.matchNum}>96%</Text>
+                    <Text style={heroS.matchWord}>PERFECT</Text>
+                  </LinearGradient>
+                </Animated.View>
+              </View>
+
+              <View style={heroS.matchInfo}>
+                <Text style={heroS.matchCity}>Bali, Indonesia</Text>
+                <Text style={heroS.matchHook}>"Temples, yoga & rice terraces made for you"</Text>
+                <View style={heroS.tagRow}>
+                  {["🏛️ Culturalist", "🧘 Relaxation"].map((t) => (
+                    <View key={t} style={heroS.tag}>
+                      <Text style={heroS.tagText}>{t}</Text>
+                    </View>
+                  ))}
+                </View>
               </View>
             </View>
 
-            {/* Spacer */}
-            <View style={{ flex: 1 }} />
-
-            {/* Bottom text */}
-            <View style={heroS.textBlock}>
-              <Text style={heroS.headline}>
-                Where will{"\n"}
-                <Text style={heroS.headlineAccent}>AI</Text> take you{"\n"}
-                next?
-              </Text>
-              <Text style={heroS.sub}>
-                Personalized trips matched to your DNA
-              </Text>
-            </View>
-
             {/* CTA */}
-            <View style={heroS.ctaWrap}>
+            <Pressable
+              onPress={() => { haptic(); onExplore(); }}
+              style={({ pressed }) => [pressed && { opacity: 0.85, transform: [{ scale: 0.97 }] }]}
+            >
               <LinearGradient
-                colors={[C.purple, "#7B5CF6", C.pink]}
+                colors={[C.purple, "#7B5CF6", C.pink] as [string, string, string]}
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 0 }}
-                style={heroS.ctaGradient}
+                style={heroS.cta}
               >
-                {/* Shimmer */}
-                <Animated.View
-                  style={[heroS.shimmer, { transform: [{ translateX: shimmerX }] }]}
-                />
-                <MaterialIcons name="flight-takeoff" size={20} color="#fff" />
-                <Text style={heroS.ctaText}>Plan My Trip</Text>
-                <View style={heroS.ctaArrow}>
-                  <MaterialIcons name="arrow-forward" size={16} color={C.purple} />
-                </View>
+                <MaterialIcons name="explore" size={18} color="#fff" />
+                <Text style={heroS.ctaText}>Explore Bali</Text>
+                <MaterialIcons name="arrow-forward" size={16} color="rgba(255,255,255,0.7)" />
               </LinearGradient>
-            </View>
+            </Pressable>
           </View>
         </View>
       </View>
@@ -286,236 +282,578 @@ function HeroCard({ onPress }: { onPress: () => void }) {
 }
 
 const heroS = StyleSheet.create({
-  wrapper: {
-    position: "relative",
-  },
-  glowRing: {
+  headerRow: {
     position: "absolute",
-    top: -3,
-    left: -3,
-    right: -3,
-    bottom: -3,
-    borderRadius: 27,
-    borderWidth: 1.5,
-    borderColor: C.purpleLight,
-    shadowColor: C.purple,
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.6,
-    shadowRadius: 20,
-  },
-  card: {
-    width: "100%" as any,
-    height: 300,
-    borderRadius: 24,
-    overflow: "hidden",
-  },
-  content: {
-    flex: 1,
-    padding: 18,
-  },
-  topRow: {
+    top: 0,
+    left: 0,
+    right: 0,
     flexDirection: "row",
-    justifyContent: "flex-start",
-  },
-  aiBadge: {
-    backgroundColor: "rgba(255,255,255,0.1)",
-    borderWidth: 1,
-    borderColor: "rgba(255,255,255,0.15)",
-    borderRadius: 20,
-    paddingHorizontal: 14,
-    paddingVertical: 6,
-    backdropFilter: "blur(10px)",
-  },
-  aiBadgeText: {
-    fontSize: 12,
-    fontFamily: "Satoshi-Bold",
-    color: C.white,
-    letterSpacing: 0.5,
-  },
-  textBlock: {
-    marginBottom: 12,
-  },
-  headline: {
-    fontSize: 24,
-    fontFamily: "Chillax-Bold",
-    color: C.white,
-    lineHeight: 30,
-    letterSpacing: -0.5,
-  },
-  headlineAccent: {
-    color: C.pink,
-  },
-  sub: {
-    fontSize: 13,
-    fontFamily: "Satoshi-Regular",
-    color: C.w60,
-    marginTop: 6,
-    lineHeight: 18,
-  },
-  ctaWrap: {
-    borderRadius: 20,
-    overflow: "hidden",
-    shadowColor: C.pink,
-    shadowOffset: { width: 0, height: 8 },
-    shadowOpacity: 0.5,
-    shadowRadius: 24,
-    elevation: 16,
-  },
-  ctaGradient: {
-    flexDirection: "row",
+    justifyContent: "space-between",
     alignItems: "center",
-    paddingVertical: 14,
-    paddingLeft: 18,
-    paddingRight: 14,
-    overflow: "hidden",
+    paddingHorizontal: 20,
+    zIndex: 10,
   },
-  ctaText: {
-    fontSize: 15,
-    fontFamily: "Satoshi-Bold",
-    color: C.white,
-    letterSpacing: 0.3,
-    flex: 1,
-    marginLeft: 10,
-  },
-  ctaArrow: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
-    backgroundColor: "rgba(255,255,255,0.2)",
+  logo: { width: 80, height: 28 },
+  avatarBtn: {
+    width: 38,
+    height: 38,
+    borderRadius: 19,
+    backgroundColor: "rgba(255,255,255,0.12)",
+    borderWidth: 1.5,
+    borderColor: "rgba(155,126,255,0.4)",
     justifyContent: "center",
     alignItems: "center",
   },
-  shimmer: {
+  avatarText: { color: C.white, fontSize: 14, fontFamily: "Satoshi-Bold" },
+  greetWrap: {
+    position: "absolute",
+    top: "22%",
+    left: 20,
+    right: 20,
+    zIndex: 5,
+  },
+  greetLine: { fontSize: 20, lineHeight: 26 },
+  greetMuted: { fontFamily: "Satoshi-Regular", color: "rgba(255,255,255,0.5)" },
+  greetName: { fontFamily: "Chillax-Bold", color: C.white },
+
+  // DNA Glass Card
+  dnaCard: {
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    right: 0,
+    borderTopLeftRadius: 24,
+    borderTopRightRadius: 24,
+    overflow: "hidden",
+    borderTopWidth: 1,
+    borderLeftWidth: 1,
+    borderRightWidth: 1,
+    borderColor: "rgba(155,126,255,0.15)",
+  },
+  glowBorder: {
     position: "absolute",
     top: 0,
-    bottom: 0,
-    width: 100,
-    backgroundColor: "rgba(255,255,255,0.08)",
-    transform: [{ skewX: "-20deg" }],
+    left: 0,
+    right: 0,
+    height: 1,
+    backgroundColor: C.purpleLight,
+  },
+  dnaCardContent: {
+    padding: 18,
+    paddingBottom: 20,
+    gap: 14,
+  },
+  dnaLabelRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 6,
+  },
+  dnaLabelText: {
+    color: C.purpleLight,
+    fontSize: 11,
+    fontFamily: "Satoshi-Bold",
+    letterSpacing: 1.2,
+  },
+  matchRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 16,
+  },
+  matchNumWrap: {},
+  matchBadge: {
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+    justifyContent: "center",
+    alignItems: "center",
+    shadowColor: C.purple,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.6,
+    shadowRadius: 16,
+    elevation: 12,
+  },
+  matchNum: {
+    color: C.white,
+    fontSize: 22,
+    fontFamily: "Chillax-Bold",
+    lineHeight: 26,
+  },
+  matchWord: {
+    color: "rgba(255,255,255,0.8)",
+    fontSize: 9,
+    fontFamily: "Satoshi-Bold",
+    letterSpacing: 1,
+  },
+  matchInfo: { flex: 1, gap: 6 },
+  matchCity: {
+    color: C.white,
+    fontSize: 20,
+    fontFamily: "Chillax-Bold",
+    lineHeight: 24,
+  },
+  matchHook: {
+    color: "rgba(255,255,255,0.55)",
+    fontSize: 12,
+    fontFamily: "Satoshi-Regular",
+    lineHeight: 17,
+    fontStyle: "italic",
+  },
+  tagRow: { flexDirection: "row", gap: 6, flexWrap: "wrap" },
+  tag: {
+    backgroundColor: "rgba(100,67,244,0.2)",
+    borderWidth: 1,
+    borderColor: "rgba(100,67,244,0.3)",
+    borderRadius: 10,
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+  },
+  tagText: { color: C.purpleLight, fontSize: 11, fontFamily: "Satoshi-Medium" },
+
+  cta: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 8,
+    paddingVertical: 14,
+    borderRadius: 16,
+  },
+  ctaText: {
+    color: C.white,
+    fontSize: 15,
+    fontFamily: "Satoshi-Bold",
+    flex: 1,
+    textAlign: "center",
   },
 });
 
 // ═══════════════════════════════════════════════════
-// CATEGORY PILLS — quick access with glowing icons
+// 4-ACTION GRID
 // ═══════════════════════════════════════════════════
-const CATEGORIES = [
-  { id: "1", icon: "beach-access" as const, label: "Beach", color: C.pink },
-  { id: "2", icon: "landscape" as const, label: "Nature", color: C.green },
-  { id: "3", icon: "location-city" as const, label: "City", color: C.purpleLight },
-  { id: "4", icon: "restaurant" as const, label: "Food", color: C.gold },
-  { id: "5", icon: "nightlife" as const, label: "Nightlife", color: C.pinkLight },
+const ACTIONS = [
+  { icon: "luggage" as const, label: "Plan Trip", sub: "AI-powered", color: C.purple, route: "/(tabs)/plan-trip" },
+  { icon: "explore" as const, label: "Explore Places", sub: "12 new matches", color: C.pink, route: "/(tabs)/explore" },
+  { icon: "auto-awesome" as const, label: "Surprise Me", sub: "Random pick", color: C.gold, route: "/(tabs)/explore" },
+  { icon: "biotech" as const, label: "Update DNA", sub: "67% complete", color: C.purpleLight, route: "/(dna)/profile" },
 ];
 
-function CategoryPills() {
-  const router = useRouter();
+function ActionGrid({ router }: { router: ReturnType<typeof useRouter> }) {
   return (
-    <View style={catS.row}>
-      {CATEGORIES.map((cat) => (
-        <Pressable
-          key={cat.id}
-          onPress={() => { haptic(); router.push("/(tabs)/explore" as any); }}
-          style={({ pressed }) => [catS.pill, pressed && { opacity: 0.8, transform: [{ scale: 0.95 }] }]}
-        >
-          <View style={[catS.iconCircle, { backgroundColor: cat.color + "18", borderColor: cat.color + "30" }]}>
-            <MaterialIcons name={cat.icon} size={20} color={cat.color} />
-          </View>
-          <Text style={catS.label}>{cat.label}</Text>
-        </Pressable>
-      ))}
+    <View style={ag.wrap}>
+      <Text style={ag.title}>What do you want to do?</Text>
+      <View style={ag.grid}>
+        {ACTIONS.map((a, i) => {
+          const anim = useRef(new Animated.Value(0)).current;
+          useEffect(() => {
+            Animated.timing(anim, {
+              toValue: 1,
+              duration: 350,
+              delay: i * 80,
+              easing: Easing.out(Easing.ease),
+              useNativeDriver: true,
+            }).start();
+          }, []);
+          return (
+            <Animated.View
+              key={a.label}
+              style={{
+                opacity: anim,
+                transform: [{ translateY: anim.interpolate({ inputRange: [0, 1], outputRange: [20, 0] }) }],
+                width: (W - 52) / 2,
+              }}
+            >
+              <Pressable
+                onPress={() => { haptic(); router.push(a.route as any); }}
+                style={({ pressed }) => [ag.card, pressed && { opacity: 0.8, transform: [{ scale: 0.96 }] }]}
+              >
+                {Platform.OS !== "web" ? (
+                  <BlurView intensity={30} tint="dark" style={StyleSheet.absoluteFill} />
+                ) : (
+                  <View style={[StyleSheet.absoluteFill, { backgroundColor: "rgba(20,10,50,0.7)" }]} />
+                )}
+                <View style={[ag.iconWrap, { backgroundColor: a.color + "18", borderColor: a.color + "30" }]}>
+                  <MaterialIcons name={a.icon} size={28} color={a.color} />
+                </View>
+                <Text style={ag.label}>{a.label}</Text>
+                <Text style={ag.sub}>{a.sub}</Text>
+              </Pressable>
+            </Animated.View>
+          );
+        })}
+      </View>
     </View>
   );
 }
 
-const catS = StyleSheet.create({
-  row: { flexDirection: "row", justifyContent: "space-between" },
-  pill: { alignItems: "center", gap: 8, flex: 1 },
-  iconCircle: {
+const ag = StyleSheet.create({
+  wrap: { paddingHorizontal: 20, marginTop: 28 },
+  title: { color: "rgba(255,255,255,0.45)", fontSize: 13, fontFamily: "Satoshi-Medium", marginBottom: 14, letterSpacing: 0.3 },
+  grid: { flexDirection: "row", flexWrap: "wrap", gap: 12 },
+  card: {
+    height: 110,
+    borderRadius: 20,
+    overflow: "hidden",
+    backgroundColor: "rgba(255,255,255,0.04)",
+    borderWidth: 1,
+    borderColor: "rgba(255,255,255,0.07)",
+    padding: 16,
+    gap: 8,
+    justifyContent: "center",
+  },
+  iconWrap: {
     width: 52,
     height: 52,
-    borderRadius: 26,
+    borderRadius: 16,
     justifyContent: "center",
     alignItems: "center",
     borderWidth: 1,
+    marginBottom: 2,
   },
-  label: { fontSize: 11, fontFamily: "Satoshi-Medium", color: C.w60 },
+  label: { color: C.white, fontSize: 14, fontFamily: "Satoshi-Bold", lineHeight: 18 },
+  sub: { color: "rgba(255,255,255,0.4)", fontSize: 11, fontFamily: "Satoshi-Regular" },
 });
 
 // ═══════════════════════════════════════════════════
-// RECOMMENDED CARD — tall cinematic
+// DNA COMPLETION BANNER
 // ═══════════════════════════════════════════════════
-const REC_W = W * 0.55;
-const REC_H = 220;
+function DNABanner({ router }: { router: ReturnType<typeof useRouter> }) {
+  const progressAnim = useRef(new Animated.Value(0)).current;
+  const pulseAnim = useRef(new Animated.Value(1)).current;
 
-function RecCard({ item, onPress }: { item: typeof RECOMMENDED[0]; onPress: () => void }) {
+  useEffect(() => {
+    Animated.timing(progressAnim, { toValue: 0.67, duration: 800, delay: 300, easing: Easing.out(Easing.ease), useNativeDriver: false }).start();
+    Animated.loop(
+      Animated.sequence([
+        Animated.timing(pulseAnim, { toValue: 1.03, duration: 1500, easing: Easing.inOut(Easing.ease), useNativeDriver: true }),
+        Animated.timing(pulseAnim, { toValue: 1.0, duration: 1500, easing: Easing.inOut(Easing.ease), useNativeDriver: true }),
+      ])
+    ).start();
+  }, []);
+
+  const progressWidth = progressAnim.interpolate({ inputRange: [0, 1], outputRange: ["0%", "100%"] });
+
   return (
     <Pressable
-      onPress={() => { haptic(); onPress(); }}
-      style={({ pressed }) => [pressed && { opacity: 0.93, transform: [{ scale: 0.97 }] }]}
+      onPress={() => { haptic(Haptics.ImpactFeedbackStyle.Medium); router.push("/(dna)/profile" as any); }}
+      style={({ pressed }) => [pressed && { opacity: 0.88 }]}
     >
-      <View style={recS.card}>
-        <ExpoImage source={DEST[item.key]} style={recS.image} contentFit="cover" transition={300} />
+      <Animated.View style={[dnaB.card, { transform: [{ scale: pulseAnim }] }]}>
+        {Platform.OS !== "web" ? (
+          <BlurView intensity={40} tint="dark" style={StyleSheet.absoluteFill} />
+        ) : (
+          <View style={[StyleSheet.absoluteFill, { backgroundColor: "rgba(20,10,50,0.8)" }]} />
+        )}
+        {/* Orange warning accent */}
+        <View style={dnaB.accentBar} />
+
+        <View style={dnaB.inner}>
+          <View style={dnaB.warningIcon}>
+            <MaterialIcons name="warning-amber" size={20} color={C.orange} />
+          </View>
+          <View style={{ flex: 1, gap: 6 }}>
+            <View style={dnaB.titleRow}>
+              <Text style={dnaB.title}>⚠️ Your DNA is incomplete</Text>
+              <Text style={dnaB.pct}>67%</Text>
+            </View>
+            <Text style={dnaB.missing}>Missing: Luxurist, Adventurer</Text>
+            {/* Progress bar */}
+            <View style={dnaB.progressTrack}>
+              <Animated.View style={[dnaB.progressFill, { width: progressWidth }]} />
+            </View>
+            <Text style={dnaB.cta}>Complete DNA (2 min) →</Text>
+          </View>
+        </View>
+      </Animated.View>
+    </Pressable>
+  );
+}
+
+const dnaB = StyleSheet.create({
+  card: {
+    marginHorizontal: 20,
+    borderRadius: 20,
+    overflow: "hidden",
+    borderWidth: 1,
+    borderColor: "rgba(255,147,39,0.25)",
+    shadowColor: C.orange,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.2,
+    shadowRadius: 16,
+    elevation: 8,
+  },
+  accentBar: {
+    position: "absolute",
+    left: 0,
+    top: 10,
+    bottom: 10,
+    width: 3,
+    backgroundColor: C.orange,
+    borderRadius: 2,
+  },
+  inner: {
+    flexDirection: "row",
+    alignItems: "flex-start",
+    padding: 18,
+    paddingLeft: 20,
+    gap: 14,
+  },
+  warningIcon: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    backgroundColor: "rgba(255,147,39,0.12)",
+    borderWidth: 1,
+    borderColor: "rgba(255,147,39,0.25)",
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 2,
+  },
+  titleRow: { flexDirection: "row", justifyContent: "space-between", alignItems: "center" },
+  title: { color: C.white, fontSize: 14, fontFamily: "Satoshi-Bold" },
+  pct: { color: C.orange, fontSize: 14, fontFamily: "Chillax-Bold" },
+  missing: { color: "rgba(255,255,255,0.45)", fontSize: 12, fontFamily: "Satoshi-Regular" },
+  progressTrack: {
+    height: 6,
+    backgroundColor: "rgba(255,255,255,0.08)",
+    borderRadius: 3,
+    overflow: "hidden",
+  },
+  progressFill: {
+    height: 6,
+    borderRadius: 3,
+    backgroundColor: C.orange,
+  },
+  cta: { color: C.orange, fontSize: 13, fontFamily: "Satoshi-Bold", marginTop: 2 },
+});
+
+// ═══════════════════════════════════════════════════
+// FULL-WIDTH RECOMMENDATION CARDS
+// ═══════════════════════════════════════════════════
+function RecCard({
+  item,
+  index,
+  onPress,
+}: {
+  item: typeof RECOMMENDED[0];
+  index: number;
+  onPress: () => void;
+}) {
+  const anim = useRef(new Animated.Value(0)).current;
+  const matchPulse = useRef(new Animated.Value(1)).current;
+
+  useEffect(() => {
+    Animated.timing(anim, {
+      toValue: 1,
+      duration: 400,
+      delay: index * 100,
+      easing: Easing.out(Easing.ease),
+      useNativeDriver: true,
+    }).start();
+
+    if (index < 2) {
+      Animated.loop(
+        Animated.sequence([
+          Animated.timing(matchPulse, { toValue: 1.06, duration: 1200, easing: Easing.inOut(Easing.ease), useNativeDriver: true }),
+          Animated.timing(matchPulse, { toValue: 1.0, duration: 1200, easing: Easing.inOut(Easing.ease), useNativeDriver: true }),
+        ])
+      ).start();
+    }
+  }, []);
+
+  return (
+    <Animated.View
+      style={{
+        opacity: anim,
+        transform: [{ translateY: anim.interpolate({ inputRange: [0, 1], outputRange: [24, 0] }) }],
+      }}
+    >
+      <Pressable
+        onPress={() => { haptic(); onPress(); }}
+        style={({ pressed }) => [recS.card, pressed && { opacity: 0.9, transform: [{ scale: 0.99 }] }]}
+      >
+        <ExpoImage source={DEST[item.key]} style={recS.img} contentFit="cover" transition={300} />
         <LinearGradient
-          colors={["transparent", "rgba(10,5,20,0.2)", "rgba(10,5,20,0.92)"]}
-          locations={[0.25, 0.5, 1]}
+          colors={["transparent", "rgba(10,5,20,0.5)", "rgba(10,5,20,0.96)"]}
+          locations={[0.2, 0.55, 1]}
           style={StyleSheet.absoluteFill}
         />
-        {/* Match badge */}
-        <View style={recS.badge}>
-          <Text style={recS.badgeText}>✦ {item.match}%</Text>
+
+        {/* DNA Match badge — center top */}
+        <View style={recS.badgeWrap}>
+          <Animated.View style={{ transform: [{ scale: matchPulse }] }}>
+            <LinearGradient
+              colors={[C.purple, C.pink] as [string, string]}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              style={recS.badge}
+            >
+              <Text style={recS.badgeNum}>{item.match}%</Text>
+              <Text style={recS.badgeWord}>MATCH</Text>
+            </LinearGradient>
+          </Animated.View>
         </View>
-        {/* Name */}
-        <View style={recS.nameWrap}>
-          <Text style={recS.city}>{item.city}</Text>
-          <Text style={recS.country}>{item.country}</Text>
+
+        {/* Bottom content */}
+        <View style={recS.bottom}>
+          <Text style={recS.city}>{item.city}, {item.country}</Text>
+          <Text style={recS.hook}>"{item.hook}"</Text>
+          <View style={recS.tagRow}>
+            {item.tags.map((t) => (
+              <View key={t} style={recS.tag}>
+                <Text style={recS.tagText}>{t}</Text>
+              </View>
+            ))}
+          </View>
+        </View>
+      </Pressable>
+    </Animated.View>
+  );
+}
+
+const recS = StyleSheet.create({
+  card: {
+    marginHorizontal: 20,
+    height: 220,
+    borderRadius: 22,
+    overflow: "hidden",
+    borderWidth: 1,
+    borderColor: "rgba(255,255,255,0.06)",
+    shadowColor: C.purple,
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.2,
+    shadowRadius: 20,
+    elevation: 10,
+  },
+  img: { ...StyleSheet.absoluteFillObject },
+  badgeWrap: {
+    position: "absolute",
+    top: 16,
+    alignSelf: "center",
+    left: 0,
+    right: 0,
+    alignItems: "center",
+  },
+  badge: {
+    paddingHorizontal: 18,
+    paddingVertical: 8,
+    borderRadius: 20,
+    alignItems: "center",
+    shadowColor: C.purple,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.5,
+    shadowRadius: 12,
+    elevation: 8,
+  },
+  badgeNum: { color: C.white, fontSize: 22, fontFamily: "Chillax-Bold", lineHeight: 26 },
+  badgeWord: { color: "rgba(255,255,255,0.8)", fontSize: 9, fontFamily: "Satoshi-Bold", letterSpacing: 1 },
+  bottom: {
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    right: 0,
+    padding: 18,
+    gap: 5,
+  },
+  city: { color: C.white, fontSize: 20, fontFamily: "Chillax-Bold", lineHeight: 24 },
+  hook: { color: "rgba(255,255,255,0.55)", fontSize: 12, fontFamily: "Satoshi-Regular", lineHeight: 16, fontStyle: "italic" },
+  tagRow: { flexDirection: "row", gap: 6, marginTop: 4 },
+  tag: {
+    backgroundColor: "rgba(100,67,244,0.25)",
+    borderWidth: 1,
+    borderColor: "rgba(100,67,244,0.35)",
+    borderRadius: 10,
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+  },
+  tagText: { color: C.purpleLight, fontSize: 11, fontFamily: "Satoshi-Medium" },
+});
+
+// ═══════════════════════════════════════════════════
+// LIVE TRIP BANNER
+// ═══════════════════════════════════════════════════
+function LiveTripBanner({ router }: { router: ReturnType<typeof useRouter> }) {
+  const dotPulse = useRef(new Animated.Value(0.3)).current;
+  useEffect(() => {
+    Animated.loop(
+      Animated.sequence([
+        Animated.timing(dotPulse, { toValue: 1, duration: 1000, useNativeDriver: true }),
+        Animated.timing(dotPulse, { toValue: 0.3, duration: 1000, useNativeDriver: true }),
+      ])
+    ).start();
+  }, []);
+
+  return (
+    <Pressable
+      onPress={() => { haptic(); router.push("/(live)/home" as any); }}
+      style={({ pressed }) => [pressed && { opacity: 0.85 }]}
+    >
+      <View style={liveS.card}>
+        {Platform.OS !== "web" ? (
+          <BlurView intensity={40} tint="dark" style={StyleSheet.absoluteFill} />
+        ) : (
+          <View style={[StyleSheet.absoluteFill, { backgroundColor: "rgba(0,20,10,0.85)" }]} />
+        )}
+        <View style={liveS.inner}>
+          <View style={liveS.dotWrap}>
+            <Animated.View style={[liveS.dotOuter, { opacity: dotPulse }]} />
+            <View style={liveS.dotInner} />
+          </View>
+          <View style={{ flex: 1, gap: 2 }}>
+            <Text style={liveS.label}>🟢 YOUR TRIP IS LIVE</Text>
+            <Text style={liveS.dest}>Bali, Indonesia</Text>
+            <Text style={liveS.day}>Day 2 of 5 · Next: Temple Visit 10:00 AM</Text>
+          </View>
+          <View style={liveS.arrow}>
+            <MaterialIcons name="chevron-right" size={20} color={C.green} />
+          </View>
+        </View>
+        <View style={liveS.ctaRow}>
+          <Text style={liveS.ctaText}>Open Live Dashboard →</Text>
         </View>
       </View>
     </Pressable>
   );
 }
 
-const recS = StyleSheet.create({
+const liveS = StyleSheet.create({
   card: {
-    width: REC_W,
-    height: REC_H,
-    borderRadius: 24,
+    marginHorizontal: 20,
+    borderRadius: 20,
     overflow: "hidden",
     borderWidth: 1,
-    borderColor: C.w10,
-  },
-  image: { width: "100%", height: "100%" },
-  badge: {
-    position: "absolute",
-    top: 14,
-    right: 14,
-    backgroundColor: C.green,
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-    borderRadius: 10,
+    borderColor: "rgba(0,201,107,0.25)",
     shadowColor: C.green,
     shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.4,
-    shadowRadius: 8,
+    shadowOpacity: 0.2,
+    shadowRadius: 16,
+    elevation: 8,
   },
-  badgeText: { fontSize: 12, fontFamily: "Satoshi-Bold", color: C.white },
-  nameWrap: { position: "absolute", bottom: 14, left: 14 },
-  city: {
-    fontSize: 20,
-    fontFamily: "Chillax-Bold",
-    color: C.white,
-    lineHeight: 24,
-    textShadowColor: "rgba(0,0,0,0.8)",
-    textShadowOffset: { width: 0, height: 2 },
-    textShadowRadius: 16,
+  inner: {
+    flexDirection: "row",
+    alignItems: "center",
+    padding: 16,
+    gap: 14,
   },
-  country: {
-    fontSize: 13,
-    fontFamily: "Satoshi-Medium",
-    color: C.w60,
-    marginTop: 4,
-    textShadowColor: "rgba(0,0,0,0.6)",
-    textShadowOffset: { width: 0, height: 1 },
-    textShadowRadius: 8,
+  dotWrap: { width: 20, height: 20, justifyContent: "center", alignItems: "center" },
+  dotOuter: { position: "absolute", width: 20, height: 20, borderRadius: 10, backgroundColor: C.green },
+  dotInner: { width: 8, height: 8, borderRadius: 4, backgroundColor: C.green },
+  label: { color: C.green, fontSize: 11, fontFamily: "Satoshi-Bold", letterSpacing: 0.8 },
+  dest: { color: C.white, fontSize: 17, fontFamily: "Chillax-Bold" },
+  day: { color: "rgba(255,255,255,0.5)", fontSize: 12, fontFamily: "Satoshi-Regular" },
+  arrow: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    backgroundColor: "rgba(0,201,107,0.12)",
+    justifyContent: "center",
+    alignItems: "center",
   },
+  ctaRow: {
+    borderTopWidth: 1,
+    borderTopColor: "rgba(0,201,107,0.12)",
+    paddingVertical: 12,
+    alignItems: "center",
+  },
+  ctaText: { color: C.green, fontSize: 13, fontFamily: "Satoshi-Bold" },
 });
 
 // ═══════════════════════════════════════════════════
@@ -524,200 +862,75 @@ const recS = StyleSheet.create({
 export default function HomeScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
-  const livePulse = useRef(new Animated.Value(0.3)).current;
-
-  useEffect(() => {
-    Animated.loop(
-      Animated.sequence([
-        Animated.timing(livePulse, { toValue: 1, duration: 1200, useNativeDriver: true }),
-        Animated.timing(livePulse, { toValue: 0.3, duration: 1200, useNativeDriver: true }),
-      ])
-    ).start();
-  }, []);
 
   return (
     <View style={s.root}>
-        {/* ═══ BACKGROUND LAYERS ═══ */}
+      {/* Background */}
       <View style={StyleSheet.absoluteFill} pointerEvents="none">
-        {/* Solid black base */}
-        <View style={[StyleSheet.absoluteFill, { backgroundColor: "#0A0514" }]} />
-        {/* Star particles */}
+        <View style={[StyleSheet.absoluteFill, { backgroundColor: C.bg }]} />
         <StarField />
-        {/* Very subtle center purple glow */}
         <View style={s.glowPurple} />
-        {/* Very subtle bottom pink glow */}
         <View style={s.glowPink} />
       </View>
 
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 110 }}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ paddingBottom: 120 }}
+      >
+        {/* ═══ HERO (70% viewport, DNA match centerpiece) ═══ */}
+        <HeroSection
+          onExplore={() => router.push({ pathname: "/(tabs)/destination-guide", params: { id: "bali" } } as any)}
+          insetTop={insets.top}
+        />
 
-        {/* ═══ HEADER ═══ */}
-        <View style={[s.header, { paddingTop: insets.top + 8 }]}>
-          <Image source={require("@/assets/images/logotype-dark.webp")} style={s.logo} resizeMode="contain" />
-          <Pressable
-            onPress={() => { haptic(); router.push("/(settings)/profile" as any); }}
-            style={({ pressed }) => [s.avatar, pressed && { opacity: 0.7 }]}
-          >
-            <Text style={s.avatarText}>D</Text>
-          </Pressable>
+        {/* ═══ 4-ACTION GRID ═══ */}
+        <ActionGrid router={router} />
+
+        {/* ═══ LIVE TRIP BANNER ═══ */}
+        <View style={{ marginTop: 24 }}>
+          <LiveTripBanner router={router} />
         </View>
 
-        {/* ═══ GREETING ═══ */}
-        <View style={s.greeting}>
-          <Text style={s.greetLine}>
-            <Text style={s.greetMuted}>Good morning, </Text>
-            <Text style={s.greetName}>David</Text>
-          </Text>
-          <View style={s.dnaPill}>
-            <Text style={s.dnaIcon}>✦</Text>
-            <Text style={s.dnaLabel}>Explorer DNA</Text>
-          </View>
+        {/* ═══ DNA COMPLETION BANNER ═══ */}
+        <View style={{ marginTop: 16 }}>
+          <DNABanner router={router} />
         </View>
 
-        {/* ═══ HERO ═══ */}
-        <View style={s.section}>
-          <HeroCard onPress={() => router.push("/(tabs)/plan-trip" as any)} />
-        </View>
-
-        {/* ═══ CATEGORIES ═══ */}
-        <View style={s.section}>
-          <CategoryPills />
-        </View>
-
-        {/* ═══ LIVE TRIP ═══ */}
-        <View style={s.section}>
-          <GlassCard glowColor={C.green} onPress={() => router.push("/(live)/home" as any)}>
-            <View style={s.liveInner}>
-              <View style={s.liveDotWrap}>
-                <Animated.View style={[s.liveDotOuter, { opacity: livePulse }]} />
-                <View style={s.liveDotInner} />
-              </View>
-              <View style={{ flex: 1, marginLeft: 14 }}>
-                <Text style={s.liveLabel}>LIVE TRIP</Text>
-                <Text style={s.liveDest}>Bali, Indonesia</Text>
-              </View>
-              <View style={s.liveArrow}>
-                <MaterialIcons name="chevron-right" size={18} color={C.green} />
-              </View>
-            </View>
-          </GlassCard>
-        </View>
-
-        {/* ═══ DNA COMPLETION ═══ */}
-        <View style={s.section}>
-          <GlassCard glowColor={C.purple} onPress={() => router.push("/(dna)/profile" as any)}>
-            <View style={s.dnaInner}>
-              <View style={s.dnaAccent} />
-              <View style={s.dnaIconWrap}>
-                <MaterialIcons name="auto-awesome" size={22} color={C.purpleLight} />
-              </View>
-              <View style={{ flex: 1 }}>
-                <Text style={s.dnaTitle}>Complete Your <Text style={{ color: C.purpleLight }}>Travel DNA</Text></Text>
-                <Text style={s.dnaSub}>Unlock personalized matches</Text>
-                {/* Progress bar */}
-                <View style={s.dnaProgress}>
-                  <View style={s.dnaProgressFill} />
-                </View>
-              </View>
-              <View style={s.dnaArrow}>
-                <MaterialIcons name="chevron-right" size={18} color={C.purpleLight} />
-              </View>
-            </View>
-          </GlassCard>
-        </View>
-
-        {/* ═══ RECOMMENDED ═══ */}
-        <View style={s.sectionFull}>
+        {/* ═══ MORE DNA MATCHES ═══ */}
+        <View style={{ marginTop: 28 }}>
           <View style={s.sectionHeader}>
-            <Text style={s.sectionTitle}>
-              <Text style={{ color: C.pink }}>Recommended</Text> for You
-            </Text>
+            <Text style={s.sectionTitle}>More DNA Matches</Text>
             <Pressable onPress={() => { haptic(); router.push("/(tabs)/explore" as any); }}>
               <Text style={s.seeAll}>See all</Text>
             </Pressable>
           </View>
-          <FlatList
-            data={RECOMMENDED}
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            keyExtractor={(i) => i.id}
-            contentContainerStyle={{ paddingHorizontal: 20, gap: 14 }}
-            snapToInterval={REC_W + 14}
-            decelerationRate="fast"
-            renderItem={({ item }) => (
+          <View style={{ gap: 14 }}>
+            {RECOMMENDED.map((item, i) => (
               <RecCard
+                key={item.id}
                 item={item}
+                index={i}
                 onPress={() => router.push({ pathname: "/(tabs)/destination-guide", params: { id: item.key } } as any)}
               />
-            )}
-          />
-        </View>
-
-        {/* ═══ QUICK ACTIONS ═══ */}
-        <View style={s.section}>
-          <View style={s.quickRow}>
-            {[
-              { icon: "account-balance-wallet" as const, label: "Wallet", value: "€45", color: C.gold },
-              { icon: "explore" as const, label: "Explore", value: "12 new", color: C.purpleLight },
-              { icon: "luggage" as const, label: "Trips", value: "3", color: C.pink },
-            ].map((q, i) => (
-              <GlassCard
-                key={i}
-                style={{ flex: 1 }}
-                onPress={() => {
-                  if (i === 0) router.push("/(points)/wallet" as any);
-                  else if (i === 1) router.push("/(tabs)/explore" as any);
-                  else router.push("/(tabs)/trips" as any);
-                }}
-              >
-                <View style={s.quickInner}>
-                  <View style={[s.quickIcon, { backgroundColor: q.color + "15", borderColor: q.color + "25" }]}>
-                    <MaterialIcons name={q.icon} size={22} color={q.color} />
-                  </View>
-                  <Text style={s.quickLabel}>{q.label}</Text>
-                  <Text style={s.quickValue}>{q.value}</Text>
-                </View>
-              </GlassCard>
             ))}
           </View>
         </View>
-
-        {/* ═══ TRAVI TIP ═══ */}
-        <View style={s.section}>
-          <GlassCard glowColor={C.purple}>
-            <View style={s.tipInner}>
-              <Image source={require("@/assets/images/mascot-dark.png")} style={s.tipMascot} resizeMode="contain" />
-              <View style={{ flex: 1 }}>
-                <Text style={s.tipTitle}>TRAVI says</Text>
-                <Text style={s.tipText}>
-                  Bali is <Text style={{ color: C.pink, fontFamily: "Satoshi-Bold" }}>trending</Text> this season — 96% match with your Explorer DNA.
-                </Text>
-              </View>
-            </View>
-          </GlassCard>
-        </View>
-
       </ScrollView>
     </View>
   );
 }
 
-// ═══════════════════════════════════════════════════
-// STYLES
-// ═══════════════════════════════════════════════════
 const s = StyleSheet.create({
   root: { flex: 1, backgroundColor: C.bg },
-
-  // ─── Background Glows ───
   glowPurple: {
     position: "absolute",
-    top: "35%",
+    top: "30%",
     left: "50%",
     marginLeft: -200,
     width: 400,
     height: 400,
     borderRadius: 200,
-    backgroundColor: "rgba(100,67,244,0.06)",
+    backgroundColor: "rgba(100,67,244,0.05)",
   },
   glowPink: {
     position: "absolute",
@@ -727,59 +940,8 @@ const s = StyleSheet.create({
     width: 360,
     height: 250,
     borderRadius: 180,
-    backgroundColor: "rgba(249,68,152,0.05)",
+    backgroundColor: "rgba(249,68,152,0.04)",
   },
-
-  // ─── Header ───
-  header: {
-    paddingHorizontal: 20,
-    paddingTop: 12,
-    paddingBottom: 4,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
-  logo: { width: 80, height: 28 },
-  avatar: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: C.glassBg,
-    borderWidth: 1.5,
-    borderColor: C.purpleGlow25,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  avatarText: { color: C.white, fontSize: 15, fontFamily: "Satoshi-Bold" },
-
-  // ─── Greeting ───
-  greeting: { paddingHorizontal: 20, paddingTop: 14, paddingBottom: 4 },
-  greetLine: { fontSize: 22, lineHeight: 28 },
-  greetMuted: { fontFamily: "Satoshi-Regular", color: C.w40 },
-  greetName: { fontFamily: "Chillax-Bold", color: C.white },
-  dnaPill: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 6,
-    marginTop: 12,
-    backgroundColor: C.purpleGlow15,
-    borderWidth: 1,
-    borderColor: C.purpleGlow25,
-    paddingHorizontal: 14,
-    paddingVertical: 6,
-    borderRadius: 16,
-    alignSelf: "flex-start",
-    shadowColor: C.purple,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
-  },
-  dnaIcon: { color: C.purpleLight, fontSize: 13 },
-  dnaLabel: { color: C.purpleLight, fontSize: 12, fontFamily: "Satoshi-Bold", letterSpacing: 0.3 },
-
-  // ─── Sections ───
-  section: { paddingHorizontal: 20, marginTop: 18 },
-  sectionFull: { marginTop: 22 },
   sectionHeader: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -787,121 +949,6 @@ const s = StyleSheet.create({
     paddingHorizontal: 20,
     marginBottom: 16,
   },
-  sectionTitle: {
-    color: C.white,
-    fontSize: 18,
-    fontFamily: "Chillax-Bold",
-  },
-  seeAll: {
-    color: C.purpleLight,
-    fontSize: 13,
-    fontFamily: "Satoshi-Bold",
-  },
-
-  // ─── Live Trip ───
-  liveInner: {
-    flexDirection: "row",
-    alignItems: "center",
-    paddingVertical: 16,
-    paddingHorizontal: 18,
-  },
-  liveDotWrap: { width: 22, height: 22, justifyContent: "center", alignItems: "center" },
-  liveDotOuter: { position: "absolute", width: 22, height: 22, borderRadius: 11, backgroundColor: C.green },
-  liveDotInner: { width: 8, height: 8, borderRadius: 4, backgroundColor: C.green },
-  liveLabel: { color: C.green, fontSize: 10, fontFamily: "Satoshi-Bold", letterSpacing: 1.5 },
-  liveDest: { color: C.white, fontSize: 16, fontFamily: "Chillax-Bold", marginTop: 2 },
-  liveArrow: {
-    width: 30,
-    height: 30,
-    borderRadius: 15,
-    backgroundColor: "rgba(0,201,107,0.12)",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-
-  // ─── DNA Card ───
-  dnaInner: {
-    flexDirection: "row",
-    alignItems: "center",
-    paddingVertical: 18,
-    paddingHorizontal: 18,
-    paddingLeft: 16,
-  },
-  dnaAccent: {
-    position: "absolute",
-    left: 0,
-    top: 8,
-    bottom: 8,
-    width: 3,
-    backgroundColor: C.purple,
-    borderRadius: 2,
-  },
-  dnaIconWrap: {
-    width: 46,
-    height: 46,
-    borderRadius: 23,
-    backgroundColor: C.purpleGlow15,
-    borderWidth: 1,
-    borderColor: C.purpleGlow25,
-    justifyContent: "center",
-    alignItems: "center",
-    marginRight: 14,
-    shadowColor: C.purple,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
-  },
-  dnaTitle: { color: C.white, fontSize: 15, fontFamily: "Satoshi-Bold" },
-  dnaSub: { color: C.w40, fontSize: 12, fontFamily: "Satoshi-Regular", marginTop: 3 },
-  dnaProgress: {
-    height: 4,
-    backgroundColor: C.w06,
-    borderRadius: 2,
-    marginTop: 8,
-    width: "80%" as any,
-  },
-  dnaProgressFill: {
-    height: 4,
-    width: "40%" as any,
-    borderRadius: 2,
-    backgroundColor: C.purple,
-  },
-  dnaArrow: {
-    width: 30,
-    height: 30,
-    borderRadius: 15,
-    backgroundColor: C.purpleGlow15,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-
-  // ─── Quick Actions ───
-  quickRow: { flexDirection: "row", gap: 10 },
-  quickInner: {
-    paddingVertical: 14,
-    paddingHorizontal: 10,
-    alignItems: "center",
-    gap: 7,
-  },
-  quickIcon: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    justifyContent: "center",
-    alignItems: "center",
-    borderWidth: 1,
-  },
-  quickLabel: { color: C.w40, fontSize: 10, fontFamily: "Satoshi-Medium" },
-  quickValue: { color: C.white, fontSize: 16, fontFamily: "Chillax-Bold" },
-
-  // ─── Tip ───
-  tipInner: {
-    flexDirection: "row",
-    alignItems: "center",
-    padding: 18,
-    gap: 14,
-  },
-  tipMascot: { width: 48, height: 48 },
-  tipTitle: { color: C.purpleLight, fontSize: 12, fontFamily: "Satoshi-Bold", letterSpacing: 0.5, marginBottom: 4 },
-  tipText: { color: C.w60, fontSize: 13, fontFamily: "Satoshi-Regular", lineHeight: 20 },
+  sectionTitle: { color: C.white, fontSize: 18, fontFamily: "Chillax-Bold" },
+  seeAll: { color: C.purpleLight, fontSize: 13, fontFamily: "Satoshi-Bold" },
 });

@@ -1,3 +1,4 @@
+import { DS } from "@/components/screen-wrapper";
 import { useState } from "react";
 import {
   View, Text, TouchableOpacity, StyleSheet, ScrollView,
