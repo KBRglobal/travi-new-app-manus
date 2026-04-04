@@ -1,97 +1,110 @@
-// Screen 51 — Split Payment — STATIC 
-// Total amount 140px, People section, Equal/Custom toggle, Summary card 100px, Send Requests
+import { useState } from "react";
 import { View, Text, StyleSheet, Pressable, ScrollView } from "react-native";
+import { MaterialIcons } from "@expo/vector-icons";
+import { BlurView } from "expo-blur";
+import { ScreenWrapper, DS } from "@/components/screen-wrapper";
+import { useRouter } from "expo-router";
+import { LinearGradient } from "expo-linear-gradient";
 
 const PEOPLE = [
-  { name: "You", amount: "E695", avatar: "Y" },
-  { name: "Sarah M.", amount: "E695", avatar: "S" },
-  { name: "David K.", amount: "E695", avatar: "D" },
+  { name: "You", avatar: "Y", amount: "€695", status: "Your share", color: DS.purple },
+  { name: "Sarah M.", avatar: "S", amount: "€695", status: "Pending", color: DS.pink },
+  { name: "David K.", avatar: "D", amount: "€695", status: "Pending", color: DS.warning },
 ];
 
 export default function SplitPaymentScreen() {
-  return (
-    <View style={s.root}>
-      <View style={s.header}>
-        <Pressable style={s.backBtn}><Text style={s.backText}>{"<"}</Text></Pressable>
-        <Text style={s.headerTitle}>Split Payment</Text>
-        <View style={{ width: 32 }} />
-      </View>
+  const router = useRouter();
+  const [mode, setMode] = useState<"equal" | "custom">("equal");
 
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 120 }}>
-        {/* Total amount — 140px */}
-        <View style={s.totalCard}>
+  return (
+    <ScreenWrapper title="Split Payment" scrollable bottomPad={100}>
+      {/* Total Card */}
+      <BlurView intensity={20} tint="dark" style={s.totalCard}>
+        <View style={s.totalInner}>
           <Text style={s.totalLabel}>Total Amount</Text>
-          <Text style={s.totalAmount}>E2,085</Text>
+          <Text style={s.totalAmount}>€2,085</Text>
           <Text style={s.totalSub}>Bali Trip — Hotel + Activities</Text>
         </View>
+      </BlurView>
 
-        {/* Equal/Custom toggle */}
-        <View style={s.toggleRow}>
-          <Pressable style={[s.toggleBtn, s.toggleActive]}><Text style={[s.toggleText, s.toggleTextActive]}>Equal Split</Text></Pressable>
-          <Pressable style={s.toggleBtn}><Text style={s.toggleText}>Custom</Text></Pressable>
-        </View>
-
-        {/* People section */}
-        <View style={s.section}>
-          <Text style={s.sectionTitle}>Split Between</Text>
-          {PEOPLE.map((p) => (
-            <View key={p.name} style={s.personRow}>
-              <View style={s.avatar}><Text style={s.avatarText}>{p.avatar}</Text></View>
-              <View style={{ flex: 1 }}>
-                <Text style={s.personName}>{p.name}</Text>
-                <Text style={s.personStatus}>{p.name === "You" ? "Your share" : "Pending"}</Text>
-              </View>
-              <Text style={s.personAmount}>{p.amount}</Text>
-            </View>
-          ))}
-          <Pressable style={s.addPerson}><Text style={s.addPersonText}>+ Add Person</Text></Pressable>
-        </View>
-
-        {/* Summary card — 100px */}
-        <View style={s.summaryCard}>
-          <View style={s.summaryRow}><Text style={s.summaryLabel}>Your share</Text><Text style={s.summaryValue}>E695</Text></View>
-          <View style={s.summaryRow}><Text style={s.summaryLabel}>Others owe you</Text><Text style={s.summaryValue}>E1,390</Text></View>
-          <View style={[s.summaryRow, { borderBottomWidth: 0 }]}><Text style={s.summaryLabel}>Requests to send</Text><Text style={s.summaryValue}>2</Text></View>
-        </View>
-      </ScrollView>
-
-      <View style={s.bottom}>
-        <Pressable style={s.sendBtn}><Text style={s.sendText}>Send Requests</Text></Pressable>
+      {/* Toggle */}
+      <View style={s.toggleRow}>
+        <Pressable style={[s.toggleBtn, mode === "equal" && s.toggleActive]} onPress={() => setMode("equal")}>
+          <Text style={[s.toggleText, mode === "equal" && s.toggleTextActive]}>Equal Split</Text>
+        </Pressable>
+        <Pressable style={[s.toggleBtn, mode === "custom" && s.toggleActive]} onPress={() => setMode("custom")}>
+          <Text style={[s.toggleText, mode === "custom" && s.toggleTextActive]}>Custom</Text>
+        </Pressable>
       </View>
-    </View>
+
+      {/* People */}
+      <Text style={s.sectionTitle}>Split Between</Text>
+      {PEOPLE.map((p) => (
+        <BlurView key={p.name} intensity={15} tint="dark" style={s.personCard}>
+          <View style={[s.avatar, { backgroundColor: p.color + "33", borderColor: p.color + "66" }]}>
+            <Text style={[s.avatarText, { color: p.color }]}>{p.avatar}</Text>
+          </View>
+          <View style={{ flex: 1 }}>
+            <Text style={s.personName}>{p.name}</Text>
+            <Text style={s.personStatus}>{p.status}</Text>
+          </View>
+          <Text style={s.personAmount}>{p.amount}</Text>
+        </BlurView>
+      ))}
+      <Pressable style={s.addPerson}>
+        <MaterialIcons name="add" size={16} color={DS.purple} />
+        <Text style={s.addPersonText}>Add Person</Text>
+      </Pressable>
+
+      {/* Summary */}
+      <BlurView intensity={20} tint="dark" style={s.summaryCard}>
+        {[
+          { label: "Your share", value: "€695" },
+          { label: "Others owe you", value: "€1,390" },
+          { label: "Requests to send", value: "2" },
+        ].map((row, i) => (
+          <View key={i} style={[s.summaryRow, i < 2 && { borderBottomWidth: 1, borderBottomColor: DS.border }]}>
+            <Text style={s.summaryLabel}>{row.label}</Text>
+            <Text style={s.summaryValue}>{row.value}</Text>
+          </View>
+        ))}
+      </BlurView>
+
+      {/* CTA */}
+      <Pressable onPress={() => router.back()}>
+        <LinearGradient colors={[DS.purple, DS.pink] as const} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={s.sendBtn}>
+          <MaterialIcons name="send" size={20} color="#FFF" />
+          <Text style={s.sendText}>Send Requests</Text>
+        </LinearGradient>
+      </Pressable>
+    </ScreenWrapper>
   );
 }
 
 const s = StyleSheet.create({
-  root: { flex: 1, backgroundColor: "#111" },
-  header: { height: 60, flexDirection: "row", alignItems: "center", paddingHorizontal: 16, gap: 12, marginTop: 48, borderBottomWidth: 1, borderBottomColor: "#222" },
-  backBtn: { width: 32, height: 32, justifyContent: "center", alignItems: "center" },
-  backText: { color: "#FFF", fontSize: 24 },
-  headerTitle: { flex: 1, color: "#FFF", fontSize: 18, fontWeight: "600", textAlign: "center" },
-  totalCard: { alignItems: "center", margin: 20, padding: 20, height: 140, borderRadius: 16, backgroundColor: "#1A1A1A", borderWidth: 1, borderColor: "#333", justifyContent: "center" },
-  totalLabel: { color: "#888", fontSize: 13 },
-  totalAmount: { color: "#FFF", fontSize: 36, fontWeight: "800", marginTop: 4 },
-  totalSub: { color: "#666", fontSize: 12, marginTop: 4 },
-  toggleRow: { flexDirection: "row", marginHorizontal: 20, borderRadius: 12, backgroundColor: "#1A1A1A", borderWidth: 1, borderColor: "#333", overflow: "hidden" },
-  toggleBtn: { flex: 1, paddingVertical: 12, alignItems: "center" },
-  toggleActive: { backgroundColor: "#333" },
-  toggleText: { color: "#888", fontSize: 14, fontWeight: "600" },
-  toggleTextActive: { color: "#FFF" },
-  section: { paddingHorizontal: 20, marginTop: 24 },
-  sectionTitle: { color: "#FFF", fontSize: 16, fontWeight: "700", marginBottom: 12 },
-  personRow: { flexDirection: "row", alignItems: "center", gap: 12, padding: 14, borderRadius: 12, backgroundColor: "#1A1A1A", borderWidth: 1, borderColor: "#333", marginBottom: 8 },
-  avatar: { width: 40, height: 40, borderRadius: 20, backgroundColor: "#222", justifyContent: "center", alignItems: "center" },
-  avatarText: { color: "#888", fontSize: 16, fontWeight: "700" },
-  personName: { color: "#FFF", fontSize: 14, fontWeight: "600" },
-  personStatus: { color: "#888", fontSize: 12, marginTop: 2 },
-  personAmount: { color: "#FFF", fontSize: 15, fontWeight: "700" },
-  addPerson: { alignSelf: "center", marginTop: 8, paddingHorizontal: 16, paddingVertical: 8, borderRadius: 20, borderWidth: 1, borderColor: "#333" },
-  addPersonText: { color: "#888", fontSize: 13 },
-  summaryCard: { margin: 20, padding: 16, height: 100, borderRadius: 14, backgroundColor: "#1A1A1A", borderWidth: 1, borderColor: "#333", justifyContent: "center" },
-  summaryRow: { flexDirection: "row", justifyContent: "space-between", paddingVertical: 6, borderBottomWidth: 1, borderBottomColor: "#222" },
-  summaryLabel: { color: "#888", fontSize: 13 },
-  summaryValue: { color: "#FFF", fontSize: 13, fontWeight: "600" },
-  bottom: { position: "absolute", bottom: 0, left: 0, right: 0, padding: 20, paddingBottom: 36, backgroundColor: "#111", borderTopWidth: 1, borderTopColor: "#222" },
-  sendBtn: { height: 52, borderRadius: 26, backgroundColor: "#333", borderWidth: 1, borderColor: "#555", justifyContent: "center", alignItems: "center" },
-  sendText: { color: "#FFF", fontSize: 16, fontWeight: "600" },
+  totalCard: { borderRadius: 20, overflow: "hidden", borderWidth: 1, borderColor: DS.border, marginBottom: 16 },
+  totalInner: { alignItems: "center", padding: 24, backgroundColor: DS.surface },
+  totalLabel: { color: DS.muted, fontSize: 13, fontFamily: "Satoshi-Regular" },
+  totalAmount: { color: DS.white, fontSize: 40, fontFamily: "Chillax-Bold", marginTop: 4 },
+  totalSub: { color: DS.muted, fontSize: 13, fontFamily: "Satoshi-Regular", marginTop: 4 },
+  toggleRow: { flexDirection: "row", borderRadius: 14, backgroundColor: DS.surface, borderWidth: 1, borderColor: DS.border, overflow: "hidden", marginBottom: 24 },
+  toggleBtn: { flex: 1, paddingVertical: 13, alignItems: "center" },
+  toggleActive: { backgroundColor: DS.purple + "33" },
+  toggleText: { color: DS.muted, fontSize: 14, fontFamily: "Satoshi-Medium" },
+  toggleTextActive: { color: DS.white },
+  sectionTitle: { color: DS.white, fontSize: 16, fontFamily: "Chillax-Bold", marginBottom: 12 },
+  personCard: { borderRadius: 16, overflow: "hidden", borderWidth: 1, borderColor: DS.border, marginBottom: 10, flexDirection: "row", alignItems: "center", gap: 12, padding: 14, backgroundColor: DS.surface },
+  avatar: { width: 44, height: 44, borderRadius: 22, borderWidth: 1, justifyContent: "center", alignItems: "center" },
+  avatarText: { fontSize: 16, fontFamily: "Chillax-Bold" },
+  personName: { color: DS.white, fontSize: 15, fontFamily: "Satoshi-Medium" },
+  personStatus: { color: DS.muted, fontSize: 12, fontFamily: "Satoshi-Regular", marginTop: 2 },
+  personAmount: { color: DS.white, fontSize: 16, fontFamily: "Chillax-Bold" },
+  addPerson: { flexDirection: "row", alignItems: "center", gap: 6, alignSelf: "center", marginVertical: 8, paddingHorizontal: 16, paddingVertical: 8, borderRadius: 20, borderWidth: 1, borderColor: DS.purple + "66" },
+  addPersonText: { color: DS.purple, fontSize: 13, fontFamily: "Satoshi-Medium" },
+  summaryCard: { borderRadius: 16, overflow: "hidden", borderWidth: 1, borderColor: DS.border, marginVertical: 16, backgroundColor: DS.surface },
+  summaryRow: { flexDirection: "row", justifyContent: "space-between", paddingVertical: 12, paddingHorizontal: 16 },
+  summaryLabel: { color: DS.muted, fontSize: 13, fontFamily: "Satoshi-Regular" },
+  summaryValue: { color: DS.white, fontSize: 14, fontFamily: "Satoshi-Medium" },
+  sendBtn: { height: 56, borderRadius: 16, flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 8, marginTop: 8 },
+  sendText: { color: DS.white, fontSize: 16, fontFamily: "Chillax-Bold" },
 });

@@ -1,35 +1,93 @@
-// Screen 71 — Loading Payment — STATIC 
-// Mascot credit card, security badge, 90s timeout
-import { View, Text, StyleSheet } from "react-native";
+import React from 'react';
+import { View, Text, ActivityIndicator, StyleSheet } from 'react-native';
+import { ScreenWrapper } from "@/components/screen-wrapper";
+import { BlurView } from "expo-blur";
+import { LinearGradient } from "expo-linear-gradient";
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 
-export default function LoadingPaymentScreen() {
+// DS object as provided in the prompt
+const DS = {
+  bg: "#0A0514", surface: "rgba(36,16,62,0.55)", surfaceHigh: "rgba(50,20,80,0.7)",
+  border: "rgba(123,68,230,0.22)", borderStrong: "rgba(100,67,244,0.4)",
+  purple: "#6443F4", pink: "#F94498", success: "#02A65C", warning: "#FF9327",
+  error: "#FF6B6B", info: "#01BEFF", white: "#FFFFFF", secondary: "#D3CFD8",
+  muted: "#A79FB2", placeholder: "#7B6A94", gradient: ["#6443F4", "#F94498"],
+};
+
+const LoadingPaymentScreen = () => {
   return (
-    <View style={s.root}>
-      <View style={s.mascot}><Text style={s.mascotText}>[MASCOT + 💳]</Text></View>
-      <Text style={s.title}>Processing Payment</Text>
-      <Text style={s.subtitle}>Securing your booking...</Text>
-      <View style={s.progressBar}>
-        <View style={s.progressFill} />
+    <ScreenWrapper title="Payment Processing" scrollable={true}>
+      <View style={styles.container}>
+        <BlurView intensity={20} tint="dark" style={styles.glassCard}>
+          <MaterialIcons name="payments" size={60} color={DS.purple} style={styles.icon} />
+          <ActivityIndicator size="large" color={DS.pink} style={styles.activityIndicator} />
+          <Text style={styles.title}>Processing Payment</Text>
+          <Text style={styles.body}>Please wait while we securely process your transaction. This may take a few moments.</Text>
+          {/* Example of a LinearGradient for a potential CTA, though not strictly needed for a loading screen */}
+          {/* <LinearGradient
+            colors={[DS.purple, DS.pink] as const}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+            style={styles.gradientButton}
+          >
+            <Text style={styles.buttonText}>Cancel Payment</Text>
+          </LinearGradient> */}
+        </BlurView>
       </View>
-      <View style={s.securityBadge}>
-        <Text style={s.badgeIcon}>🔒</Text>
-        <Text style={s.badgeText}>256-bit SSL Encrypted</Text>
-      </View>
-      <Text style={s.hint}>Please don't close this screen. This may take up to 90 seconds.</Text>
-    </View>
+    </ScreenWrapper>
   );
-}
+};
 
-const s = StyleSheet.create({
-  root: { flex: 1, backgroundColor: "#111", justifyContent: "center", alignItems: "center", padding: 40 },
-  mascot: { width: 140, height: 140, borderRadius: 35, backgroundColor: "#1A1A1A", borderWidth: 1, borderColor: "#333", justifyContent: "center", alignItems: "center", marginBottom: 24 },
-  mascotText: { color: "#555", fontSize: 16 },
-  title: { color: "#FFF", fontSize: 22, fontWeight: "800", textAlign: "center" },
-  subtitle: { color: "#888", fontSize: 14, marginTop: 8 },
-  progressBar: { width: "80%", height: 6, borderRadius: 3, backgroundColor: "#222", marginTop: 24 },
-  progressFill: { width: "40%", height: 6, borderRadius: 3, backgroundColor: "#555" },
-  securityBadge: { flexDirection: "row", alignItems: "center", gap: 6, marginTop: 24, paddingHorizontal: 14, paddingVertical: 8, borderRadius: 20, backgroundColor: "#1A1A1A", borderWidth: 1, borderColor: "#333" },
-  badgeIcon: { fontSize: 14 },
-  badgeText: { color: "#888", fontSize: 12 },
-  hint: { color: "#555", fontSize: 12, textAlign: "center", marginTop: 20, lineHeight: 18 },
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: DS.bg,
+    padding: 20,
+  },
+  glassCard: {
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: DS.border,
+    backgroundColor: DS.surface,
+    overflow: "hidden",
+    padding: 30,
+    alignItems: 'center',
+    width: '90%',
+    maxWidth: 400,
+  },
+  icon: {
+    marginBottom: 20,
+  },
+  activityIndicator: {
+    marginBottom: 20,
+  },
+  title: {
+    fontFamily: 'Chillax-Bold',
+    fontSize: 24,
+    color: DS.white,
+    marginBottom: 10,
+    textAlign: 'center',
+  },
+  body: {
+    fontFamily: 'Satoshi-Regular',
+    fontSize: 16,
+    color: DS.muted,
+    textAlign: 'center',
+    lineHeight: 22,
+  },
+  gradientButton: {
+    marginTop: 30,
+    paddingVertical: 12,
+    paddingHorizontal: 25,
+    borderRadius: 10,
+  },
+  buttonText: {
+    fontFamily: 'Satoshi-Medium',
+    fontSize: 16,
+    color: DS.white,
+  },
 });
+
+export default LoadingPaymentScreen;

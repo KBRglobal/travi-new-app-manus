@@ -1,120 +1,163 @@
-// Screen 8 — Quick DNA: Swipe — STATIC 
-// Route: /dna/quick-swipe | Mode: Onboarding
-// Spec: Full-screen card, swipe left/right indicators, progress bar,
-// Category badge, Like/Dislike/Undo buttons bottom
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { ScreenWrapper } from '@/components/screen-wrapper';
+import { BlurView } from 'expo-blur';
+import { LinearGradient } from 'expo-linear-gradient';
+import { MaterialIcons } from '@expo/vector-icons';
 
-import { View, Text, StyleSheet, Pressable } from "react-native";
+// DS object (assuming it's exported from ScreenWrapper or a similar design system file)
+const DS = {
+  bg: "#0A0514", surface: "rgba(36,16,62,0.55)", surfaceHigh: "rgba(50,20,80,0.7)",
+  border: "rgba(123,68,230,0.22)", borderStrong: "rgba(100,67,244,0.4)",
+  purple: "#6443F4", pink: "#F94498", success: "#02A65C", warning: "#FF9327",
+  error: "#FF6B6B", info: "#01BEFF", white: "#FFFFFF", secondary: "#D3CFD8",
+  muted: "#A79FB2", placeholder: "#7B6A94", gradient: ["#6443F4", "#F94498"],
+};
+
+interface CardData {
+  id: string;
+  title: string;
+  description: string;
+  image: string;
+}
+
+const initialCards: CardData[] = [
+  {
+    id: '1',
+    title: 'Explore Paris',
+    description: 'Romantic city with iconic landmarks and exquisite cuisine.',
+    image: 'https://images.unsplash.com/photo-1502602898664-a31875f7000b?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+  },
+  {
+    id: '2',
+    title: 'Adventure in Bali',
+    description: 'Tropical paradise with lush rice paddies and vibrant culture.',
+    image: 'https://images.unsplash.com/photo-1537996194471-bd805c7f1fbd?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+  },
+  {
+    id: '3',
+    title: 'Relax in Maldives',
+    description: 'Stunning overwater bungalows and crystal-clear waters.',
+    image: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+  },
+];
 
 export default function QuickSwipeScreen() {
+  const [cards, setCards] = useState<CardData[]>(initialCards);
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const handleSwipe = (direction: 'left' | 'right') => {
+    // In a real app, this would involve animation and actual swipe logic
+    console.log(`Swiped ${direction} on card ${cards[currentIndex].title}`);
+    if (currentIndex < cards.length - 1) {
+      setCurrentIndex(currentIndex + 1);
+    } else {
+      // For demo, reset or load more cards
+      setCurrentIndex(0);
+      // In a real app, you might fetch more data here
+    }
+  };
+
+  const currentCard = cards[currentIndex];
+
   return (
-    <View style={s.root}>
-      {/* Progress bar */}
-      <View style={s.progressArea}>
-        <View style={s.progressTrack}>
-          <View style={[s.progressFill, { width: "35%" }]} />
-        </View>
-        <Text style={s.progressLabel}>7 / 20</Text>
-      </View>
-
-      {/* Card area */}
-      <View style={s.cardArea}>
-        <View style={[s.swipeIndicator, s.swipeLeft]}>
-          <Text style={s.swipeTextNope}>NOPE</Text>
-        </View>
-        <View style={[s.swipeIndicator, s.swipeRight]}>
-          <Text style={s.swipeTextLike}>LIKE</Text>
-        </View>
-
-        <View style={s.card}>
-          <View style={s.cardImage}>
-            <Text style={s.imagePlaceholder}>Activity Image</Text>
-          </View>
-          <View style={s.categoryBadge}>
-            <Text style={s.categoryText}>Adventure</Text>
-          </View>
-          <View style={s.cardInfo}>
-            <Text style={s.cardTitle}>Bungee Jumping</Text>
-            <Text style={s.cardSubtitle}>Queenstown, New Zealand</Text>
-            <View style={s.tagRow}>
-              <View style={s.tag}><Text style={s.tagText}>Extreme</Text></View>
-              <View style={s.tag}><Text style={s.tagText}>Outdoor</Text></View>
+    <ScreenWrapper title="Quick Swipe" scrollable={false} contentStyle={styles.screenWrapper}>
+      <View style={styles.container}>
+        {currentCard ? (
+          <BlurView intensity={20} tint="dark" style={styles.cardContainer}>
+            <Image source={{ uri: currentCard.image }} style={styles.cardImage} />
+            <View style={styles.cardContent}>
+              <Text style={styles.cardTitle}>{currentCard.title}</Text>
+              <Text style={styles.cardDescription}>{currentCard.description}</Text>
             </View>
-          </View>
-        </View>
+            <View style={styles.actions}>
+              <TouchableOpacity onPress={() => handleSwipe('left')} style={styles.actionButton}>
+                <LinearGradient colors={[DS.purple, DS.pink] as const} style={styles.gradientButton}>
+                  <MaterialIcons name="close" size={32} color={DS.white} />
+                </LinearGradient>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => handleSwipe('right')} style={styles.actionButton}>
+                <LinearGradient colors={[DS.purple, DS.pink] as const} style={styles.gradientButton}>
+                  <MaterialIcons name="favorite" size={32} color={DS.white} />
+                </LinearGradient>
+              </TouchableOpacity>
+            </View>
+          </BlurView>
+        ) : (
+          <Text style={styles.noCardsText}>No more cards to display!</Text>
+        )}
       </View>
-
-      {/* Bottom buttons */}
-      <View style={s.bottomBar}>
-        <Pressable style={[s.actionBtn, s.dislikeBtn]}>
-          <Text style={s.actionIcon}>✕</Text>
-        </Pressable>
-        <Pressable style={[s.actionBtn, s.undoBtn]}>
-          <Text style={s.actionIconSmall}>↩</Text>
-        </Pressable>
-        <Pressable style={[s.actionBtn, s.likeBtn]}>
-          <Text style={s.actionIcon}>♥</Text>
-        </Pressable>
-      </View>
-    </View>
+    </ScreenWrapper>
   );
 }
 
-const s = StyleSheet.create({
-  root: { flex: 1, backgroundColor: "#111" },
-  progressArea: {
-    paddingHorizontal: 20, paddingTop: 56, paddingBottom: 12,
-    flexDirection: "row", alignItems: "center", gap: 12,
+const styles = StyleSheet.create({
+  screenWrapper: {
+    backgroundColor: DS.bg,
   },
-  progressTrack: { flex: 1, height: 4, borderRadius: 2, backgroundColor: "#333" },
-  progressFill: { height: 4, borderRadius: 2, backgroundColor: "#666" },
-  progressLabel: { color: "#888", fontSize: 13 },
-  cardArea: { flex: 1, padding: 16 },
-  swipeIndicator: {
-    position: "absolute", top: "40%", zIndex: 10,
-    paddingHorizontal: 16, paddingVertical: 8, borderRadius: 8, borderWidth: 2,
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+    backgroundColor: DS.bg,
   },
-  swipeLeft: { left: 24, borderColor: "#EF4444", transform: [{ rotate: "-15deg" }] },
-  swipeRight: { right: 24, borderColor: "#22C55E", transform: [{ rotate: "15deg" }] },
-  swipeTextNope: { color: "#EF4444", fontSize: 24, fontWeight: "800" },
-  swipeTextLike: { color: "#22C55E", fontSize: 24, fontWeight: "800" },
-  card: {
-    flex: 1, borderRadius: 20, backgroundColor: "#1A1A1A",
-    borderWidth: 1, borderColor: "#333", overflow: "hidden",
+  cardContainer: {
+    width: '90%',
+    aspectRatio: 0.7,
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: DS.border,
+    backgroundColor: DS.surface,
+    overflow: 'hidden',
+    shadowColor: DS.purple,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
+    elevation: 10,
   },
   cardImage: {
-    flex: 1, backgroundColor: "#222",
-    justifyContent: "center", alignItems: "center",
+    width: '100%',
+    height: '70%',
+    borderTopLeftRadius: 16,
+    borderTopRightRadius: 16,
   },
-  imagePlaceholder: { color: "#555", fontSize: 16 },
-  categoryBadge: {
-    position: "absolute", top: 16, left: 16,
-    paddingHorizontal: 12, paddingVertical: 6, borderRadius: 20,
-    backgroundColor: "rgba(0,0,0,0.6)",
+  cardContent: {
+    padding: 15,
+    flex: 1,
+    justifyContent: 'center',
   },
-  categoryText: { color: "#FFF", fontSize: 13, fontWeight: "500" },
-  cardInfo: {
-    position: "absolute", bottom: 0, left: 0, right: 0,
-    padding: 20, backgroundColor: "rgba(0,0,0,0.7)",
+  cardTitle: {
+    fontFamily: 'Chillax-Bold',
+    fontSize: 24,
+    color: DS.white,
+    marginBottom: 5,
   },
-  cardTitle: { color: "#FFF", fontSize: 22, fontWeight: "700", marginBottom: 4 },
-  cardSubtitle: { color: "#999", fontSize: 14, marginBottom: 8 },
-  tagRow: { flexDirection: "row", gap: 8 },
-  tag: {
-    paddingHorizontal: 10, paddingVertical: 4, borderRadius: 12,
-    backgroundColor: "rgba(255,255,255,0.1)",
+  cardDescription: {
+    fontFamily: 'Satoshi-Regular',
+    fontSize: 16,
+    color: DS.muted,
   },
-  tagText: { color: "#CCC", fontSize: 12 },
-  bottomBar: {
-    flexDirection: "row", justifyContent: "center", gap: 24,
-    paddingVertical: 20, paddingBottom: 40,
+  actions: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    paddingBottom: 20,
+    paddingHorizontal: 10,
   },
-  actionBtn: {
-    width: 64, height: 64, borderRadius: 32,
-    justifyContent: "center", alignItems: "center", borderWidth: 2,
+  actionButton: {
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    overflow: 'hidden',
   },
-  dislikeBtn: { borderColor: "#EF4444", backgroundColor: "rgba(239,68,68,0.1)" },
-  undoBtn: { borderColor: "#555", backgroundColor: "#1A1A1A", width: 48, height: 48, borderRadius: 24 },
-  likeBtn: { borderColor: "#22C55E", backgroundColor: "rgba(34,197,94,0.1)" },
-  actionIcon: { fontSize: 24, color: "#FFF" },
-  actionIconSmall: { fontSize: 20, color: "#888" },
+  gradientButton: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  noCardsText: {
+    fontFamily: 'Satoshi-Medium',
+    fontSize: 18,
+    color: DS.white,
+  },
 });

@@ -1,50 +1,114 @@
-// Screen 72 — First Swipe Tutorial — STATIC 
-// 4 steps, spotlight, progress dots, skip
-import { View, Text, StyleSheet, Pressable } from "react-native";
+import React from 'react';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { ScreenWrapper, DS } from '@/components/screen-wrapper';
+import { BlurView } from 'expo-blur';
+import { LinearGradient } from 'expo-linear-gradient';
+import { MaterialIcons } from '@expo/vector-icons';
 
-export default function FirstSwipeTutorialScreen() {
+const FirstSwipeTutorial = () => {
   return (
-    <View style={s.root}>
-      <View style={s.overlay} />
-      {/* Spotlight area */}
-      <View style={s.spotlightArea}>
-        <View style={s.fakeCard}>
-          <Text style={s.fakeCardText}>[DESTINATION CARD]</Text>
-        </View>
-      </View>
-      {/* Tutorial tooltip */}
-      <View style={s.tooltip}>
-        <Text style={s.tooltipTitle}>Swipe Right to Like</Text>
-        <Text style={s.tooltipBody}>Swipe right on destinations you love. We'll use this to build your travel DNA profile.</Text>
-        <View style={s.dotsRow}>
-          <View style={[s.dot, s.dotActive]} />
-          <View style={s.dot} />
-          <View style={s.dot} />
-          <View style={s.dot} />
-        </View>
-        <View style={s.tooltipActions}>
-          <Pressable><Text style={s.skipText}>Skip</Text></Pressable>
-          <Pressable style={s.nextBtn}><Text style={s.nextText}>Next</Text></Pressable>
-        </View>
-      </View>
-    </View>
-  );
-}
+    <ScreenWrapper title="First Swipe Tutorial" scrollable={true}>
+      <View style={styles.container}>
+        <BlurView intensity={20} tint="dark" style={styles.card}>
+          <MaterialIcons name="touch-app" size={60} color={DS.purple} style={styles.icon} />
+          <Text style={styles.title}>Discover Your Next Adventure</Text>
+          <Text style={styles.description}>
+            Swipe left to pass, swipe right to like. It's that simple to find your perfect travel match.
+          </Text>
+          <TouchableOpacity activeOpacity={0.8} style={styles.buttonContainer}>
+            <LinearGradient
+              colors={[DS.purple, DS.pink] as const}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              style={styles.buttonGradient}
+            >
+              <Text style={styles.buttonText}>Start Swiping</Text>
+              <MaterialIcons name="arrow-forward" size={20} color={DS.white} style={styles.buttonIcon} />
+            </LinearGradient>
+          </TouchableOpacity>
+        </BlurView>
 
-const s = StyleSheet.create({
-  root: { flex: 1, backgroundColor: "#111" },
-  overlay: { ...StyleSheet.absoluteFillObject, backgroundColor: "#000", opacity: 0.6 },
-  spotlightArea: { flex: 1, justifyContent: "center", alignItems: "center", paddingTop: 80 },
-  fakeCard: { width: "85%", height: "60%", borderRadius: 20, backgroundColor: "#1A1A1A", borderWidth: 2, borderColor: "#555", justifyContent: "center", alignItems: "center" },
-  fakeCardText: { color: "#555", fontSize: 16 },
-  tooltip: { position: "absolute", bottom: 80, left: 20, right: 20, padding: 20, borderRadius: 16, backgroundColor: "#1A1A1A", borderWidth: 1, borderColor: "#333" },
-  tooltipTitle: { color: "#FFF", fontSize: 18, fontWeight: "800" },
-  tooltipBody: { color: "#888", fontSize: 14, lineHeight: 22, marginTop: 6 },
-  dotsRow: { flexDirection: "row", gap: 6, marginTop: 16 },
-  dot: { width: 8, height: 8, borderRadius: 4, backgroundColor: "#333" },
-  dotActive: { backgroundColor: "#FFF", width: 20 },
-  tooltipActions: { flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginTop: 16 },
-  skipText: { color: "#888", fontSize: 14 },
-  nextBtn: { paddingHorizontal: 20, paddingVertical: 10, borderRadius: 20, backgroundColor: "#333", borderWidth: 1, borderColor: "#555" },
-  nextText: { color: "#FFF", fontSize: 14, fontWeight: "600" },
+        <BlurView intensity={20} tint="dark" style={styles.card}>
+          <MaterialIcons name="flight-takeoff" size={60} color={DS.pink} style={styles.icon} />
+          <Text style={styles.title}>Personalized Recommendations</Text>
+          <Text style={styles.description}>
+            Our smart algorithm learns your preferences to show you destinations you'll truly love.
+          </Text>
+          <TouchableOpacity activeOpacity={0.8} style={styles.buttonContainer}>
+            <LinearGradient
+              colors={[DS.purple, DS.pink] as const}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              style={styles.buttonGradient}
+            >
+              <Text style={styles.buttonText}>Learn More</Text>
+              <MaterialIcons name="info-outline" size={20} color={DS.white} style={styles.buttonIcon} />
+            </LinearGradient>
+          </TouchableOpacity>
+        </BlurView>
+      </View>
+    </ScreenWrapper>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 20,
+    alignItems: 'center',
+    backgroundColor: DS.bg, // Ensure background is dark
+  },
+  card: {
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: DS.border,
+    backgroundColor: DS.surface,
+    overflow: 'hidden',
+    padding: 20,
+    marginVertical: 10,
+    width: '100%',
+    maxWidth: 400,
+    alignItems: 'center',
+  },
+  icon: {
+    marginBottom: 15,
+  },
+  title: {
+    fontFamily: 'Chillax-Bold',
+    fontSize: 24,
+    color: DS.white,
+    textAlign: 'center',
+    marginBottom: 10,
+  },
+  description: {
+    fontFamily: 'Satoshi-Regular',
+    fontSize: 16,
+    color: DS.muted,
+    textAlign: 'center',
+    marginBottom: 20,
+    lineHeight: 24,
+  },
+  buttonContainer: {
+    width: '100%',
+    marginTop: 10,
+  },
+  buttonGradient: {
+    paddingVertical: 15,
+    paddingHorizontal: 20,
+    borderRadius: 10,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  buttonText: {
+    fontFamily: 'Satoshi-Medium',
+    fontSize: 18,
+    color: DS.white,
+    marginRight: 10,
+  },
+  buttonIcon: {
+    marginLeft: 5,
+  },
 });
+
+export default FirstSwipeTutorial;

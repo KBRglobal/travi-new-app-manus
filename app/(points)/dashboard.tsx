@@ -30,7 +30,7 @@ export default function PointsDashboardScreen() {
 
       {/* Points card */}
       <View style={{ paddingHorizontal: 16, marginBottom: 24 }}>
-        <LinearGradient colors={[DS.purple, DS.pink]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={s.pointsCard}>
+        <LinearGradient colors={[DS.purple, DS.pink] as const} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={s.pointsCard}>
           <Text style={s.pointsLabel}>Your Points Balance</Text>
           <Text style={s.pointsAmount}>12,840</Text>
           <Text style={s.pointsSub}>≈ $128.40 travel credit</Text>

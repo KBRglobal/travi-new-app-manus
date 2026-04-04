@@ -1,75 +1,129 @@
-// Screen 95 — Gift Cards (Static Wireframe)
-// Route: /points/gift-cards | Mode: Points
+import React from 'react';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { ScreenWrapper, DS } from '@/components/screen-wrapper';
+import { BlurView } from 'expo-blur';
+import { LinearGradient } from 'expo-linear-gradient';
+import { MaterialIcons } from '@expo/vector-icons';
 
-import { ScrollView, Text, View, StyleSheet } from "react-native";
-import { ScreenContainer } from "@/components/screen-container";
+// Assuming DS is exported from ScreenWrapper or a separate design system file
 
-const CATEGORIES = ["All", "Shopping", "Food", "Travel", "Entertainment"];
-
-const CARDS = [
-  { id: "1", brand: "Amazon", icon: "🛒", from: "2,500", cat: "Shopping" },
-  { id: "2", brand: "Uber Eats", icon: "🍔", from: "1,500", cat: "Food" },
-  { id: "3", brand: "Netflix", icon: "🎬", from: "1,000", cat: "Entertainment" },
-  { id: "4", brand: "Airbnb", icon: "🏠", from: "5,000", cat: "Travel" },
-  { id: "5", brand: "Starbucks", icon: "☕", from: "500", cat: "Food" },
-  { id: "6", brand: "Apple", icon: "🍎", from: "2,500", cat: "Shopping" },
-  { id: "7", brand: "Spotify", icon: "🎵", from: "1,000", cat: "Entertainment" },
-  { id: "8", brand: "Nike", icon: "👟", from: "3,000", cat: "Shopping" },
-];
-
-export default function GiftCardsScreen() {
+const GiftCardsScreen = () => {
   return (
-    <ScreenContainer>
-      <View style={s.container}>
-        <View style={s.header}>
-          <Text style={s.back}>←</Text>
-          <Text style={s.title}>Gift Cards</Text>
-          <View style={{width:24}}/>
-        </View>
-
-        {/* Search */}
-        <View style={s.searchBar}><Text style={s.searchPlaceholder}>🔍  Search brands...</Text></View>
-
-        {/* Category Tabs */}
-        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={s.catRow}>
-          {CATEGORIES.map((c,i)=>(
-            <View key={c} style={[s.catPill, i===0 && s.catActive]}>
-              <Text style={[s.catText, i===0 && s.catTextActive]}>{c}</Text>
+    <ScreenWrapper title="Gift Cards" scrollable={true}>
+      <View style={styles.sectionContainer}>
+        <Text style={styles.sectionTitle}>Your Gift Cards</Text>
+        <BlurView intensity={20} tint="dark" style={styles.glassCard}>
+          <View style={styles.cardContent}>
+            <MaterialIcons name="card-giftcard" size={32} color={DS.purple} />
+            <View style={{ marginLeft: 10 }}>
+              <Text style={styles.cardTitle}>TRAVI Platinum Card</Text>
+              <Text style={styles.cardSubtitle}>Balance: $500.00</Text>
             </View>
-          ))}
-        </ScrollView>
-
-        <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={s.scroll}>
-          <View style={s.grid}>
-            {CARDS.map(c=>(
-              <View key={c.id} style={s.card}>
-                <View style={s.cardIcon}><Text style={{fontSize:32}}>{c.icon}</Text></View>
-                <Text style={s.cardBrand}>{c.brand}</Text>
-                <Text style={s.cardFrom}>From ⬡ {c.from}</Text>
-              </View>
-            ))}
           </View>
-          <View style={{height:100}}/>
-        </ScrollView>
-      </View>
-    </ScreenContainer>
-  );
-}
+          <TouchableOpacity activeOpacity={0.8}>
+            <LinearGradient
+              colors={[DS.purple, DS.pink] as const}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              style={styles.ctaButton}
+            >
+              <Text style={styles.ctaButtonText}>Redeem Now</Text>
+            </LinearGradient>
+          </TouchableOpacity>
+        </BlurView>
 
-const N="#111",N2="#1a1a1a",N3="#222",W="#fff",G="#888";
-const s = StyleSheet.create({
-  container:{flex:1,backgroundColor:N},
-  header:{height:60,flexDirection:"row",alignItems:"center",justifyContent:"space-between",paddingHorizontal:16},
-  back:{fontSize:24,color:W},title:{fontSize:20,fontWeight:"700",color:W},
-  searchBar:{marginHorizontal:16,height:44,borderRadius:12,backgroundColor:N2,justifyContent:"center",paddingHorizontal:16,marginBottom:12},
-  searchPlaceholder:{fontSize:14,color:"#555"},
-  catRow:{paddingHorizontal:16,gap:8,marginBottom:12},
-  catPill:{paddingHorizontal:16,paddingVertical:8,borderRadius:20,backgroundColor:N2,borderWidth:1,borderColor:N3},
-  catActive:{backgroundColor:"#333",borderColor:"#555"},
-  catText:{fontSize:14,color:G},catTextActive:{color:W,fontWeight:"600"},
-  scroll:{paddingHorizontal:16},
-  grid:{flexDirection:"row",flexWrap:"wrap",gap:12},
-  card:{width:"47%",backgroundColor:N2,borderRadius:16,borderWidth:1,borderColor:N3,padding:20,alignItems:"center",gap:8},
-  cardIcon:{width:56,height:56,borderRadius:14,backgroundColor:N3,alignItems:"center",justifyContent:"center"},
-  cardBrand:{fontSize:15,fontWeight:"600",color:W},cardFrom:{fontSize:12,color:G},
+        <BlurView intensity={20} tint="dark" style={styles.glassCard}>
+          <View style={styles.cardContent}>
+            <MaterialIcons name="card-giftcard" size={32} color={DS.pink} />
+            <View style={{ marginLeft: 10 }}>
+              <Text style={styles.cardTitle}>Travel Voucher</Text>
+              <Text style={styles.cardSubtitle}>Balance: $100.00</Text>
+            </View>
+          </View>
+          <TouchableOpacity activeOpacity={0.8}>
+            <LinearGradient
+              colors={[DS.purple, DS.pink] as const}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              style={styles.ctaButton}
+            >
+              <Text style={styles.ctaButtonText}>View Details</Text>
+            </LinearGradient>
+          </TouchableOpacity>
+        </BlurView>
+      </View>
+
+      <View style={styles.sectionContainer}>
+        <Text style={styles.sectionTitle}>Add New Gift Card</Text>
+        <BlurView intensity={20} tint="dark" style={styles.glassCard}>
+          <View style={styles.addCardContent}>
+            <MaterialIcons name="add-circle-outline" size={40} color={DS.white} />
+            <Text style={styles.addCardText}>Tap to add a new gift card</Text>
+          </View>
+        </BlurView>
+      </View>
+    </ScreenWrapper>
+  );
+};
+
+const styles = StyleSheet.create({
+  sectionContainer: {
+    marginBottom: 20,
+    paddingHorizontal: 20,
+  },
+  sectionTitle: {
+    fontFamily: 'Chillax-Bold',
+    fontSize: 20,
+    color: DS.white,
+    marginBottom: 15,
+  },
+  glassCard: {
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: DS.border,
+    backgroundColor: DS.surface,
+    overflow: 'hidden',
+    padding: 15,
+    marginBottom: 15,
+  },
+  cardContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 15,
+  },
+  cardTitle: {
+    fontFamily: 'Satoshi-Medium',
+    fontSize: 18,
+    color: DS.white,
+  },
+  cardSubtitle: {
+    fontFamily: 'Satoshi-Regular',
+    fontSize: 14,
+    color: DS.muted,
+    marginTop: 5,
+  },
+  ctaButton: {
+    paddingVertical: 12,
+    paddingHorizontal: 20,
+    borderRadius: 10,
+    alignItems: 'center',
+  },
+  ctaButtonText: {
+    fontFamily: 'Satoshi-Medium',
+    fontSize: 16,
+    color: DS.white,
+  },
+  addCardContent: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 20,
+  },
+  addCardText: {
+    fontFamily: 'Satoshi-Medium',
+    fontSize: 16,
+    color: DS.white,
+    marginTop: 10,
+  },
 });
+
+export default GiftCardsScreen;

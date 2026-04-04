@@ -1,110 +1,95 @@
-// Screen 53 — Membership — STATIC 
-// Current tier 160px, 3-col comparison table, FAQ accordion, Cancel link
 import { View, Text, StyleSheet, Pressable, ScrollView } from "react-native";
+import { MaterialIcons } from "@expo/vector-icons";
+import { BlurView } from "expo-blur";
+import { ScreenWrapper, DS } from "@/components/screen-wrapper";
+import { LinearGradient } from "expo-linear-gradient";
+import { useRouter } from "expo-router";
 
-const TIERS = [
-  { name: "Free", price: "E0", features: ["Basic DNA", "3 trips/year", "Standard support", "—", "—"] },
-  { name: "Explorer", price: "E9.99/mo", features: ["Full DNA", "Unlimited trips", "Priority support", "10% cashback", "—"], current: true },
-  { name: "Elite", price: "E24.99/mo", features: ["Full DNA+", "Unlimited trips", "24/7 concierge", "15% cashback", "Lounge access"] },
-];
-
-const FEATURES = ["DNA Analysis", "Trips", "Support", "Cashback", "Perks"];
-
-const FAQS = [
-  { q: "Can I cancel anytime?", a: "Yes, cancel anytime. You'll keep access until the end of your billing period." },
-  { q: "What happens to my cashback?", a: "Earned cashback stays in your wallet regardless of membership status." },
-  { q: "Can I upgrade mid-cycle?", a: "Yes, you'll be charged the prorated difference for the remaining period." },
+const PLANS = [
+  {
+    id: "free", name: "Explorer", price: "Free", period: "",
+    color: DS.muted, gradient: [DS.surface, DS.surfaceHigh] as [string, string],
+    features: ["5 AI trip plans/month", "Basic DNA quiz", "Standard cashback", "Community access"],
+    current: true,
+  },
+  {
+    id: "pro", name: "Voyager", price: "€9.99", period: "/month",
+    color: DS.purple, gradient: [DS.purple + "33", DS.pink + "22"] as [string, string],
+    features: ["Unlimited AI trip plans", "Advanced DNA insights", "2x cashback", "Priority support", "Exclusive deals"],
+    current: false,
+  },
+  {
+    id: "elite", name: "Nomad Elite", price: "€24.99", period: "/month",
+    color: DS.warning, gradient: [DS.warning + "22", DS.pink + "11"] as [string, string],
+    features: ["Everything in Voyager", "Personal travel concierge", "Airport lounge access", "5x cashback", "VIP experiences"],
+    current: false,
+  },
 ];
 
 export default function MembershipScreen() {
+  const router = useRouter();
+
   return (
-    <View style={s.root}>
-      <View style={s.header}>
-        <Pressable style={s.backBtn}><Text style={s.backText}>{"<"}</Text></Pressable>
-        <Text style={s.headerTitle}>Membership</Text>
-        <View style={{ width: 32 }} />
-      </View>
+    <ScreenWrapper title="Membership" scrollable bottomPad={40}>
+      {/* Current badge */}
+      <BlurView intensity={20} tint="dark" style={s.currentBadge}>
+        <LinearGradient colors={[DS.purple + "33", DS.pink + "22"]} style={s.currentInner}>
+          <MaterialIcons name="star" size={20} color={DS.purple} />
+          <Text style={s.currentText}>Current Plan: <Text style={{ color: DS.purple }}>Explorer</Text></Text>
+        </LinearGradient>
+      </BlurView>
 
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 40 }}>
-        {/* Current tier — 160px */}
-        <View style={s.currentCard}>
-          <Text style={s.currentLabel}>Current Plan</Text>
-          <Text style={s.currentTier}>Explorer</Text>
-          <Text style={s.currentPrice}>E9.99/month</Text>
-          <Text style={s.currentRenewal}>Renews Apr 15, 2026</Text>
-        </View>
-
-        {/* 3-col comparison table */}
-        <View style={s.section}>
-          <Text style={s.sectionTitle}>Compare Plans</Text>
-          <View style={s.table}>
-            {/* Header row */}
-            <View style={s.tableRow}>
-              <View style={s.tableCell}><Text style={s.tableCellText}> </Text></View>
-              {TIERS.map((t) => (
-                <View key={t.name} style={[s.tableCell, t.current && s.tableCellCurrent]}>
-                  <Text style={[s.tierName, t.current && { color: "#FFF" }]}>{t.name}</Text>
-                  <Text style={s.tierPrice}>{t.price}</Text>
-                </View>
-              ))}
+      {/* Plans */}
+      {PLANS.map(plan => (
+        <BlurView key={plan.id} intensity={15} tint="dark" style={[s.planCard, plan.current && { borderColor: DS.purple }]}>
+          <LinearGradient colors={plan.gradient} style={s.planInner}>
+            {plan.current && (
+              <View style={s.currentPill}>
+                <Text style={s.currentPillText}>Current</Text>
+              </View>
+            )}
+            <View style={s.planHeader}>
+              <Text style={[s.planName, { color: plan.color }]}>{plan.name}</Text>
+              <View style={s.planPriceRow}>
+                <Text style={s.planPrice}>{plan.price}</Text>
+                <Text style={s.planPeriod}>{plan.period}</Text>
+              </View>
             </View>
-            {/* Feature rows */}
-            {FEATURES.map((feat, fi) => (
-              <View key={feat} style={s.tableRow}>
-                <View style={s.tableCell}><Text style={s.featLabel}>{feat}</Text></View>
-                {TIERS.map((t) => (
-                  <View key={t.name} style={[s.tableCell, t.current && s.tableCellCurrent]}>
-                    <Text style={s.featValue}>{t.features[fi]}</Text>
-                  </View>
-                ))}
+            {plan.features.map(f => (
+              <View key={f} style={s.featureRow}>
+                <MaterialIcons name="check-circle" size={16} color={plan.color} />
+                <Text style={s.featureText}>{f}</Text>
               </View>
             ))}
-          </View>
-        </View>
-
-        {/* FAQ accordion */}
-        <View style={s.section}>
-          <Text style={s.sectionTitle}>FAQ</Text>
-          {FAQS.map((faq, i) => (
-            <View key={i} style={s.faqCard}>
-              <Text style={s.faqQ}>{faq.q}</Text>
-              <Text style={s.faqA}>{faq.a}</Text>
-            </View>
-          ))}
-        </View>
-
-        {/* Cancel link */}
-        <Pressable style={s.cancelLink}><Text style={s.cancelText}>Cancel Membership</Text></Pressable>
-      </ScrollView>
-    </View>
+            {!plan.current && (
+              <Pressable style={{ marginTop: 16 }}>
+                <LinearGradient colors={[DS.purple, DS.pink] as const} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={s.upgradeBtn}>
+                  <Text style={s.upgradeBtnText}>Upgrade to {plan.name}</Text>
+                </LinearGradient>
+              </Pressable>
+            )}
+          </LinearGradient>
+        </BlurView>
+      ))}
+    </ScreenWrapper>
   );
 }
 
 const s = StyleSheet.create({
-  root: { flex: 1, backgroundColor: "#111" },
-  header: { height: 60, flexDirection: "row", alignItems: "center", paddingHorizontal: 16, gap: 12, marginTop: 48, borderBottomWidth: 1, borderBottomColor: "#222" },
-  backBtn: { width: 32, height: 32, justifyContent: "center", alignItems: "center" },
-  backText: { color: "#FFF", fontSize: 24 },
-  headerTitle: { flex: 1, color: "#FFF", fontSize: 18, fontWeight: "600", textAlign: "center" },
-  currentCard: { alignItems: "center", margin: 20, padding: 20, height: 160, borderRadius: 16, backgroundColor: "#1A1A1A", borderWidth: 1, borderColor: "#333", justifyContent: "center" },
-  currentLabel: { color: "#888", fontSize: 12 },
-  currentTier: { color: "#FFF", fontSize: 28, fontWeight: "800", marginTop: 4 },
-  currentPrice: { color: "#BBB", fontSize: 15, marginTop: 4 },
-  currentRenewal: { color: "#666", fontSize: 12, marginTop: 4 },
-  section: { paddingHorizontal: 20, marginTop: 24 },
-  sectionTitle: { color: "#FFF", fontSize: 16, fontWeight: "700", marginBottom: 12 },
-  table: { borderRadius: 14, backgroundColor: "#1A1A1A", borderWidth: 1, borderColor: "#333", overflow: "hidden" },
-  tableRow: { flexDirection: "row", borderBottomWidth: 1, borderBottomColor: "#222" },
-  tableCell: { flex: 1, padding: 10, alignItems: "center", justifyContent: "center" },
-  tableCellCurrent: { backgroundColor: "#222" },
-  tableCellText: { color: "#888", fontSize: 12 },
-  tierName: { color: "#888", fontSize: 13, fontWeight: "700" },
-  tierPrice: { color: "#666", fontSize: 11, marginTop: 2 },
-  featLabel: { color: "#888", fontSize: 12, textAlign: "left" },
-  featValue: { color: "#BBB", fontSize: 12, textAlign: "center" },
-  faqCard: { padding: 14, borderRadius: 12, backgroundColor: "#1A1A1A", borderWidth: 1, borderColor: "#333", marginBottom: 8 },
-  faqQ: { color: "#FFF", fontSize: 14, fontWeight: "600" },
-  faqA: { color: "#888", fontSize: 13, marginTop: 6, lineHeight: 20 },
-  cancelLink: { alignSelf: "center", marginTop: 20, paddingVertical: 8 },
-  cancelText: { color: "#F87171", fontSize: 14 },
+  currentBadge: { borderRadius: 14, overflow: "hidden", borderWidth: 1, borderColor: DS.purple + "44", marginBottom: 20 },
+  currentInner: { flexDirection: "row", alignItems: "center", gap: 8, padding: 14 },
+  currentText: { color: DS.white, fontSize: 14, fontFamily: "Satoshi-Medium" },
+  planCard: { borderRadius: 20, overflow: "hidden", borderWidth: 1, borderColor: DS.border, marginBottom: 16 },
+  planInner: { padding: 20 },
+  currentPill: { alignSelf: "flex-start", backgroundColor: DS.purple, paddingHorizontal: 10, paddingVertical: 4, borderRadius: 10, marginBottom: 10 },
+  currentPillText: { color: DS.white, fontSize: 11, fontFamily: "Satoshi-Medium" },
+  planHeader: { flexDirection: "row", justifyContent: "space-between", alignItems: "flex-end", marginBottom: 16 },
+  planName: { fontSize: 22, fontFamily: "Chillax-Bold" },
+  planPriceRow: { flexDirection: "row", alignItems: "baseline", gap: 2 },
+  planPrice: { color: DS.white, fontSize: 24, fontFamily: "Chillax-Bold" },
+  planPeriod: { color: DS.muted, fontSize: 13, fontFamily: "Satoshi-Regular" },
+  featureRow: { flexDirection: "row", alignItems: "center", gap: 10, marginBottom: 8 },
+  featureText: { color: DS.secondary, fontSize: 14, fontFamily: "Satoshi-Regular" },
+  upgradeBtn: { height: 48, borderRadius: 12, justifyContent: "center", alignItems: "center" },
+  upgradeBtnText: { color: DS.white, fontSize: 15, fontFamily: "Chillax-Bold" },
 });

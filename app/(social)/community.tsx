@@ -1,205 +1,158 @@
-// Screen 78 — Community Feed (Static Wireframe)
-// Route: /social/feed | Mode: Discovery (Social tab)
-// Zones: Header 80px, Stories Row 100px, Tabs 48px, Body (posts scroll)
 
-import { ScrollView, Text, View, StyleSheet } from "react-native";
-import { ScreenContainer } from "@/components/screen-container";
+import React from 'react';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
+import { BlurView } from 'expo-blur';
+import { MaterialIcons } from '@expo/vector-icons'; // Assuming @expo/vector-icons is available for MaterialIcons
+import { ScreenWrapper, DS } from '@/components/screen-wrapper'; // Assuming this path and export
 
-const STORIES = [
-  { id: "you", name: "Your Story", hasStory: false },
-  { id: "1", name: "Sarah M.", hasStory: true },
-  { id: "2", name: "Marco R.", hasStory: true },
-  { id: "3", name: "Yuki T.", hasStory: true },
-  { id: "4", name: "Elena K.", hasStory: true },
-  { id: "5", name: "James L.", hasStory: true },
-];
+// Custom Text components for typography
+const ChillaxBold = (props: any) => <Text style={{ fontFamily: 'Chillax-Bold', color: DS.white, ...props.style }}>{props.children}</Text>;
+const SatoshiMedium = (props: any) => <Text style={{ fontFamily: 'Satoshi-Medium', color: DS.white, ...props.style }}>{props.children}</Text>;
+const SatoshiRegular = (props: any) => <Text style={{ fontFamily: 'Satoshi-Regular', color: DS.white, ...props.style }}>{props.children}</Text>;
 
-const POSTS = [
-  {
-    id: "1",
-    author: "Sarah Mitchell",
-    location: "Barcelona, Spain",
-    dnaMatch: 92,
-    caption: "Found the most amazing hidden tapas bar in El Born! The patatas bravas here are unreal.",
-    likes: 47,
-    comments: 12,
-    timeAgo: "2h ago",
-    category: "Food & Culture",
-  },
-  {
-    id: "2",
-    author: "Marco Rossi",
-    location: "Kyoto, Japan",
-    dnaMatch: 78,
-    caption: "Golden hour at Fushimi Inari. Arrived at 5am to have the gates all to myself.",
-    likes: 123,
-    comments: 34,
-    timeAgo: "5h ago",
-    category: "Adventure",
-  },
-  {
-    id: "3",
-    author: "Elena Kowalski",
-    location: "Santorini, Greece",
-    dnaMatch: 85,
-    caption: "Sunset from Oia never gets old. Third visit and still speechless every time.",
-    likes: 89,
-    comments: 21,
-    timeAgo: "1d ago",
-    category: "Relaxation",
-  },
-];
-
-export default function CommunityFeedScreen() {
+const CommunityScreen = () => {
   return (
-    <ScreenContainer>
-      <View style={s.container}>
-        {/* Header — 80px */}
-        <View style={s.header}>
-          <Text style={s.headerTitle}>TRAVI Community</Text>
-          <View style={s.iconBtn}>
-            <Text style={s.iconText}>🔔</Text>
+    <ScreenWrapper title="Community" scrollable={true}>
+      <View style={styles.container}>
+        {/* Section 1: Welcome and Description */}
+        <View style={styles.section}>
+          <ChillaxBold style={styles.sectionTitle}>Welcome to the TRAVI Community!</ChillaxBold>
+          <SatoshiRegular style={styles.sectionDescription}>
+            Connect with fellow travelers, share your experiences, and discover new adventures.
+            This is your hub for all things travel. Let's explore the world together!
+          </SatoshiRegular>
+        </View>
+
+        {/* Section 2: Quick Actions/Glass Cards */}
+        <View style={styles.section}>
+          <SatoshiMedium style={styles.sectionHeader}>Quick Actions</SatoshiMedium>
+          <View style={styles.cardRow}>
+            <BlurView intensity={20} tint="dark" style={styles.glassCard}>
+              <TouchableOpacity style={styles.cardContent}>
+                <MaterialIcons name="group" size={30} color={DS.purple} />
+                <SatoshiMedium style={styles.cardTitle}>Find Groups</SatoshiMedium>
+                <SatoshiRegular style={styles.cardDescription}>Join discussions & meetups</SatoshiRegular>
+              </TouchableOpacity>
+            </BlurView>
+            <BlurView intensity={20} tint="dark" style={styles.glassCard}>
+              <TouchableOpacity style={styles.cardContent}>
+                <MaterialIcons name="event" size={30} color={DS.pink} />
+                <SatoshiMedium style={styles.cardTitle}>Events</SatoshiMedium>
+                <SatoshiRegular style={styles.cardDescription}>Discover upcoming events</SatoshiRegular>
+              </TouchableOpacity>
+            </BlurView>
+          </View>
+          <View style={styles.cardRow}>
+            <BlurView intensity={20} tint="dark" style={styles.glassCard}>
+              <TouchableOpacity style={styles.cardContent}>
+                <MaterialIcons name="chat" size={30} color={DS.success} />
+                <SatoshiMedium style={styles.cardTitle}>Chat</SatoshiMedium>
+                <SatoshiRegular style={styles.cardDescription}>Instant messaging</SatoshiRegular>
+              </TouchableOpacity>
+            </BlurView>
+            <BlurView intensity={20} tint="dark" style={styles.glassCard}>
+              <TouchableOpacity style={styles.cardContent}>
+                <MaterialIcons name="photo-library" size={30} color={DS.warning} />
+                <SatoshiMedium style={styles.cardTitle}>Gallery</SatoshiMedium>
+                <SatoshiRegular style={styles.cardDescription}>Share your travel photos</SatoshiRegular>
+              </TouchableOpacity>
+            </BlurView>
           </View>
         </View>
 
-        <ScrollView showsVerticalScrollIndicator={false}>
-          {/* Stories Row — 100px */}
-          <View style={s.storiesSection}>
-            <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={s.storiesRow}>
-              {STORIES.map((story) => (
-                <View key={story.id} style={s.storyItem}>
-                  <View style={[s.storyAvatar, story.hasStory && s.storyAvatarActive]}>
-                    {story.id === "you" ? (
-                      <Text style={s.storyPlus}>+</Text>
-                    ) : (
-                      <Text style={s.storyInitial}>{story.name[0]}</Text>
-                    )}
-                  </View>
-                  <Text style={s.storyName} numberOfLines={1}>{story.name}</Text>
-                </View>
-              ))}
-            </ScrollView>
-          </View>
-
-          {/* Tabs — 48px */}
-          <View style={s.tabsRow}>
-            <View style={[s.tab, s.tabActive]}>
-              <Text style={[s.tabText, s.tabTextActive]}>Traveler Network</Text>
-            </View>
-            <View style={s.tab}>
-              <Text style={s.tabText}>Travel Buddies</Text>
-            </View>
-          </View>
-
-          {/* Posts */}
-          {POSTS.map((post) => (
-            <View key={post.id} style={s.postCard}>
-              {/* Author Row */}
-              <View style={s.postAuthorRow}>
-                <View style={s.postAvatar}>
-                  <Text style={s.postAvatarText}>{post.author[0]}</Text>
-                </View>
-                <View style={s.postAuthorInfo}>
-                  <Text style={s.postAuthorName}>{post.author}</Text>
-                  <Text style={s.postAuthorLocation}>{post.location}</Text>
-                </View>
-                <View style={s.dnaBadge}>
-                  <Text style={s.dnaBadgeText}>{post.dnaMatch}% Match</Text>
-                </View>
-              </View>
-
-              {/* Image Placeholder */}
-              <View style={s.postImage}>
-                <View style={s.categoryTag}>
-                  <Text style={s.categoryTagText}>{post.category}</Text>
-                </View>
-                <View style={s.postLocationBadge}>
-                  <Text style={s.postLocationText}>{post.location}</Text>
-                </View>
-              </View>
-
-              {/* Caption */}
-              <Text style={s.postCaption}>{post.caption}</Text>
-
-              {/* Actions Row */}
-              <View style={s.postActions}>
-                <View style={s.actionBtn}>
-                  <Text style={s.actionIcon}>♡</Text>
-                  <Text style={s.actionCount}>{post.likes}</Text>
-                </View>
-                <View style={s.actionBtn}>
-                  <Text style={s.actionIcon}>💬</Text>
-                  <Text style={s.actionCount}>{post.comments}</Text>
-                </View>
-                <View style={s.actionBtn}>
-                  <Text style={s.actionIcon}>↗</Text>
-                </View>
-                <View style={s.actionBtn}>
-                  <Text style={s.actionIcon}>🔖</Text>
-                </View>
-                <View style={{ flex: 1 }} />
-                <Text style={s.postTime}>{post.timeAgo}</Text>
-              </View>
-            </View>
-          ))}
-
-          <View style={{ height: 100 }} />
-        </ScrollView>
+        {/* Section 3: Call to Action */}
+        <View style={styles.section}>
+          <SatoshiMedium style={styles.sectionHeader}>Ready to Connect?</SatoshiMedium>
+          <TouchableOpacity style={styles.ctaButton}>
+            <LinearGradient
+              colors={[DS.purple, DS.pink] as const}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              style={styles.gradientBackground}
+            >
+              <SatoshiMedium style={styles.ctaButtonText}>Start a New Discussion</SatoshiMedium>
+              <MaterialIcons name="arrow-forward" size={20} color={DS.white} style={{ marginLeft: 10 }} />
+            </LinearGradient>
+          </TouchableOpacity>
+        </View>
       </View>
-    </ScreenContainer>
+    </ScreenWrapper>
   );
-}
+};
 
-const N = "#111";
-const N2 = "#1a1a1a";
-const N3 = "#222";
-const W = "#fff";
-const G = "#888";
-const ACCENT = "#666";
-
-const s = StyleSheet.create({
-  container: { flex: 1, backgroundColor: N },
-  header: { height: 80, flexDirection: "row", alignItems: "flex-end", justifyContent: "space-between", paddingHorizontal: 16, paddingBottom: 12 },
-  headerTitle: { fontSize: 28, fontWeight: "700", color: W },
-  iconBtn: { width: 44, height: 44, borderRadius: 12, backgroundColor: N2, alignItems: "center", justifyContent: "center" },
-  iconText: { fontSize: 20 },
-
-  storiesSection: { height: 100, borderBottomWidth: 1, borderBottomColor: N3 },
-  storiesRow: { paddingHorizontal: 16, gap: 16, alignItems: "center", height: 100 },
-  storyItem: { alignItems: "center", width: 64 },
-  storyAvatar: { width: 56, height: 56, borderRadius: 14, backgroundColor: N2, borderWidth: 2, borderColor: N3, alignItems: "center", justifyContent: "center" },
-  storyAvatarActive: { borderColor: ACCENT, borderWidth: 3 },
-  storyPlus: { fontSize: 24, color: ACCENT, fontWeight: "600" },
-  storyInitial: { fontSize: 20, fontWeight: "600", color: W },
-  storyName: { fontSize: 11, color: G, marginTop: 4 },
-
-  tabsRow: { flexDirection: "row", paddingHorizontal: 16, paddingVertical: 12, gap: 8 },
-  tab: { paddingHorizontal: 16, paddingVertical: 8, borderRadius: 20, backgroundColor: N2 },
-  tabActive: { backgroundColor: "#333" },
-  tabText: { fontSize: 14, color: G, fontWeight: "500" },
-  tabTextActive: { color: W },
-
-  postCard: { marginHorizontal: 16, marginTop: 16, backgroundColor: N2, borderRadius: 20, borderWidth: 1, borderColor: N3, overflow: "hidden" },
-  postAuthorRow: { flexDirection: "row", alignItems: "center", padding: 12, gap: 10 },
-  postAvatar: { width: 40, height: 40, borderRadius: 10, backgroundColor: N3, alignItems: "center", justifyContent: "center" },
-  postAvatarText: { fontSize: 16, fontWeight: "600", color: W },
-  postAuthorInfo: { flex: 1 },
-  postAuthorName: { fontSize: 16, fontWeight: "600", color: W },
-  postAuthorLocation: { fontSize: 12, color: G },
-  dnaBadge: { paddingHorizontal: 8, paddingVertical: 4, borderRadius: 12, backgroundColor: "#1a3a1a" },
-  dnaBadgeText: { fontSize: 12, fontWeight: "600", color: "#4a4" },
-
-  postImage: { height: 240, backgroundColor: N3, justifyContent: "flex-end", padding: 12 },
-  categoryTag: { position: "absolute", top: 12, left: 12, paddingHorizontal: 8, paddingVertical: 4, borderRadius: 8, backgroundColor: "rgba(255,255,255,0.15)" },
-  categoryTagText: { fontSize: 12, color: W, fontWeight: "500" },
-  postLocationBadge: { alignSelf: "flex-start", paddingHorizontal: 8, paddingVertical: 4, borderRadius: 12, backgroundColor: "rgba(0,0,0,0.5)" },
-  postLocationText: { fontSize: 12, color: W },
-
-  postCaption: { fontSize: 14, color: "#ccc", lineHeight: 20, paddingHorizontal: 12, paddingTop: 12 },
-
-  postActions: { flexDirection: "row", alignItems: "center", paddingHorizontal: 12, paddingVertical: 12, gap: 16 },
-  actionBtn: { flexDirection: "row", alignItems: "center", gap: 4 },
-  actionIcon: { fontSize: 20 },
-  actionCount: { fontSize: 14, color: G },
-  postTime: { fontSize: 12, color: G },
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 20,
+    backgroundColor: DS.bg, // Ensure background is set if ScreenWrapper doesn't cover it fully or for inner views
+  },
+  section: {
+    marginBottom: 30,
+  },
+  sectionTitle: {
+    fontSize: 28,
+    marginBottom: 10,
+    textAlign: 'center',
+  },
+  sectionDescription: {
+    fontSize: 16,
+    textAlign: 'center',
+    color: DS.muted,
+    lineHeight: 24,
+  },
+  sectionHeader: {
+    fontSize: 20,
+    marginBottom: 15,
+    color: DS.white,
+    textAlign: 'center',
+  },
+  cardRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    marginBottom: 15,
+  },
+  glassCard: {
+    flex: 1,
+    marginHorizontal: 8,
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: DS.border,
+    backgroundColor: DS.surface,
+    overflow: 'hidden',
+    padding: 15,
+    alignItems: 'center',
+  },
+  cardContent: {
+    alignItems: 'center',
+  },
+  cardTitle: {
+    fontSize: 18,
+    marginTop: 10,
+    marginBottom: 5,
+    color: DS.white,
+  },
+  cardDescription: {
+    fontSize: 12,
+    color: DS.muted,
+    textAlign: 'center',
+  },
+  ctaButton: {
+    borderRadius: 12,
+    overflow: 'hidden',
+    marginTop: 20,
+  },
+  gradientBackground: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 15,
+    paddingHorizontal: 25,
+  },
+  ctaButtonText: {
+    fontSize: 18,
+    color: DS.white,
+  },
 });
+
+export default CommunityScreen;

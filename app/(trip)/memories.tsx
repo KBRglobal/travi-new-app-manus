@@ -1,83 +1,143 @@
-// Screen 40 — Memories Gallery — STATIC 
-// Summary 100px, 3-col grid, Group by Day toggle, Long-press multi-select, Full-screen viewer
-import { View, Text, StyleSheet, Pressable, ScrollView } from "react-native";
+import React from 'react';
+import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity } from 'react-native';
+import { ScreenWrapper } from '@/components/screen-wrapper';
+import { BlurView } from 'expo-blur';
+import { LinearGradient } from 'expo-linear-gradient';
+import { MaterialIcons } from '@expo/vector-icons';
 
-const PHOTOS = Array.from({ length: 18 }, (_, i) => ({ id: i + 1, day: i < 6 ? 1 : i < 12 ? 2 : 3 }));
+// DS object as provided in the prompt
+const DS = {
+  bg: "#0A0514", surface: "rgba(36,16,62,0.55)", surfaceHigh: "rgba(50,20,80,0.7)",
+  border: "rgba(123,68,230,0.22)", borderStrong: "rgba(100,67,244,0.4)",
+  purple: "#6443F4", pink: "#F94498", success: "#02A65C", warning: "#FF9327",
+  error: "#FF6B6B", info: "#01BEFF", white: "#FFFFFF", secondary: "#D3CFD8",
+  muted: "#A79FB2", placeholder: "#7B6A94", gradient: ["#6443F4", "#F94498"],
+};
+
+// Custom fonts (assuming these are loaded and available)
+const Typography = StyleSheet.create({
+  chillaxBold: {
+    fontFamily: 'Chillax-Bold',
+    color: DS.white,
+  },
+  satoshiMedium: {
+    fontFamily: 'Satoshi-Medium',
+    color: DS.secondary,
+  },
+  satoshiRegular: {
+    fontFamily: 'Satoshi-Regular',
+    color: DS.muted,
+  },
+});
+
+const memoriesData = [
+  {
+    id: '1',
+    title: 'Summer in Paris',
+    date: 'July 2023',
+    image: 'https://via.placeholder.com/150/FF0000/FFFFFF?text=Paris',
+    description: 'A wonderful trip to the city of love, exploring historical sites and enjoying local cuisine.',
+  },
+  {
+    id: '2',
+    title: 'Mountain Adventure',
+    date: 'September 2022',
+    image: 'https://via.placeholder.com/150/0000FF/FFFFFF?text=Mountains',
+    description: 'Hiking through breathtaking trails and camping under the stars.',
+  },
+  {
+    id: '3',
+    title: 'Beach Getaway',
+    date: 'April 2022',
+    image: 'https://via.placeholder.com/150/008000/FFFFFF?text=Beach',
+    description: 'Relaxing by the ocean, swimming, and enjoying the sun.',
+  },
+];
 
 export default function MemoriesScreen() {
   return (
-    <View style={s.root}>
-      <View style={s.header}>
-        <Pressable style={s.backBtn}><Text style={s.backText}>{"<"}</Text></Pressable>
-        <Text style={s.headerTitle}>Memories</Text>
-        <Pressable><Text style={s.selectText}>Select</Text></Pressable>
+    <ScreenWrapper title="Your Memories" scrollable={true}>
+      <View style={styles.contentContainer}>
+        {memoriesData.map((memory) => (
+          <BlurView key={memory.id} intensity={20} tint="dark" style={styles.memoryCard}>
+            <Image source={{ uri: memory.image }} style={styles.memoryImage} />
+            <View style={styles.memoryDetails}>
+              <Text style={[Typography.chillaxBold, styles.memoryTitle]}>{memory.title}</Text>
+              <Text style={[Typography.satoshiMedium, styles.memoryDate]}>{memory.date}</Text>
+              <Text style={[Typography.satoshiRegular, styles.memoryDescription]}>{memory.description}</Text>
+            </View>
+          </BlurView>
+        ))}
+
+        <TouchableOpacity activeOpacity={0.8} style={styles.ctaButton}>
+          <LinearGradient
+            colors={[DS.purple, DS.pink] as const}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+            style={styles.gradientBackground}
+          >
+            <MaterialIcons name="add-circle-outline" size={24} color={DS.white} />
+            <Text style={[Typography.satoshiMedium, styles.ctaButtonText]}>Add New Memory</Text>
+          </LinearGradient>
+        </TouchableOpacity>
       </View>
-
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 40 }}>
-        {/* Summary — 100px */}
-        <View style={s.summaryCard}>
-          <View style={s.summaryItem}><Text style={s.summaryNum}>18</Text><Text style={s.summaryLabel}>Photos</Text></View>
-          <View style={s.summaryItem}><Text style={s.summaryNum}>3</Text><Text style={s.summaryLabel}>Videos</Text></View>
-          <View style={s.summaryItem}><Text style={s.summaryNum}>3</Text><Text style={s.summaryLabel}>Days</Text></View>
-        </View>
-
-        {/* Group by Day toggle */}
-        <View style={s.toggleRow}>
-          <Text style={s.toggleLabel}>Group by Day</Text>
-          <View style={s.toggle}><View style={s.toggleKnob} /></View>
-        </View>
-
-        {/* Day 1 */}
-        <Text style={s.dayHeader}>Day 1 — Apr 15</Text>
-        <View style={s.grid}>
-          {PHOTOS.filter(p => p.day === 1).map((p) => (
-            <Pressable key={p.id} style={s.gridItem}>
-              <Text style={s.gridText}>{p.id}</Text>
-            </Pressable>
-          ))}
-        </View>
-
-        {/* Day 2 */}
-        <Text style={s.dayHeader}>Day 2 — Apr 16</Text>
-        <View style={s.grid}>
-          {PHOTOS.filter(p => p.day === 2).map((p) => (
-            <Pressable key={p.id} style={s.gridItem}>
-              <Text style={s.gridText}>{p.id}</Text>
-            </Pressable>
-          ))}
-        </View>
-
-        {/* Day 3 */}
-        <Text style={s.dayHeader}>Day 3 — Apr 17</Text>
-        <View style={s.grid}>
-          {PHOTOS.filter(p => p.day === 3).map((p) => (
-            <Pressable key={p.id} style={s.gridItem}>
-              <Text style={s.gridText}>{p.id}</Text>
-            </Pressable>
-          ))}
-        </View>
-      </ScrollView>
-    </View>
+    </ScreenWrapper>
   );
 }
 
-const s = StyleSheet.create({
-  root: { flex: 1, backgroundColor: "#111" },
-  header: { height: 60, flexDirection: "row", alignItems: "center", paddingHorizontal: 16, gap: 12, marginTop: 48, borderBottomWidth: 1, borderBottomColor: "#222" },
-  backBtn: { width: 32, height: 32, justifyContent: "center", alignItems: "center" },
-  backText: { color: "#FFF", fontSize: 24 },
-  headerTitle: { flex: 1, color: "#FFF", fontSize: 18, fontWeight: "600", textAlign: "center" },
-  selectText: { color: "#888", fontSize: 14 },
-  summaryCard: { flexDirection: "row", margin: 20, padding: 16, height: 100, borderRadius: 14, backgroundColor: "#1A1A1A", borderWidth: 1, borderColor: "#333" },
-  summaryItem: { flex: 1, alignItems: "center", justifyContent: "center" },
-  summaryNum: { color: "#FFF", fontSize: 22, fontWeight: "800" },
-  summaryLabel: { color: "#888", fontSize: 12, marginTop: 2 },
-  toggleRow: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 20, marginBottom: 12 },
-  toggleLabel: { color: "#888", fontSize: 14 },
-  toggle: { width: 48, height: 28, borderRadius: 14, backgroundColor: "#333", justifyContent: "center", alignItems: "flex-end", paddingHorizontal: 2 },
-  toggleKnob: { width: 24, height: 24, borderRadius: 12, backgroundColor: "#FFF" },
-  dayHeader: { color: "#FFF", fontSize: 14, fontWeight: "600", paddingHorizontal: 20, marginTop: 16, marginBottom: 8 },
-  grid: { flexDirection: "row", flexWrap: "wrap", paddingHorizontal: 18, gap: 4 },
-  gridItem: { width: "31.5%", aspectRatio: 1, borderRadius: 8, backgroundColor: "#1A1A1A", borderWidth: 1, borderColor: "#333", justifyContent: "center", alignItems: "center" },
-  gridText: { color: "#444", fontSize: 14 },
+const styles = StyleSheet.create({
+  contentContainer: {
+    paddingHorizontal: 20,
+    paddingBottom: 40,
+  },
+  memoryCard: {
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: DS.border,
+    backgroundColor: DS.surface,
+    overflow: 'hidden',
+    marginBottom: 20,
+    padding: 15,
+  },
+  memoryImage: {
+    width: '100%',
+    height: 180,
+    borderRadius: 12,
+    marginBottom: 15,
+  },
+  memoryDetails: {
+    // Styles for text details
+  },
+  memoryTitle: {
+    fontSize: 20,
+    marginBottom: 8,
+  },
+  memoryDate: {
+    fontSize: 14,
+    marginBottom: 5,
+    opacity: 0.8,
+  },
+  memoryDescription: {
+    fontSize: 14,
+    lineHeight: 20,
+    opacity: 0.7,
+  },
+  ctaButton: {
+    marginTop: 30,
+    borderRadius: 16,
+    overflow: 'hidden',
+  },
+  gradientBackground: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 15,
+    paddingHorizontal: 20,
+    minHeight: 56,
+  },
+  ctaButtonText: {
+    fontSize: 16,
+    color: DS.white,
+    marginLeft: 10,
+  },
 });

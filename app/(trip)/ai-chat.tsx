@@ -1,87 +1,139 @@
-// Screen 41 — AI Chat — STATIC 
-// Swipe handle + title, Message bubbles (AI left 40px avatar, User right), Quick chips, Input 72px + mic + send
-import { View, Text, StyleSheet, Pressable, ScrollView } from "react-native";
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, ScrollView, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
+import { BlurView } from 'expo-blur';
+import { MaterialIcons } from '@expo/vector-icons';
+import { ScreenWrapper, DS } from '@/components/screen-wrapper';
 
-const MESSAGES = [
-  { from: "ai", text: "Hi! I'm your TRAVI assistant. I can help with restaurant recommendations, directions, translations, and anything else during your trip. What do you need?" },
-  { from: "user", text: "What's a good restaurant near Ubud for dinner tonight?" },
-  { from: "ai", text: "Great question! Here are my top 3 picks near Ubud:\n\n1. Locavore — Fine dining, farm-to-table (E45/person)\n2. Sardine — Seafood in rice paddies (E30/person)\n3. Hujan Locale — Indonesian fusion (E25/person)\n\nWould you like me to make a reservation?" },
-  { from: "user", text: "Sardine sounds great, can you book for 2 at 7pm?" },
-  { from: "ai", text: "I'll check availability at Sardine for 2 guests at 7:00 PM tonight. One moment..." },
-];
+const AIChatScreen = () => {
+  const [message, setMessage] = useState('');
+  const [chatMessages, setChatMessages] = useState([
+    { id: '1', text: 'Hello! How can I help you today?', sender: 'ai' },
+    { id: '2', text: 'I need help planning a trip to Paris.', sender: 'user' },
+  ]);
 
-const QUICK_CHIPS = ["Translate something", "Find nearby ATM", "Weather update", "Call hotel"];
+  const handleSendMessage = () => {
+    if (message.trim()) {
+      setChatMessages([...chatMessages, { id: String(chatMessages.length + 1), text: message, sender: 'user' }]);
+      setMessage('');
+      // Simulate AI response
+      setTimeout(() => {
+        setChatMessages(prevMessages => [...prevMessages, { id: String(prevMessages.length + 1), text: 'Great! What dates are you thinking for your trip to Paris?', sender: 'ai' }]);
+      }, 1000);
+    }
+  };
 
-export default function AIChatScreen() {
   return (
-    <View style={s.root}>
-      {/* Handle + header */}
-      <View style={s.handleArea}>
-        <View style={s.handle} />
-      </View>
-      <View style={s.header}>
-        <Text style={s.headerTitle}>AI Assistant</Text>
-        <Pressable><Text style={s.closeText}>X</Text></Pressable>
-      </View>
-
-      {/* Messages */}
-      <ScrollView style={s.messages} contentContainerStyle={{ paddingBottom: 20 }}>
-        {MESSAGES.map((msg, i) => (
-          <View key={i} style={[s.msgRow, msg.from === "user" && s.msgRowUser]}>
-            {msg.from === "ai" && (
-              <View style={s.avatar}><Text style={s.avatarText}>T</Text></View>
-            )}
-            <View style={[s.bubble, msg.from === "user" ? s.bubbleUser : s.bubbleAI]}>
-              <Text style={[s.msgText, msg.from === "user" && s.msgTextUser]}>{msg.text}</Text>
+    <ScreenWrapper title="AI Chat" scrollable={true}>
+      <KeyboardAvoidingView
+        style={styles.keyboardAvoidingView}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        keyboardVerticalOffset={Platform.OS === 'ios' ? 90 : 0} // Adjust offset as needed
+      >
+        <ScrollView contentContainerStyle={styles.chatContainer}>
+          {chatMessages.map((msg) => (
+            <View key={msg.id} style={msg.sender === 'user' ? styles.userMessageContainer : styles.aiMessageContainer}>
+              <BlurView intensity={20} tint="dark" style={styles.blurCard}>
+                <Text style={msg.sender === 'user' ? styles.userMessageText : styles.aiMessageText}>
+                  {msg.text}
+                </Text>
+              </BlurView>
             </View>
-          </View>
-        ))}
-      </ScrollView>
+          ))}
+        </ScrollView>
 
-      {/* Quick chips */}
-      <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={s.chipsRow}>
-        {QUICK_CHIPS.map((chip) => (
-          <Pressable key={chip} style={s.chip}>
-            <Text style={s.chipText}>{chip}</Text>
-          </Pressable>
-        ))}
-      </ScrollView>
-
-      {/* Input — 72px */}
-      <View style={s.inputBar}>
-        <View style={s.inputField}><Text style={s.inputPlaceholder}>Type a message...</Text></View>
-        <Pressable style={s.micBtn}><Text style={s.micText}>M</Text></Pressable>
-        <Pressable style={s.sendBtn}><Text style={s.sendText}>{">"}</Text></Pressable>
-      </View>
-    </View>
+        <View style={styles.inputArea}>
+          <TextInput
+            style={styles.textInput}
+            placeholder="Type your message..."
+            placeholderTextColor={DS.placeholder}
+            value={message}
+            onChangeText={setMessage}
+            multiline
+          />
+          <TouchableOpacity onPress={handleSendMessage} disabled={!message.trim()}>
+            <LinearGradient
+              colors={[DS.purple, DS.pink] as const}
+              style={styles.sendButton}
+              start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}
+            >
+              <MaterialIcons name="send" size={24} color={DS.white} />
+            </LinearGradient>
+          </TouchableOpacity>
+        </View>
+      </KeyboardAvoidingView>
+    </ScreenWrapper>
   );
-}
+};
 
-const s = StyleSheet.create({
-  root: { flex: 1, backgroundColor: "#111" },
-  handleArea: { alignItems: "center", paddingTop: 8 },
-  handle: { width: 40, height: 4, borderRadius: 2, backgroundColor: "#444" },
-  header: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 20, paddingVertical: 12, borderBottomWidth: 1, borderBottomColor: "#222", marginTop: 40 },
-  headerTitle: { color: "#FFF", fontSize: 18, fontWeight: "700" },
-  closeText: { color: "#888", fontSize: 18 },
-  messages: { flex: 1, paddingHorizontal: 16, paddingTop: 12 },
-  msgRow: { flexDirection: "row", marginBottom: 12, gap: 8 },
-  msgRowUser: { justifyContent: "flex-end" },
-  avatar: { width: 40, height: 40, borderRadius: 20, backgroundColor: "#222", justifyContent: "center", alignItems: "center" },
-  avatarText: { color: "#888", fontSize: 16, fontWeight: "700" },
-  bubble: { maxWidth: "75%", padding: 14, borderRadius: 16 },
-  bubbleAI: { backgroundColor: "#1A1A1A", borderWidth: 1, borderColor: "#333", borderTopLeftRadius: 4 },
-  bubbleUser: { backgroundColor: "#333", borderTopRightRadius: 4 },
-  msgText: { color: "#DDD", fontSize: 14, lineHeight: 22 },
-  msgTextUser: { color: "#FFF" },
-  chipsRow: { paddingHorizontal: 16, paddingVertical: 8, gap: 8 },
-  chip: { paddingHorizontal: 14, paddingVertical: 8, borderRadius: 20, backgroundColor: "#1A1A1A", borderWidth: 1, borderColor: "#333" },
-  chipText: { color: "#888", fontSize: 13 },
-  inputBar: { flexDirection: "row", alignItems: "center", paddingHorizontal: 16, paddingVertical: 12, paddingBottom: 36, gap: 8, borderTopWidth: 1, borderTopColor: "#222", height: 72 },
-  inputField: { flex: 1, height: 44, borderRadius: 22, backgroundColor: "#1A1A1A", borderWidth: 1, borderColor: "#333", justifyContent: "center", paddingHorizontal: 16 },
-  inputPlaceholder: { color: "#555", fontSize: 14 },
-  micBtn: { width: 40, height: 40, borderRadius: 20, backgroundColor: "#222", justifyContent: "center", alignItems: "center" },
-  micText: { color: "#888", fontSize: 14, fontWeight: "700" },
-  sendBtn: { width: 40, height: 40, borderRadius: 20, backgroundColor: "#333", justifyContent: "center", alignItems: "center" },
-  sendText: { color: "#FFF", fontSize: 16, fontWeight: "700" },
+const styles = StyleSheet.create({
+  keyboardAvoidingView: {
+    flex: 1,
+  },
+  chatContainer: {
+    flexGrow: 1,
+    padding: 16,
+    justifyContent: 'flex-end',
+  },
+  aiMessageContainer: {
+    alignSelf: 'flex-start',
+    marginBottom: 10,
+    maxWidth: '80%',
+  },
+  userMessageContainer: {
+    alignSelf: 'flex-end',
+    marginBottom: 10,
+    maxWidth: '80%',
+  },
+  blurCard: {
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: DS.border,
+    backgroundColor: DS.surface,
+    overflow: 'hidden',
+    padding: 12,
+  },
+  aiMessageText: {
+    color: DS.white,
+    fontSize: 16,
+    // fontFamily: 'Satoshi-Regular', // Placeholder for Satoshi-Regular
+  },
+  userMessageText: {
+    color: DS.white,
+    fontSize: 16,
+    // fontFamily: 'Satoshi-Regular', // Placeholder for Satoshi-Regular
+  },
+  inputArea: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 16,
+    backgroundColor: DS.bg, // Ensure input area background matches overall background
+    borderTopWidth: 1,
+    borderColor: DS.border,
+  },
+  textInput: {
+    flex: 1,
+    minHeight: 40,
+    maxHeight: 120,
+    borderRadius: 20,
+    paddingHorizontal: 15,
+    paddingTop: 10,
+    paddingBottom: 10,
+    marginRight: 10,
+    fontSize: 16,
+    color: DS.white,
+    backgroundColor: DS.surfaceHigh, // Use a slightly different surface for input
+    borderWidth: 1,
+    borderColor: DS.borderStrong,
+    // fontFamily: 'Satoshi-Regular', // Placeholder for Satoshi-Regular
+  },
+  sendButton: {
+    width: 48,
+    height: 48,
+    borderRadius: 24,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 });
+
+export default AIChatScreen;

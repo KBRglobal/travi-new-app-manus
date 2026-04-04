@@ -20,7 +20,7 @@ export default function EmptyTripsScreen() {
       <Text style={s.title}>No Trips Yet</Text>
       <Text style={s.body}>Your adventure starts here.{'\n'}Let TRAVI's AI plan your perfect first trip.</Text>
       <Pressable style={({ pressed }) => [s.primaryBtn, pressed && { opacity: 0.8, transform: [{ scale: 0.97 }] }]} onPress={() => router.push("/(trip)/plan" as any)}>
-        <LinearGradient colors={[DS.purple, DS.pink]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={s.btnGrad}>
+        <LinearGradient colors={[DS.purple, DS.pink] as const} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={s.btnGrad}>
           <MaterialIcons name="add" size={20} color={DS.white} style={{ marginRight: 8 }} />
           <Text style={s.btnText}>Plan a Trip</Text>
         </LinearGradient>

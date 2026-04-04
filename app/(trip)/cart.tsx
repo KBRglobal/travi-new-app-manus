@@ -1,131 +1,164 @@
-// Screen 27 — Cart / Trip Review — STATIC 
-import { View, Text, StyleSheet, Pressable, ScrollView } from "react-native";
+import React from 'react';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import { BlurView } from 'expo-blur';
+import { LinearGradient } from 'expo-linear-gradient';
+import { MaterialIcons } from '@expo/vector-icons';
+import { ScreenWrapper, DS } from '@/components/screen-wrapper';
 
-const FLIGHTS = [
-  { route: "TLV > DPS", airline: "Emirates", time: "22:00-14:30+1", price: "E890" },
-  { route: "DPS > TLV", airline: "Emirates", time: "16:00-06:30+1", price: "E890" },
-];
-const HOTEL = { name: "The Mulia Resort", room: "Deluxe Ocean View", nights: 7, price: "E2,240" };
-const ACTIVITIES = [
-  { title: "Bali Swing Experience", price: "E45" },
-  { title: "Ubud Rice Terraces Tour", price: "E35" },
-  { title: "Mount Batur Sunrise Trek", price: "E55" },
-  { title: "Monkey Forest Sanctuary", price: "E15" },
-];
+const CartScreen = () => {
+  // Placeholder data for cart items
+  const cartItems = [
+    { id: '1', name: 'Flight to Paris', price: 1200, quantity: 1 },
+    { id: '2', name: 'Hotel in Rome', price: 800, quantity: 1 },
+    { id: '3', name: 'Travel Insurance', price: 50, quantity: 1 },
+  ];
 
-export default function CartScreen() {
+  const subtotal = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const tax = subtotal * 0.05; // 5% tax
+  const total = subtotal + tax;
+
   return (
-    <View style={s.root}>
-      <View style={s.header}>
-        <Pressable style={s.backBtn}><Text style={s.backText}>{"<"}</Text></Pressable>
-        <Text style={s.headerTitle}>Trip Review</Text>
-        <View style={{ width: 32 }} />
+    <ScreenWrapper title="Your Cart" scrollable={true}>
+      <View style={styles.container}>
+        {cartItems.map((item) => (
+          <BlurView key={item.id} intensity={20} tint="dark" style={styles.card}>
+            <View style={styles.itemDetails}>
+              <Text style={styles.itemName}>{item.name}</Text>
+              <Text style={styles.itemPrice}>${item.price.toFixed(2)}</Text>
+            </View>
+            <View style={styles.itemQuantity}>
+              <MaterialIcons name="remove-circle-outline" size={24} color={DS.muted} />
+              <Text style={styles.quantityText}>{item.quantity}</Text>
+              <MaterialIcons name="add-circle-outline" size={24} color={DS.muted} />
+            </View>
+          </BlurView>
+        ))}
+
+        <BlurView intensity={20} tint="dark" style={styles.summaryCard}>
+          <View style={styles.summaryRow}>
+            <Text style={styles.summaryLabel}>Subtotal</Text>
+            <Text style={styles.summaryValue}>${subtotal.toFixed(2)}</Text>
+          </View>
+          <View style={styles.summaryRow}>
+            <Text style={styles.summaryLabel}>Tax (5%)</Text>
+            <Text style={styles.summaryValue}>${tax.toFixed(2)}</Text>
+          </View>
+          <View style={styles.summaryRow}>
+            <Text style={styles.totalLabel}>Total</Text>
+            <Text style={styles.totalValue}>${total.toFixed(2)}</Text>
+          </View>
+        </BlurView>
+
+        <TouchableOpacity activeOpacity={0.8} style={styles.checkoutButton}>
+          <LinearGradient
+            colors={[DS.purple, DS.pink] as const}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+            style={styles.gradientButton}
+          >
+            <Text style={styles.checkoutButtonText}>Proceed to Checkout</Text>
+            <MaterialIcons name="arrow-forward" size={24} color={DS.white} />
+          </LinearGradient>
+        </TouchableOpacity>
       </View>
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 300 }}>
-        {/* Flights accordion */}
-        <View style={s.section}>
-          <View style={s.sectionHeader}>
-            <Text style={s.sectionTitle}>Flights</Text>
-            <Text style={s.sectionCount}>{FLIGHTS.length} items</Text>
-          </View>
-          {FLIGHTS.map((f, i) => (
-            <View key={i} style={s.itemCard}>
-              <View style={{ flex: 1 }}>
-                <Text style={s.itemTitle}>{f.route}</Text>
-                <Text style={s.itemSub}>{f.airline} | {f.time}</Text>
-              </View>
-              <Text style={s.itemPrice}>{f.price}</Text>
-            </View>
-          ))}
-        </View>
-
-        {/* Hotel accordion */}
-        <View style={s.section}>
-          <View style={s.sectionHeader}>
-            <Text style={s.sectionTitle}>Hotel</Text>
-            <Text style={s.sectionCount}>1 item</Text>
-          </View>
-          <View style={s.itemCard}>
-            <View style={{ flex: 1 }}>
-              <Text style={s.itemTitle}>{HOTEL.name}</Text>
-              <Text style={s.itemSub}>{HOTEL.room} | {HOTEL.nights} nights</Text>
-            </View>
-            <Text style={s.itemPrice}>{HOTEL.price}</Text>
-          </View>
-        </View>
-
-        {/* Activities accordion */}
-        <View style={s.section}>
-          <View style={s.sectionHeader}>
-            <Text style={s.sectionTitle}>Activities</Text>
-            <Text style={s.sectionCount}>{ACTIVITIES.length} items</Text>
-          </View>
-          {ACTIVITIES.map((a, i) => (
-            <View key={i} style={s.itemCard}>
-              <Text style={[s.itemTitle, { flex: 1 }]}>{a.title}</Text>
-              <Text style={s.itemPrice}>{a.price}</Text>
-            </View>
-          ))}
-        </View>
-
-        {/* Promo code */}
-        <View style={s.promoRow}>
-          <View style={s.promoInput}><Text style={s.promoPlaceholder}>Promo code</Text></View>
-          <Pressable style={s.promoBtn}><Text style={s.promoBtnText}>Apply</Text></Pressable>
-        </View>
-      </ScrollView>
-
-      {/* Price summary — 240px */}
-      <View style={s.priceSummary}>
-        <View style={s.priceRow}><Text style={s.priceLabel}>Flights</Text><Text style={s.priceValue}>E1,780</Text></View>
-        <View style={s.priceRow}><Text style={s.priceLabel}>Hotel</Text><Text style={s.priceValue}>E2,240</Text></View>
-        <View style={s.priceRow}><Text style={s.priceLabel}>Activities</Text><Text style={s.priceValue}>E150</Text></View>
-        <View style={s.divider} />
-        <View style={s.priceRow}><Text style={s.totalLabel}>Total</Text><Text style={s.totalValue}>E4,170</Text></View>
-        <View style={s.priceRow}><Text style={s.cashbackLabel}>Cashback earned</Text><Text style={s.cashbackValue}>+E417</Text></View>
-
-        <View style={s.termsRow}>
-          <View style={s.checkbox} />
-          <Text style={s.termsText}>I agree to the Terms & Conditions</Text>
-        </View>
-
-        <Pressable style={s.ctaBtn}><Text style={s.ctaText}>Proceed to Checkout</Text></Pressable>
-      </View>
-    </View>
+    </ScreenWrapper>
   );
-}
+};
 
-const s = StyleSheet.create({
-  root: { flex: 1, backgroundColor: "#111" },
-  header: { height: 60, flexDirection: "row", alignItems: "center", paddingHorizontal: 16, gap: 12, marginTop: 48, borderBottomWidth: 1, borderBottomColor: "#222" },
-  backBtn: { width: 32, height: 32, justifyContent: "center", alignItems: "center" },
-  backText: { color: "#FFF", fontSize: 24 },
-  headerTitle: { flex: 1, color: "#FFF", fontSize: 18, fontWeight: "600", textAlign: "center" },
-  section: { paddingHorizontal: 20, marginTop: 16 },
-  sectionHeader: { flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: 8 },
-  sectionTitle: { color: "#FFF", fontSize: 16, fontWeight: "700" },
-  sectionCount: { color: "#888", fontSize: 12 },
-  itemCard: { flexDirection: "row", alignItems: "center", padding: 14, borderRadius: 12, backgroundColor: "#1A1A1A", borderWidth: 1, borderColor: "#333", marginBottom: 8 },
-  itemTitle: { color: "#FFF", fontSize: 14, fontWeight: "600" },
-  itemSub: { color: "#888", fontSize: 12, marginTop: 2 },
-  itemPrice: { color: "#FFF", fontSize: 15, fontWeight: "700" },
-  promoRow: { flexDirection: "row", paddingHorizontal: 20, marginTop: 16, gap: 8 },
-  promoInput: { flex: 1, height: 44, borderRadius: 10, backgroundColor: "#1A1A1A", borderWidth: 1, borderColor: "#333", justifyContent: "center", paddingHorizontal: 14 },
-  promoPlaceholder: { color: "#555", fontSize: 14 },
-  promoBtn: { height: 44, paddingHorizontal: 16, borderRadius: 10, backgroundColor: "#333", justifyContent: "center", alignItems: "center" },
-  promoBtnText: { color: "#FFF", fontSize: 14, fontWeight: "600" },
-  priceSummary: { position: "absolute", bottom: 0, left: 0, right: 0, padding: 20, paddingBottom: 36, backgroundColor: "#151515", borderTopWidth: 1, borderTopColor: "#222" },
-  priceRow: { flexDirection: "row", justifyContent: "space-between", marginBottom: 6 },
-  priceLabel: { color: "#888", fontSize: 14 },
-  priceValue: { color: "#FFF", fontSize: 14 },
-  divider: { height: 1, backgroundColor: "#333", marginVertical: 8 },
-  totalLabel: { color: "#FFF", fontSize: 16, fontWeight: "700" },
-  totalValue: { color: "#FFF", fontSize: 18, fontWeight: "800" },
-  cashbackLabel: { color: "#4ADE80", fontSize: 13 },
-  cashbackValue: { color: "#4ADE80", fontSize: 14, fontWeight: "700" },
-  termsRow: { flexDirection: "row", alignItems: "center", gap: 10, marginTop: 12 },
-  checkbox: { width: 20, height: 20, borderRadius: 4, borderWidth: 1.5, borderColor: "#555" },
-  termsText: { color: "#888", fontSize: 12, flex: 1 },
-  ctaBtn: { width: "100%", height: 52, borderRadius: 26, backgroundColor: "#333", borderWidth: 1, borderColor: "#555", justifyContent: "center", alignItems: "center", marginTop: 12 },
-  ctaText: { color: "#FFF", fontSize: 16, fontWeight: "600" },
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 20,
+    backgroundColor: DS.bg,
+  },
+  card: {
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: DS.border,
+    backgroundColor: DS.surface,
+    overflow: 'hidden',
+    padding: 15,
+    marginBottom: 15,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  itemDetails: {
+    flex: 1,
+  },
+  itemName: {
+    fontFamily: 'Chillax-Bold',
+    fontSize: 18,
+    color: DS.white,
+    marginBottom: 5,
+  },
+  itemPrice: {
+    fontFamily: 'Satoshi-Medium',
+    fontSize: 16,
+    color: DS.white,
+  },
+  itemQuantity: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  quantityText: {
+    fontFamily: 'Satoshi-Regular',
+    fontSize: 16,
+    color: DS.white,
+    marginHorizontal: 10,
+  },
+  summaryCard: {
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: DS.border,
+    backgroundColor: DS.surface,
+    overflow: 'hidden',
+    padding: 20,
+    marginTop: 20,
+    marginBottom: 30,
+  },
+  summaryRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 10,
+  },
+  summaryLabel: {
+    fontFamily: 'Satoshi-Regular',
+    fontSize: 16,
+    color: DS.muted,
+  },
+  summaryValue: {
+    fontFamily: 'Satoshi-Medium',
+    fontSize: 16,
+    color: DS.white,
+  },
+  totalLabel: {
+    fontFamily: 'Chillax-Bold',
+    fontSize: 20,
+    color: DS.white,
+  },
+  totalValue: {
+    fontFamily: 'Chillax-Bold',
+    fontSize: 20,
+    color: DS.white,
+  },
+  checkoutButton: {
+    borderRadius: 16,
+    overflow: 'hidden',
+  },
+  gradientButton: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingVertical: 15,
+    paddingHorizontal: 20,
+  },
+  checkoutButtonText: {
+    fontFamily: 'Chillax-Bold',
+    fontSize: 18,
+    color: DS.white,
+    marginRight: 10,
+  },
 });
+
+export default CartScreen;

@@ -1,151 +1,152 @@
-// Screen 80 — Travel Compatibility Score (Static Wireframe)
-// Route: /social/compatibility | Mode: Discovery (Social)
-// Zones: Header 60px, Versus Section 160px, Score Ring 200px, Dimensions 8 rows, CTA
+import React from 'react';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { ScreenWrapper } from '@/components/screen-wrapper';
+import { BlurView } from 'expo-blur';
+import { LinearGradient } from 'expo-linear-gradient';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 
-import { ScrollView, Text, View, StyleSheet } from "react-native";
-import { ScreenContainer } from "@/components/screen-container";
+// DS object exported from ScreenWrapper.tsx
+const DS = {
+  bg: "#0A0514", surface: "rgba(36,16,62,0.55)", surfaceHigh: "rgba(50,20,80,0.7)",
+  border: "rgba(123,68,230,0.22)", borderStrong: "rgba(100,67,244,0.4)",
+  purple: "#6443F4", pink: "#F94498", success: "#02A65C", warning: "#FF9327",
+  error: "#FF6B6B", info: "#01BEFF", white: "#FFFFFF", secondary: "#D3CFD8",
+  muted: "#A79FB2", placeholder: "#7B6A94", gradient: ["#6443F4", "#F94498"],
+};
 
-const DIMENSIONS = [
-  { name: "Adventure", you: 85, them: 78 },
-  { name: "Culture", you: 72, them: 90 },
-  { name: "Food", you: 95, them: 88 },
-  { name: "Relaxation", you: 60, them: 65 },
-  { name: "Nightlife", you: 45, them: 70 },
-  { name: "Nature", you: 80, them: 82 },
-  { name: "Budget", you: 70, them: 75 },
-  { name: "Luxury", you: 55, them: 40 },
-];
-
-export default function CompatibilityScreen() {
+const CompatibilityScreen = () => {
   return (
-    <ScreenContainer>
-      <View style={s.container}>
-        {/* Header */}
-        <View style={s.header}>
-          <Text style={s.backArrow}>←</Text>
-          <Text style={s.headerTitle}>Compatibility</Text>
-          <View style={{ width: 24 }} />
+    <ScreenWrapper title="Compatibility" scrollable={true}>
+      <View style={styles.container}>
+        <Text style={styles.header}>Find Your Travel Match</Text>
+        <Text style={styles.bodyText}>
+          Discover how compatible you are with other travelers based on your preferences and travel styles.
+          Our advanced algorithm analyzes various factors to help you find the perfect companion for your next adventure.
+        </Text>
+
+        <BlurView intensity={20} tint="dark" style={styles.card}>
+          <View style={styles.cardContent}>
+            <MaterialIcons name="people" size={30} color={DS.purple} />
+            <Text style={styles.cardTitle}>Compatibility Score</Text>
+            <Text style={styles.cardBody}>
+              Your current compatibility score is 85%. Explore profiles to see detailed breakdowns.
+            </Text>
+            <TouchableOpacity style={styles.button}>
+              <LinearGradient
+                colors={[DS.purple, DS.pink] as const}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 1 }}
+                style={styles.gradientButton}
+              >
+                <Text style={styles.buttonText}>View Matches</Text>
+                <MaterialIcons name="arrow-forward" size={20} color={DS.white} style={{ marginLeft: 8 }} />
+              </LinearGradient>
+            </TouchableOpacity>
+          </View>
+        </BlurView>
+
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>How it Works</Text>
+          <Text style={styles.bodyText}>
+            We analyze your travel history, interests, and personality traits to provide accurate compatibility insights.
+            Connect with like-minded individuals and make your journeys unforgettable.
+          </Text>
         </View>
 
-        <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={s.scroll}>
-          {/* Versus Section — 160px */}
-          <View style={s.versusSection}>
-            <View style={s.versusUser}>
-              <View style={s.versusAvatar}><Text style={s.versusInitial}>Y</Text></View>
-              <Text style={s.versusName}>You</Text>
-            </View>
-            <View style={s.vsCircle}><Text style={s.vsText}>VS</Text></View>
-            <View style={s.versusUser}>
-              <View style={s.versusAvatar}><Text style={s.versusInitial}>S</Text></View>
-              <Text style={s.versusName}>Sarah M.</Text>
-            </View>
-          </View>
+        <TouchableOpacity style={styles.button}>
+          <LinearGradient
+            colors={[DS.purple, DS.pink] as const}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+            style={styles.gradientButton}
+          >
+            <Text style={styles.buttonText}>Update Preferences</Text>
+            <MaterialIcons name="settings" size={20} color={DS.white} style={{ marginLeft: 8 }} />
+          </LinearGradient>
+        </TouchableOpacity>
 
-          {/* Score Ring — 200px */}
-          <View style={s.scoreSection}>
-            <View style={s.scoreRing}>
-              <Text style={s.scoreNumber}>87</Text>
-              <Text style={s.scorePercent}>%</Text>
-            </View>
-            <Text style={s.scoreLabel}>Travel Compatibility</Text>
-            <Text style={s.scoreDesc}>You and Sarah share similar travel styles in Food, Nature, and Adventure.</Text>
-          </View>
-
-          {/* Dimension Comparison */}
-          <View style={s.dimensionsSection}>
-            <Text style={s.sectionTitle}>DNA Comparison</Text>
-            <View style={s.legendRow}>
-              <View style={s.legendItem}><View style={[s.legendDot, { backgroundColor: "#666" }]} /><Text style={s.legendText}>You</Text></View>
-              <View style={s.legendItem}><View style={[s.legendDot, { backgroundColor: "#999" }]} /><Text style={s.legendText}>Sarah</Text></View>
-            </View>
-            {DIMENSIONS.map((dim) => (
-              <View key={dim.name} style={s.dimRow}>
-                <Text style={s.dimName}>{dim.name}</Text>
-                <View style={s.dimBars}>
-                  <View style={s.dimBarTrack}>
-                    <View style={[s.dimBarFill, { width: `${dim.you}%`, backgroundColor: "#666" }]} />
-                  </View>
-                  <View style={s.dimBarTrack}>
-                    <View style={[s.dimBarFill, { width: `${dim.them}%`, backgroundColor: "#999" }]} />
-                  </View>
-                </View>
-                <View style={s.dimScores}>
-                  <Text style={s.dimScore}>{dim.you}</Text>
-                  <Text style={s.dimScore}>{dim.them}</Text>
-                </View>
-              </View>
-            ))}
-          </View>
-
-          {/* Shared Interests */}
-          <View style={s.sharedSection}>
-            <Text style={s.sectionTitle}>Shared Interests</Text>
-            <View style={s.pillsRow}>
-              {["Street Food", "Hiking", "Photography", "Local Markets", "Sunsets"].map((i) => (
-                <View key={i} style={s.pill}><Text style={s.pillText}>{i}</Text></View>
-              ))}
-            </View>
-          </View>
-
-          {/* CTA */}
-          <View style={s.ctaSection}>
-            <View style={s.ctaBtn}><Text style={s.ctaText}>Send Connect Request</Text></View>
-            <View style={s.ctaBtnSecondary}><Text style={s.ctaTextSecondary}>Message Sarah</Text></View>
-          </View>
-
-          <View style={{ height: 100 }} />
-        </ScrollView>
       </View>
-    </ScreenContainer>
+    </ScreenWrapper>
   );
-}
+};
 
-const N = "#111"; const N2 = "#1a1a1a"; const N3 = "#222"; const W = "#fff"; const G = "#888";
-
-const s = StyleSheet.create({
-  container: { flex: 1, backgroundColor: N },
-  header: { height: 60, flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 16 },
-  backArrow: { fontSize: 24, color: W },
-  headerTitle: { fontSize: 20, fontWeight: "700", color: W },
-  scroll: { paddingHorizontal: 16 },
-
-  versusSection: { flexDirection: "row", alignItems: "center", justifyContent: "center", height: 160, gap: 24 },
-  versusUser: { alignItems: "center", gap: 8 },
-  versusAvatar: { width: 72, height: 72, borderRadius: 18, backgroundColor: N2, borderWidth: 2, borderColor: N3, alignItems: "center", justifyContent: "center" },
-  versusInitial: { fontSize: 28, fontWeight: "700", color: "#555" },
-  versusName: { fontSize: 16, fontWeight: "600", color: W },
-  vsCircle: { width: 40, height: 40, borderRadius: 20, backgroundColor: N3, alignItems: "center", justifyContent: "center" },
-  vsText: { fontSize: 14, fontWeight: "700", color: G },
-
-  scoreSection: { alignItems: "center", paddingVertical: 24 },
-  scoreRing: { width: 140, height: 140, borderRadius: 70, borderWidth: 6, borderColor: "#444", alignItems: "center", justifyContent: "center", flexDirection: "row" },
-  scoreNumber: { fontSize: 48, fontWeight: "700", color: W },
-  scorePercent: { fontSize: 20, fontWeight: "600", color: G, marginTop: 8 },
-  scoreLabel: { fontSize: 18, fontWeight: "600", color: W, marginTop: 12 },
-  scoreDesc: { fontSize: 14, color: G, textAlign: "center", marginTop: 8, lineHeight: 20, paddingHorizontal: 20 },
-
-  dimensionsSection: { marginTop: 24, gap: 12 },
-  sectionTitle: { fontSize: 18, fontWeight: "700", color: W, marginBottom: 4 },
-  legendRow: { flexDirection: "row", gap: 16 },
-  legendItem: { flexDirection: "row", alignItems: "center", gap: 6 },
-  legendDot: { width: 10, height: 10, borderRadius: 5 },
-  legendText: { fontSize: 12, color: G },
-  dimRow: { flexDirection: "row", alignItems: "center", gap: 8, height: 44 },
-  dimName: { width: 80, fontSize: 13, color: G },
-  dimBars: { flex: 1, gap: 3 },
-  dimBarTrack: { height: 6, borderRadius: 3, backgroundColor: N3 },
-  dimBarFill: { height: 6, borderRadius: 3 },
-  dimScores: { width: 40, gap: 2, alignItems: "flex-end" },
-  dimScore: { fontSize: 11, color: G },
-
-  sharedSection: { marginTop: 24, gap: 12 },
-  pillsRow: { flexDirection: "row", flexWrap: "wrap", gap: 8 },
-  pill: { paddingHorizontal: 12, paddingVertical: 6, borderRadius: 16, backgroundColor: N2, borderWidth: 1, borderColor: N3 },
-  pillText: { fontSize: 13, color: G },
-
-  ctaSection: { marginTop: 32, gap: 12 },
-  ctaBtn: { height: 52, borderRadius: 14, backgroundColor: "#333", alignItems: "center", justifyContent: "center" },
-  ctaText: { fontSize: 16, fontWeight: "600", color: W },
-  ctaBtnSecondary: { height: 52, borderRadius: 14, backgroundColor: N2, borderWidth: 1, borderColor: N3, alignItems: "center", justifyContent: "center" },
-  ctaTextSecondary: { fontSize: 16, fontWeight: "600", color: G },
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 20,
+  },
+  header: {
+    fontFamily: 'Chillax-Bold',
+    fontSize: 32,
+    color: DS.white,
+    marginBottom: 15,
+    textAlign: 'center',
+  },
+  bodyText: {
+    fontFamily: 'Satoshi-Regular',
+    fontSize: 16,
+    color: DS.muted,
+    textAlign: 'center',
+    marginBottom: 25,
+    lineHeight: 24,
+  },
+  card: {
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: DS.border,
+    backgroundColor: DS.surface,
+    overflow: 'hidden',
+    marginBottom: 30,
+    padding: 20,
+    alignItems: 'center',
+  },
+  cardContent: {
+    alignItems: 'center',
+  },
+  cardTitle: {
+    fontFamily: 'Satoshi-Medium',
+    fontSize: 22,
+    color: DS.white,
+    marginTop: 10,
+    marginBottom: 10,
+  },
+  cardBody: {
+    fontFamily: 'Satoshi-Regular',
+    fontSize: 15,
+    color: DS.secondary,
+    textAlign: 'center',
+    marginBottom: 20,
+    lineHeight: 22,
+  },
+  button: {
+    width: '100%',
+    borderRadius: 12,
+    overflow: 'hidden',
+    marginTop: 10,
+  },
+  gradientButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 15,
+    paddingHorizontal: 20,
+    borderRadius: 12,
+  },
+  buttonText: {
+    fontFamily: 'Satoshi-Medium',
+    fontSize: 18,
+    color: DS.white,
+  },
+  section: {
+    marginBottom: 30,
+    alignItems: 'center',
+  },
+  sectionTitle: {
+    fontFamily: 'Chillax-Bold',
+    fontSize: 24,
+    color: DS.white,
+    marginBottom: 15,
+  },
 });
+
+export default CompatibilityScreen;

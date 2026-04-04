@@ -1,299 +1,179 @@
-import { useState, useMemo } from "react";
-import {
-  View, Text, TouchableOpacity, StyleSheet, ScrollView,
-  Dimensions, Platform
-} from "react-native";
-import { router } from "expo-router";
-import { LinearGradient } from "expo-linear-gradient";
-import { IconSymbol } from "@/components/ui/icon-symbol";
-import { BRAND, TYPE, RADIUS } from "@/constants/brand";
-import * as Haptics from "expo-haptics";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { trpc } from "@/lib/trpc";
-import { useAuth } from "@/hooks/use-auth";
-import { SkeletonBlock } from "@/components/skeleton-loader";
+import React from 'react';
+import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { ScreenWrapper } from '@/components/screen-wrapper';
+import { BlurView } from 'expo-blur';
+import { LinearGradient } from 'expo-linear-gradient';
+import { MaterialIcons } from '@expo/vector-icons';
 
-const { width: W } = Dimensions.get("window");
-
-// ─── Types ────────────────────────────────────────────────────────────────────
-interface DNASnapshot {
-  id: string;
-  date: string;
-  tripName: string;
-  destination: string;
-  traits: Record<string, number>;
-  insights: string[];
-  emoji: string;
-}
-
-// ─── Mock Data ────────────────────────────────────────────────────────────────
-const TRAIT_META: Record<string, { label: string; icon: string; color: string }> = {
-  adventureLevel:   { label: "Adventure",   icon: "🧗", color: "#EF4444" },
-  culturalDepth:    { label: "Culture",     icon: "🏛️", color: "#A855F7" },
-  foodieness:       { label: "Foodie",      icon: "🍜", color: "#F59E0B" },
-  socialEnergy:     { label: "Social",      icon: "🎉", color: "#F94498" },
-  luxuryAffinity:   { label: "Luxury",      icon: "👑", color: "#D97706" },
-  natureConnection: { label: "Nature",      icon: "🌿", color: "#22C55E" },
+// DS object is assumed to be exported from ScreenWrapper.tsx, but defined here for reference and clarity
+const DS = {
+  bg: "#0A0514",
+  surface: "rgba(36,16,62,0.55)",
+  surfaceHigh: "rgba(50,20,80,0.7)",
+  border: "rgba(123,68,230,0.22)",
+  borderStrong: "rgba(100,67,244,0.4)",
+  purple: "#6443F4",
+  pink: "#F94498",
+  success: "#02A65C",
+  warning: "#FF9327",
+  error: "#FF6B6B",
+  info: "#01BEFF",
+  white: "#FFFFFF",
+  secondary: "#D3CFD8",
+  muted: "#A79FB2",
+  placeholder: "#7B6A94",
+  gradient: ["#6443F4", "#F94498"],
 };
 
-const SNAPSHOTS: DNASnapshot[] = [
-  {
-    id: "s4",
-    date: "Apr 2, 2026",
-    tripName: "Current DNA",
-    destination: "—",
-    emoji: "✨",
-    traits: { adventureLevel: 82, culturalDepth: 91, foodieness: 88, socialEnergy: 76, luxuryAffinity: 45, natureConnection: 68 },
-    insights: [
-      "Your cultural depth has grown 12% since Tokyo — you're seeking deeper, more authentic experiences.",
-      "Adventure spirit is at an all-time high. You're ready for more challenging activities.",
-      "Luxury affinity remains low — you value experiences over comfort.",
-    ],
-  },
-  {
-    id: "s3",
-    date: "Mar 21, 2026",
-    tripName: "Tokyo & Kyoto",
-    destination: "Japan",
-    emoji: "🇯🇵",
-    traits: { adventureLevel: 78, culturalDepth: 79, foodieness: 85, socialEnergy: 74, luxuryAffinity: 42, natureConnection: 65 },
-    insights: [
-      "Tokyo trip boosted your foodie score by 18% — you loved the omakase experiences.",
-      "Cultural depth jumped after visiting temples and traditional tea ceremonies.",
-      "You preferred local izakayas over Michelin restaurants — luxury score dropped slightly.",
-    ],
-  },
-  {
-    id: "s2",
-    date: "Jan 17, 2026",
-    tripName: "Bali Wellness Retreat",
-    destination: "Indonesia",
-    emoji: "🇮🇩",
-    traits: { adventureLevel: 72, culturalDepth: 68, foodieness: 67, socialEnergy: 70, luxuryAffinity: 48, natureConnection: 82 },
-    insights: [
-      "Nature connection spiked after Bali — you spent 80% of time outdoors.",
-      "Wellness activities (yoga, spa) increased your luxury affinity temporarily.",
-      "You avoided nightlife — social energy stayed steady.",
-    ],
-  },
-  {
-    id: "s1",
-    date: "Nov 5, 2025",
-    tripName: "Initial DNA Quiz",
-    destination: "—",
-    emoji: "🧬",
-    traits: { adventureLevel: 65, culturalDepth: 60, foodieness: 55, socialEnergy: 68, luxuryAffinity: 50, natureConnection: 58 },
-    insights: [
-      "Your starting DNA profile — based on the onboarding quiz.",
-      "TRAVI learns more about you with every trip you take.",
-      "The more you travel, the more accurate your recommendations become.",
-    ],
-  },
-];
-
-// ─── DNA Snapshot Card ────────────────────────────────────────────────────────
-function SnapshotCard({ snapshot, isLatest }: { snapshot: DNASnapshot; isLatest: boolean }) {
-  const [expanded, setExpanded] = useState(false);
-
+const DnaEvolutionScreen = () => {
   return (
-    <View style={[S.snapshotCard, isLatest && S.snapshotCardLatest]}>
-      {isLatest && (
+    <ScreenWrapper title="Your Travel Evolution" scrollable={true}>
+      <View style={styles.container}>
+        <BlurView intensity={20} tint="dark" style={styles.card}>
+          <View style={styles.cardContent}>
+            <MaterialIcons name="flight-takeoff" size={32} color={DS.purple} />
+            <Text style={styles.cardTitle}>Journeys Completed</Text>
+            <Text style={styles.cardValue}>12</Text>
+          </View>
+        </BlurView>
+
+        <BlurView intensity={20} tint="dark" style={styles.card}>
+          <View style={styles.cardContent}>
+            <MaterialIcons name="star" size={32} color={DS.pink} />
+            <Text style={styles.cardTitle}>Elite Status Points</Text>
+            <Text style={styles.cardValue}>8,500</Text>
+          </View>
+        </BlurView>
+
+        <BlurView intensity={20} tint="dark" style={styles.card}>
+          <View style={styles.cardContent}>
+            <MaterialIcons name="redeem" size={32} color={DS.success} />
+            <Text style={styles.cardTitle}>Rewards Redeemed</Text>
+            <Text style={styles.cardValue}>3</Text>
+          </View>
+        </BlurView>
+
         <LinearGradient
-          colors={["rgba(100,67,244,0.2)", "rgba(249,68,152,0.12)"]}
-          style={StyleSheet.absoluteFillObject}
-        />
-      )}
-      <View style={S.snapshotHeader}>
-        <View style={S.snapshotLeft}>
-          <Text style={S.snapshotEmoji}>{snapshot.emoji}</Text>
-          <View>
-            <Text style={S.snapshotTrip}>{snapshot.tripName}</Text>
-            <Text style={S.snapshotDate}>{snapshot.date}</Text>
-          </View>
-        </View>
-        {isLatest && (
-          <View style={S.latestBadge}>
-            <Text style={S.latestBadgeText}>Current</Text>
-          </View>
-        )}
-      </View>
-
-      {/* Traits Grid */}
-      <View style={S.traitsGrid}>
-        {Object.entries(snapshot.traits).map(([key, value]) => {
-          const meta = TRAIT_META[key];
-          if (!meta) return null;
-          return (
-            <View key={key} style={S.traitPill}>
-              <Text style={S.traitIcon}>{meta.icon}</Text>
-              <Text style={S.traitValue}>{value}</Text>
-            </View>
-          );
-        })}
-      </View>
-
-      {/* Insights */}
-      <TouchableOpacity
-        style={S.insightsToggle}
-        onPress={() => {
-          if (Platform.OS !== "web") Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-          setExpanded(!expanded);
-        }}
-        activeOpacity={0.8}
-      >
-        <Text style={S.insightsToggleText}>
-          {expanded ? "Hide insights" : `View ${snapshot.insights.length} insights`}
-        </Text>
-        <IconSymbol name="chevron.right" size={14} color={BRAND.textMuted} />
-      </TouchableOpacity>
-
-      {expanded && (
-        <View style={S.insightsWrap}>
-          {snapshot.insights.map((insight, i) => (
-            <View key={i} style={S.insightRow}>
-              <View style={S.insightDot} />
-              <Text style={S.insightText}>{insight}</Text>
-            </View>
-          ))}
-        </View>
-      )}
-    </View>
-  );
-}
-
-// ─── Snapshot Skeleton ────────────────────────────────────────────────────────
-function SnapshotSkeleton() {
-  return (
-    <View style={S.snapshotCard}>
-      <View style={{ flexDirection: "row", alignItems: "center", gap: 12, marginBottom: 8 }}>
-        <SkeletonBlock width={40} height={40} borderRadius={20} />
-        <View style={{ gap: 6, flex: 1 }}>
-          <SkeletonBlock width="50%" height={16} />
-          <SkeletonBlock width="30%" height={12} />
-        </View>
-      </View>
-      <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 8 }}>
-        {Array.from({ length: 6 }).map((_, i) => (
-          <SkeletonBlock key={i} width={60} height={28} borderRadius={12} />
-        ))}
-      </View>
-      <SkeletonBlock width="40%" height={14} style={{ marginTop: 8 }} />
-    </View>
-  );
-}
-
-// ─── Main Screen ──────────────────────────────────────────────────────────────
-export default function DNAEvolutionScreen() {
-  const insets = useSafeAreaInsets();
-  const { isAuthenticated } = useAuth({ autoFetch: false });
-
-  // Fetch real DNA scores from backend
-  const { data: dnaResult, isLoading } = trpc.dna.getResult.useQuery(undefined, {
-    enabled: isAuthenticated,
-  });
-
-  // Build snapshots: replace "Current DNA" traits with real data when available
-  const snapshots = useMemo(() => {
-    if (!dnaResult) return SNAPSHOTS;
-
-    // Map backend DNA scores to the trait keys used in the UI
-    const realTraits: Record<string, number> = {
-      adventureLevel:   dnaResult.explorerScore ?? dnaResult.adventurerScore ?? 0,
-      culturalDepth:    dnaResult.culturalistScore ?? 0,
-      foodieness:       dnaResult.foodieScore ?? 0,
-      socialEnergy:     dnaResult.photographerScore ?? 0,
-      luxuryAffinity:   dnaResult.relaxerScore ?? 0,
-      natureConnection: dnaResult.naturalistScore ?? 0,
-    };
-
-    // Only replace the first snapshot (Current DNA) with real data
-    return SNAPSHOTS.map((snapshot, i) => {
-      if (i !== 0) return snapshot;
-      return { ...snapshot, traits: realTraits };
-    });
-  }, [dnaResult]);
-
-  const showSkeleton = isAuthenticated && isLoading;
-
-  return (
-    <View style={[S.container, { paddingTop: insets.top }]}>
-      <LinearGradient colors={["#24103E", "rgba(36,16,62,0.55)", "#1A0A3D"]} style={StyleSheet.absoluteFillObject} />
-      <View style={S.orb1} />
-      <View style={S.orb2} />
-
-      {/* Header */}
-      <View style={S.header}>
-        <TouchableOpacity
-          style={S.backBtn}
-          onPress={() => {
-            if (Platform.OS !== "web") Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-            router.back();
-          }}
-          activeOpacity={0.7}
+          colors={[DS.purple, DS.pink] as const}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 1 }}
+          style={styles.ctaButton}
         >
-          <IconSymbol name="chevron.left" size={22} color="#FFF" />
-        </TouchableOpacity>
-        <Text style={S.headerTitle}>DNA Evolution</Text>
-        <View style={{ width: 40 }} />
-      </View>
+          <Text style={styles.ctaButtonText}>Explore New Adventures</Text>
+          <MaterialIcons name="arrow-forward" size={20} color={DS.white} style={{ marginLeft: 8 }} />
+        </LinearGradient>
 
-      {/* Hero */}
-      <View style={S.hero}>
-        <Text style={S.heroTitle}>Your Travel DNA Journey</Text>
-        <Text style={S.heroSub}>
-          TRAVI learns from every trip you take. Watch how your travel personality evolves over time.
-        </Text>
-      </View>
+        <Text style={styles.sectionHeader}>Upcoming Milestones</Text>
 
-      {/* Timeline */}
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 130, gap: 12 }}
-      >
-        {showSkeleton
-          ? Array.from({ length: 3 }).map((_, i) => <SnapshotSkeleton key={i} />)
-          : snapshots.map((snapshot, i) => (
-              <SnapshotCard key={snapshot.id} snapshot={snapshot} isLatest={i === 0} />
-            ))}
-      </ScrollView>
-    </View>
+        <BlurView intensity={20} tint="dark" style={styles.milestoneCard}>
+          <View style={styles.milestoneContent}>
+            <MaterialIcons name="military-tech" size={24} color={DS.info} />
+            <View style={{ flex: 1, marginLeft: 10 }}>
+              <Text style={styles.milestoneTitle}>Reach Platinum Tier</Text>
+              <Text style={styles.milestoneDescription}>Accumulate 10,000 Elite Status Points</Text>
+            </View>
+            <Text style={styles.milestoneProgress}>85%</Text>
+          </View>
+        </BlurView>
+
+        <BlurView intensity={20} tint="dark" style={styles.milestoneCard}>
+          <View style={styles.milestoneContent}>
+            <MaterialIcons name="card-giftcard" size={24} color={DS.warning} />
+            <View style={{ flex: 1, marginLeft: 10 }}>
+              <Text style={styles.milestoneTitle}>Unlock Exclusive Lounge Access</Text>
+              <Text style={styles.milestoneDescription}>Complete 20 international flights</Text>
+            </View>
+            <Text style={styles.milestoneProgress}>60%</Text>
+          </View>
+        </BlurView>
+
+      </View>
+    </ScreenWrapper>
   );
-}
+};
 
-// ─── Styles ───────────────────────────────────────────────────────────────────
-const S = StyleSheet.create({
-  container: { flex: 1, backgroundColor: BRAND.bgDeep },
-  orb1: { position: "absolute", top: -60, right: -60, width: 200, height: 200, borderRadius: 100, backgroundColor: "rgba(100,67,244,0.1)" },
-  orb2: { position: "absolute", bottom: 200, left: -80, width: 160, height: 160, borderRadius: 80, backgroundColor: "rgba(249,68,152,0.07)" },
-
-  header: { flexDirection: "row", alignItems: "center", paddingHorizontal: 16, paddingBottom: 16, paddingTop: 4 },
-  backBtn: { width: 40, height: 40, alignItems: "center", justifyContent: "center" },
-  headerTitle: { ...TYPE.h2, color: BRAND.textPrimary, flex: 1, textAlign: "center" },
-
-  hero: { paddingHorizontal: 16, paddingBottom: 130, gap: 6 },
-  heroTitle: { ...TYPE.h3, color: BRAND.textPrimary },
-  heroSub: { ...TYPE.body, color: BRAND.textSecondary, lineHeight: 22 },
-
-  snapshotCard: { borderRadius: RADIUS.xl, overflow: "hidden", padding: 16, gap: 12, borderWidth: 1, borderColor: "rgba(255,255,255,0.12)", backgroundColor: "rgba(255,255,255,0.06)" },
-  snapshotCardLatest: { borderColor: "rgba(100,67,244,0.4)", borderWidth: 2 },
-  snapshotHeader: { flexDirection: "row", alignItems: "center", justifyContent: "space-between" },
-  snapshotLeft: { flexDirection: "row", alignItems: "center", gap: 12 },
-  snapshotEmoji: { fontSize: 32 },
-  snapshotTrip: { ...TYPE.h4, color: BRAND.textPrimary },
-  snapshotDate: { ...TYPE.small, color: BRAND.textMuted, marginTop: 2 },
-  latestBadge: { backgroundColor: "rgba(100,67,244,0.25)", borderRadius: 10, paddingHorizontal: 10, paddingVertical: 4, borderWidth: 1, borderColor: "rgba(100,67,244,0.5)" },
-  latestBadgeText: { color: BRAND.purple, fontSize: 11, fontWeight: "800", fontFamily: "Chillax-Bold" },
-
-  traitsGrid: { flexDirection: "row", flexWrap: "wrap", gap: 8 },
-  traitPill: { flexDirection: "row", alignItems: "center", gap: 6, backgroundColor: "rgba(255,255,255,0.06)", borderRadius: 12, paddingHorizontal: 10, paddingVertical: 6, borderWidth: 1, borderColor: "rgba(255,255,255,0.12)" },
-  traitIcon: { fontSize: 14 },
-  traitValue: { color: BRAND.textPrimary, fontSize: 13, fontWeight: "700" },
-
-  insightsToggle: { flexDirection: "row", alignItems: "center", gap: 6, paddingVertical: 8 },
-  insightsToggleText: { ...TYPE.small, color: BRAND.purple, fontWeight: "700", flex: 1 },
-
-  insightsWrap: { gap: 10, paddingTop: 4 },
-  insightRow: { flexDirection: "row", gap: 10, alignItems: "flex-start" },
-  insightDot: { width: 6, height: 6, borderRadius: 3, backgroundColor: BRAND.purple, marginTop: 6 },
-  insightText: { ...TYPE.body, color: BRAND.textSecondary, flex: 1, lineHeight: 20 },
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 20,
+    backgroundColor: DS.bg, // Ensure background is set if not fully handled by ScreenWrapper
+  },
+  card: {
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: DS.border,
+    backgroundColor: DS.surface,
+    overflow: "hidden",
+    marginBottom: 15,
+    padding: 20,
+    alignItems: 'center',
+  },
+  cardContent: {
+    alignItems: 'center',
+  },
+  cardTitle: {
+    fontFamily: 'Satoshi-Medium',
+    fontSize: 16,
+    color: DS.muted,
+    marginTop: 10,
+  },
+  cardValue: {
+    fontFamily: 'Chillax-Bold',
+    fontSize: 32,
+    color: DS.white,
+    marginTop: 5,
+  },
+  ctaButton: {
+    borderRadius: 12,
+    paddingVertical: 15,
+    paddingHorizontal: 20,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 20,
+    marginBottom: 30,
+  },
+  ctaButtonText: {
+    fontFamily: 'Satoshi-Medium',
+    fontSize: 18,
+    color: DS.white,
+  },
+  sectionHeader: {
+    fontFamily: 'Chillax-Bold',
+    fontSize: 22,
+    color: DS.white,
+    marginBottom: 15,
+    textAlign: 'center',
+  },
+  milestoneCard: {
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: DS.border,
+    backgroundColor: DS.surface,
+    overflow: "hidden",
+    marginBottom: 10,
+    padding: 15,
+  },
+  milestoneContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  milestoneTitle: {
+    fontFamily: 'Satoshi-Medium',
+    fontSize: 16,
+    color: DS.white,
+  },
+  milestoneDescription: {
+    fontFamily: 'Satoshi-Regular',
+    fontSize: 13,
+    color: DS.muted,
+    marginTop: 2,
+  },
+  milestoneProgress: {
+    fontFamily: 'Chillax-Bold',
+    fontSize: 18,
+    color: DS.purple,
+  },
 });
+
+export default DnaEvolutionScreen;

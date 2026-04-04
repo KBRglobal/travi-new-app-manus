@@ -1,61 +1,133 @@
-// Screen 74 — DNA Completion Celebration — STATIC 
-// Confetti, DNA badge 160px, top 3 dimensions, auto-enable CTA 3s
-import { View, Text, StyleSheet, Pressable } from "react-native";
+import React from 'react';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { ScreenWrapper, DS } from '@/components/screen-wrapper';
+import { BlurView } from 'expo-blur';
+import { LinearGradient } from 'expo-linear-gradient';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 
-const TOP_3 = [
-  { label: "Adventure", score: "92%", icon: "🏔" },
-  { label: "Culture", score: "87%", icon: "🏛" },
-  { label: "Relaxation", score: "78%", icon: "🏖" },
-];
+// DS object exported from ScreenWrapper.tsx (for local use in styling)
 
-export default function DnaCelebrationScreen() {
+const DnaCelebrationScreen = () => {
   return (
-    <View style={s.root}>
-      {/* Confetti placeholder */}
-      <Text style={s.confetti}>🎊 🎉 ✨</Text>
+    <ScreenWrapper title="DNA Celebration" scrollable={true}>
+      <View style={styles.contentContainer}>
+        <MaterialIcons name="star" size={60} color={DS.pink} style={styles.icon} />
+        <Text style={styles.title}>Your Unique Travel DNA</Text>
+        <Text style={styles.description}>
+          Discover the essence of your travel style and celebrate the journeys that make you, YOU.
+          Every adventure shapes your unique DNA, guiding you to new horizons.
+        </Text>
 
-      <View style={s.badge}><Text style={s.badgeText}>🧬</Text></View>
-      <Text style={s.title}>Your Travel DNA is Ready!</Text>
-      <Text style={s.subtitle}>Based on your preferences, here's your travel personality</Text>
-
-      {/* Top 3 dimensions */}
-      <View style={s.dimensionsCard}>
-        {TOP_3.map((d) => (
-          <View key={d.label} style={s.dimRow}>
-            <Text style={s.dimIcon}>{d.icon}</Text>
-            <View style={{ flex: 1 }}>
-              <Text style={s.dimLabel}>{d.label}</Text>
-              <View style={s.dimBar}><View style={[s.dimFill, { width: d.score as any }]} /></View>
-            </View>
-            <Text style={s.dimScore}>{d.score}</Text>
+        <BlurView intensity={20} tint="dark" style={styles.glassCard}>
+          <Text style={styles.cardTitle}>DNA Insights</Text>
+          <Text style={styles.cardText}>
+            Your travel DNA reveals a strong preference for adventurous explorations and cultural immersions.
+            You thrive in dynamic environments and seek authentic experiences.
+          </Text>
+          <View style={styles.dnaAttribute}>
+            <MaterialIcons name="explore" size={20} color={DS.purple} />
+            <Text style={styles.attributeText}>Adventure Seeker</Text>
           </View>
-        ))}
-      </View>
+          <View style={styles.dnaAttribute}>
+            <MaterialIcons name="palette" size={20} color={DS.purple} />
+            <Text style={styles.attributeText}>Cultural Enthusiast</Text>
+          </View>
+        </BlurView>
 
-      <View style={s.bottom}>
-        <Pressable style={s.ctaBtn}><Text style={s.ctaText}>See Recommendations</Text></Pressable>
-        <Pressable><Text style={s.skipText}>Explore on my own</Text></Pressable>
+        <TouchableOpacity style={styles.ctaButton}>
+          <LinearGradient
+            colors={[DS.purple, DS.pink] as const}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+            style={styles.gradientBackground}
+          >
+            <Text style={styles.ctaButtonText}>Explore More DNA Journeys</Text>
+            <MaterialIcons name="arrow-forward" size={20} color={DS.white} />
+          </LinearGradient>
+        </TouchableOpacity>
       </View>
-    </View>
+    </ScreenWrapper>
   );
-}
+};
 
-const s = StyleSheet.create({
-  root: { flex: 1, backgroundColor: "#111", justifyContent: "center", alignItems: "center", padding: 20 },
-  confetti: { position: "absolute", top: 60, fontSize: 32 },
-  badge: { width: 160, height: 160, borderRadius: 40, backgroundColor: "#1A1A1A", borderWidth: 2, borderColor: "#333", justifyContent: "center", alignItems: "center", marginBottom: 24 },
-  badgeText: { fontSize: 64 },
-  title: { color: "#FFF", fontSize: 24, fontWeight: "800", textAlign: "center" },
-  subtitle: { color: "#888", fontSize: 14, textAlign: "center", marginTop: 6 },
-  dimensionsCard: { width: "100%", marginTop: 28, padding: 16, borderRadius: 16, backgroundColor: "#1A1A1A", borderWidth: 1, borderColor: "#333", gap: 14 },
-  dimRow: { flexDirection: "row", alignItems: "center", gap: 10 },
-  dimIcon: { fontSize: 24 },
-  dimLabel: { color: "#FFF", fontSize: 14, fontWeight: "600" },
-  dimBar: { height: 6, borderRadius: 3, backgroundColor: "#222", marginTop: 4 },
-  dimFill: { height: 6, borderRadius: 3, backgroundColor: "#555" },
-  dimScore: { color: "#888", fontSize: 13, fontWeight: "600", width: 36 },
-  bottom: { position: "absolute", bottom: 40, left: 20, right: 20, alignItems: "center", gap: 12 },
-  ctaBtn: { width: "100%", height: 52, borderRadius: 26, backgroundColor: "#333", borderWidth: 1, borderColor: "#555", justifyContent: "center", alignItems: "center" },
-  ctaText: { color: "#FFF", fontSize: 16, fontWeight: "600" },
-  skipText: { color: "#888", fontSize: 14 },
+const styles = StyleSheet.create({
+  contentContainer: {
+    flex: 1,
+    padding: 20,
+    alignItems: 'center',
+  },
+  icon: {
+    marginBottom: 20,
+  },
+  title: {
+    fontFamily: 'Chillax-Bold',
+    fontSize: 28,
+    color: DS.white,
+    textAlign: 'center',
+    marginBottom: 10,
+  },
+  description: {
+    fontFamily: 'Satoshi-Regular',
+    fontSize: 16,
+    color: DS.muted,
+    textAlign: 'center',
+    marginBottom: 30,
+    lineHeight: 24,
+  },
+  glassCard: {
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: DS.border,
+    backgroundColor: DS.surface,
+    overflow: 'hidden',
+    padding: 20,
+    width: '100%',
+    marginBottom: 30,
+  },
+  cardTitle: {
+    fontFamily: 'Chillax-Bold',
+    fontSize: 22,
+    color: DS.white,
+    marginBottom: 15,
+    textAlign: 'center',
+  },
+  cardText: {
+    fontFamily: 'Satoshi-Regular',
+    fontSize: 15,
+    color: DS.secondary,
+    marginBottom: 20,
+    lineHeight: 22,
+  },
+  dnaAttribute: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+  attributeText: {
+    fontFamily: 'Satoshi-Medium',
+    fontSize: 16,
+    color: DS.white,
+    marginLeft: 10,
+  },
+  ctaButton: {
+    width: '100%',
+    borderRadius: 12,
+    overflow: 'hidden',
+  },
+  gradientBackground: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingVertical: 15,
+    paddingHorizontal: 20,
+    borderRadius: 12,
+  },
+  ctaButtonText: {
+    fontFamily: 'Satoshi-Medium',
+    fontSize: 18,
+    color: DS.white,
+    marginRight: 10,
+  },
 });
+
+export default DnaCelebrationScreen;

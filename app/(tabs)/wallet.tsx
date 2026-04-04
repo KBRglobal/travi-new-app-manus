@@ -32,7 +32,7 @@ export default function WalletScreen() {
 
       {/* Balance card */}
       <View style={{ paddingHorizontal: 16, marginBottom: 24 }}>
-        <LinearGradient colors={[DS.purple, DS.pink]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={s.balanceCard}>
+        <LinearGradient colors={[DS.purple, DS.pink] as const} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={s.balanceCard}>
           <View style={s.balanceTop}>
             <Text style={s.balanceLabel}>TRAVI Balance</Text>
             <View style={s.balanceBadge}>

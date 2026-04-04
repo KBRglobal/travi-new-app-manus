@@ -1,109 +1,166 @@
-import React, { useState } from "react";
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, Platform, Image } from "react-native";
-import { router } from "expo-router";
-import { ScreenContainer } from "@/components/screen-container";
-import { IconSymbol } from "@/components/ui/icon-symbol";
-import { useColors } from "@/hooks/use-colors";
-import * as Haptics from "expo-haptics";
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, Image, Platform } from 'react-native';
+import { BlurView } from 'expo-blur';
+import { LinearGradient } from 'expo-linear-gradient';
+import { MaterialIcons } from '@expo/vector-icons';
+import { ScreenWrapper, DS } from '@/components/screen-wrapper';
 
-export default function EditProfileScreen() {
-  const colors = useColors();
-  const [name, setName] = useState("Traveler");
-  const [email, setEmail] = useState("traveler@example.com");
-  const [phone, setPhone] = useState("+1 555-0123");
-  const [birthday, setBirthday] = useState("1990-01-01");
+const EditProfileScreen = () => {
+  const [name, setName] = useState('John Doe');
+  const [email, setEmail] = useState('john.doe@example.com');
 
-  const handleSave = () => {
-    if (Platform.OS !== "web") Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-    router.back();
+  const handleSaveChanges = () => {
+    console.log('Saving changes:', { name, email });
+    // Add actual save logic here
   };
 
   return (
-    <ScreenContainer>
-      <View style={[S.header, { borderBottomColor: colors.border }]}>
-        <TouchableOpacity onPress={() => router.back()} activeOpacity={0.7}>
-          <IconSymbol name="chevron.left" size={24} color={colors.text} />
-        </TouchableOpacity>
-        <Text style={[S.headerTitle, { color: colors.text }]}>Edit Profile</Text>
-        <TouchableOpacity onPress={handleSave} activeOpacity={0.7}>
-          <Text style={[S.saveBtn, { color: "#6443F4" }]}>Save</Text>
+    <ScreenWrapper title="Edit Profile" scrollable={true}>
+      <View style={styles.avatarContainer}>
+        <Image
+          source={{ uri: 'https://via.placeholder.com/100/6443F4/FFFFFF?text=JD' }} // Placeholder avatar
+          style={styles.avatar}
+        />
+        <TouchableOpacity style={styles.changeAvatarButton}>
+          <MaterialIcons name="edit" size={20} color={DS.purple} />
+          <Text style={styles.changeAvatarText}>Change Avatar</Text>
         </TouchableOpacity>
       </View>
 
-      <ScrollView contentContainerStyle={S.scroll}>
-        {/* Avatar */}
-        <View style={S.avatarSection}>
-          <View style={[S.avatarCircle, { backgroundColor: colors.surface }]}>
-            <Image source={require("@/assets/images/icon.png")} style={S.avatarImg} />
-          </View>
-          <TouchableOpacity style={S.changePhotoBtn} activeOpacity={0.8}>
-            <Text style={S.changePhotoText}>Change Photo</Text>
-          </TouchableOpacity>
-        </View>
-
-        {/* Form Fields */}
-        <View style={S.form}>
-          <View style={S.field}>
-            <Text style={[S.label, { color: colors.muted }]}>Full Name</Text>
+      <View style={styles.cardContainer}>
+        {Platform.OS === 'ios' ? (
+          <BlurView intensity={20} tint="dark" style={styles.glassCard}>
+            <Text style={styles.label}>Name</Text>
             <TextInput
+              style={styles.input}
               value={name}
               onChangeText={setName}
-              style={[S.input, { backgroundColor: colors.surface, color: colors.text, borderColor: colors.border }]}
-              placeholderTextColor={colors.muted}
+              placeholder="Enter your name"
+              placeholderTextColor={DS.placeholder}
+            />
+          </BlurView>
+        ) : (
+          <View style={[styles.glassCard, { backgroundColor: DS.surface }]}>
+            <Text style={styles.label}>Name</Text>
+            <TextInput
+              style={styles.input}
+              value={name}
+              onChangeText={setName}
+              placeholder="Enter your name"
+              placeholderTextColor={DS.placeholder}
             />
           </View>
+        )}
+      </View>
 
-          <View style={S.field}>
-            <Text style={[S.label, { color: colors.muted }]}>Email</Text>
+      <View style={styles.cardContainer}>
+        {Platform.OS === 'ios' ? (
+          <BlurView intensity={20} tint="dark" style={styles.glassCard}>
+            <Text style={styles.label}>Email</Text>
             <TextInput
+              style={styles.input}
               value={email}
               onChangeText={setEmail}
+              placeholder="Enter your email"
+              placeholderTextColor={DS.placeholder}
               keyboardType="email-address"
-              autoCapitalize="none"
-              style={[S.input, { backgroundColor: colors.surface, color: colors.text, borderColor: colors.border }]}
-              placeholderTextColor={colors.muted}
             />
-          </View>
-
-          <View style={S.field}>
-            <Text style={[S.label, { color: colors.muted }]}>Phone</Text>
+          </BlurView>
+        ) : (
+          <View style={[styles.glassCard, { backgroundColor: DS.surface }]}>
+            <Text style={styles.label}>Email</Text>
             <TextInput
-              value={phone}
-              onChangeText={setPhone}
-              keyboardType="phone-pad"
-              style={[S.input, { backgroundColor: colors.surface, color: colors.text, borderColor: colors.border }]}
-              placeholderTextColor={colors.muted}
+              style={styles.input}
+              value={email}
+              onChangeText={setEmail}
+              placeholder="Enter your email"
+              placeholderTextColor={DS.placeholder}
+              keyboardType="email-address"
             />
           </View>
+        )}
+      </View>
 
-          <View style={S.field}>
-            <Text style={[S.label, { color: colors.muted }]}>Birthday</Text>
-            <TextInput
-              value={birthday}
-              onChangeText={setBirthday}
-              placeholder="YYYY-MM-DD"
-              style={[S.input, { backgroundColor: colors.surface, color: colors.text, borderColor: colors.border }]}
-              placeholderTextColor={colors.muted}
-            />
-          </View>
-        </View>
-      </ScrollView>
-    </ScreenContainer>
+      <TouchableOpacity onPress={handleSaveChanges} style={styles.saveButtonContainer}>
+        <LinearGradient
+          colors={[DS.purple, DS.pink] as const}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 1 }}
+          style={styles.saveButtonGradient}
+        >
+          <Text style={styles.saveButtonText}>Save Changes</Text>
+        </LinearGradient>
+      </TouchableOpacity>
+    </ScreenWrapper>
   );
-}
+};
 
-const S = StyleSheet.create({
-  header: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 20, paddingVertical: 16, borderBottomWidth: 0.5 },
-  headerTitle: { fontSize: 18, fontFamily: "Chillax-Semibold", fontWeight: "600" },
-  saveBtn: { fontSize: 16, fontFamily: "Chillax-Semibold", fontWeight: "600" },
-  scroll: { padding: 20, paddingBottom: 130 },
-  avatarSection: { alignItems: "center", marginBottom: 32 },
-  avatarCircle: { width: 100, height: 100, borderRadius: 50, alignItems: "center", justifyContent: "center", marginBottom: 12 },
-  avatarImg: { width: 60, height: 60, resizeMode: "contain" },
-  changePhotoBtn: { paddingHorizontal: 16, paddingVertical: 8 },
-  changePhotoText: { color: "#6443F4", fontSize: 15, fontFamily: "Chillax-Semibold", fontWeight: "600" },
-  form: { gap: 20 },
-  field: { gap: 8 },
-  label: { fontSize: 14, fontFamily: "Satoshi-Regular", fontWeight: "500" },
-  input: { height: 50, borderRadius: 12, borderWidth: 1, paddingHorizontal: 16, fontSize: 16, fontFamily: "Satoshi-Regular" },
+const styles = StyleSheet.create({
+  avatarContainer: {
+    alignItems: 'center',
+    marginVertical: 30,
+  },
+  avatar: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    borderWidth: 2,
+    borderColor: DS.purple,
+  },
+  changeAvatarButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 15,
+    paddingVertical: 8,
+    paddingHorizontal: 15,
+    borderRadius: 20,
+    backgroundColor: DS.surfaceHigh,
+  },
+  changeAvatarText: {
+    color: DS.white,
+    fontFamily: 'Satoshi-Medium',
+    marginLeft: 5,
+    fontSize: 14,
+  },
+  cardContainer: {
+    marginBottom: 20,
+  },
+  glassCard: {
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: DS.border,
+    overflow: 'hidden',
+    padding: 20,
+  },
+  label: {
+    fontFamily: 'Satoshi-Medium',
+    fontSize: 16,
+    color: DS.muted,
+    marginBottom: 8,
+  },
+  input: {
+    fontFamily: 'Satoshi-Regular',
+    fontSize: 18,
+    color: DS.white,
+    paddingVertical: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: DS.borderStrong,
+  },
+  saveButtonContainer: {
+    marginTop: 30,
+    borderRadius: 16,
+    overflow: 'hidden',
+  },
+  saveButtonGradient: {
+    paddingVertical: 18,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  saveButtonText: {
+    color: DS.white,
+    fontFamily: 'Chillax-Bold',
+    fontSize: 18,
+  },
 });
+
+export default EditProfileScreen;

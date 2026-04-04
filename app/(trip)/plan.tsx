@@ -78,7 +78,7 @@ export default function PlanScreen() {
 
         {/* CTA */}
         <Pressable style={({ pressed }) => [s.ctaBtn, pressed && { opacity: 0.85, transform: [{ scale: 0.97 }] }]} onPress={() => router.push("/(trip)/destination-select" as any)}>
-          <LinearGradient colors={[DS.purple, DS.pink]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={s.ctaGrad}>
+          <LinearGradient colors={[DS.purple, DS.pink] as const} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={s.ctaGrad}>
             <Text style={s.ctaText}>Continue</Text>
             <MaterialIcons name="arrow-forward" size={18} color={DS.white} style={{ marginLeft: 8 }} />
           </LinearGradient>

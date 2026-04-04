@@ -1,83 +1,139 @@
-import React, { useState } from "react";
-import { View, Text, TouchableOpacity, StyleSheet, ScrollView, Switch, Platform } from "react-native";
-import { router } from "expo-router";
-import { ScreenContainer } from "@/components/screen-container";
-import { IconSymbol } from "@/components/ui/icon-symbol";
-import { useColors } from "@/hooks/use-colors";
-import * as Haptics from "expo-haptics";
+import React from 'react';
+import { View, Text, StyleSheet, Switch } from 'react-native';
+import { ScreenWrapper, DS } from '@/components/screen-wrapper';
+import { BlurView } from 'expo-blur';
+import { LinearGradient } from 'expo-linear-gradient';
+import { MaterialIcons } from '@expo/vector-icons';
 
-export default function PrivacySecurityScreen() {
-  const colors = useColors();
-  const [privateAccount, setPrivateAccount] = useState(false);
-  const [shareLocation, setShareLocation] = useState(true);
-  const [showTrips, setShowTrips] = useState(true);
-  const [showDNA, setShowDNA] = useState(true);
-  const [twoFactor, setTwoFactor] = useState(false);
-  const [biometrics, setBiometrics] = useState(true);
-
-  const toggle = (setter: (v: boolean) => void, val: boolean) => {
-    if (Platform.OS !== "web") Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-    setter(!val);
-  };
-
-  const Row = ({ label, desc, value, onToggle }: { label: string; desc?: string; value: boolean; onToggle: () => void }) => (
-    <View style={[S.row, { borderBottomColor: colors.border }]}>
-      <View style={S.rowLeft}>
-        <Text style={[S.rowLabel, { color: colors.text }]}>{label}</Text>
-        {desc ? <Text style={[S.rowDesc, { color: colors.muted }]}>{desc}</Text> : null}
-      </View>
-      <Switch
-        value={value}
-        onValueChange={onToggle}
-        trackColor={{ false: colors.border, true: "#6443F4" }}
-        thumbColor="#fff"
-      />
-    </View>
-  );
+const PrivacySecurityScreen = () => {
+  const [faceIdEnabled, setFaceIdEnabled] = React.useState(false);
+  const [twoFactorEnabled, setTwoFactorEnabled] = React.useState(true);
+  const [locationSharing, setLocationSharing] = React.useState(false);
 
   return (
-    <ScreenContainer>
-      <View style={[S.header, { borderBottomColor: colors.border }]}>
-        <TouchableOpacity onPress={() => router.back()} activeOpacity={0.7}>
-          <IconSymbol name="chevron.left" size={24} color={colors.text} />
-        </TouchableOpacity>
-        <Text style={[S.headerTitle, { color: colors.text }]}>Privacy & Security</Text>
-        <View style={{ width: 24 }} />
+    <ScreenWrapper title="Privacy & Security" scrollable={true}>
+      <View style={styles.section}>
+        <Text style={styles.sectionTitle}>Security</Text>
+        <BlurView intensity={20} tint="dark" style={styles.card}>
+          <View style={styles.row}>
+            <MaterialIcons name="face" size={24} color={DS.white} />
+            <Text style={styles.rowText}>Enable Face ID</Text>
+            <Switch
+              trackColor={{ false: DS.muted, true: DS.purple }}
+              thumbColor={DS.white}
+              ios_backgroundColor={DS.muted}
+              onValueChange={setFaceIdEnabled}
+              value={faceIdEnabled}
+            />
+          </View>
+          <View style={styles.separator} />
+          <View style={styles.row}>
+            <MaterialIcons name="security" size={24} color={DS.white} />
+            <Text style={styles.rowText}>Two-Factor Authentication</Text>
+            <Switch
+              trackColor={{ false: DS.muted, true: DS.purple }}
+              thumbColor={DS.white}
+              ios_backgroundColor={DS.muted}
+              onValueChange={setTwoFactorEnabled}
+              value={twoFactorEnabled}
+            />
+          </View>
+        </BlurView>
       </View>
 
-      <ScrollView contentContainerStyle={S.scroll}>
-        <Text style={[S.section, { color: colors.muted }]}>PRIVACY</Text>
-        <View style={[S.card, { backgroundColor: colors.surface }]}>
-          <Row label="Private Account" desc="Only approved followers see your trips" value={privateAccount} onToggle={() => toggle(setPrivateAccount, privateAccount)} />
-          <Row label="Share Location" desc="Allow TRAVI to use your location" value={shareLocation} onToggle={() => toggle(setShareLocation, shareLocation)} />
-          <Row label="Show My Trips" desc="Visible to community members" value={showTrips} onToggle={() => toggle(setShowTrips, showTrips)} />
-          <Row label="Show Traveler DNA" desc="Visible on your public profile" value={showDNA} onToggle={() => toggle(setShowDNA, showDNA)} />
-        </View>
+      <View style={styles.section}>
+        <Text style={styles.sectionTitle}>Privacy</Text>
+        <BlurView intensity={20} tint="dark" style={styles.card}>
+          <View style={styles.row}>
+            <MaterialIcons name="location-on" size={24} color={DS.white} />
+            <Text style={styles.rowText}>Location Sharing</Text>
+            <Switch
+              trackColor={{ false: DS.muted, true: DS.purple }}
+              thumbColor={DS.white}
+              ios_backgroundColor={DS.muted}
+              onValueChange={setLocationSharing}
+              value={locationSharing}
+            />
+          </View>
+          <View style={styles.separator} />
+          <View style={styles.row}>
+            <MaterialIcons name="data-usage" size={24} color={DS.white} />
+            <Text style={styles.rowText}>Personal Data Management</Text>
+            <MaterialIcons name="chevron-right" size={24} color={DS.muted} />
+          </View>
+          <View style={styles.separator} />
+          <View style={styles.row}>
+            <MaterialIcons name="policy" size={24} color={DS.white} />
+            <Text style={styles.rowText}>Privacy Policy</Text>
+            <MaterialIcons name="chevron-right" size={24} color={DS.muted} />
+          </View>
+        </BlurView>
+      </View>
 
-        <Text style={[S.section, { color: colors.muted }]}>SECURITY</Text>
-        <View style={[S.card, { backgroundColor: colors.surface }]}>
-          <Row label="Two-Factor Authentication" desc="Extra layer of account security" value={twoFactor} onToggle={() => toggle(setTwoFactor, twoFactor)} />
-          <Row label="Face ID / Biometrics" desc="Use biometrics to unlock app" value={biometrics} onToggle={() => toggle(setBiometrics, biometrics)} />
-        </View>
-
-        <TouchableOpacity style={[S.dangerBtn, { borderColor: "#F94498" }]} activeOpacity={0.8}>
-          <Text style={S.dangerText}>Delete Account</Text>
-        </TouchableOpacity>
-      </ScrollView>
-    </ScreenContainer>
+      <View style={styles.section}>
+        <LinearGradient
+          colors={[DS.purple, DS.pink] as const}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 1 }}
+          style={styles.ctaButton}
+        >
+          <Text style={styles.ctaButtonText}>Save Changes</Text>
+        </LinearGradient>
+      </View>
+    </ScreenWrapper>
   );
-}
+};
 
-const S = StyleSheet.create({
-  header: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 20, paddingVertical: 16, borderBottomWidth: 0.5 },
-  headerTitle: { fontSize: 18, fontFamily: "Chillax-Semibold", fontWeight: "600" },
-  scroll: { padding: 20, paddingBottom: 130 },
-  section: { fontSize: 12, fontFamily: "Chillax-Semibold", fontWeight: "600", letterSpacing: 1, marginBottom: 8, marginTop: 20 },
-  card: { borderRadius: 16, overflow: "hidden" },
-  row: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 16, paddingVertical: 14, borderBottomWidth: 0.5 },
-  rowLeft: { flex: 1, marginRight: 12 },
-  rowLabel: { fontSize: 15, fontFamily: "Satoshi-Regular", fontWeight: "500" },
-  rowDesc: { fontSize: 12, fontFamily: "Satoshi-Regular", marginTop: 2 },
-  dangerBtn: { marginTop: 32, borderWidth: 1.5, borderRadius: 12, paddingVertical: 14, alignItems: "center" },
-  dangerText: { color: "#F94498", fontSize: 15, fontFamily: "Chillax-Semibold", fontWeight: "600" },
+const styles = StyleSheet.create({
+  section: {
+    marginBottom: 20,
+  },
+  sectionTitle: {
+    fontFamily: 'Chillax-Bold',
+    fontSize: 20,
+    color: DS.white,
+    marginBottom: 15,
+    marginLeft: 10,
+  },
+  card: {
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: DS.border,
+    backgroundColor: DS.surface,
+    overflow: 'hidden',
+    paddingHorizontal: 15,
+  },
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingVertical: 15,
+  },
+  rowText: {
+    fontFamily: 'Satoshi-Medium',
+    fontSize: 16,
+    color: DS.white,
+    flex: 1,
+    marginLeft: 15,
+  },
+  separator: {
+    height: 1,
+    backgroundColor: DS.border,
+    marginLeft: 40, // Align with text
+  },
+  ctaButton: {
+    borderRadius: 12,
+    paddingVertical: 15,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 20,
+    marginHorizontal: 10,
+  },
+  ctaButtonText: {
+    fontFamily: 'Chillax-Bold',
+    fontSize: 18,
+    color: DS.white,
+  },
 });
+
+export default PrivacySecurityScreen;

@@ -20,7 +20,7 @@ export default function NoInternetScreen() {
       <Text style={s.title}>No Internet</Text>
       <Text style={s.body}>Please check your connection and try again.{"\n"}Some features may be available offline.</Text>
       <Pressable style={({ pressed }) => [s.retryBtn, pressed && { opacity: 0.8, transform: [{ scale: 0.97 }] }]} onPress={() => router.back()}>
-        <LinearGradient colors={[DS.purple, DS.pink]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={s.retryGrad}>
+        <LinearGradient colors={[DS.purple, DS.pink] as const} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={s.retryGrad}>
           <MaterialIcons name="refresh" size={18} color={DS.white} style={{ marginRight: 8 }} />
           <Text style={s.retryText}>Retry</Text>
         </LinearGradient>

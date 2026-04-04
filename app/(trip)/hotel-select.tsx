@@ -1,117 +1,156 @@
-// Screen 23 — Hotel Select — STATIC 
-// Route: /(trip)/hotel-select | Mode: Planning
-// Spec: Filter chips, Sort + Map toggle, Hotel cards 240px, Skip link
+import React from 'react';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, TextInput } from 'react-native';
+import { BlurView } from 'expo-blur';
+import { LinearGradient } from 'expo-linear-gradient';
+import { MaterialIcons } from '@expo/vector-icons';
+import { ScreenWrapper, DS } from '@/components/screen-wrapper';
 
-import { View, Text, StyleSheet, Pressable, ScrollView } from "react-native";
+// DS object as provided in the prompt
 
-const FILTERS = ["All", "5 Star", "Pool", "Beach", "Spa", "Boutique"];
-
-const HOTELS = [
-  { id: "1", name: "The Mulia Resort", stars: 5, rating: 9.4, reviews: 2840, price: "€320", perNight: true, match: 96, tags: ["Pool", "Beach", "Spa"] },
-  { id: "2", name: "Four Seasons Jimbaran", stars: 5, rating: 9.6, reviews: 3120, price: "€450", perNight: true, match: 94, tags: ["Beach", "Spa"] },
-  { id: "3", name: "Alila Ubud", stars: 5, rating: 9.2, reviews: 1560, price: "€280", perNight: true, match: 91, tags: ["Pool", "Spa"] },
-  { id: "4", name: "W Bali Seminyak", stars: 5, rating: 8.8, reviews: 2100, price: "€260", perNight: true, match: 88, tags: ["Pool", "Beach"] },
+// Dummy data for hotels
+const hotels = [
+  { id: '1', name: 'Grand Hyatt', location: 'New York', price: '$350', rating: 4.5 },
+  { id: '2', name: 'The Plaza Hotel', location: 'New York', price: '$500', rating: 4.8 },
+  { id: '3', name: 'W Hotel', location: 'New York', price: '$280', rating: 4.2 },
+  { id: '4', name: 'The St. Regis', location: 'New York', price: '$600', rating: 4.9 },
+  { id: '5', name: 'Mandarin Oriental', location: 'New York', price: '$700', rating: 4.7 },
+  { id: '6', name: 'The Peninsula', location: 'New York', price: '$550', rating: 4.6 },
 ];
 
-export default function HotelSelectScreen() {
+const HotelSelectScreen = () => {
   return (
-    <View style={s.root}>
-      <View style={s.header}>
-        <Pressable style={s.backBtn}><Text style={s.backText}>‹</Text></Pressable>
-        <Text style={s.headerTitle}>Select Hotel</Text>
-        <Pressable><Text style={s.skipText}>Skip</Text></Pressable>
-      </View>
+    <ScreenWrapper title="Select Hotel" scrollable={true}>
+      <View style={styles.container}>
+        {/* Search Input */}
+        <BlurView intensity={20} tint="dark" style={styles.searchInputContainer}>
+          <MaterialIcons name="search" size={20} color={DS.muted} style={styles.searchIcon} />
+          <TextInput
+            style={styles.searchInput}
+            placeholder="Search for hotels..."
+            placeholderTextColor={DS.placeholder}
+          />
+        </BlurView>
 
-      {/* Destination + dates summary */}
-      <View style={s.summaryRow}>
-        <Text style={s.summaryText}>Bali · Apr 15–22 · 2 Adults · 7 nights</Text>
-      </View>
-
-      {/* Sort + Map toggle */}
-      <View style={s.toolRow}>
-        <Pressable style={s.sortBtn}><Text style={s.sortText}>Sort: Recommended ↕</Text></Pressable>
-        <Pressable style={s.mapBtn}><Text style={s.mapText}>Map 🗺️</Text></Pressable>
-      </View>
-
-      {/* Filter chips */}
-      <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={s.filterRow}>
-        {FILTERS.map((f, i) => (
-          <Pressable key={f} style={[s.filterChip, i === 0 && s.filterActive]}>
-            <Text style={[s.filterText, i === 0 && s.filterTextActive]}>{f}</Text>
-          </Pressable>
-        ))}
-      </ScrollView>
-
-      {/* Hotel cards — 240px each */}
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 100 }}>
-        <Text style={s.resultsText}>{HOTELS.length} hotels found</Text>
-        {HOTELS.map((h) => (
-          <Pressable key={h.id} style={s.hotelCard}>
-            <View style={s.hotelImage}>
-              <Text style={s.imgText}>{h.name}</Text>
-              <View style={s.matchBadge}><Text style={s.matchText}>{h.match}%</Text></View>
-            </View>
-            <View style={s.hotelBody}>
-              <View style={s.hotelTop}>
-                <View style={{ flex: 1 }}>
-                  <Text style={s.hotelName}>{h.name}</Text>
-                  <Text style={s.hotelStars}>{"★".repeat(h.stars)}</Text>
-                </View>
-                <View style={s.ratingBadge}><Text style={s.ratingText}>{h.rating}</Text></View>
-              </View>
-              <Text style={s.reviewCount}>{h.reviews.toLocaleString()} reviews</Text>
-              <View style={s.tagRow}>
-                {h.tags.map((t) => (
-                  <View key={t} style={s.tag}><Text style={s.tagText}>{t}</Text></View>
-                ))}
-              </View>
-              <View style={s.priceRow}>
-                <Text style={s.price}>{h.price}<Text style={s.perNight}>/night</Text></Text>
+        {/* Hotel List */}
+        {hotels.map((hotel) => (
+          <BlurView key={hotel.id} intensity={20} tint="dark" style={styles.hotelCard}>
+            <View style={styles.hotelInfo}>
+              <Text style={styles.hotelName}>{hotel.name}</Text>
+              <Text style={styles.hotelLocation}>{hotel.location}</Text>
+              <View style={styles.ratingContainer}>
+                <MaterialIcons name="star" size={16} color={DS.warning} />
+                <Text style={styles.hotelRating}>{hotel.rating}</Text>
               </View>
             </View>
-          </Pressable>
+            <View style={styles.hotelActions}>
+              <Text style={styles.hotelPrice}>{hotel.price}</Text>
+              <TouchableOpacity style={styles.selectButton}>
+                <LinearGradient
+                  colors={[DS.purple, DS.pink] as const}
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 1, y: 1 }}
+                  style={styles.gradientButton}
+                >
+                  <Text style={styles.selectButtonText}>Select</Text>
+                </LinearGradient>
+              </TouchableOpacity>
+            </View>
+          </BlurView>
         ))}
-      </ScrollView>
-    </View>
+      </View>
+    </ScreenWrapper>
   );
-}
+};
 
-const s = StyleSheet.create({
-  root: { flex: 1, backgroundColor: "#111" },
-  header: { height: 60, flexDirection: "row", alignItems: "center", paddingHorizontal: 16, gap: 12, marginTop: 48, borderBottomWidth: 1, borderBottomColor: "#222" },
-  backBtn: { width: 32, height: 32, justifyContent: "center", alignItems: "center" },
-  backText: { color: "#FFF", fontSize: 24 },
-  headerTitle: { flex: 1, color: "#FFF", fontSize: 18, fontWeight: "600", textAlign: "center" },
-  skipText: { color: "#888", fontSize: 14 },
-  summaryRow: { paddingHorizontal: 20, paddingVertical: 10, borderBottomWidth: 1, borderBottomColor: "#222" },
-  summaryText: { color: "#888", fontSize: 13, textAlign: "center" },
-  toolRow: { flexDirection: "row", paddingHorizontal: 20, paddingTop: 12, gap: 8 },
-  sortBtn: { flex: 1, height: 36, borderRadius: 10, backgroundColor: "#1A1A1A", borderWidth: 1, borderColor: "#333", justifyContent: "center", alignItems: "center" },
-  sortText: { color: "#CCC", fontSize: 13 },
-  mapBtn: { height: 36, paddingHorizontal: 16, borderRadius: 10, backgroundColor: "#1A1A1A", borderWidth: 1, borderColor: "#333", justifyContent: "center", alignItems: "center" },
-  mapText: { color: "#CCC", fontSize: 13 },
-  filterRow: { paddingHorizontal: 20, paddingVertical: 12, gap: 8 },
-  filterChip: { paddingHorizontal: 16, paddingVertical: 8, borderRadius: 16, backgroundColor: "#1A1A1A", borderWidth: 1, borderColor: "#333" },
-  filterActive: { backgroundColor: "#333", borderColor: "#666" },
-  filterText: { color: "#888", fontSize: 13 },
-  filterTextActive: { color: "#FFF", fontWeight: "600" },
-  resultsText: { color: "#888", fontSize: 13, paddingHorizontal: 20, marginBottom: 12 },
-  hotelCard: { marginHorizontal: 20, marginBottom: 16, borderRadius: 14, backgroundColor: "#1A1A1A", borderWidth: 1, borderColor: "#333", overflow: "hidden" },
-  hotelImage: { height: 160, backgroundColor: "#222", justifyContent: "center", alignItems: "center" },
-  imgText: { color: "#555", fontSize: 14 },
-  matchBadge: { position: "absolute", top: 10, right: 10, paddingHorizontal: 8, paddingVertical: 4, borderRadius: 8, backgroundColor: "rgba(0,0,0,0.6)" },
-  matchText: { color: "#FFF", fontSize: 11, fontWeight: "700" },
-  hotelBody: { padding: 14, gap: 6 },
-  hotelTop: { flexDirection: "row", alignItems: "flex-start" },
-  hotelName: { color: "#FFF", fontSize: 16, fontWeight: "700" },
-  hotelStars: { color: "#F59E0B", fontSize: 12, marginTop: 2 },
-  ratingBadge: { paddingHorizontal: 8, paddingVertical: 4, borderRadius: 8, backgroundColor: "#333" },
-  ratingText: { color: "#FFF", fontSize: 13, fontWeight: "700" },
-  reviewCount: { color: "#888", fontSize: 12 },
-  tagRow: { flexDirection: "row", gap: 6, marginTop: 4 },
-  tag: { paddingHorizontal: 10, paddingVertical: 4, borderRadius: 8, backgroundColor: "#222", borderWidth: 1, borderColor: "#333" },
-  tagText: { color: "#888", fontSize: 11 },
-  priceRow: { marginTop: 4 },
-  price: { color: "#FFF", fontSize: 18, fontWeight: "800" },
-  perNight: { color: "#888", fontSize: 12, fontWeight: "400" },
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 20,
+    backgroundColor: DS.bg, // ScreenWrapper should handle this, but adding for clarity
+  },
+  searchInputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: DS.border,
+    backgroundColor: DS.surface,
+    overflow: 'hidden',
+    marginBottom: 20,
+    paddingHorizontal: 15,
+    height: 50,
+  },
+  searchIcon: {
+    marginRight: 10,
+  },
+  searchInput: {
+    flex: 1,
+    color: DS.white,
+    fontFamily: 'Satoshi-Medium', // Assuming fonts are loaded
+    fontSize: 16,
+  },
+  hotelCard: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: DS.border,
+    backgroundColor: DS.surface,
+    overflow: 'hidden',
+    marginBottom: 15,
+    padding: 15,
+  },
+  hotelInfo: {
+    flex: 1,
+  },
+  hotelName: {
+    fontFamily: 'Chillax-Bold', // Assuming fonts are loaded
+    fontSize: 18,
+    color: DS.white,
+    marginBottom: 5,
+  },
+  hotelLocation: {
+    fontFamily: 'Satoshi-Regular', // Assuming fonts are loaded
+    fontSize: 14,
+    color: DS.muted,
+    marginBottom: 5,
+  },
+  ratingContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  hotelRating: {
+    fontFamily: 'Satoshi-Medium', // Assuming fonts are loaded
+    fontSize: 14,
+    color: DS.warning,
+    marginLeft: 5,
+  },
+  hotelActions: {
+    alignItems: 'flex-end',
+  },
+  hotelPrice: {
+    fontFamily: 'Chillax-Bold', // Assuming fonts are loaded
+    fontSize: 20,
+    color: DS.white,
+    marginBottom: 10,
+  },
+  selectButton: {
+    borderRadius: 10,
+    overflow: 'hidden',
+  },
+  gradientButton: {
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  selectButtonText: {
+    fontFamily: 'Satoshi-Medium', // Assuming fonts are loaded
+    fontSize: 16,
+    color: DS.white,
+  },
 });
+
+export default HotelSelectScreen;

@@ -1,98 +1,108 @@
-// Screen 66 — Help & Support — STATIC 
-// Search + 2x2 quick actions + popular topics + contact form
-import { View, Text, StyleSheet, Pressable, ScrollView } from "react-native";
+import { useState } from "react";
+import { View, Text, StyleSheet, Pressable, TextInput, FlatList } from "react-native";
+import { MaterialIcons } from "@expo/vector-icons";
+import { BlurView } from "expo-blur";
+import { ScreenWrapper, DS } from "@/components/screen-wrapper";
+import { LinearGradient } from "expo-linear-gradient";
 
-const QUICK_ACTIONS = [
-  { icon: "?", label: "FAQ" },
-  { icon: "💬", label: "Live Chat" },
-  { icon: "📧", label: "Email Us" },
-  { icon: "📞", label: "Call Us" },
+const FAQS = [
+  { q: "How does the DNA quiz work?", a: "The DNA quiz analyzes your travel personality across 8 dimensions to match you with perfect destinations and experiences." },
+  { q: "How do TRAVI Points work?", a: "You earn TRAVI Points on every booking. Points can be redeemed for discounts, upgrades, and exclusive experiences." },
+  { q: "Can I change my trip after booking?", a: "Yes! You can modify most bookings up to 48 hours before departure through the Trip Hub." },
+  { q: "How does cashback work?", a: "TRAVI returns 100% of commissions earned from your bookings directly to your wallet as cashback." },
+  { q: "Is my payment information secure?", a: "All payments are processed with bank-level encryption. We never store your full card details." },
 ];
 
-const TOPICS = [
-  "How to book a trip",
-  "Cancel or modify booking",
-  "Wallet & payments",
-  "DNA profile questions",
-  "Account & security",
-  "Cashback & rewards",
-  "Technical issues",
-  "Privacy & data",
+const CATEGORIES = [
+  { icon: "flight", label: "Flights", color: DS.purple },
+  { icon: "hotel", label: "Hotels", color: DS.pink },
+  { icon: "account-balance-wallet", label: "Payments", color: DS.success },
+  { icon: "psychology", label: "DNA Quiz", color: DS.warning },
 ];
 
 export default function HelpScreen() {
+  const [search, setSearch] = useState("");
+  const [expanded, setExpanded] = useState<number | null>(null);
+  const filtered = FAQS.filter(f => f.q.toLowerCase().includes(search.toLowerCase()));
+
   return (
-    <View style={s.root}>
-      <View style={s.header}>
-        <Pressable style={s.backBtn}><Text style={s.backText}>{"<"}</Text></Pressable>
-        <Text style={s.headerTitle}>Help & Support</Text>
-        <View style={{ width: 32 }} />
+    <ScreenWrapper title="Help Center" scrollable bottomPad={40}>
+      {/* Search */}
+      <BlurView intensity={15} tint="dark" style={s.searchCard}>
+        <MaterialIcons name="search" size={20} color={DS.muted} />
+        <TextInput
+          style={s.searchInput}
+          placeholder="Search help articles..."
+          placeholderTextColor={DS.placeholder}
+          value={search}
+          onChangeText={setSearch}
+        />
+      </BlurView>
+
+      {/* Categories */}
+      <Text style={s.sectionTitle}>Browse by Topic</Text>
+      <View style={s.categories}>
+        {CATEGORIES.map(c => (
+          <Pressable key={c.label} style={s.catBtn}>
+            <BlurView intensity={15} tint="dark" style={[s.catInner, { borderColor: c.color + "44" }]}>
+              <View style={[s.catIcon, { backgroundColor: c.color + "22" }]}>
+                <MaterialIcons name={c.icon as any} size={22} color={c.color} />
+              </View>
+              <Text style={s.catLabel}>{c.label}</Text>
+            </BlurView>
+          </Pressable>
+        ))}
       </View>
 
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 40 }}>
-        {/* Search */}
-        <View style={s.searchWrap}>
-          <View style={s.searchBar}><Text style={s.searchPlaceholder}>Search for help...</Text></View>
-        </View>
+      {/* FAQs */}
+      <Text style={s.sectionTitle}>Frequently Asked</Text>
+      {filtered.map((faq, i) => (
+        <Pressable key={i} onPress={() => setExpanded(expanded === i ? null : i)}>
+          <BlurView intensity={15} tint="dark" style={[s.faqCard, { marginBottom: 8 }]}>
+            <View style={s.faqHeader}>
+              <Text style={s.faqQ}>{faq.q}</Text>
+              <MaterialIcons name={expanded === i ? "expand-less" : "expand-more"} size={20} color={DS.muted} />
+            </View>
+            {expanded === i && <Text style={s.faqA}>{faq.a}</Text>}
+          </BlurView>
+        </Pressable>
+      ))}
 
-        {/* 2x2 quick actions */}
-        <View style={s.grid}>
-          {QUICK_ACTIONS.map((a) => (
-            <Pressable key={a.label} style={s.gridItem}>
-              <Text style={s.gridIcon}>{a.icon}</Text>
-              <Text style={s.gridLabel}>{a.label}</Text>
-            </Pressable>
-          ))}
-        </View>
-
-        {/* Popular topics */}
-        <View style={s.section}>
-          <Text style={s.sectionTitle}>Popular Topics</Text>
-          {TOPICS.map((topic) => (
-            <Pressable key={topic} style={s.topicRow}>
-              <Text style={s.topicText}>{topic}</Text>
-              <Text style={s.topicArrow}>{">"}</Text>
-            </Pressable>
-          ))}
-        </View>
-
-        {/* Contact form */}
-        <View style={s.section}>
-          <Text style={s.sectionTitle}>Still Need Help?</Text>
-          <View style={s.formCard}>
-            <View style={s.formField}><Text style={s.formLabel}>Subject</Text><View style={s.formInput}><Text style={s.formPlaceholder}>Describe your issue...</Text></View></View>
-            <View style={s.formField}><Text style={s.formLabel}>Message</Text><View style={[s.formInput, { height: 100 }]}><Text style={s.formPlaceholder}>Tell us more...</Text></View></View>
-            <Pressable style={s.submitBtn}><Text style={s.submitText}>Submit</Text></Pressable>
-          </View>
-        </View>
-      </ScrollView>
-    </View>
+      {/* Contact */}
+      <BlurView intensity={20} tint="dark" style={s.contactCard}>
+        <LinearGradient colors={[DS.purple + "22", DS.pink + "11"]} style={s.contactInner}>
+          <MaterialIcons name="support-agent" size={32} color={DS.purple} />
+          <Text style={s.contactTitle}>Still need help?</Text>
+          <Text style={s.contactSub}>Our team is available 24/7</Text>
+          <Pressable style={s.contactBtn}>
+            <LinearGradient colors={[DS.purple, DS.pink] as const} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={s.contactBtnGrad}>
+              <Text style={s.contactBtnText}>Chat with Support</Text>
+            </LinearGradient>
+          </Pressable>
+        </LinearGradient>
+      </BlurView>
+    </ScreenWrapper>
   );
 }
 
 const s = StyleSheet.create({
-  root: { flex: 1, backgroundColor: "#111" },
-  header: { height: 60, flexDirection: "row", alignItems: "center", paddingHorizontal: 16, gap: 12, marginTop: 48, borderBottomWidth: 1, borderBottomColor: "#222" },
-  backBtn: { width: 32, height: 32, justifyContent: "center", alignItems: "center" },
-  backText: { color: "#FFF", fontSize: 24 },
-  headerTitle: { flex: 1, color: "#FFF", fontSize: 18, fontWeight: "600", textAlign: "center" },
-  searchWrap: { padding: 20 },
-  searchBar: { height: 48, borderRadius: 14, backgroundColor: "#1A1A1A", borderWidth: 1, borderColor: "#333", justifyContent: "center", paddingHorizontal: 16 },
-  searchPlaceholder: { color: "#555", fontSize: 15 },
-  grid: { flexDirection: "row", flexWrap: "wrap", paddingHorizontal: 16, gap: 12 },
-  gridItem: { width: "47%", height: 88, borderRadius: 14, backgroundColor: "#1A1A1A", borderWidth: 1, borderColor: "#333", justifyContent: "center", alignItems: "center", gap: 6 },
-  gridIcon: { fontSize: 24 },
-  gridLabel: { color: "#FFF", fontSize: 13, fontWeight: "600" },
-  section: { paddingHorizontal: 20, marginTop: 24 },
-  sectionTitle: { color: "#FFF", fontSize: 16, fontWeight: "700", marginBottom: 10 },
-  topicRow: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", height: 48, borderBottomWidth: 1, borderBottomColor: "#1A1A1A" },
-  topicText: { color: "#FFF", fontSize: 15 },
-  topicArrow: { color: "#555", fontSize: 14 },
-  formCard: { padding: 16, borderRadius: 14, backgroundColor: "#1A1A1A", borderWidth: 1, borderColor: "#333", gap: 12 },
-  formField: { gap: 4 },
-  formLabel: { color: "#888", fontSize: 13 },
-  formInput: { height: 44, borderRadius: 10, backgroundColor: "#111", borderWidth: 1, borderColor: "#333", justifyContent: "center", paddingHorizontal: 12 },
-  formPlaceholder: { color: "#555", fontSize: 14 },
-  submitBtn: { height: 44, borderRadius: 22, backgroundColor: "#333", borderWidth: 1, borderColor: "#555", justifyContent: "center", alignItems: "center" },
-  submitText: { color: "#FFF", fontSize: 14, fontWeight: "600" },
+  searchCard: { borderRadius: 14, overflow: "hidden", borderWidth: 1, borderColor: DS.border, flexDirection: "row", alignItems: "center", gap: 10, paddingHorizontal: 16, height: 50, backgroundColor: DS.surface, marginBottom: 24 },
+  searchInput: { flex: 1, color: DS.white, fontSize: 14, fontFamily: "Satoshi-Regular" },
+  sectionTitle: { color: DS.white, fontSize: 16, fontFamily: "Chillax-Bold", marginBottom: 12 },
+  categories: { flexDirection: "row", flexWrap: "wrap", gap: 10, marginBottom: 24 },
+  catBtn: { width: "47%" },
+  catInner: { borderRadius: 14, overflow: "hidden", borderWidth: 1, padding: 14, alignItems: "center", gap: 8, backgroundColor: DS.surface },
+  catIcon: { width: 44, height: 44, borderRadius: 12, justifyContent: "center", alignItems: "center" },
+  catLabel: { color: DS.white, fontSize: 13, fontFamily: "Satoshi-Medium" },
+  faqCard: { borderRadius: 14, overflow: "hidden", borderWidth: 1, borderColor: DS.border, padding: 14, backgroundColor: DS.surface },
+  faqHeader: { flexDirection: "row", alignItems: "center", gap: 8 },
+  faqQ: { flex: 1, color: DS.white, fontSize: 14, fontFamily: "Satoshi-Medium" },
+  faqA: { color: DS.muted, fontSize: 13, fontFamily: "Satoshi-Regular", lineHeight: 20, marginTop: 10 },
+  contactCard: { borderRadius: 20, overflow: "hidden", borderWidth: 1, borderColor: DS.border, marginTop: 8 },
+  contactInner: { alignItems: "center", padding: 24, gap: 8 },
+  contactTitle: { color: DS.white, fontSize: 18, fontFamily: "Chillax-Bold" },
+  contactSub: { color: DS.muted, fontSize: 13, fontFamily: "Satoshi-Regular" },
+  contactBtn: { marginTop: 8, width: "100%" },
+  contactBtnGrad: { height: 48, borderRadius: 12, justifyContent: "center", alignItems: "center" },
+  contactBtnText: { color: DS.white, fontSize: 15, fontFamily: "Chillax-Bold" },
 });

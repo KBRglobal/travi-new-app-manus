@@ -1,30 +1,89 @@
-// Screen 70 — Loading Matching Engine — STATIC 
-// Mascot with magnifier, rotating subtext, progress bar, 30s timeout
-import { View, Text, StyleSheet } from "react-native";
+import React from 'react';
+import { View, Text, StyleSheet, ActivityIndicator, TouchableOpacity } from 'react-native';
+import { ScreenWrapper, DS } from '@/components/screen-wrapper';
+import { BlurView } from 'expo-blur';
+import { LinearGradient } from 'expo-linear-gradient';
+import { MaterialIcons } from '@expo/vector-icons';
 
-export default function LoadingMatchingScreen() {
+// DS object exported from ScreenWrapper.tsx (for reference, assuming ScreenWrapper provides it)
+
+const LoadingMatchingScreen = () => {
   return (
-    <View style={s.root}>
-      <View style={s.mascot}><Text style={s.mascotText}>[MASCOT + 🔍]</Text></View>
-      <Text style={s.title}>Finding Your Perfect Match</Text>
-      <Text style={s.subtitle}>Analyzing your travel DNA...</Text>
-      <View style={s.progressBar}>
-        <View style={s.progressFill} />
-      </View>
-      <Text style={s.progressText}>65%</Text>
-      <Text style={s.hint}>This usually takes 10-30 seconds</Text>
-    </View>
-  );
-}
+    <ScreenWrapper title="Finding Your Match" scrollable={false}>
+      <View style={styles.container}>
+        <BlurView intensity={20} tint="dark" style={styles.glassCard}>
+          <ActivityIndicator size="large" color={DS.purple} />
+          <Text style={styles.headerText}>Searching for adventures...</Text>
+          <Text style={styles.bodyText}>Please wait while we find the perfect travel companions for you.</Text>
+        </BlurView>
 
-const s = StyleSheet.create({
-  root: { flex: 1, backgroundColor: "#111", justifyContent: "center", alignItems: "center", padding: 40 },
-  mascot: { width: 140, height: 140, borderRadius: 35, backgroundColor: "#1A1A1A", borderWidth: 1, borderColor: "#333", justifyContent: "center", alignItems: "center", marginBottom: 24 },
-  mascotText: { color: "#555", fontSize: 16 },
-  title: { color: "#FFF", fontSize: 22, fontWeight: "800", textAlign: "center" },
-  subtitle: { color: "#888", fontSize: 14, marginTop: 8 },
-  progressBar: { width: "80%", height: 6, borderRadius: 3, backgroundColor: "#222", marginTop: 24 },
-  progressFill: { width: "65%", height: 6, borderRadius: 3, backgroundColor: "#555" },
-  progressText: { color: "#888", fontSize: 13, marginTop: 6 },
-  hint: { color: "#555", fontSize: 12, marginTop: 20 },
+        {/* Example of a CTA with LinearGradient, typically not on a loading screen but for demonstration */}
+        <TouchableOpacity style={styles.ctaButton}>
+          <LinearGradient
+            colors={[DS.purple, DS.pink] as const}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+            style={styles.gradientBackground}
+          >
+            <MaterialIcons name="cancel" size={24} color={DS.white} />
+            <Text style={styles.ctaButtonText}>Cancel Search</Text>
+          </LinearGradient>
+        </TouchableOpacity>
+      </View>
+    </ScreenWrapper>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+  },
+  glassCard: {
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: DS.border,
+    backgroundColor: DS.surface,
+    overflow: 'hidden',
+    padding: 30,
+    alignItems: 'center',
+    marginBottom: 30,
+  },
+  headerText: {
+    fontFamily: 'Chillax-Bold', // Assuming Chillax-Bold is loaded and available
+    fontSize: 24,
+    color: DS.white,
+    marginTop: 20,
+    textAlign: 'center',
+  },
+  bodyText: {
+    fontFamily: 'Satoshi-Regular', // Assuming Satoshi-Regular is loaded and available
+    fontSize: 16,
+    color: DS.muted,
+    marginTop: 10,
+    textAlign: 'center',
+  },
+  ctaButton: {
+    width: '80%',
+    borderRadius: 16,
+    overflow: 'hidden',
+  },
+  gradientBackground: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 15,
+    paddingHorizontal: 20,
+    borderRadius: 16,
+  },
+  ctaButtonText: {
+    fontFamily: 'Satoshi-Medium', // Assuming Satoshi-Medium is loaded and available
+    fontSize: 18,
+    color: DS.white,
+    marginLeft: 10,
+  },
 });
+
+export default LoadingMatchingScreen;

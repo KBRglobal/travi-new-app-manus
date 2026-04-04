@@ -1,114 +1,167 @@
-// Screen 81 — Traveler Card Swipe (Static Wireframe)
-// Route: /social/discover/swipe | Mode: Discovery (Social)
-// Zones: Header 60px, Card Stack (full), Action Buttons 80px
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, Image, TouchableOpacity, Dimensions } from 'react-native';
+import { ScreenWrapper } from '@/components/screen-wrapper';
+import { BlurView } from 'expo-blur';
+import { LinearGradient } from 'expo-linear-gradient';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 
-import { Text, View, StyleSheet } from "react-native";
-import { ScreenContainer } from "@/components/screen-container";
+// DS object exported from ScreenWrapper.tsx
+const DS = {
+  bg: "#0A0514", surface: "rgba(36,16,62,0.55)", surfaceHigh: "rgba(50,20,80,0.7)",
+  border: "rgba(123,68,230,0.22)", borderStrong: "rgba(100,67,244,0.4)",
+  purple: "#6443F4", pink: "#F94498", success: "#02A65C", warning: "#FF9327",
+  error: "#FF6B6B", info: "#01BEFF", white: "#FFFFFF", secondary: "#D3CFD8",
+  muted: "#A79FB2", placeholder: "#7B6A94", gradient: ["#6443F4", "#F94498"],
+};
 
-export default function SwipeTravelersScreen() {
+const { width } = Dimensions.get('window');
+
+const mockTravelers = [
+  {
+    id: '1',
+    name: 'Alice',
+    age: 28,
+    location: 'New York, USA',
+    bio: 'Adventure seeker and foodie. Looking for travel buddies for my next trip to Japan!',
+    imageUrl: 'https://picsum.photos/id/1005/400/600',
+  },
+  {
+    id: '2',
+    name: 'Bob',
+    age: 32,
+    location: 'London, UK',
+    bio: 'Loves hiking and exploring historical sites. Planning a backpacking trip through Europe.',
+    imageUrl: 'https://picsum.photos/id/1011/400/600',
+  },
+  {
+    id: '3',
+    name: 'Charlie',
+    age: 25,
+    location: 'Sydney, Australia',
+    bio: 'Beach lover and surf enthusiast. Always up for a spontaneous road trip!',
+    imageUrl: 'https://picsum.photos/id/1012/400/600',
+  },
+];
+
+const SwipeTravelersScreen = () => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const handleSwipe = (direction: 'left' | 'right') => {
+    // In a real app, this would handle actual swipe logic and data fetching
+    console.log(`Swiped ${direction} for ${mockTravelers[currentIndex].name}`);
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % mockTravelers.length);
+  };
+
+  const currentTraveler = mockTravelers[currentIndex];
+
   return (
-    <ScreenContainer>
-      <View style={s.container}>
-        {/* Header */}
-        <View style={s.header}>
-          <Text style={s.backArrow}>←</Text>
-          <Text style={s.headerTitle}>Find Travel Buddies</Text>
-          <Text style={s.headerIcon}>⚙</Text>
-        </View>
-
-        {/* Card Stack */}
-        <View style={s.cardStack}>
-          {/* Background card (peek) */}
-          <View style={[s.card, s.cardBehind]}>
-            <View style={s.cardImageArea}>
-              <Text style={s.cardInitial}>E</Text>
+    <ScreenWrapper title="Swipe Travelers" scrollable={false} contentStyle={styles.screenWrapper}>
+      <View style={styles.container}>
+        {currentTraveler ? (
+          <BlurView intensity={20} tint="dark" style={styles.card}>
+            <Image source={{ uri: currentTraveler.imageUrl }} style={styles.travelerImage} />
+            <View style={styles.infoContainer}>
+              <Text style={styles.nameText}>{currentTraveler.name}, {currentTraveler.age}</Text>
+              <Text style={styles.locationText}>
+                <MaterialIcons name="location-on" size={16} color={DS.muted} /> {currentTraveler.location}
+              </Text>
+              <Text style={styles.bioText}>{currentTraveler.bio}</Text>
             </View>
-          </View>
-
-          {/* Front card */}
-          <View style={s.card}>
-            <View style={s.cardImageArea}>
-              <Text style={s.cardInitial}>S</Text>
-              <View style={s.onlineBadge}><Text style={s.onlineText}>● Online</Text></View>
-              <View style={s.verifiedBadge}><Text style={s.verifiedText}>✓ Verified</Text></View>
+            <View style={styles.actionsContainer}>
+              <TouchableOpacity onPress={() => handleSwipe('left')} style={styles.actionButton}>
+                <LinearGradient colors={[DS.error, '#FF3D68']} style={styles.gradientButton}>
+                  <MaterialIcons name="close" size={30} color={DS.white} />
+                </LinearGradient>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => handleSwipe('right')} style={styles.actionButton}>
+                <LinearGradient colors={[DS.success, '#00C853']} style={styles.gradientButton}>
+                  <MaterialIcons name="check" size={30} color={DS.white} />
+                </LinearGradient>
+              </TouchableOpacity>
             </View>
-            <View style={s.cardInfo}>
-              <View style={s.nameRow}>
-                <Text style={s.cardName}>Sarah Mitchell, 28</Text>
-                <View style={s.matchBadge}><Text style={s.matchText}>92% Match</Text></View>
-              </View>
-              <Text style={s.cardLocation}>Barcelona, Spain</Text>
-              <Text style={s.cardBio}>Food lover, culture explorer. Always looking for the best local spots and hidden gems.</Text>
-              <View style={s.interestsRow}>
-                {["Food", "Culture", "Photography", "Markets"].map((i) => (
-                  <View key={i} style={s.interestPill}><Text style={s.interestText}>{i}</Text></View>
-                ))}
-              </View>
-              <View style={s.dnaPreview}>
-                <Text style={s.dnaLabel}>Top DNA:</Text>
-                <Text style={s.dnaValue}>Food 95 · Culture 90 · Adventure 85</Text>
-              </View>
-            </View>
-          </View>
-        </View>
-
-        {/* Action Buttons — 80px */}
-        <View style={s.actionsRow}>
-          <View style={[s.actionBtn, s.actionSkip]}>
-            <Text style={s.actionEmoji}>✕</Text>
-            <Text style={s.actionLabel}>Skip</Text>
-          </View>
-          <View style={[s.actionBtn, s.actionSuperLike]}>
-            <Text style={s.actionEmoji}>⭐</Text>
-            <Text style={s.actionLabel}>Super</Text>
-          </View>
-          <View style={[s.actionBtn, s.actionConnect]}>
-            <Text style={s.actionEmoji}>✓</Text>
-            <Text style={s.actionLabel}>Connect</Text>
-          </View>
-        </View>
+          </BlurView>
+        ) : (
+          <Text style={styles.noTravelersText}>No more travelers to swipe!</Text>
+        )}
       </View>
-    </ScreenContainer>
+    </ScreenWrapper>
   );
-}
+};
 
-const N = "#111"; const N2 = "#1a1a1a"; const N3 = "#222"; const W = "#fff"; const G = "#888";
-
-const s = StyleSheet.create({
-  container: { flex: 1, backgroundColor: N },
-  header: { height: 60, flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 16 },
-  backArrow: { fontSize: 24, color: W },
-  headerTitle: { fontSize: 20, fontWeight: "700", color: W },
-  headerIcon: { fontSize: 20, color: G },
-
-  cardStack: { flex: 1, paddingHorizontal: 16, paddingTop: 8, paddingBottom: 8 },
-  card: { position: "absolute", top: 8, left: 16, right: 16, bottom: 0, backgroundColor: N2, borderRadius: 24, borderWidth: 1, borderColor: N3, overflow: "hidden" },
-  cardBehind: { top: 16, left: 24, right: 24, transform: [{ scale: 0.95 }], opacity: 0.5 },
-  cardImageArea: { height: "50%", backgroundColor: N3, alignItems: "center", justifyContent: "center" },
-  cardInitial: { fontSize: 64, fontWeight: "700", color: "#333" },
-  onlineBadge: { position: "absolute", top: 12, left: 12, paddingHorizontal: 8, paddingVertical: 4, borderRadius: 12, backgroundColor: "rgba(0,0,0,0.6)" },
-  onlineText: { fontSize: 12, color: "#4a4" },
-  verifiedBadge: { position: "absolute", top: 12, right: 12, paddingHorizontal: 8, paddingVertical: 4, borderRadius: 12, backgroundColor: "rgba(0,0,0,0.6)" },
-  verifiedText: { fontSize: 12, color: "#69c" },
-  cardInfo: { flex: 1, padding: 16, gap: 8 },
-  nameRow: { flexDirection: "row", alignItems: "center", justifyContent: "space-between" },
-  cardName: { fontSize: 22, fontWeight: "700", color: W },
-  matchBadge: { paddingHorizontal: 8, paddingVertical: 4, borderRadius: 12, backgroundColor: "#1a3a1a" },
-  matchText: { fontSize: 12, fontWeight: "600", color: "#4a4" },
-  cardLocation: { fontSize: 14, color: G },
-  cardBio: { fontSize: 14, color: "#aaa", lineHeight: 20 },
-  interestsRow: { flexDirection: "row", flexWrap: "wrap", gap: 6 },
-  interestPill: { paddingHorizontal: 10, paddingVertical: 4, borderRadius: 12, backgroundColor: N3 },
-  interestText: { fontSize: 12, color: G },
-  dnaPreview: { flexDirection: "row", gap: 6, marginTop: 4 },
-  dnaLabel: { fontSize: 12, fontWeight: "600", color: G },
-  dnaValue: { fontSize: 12, color: "#aaa" },
-
-  actionsRow: { flexDirection: "row", justifyContent: "center", gap: 24, paddingVertical: 16, paddingBottom: 24 },
-  actionBtn: { width: 64, height: 64, borderRadius: 32, alignItems: "center", justifyContent: "center", backgroundColor: N2, borderWidth: 1, borderColor: N3 },
-  actionSkip: { borderColor: "#533" },
-  actionSuperLike: { borderColor: "#553" },
-  actionConnect: { borderColor: "#353" },
-  actionEmoji: { fontSize: 24 },
-  actionLabel: { fontSize: 10, color: G, marginTop: 2 },
+const styles = StyleSheet.create({
+  screenWrapper: {
+    backgroundColor: DS.bg,
+  },
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+    backgroundColor: DS.bg,
+  },
+  card: {
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: DS.border,
+    backgroundColor: DS.surface,
+    overflow: 'hidden',
+    width: width * 0.9,
+    maxWidth: 400,
+    aspectRatio: 0.7,
+    justifyContent: 'space-between',
+    paddingBottom: 20,
+  },
+  travelerImage: {
+    width: '100%',
+    height: '60%',
+    borderTopLeftRadius: 16,
+    borderTopRightRadius: 16,
+  },
+  infoContainer: {
+    padding: 15,
+  },
+  nameText: {
+    fontFamily: 'Chillax-Bold',
+    fontSize: 24,
+    color: DS.white,
+    marginBottom: 5,
+  },
+  locationText: {
+    fontFamily: 'Satoshi-Regular',
+    fontSize: 16,
+    color: DS.muted,
+    marginBottom: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  bioText: {
+    fontFamily: 'Satoshi-Regular',
+    fontSize: 14,
+    color: DS.secondary,
+    lineHeight: 20,
+  },
+  actionsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    marginTop: 20,
+    paddingHorizontal: 20,
+  },
+  actionButton: {
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    overflow: 'hidden',
+  },
+  gradientButton: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  noTravelersText: {
+    fontFamily: 'Satoshi-Medium',
+    fontSize: 18,
+    color: DS.muted,
+  },
 });
+
+export default SwipeTravelersScreen;

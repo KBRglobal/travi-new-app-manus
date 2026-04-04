@@ -57,7 +57,7 @@ export default function SocialDiscoverScreen() {
         ItemSeparatorComponent={() => <View style={{ height: 10 }} />}
         ListHeaderComponent={
           <Pressable style={s.swipeBtn} onPress={() => router.push("/(social)/swipe-travelers" as any)}>
-            <LinearGradient colors={[DS.purple, DS.pink]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={s.swipeGrad}>
+            <LinearGradient colors={[DS.purple, DS.pink] as const} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={s.swipeGrad}>
               <MaterialIcons name="swipe" size={18} color={DS.white} style={{ marginRight: 8 }} />
               <Text style={s.swipeText}>Swipe to Match Travelers</Text>
             </LinearGradient>

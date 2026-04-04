@@ -1,96 +1,109 @@
-// Screen 96 — Earn Guide (Static Wireframe)
-// Route: /points/earn | Mode: Points
+import React from 'react';
+import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
+import { BlurView } from 'expo-blur';
+import { MaterialIcons } from '@expo/vector-icons';
+import { ScreenWrapper, DS } from '@/components/screen-wrapper';
 
-import { ScrollView, Text, View, StyleSheet } from "react-native";
-import { ScreenContainer } from "@/components/screen-container";
-
-const WAYS = [
-  { id: "1", icon: "✈", title: "Book Flights", desc: "Earn 3pts per €1 spent on flights", pts: "Up to 3,000 pts" },
-  { id: "2", icon: "🏨", title: "Book Hotels", desc: "Earn 2pts per €1 spent on hotels", pts: "Up to 2,000 pts" },
-  { id: "3", icon: "🎯", title: "Complete DNA", desc: "Complete your Travel DNA profile", pts: "500 pts" },
-  { id: "4", icon: "👥", title: "Refer Friends", desc: "Invite friends to join TRAVI", pts: "500 pts each" },
-  { id: "5", icon: "⭐", title: "Write Reviews", desc: "Review places you've visited", pts: "50 pts each" },
-  { id: "6", icon: "📸", title: "Share Photos", desc: "Upload trip photos to community", pts: "25 pts each" },
-  { id: "7", icon: "🎮", title: "Daily Check-in", desc: "Open the app daily for bonus", pts: "10 pts/day" },
-  { id: "8", icon: "🏆", title: "Challenges", desc: "Complete weekly travel challenges", pts: "100-500 pts" },
-];
-
-const TIERS = [
-  { name: "Explorer", min: "0", rate: "1x", color: "#555" },
-  { name: "Adventurer", min: "5,000", rate: "1.5x", color: "#666" },
-  { name: "Voyager", min: "15,000", rate: "2x", color: "#777" },
-  { name: "Legend", min: "50,000", rate: "3x", color: "#888" },
-];
-
-export default function EarnGuideScreen() {
+const EarnGuideScreen = () => {
   return (
-    <ScreenContainer>
-      <View style={s.container}>
-        <View style={s.header}>
-          <Text style={s.back}>←</Text>
-          <Text style={s.title}>How to Earn</Text>
-          <View style={{width:24}}/>
+    <ScreenWrapper title="Earn Points Guide" scrollable={true}>
+      <View style={styles.container}>
+        <Text style={styles.header}>How to Earn TRAVI Points</Text>
+
+        <BlurView intensity={20} tint="dark" style={styles.card}>
+          <MaterialIcons name="star" size={24} color={DS.purple} style={styles.icon} />
+          <Text style={styles.cardTitle}>Complete Challenges</Text>
+          <Text style={styles.cardDescription}>Participate in daily and weekly challenges to earn bonus points. Check the 'Challenges' section for more details.</Text>
+        </BlurView>
+
+        <BlurView intensity={20} tint="dark" style={styles.card}>
+          <MaterialIcons name="flight" size={24} color={DS.pink} style={styles.icon} />
+          <Text style={styles.cardTitle}>Book Travel</Text>
+          <Text style={styles.cardDescription}>Earn points for every flight, hotel, and activity booking made through TRAVI. The more you travel, the more you earn!</Text>
+        </BlurView>
+
+        <BlurView intensity={20} tint="dark" style={styles.card}>
+          <MaterialIcons name="group" size={24} color={DS.success} style={styles.icon} />
+          <Text style={styles.cardTitle}>Refer Friends</Text>
+          <Text style={styles.cardDescription}>Invite your friends to TRAVI and earn points when they make their first booking. Sharing is caring, and rewarding!</Text>
+        </BlurView>
+
+        <View style={styles.ctaContainer}>
+          <LinearGradient
+            colors={[DS.purple, DS.pink] as const}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+            style={styles.ctaButton}
+          >
+            <Text style={styles.ctaButtonText}>Start Earning Now</Text>
+            <MaterialIcons name="arrow-forward" size={20} color={DS.white} />
+          </LinearGradient>
         </View>
-        <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={s.scroll}>
-          {/* Current Status */}
-          <View style={s.statusCard}>
-            <Text style={s.statusLabel}>Your Earning Rate</Text>
-            <Text style={s.statusRate}>1.5x</Text>
-            <Text style={s.statusTier}>Adventurer Tier</Text>
-            <View style={s.progressTrack}><View style={[s.progressFill,{width:"60%"}]}/></View>
-            <Text style={s.progressText}>7,450 / 15,000 pts to Voyager</Text>
-          </View>
-
-          {/* Ways to Earn */}
-          <Text style={s.secTitle}>Ways to Earn</Text>
-          {WAYS.map(w=>(
-            <View key={w.id} style={s.wayCard}>
-              <View style={s.wayIcon}><Text style={{fontSize:24}}>{w.icon}</Text></View>
-              <View style={s.wayInfo}>
-                <Text style={s.wayTitle}>{w.title}</Text>
-                <Text style={s.wayDesc}>{w.desc}</Text>
-              </View>
-              <Text style={s.wayPts}>{w.pts}</Text>
-            </View>
-          ))}
-
-          {/* Tier Breakdown */}
-          <Text style={s.secTitle}>Tier Benefits</Text>
-          {TIERS.map(t=>(
-            <View key={t.name} style={s.tierRow}>
-              <View style={[s.tierDot,{backgroundColor:t.color}]}/>
-              <View style={s.tierInfo}>
-                <Text style={s.tierName}>{t.name}</Text>
-                <Text style={s.tierMin}>Min {t.min} pts</Text>
-              </View>
-              <Text style={s.tierRate}>{t.rate} earning</Text>
-            </View>
-          ))}
-          <View style={{height:100}}/>
-        </ScrollView>
       </View>
-    </ScreenContainer>
+    </ScreenWrapper>
   );
-}
+};
 
-const N="#111",N2="#1a1a1a",N3="#222",W="#fff",G="#888";
-const s = StyleSheet.create({
-  container:{flex:1,backgroundColor:N},
-  header:{height:60,flexDirection:"row",alignItems:"center",justifyContent:"space-between",paddingHorizontal:16},
-  back:{fontSize:24,color:W},title:{fontSize:20,fontWeight:"700",color:W},
-  scroll:{paddingHorizontal:16},
-  statusCard:{backgroundColor:N2,borderRadius:20,borderWidth:1,borderColor:N3,padding:24,alignItems:"center",gap:8},
-  statusLabel:{fontSize:14,color:G},statusRate:{fontSize:40,fontWeight:"700",color:W},statusTier:{fontSize:16,fontWeight:"600",color:G},
-  progressTrack:{width:"100%",height:6,borderRadius:3,backgroundColor:N3,marginTop:8},
-  progressFill:{height:6,borderRadius:3,backgroundColor:"#555"},
-  progressText:{fontSize:12,color:G},
-  secTitle:{fontSize:18,fontWeight:"700",color:W,marginTop:24,marginBottom:12},
-  wayCard:{flexDirection:"row",alignItems:"center",backgroundColor:N2,borderRadius:14,borderWidth:1,borderColor:N3,padding:14,gap:12,marginBottom:8},
-  wayIcon:{width:44,height:44,borderRadius:12,backgroundColor:N3,alignItems:"center",justifyContent:"center"},
-  wayInfo:{flex:1},wayTitle:{fontSize:15,fontWeight:"600",color:W},wayDesc:{fontSize:12,color:G,marginTop:2},
-  wayPts:{fontSize:13,fontWeight:"600",color:W},
-  tierRow:{flexDirection:"row",alignItems:"center",paddingVertical:14,borderBottomWidth:1,borderBottomColor:N3,gap:10},
-  tierDot:{width:12,height:12,borderRadius:6},tierInfo:{flex:1},
-  tierName:{fontSize:15,fontWeight:"600",color:W},tierMin:{fontSize:12,color:G},
-  tierRate:{fontSize:14,fontWeight:"600",color:G},
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 20,
+    backgroundColor: DS.bg,
+  },
+  header: {
+    fontFamily: 'Chillax-Bold',
+    fontSize: 28,
+    color: DS.white,
+    marginBottom: 30,
+    textAlign: 'center',
+  },
+  card: {
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: DS.border,
+    backgroundColor: DS.surface,
+    overflow: 'hidden',
+    padding: 20,
+    marginBottom: 20,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  icon: {
+    marginRight: 15,
+  },
+  cardTitle: {
+    fontFamily: 'Satoshi-Medium',
+    fontSize: 18,
+    color: DS.white,
+    flex: 1,
+  },
+  cardDescription: {
+    fontFamily: 'Satoshi-Regular',
+    fontSize: 14,
+    color: DS.muted,
+    marginTop: 5,
+    marginLeft: 39, // To align with cardTitle after icon
+  },
+  ctaContainer: {
+    marginTop: 30,
+    alignItems: 'center',
+  },
+  ctaButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 15,
+    paddingHorizontal: 30,
+    borderRadius: 10,
+    width: '80%',
+  },
+  ctaButtonText: {
+    fontFamily: 'Satoshi-Medium',
+    fontSize: 18,
+    color: DS.white,
+    marginRight: 10,
+  },
 });
+
+export default EarnGuideScreen;

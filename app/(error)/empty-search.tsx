@@ -30,7 +30,7 @@ export default function EmptySearchScreen() {
         ))}
       </View>
       <Pressable style={({ pressed }) => [s.primaryBtn, pressed && { opacity: 0.8, transform: [{ scale: 0.97 }] }]} onPress={() => router.push("/(tabs)/explore" as any)}>
-        <LinearGradient colors={[DS.purple, DS.pink]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={s.btnGrad}>
+        <LinearGradient colors={[DS.purple, DS.pink] as const} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={s.btnGrad}>
           <MaterialIcons name="explore" size={18} color={DS.white} style={{ marginRight: 8 }} />
           <Text style={s.btnText}>Browse All Destinations</Text>
         </LinearGradient>

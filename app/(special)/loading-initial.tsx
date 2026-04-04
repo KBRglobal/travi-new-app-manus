@@ -1,29 +1,69 @@
-// Screen 69 — Loading Initial — STATIC 
-// Mascot 180px + 3 loading dots
-import { View, Text, StyleSheet } from "react-native";
+import React from 'react';
+import { View, Text, ActivityIndicator, StyleSheet } from 'react-native';
+import { BlurView } from 'expo-blur';
+import { LinearGradient } from 'expo-linear-gradient';
+import { ScreenWrapper, DS } from '@/components/screen-wrapper';
+import { MaterialIcons } from '@expo/vector-icons';
 
-export default function LoadingInitialScreen() {
+const LoadingInitialScreen = () => {
   return (
-    <View style={s.root}>
-      <View style={s.mascot}><Text style={s.mascotText}>[MASCOT]</Text></View>
-      <Text style={s.logo}>TRAVI</Text>
-      <Text style={s.tagline}>Your AI Travel Companion</Text>
-      <View style={s.dotsRow}>
-        <View style={s.dot} />
-        <View style={[s.dot, s.dotActive]} />
-        <View style={s.dot} />
+    <ScreenWrapper title="Loading" scrollable={false}>
+      <View style={styles.container}>
+        <BlurView intensity={20} tint="dark" style={styles.blurCard}>
+          <ActivityIndicator size="large" color={DS.purple} />
+          <Text style={styles.loadingText}>Preparing your journey...</Text>
+          <LinearGradient
+            colors={[DS.purple, DS.pink] as const}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+            style={styles.gradientButton}
+          >
+            <MaterialIcons name="flight-takeoff" size={24} color={DS.white} />
+            <Text style={styles.buttonText}>TRAVI is loading</Text>
+          </LinearGradient>
+        </BlurView>
       </View>
-    </View>
+    </ScreenWrapper>
   );
-}
+};
 
-const s = StyleSheet.create({
-  root: { flex: 1, backgroundColor: "#111", justifyContent: "center", alignItems: "center" },
-  mascot: { width: 180, height: 180, borderRadius: 40, backgroundColor: "#1A1A1A", borderWidth: 1, borderColor: "#333", justifyContent: "center", alignItems: "center", marginBottom: 24 },
-  mascotText: { color: "#555", fontSize: 16 },
-  logo: { color: "#FFF", fontSize: 36, fontWeight: "900", letterSpacing: 4 },
-  tagline: { color: "#888", fontSize: 14, marginTop: 6 },
-  dotsRow: { flexDirection: "row", gap: 8, marginTop: 32 },
-  dot: { width: 8, height: 8, borderRadius: 4, backgroundColor: "#333" },
-  dotActive: { backgroundColor: "#888" },
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: DS.bg,
+  },
+  blurCard: {
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: DS.border,
+    backgroundColor: DS.surface,
+    overflow: 'hidden',
+    padding: 30,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  loadingText: {
+    fontFamily: 'Satoshi-Medium',
+    fontSize: 18,
+    color: DS.white,
+    marginTop: 20,
+    marginBottom: 30,
+  },
+  gradientButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 12,
+    paddingHorizontal: 25,
+    borderRadius: 10,
+    gap: 10,
+  },
+  buttonText: {
+    fontFamily: 'Chillax-Bold',
+    fontSize: 16,
+    color: DS.white,
+  },
 });
+
+export default LoadingInitialScreen;

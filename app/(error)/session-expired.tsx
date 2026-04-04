@@ -20,7 +20,7 @@ export default function SessionExpiredScreen() {
       <Text style={s.title}>Session Expired</Text>
       <Text style={s.body}>Your session has timed out for security.{'\n'}Please sign in again to continue.</Text>
       <Pressable style={({ pressed }) => [s.primaryBtn, pressed && { opacity: 0.8, transform: [{ scale: 0.97 }] }]} onPress={() => router.replace("/(auth)/sign-up" as any)}>
-        <LinearGradient colors={[DS.purple, DS.pink]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={s.btnGrad}>
+        <LinearGradient colors={[DS.purple, DS.pink] as const} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={s.btnGrad}>
           <MaterialIcons name="login" size={18} color={DS.white} style={{ marginRight: 8 }} />
           <Text style={s.btnText}>Sign In Again</Text>
         </LinearGradient>

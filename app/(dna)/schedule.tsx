@@ -1,98 +1,138 @@
-// Screen 9 — Quick DNA: Schedule — STATIC 
-// Route: /dna/schedule | Mode: Onboarding
-// Spec: 4 radio options for travel timeline, Continue CTA
+import React from 'react';
+import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
+import { ScreenWrapper, DS } from '@/components/screen-wrapper';
+import { BlurView } from 'expo-blur';
+import { LinearGradient } from 'expo-linear-gradient';
+import { MaterialIcons } from '@expo/vector-icons';
 
-import { View, Text, StyleSheet, Pressable, ScrollView } from "react-native";
-
-const OPTIONS = [
-  { id: "soon", label: "Within 2 weeks", desc: "I'm ready to go!" },
-  { id: "month", label: "Within a month", desc: "Planning ahead" },
-  { id: "quarter", label: "In 2-3 months", desc: "Taking my time" },
-  { id: "exploring", label: "Just exploring", desc: "No specific plans yet" },
-];
-
-const SELECTED = "month";
-
-export default function ScheduleScreen() {
-  return (
-    <View style={s.root}>
-      <View style={s.header}>
-        <Pressable style={s.backBtn}><Text style={s.backIcon}>←</Text></Pressable>
-        <Text style={s.headerTitle}>Travel Timeline</Text>
-        <View style={{ width: 44 }} />
-      </View>
-
-      <ScrollView style={s.body} contentContainerStyle={s.bodyContent}>
-        <Text style={s.title}>When are you planning to travel?</Text>
-        <Text style={s.subtitle}>This helps us prioritize your recommendations</Text>
-
-        <View style={s.optionsList}>
-          {OPTIONS.map((opt) => {
-            const sel = opt.id === SELECTED;
-            return (
-              <Pressable key={opt.id} style={[s.option, sel && s.optionSelected]}>
-                <View style={[s.radio, sel && s.radioSel]}>
-                  {sel && <View style={s.radioDot} />}
-                </View>
-                <View style={s.optionContent}>
-                  <Text style={[s.optionLabel, sel && s.optionLabelSel]}>{opt.label}</Text>
-                  <Text style={s.optionDesc}>{opt.desc}</Text>
-                </View>
-              </Pressable>
-            );
-          })}
-        </View>
-      </ScrollView>
-
-      <View style={s.bottomBar}>
-        <Pressable style={s.primaryBtn}>
-          <Text style={s.primaryText}>Continue</Text>
-        </Pressable>
-      </View>
-    </View>
-  );
+interface ScheduleItem {
+  id: string;
+  title: string;
+  time: string;
+  location: string;
+  icon: keyof typeof MaterialIcons.glyphMap;
 }
 
-const s = StyleSheet.create({
-  root: { flex: 1, backgroundColor: "#111" },
-  header: {
-    height: 60, flexDirection: "row", alignItems: "center",
-    paddingHorizontal: 16, borderBottomWidth: 1, borderBottomColor: "#222", marginTop: 48,
+const scheduleData: ScheduleItem[] = [
+  {
+    id: '1',
+    title: 'Flight to Paris',
+    time: '08:00 AM',
+    location: 'JFK Airport, Terminal 4',
+    icon: 'flight-takeoff',
   },
-  backBtn: { width: 44, height: 44, justifyContent: "center" },
-  backIcon: { color: "#FFF", fontSize: 20 },
-  headerTitle: { flex: 1, color: "#FFF", fontSize: 18, fontWeight: "600", textAlign: "center" },
-  body: { flex: 1 },
-  bodyContent: { padding: 24, paddingBottom: 100 },
-  title: { fontSize: 24, fontWeight: "700", color: "#FFF", marginBottom: 8 },
-  subtitle: { fontSize: 15, color: "#999", marginBottom: 28 },
-  optionsList: { gap: 12 },
-  option: {
-    flexDirection: "row", alignItems: "center", gap: 16,
-    padding: 16, borderRadius: 16, backgroundColor: "#1A1A1A",
-    borderWidth: 1, borderColor: "#333",
+  {
+    id: '2',
+    title: 'Hotel Check-in',
+    time: '03:00 PM',
+    location: 'The Parisian Hotel',
+    icon: 'hotel',
   },
-  optionSelected: { borderColor: "#666", backgroundColor: "#222" },
-  radio: {
-    width: 24, height: 24, borderRadius: 12,
-    borderWidth: 2, borderColor: "#555",
-    justifyContent: "center", alignItems: "center",
+  {
+    id: '3',
+    title: 'Eiffel Tower Tour',
+    time: '06:00 PM',
+    location: 'Eiffel Tower, Paris',
+    icon: 'tour',
   },
-  radioSel: { borderColor: "#888" },
-  radioDot: { width: 12, height: 12, borderRadius: 6, backgroundColor: "#888" },
-  optionContent: { flex: 1 },
-  optionLabel: { color: "#CCC", fontSize: 16, fontWeight: "600" },
-  optionLabelSel: { color: "#FFF" },
-  optionDesc: { color: "#777", fontSize: 13, marginTop: 2 },
-  bottomBar: {
-    position: "absolute", bottom: 0, left: 0, right: 0,
-    padding: 20, paddingBottom: 36, backgroundColor: "#111",
-    borderTopWidth: 1, borderTopColor: "#222",
+  {
+    id: '4',
+    title: 'Dinner Reservation',
+    time: '08:30 PM',
+    location: 'Le Jules Verne',
+    icon: 'restaurant',
   },
-  primaryBtn: {
-    height: 56, borderRadius: 28, backgroundColor: "#333",
-    borderWidth: 1, borderColor: "#555",
-    justifyContent: "center", alignItems: "center",
+];
+
+const ScheduleScreen = () => {
+  const renderScheduleItem = ({ item }: { item: ScheduleItem }) => (
+    <BlurView intensity={20} style={styles.card}>
+      <View style={styles.cardContent}>
+        <MaterialIcons name={item.icon} size={24} color={DS.purple} style={styles.cardIcon} />
+        <View style={styles.cardTextContainer}>
+          <Text style={styles.cardTitle}>{item.title}</Text>
+          <Text style={styles.cardTimeLocation}>{item.time} - {item.location}</Text>
+        </View>
+        <MaterialIcons name="chevron-right" size={24} color={DS.muted} />
+      </View>
+    </BlurView>
+  );
+
+  return (
+    <ScreenWrapper title="My Schedule" scrollable={true}>
+      <FlatList
+        data={scheduleData}
+        renderItem={renderScheduleItem}
+        keyExtractor={(item) => item.id}
+        contentContainerStyle={styles.listContent}
+      />
+      <TouchableOpacity activeOpacity={0.8} style={styles.ctaButton}>
+        <LinearGradient
+          colors={[DS.purple, DS.pink] as const}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 1 }}
+          style={styles.gradientBackground}
+        >
+          <Text style={styles.ctaButtonText}>Add New Event</Text>
+        </LinearGradient>
+      </TouchableOpacity>
+    </ScreenWrapper>
+  );
+};
+
+const styles = StyleSheet.create({
+  listContent: {
+    paddingHorizontal: 20,
+    paddingBottom: 100, // To ensure CTA doesn't cover last item
   },
-  primaryText: { color: "#FFF", fontSize: 16, fontWeight: "600" },
+  card: {
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: DS.border,
+    backgroundColor: DS.surface,
+    overflow: 'hidden',
+    marginBottom: 15,
+    padding: 15,
+  },
+  cardContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  cardIcon: {
+    marginRight: 15,
+  },
+  cardTextContainer: {
+    flex: 1,
+  },
+  cardTitle: {
+    fontFamily: 'Chillax-Bold',
+    fontSize: 18,
+    color: DS.white,
+    marginBottom: 5,
+  },
+  cardTimeLocation: {
+    fontFamily: 'Satoshi-Regular',
+    fontSize: 14,
+    color: DS.muted,
+  },
+  ctaButton: {
+    position: 'absolute',
+    bottom: 30,
+    left: 20,
+    right: 20,
+    borderRadius: 12,
+    overflow: 'hidden',
+  },
+  gradientBackground: {
+    paddingVertical: 18,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  ctaButtonText: {
+    fontFamily: 'Satoshi-Medium',
+    fontSize: 18,
+    color: DS.white,
+  },
 });
+
+export default ScheduleScreen;

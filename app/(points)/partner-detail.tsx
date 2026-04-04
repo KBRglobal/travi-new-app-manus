@@ -1,93 +1,156 @@
-// Screen 94 — Partner Detail (Static Wireframe)
-// Route: /points/partner/:id | Mode: Points
+import React from 'react';
+import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
+import { BlurView } from 'expo-blur';
+import { MaterialIcons } from '@expo/vector-icons';
+import { ScreenWrapper, DS } from '@/components/screen-wrapper';
 
-import { ScrollView, Text, View, StyleSheet } from "react-native";
-import { ScreenContainer } from "@/components/screen-container";
+const PartnerDetailScreen = () => {
+  // Placeholder data for partner details
+  const partner = {
+    id: '1',
+    name: 'TRAVI Rewards Partner',
+    logo: 'https://via.placeholder.com/150/6443F4/FFFFFF?text=Partner',
+    description: 'Earn exclusive points and rewards with our premium travel partner. Enjoy discounts on flights, hotels, and experiences worldwide.',
+    pointsEarned: 1500,
+    offers: [
+      { id: '1', title: '20% off all flights', icon: 'flight' },
+      { id: '2', title: 'Free hotel upgrade', icon: 'hotel' },
+      { id: '3', title: 'Exclusive lounge access', icon: 'lounge' },
+    ],
+  };
 
-const REWARDS = [
-  { id: "1", title: "$25 Gift Card", pts: "2,500" },
-  { id: "2", title: "$50 Gift Card", pts: "5,000" },
-  { id: "3", title: "$100 Gift Card", pts: "9,500", badge: "Best Value" },
-];
-
-export default function PartnerDetailScreen() {
   return (
-    <ScreenContainer>
-      <View style={s.container}>
-        <View style={s.header}>
-          <Text style={s.back}>←</Text>
-          <Text style={s.title}>Amazon</Text>
-          <View style={{width:24}}/>
-        </View>
-        <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={s.scroll}>
-          <View style={s.heroCard}>
-            <View style={s.heroLogo}><Text style={{fontSize:40}}>🎁</Text></View>
-            <Text style={s.heroName}>Amazon Gift Cards</Text>
-            <Text style={s.heroDesc}>Redeem your TRAVI points for Amazon gift cards. Use them for millions of products.</Text>
-            <View style={s.heroStats}>
-              <View style={s.heroStat}><Text style={s.statVal}>1:0.01</Text><Text style={s.statLabel}>Conversion</Text></View>
-              <View style={s.divider}/>
-              <View style={s.heroStat}><Text style={s.statVal}>Instant</Text><Text style={s.statLabel}>Delivery</Text></View>
-              <View style={s.divider}/>
-              <View style={s.heroStat}><Text style={s.statVal}>Digital</Text><Text style={s.statLabel}>Format</Text></View>
-            </View>
+    <ScreenWrapper title="Partner Details" scrollable={true}>
+      <View style={styles.container}>
+        <BlurView intensity={20} tint="dark" style={styles.glassCard}>
+          <View style={styles.partnerHeader}>
+            <Image source={{ uri: partner.logo }} style={styles.partnerLogo} />
+            <Text style={styles.partnerName}>{partner.name}</Text>
           </View>
-
-          <Text style={s.secTitle}>Available Rewards</Text>
-          {REWARDS.map(r=>(
-            <View key={r.id} style={s.rewardCard}>
-              <View style={s.rewardInfo}>
-                <View style={s.rewardNameRow}>
-                  <Text style={s.rewardTitle}>{r.title}</Text>
-                  {r.badge && <View style={s.rewardBadge}><Text style={s.rewardBadgeText}>{r.badge}</Text></View>}
-                </View>
-                <Text style={s.rewardPts}>⬡ {r.pts} pts</Text>
-              </View>
-              <View style={s.redeemBtn}><Text style={s.redeemText}>Redeem</Text></View>
-            </View>
-          ))}
-
-          <View style={s.infoSection}>
-            <Text style={s.secTitle}>How It Works</Text>
-            {["Select your desired gift card amount","Confirm redemption with your points","Receive digital code instantly via email","Apply code at checkout on Amazon"].map((step,i)=>(
-              <View key={i} style={s.stepRow}>
-                <View style={s.stepNum}><Text style={s.stepNumText}>{i+1}</Text></View>
-                <Text style={s.stepText}>{step}</Text>
-              </View>
-            ))}
+          <Text style={styles.partnerDescription}>{partner.description}</Text>
+          <View style={styles.pointsContainer}>
+            <MaterialIcons name="star" size={20} color={DS.warning} />
+            <Text style={styles.pointsText}>{partner.pointsEarned} Points Earned</Text>
           </View>
-          <View style={{height:100}}/>
-        </ScrollView>
+        </BlurView>
+
+        <Text style={styles.offersTitle}>Exclusive Offers</Text>
+        {partner.offers.map((offer) => (
+          <BlurView key={offer.id} intensity={20} tint="dark" style={styles.offerCard}>
+            <MaterialIcons name={offer.icon as any} size={24} color={DS.purple} />
+            <Text style={styles.offerText}>{offer.title}</Text>
+          </BlurView>
+        ))}
+
+        <TouchableOpacity style={styles.ctaButton}>
+          <LinearGradient
+            colors={[DS.purple, DS.pink] as const}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+            style={styles.gradientButton}
+          >
+            <Text style={styles.ctaButtonText}>View Partner Website</Text>
+            <MaterialIcons name="arrow-forward" size={20} color={DS.white} style={{ marginLeft: 8 }} />
+          </LinearGradient>
+        </TouchableOpacity>
       </View>
-    </ScreenContainer>
+    </ScreenWrapper>
   );
-}
+};
 
-const N="#111",N2="#1a1a1a",N3="#222",W="#fff",G="#888";
-const s = StyleSheet.create({
-  container:{flex:1,backgroundColor:N},
-  header:{height:60,flexDirection:"row",alignItems:"center",justifyContent:"space-between",paddingHorizontal:16},
-  back:{fontSize:24,color:W},title:{fontSize:20,fontWeight:"700",color:W},
-  scroll:{paddingHorizontal:16},
-  heroCard:{backgroundColor:N2,borderRadius:20,borderWidth:1,borderColor:N3,padding:24,alignItems:"center",gap:10},
-  heroLogo:{width:80,height:80,borderRadius:20,backgroundColor:N3,alignItems:"center",justifyContent:"center"},
-  heroName:{fontSize:22,fontWeight:"700",color:W},heroDesc:{fontSize:14,color:G,textAlign:"center",lineHeight:20},
-  heroStats:{flexDirection:"row",alignItems:"center",gap:16,marginTop:8},
-  heroStat:{alignItems:"center"},statVal:{fontSize:16,fontWeight:"700",color:W},statLabel:{fontSize:12,color:G,marginTop:2},
-  divider:{width:1,height:32,backgroundColor:N3},
-  secTitle:{fontSize:18,fontWeight:"700",color:W,marginTop:24,marginBottom:12},
-  rewardCard:{flexDirection:"row",alignItems:"center",backgroundColor:N2,borderRadius:16,borderWidth:1,borderColor:N3,padding:16,marginBottom:10},
-  rewardInfo:{flex:1,gap:4},
-  rewardNameRow:{flexDirection:"row",alignItems:"center",gap:8},
-  rewardTitle:{fontSize:16,fontWeight:"600",color:W},
-  rewardBadge:{paddingHorizontal:6,paddingVertical:2,borderRadius:6,backgroundColor:"#1a3a1a"},
-  rewardBadgeText:{fontSize:10,fontWeight:"600",color:"#4a4"},
-  rewardPts:{fontSize:14,color:G},
-  redeemBtn:{paddingHorizontal:16,paddingVertical:10,borderRadius:12,backgroundColor:"#333"},
-  redeemText:{fontSize:14,fontWeight:"600",color:W},
-  infoSection:{marginTop:8},
-  stepRow:{flexDirection:"row",alignItems:"center",gap:12,marginBottom:12},
-  stepNum:{width:28,height:28,borderRadius:14,backgroundColor:N3,alignItems:"center",justifyContent:"center"},
-  stepNumText:{fontSize:14,fontWeight:"700",color:W},
-  stepText:{flex:1,fontSize:14,color:"#aaa",lineHeight:20},
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 20,
+    backgroundColor: DS.bg,
+  },
+  glassCard: {
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: DS.border,
+    backgroundColor: DS.surface,
+    overflow: 'hidden',
+    padding: 20,
+    marginBottom: 20,
+  },
+  partnerHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 15,
+  },
+  partnerLogo: {
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    marginRight: 15,
+    borderWidth: 1,
+    borderColor: DS.borderStrong,
+  },
+  partnerName: {
+    fontFamily: 'Chillax-Bold',
+    fontSize: 24,
+    color: DS.white,
+  },
+  partnerDescription: {
+    fontFamily: 'Satoshi-Regular',
+    fontSize: 16,
+    color: DS.secondary,
+    marginBottom: 15,
+    lineHeight: 22,
+  },
+  pointsContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 10,
+  },
+  pointsText: {
+    fontFamily: 'Satoshi-Medium',
+    fontSize: 18,
+    color: DS.warning,
+    marginLeft: 8,
+  },
+  offersTitle: {
+    fontFamily: 'Chillax-Bold',
+    fontSize: 20,
+    color: DS.white,
+    marginBottom: 15,
+    marginTop: 10,
+  },
+  offerCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: DS.border,
+    backgroundColor: DS.surface,
+    overflow: 'hidden',
+    padding: 15,
+    marginBottom: 10,
+  },
+  offerText: {
+    fontFamily: 'Satoshi-Medium',
+    fontSize: 16,
+    color: DS.white,
+    marginLeft: 15,
+  },
+  ctaButton: {
+    marginTop: 30,
+    borderRadius: 12,
+    overflow: 'hidden',
+  },
+  gradientButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 15,
+    paddingHorizontal: 20,
+  },
+  ctaButtonText: {
+    fontFamily: 'Chillax-Bold',
+    fontSize: 18,
+    color: DS.white,
+  },
 });
+
+export default PartnerDetailScreen;

@@ -1,106 +1,174 @@
-/**
- * TRAVI — Notification Settings
- */
-import { router } from "expo-router";
 import React, { useState } from "react";
-import { ScrollView, StyleSheet, Switch, Text, TouchableOpacity, View } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { View, Text, StyleSheet, Switch, TouchableOpacity } from "react-native";
+import { ScreenWrapper, DS } from "@/components/screen-wrapper";
+import { BlurView } from "expo-blur";
+import { LinearGradient } from "expo-linear-gradient";
+import { MaterialIcons } from "@expo/vector-icons";
 
-type NotifSection = { title: string; items: { id: string; label: string; desc: string; defaultOn: boolean }[] };
-
-const SECTIONS: NotifSection[] = [
-  {
-    title: "Trip Alerts",
-    items: [
-      { id: "price_drop", label: "Price Drop Alerts", desc: "When flight or hotel prices drop for saved trips", defaultOn: true },
-      { id: "trip_reminder", label: "Trip Reminders", desc: "24h and 2h before departure", defaultOn: true },
-      { id: "gate_change", label: "Gate & Flight Changes", desc: "Real-time gate changes and delays", defaultOn: true },
-      { id: "checkin_open", label: "Check-in Opens", desc: "When online check-in is available", defaultOn: true },
-    ],
-  },
-  {
-    title: "Cashback & Wallet",
-    items: [
-      { id: "cashback_earned", label: "Cashback Earned", desc: "When you earn cashback on a booking", defaultOn: true },
-      { id: "wallet_credit", label: "Wallet Credits", desc: "When credits are added to your wallet", defaultOn: true },
-      { id: "kyc_status", label: "KYC Status Updates", desc: "Identity verification progress", defaultOn: true },
-    ],
-  },
-  {
-    title: "Social",
-    items: [
-      { id: "friend_invite", label: "Friend Invites", desc: "When someone invites you on a trip", defaultOn: true },
-      { id: "dna_match", label: "DNA Matches", desc: "When a high-compatibility traveler is found", defaultOn: false },
-      { id: "community_reply", label: "Community Replies", desc: "Replies to your posts and comments", defaultOn: false },
-      { id: "message_new", label: "New Messages", desc: "Direct messages from other travelers", defaultOn: true },
-    ],
-  },
-  {
-    title: "Marketing",
-    items: [
-      { id: "deals", label: "Exclusive Deals", desc: "Personalized travel deals based on your DNA", defaultOn: true },
-      { id: "newsletter", label: "Weekly Digest", desc: "Top destinations and travel tips", defaultOn: false },
-      { id: "partner_offers", label: "Partner Offers", desc: "Offers from TRAVI partners", defaultOn: false },
-    ],
-  },
-];
-
-export default function NotificationsSettingsScreen() {
-  const insets = useSafeAreaInsets();
-  const [prefs, setPrefs] = useState<Record<string, boolean>>(() => {
-    const init: Record<string, boolean> = {};
-    SECTIONS.forEach((s) => s.items.forEach((item) => { init[item.id] = item.defaultOn; }));
-    return init;
-  });
-
-  const toggle = (id: string) => setPrefs((p) => ({ ...p, [id]: !p[id] }));
+export default function NotificationsScreen() {
+  const [pushEnabled, setPushEnabled] = useState(true);
+  const [emailEnabled, setEmailEnabled] = useState(false);
+  const [smsEnabled, setSmsEnabled] = useState(true);
+  const [promoEnabled, setPromoEnabled] = useState(false);
 
   return (
-    <View style={[S.container, { paddingTop: insets.top }]}>
-      <View style={S.header}>
-        <TouchableOpacity onPress={() => router.back()} style={S.backBtn} activeOpacity={0.7}>
-          <Text style={S.backText}>←</Text>
-        </TouchableOpacity>
-        <Text style={S.headerTitle}>Notifications</Text>
-        <View style={{ width: 36 }} />
-      </View>
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 130 }}>
-        {SECTIONS.map((section) => (
-          <View key={section.title} style={S.section}>
-            <Text style={S.sectionTitle}>{section.title}</Text>
-            {section.items.map((item) => (
-              <View key={item.id} style={S.row}>
-                <View style={S.rowText}>
-                  <Text style={S.rowLabel}>{item.label}</Text>
-                  <Text style={S.rowDesc}>{item.desc}</Text>
-                </View>
-                <Switch
-                  value={prefs[item.id]}
-                  onValueChange={() => toggle(item.id)}
-                  trackColor={{ false: "#2A2A3A", true: "#6443F4" }}
-                  thumbColor="#FFFFFF"
-                />
+    <ScreenWrapper title="Notifications" scrollable={true}>
+      <View style={styles.container}>
+        <Text style={styles.sectionTitle}>Preferences</Text>
+        
+        <BlurView intensity={20} tint="dark" style={styles.card}>
+          <View style={styles.settingRow}>
+            <View style={styles.settingInfo}>
+              <MaterialIcons name="notifications-active" size={24} color={DS.purple} />
+              <View style={styles.settingTextContainer}>
+                <Text style={styles.settingTitle}>Push Notifications</Text>
+                <Text style={styles.settingDescription}>Receive alerts on your device</Text>
               </View>
-            ))}
+            </View>
+            <Switch
+              value={pushEnabled}
+              onValueChange={setPushEnabled}
+              trackColor={{ false: DS.muted, true: DS.purple }}
+              thumbColor={DS.white}
+            />
           </View>
-        ))}
-      </ScrollView>
-    </View>
+
+          <View style={styles.divider} />
+
+          <View style={styles.settingRow}>
+            <View style={styles.settingInfo}>
+              <MaterialIcons name="email" size={24} color={DS.pink} />
+              <View style={styles.settingTextContainer}>
+                <Text style={styles.settingTitle}>Email Updates</Text>
+                <Text style={styles.settingDescription}>Weekly summaries and news</Text>
+              </View>
+            </View>
+            <Switch
+              value={emailEnabled}
+              onValueChange={setEmailEnabled}
+              trackColor={{ false: DS.muted, true: DS.purple }}
+              thumbColor={DS.white}
+            />
+          </View>
+
+          <View style={styles.divider} />
+
+          <View style={styles.settingRow}>
+            <View style={styles.settingInfo}>
+              <MaterialIcons name="sms" size={24} color={DS.info} />
+              <View style={styles.settingTextContainer}>
+                <Text style={styles.settingTitle}>SMS Alerts</Text>
+                <Text style={styles.settingDescription}>Important security alerts</Text>
+              </View>
+            </View>
+            <Switch
+              value={smsEnabled}
+              onValueChange={setSmsEnabled}
+              trackColor={{ false: DS.muted, true: DS.purple }}
+              thumbColor={DS.white}
+            />
+          </View>
+        </BlurView>
+
+        <Text style={styles.sectionTitle}>Marketing</Text>
+
+        <BlurView intensity={20} tint="dark" style={styles.card}>
+          <View style={styles.settingRow}>
+            <View style={styles.settingInfo}>
+              <MaterialIcons name="local-offer" size={24} color={DS.warning} />
+              <View style={styles.settingTextContainer}>
+                <Text style={styles.settingTitle}>Promotions</Text>
+                <Text style={styles.settingDescription}>Special offers and discounts</Text>
+              </View>
+            </View>
+            <Switch
+              value={promoEnabled}
+              onValueChange={setPromoEnabled}
+              trackColor={{ false: DS.muted, true: DS.purple }}
+              thumbColor={DS.white}
+            />
+          </View>
+        </BlurView>
+
+        <TouchableOpacity style={styles.saveButtonContainer} activeOpacity={0.8}>
+          <LinearGradient
+            colors={[DS.purple, DS.pink] as const}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 0 }}
+            style={styles.saveButton}
+          >
+            <Text style={styles.saveButtonText}>Save Preferences</Text>
+          </LinearGradient>
+        </TouchableOpacity>
+      </View>
+    </ScreenWrapper>
   );
 }
 
-const S = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#0D0628" },
-  header: { flexDirection: "row", alignItems: "center", paddingHorizontal: 20, paddingBottom: 16, gap: 12 },
-  backBtn: { width: 36, height: 36, borderRadius: 18, backgroundColor: "rgba(255,255,255,0.06)", alignItems: "center", justifyContent: "center" },
-  backText: { color: "#FFFFFF", fontSize: 18, fontWeight: "700",
-      fontFamily: "Chillax-Semibold" },
-  headerTitle: { flex: 1, color: "#FFFFFF", fontSize: 20, fontWeight: "900", textAlign: "center", fontFamily: "Chillax-Bold" },
-  section: { paddingHorizontal: 20, marginBottom: 24 },
-  sectionTitle: { color: "rgba(255,255,255,0.5)", fontSize: 11, fontWeight: "800",
-      fontFamily: "Chillax-Bold", textTransform: "uppercase", letterSpacing: 1.5, marginBottom: 12 },
-  row: { flexDirection: "row", alignItems: "center", paddingVertical: 12, borderBottomWidth: 1, borderBottomColor: "rgba(255,255,255,0.12)", gap: 12 },
-  rowText: { flex: 1, gap: 2 },
-  rowLabel: { color: "#FFFFFF", fontSize: 14, fontWeight: "700" },
-  rowDesc: { color: "rgba(255,255,255,0.5)", fontSize: 12, lineHeight: 18 },
+const styles = StyleSheet.create({
+  container: {
+    paddingHorizontal: 20,
+    paddingBottom: 40,
+  },
+  sectionTitle: {
+    fontFamily: "Chillax-Bold",
+    fontSize: 20,
+    color: DS.white,
+    marginTop: 24,
+    marginBottom: 16,
+  },
+  card: {
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: DS.border,
+    backgroundColor: DS.surface,
+    overflow: "hidden",
+    padding: 16,
+  },
+  settingRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingVertical: 8,
+  },
+  settingInfo: {
+    flexDirection: "row",
+    alignItems: "center",
+    flex: 1,
+  },
+  settingTextContainer: {
+    marginLeft: 16,
+    flex: 1,
+  },
+  settingTitle: {
+    fontFamily: "Satoshi-Medium",
+    fontSize: 16,
+    color: DS.white,
+    marginBottom: 4,
+  },
+  settingDescription: {
+    fontFamily: "Satoshi-Regular",
+    fontSize: 14,
+    color: DS.muted,
+  },
+  divider: {
+    height: 1,
+    backgroundColor: DS.border,
+    marginVertical: 12,
+  },
+  saveButtonContainer: {
+    marginTop: 40,
+    borderRadius: 16,
+    overflow: "hidden",
+  },
+  saveButton: {
+    paddingVertical: 16,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  saveButtonText: {
+    fontFamily: "Satoshi-Medium",
+    fontSize: 16,
+    color: DS.white,
+  },
 });

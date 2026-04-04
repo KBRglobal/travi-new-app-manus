@@ -4,46 +4,19 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { HapticTab } from "@/components/haptic-tab";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 
-// Figma prompt palette
 const T = {
   bg: "#120824",
   border: "rgba(123,68,230,0.2)",
   inactive: "rgba(255,255,255,0.35)",
   active: "#F94498",
   activeBg: "rgba(249,68,152,0.15)",
-  white: "#FFFFFF",
 };
 
-// Tab icon names (Material Icons)
-const TAB_ICONS: Record<string, string> = {
-  Home: "home",
-  Trips: "flight",
-  Wallet: "account-balance-wallet",
-  Explore: "explore",
-  Profile: "person",
-};
-
-interface TabIconProps {
-  name: string;
-  label: string;
-  focused: boolean;
-}
-
-function TabIcon({ name, label, focused }: TabIconProps) {
+function TabIcon({ name, label, focused }: { name: string; label: string; focused: boolean }) {
   return (
     <View style={[styles.tabItem, focused && styles.tabItemActive]}>
-      <MaterialIcons
-        name={name as any}
-        size={22}
-        color={focused ? T.active : T.inactive}
-      />
-      <Text
-        style={[
-          styles.tabLabel,
-          { color: focused ? T.active : T.inactive },
-        ]}
-        numberOfLines={1}
-      >
+      <MaterialIcons name={name as any} size={22} color={focused ? T.active : T.inactive} />
+      <Text style={[styles.tabLabel, { color: focused ? T.active : T.inactive }]} numberOfLines={1}>
         {label}
       </Text>
     </View>
@@ -79,87 +52,86 @@ export default function TabLayout() {
         },
       }}
     >
+      {/* ── 5 visible tabs ── */}
       <Tabs.Screen
         name="index"
         options={{
           title: "Home",
-          tabBarIcon: ({ focused }) => (
-            <TabIcon name="home" label="Home" focused={focused} />
-          ),
+          tabBarIcon: ({ focused }) => <TabIcon name="home" label="Home" focused={focused} />,
         }}
       />
       <Tabs.Screen
         name="trips"
         options={{
           title: "Trips",
-          tabBarIcon: ({ focused }) => (
-            <TabIcon name="flight" label="Trips" focused={focused} />
-          ),
+          tabBarIcon: ({ focused }) => <TabIcon name="flight" label="Trips" focused={focused} />,
         }}
       />
       <Tabs.Screen
         name="wallet"
         options={{
           title: "Wallet",
-          tabBarIcon: ({ focused }) => (
-            <TabIcon name="account-balance-wallet" label="Wallet" focused={focused} />
-          ),
+          tabBarIcon: ({ focused }) => <TabIcon name="account-balance-wallet" label="Wallet" focused={focused} />,
         }}
       />
       <Tabs.Screen
         name="explore"
         options={{
           title: "Explore",
-          tabBarIcon: ({ focused }) => (
-            <TabIcon name="explore" label="Explore" focused={focused} />
-          ),
+          tabBarIcon: ({ focused }) => <TabIcon name="explore" label="Explore" focused={focused} />,
         }}
       />
       <Tabs.Screen
         name="profile"
         options={{
           title: "Profile",
-          tabBarIcon: ({ focused }) => (
-            <TabIcon name="person" label="Profile" focused={focused} />
-          ),
+          tabBarIcon: ({ focused }) => <TabIcon name="person" label="Profile" focused={focused} />,
         }}
       />
 
-      {/* Hidden screens */}
+      {/* ── All other screens hidden from tab bar ── */}
+      <Tabs.Screen name="add-funds" options={{ href: null }} />
       <Tabs.Screen name="alerts" options={{ href: null }} />
-      <Tabs.Screen name="notifications" options={{ href: null }} />
-      <Tabs.Screen name="subscription" options={{ href: null }} />
-      <Tabs.Screen name="refer" options={{ href: null }} />
+      <Tabs.Screen name="badges-leaderboard" options={{ href: null }} />
+      <Tabs.Screen name="competitors" options={{ href: null }} />
+      <Tabs.Screen name="connecting" options={{ href: null }} />
       <Tabs.Screen name="destination-guide" options={{ href: null }} />
       <Tabs.Screen name="destination-swipe" options={{ href: null }} />
+      <Tabs.Screen name="dna-evolution" options={{ href: null }} />
+      <Tabs.Screen name="dna-management" options={{ href: null }} />
+      <Tabs.Screen name="enterprise" options={{ href: null }} />
       <Tabs.Screen name="events" options={{ href: null }} />
+      <Tabs.Screen name="help" options={{ href: null }} />
+      <Tabs.Screen name="invite-partner" options={{ href: null }} />
+      <Tabs.Screen name="kyc" options={{ href: null }} />
+      <Tabs.Screen name="membership" options={{ href: null }} />
+      <Tabs.Screen name="memory-hub" options={{ href: null }} />
+      <Tabs.Screen name="notifications" options={{ href: null }} />
+      <Tabs.Screen name="plan-trip" options={{ href: null }} />
+      <Tabs.Screen name="profile-edit" options={{ href: null }} />
+      <Tabs.Screen name="property-detail" options={{ href: null }} />
+      <Tabs.Screen name="prospects-crm" options={{ href: null }} />
       <Tabs.Screen name="real-estate" options={{ href: null }} />
       <Tabs.Screen name="real-estate-analysis" options={{ href: null }} />
       <Tabs.Screen name="real-estate-contacts" options={{ href: null }} />
       <Tabs.Screen name="real-estate-guide" options={{ href: null }} />
-      <Tabs.Screen name="property-detail" options={{ href: null }} />
+      <Tabs.Screen name="refer" options={{ href: null }} />
+      <Tabs.Screen name="regulations-tracker" options={{ href: null }} />
+      <Tabs.Screen name="revenue-dashboard" options={{ href: null }} />
+      <Tabs.Screen name="rewards-portal" options={{ href: null }} />
+      <Tabs.Screen name="search" options={{ href: null }} />
+      <Tabs.Screen name="settings" options={{ href: null }} />
       <Tabs.Screen name="south-america-hub" options={{ href: null }} />
-      <Tabs.Screen name="enterprise" options={{ href: null }} />
-      <Tabs.Screen name="prospects-crm" options={{ href: null }} />
+      <Tabs.Screen name="split-payment" options={{ href: null }} />
+      <Tabs.Screen name="subscription" options={{ href: null }} />
       <Tabs.Screen name="support" options={{ href: null }} />
+      <Tabs.Screen name="transaction-history" options={{ href: null }} />
       <Tabs.Screen name="trip-detail" options={{ href: null }} />
       <Tabs.Screen name="trip-hub" options={{ href: null }} />
-      <Tabs.Screen name="dna-evolution" options={{ href: null }} />
-      <Tabs.Screen name="badges-leaderboard" options={{ href: null }} />
-      <Tabs.Screen name="memory-hub" options={{ href: null }} />
-      <Tabs.Screen name="rewards-portal" options={{ href: null }} />
-      <Tabs.Screen name="avatar-customization" options={{ href: null }} />
-      <Tabs.Screen name="mini-games" options={{ href: null }} />
-      <Tabs.Screen name="wishlist" options={{ href: null }} />
-      <Tabs.Screen name="invite-partner" options={{ href: null }} />
-      <Tabs.Screen name="competitors" options={{ href: null }} />
-      <Tabs.Screen name="revenue-dashboard" options={{ href: null }} />
-      <Tabs.Screen name="regulations-tracker" options={{ href: null }} />
-      <Tabs.Screen name="connecting" options={{ href: null }} />
+      <Tabs.Screen name="wallet-exchange" options={{ href: null }} />
       <Tabs.Screen name="wallet-kyc" options={{ href: null }} />
       <Tabs.Screen name="wallet-withdraw" options={{ href: null }} />
-      <Tabs.Screen name="wallet-exchange" options={{ href: null }} />
-      <Tabs.Screen name="plan-trip" options={{ href: null }} />
+      <Tabs.Screen name="wishlist" options={{ href: null }} />
     </Tabs>
   );
 }

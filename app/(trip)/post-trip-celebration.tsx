@@ -1,64 +1,123 @@
-// Screen 44 — Post-Trip Celebration — STATIC 
-// Full screen, Confetti 2s, Stats 2x2, Cashback card 140px, 5 star rating
-import { View, Text, StyleSheet, Pressable } from "react-native";
+import React from 'react';
+import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { ScreenWrapper, DS } from '@/components/screen-wrapper';
+import { BlurView } from 'expo-blur';
+import { LinearGradient } from 'expo-linear-gradient';
+import { MaterialIcons } from '@expo/vector-icons';
 
-export default function PostTripCelebrationScreen() {
+const PostTripCelebration = () => {
   return (
-    <View style={s.root}>
-      <Text style={s.confetti}>* * * * * * *</Text>
-      <Text style={s.title}>Welcome Back!</Text>
-      <Text style={s.sub}>Your Bali trip was amazing</Text>
+    <ScreenWrapper title="Trip Celebration" scrollable={true}>
+      <View style={styles.container}>
+        <MaterialIcons name="celebration" size={80} color={DS.purple} style={styles.icon} />
+        <Text style={styles.header}>Congratulations!</Text>
+        <Text style={styles.subHeader}>You've completed an amazing trip!</Text>
 
-      {/* Stats 2x2 */}
-      <View style={s.statsGrid}>
-        <View style={s.statCard}><Text style={s.statNum}>7</Text><Text style={s.statLabel}>Days</Text></View>
-        <View style={s.statCard}><Text style={s.statNum}>9</Text><Text style={s.statLabel}>Activities</Text></View>
-        <View style={s.statCard}><Text style={s.statNum}>142</Text><Text style={s.statLabel}>Photos</Text></View>
-        <View style={s.statCard}><Text style={s.statNum}>E4,170</Text><Text style={s.statLabel}>Total Spent</Text></View>
+        <BlurView intensity={20} tint="dark" style={styles.glassCard}>
+          <Text style={styles.cardTitle}>Your Trip Highlights</Text>
+          <View style={styles.highlightItem}>
+            <MaterialIcons name="location-on" size={20} color={DS.pink} />
+            <Text style={styles.highlightText}>Visited 5 new cities</Text>
+          </View>
+          <View style={styles.highlightItem}>
+            <MaterialIcons name="flight-takeoff" size={20} color={DS.pink} />
+            <Text style={styles.highlightText}>Flew over 10,000 miles</Text>
+          </View>
+          <View style={styles.highlightItem}>
+            <MaterialIcons name="camera-alt" size={20} color={DS.pink} />
+            <Text style={styles.highlightText}>Captured 200+ memories</Text>
+          </View>
+        </BlurView>
+
+        <LinearGradient
+          colors={[DS.purple, DS.pink] as const}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 1 }}
+          style={styles.ctaButton}
+        >
+          <Text style={styles.ctaButtonText}>Share Your Experience</Text>
+        </LinearGradient>
+
+        <LinearGradient
+          colors={[DS.purple, DS.pink] as const}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 1 }}
+          style={styles.ctaButton}
+        >
+          <Text style={styles.ctaButtonText}>Plan Your Next Adventure</Text>
+        </LinearGradient>
       </View>
-
-      {/* Cashback card — 140px */}
-      <View style={s.cashbackCard}>
-        <Text style={s.cashbackTitle}>Cashback Earned</Text>
-        <Text style={s.cashbackAmount}>+E417</Text>
-        <Text style={s.cashbackSub}>Added to your TRAVI Wallet</Text>
-      </View>
-
-      {/* 5 star rating */}
-      <View style={s.ratingSection}>
-        <Text style={s.ratingTitle}>How was your trip?</Text>
-        <View style={s.starsRow}>
-          {[1, 2, 3, 4, 5].map((star) => (
-            <Pressable key={star} style={s.star}><Text style={s.starText}>*</Text></Pressable>
-          ))}
-        </View>
-      </View>
-
-      <Pressable style={s.cta}><Text style={s.ctaText}>View Trip Summary</Text></Pressable>
-      <Pressable><Text style={s.skipText}>Skip for now</Text></Pressable>
-    </View>
+    </ScreenWrapper>
   );
-}
+};
 
-const s = StyleSheet.create({
-  root: { flex: 1, backgroundColor: "#111", justifyContent: "center", alignItems: "center", padding: 20 },
-  confetti: { color: "#555", fontSize: 20, letterSpacing: 8, marginBottom: 16 },
-  title: { color: "#FFF", fontSize: 28, fontWeight: "800" },
-  sub: { color: "#888", fontSize: 15, marginTop: 4 },
-  statsGrid: { flexDirection: "row", flexWrap: "wrap", gap: 12, marginTop: 28, width: "100%" },
-  statCard: { width: "47%", height: 80, borderRadius: 14, backgroundColor: "#1A1A1A", borderWidth: 1, borderColor: "#333", justifyContent: "center", alignItems: "center" },
-  statNum: { color: "#FFF", fontSize: 22, fontWeight: "800" },
-  statLabel: { color: "#888", fontSize: 12, marginTop: 2 },
-  cashbackCard: { width: "100%", height: 140, borderRadius: 16, backgroundColor: "#1A1A1A", borderWidth: 1, borderColor: "#333", justifyContent: "center", alignItems: "center", marginTop: 16 },
-  cashbackTitle: { color: "#888", fontSize: 13 },
-  cashbackAmount: { color: "#4ADE80", fontSize: 36, fontWeight: "800", marginTop: 4 },
-  cashbackSub: { color: "#666", fontSize: 12, marginTop: 4 },
-  ratingSection: { alignItems: "center", marginTop: 24 },
-  ratingTitle: { color: "#FFF", fontSize: 16, fontWeight: "600", marginBottom: 12 },
-  starsRow: { flexDirection: "row", gap: 12 },
-  star: { width: 48, height: 48, borderRadius: 24, backgroundColor: "#222", borderWidth: 1, borderColor: "#444", justifyContent: "center", alignItems: "center" },
-  starText: { color: "#FBBF24", fontSize: 24 },
-  cta: { width: "100%", height: 52, borderRadius: 26, backgroundColor: "#333", borderWidth: 1, borderColor: "#555", justifyContent: "center", alignItems: "center", marginTop: 24 },
-  ctaText: { color: "#FFF", fontSize: 16, fontWeight: "600" },
-  skipText: { color: "#888", fontSize: 14, marginTop: 12 },
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 20,
+    alignItems: 'center',
+    backgroundColor: DS.bg,
+  },
+  icon: {
+    marginBottom: 20,
+  },
+  header: {
+    fontFamily: 'Chillax-Bold',
+    fontSize: 32,
+    color: DS.white,
+    marginBottom: 10,
+    textAlign: 'center',
+  },
+  subHeader: {
+    fontFamily: 'Satoshi-Medium',
+    fontSize: 18,
+    color: DS.muted,
+    marginBottom: 30,
+    textAlign: 'center',
+  },
+  glassCard: {
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: DS.border,
+    backgroundColor: DS.surface,
+    overflow: 'hidden',
+    padding: 20,
+    width: '100%',
+    maxWidth: 400,
+    marginBottom: 30,
+  },
+  cardTitle: {
+    fontFamily: 'Chillax-Bold',
+    fontSize: 22,
+    color: DS.white,
+    marginBottom: 15,
+    textAlign: 'center',
+  },
+  highlightItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+  highlightText: {
+    fontFamily: 'Satoshi-Regular',
+    fontSize: 16,
+    color: DS.secondary,
+    marginLeft: 10,
+  },
+  ctaButton: {
+    paddingVertical: 15,
+    paddingHorizontal: 30,
+    borderRadius: 10,
+    width: '100%',
+    maxWidth: 400,
+    alignItems: 'center',
+    marginBottom: 15,
+  },
+  ctaButtonText: {
+    fontFamily: 'Satoshi-Medium',
+    fontSize: 18,
+    color: DS.white,
+  },
 });
+
+export default PostTripCelebration;

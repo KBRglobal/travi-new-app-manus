@@ -1,114 +1,175 @@
-// Screen 26 — Itinerary Builder — STATIC 
-import { View, Text, StyleSheet, Pressable, ScrollView } from "react-native";
+import React from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
+import { BlurView } from 'expo-blur';
+import { LinearGradient } from 'expo-linear-gradient';
+import { MaterialIcons } from '@expo/vector-icons';
+import { ScreenWrapper, DS } from '@/components/screen-wrapper';
 
-const DAYS = [
-  { day: 1, date: "Apr 15", activities: [
-    { time: "09:00", title: "Airport Transfer", duration: "1h", type: "Transport" },
-    { time: "11:00", title: "Hotel Check-in", duration: "30m", type: "Hotel" },
-    { time: "14:00", title: "Bali Swing Experience", duration: "3h", type: "Adventure" },
-    { time: "19:00", title: "Dinner at Jimbaran Bay", duration: "2h", type: "Dining" },
-  ]},
-  { day: 2, date: "Apr 16", activities: [
-    { time: "08:00", title: "Ubud Rice Terraces", duration: "4h", type: "Nature" },
-    { time: "13:00", title: "Lunch at Locavore", duration: "1.5h", type: "Dining" },
-    { time: "15:00", title: "Monkey Forest Sanctuary", duration: "2h", type: "Nature" },
-  ]},
-  { day: 3, date: "Apr 17", activities: [
-    { time: "07:00", title: "Mount Batur Sunrise Trek", duration: "5h", type: "Adventure" },
-    { time: "14:00", title: "Hot Springs", duration: "2h", type: "Wellness" },
-  ]},
-];
+// DS object exported from ScreenWrapper.tsx (for reference and direct use)
 
-export default function ItineraryBuilderScreen() {
+const ItineraryBuilder = () => {
+  // Dummy data for itinerary items
+  const itineraryItems = [
+    { id: '1', title: 'Flight to Paris', time: '10:00 AM', location: 'CDG Airport' },
+    { id: '2', title: 'Check-in at Hotel', time: '03:00 PM', location: 'The Parisian Hotel' },
+    { id: '3', title: 'Eiffel Tower Visit', time: '06:00 PM', location: 'Champ de Mars' },
+  ];
+
   return (
-    <View style={s.root}>
-      <View style={s.header}>
-        <Pressable style={s.backBtn}><Text style={s.backText}>{"<"}</Text></Pressable>
-        <Text style={s.headerTitle}>Build Itinerary</Text>
-        <Pressable><Text style={s.menuText}>...</Text></Pressable>
-      </View>
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 120 }}>
-        <View style={s.summary}>
-          <Text style={s.summaryDest}>Bali, Indonesia</Text>
-          <Text style={s.summaryDates}>Apr 15-22, 2026 | 7 nights</Text>
-          <View style={s.summaryStats}>
-            <View style={s.stat}><Text style={s.statValue}>9</Text><Text style={s.statLabel}>Activities</Text></View>
-            <View style={s.stat}><Text style={s.statValue}>3</Text><Text style={s.statLabel}>Days Planned</Text></View>
-            <View style={s.stat}><Text style={s.statValue}>4</Text><Text style={s.statLabel}>Days Free</Text></View>
-          </View>
-        </View>
-        {DAYS.map((day) => (
-          <View key={day.day}>
-            <View style={s.dayHeader}>
-              <Text style={s.dayTitle}>Day {day.day}</Text>
-              <Text style={s.dayDate}>{day.date}</Text>
-              <Pressable><Text style={s.addText}>+ Add</Text></Pressable>
+    <ScreenWrapper title="Build Your Itinerary" scrollable={true}>
+      <View style={styles.container}>
+        {/* Add New Item Section */}
+        <BlurView intensity={20} tint="dark" style={styles.glassCard}>
+          <View style={styles.cardContent}>
+            <Text style={styles.label}>Add New Event</Text>
+            <View style={styles.inputContainer}>
+              <MaterialIcons name="add-circle-outline" size={24} color={DS.muted} />
+              <Text style={styles.inputPlaceholder}>Tap to add a new event or activity</Text>
             </View>
-            {day.activities.map((act, i) => (
-              <View key={i}>
-                <Pressable style={s.actCard}>
-                  <View style={s.timeCol}>
-                    <Text style={s.actTime}>{act.time}</Text>
-                    <View style={s.timeLine} />
-                  </View>
-                  <View style={s.actBody}>
-                    <View style={s.actTop}>
-                      <View style={{ flex: 1 }}>
-                        <Text style={s.actTitle}>{act.title}</Text>
-                        <Text style={s.actMeta}>{act.duration} | {act.type}</Text>
-                      </View>
-                      <Pressable><Text style={s.dragHandle}>::</Text></Pressable>
-                    </View>
-                  </View>
-                </Pressable>
-                {i < day.activities.length - 1 && (
-                  <View style={s.travel}><View style={s.tLine}/><Text style={s.tText}>15 min</Text><View style={s.tLine}/></View>
-                )}
-              </View>
-            ))}
+            <TouchableOpacity style={styles.ctaButton}>
+              <LinearGradient
+                colors={[DS.purple, DS.pink] as const}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 1 }}
+                style={styles.gradientBackground}
+              >
+                <Text style={styles.ctaButtonText}>Add Event</Text>
+                <MaterialIcons name="arrow-forward" size={20} color={DS.white} />
+              </LinearGradient>
+            </TouchableOpacity>
           </View>
-        ))}
-      </ScrollView>
-      <View style={s.bottom}>
-        <Text style={s.actCount}>9 activities</Text>
-        <Pressable style={s.cta}><Text style={s.ctaText}>Continue to Review</Text></Pressable>
-      </View>
-    </View>
-  );
-}
+        </BlurView>
 
-const s = StyleSheet.create({
-  root: { flex: 1, backgroundColor: "#111" },
-  header: { height: 60, flexDirection: "row", alignItems: "center", paddingHorizontal: 16, gap: 12, marginTop: 48, borderBottomWidth: 1, borderBottomColor: "#222" },
-  backBtn: { width: 32, height: 32, justifyContent: "center", alignItems: "center" },
-  backText: { color: "#FFF", fontSize: 24 },
-  headerTitle: { flex: 1, color: "#FFF", fontSize: 18, fontWeight: "600", textAlign: "center" },
-  menuText: { color: "#888", fontSize: 20 },
-  summary: { padding: 20, height: 140, borderBottomWidth: 1, borderBottomColor: "#222", justifyContent: "center" },
-  summaryDest: { color: "#FFF", fontSize: 20, fontWeight: "800" },
-  summaryDates: { color: "#888", fontSize: 13, marginTop: 4 },
-  summaryStats: { flexDirection: "row", gap: 24, marginTop: 12 },
-  stat: { alignItems: "center" },
-  statValue: { color: "#FFF", fontSize: 18, fontWeight: "700" },
-  statLabel: { color: "#888", fontSize: 11, marginTop: 2 },
-  dayHeader: { flexDirection: "row", alignItems: "center", paddingHorizontal: 20, paddingVertical: 12, backgroundColor: "#151515", borderBottomWidth: 1, borderBottomColor: "#222" },
-  dayTitle: { color: "#FFF", fontSize: 16, fontWeight: "700", flex: 1 },
-  dayDate: { color: "#888", fontSize: 13, marginRight: 12 },
-  addText: { color: "#888", fontSize: 13 },
-  actCard: { flexDirection: "row", paddingHorizontal: 20, paddingVertical: 12, minHeight: 80 },
-  timeCol: { width: 50, alignItems: "center" },
-  actTime: { color: "#888", fontSize: 12 },
-  timeLine: { flex: 1, width: 1, backgroundColor: "#333", marginTop: 4 },
-  actBody: { flex: 1, marginLeft: 12, borderRadius: 12, backgroundColor: "#1A1A1A", borderWidth: 1, borderColor: "#333", padding: 14 },
-  actTop: { flexDirection: "row", alignItems: "flex-start" },
-  actTitle: { color: "#FFF", fontSize: 15, fontWeight: "600" },
-  actMeta: { color: "#888", fontSize: 12, marginTop: 4 },
-  dragHandle: { color: "#555", fontSize: 16 },
-  travel: { flexDirection: "row", alignItems: "center", paddingHorizontal: 40, height: 40, gap: 8 },
-  tLine: { flex: 1, height: 1, backgroundColor: "#222" },
-  tText: { color: "#666", fontSize: 11 },
-  bottom: { position: "absolute", bottom: 0, left: 0, right: 0, padding: 20, paddingBottom: 36, backgroundColor: "#111", borderTopWidth: 1, borderTopColor: "#222", alignItems: "center", gap: 8 },
-  actCount: { color: "#888", fontSize: 13 },
-  cta: { width: "100%", height: 52, borderRadius: 26, backgroundColor: "#333", borderWidth: 1, borderColor: "#555", justifyContent: "center", alignItems: "center" },
-  ctaText: { color: "#FFF", fontSize: 16, fontWeight: "600" },
+        {/* Existing Itinerary Items */}
+        <Text style={styles.sectionTitle}>Your Current Itinerary</Text>
+        {itineraryItems.map((item) => (
+          <BlurView key={item.id} intensity={20} tint="dark" style={styles.itineraryItemCard}>
+            <View style={styles.itemContent}>
+              <MaterialIcons name="event" size={24} color={DS.purple} />
+              <View style={styles.itemDetails}>
+                <Text style={styles.itemTitle}>{item.title}</Text>
+                <Text style={styles.itemTimeLocation}>{item.time} - {item.location}</Text>
+              </View>
+              <TouchableOpacity>
+                <MaterialIcons name="edit" size={20} color={DS.muted} />
+              </TouchableOpacity>
+            </View>
+          </BlurView>
+        ))}
+
+        {/* Final CTA */}
+        <TouchableOpacity style={styles.bottomCtaButton}>
+          <LinearGradient
+            colors={[DS.purple, DS.pink] as const}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+            style={styles.gradientBackground}
+          >
+            <Text style={styles.ctaButtonText}>Finalize Itinerary</Text>
+            <MaterialIcons name="check-circle-outline" size={20} color={DS.white} />
+          </LinearGradient>
+        </TouchableOpacity>
+      </View>
+    </ScreenWrapper>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 20,
+    backgroundColor: DS.bg, // Ensure background is set if ScreenWrapper doesn't cover it fully or for preview
+  },
+  glassCard: {
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: DS.border,
+    backgroundColor: DS.surface,
+    overflow: "hidden",
+    marginBottom: 20,
+    padding: 20,
+  },
+  cardContent: {
+    // Styles for content inside the glass card
+  },
+  label: {
+    fontFamily: 'Satoshi-Medium',
+    fontSize: 16,
+    color: DS.white,
+    marginBottom: 10,
+  },
+  inputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: DS.surfaceHigh,
+    borderRadius: 10,
+    padding: 15,
+    marginBottom: 15,
+  },
+  inputPlaceholder: {
+    fontFamily: 'Satoshi-Regular',
+    fontSize: 14,
+    color: DS.placeholder,
+    marginLeft: 10,
+  },
+  ctaButton: {
+    borderRadius: 10,
+    overflow: 'hidden',
+  },
+  gradientBackground: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingVertical: 15,
+    paddingHorizontal: 20,
+    borderRadius: 10, // Ensure gradient also has border radius
+  },
+  ctaButtonText: {
+    fontFamily: 'Chillax-Bold',
+    fontSize: 18,
+    color: DS.white,
+    marginRight: 10,
+  },
+  sectionTitle: {
+    fontFamily: 'Chillax-Bold',
+    fontSize: 22,
+    color: DS.white,
+    marginBottom: 15,
+    marginTop: 10,
+  },
+  itineraryItemCard: {
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: DS.border,
+    backgroundColor: DS.surface,
+    overflow: "hidden",
+    marginBottom: 15,
+    padding: 15,
+  },
+  itemContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  itemDetails: {
+    marginLeft: 15,
+    flex: 1,
+  },
+  itemTitle: {
+    fontFamily: 'Satoshi-Medium',
+    fontSize: 16,
+    color: DS.white,
+  },
+  itemTimeLocation: {
+    fontFamily: 'Satoshi-Regular',
+    fontSize: 13,
+    color: DS.muted,
+    marginTop: 2,
+  },
+  bottomCtaButton: {
+    marginTop: 30,
+    borderRadius: 10,
+    overflow: 'hidden',
+  },
 });
+
+export default ItineraryBuilder;

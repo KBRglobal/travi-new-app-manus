@@ -1,79 +1,94 @@
-// Screen 47 — Photo Gallery Post-Trip — STATIC 
-// Album info 100px, Sorting tabs, 3-col grid, Highlight Video, Multi-select
-import { View, Text, StyleSheet, Pressable, ScrollView } from "react-native";
+import React from 'react';
+import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity } from 'react-native';
+import { ScreenWrapper } from '@/components/screen-wrapper';
+import { BlurView } from 'expo-blur';
+import { LinearGradient } from 'expo-linear-gradient';
+import { MaterialIcons } from '@expo/vector-icons';
 
-const SORT_TABS = ["All", "Favorites", "Activities", "Food", "Scenery"];
-const PHOTOS = Array.from({ length: 24 }, (_, i) => i + 1);
+// DS object as provided in the prompt
+const DS = {
+  bg: "#0A0514", surface: "rgba(36,16,62,0.55)", surfaceHigh: "rgba(50,20,80,0.7)",
+  border: "rgba(123,68,230,0.22)", borderStrong: "rgba(100,67,244,0.4)",
+  purple: "#6443F4", pink: "#F94498", success: "#02A65C", warning: "#FF9327",
+  error: "#FF6B6B", info: "#01BEFF", white: "#FFFFFF", secondary: "#D3CFD8",
+  muted: "#A79FB2", placeholder: "#7B6A94", gradient: ["#6443F4", "#F94498"],
+};
 
-export default function PostTripGalleryScreen() {
+const PostTripGallery = () => {
+  const photos = [
+    'https://via.placeholder.com/150/FF0000/FFFFFF?text=Photo1',
+    'https://via.placeholder.com/150/00FF00/FFFFFF?text=Photo2',
+    'https://via.placeholder.com/150/0000FF/FFFFFF?text=Photo3',
+    'https://via.placeholder.com/150/FFFF00/000000?text=Photo4',
+    'https://via.placeholder.com/150/00FFFF/000000?text=Photo5',
+  ];
+
   return (
-    <View style={s.root}>
-      <View style={s.header}>
-        <Pressable style={s.backBtn}><Text style={s.backText}>{"<"}</Text></Pressable>
-        <Text style={s.headerTitle}>Photo Gallery</Text>
-        <Pressable><Text style={s.selectText}>Select</Text></Pressable>
+    <ScreenWrapper title="Your Trip Gallery" scrollable={true}>
+      <View style={styles.galleryContainer}>
+        {photos.map((photo, index) => (
+          <BlurView key={index} intensity={20} tint="dark" style={styles.glassCard}>
+            <Image source={{ uri: photo }} style={styles.image} />
+          </BlurView>
+        ))}
       </View>
-
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 40 }}>
-        {/* Album info — 100px */}
-        <View style={s.albumInfo}>
-          <View style={s.albumStat}><Text style={s.albumNum}>142</Text><Text style={s.albumLabel}>Photos</Text></View>
-          <View style={s.albumStat}><Text style={s.albumNum}>8</Text><Text style={s.albumLabel}>Videos</Text></View>
-          <View style={s.albumStat}><Text style={s.albumNum}>7</Text><Text style={s.albumLabel}>Days</Text></View>
-          <View style={s.albumStat}><Text style={s.albumNum}>3.2GB</Text><Text style={s.albumLabel}>Size</Text></View>
-        </View>
-
-        {/* Highlight Video */}
-        <Pressable style={s.videoCard}>
-          <Text style={s.videoPlaceholder}>[HIGHLIGHT VIDEO]</Text>
-          <View style={s.playBtn}><Text style={s.playText}>{">"}</Text></View>
-          <Text style={s.videoTitle}>Trip Highlights — 2:30</Text>
-        </Pressable>
-
-        {/* Sorting tabs */}
-        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={s.tabsRow}>
-          {SORT_TABS.map((tab, i) => (
-            <Pressable key={tab} style={[s.tab, i === 0 && s.tabActive]}>
-              <Text style={[s.tabText, i === 0 && s.tabTextActive]}>{tab}</Text>
-            </Pressable>
-          ))}
-        </ScrollView>
-
-        {/* 3-col grid */}
-        <View style={s.grid}>
-          {PHOTOS.map((p) => (
-            <Pressable key={p} style={s.gridItem}>
-              <Text style={s.gridText}>{p}</Text>
-            </Pressable>
-          ))}
-        </View>
-      </ScrollView>
-    </View>
+      <TouchableOpacity style={styles.button}>
+        <LinearGradient
+          colors={[DS.purple, DS.pink] as const}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 0 }}
+          style={styles.gradientButton}
+        >
+          <MaterialIcons name="share" size={20} color={DS.white} />
+          <Text style={styles.buttonText}>Share Gallery</Text>
+        </LinearGradient>
+      </TouchableOpacity>
+    </ScreenWrapper>
   );
-}
+};
 
-const s = StyleSheet.create({
-  root: { flex: 1, backgroundColor: "#111" },
-  header: { height: 60, flexDirection: "row", alignItems: "center", paddingHorizontal: 16, gap: 12, marginTop: 48, borderBottomWidth: 1, borderBottomColor: "#222" },
-  backBtn: { width: 32, height: 32, justifyContent: "center", alignItems: "center" },
-  backText: { color: "#FFF", fontSize: 24 },
-  headerTitle: { flex: 1, color: "#FFF", fontSize: 18, fontWeight: "600", textAlign: "center" },
-  selectText: { color: "#888", fontSize: 14 },
-  albumInfo: { flexDirection: "row", margin: 20, padding: 16, height: 100, borderRadius: 14, backgroundColor: "#1A1A1A", borderWidth: 1, borderColor: "#333" },
-  albumStat: { flex: 1, alignItems: "center", justifyContent: "center" },
-  albumNum: { color: "#FFF", fontSize: 20, fontWeight: "800" },
-  albumLabel: { color: "#888", fontSize: 11, marginTop: 2 },
-  videoCard: { marginHorizontal: 20, height: 180, borderRadius: 14, backgroundColor: "#1A1A1A", borderWidth: 1, borderColor: "#333", justifyContent: "center", alignItems: "center", marginBottom: 12 },
-  videoPlaceholder: { color: "#444", fontSize: 14 },
-  playBtn: { position: "absolute", width: 48, height: 48, borderRadius: 24, backgroundColor: "#333", justifyContent: "center", alignItems: "center" },
-  playText: { color: "#FFF", fontSize: 20 },
-  videoTitle: { position: "absolute", bottom: 12, color: "#888", fontSize: 12 },
-  tabsRow: { paddingHorizontal: 16, paddingVertical: 8, gap: 8 },
-  tab: { paddingHorizontal: 14, paddingVertical: 8, borderRadius: 20, backgroundColor: "#1A1A1A", borderWidth: 1, borderColor: "#333" },
-  tabActive: { backgroundColor: "#333", borderColor: "#555" },
-  tabText: { color: "#888", fontSize: 13 },
-  tabTextActive: { color: "#FFF" },
-  grid: { flexDirection: "row", flexWrap: "wrap", paddingHorizontal: 18, gap: 4 },
-  gridItem: { width: "31.5%", aspectRatio: 1, borderRadius: 8, backgroundColor: "#1A1A1A", borderWidth: 1, borderColor: "#333", justifyContent: "center", alignItems: "center" },
-  gridText: { color: "#444", fontSize: 14 },
+const styles = StyleSheet.create({
+  galleryContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-around',
+    padding: 10,
+  },
+  glassCard: {
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: DS.border,
+    backgroundColor: DS.surface,
+    overflow: 'hidden',
+    margin: 8,
+    width: 150,
+    height: 150,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  image: {
+    width: '100%',
+    height: '100%',
+    borderRadius: 16, // Apply to image as well for consistency within the card
+  },
+  button: {
+    marginTop: 30,
+    marginHorizontal: 20,
+    borderRadius: 10,
+    overflow: 'hidden',
+  },
+  gradientButton: {
+    padding: 15,
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'row',
+    gap: 10,
+  },
+  buttonText: {
+    color: DS.white,
+    fontSize: 18,
+    fontFamily: 'Satoshi-Medium', // Assuming Satoshi-Medium for labels/buttons
+  },
 });
+
+export default PostTripGallery;

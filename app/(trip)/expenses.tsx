@@ -1,109 +1,138 @@
-// Screen 39 — Expenses Tracker — STATIC 
-// Summary 140px + budget bar, Filter tabs, Date-grouped rows 88px, Add expense modal, Split button
-import { View, Text, StyleSheet, Pressable, ScrollView } from "react-native";
+import React from 'react';
+import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { ScreenWrapper, DS } from '@/components/screen-wrapper';
+import { BlurView } from 'expo-blur';
+import { LinearGradient } from 'expo-linear-gradient';
+import { MaterialIcons } from '@expo/vector-icons';
 
-const FILTERS = ["All", "Food", "Transport", "Activities", "Shopping"];
-
-const EXPENSES = [
-  { date: "Apr 16", items: [
-    { title: "Lunch at Locavore", category: "Food", amount: "E35", time: "13:00" },
-    { title: "Grab to Ubud", category: "Transport", amount: "E8", time: "09:30" },
-    { title: "Rice Terraces Entry", category: "Activities", amount: "E15", time: "10:00" },
-  ]},
-  { date: "Apr 15", items: [
-    { title: "Airport Transfer", category: "Transport", amount: "E25", time: "14:30" },
-    { title: "Dinner at Sardine", category: "Food", amount: "E55", time: "19:00" },
-    { title: "Minimart Supplies", category: "Shopping", amount: "E12", time: "16:00" },
-  ]},
+const expensesData = [
+  { id: '1', category: 'Flight', amount: 350.00, date: '2026-03-28', icon: 'flight' },
+  { id: '2', category: 'Hotel', amount: 120.00, date: '2026-03-27', icon: 'hotel' },
+  { id: '3', category: 'Food', amount: 45.50, date: '2026-03-27', icon: 'restaurant' },
+  { id: '4', category: 'Transport', amount: 25.00, date: '2026-03-26', icon: 'directions-car' },
+  { id: '5', category: 'Activities', amount: 75.00, date: '2026-03-26', icon: 'local-activity' },
+  { id: '6', category: 'Shopping', amount: 90.00, date: '2026-03-25', icon: 'shopping-bag' },
 ];
 
-export default function ExpensesScreen() {
+const ExpensesScreen = () => {
   return (
-    <View style={s.root}>
-      <View style={s.header}>
-        <Pressable style={s.backBtn}><Text style={s.backText}>{"<"}</Text></Pressable>
-        <Text style={s.headerTitle}>Expenses</Text>
-        <Pressable><Text style={s.splitText}>Split</Text></Pressable>
+    <ScreenWrapper title="Expenses" scrollable={true}>
+      <View style={styles.summaryCardContainer}>
+        <BlurView intensity={20} tint="dark" style={styles.blurCard}>
+          <View style={styles.summaryContent}>
+            <Text style={styles.summaryTitle}>Total Spent</Text>
+            <Text style={styles.summaryAmount}>$705.50</Text>
+            <LinearGradient
+              colors={[DS.purple, DS.pink] as const}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              style={styles.ctaButton}
+            >
+              <Text style={styles.ctaButtonText}>Add New Expense</Text>
+            </LinearGradient>
+          </View>
+        </BlurView>
       </View>
 
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 100 }}>
-        {/* Summary — 140px */}
-        <View style={s.summaryCard}>
-          <View style={s.summaryRow}>
-            <View style={{ flex: 1 }}>
-              <Text style={s.summaryLabel}>Total Spent</Text>
-              <Text style={s.summaryAmount}>E150</Text>
+      <View style={styles.expensesList}>
+        <Text style={styles.sectionTitle}>Recent Expenses</Text>
+        {expensesData.map((expense) => (
+          <BlurView key={expense.id} intensity={20} tint="dark" style={styles.expenseItemBlur}>
+            <View style={styles.expenseItem}>
+              <MaterialIcons name={expense.icon as any} size={24} color={DS.purple} />
+              <View style={styles.expenseDetails}>
+                <Text style={styles.expenseCategory}>{expense.category}</Text>
+                <Text style={styles.expenseDate}>{expense.date}</Text>
+              </View>
+              <Text style={styles.expenseAmount}>${expense.amount.toFixed(2)}</Text>
             </View>
-            <View style={{ flex: 1, alignItems: "flex-end" }}>
-              <Text style={s.summaryLabel}>Budget</Text>
-              <Text style={s.summaryBudget}>E500</Text>
-            </View>
-          </View>
-          <View style={s.budgetBar}><View style={[s.budgetFill, { width: "30%" }]} /></View>
-          <Text style={s.budgetText}>E350 remaining (70%)</Text>
-        </View>
-
-        {/* Filter tabs */}
-        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={s.filtersRow}>
-          {FILTERS.map((f, i) => (
-            <Pressable key={f} style={[s.filterChip, i === 0 && s.filterActive]}>
-              <Text style={[s.filterText, i === 0 && s.filterTextActive]}>{f}</Text>
-            </Pressable>
-          ))}
-        </ScrollView>
-
-        {/* Date-grouped expenses */}
-        {EXPENSES.map((group) => (
-          <View key={group.date} style={s.dateGroup}>
-            <Text style={s.dateHeader}>{group.date}</Text>
-            {group.items.map((item, i) => (
-              <Pressable key={i} style={s.expenseRow}>
-                <View style={s.catIcon}><Text style={s.catText}>{item.category[0]}</Text></View>
-                <View style={{ flex: 1 }}>
-                  <Text style={s.expTitle}>{item.title}</Text>
-                  <Text style={s.expCat}>{item.category} | {item.time}</Text>
-                </View>
-                <Text style={s.expAmount}>{item.amount}</Text>
-              </Pressable>
-            ))}
-          </View>
+          </BlurView>
         ))}
-      </ScrollView>
-
-      {/* Add expense FAB */}
-      <Pressable style={s.fab}><Text style={s.fabText}>+</Text></Pressable>
-    </View>
+      </View>
+    </ScreenWrapper>
   );
-}
+};
 
-const s = StyleSheet.create({
-  root: { flex: 1, backgroundColor: "#111" },
-  header: { height: 60, flexDirection: "row", alignItems: "center", paddingHorizontal: 16, gap: 12, marginTop: 48, borderBottomWidth: 1, borderBottomColor: "#222" },
-  backBtn: { width: 32, height: 32, justifyContent: "center", alignItems: "center" },
-  backText: { color: "#FFF", fontSize: 24 },
-  headerTitle: { flex: 1, color: "#FFF", fontSize: 18, fontWeight: "600", textAlign: "center" },
-  splitText: { color: "#888", fontSize: 14 },
-  summaryCard: { margin: 20, padding: 16, height: 140, borderRadius: 14, backgroundColor: "#1A1A1A", borderWidth: 1, borderColor: "#333", justifyContent: "center" },
-  summaryRow: { flexDirection: "row", marginBottom: 12 },
-  summaryLabel: { color: "#888", fontSize: 12 },
-  summaryAmount: { color: "#FFF", fontSize: 28, fontWeight: "800", marginTop: 2 },
-  summaryBudget: { color: "#FFF", fontSize: 20, fontWeight: "700", marginTop: 2 },
-  budgetBar: { height: 8, borderRadius: 4, backgroundColor: "#222" },
-  budgetFill: { height: 8, borderRadius: 4, backgroundColor: "#555" },
-  budgetText: { color: "#888", fontSize: 11, marginTop: 6 },
-  filtersRow: { paddingHorizontal: 16, paddingVertical: 8, gap: 8 },
-  filterChip: { paddingHorizontal: 14, paddingVertical: 8, borderRadius: 20, backgroundColor: "#1A1A1A", borderWidth: 1, borderColor: "#333" },
-  filterActive: { backgroundColor: "#333", borderColor: "#555" },
-  filterText: { color: "#888", fontSize: 13 },
-  filterTextActive: { color: "#FFF" },
-  dateGroup: { paddingHorizontal: 20, marginTop: 16 },
-  dateHeader: { color: "#888", fontSize: 13, fontWeight: "600", marginBottom: 8 },
-  expenseRow: { flexDirection: "row", alignItems: "center", gap: 12, padding: 14, height: 88, borderRadius: 12, backgroundColor: "#1A1A1A", borderWidth: 1, borderColor: "#333", marginBottom: 8 },
-  catIcon: { width: 36, height: 36, borderRadius: 10, backgroundColor: "#222", justifyContent: "center", alignItems: "center" },
-  catText: { color: "#888", fontSize: 14, fontWeight: "700" },
-  expTitle: { color: "#FFF", fontSize: 14, fontWeight: "600" },
-  expCat: { color: "#888", fontSize: 12, marginTop: 2 },
-  expAmount: { color: "#FFF", fontSize: 15, fontWeight: "700" },
-  fab: { position: "absolute", bottom: 36, right: 20, width: 56, height: 56, borderRadius: 16, backgroundColor: "#333", borderWidth: 1, borderColor: "#555", justifyContent: "center", alignItems: "center" },
-  fabText: { color: "#FFF", fontSize: 28, fontWeight: "300" },
+const styles = StyleSheet.create({
+  summaryCardContainer: {
+    marginHorizontal: 20,
+    marginBottom: 20,
+  },
+  blurCard: {
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: DS.border,
+    backgroundColor: DS.surface,
+    overflow: 'hidden',
+    padding: 20,
+  },
+  summaryContent: {
+    alignItems: 'center',
+  },
+  summaryTitle: {
+    fontFamily: 'Satoshi-Medium',
+    fontSize: 16,
+    color: DS.muted,
+    marginBottom: 5,
+  },
+  summaryAmount: {
+    fontFamily: 'Chillax-Bold',
+    fontSize: 36,
+    color: DS.white,
+    marginBottom: 20,
+  },
+  ctaButton: {
+    paddingVertical: 12,
+    paddingHorizontal: 30,
+    borderRadius: 10,
+  },
+  ctaButtonText: {
+    fontFamily: 'Satoshi-Medium',
+    fontSize: 18,
+    color: DS.white,
+  },
+  expensesList: {
+    marginHorizontal: 20,
+  },
+  sectionTitle: {
+    fontFamily: 'Chillax-Bold',
+    fontSize: 22,
+    color: DS.white,
+    marginBottom: 15,
+  },
+  expenseItemBlur: {
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: DS.border,
+    backgroundColor: DS.surface,
+    overflow: 'hidden',
+    marginBottom: 10,
+  },
+  expenseItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 15,
+  },
+  expenseDetails: {
+    flex: 1,
+    marginLeft: 15,
+  },
+  expenseCategory: {
+    fontFamily: 'Satoshi-Medium',
+    fontSize: 16,
+    color: DS.white,
+  },
+  expenseDate: {
+    fontFamily: 'Satoshi-Regular',
+    fontSize: 12,
+    color: DS.muted,
+    marginTop: 2,
+  },
+  expenseAmount: {
+    fontFamily: 'Chillax-Bold',
+    fontSize: 18,
+    color: DS.white,
+  },
 });
+
+export default ExpensesScreen;

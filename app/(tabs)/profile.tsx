@@ -39,7 +39,7 @@ export default function ProfileScreen() {
       {/* Hero */}
       <LinearGradient colors={["rgba(100,67,244,0.3)", "rgba(10,5,20,0)"]} style={[s.hero, { paddingTop: insets.top + 16 }]}>
         <View style={s.avatarWrap}>
-          <LinearGradient colors={[DS.purple, DS.pink]} style={s.avatarRing}>
+          <LinearGradient colors={[DS.purple, DS.pink] as const} style={s.avatarRing}>
             <View style={s.avatarInner}>
               <MaterialIcons name="person" size={40} color={DS.white} />
             </View>

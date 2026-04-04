@@ -20,7 +20,7 @@ export default function GpsDeniedScreen() {
       <Text style={s.title}>Location Access Needed</Text>
       <Text style={s.body}>TRAVI uses your location for real-time trip assistance.{'\n'}Enable location access to continue.</Text>
       <Pressable style={({ pressed }) => [s.primaryBtn, pressed && { opacity: 0.8, transform: [{ scale: 0.97 }] }]} onPress={() => router.back()}>
-        <LinearGradient colors={[DS.purple, DS.pink]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={s.btnGrad}>
+        <LinearGradient colors={[DS.purple, DS.pink] as const} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={s.btnGrad}>
           <MaterialIcons name="settings" size={18} color={DS.white} style={{ marginRight: 8 }} />
           <Text style={s.btnText}>Open Settings</Text>
         </LinearGradient>

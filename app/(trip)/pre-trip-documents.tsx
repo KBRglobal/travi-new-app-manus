@@ -1,80 +1,89 @@
-// Screen 34 — Pre-Trip Documents — STATIC 
-// Status card 100px, Document cards 100px, Status badges, Export PDF
-import { View, Text, StyleSheet, Pressable, ScrollView } from "react-native";
+import React from 'react';
+import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { BlurView } from 'expo-blur';
+import { LinearGradient } from 'expo-linear-gradient';
+import { MaterialIcons } from '@expo/vector-icons';
+import { ScreenWrapper, DS } from '@/components/screen-wrapper';
 
-const DOCS = [
-  { title: "Passport", status: "Valid", exp: "Dec 2029", statusColor: "#4ADE80" },
-  { title: "Visa / eVisa", status: "Pending", exp: "Applied Mar 28", statusColor: "#FBBF24" },
-  { title: "Travel Insurance", status: "Not Added", exp: "", statusColor: "#888" },
-  { title: "Flight Tickets", status: "Valid", exp: "Emirates TLV-DPS", statusColor: "#4ADE80" },
-  { title: "Hotel Confirmation", status: "Valid", exp: "The Mulia Resort", statusColor: "#4ADE80" },
-  { title: "COVID Certificate", status: "Expired", exp: "Expired Jan 2024", statusColor: "#F87171" },
+// Dummy data for demonstration
+const tripDocuments = [
+  { id: '1', name: 'Flight Tickets', icon: 'airplane-ticket', status: 'Completed' },
+  { id: '2', name: 'Hotel Booking', icon: 'hotel', status: 'Pending' },
+  { id: '3', name: 'Visa Application', icon: 'description', status: 'Completed' },
+  { id: '4', name: 'Travel Insurance', icon: 'health-and-safety', status: 'Pending' },
+  { id: '5', name: 'Passport Copy', icon: 'passport', status: 'Completed' },
+  { id: '6', name: 'Itinerary', icon: 'map', status: 'Completed' },
 ];
 
-export default function PreTripDocumentsScreen() {
+const PreTripDocumentsScreen = () => {
   return (
-    <View style={s.root}>
-      <View style={s.header}>
-        <Pressable style={s.backBtn}><Text style={s.backText}>{"<"}</Text></Pressable>
-        <Text style={s.headerTitle}>Documents</Text>
-        <Pressable><Text style={s.exportText}>Export PDF</Text></Pressable>
-      </View>
-
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 40 }}>
-        {/* Status card — 100px */}
-        <View style={s.statusCard}>
-          <Text style={s.statusTitle}>Document Status</Text>
-          <View style={s.statusRow}>
-            <View style={s.statusItem}><Text style={[s.statusDot, { color: "#4ADE80" }]}>o</Text><Text style={s.statusLabel}>3 Valid</Text></View>
-            <View style={s.statusItem}><Text style={[s.statusDot, { color: "#FBBF24" }]}>o</Text><Text style={s.statusLabel}>1 Pending</Text></View>
-            <View style={s.statusItem}><Text style={[s.statusDot, { color: "#888" }]}>o</Text><Text style={s.statusLabel}>1 Missing</Text></View>
-            <View style={s.statusItem}><Text style={[s.statusDot, { color: "#F87171" }]}>o</Text><Text style={s.statusLabel}>1 Expired</Text></View>
-          </View>
-        </View>
-
-        {/* Document cards — 100px each */}
-        {DOCS.map((doc) => (
-          <Pressable key={doc.title} style={s.docCard}>
-            <View style={s.docIcon}><Text style={s.docIconText}>D</Text></View>
-            <View style={{ flex: 1 }}>
-              <Text style={s.docTitle}>{doc.title}</Text>
-              {doc.exp ? <Text style={s.docExp}>{doc.exp}</Text> : null}
+    <ScreenWrapper title="Pre-Trip Documents" scrollable={true}>
+      <View style={styles.container}>
+        {tripDocuments.map((doc) => (
+          <BlurView key={doc.id} intensity={20} tint="dark" style={styles.card}>
+            <View style={styles.cardContent}>
+              <MaterialIcons name={doc.icon as any} size={24} color={DS.purple} />
+              <Text style={styles.documentName}>{doc.name}</Text>
+              <Text style={[styles.documentStatus, { color: doc.status === 'Completed' ? DS.success : DS.warning }]}>
+                {doc.status}
+              </Text>
             </View>
-            <View style={[s.badge, { borderColor: doc.statusColor }]}>
-              <Text style={[s.badgeText, { color: doc.statusColor }]}>{doc.status}</Text>
-            </View>
-          </Pressable>
+          </BlurView>
         ))}
 
-        {/* Add document */}
-        <Pressable style={s.addBtn}>
-          <Text style={s.addText}>+ Add Document</Text>
-        </Pressable>
-      </ScrollView>
-    </View>
+        <LinearGradient colors={[DS.purple, DS.pink] as const} style={styles.ctaButton}>
+          <Text style={styles.ctaButtonText}>Upload New Document</Text>
+          <MaterialIcons name="cloud-upload" size={20} color={DS.white} />
+        </LinearGradient>
+      </View>
+    </ScreenWrapper>
   );
-}
+};
 
-const s = StyleSheet.create({
-  root: { flex: 1, backgroundColor: "#111" },
-  header: { height: 60, flexDirection: "row", alignItems: "center", paddingHorizontal: 16, gap: 12, marginTop: 48, borderBottomWidth: 1, borderBottomColor: "#222" },
-  backBtn: { width: 32, height: 32, justifyContent: "center", alignItems: "center" },
-  backText: { color: "#FFF", fontSize: 24 },
-  headerTitle: { flex: 1, color: "#FFF", fontSize: 18, fontWeight: "600", textAlign: "center" },
-  exportText: { color: "#888", fontSize: 13 },
-  statusCard: { margin: 20, padding: 16, height: 100, borderRadius: 14, backgroundColor: "#1A1A1A", borderWidth: 1, borderColor: "#333", justifyContent: "center" },
-  statusTitle: { color: "#FFF", fontSize: 15, fontWeight: "600", marginBottom: 10 },
-  statusRow: { flexDirection: "row", gap: 16 },
-  statusItem: { flexDirection: "row", alignItems: "center", gap: 4 },
-  statusDot: { fontSize: 14 },
-  statusLabel: { color: "#888", fontSize: 12 },
-  docCard: { flexDirection: "row", alignItems: "center", marginHorizontal: 20, marginBottom: 8, padding: 16, height: 100, borderRadius: 14, backgroundColor: "#1A1A1A", borderWidth: 1, borderColor: "#333", gap: 12 },
-  docIcon: { width: 40, height: 40, borderRadius: 10, backgroundColor: "#222", justifyContent: "center", alignItems: "center" },
-  docIconText: { color: "#888", fontSize: 16, fontWeight: "700" },
-  docTitle: { color: "#FFF", fontSize: 15, fontWeight: "600" },
-  docExp: { color: "#888", fontSize: 12, marginTop: 2 },
-  badge: { paddingHorizontal: 10, paddingVertical: 4, borderRadius: 8, borderWidth: 1 },
-  badgeText: { fontSize: 11, fontWeight: "600" },
-  addBtn: { marginHorizontal: 20, marginTop: 8, height: 48, borderRadius: 12, borderWidth: 1, borderColor: "#333", borderStyle: "dashed", justifyContent: "center", alignItems: "center" },
-  addText: { color: "#888", fontSize: 14 },
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    paddingVertical: 20,
+  },
+  card: {
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: DS.border,
+    backgroundColor: DS.surface,
+    overflow: 'hidden',
+    marginBottom: 15,
+    padding: 15,
+  },
+  cardContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  documentName: {
+    fontFamily: 'Satoshi-Medium',
+    fontSize: 16,
+    color: DS.white,
+    flex: 1,
+    marginLeft: 10,
+  },
+  documentStatus: {
+    fontFamily: 'Satoshi-Regular',
+    fontSize: 14,
+  },
+  ctaButton: {
+    borderRadius: 16,
+    paddingVertical: 15,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 20,
+    flexDirection: 'row',
+  },
+  ctaButtonText: {
+    fontFamily: 'Chillax-Bold',
+    fontSize: 18,
+    color: DS.white,
+    marginRight: 10,
+  },
 });
+
+export default PreTripDocumentsScreen;

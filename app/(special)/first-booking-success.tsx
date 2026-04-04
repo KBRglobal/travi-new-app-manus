@@ -1,57 +1,95 @@
-// Screen 75 — First Booking Success — STATIC 
-// Confetti, trip card 180px, achievement badge, auto-dismiss 5s
-import { View, Text, StyleSheet, Pressable } from "react-native";
+import React from 'react';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { ScreenWrapper } from '@/components/screen-wrapper';
+import { BlurView } from 'expo-blur';
+import { LinearGradient } from 'expo-linear-gradient';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 
-export default function FirstBookingSuccessScreen() {
+// Assuming DS is exported from ScreenWrapper or a similar design system file
+// For this task, we'll define it here based on the provided structure
+const DS = {
+  bg: "#0A0514", surface: "rgba(36,16,62,0.55)", surfaceHigh: "rgba(50,20,80,0.7)",
+  border: "rgba(123,68,230,0.22)", borderStrong: "rgba(100,67,244,0.4)",
+  purple: "#6443F4", pink: "#F94498", success: "#02A65C", warning: "#FF9327",
+  error: "#FF6B6B", info: "#01BEFF", white: "#FFFFFF", secondary: "#D3CFD8",
+  muted: "#A79FB2", placeholder: "#7B6A94", gradient: ["#6443F4", "#F94498"],
+};
+
+const FirstBookingSuccess = () => {
   return (
-    <View style={s.root}>
-      <Text style={s.confetti}>🎊 🎉 ✨ 🎆</Text>
-
-      <View style={s.achievementBadge}>
-        <Text style={s.badgeIcon}>🏆</Text>
-        <Text style={s.badgeTitle}>First Trip Booked!</Text>
+    <ScreenWrapper title="Booking Confirmation" scrollable={true}>
+      <View style={styles.container}>
+        <BlurView intensity={20} tint="dark" style={styles.card}>
+          <MaterialIcons name="check-circle" size={80} color={DS.success} style={styles.icon} />
+          <Text style={styles.title}>Booking Successful!</Text>
+          <Text style={styles.message}>Your booking has been confirmed and details sent to your email.</Text>
+          <TouchableOpacity style={styles.buttonContainer}>
+            <LinearGradient
+              colors={[DS.purple, DS.pink] as const}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              style={styles.buttonGradient}
+            >
+              <Text style={styles.buttonText}>View Details</Text>
+            </LinearGradient>
+          </TouchableOpacity>
+        </BlurView>
       </View>
-
-      <Text style={s.title}>Congratulations!</Text>
-      <Text style={s.subtitle}>Your first adventure awaits</Text>
-
-      {/* Trip card — 180px */}
-      <View style={s.tripCard}>
-        <View style={s.tripImage}><Text style={s.tripImageText}>[DESTINATION IMAGE]</Text></View>
-        <View style={s.tripInfo}>
-          <Text style={s.tripDest}>Bali, Indonesia</Text>
-          <Text style={s.tripDates}>Apr 15 - Apr 21, 2026</Text>
-          <Text style={s.tripPrice}>E2,450</Text>
-        </View>
-      </View>
-
-      <View style={s.bottom}>
-        <Pressable style={s.ctaBtn}><Text style={s.ctaText}>View My Trip</Text></Pressable>
-        <Pressable><Text style={s.skipText}>Go to Home</Text></Pressable>
-        <Text style={s.autoText}>Auto-dismissing in 5s...</Text>
-      </View>
-    </View>
+    </ScreenWrapper>
   );
-}
+};
 
-const s = StyleSheet.create({
-  root: { flex: 1, backgroundColor: "#111", justifyContent: "center", alignItems: "center", padding: 20 },
-  confetti: { position: "absolute", top: 60, fontSize: 32 },
-  achievementBadge: { flexDirection: "row", alignItems: "center", gap: 8, paddingHorizontal: 16, paddingVertical: 8, borderRadius: 20, backgroundColor: "#1A1A1A", borderWidth: 1, borderColor: "#FBBF2440", marginBottom: 20 },
-  badgeIcon: { fontSize: 20 },
-  badgeTitle: { color: "#FBBF24", fontSize: 14, fontWeight: "700" },
-  title: { color: "#FFF", fontSize: 28, fontWeight: "800" },
-  subtitle: { color: "#888", fontSize: 15, marginTop: 4 },
-  tripCard: { width: "100%", height: 180, borderRadius: 16, backgroundColor: "#1A1A1A", borderWidth: 1, borderColor: "#333", overflow: "hidden", marginTop: 24 },
-  tripImage: { height: 100, backgroundColor: "#222", justifyContent: "center", alignItems: "center" },
-  tripImageText: { color: "#555", fontSize: 14 },
-  tripInfo: { padding: 14 },
-  tripDest: { color: "#FFF", fontSize: 16, fontWeight: "700" },
-  tripDates: { color: "#888", fontSize: 13, marginTop: 2 },
-  tripPrice: { color: "#FFF", fontSize: 15, fontWeight: "700", position: "absolute", right: 14, bottom: 14 },
-  bottom: { position: "absolute", bottom: 40, left: 20, right: 20, alignItems: "center", gap: 10 },
-  ctaBtn: { width: "100%", height: 52, borderRadius: 26, backgroundColor: "#333", borderWidth: 1, borderColor: "#555", justifyContent: "center", alignItems: "center" },
-  ctaText: { color: "#FFF", fontSize: 16, fontWeight: "600" },
-  skipText: { color: "#888", fontSize: 14 },
-  autoText: { color: "#555", fontSize: 11 },
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+    backgroundColor: DS.bg, // Set background from DS
+  },
+  card: {
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: DS.border,
+    backgroundColor: DS.surface,
+    overflow: 'hidden',
+    padding: 30,
+    alignItems: 'center',
+    width: '90%',
+    maxWidth: 400,
+  },
+  icon: {
+    marginBottom: 20,
+  },
+  title: {
+    fontFamily: 'Chillax-Bold',
+    fontSize: 28,
+    color: DS.white,
+    marginBottom: 10,
+    textAlign: 'center',
+  },
+  message: {
+    fontFamily: 'Satoshi-Regular',
+    fontSize: 16,
+    color: DS.muted,
+    textAlign: 'center',
+    marginBottom: 30,
+  },
+  buttonContainer: {
+    width: '100%',
+    marginTop: 20,
+  },
+  buttonGradient: {
+    paddingVertical: 15,
+    paddingHorizontal: 20,
+    borderRadius: 10,
+    alignItems: 'center',
+  },
+  buttonText: {
+    fontFamily: 'Satoshi-Medium',
+    fontSize: 18,
+    color: DS.white,
+  },
 });
+
+export default FirstBookingSuccess;

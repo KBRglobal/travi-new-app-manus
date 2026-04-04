@@ -1,91 +1,145 @@
-// Screen 92 — Redeem Points Hub (Static Wireframe)
-// Route: /points/redeem | Mode: Points
-// Zones: Header 60px, Balance 80px, Featured Rewards scroll, 6 Categories grid
+import React from 'react';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
+import { BlurView } from 'expo-blur';
+import { MaterialIcons } from '@expo/vector-icons';
+import { ScreenWrapper, DS } from '@/components/screen-wrapper';
 
-import { ScrollView, Text, View, StyleSheet } from "react-native";
-import { ScreenContainer } from "@/components/screen-container";
+// DS object as provided in the prompt
 
-const FEATURED = [
-  { id: "1", title: "Business Class Upgrade", pts: "25,000", partner: "Emirates" },
-  { id: "2", title: "$50 Amazon Gift Card", pts: "5,000", partner: "Amazon" },
-  { id: "3", title: "Spa Day Experience", pts: "8,000", partner: "Four Seasons" },
-];
+const RedeemScreen = () => {
+  const currentPoints = 12500;
+  const rewards = [
+    { id: '1', name: 'Flight Discount (5000 points)', points: 5000, description: 'Get $50 off your next flight.' },
+    { id: '2', name: 'Hotel Stay (10000 points)', points: 10000, description: 'One night free at selected hotels.' },
+    { id: '3', name: 'Upgrade to Business Class (15000 points)', points: 15000, description: 'Upgrade your economy ticket.' },
+    { id: '4', name: 'Lounge Access (3000 points)', points: 3000, description: 'Access to airport lounges worldwide.' },
+  ];
 
-const CATEGORIES = [
-  { id: "1", icon: "✈", title: "Airline Miles", count: "15 airlines" },
-  { id: "2", icon: "🎁", title: "Gift Cards", count: "100+ brands" },
-  { id: "3", icon: "🏨", title: "Hotel Credits", count: "50+ hotels" },
-  { id: "4", icon: "💰", title: "Cash Back", count: "Instant" },
-  { id: "5", icon: "🎫", title: "Experiences", count: "200+ options" },
-  { id: "6", icon: "⭐", title: "Upgrades", count: "Flight & Hotel" },
-];
-
-export default function RedeemHubScreen() {
   return (
-    <ScreenContainer>
-      <View style={s.container}>
-        <View style={s.header}>
-          <Text style={s.back}>←</Text>
-          <Text style={s.title}>Redeem Points</Text>
-          <View style={{width:24}}/>
-        </View>
-
-        {/* Balance */}
-        <View style={s.balanceBar}>
-          <Text style={s.balanceLabel}>Available: </Text>
-          <Text style={s.balanceValue}>⬡ 12,450 pts</Text>
-        </View>
-
-        <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={s.scroll}>
-          {/* Featured Rewards */}
-          <Text style={s.secTitle}>Featured Rewards</Text>
-          <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={s.featuredRow}>
-            {FEATURED.map(f => (
-              <View key={f.id} style={s.featuredCard}>
-                <View style={s.featuredImage}><Text style={{fontSize:32}}>🎁</Text></View>
-                <View style={s.featuredInfo}>
-                  <Text style={s.featuredTitle}>{f.title}</Text>
-                  <Text style={s.featuredPartner}>{f.partner}</Text>
-                  <Text style={s.featuredPts}>⬡ {f.pts} pts</Text>
-                </View>
-              </View>
-            ))}
-          </ScrollView>
-
-          {/* Categories */}
-          <Text style={s.secTitle}>Categories</Text>
-          <View style={s.catGrid}>
-            {CATEGORIES.map(c => (
-              <View key={c.id} style={s.catCard}>
-                <Text style={s.catIcon}>{c.icon}</Text>
-                <Text style={s.catTitle}>{c.title}</Text>
-                <Text style={s.catCount}>{c.count}</Text>
-              </View>
-            ))}
+    <ScreenWrapper title="Redeem Points" scrollable={true}>
+      <View style={styles.container}>
+        {/* Your Points Section */}
+        <Text style={styles.sectionTitle}>Your Points</Text>
+        <BlurView intensity={20} tint="dark" style={styles.pointsCard}>
+          <View style={styles.pointsContent}>
+            <MaterialIcons name="star" size={30} color={DS.warning} />
+            <Text style={styles.pointsText}>{currentPoints}</Text>
+            <Text style={styles.pointsLabel}>Available Points</Text>
           </View>
+        </BlurView>
 
-          <View style={{height:100}}/>
-        </ScrollView>
+        {/* Available Rewards Section */}
+        <Text style={styles.sectionTitle}>Available Rewards</Text>
+        {rewards.map((reward) => (
+          <BlurView key={reward.id} intensity={20} tint="dark" style={styles.rewardCard}>
+            <View style={styles.rewardContent}>
+              <View>
+                <Text style={styles.rewardName}>{reward.name}</Text>
+                <Text style={styles.rewardDescription}>{reward.description}</Text>
+              </View>
+              <TouchableOpacity
+                style={styles.redeemButton}
+                onPress={() => console.log(`Redeem ${reward.name}`)}
+                disabled={currentPoints < reward.points}
+              >
+                <LinearGradient
+                  colors={[DS.purple, DS.pink] as const}
+                  start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}
+                  style={styles.gradientButton}
+                >
+                  <Text style={styles.redeemButtonText}>
+                    {currentPoints >= reward.points ? `Redeem (${reward.points})` : `Need ${reward.points - currentPoints} more`}
+                  </Text>
+                </LinearGradient>
+              </TouchableOpacity>
+            </View>
+          </BlurView>
+        ))}
       </View>
-    </ScreenContainer>
+    </ScreenWrapper>
   );
-}
+};
 
-const N="#111",N2="#1a1a1a",N3="#222",W="#fff",G="#888";
-const s = StyleSheet.create({
-  container:{flex:1,backgroundColor:N},
-  header:{height:60,flexDirection:"row",alignItems:"center",justifyContent:"space-between",paddingHorizontal:16},
-  back:{fontSize:24,color:W},title:{fontSize:20,fontWeight:"700",color:W},
-  balanceBar:{flexDirection:"row",alignItems:"center",justifyContent:"center",paddingVertical:12,backgroundColor:N2,marginHorizontal:16,borderRadius:12,borderWidth:1,borderColor:N3},
-  balanceLabel:{fontSize:14,color:G},balanceValue:{fontSize:16,fontWeight:"700",color:W},
-  scroll:{paddingHorizontal:16,paddingTop:16},
-  secTitle:{fontSize:18,fontWeight:"700",color:W,marginBottom:12,marginTop:8},
-  featuredRow:{gap:12,paddingBottom:8},
-  featuredCard:{width:200,backgroundColor:N2,borderRadius:16,borderWidth:1,borderColor:N3,overflow:"hidden"},
-  featuredImage:{height:100,backgroundColor:N3,alignItems:"center",justifyContent:"center"},
-  featuredInfo:{padding:12,gap:4},
-  featuredTitle:{fontSize:14,fontWeight:"600",color:W},featuredPartner:{fontSize:12,color:G},featuredPts:{fontSize:14,fontWeight:"700",color:W,marginTop:4},
-  catGrid:{flexDirection:"row",flexWrap:"wrap",gap:12},
-  catCard:{width:"47%",backgroundColor:N2,borderRadius:16,borderWidth:1,borderColor:N3,padding:20,alignItems:"center",gap:8},
-  catIcon:{fontSize:32},catTitle:{fontSize:15,fontWeight:"600",color:W},catCount:{fontSize:12,color:G},
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 20,
+    backgroundColor: DS.bg, // Ensure background is set for the scrollable content
+  },
+  sectionTitle: {
+    fontFamily: 'Chillax-Bold',
+    fontSize: 22,
+    color: DS.white,
+    marginBottom: 15,
+    marginTop: 25,
+  },
+  pointsCard: {
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: DS.border,
+    backgroundColor: DS.surface,
+    overflow: 'hidden',
+    padding: 20,
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  pointsContent: {
+    alignItems: 'center',
+  },
+  pointsText: {
+    fontFamily: 'Chillax-Bold',
+    fontSize: 48,
+    color: DS.white,
+    marginTop: 10,
+  },
+  pointsLabel: {
+    fontFamily: 'Satoshi-Medium',
+    fontSize: 16,
+    color: DS.muted,
+  },
+  rewardCard: {
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: DS.border,
+    backgroundColor: DS.surface,
+    overflow: 'hidden',
+    padding: 15,
+    marginBottom: 15,
+  },
+  rewardContent: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  rewardName: {
+    fontFamily: 'Satoshi-Medium',
+    fontSize: 18,
+    color: DS.white,
+    marginBottom: 5,
+  },
+  rewardDescription: {
+    fontFamily: 'Satoshi-Regular',
+    fontSize: 14,
+    color: DS.muted,
+    maxWidth: '70%', // Prevent text from overlapping button
+  },
+  redeemButton: {
+    borderRadius: 10,
+    overflow: 'hidden',
+  },
+  gradientButton: {
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  redeemButtonText: {
+    fontFamily: 'Satoshi-Medium',
+    fontSize: 14,
+    color: DS.white,
+  },
 });
+
+export default RedeemScreen;

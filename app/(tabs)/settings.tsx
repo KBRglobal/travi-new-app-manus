@@ -1,106 +1,120 @@
-// Screen 55 — Settings
-import React from "react";
-import { View, Text, StyleSheet, Pressable, ScrollView, Switch } from "react-native";
-import { LinearGradient } from "expo-linear-gradient";
+import { View, Text, StyleSheet, Pressable, Switch } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { BlurView } from "expo-blur";
+import { ScreenWrapper, DS } from "@/components/screen-wrapper";
 import { useRouter } from "expo-router";
 import { useState } from "react";
 
-const DS = { bg: "#0A0514", surface: "rgba(36,16,62,0.55)", surfaceHigh: "rgba(50,20,80,0.7)", border: "rgba(123,68,230,0.22)", borderStrong: "rgba(100,67,244,0.4)", purple: "#6443F4", pink: "#F94498", success: "#02A65C", warning: "#FF9327", error: "#FF6B6B", info: "#01BEFF", white: "#FFFFFF", secondary: "#D3CFD8", muted: "#A79FB2", placeholder: "#7B6A94" };
-
 const SECTIONS = [
-  { title: "Account", items: [
-    { label: "Change Email", icon: "email", route: "/(settings)/edit-profile" },
-    { label: "Change Password", icon: "lock-outline", route: "/(settings)/change-password" },
-    { label: "Privacy & Security", icon: "security", route: "/(settings)/privacy-security" },
-  ]},
-  { title: "Notifications", items: [
-    { label: "Push Notifications", icon: "notifications-none", route: "/(settings)/notifications" },
-    { label: "Email Alerts", icon: "mail-outline", route: "/(settings)/notifications" },
-  ]},
-  { title: "App Preferences", items: [
-    { label: "Language", icon: "language", route: "/(settings)/language-selector" },
-    { label: "Currency", icon: "attach-money", route: "/(settings)/currency-selector" },
-  ]},
-  { title: "AI Settings", items: [
-    { label: "Travel DNA", icon: "science", route: "/(tabs)/dna-management" },
-    { label: "AI Recommendations", icon: "auto-awesome", route: "/(tabs)/dna-management" },
-  ]},
-  { title: "Support", items: [
-    { label: "Help Center", icon: "help-outline", route: "/(tabs)/help" },
-    { label: "Contact Support", icon: "support-agent", route: "/(tabs)/support" },
-    { label: "Rate TRAVI", icon: "star-outline", route: "/(tabs)/support" },
-  ]},
+  {
+    title: "Account",
+    items: [
+      { icon: "person", label: "Edit Profile", route: "/(tabs)/profile-edit", hasArrow: true },
+      { icon: "verified-user", label: "Verify Identity", route: "/(tabs)/kyc", hasArrow: true },
+      { icon: "lock", label: "Privacy & Security", route: "/(settings)/privacy-security", hasArrow: true },
+    ],
+  },
+  {
+    title: "Preferences",
+    items: [
+      { icon: "notifications", label: "Notifications", route: "/(settings)/notifications", hasArrow: true },
+      { icon: "language", label: "Language", route: "/(settings)/language-selector", hasArrow: true },
+      { icon: "health-and-safety", label: "Health & Activity", route: "/(settings)/health-activity", hasArrow: true },
+    ],
+  },
+  {
+    title: "Travel",
+    items: [
+      { icon: "flight", label: "DNA Management", route: "/(tabs)/dna-management", hasArrow: true },
+      { icon: "card-membership", label: "Membership", route: "/(tabs)/membership", hasArrow: true },
+      { icon: "people", label: "Invite Partner", route: "/(tabs)/invite-partner", hasArrow: true },
+    ],
+  },
+  {
+    title: "Support",
+    items: [
+      { icon: "help-outline", label: "Help Center", route: "/(tabs)/help", hasArrow: true },
+      { icon: "emergency", label: "Emergency Contacts", route: "/(settings)/emergency", hasArrow: true },
+      { icon: "info-outline", label: "About TRAVI", route: null, hasArrow: true },
+    ],
+  },
 ];
 
 export default function SettingsScreen() {
-  const insets = useSafeAreaInsets();
   const router = useRouter();
-  const [notifications, setNotifications] = useState(true);
-  const [aiSuggestions, setAiSuggestions] = useState(true);
+  const [darkMode, setDarkMode] = useState(true);
+  const [biometrics, setBiometrics] = useState(false);
 
   return (
-    <ScrollView style={{ flex: 1, backgroundColor: DS.bg }} contentContainerStyle={{ paddingBottom: insets.bottom + 100 }} showsVerticalScrollIndicator={false}>
-      <View style={[s.header, { paddingTop: insets.top + 8 }]}>
-        <Text style={s.title}>Settings</Text>
-      </View>
+    <ScreenWrapper title="Settings" scrollable bottomPad={40}>
+      {/* Toggles */}
+      <BlurView intensity={15} tint="dark" style={s.card}>
+        <View style={[s.row, s.rowBorder]}>
+          <View style={s.rowLeft}>
+            <View style={[s.iconBox, { backgroundColor: DS.purple + "22" }]}>
+              <MaterialIcons name="dark-mode" size={18} color={DS.purple} />
+            </View>
+            <Text style={s.rowLabel}>Dark Mode</Text>
+          </View>
+          <Switch value={darkMode} onValueChange={setDarkMode} trackColor={{ false: DS.border, true: DS.purple }} thumbColor={DS.white} />
+        </View>
+        <View style={s.row}>
+          <View style={s.rowLeft}>
+            <View style={[s.iconBox, { backgroundColor: DS.success + "22" }]}>
+              <MaterialIcons name="fingerprint" size={18} color={DS.success} />
+            </View>
+            <Text style={s.rowLabel}>Biometric Login</Text>
+          </View>
+          <Switch value={biometrics} onValueChange={setBiometrics} trackColor={{ false: DS.border, true: DS.success }} thumbColor={DS.white} />
+        </View>
+      </BlurView>
 
-      <View style={{ paddingHorizontal: 16 }}>
-        {SECTIONS.map((section) => (
-          <View key={section.title} style={s.section}>
-            <Text style={s.sectionLabel}>{section.title}</Text>
-            <View style={s.sectionCard}>
-              {section.items.map((item, idx) => (
-                <Pressable key={item.label} style={({ pressed }) => [s.row, idx < section.items.length - 1 && s.rowBorder, pressed && { opacity: 0.7 }]} onPress={() => router.push(item.route as any)}>
-                  <View style={s.iconWrap}>
-                    <MaterialIcons name={item.icon as any} size={18} color={DS.purple} />
+      {/* Sections */}
+      {SECTIONS.map(section => (
+        <View key={section.title} style={s.section}>
+          <Text style={s.sectionTitle}>{section.title}</Text>
+          <BlurView intensity={15} tint="dark" style={s.card}>
+            {section.items.map((item, i) => (
+              <Pressable
+                key={item.label}
+                style={[s.row, i < section.items.length - 1 && s.rowBorder]}
+                onPress={() => item.route && router.push(item.route as any)}
+              >
+                <View style={s.rowLeft}>
+                  <View style={[s.iconBox, { backgroundColor: DS.surface }]}>
+                    <MaterialIcons name={item.icon as any} size={18} color={DS.muted} />
                   </View>
                   <Text style={s.rowLabel}>{item.label}</Text>
-                  <MaterialIcons name="chevron-right" size={20} color={DS.muted} />
-                </Pressable>
-              ))}
-            </View>
-          </View>
-        ))}
-
-        {/* Toggles */}
-        <View style={s.section}>
-          <Text style={s.sectionLabel}>Quick Toggles</Text>
-          <View style={s.sectionCard}>
-            <View style={[s.row, s.rowBorder]}>
-              <View style={s.iconWrap}><MaterialIcons name="notifications" size={18} color={DS.purple} /></View>
-              <Text style={s.rowLabel}>Push Notifications</Text>
-              <Switch value={notifications} onValueChange={setNotifications} trackColor={{ false: DS.surface, true: DS.purple }} thumbColor={DS.white} />
-            </View>
-            <View style={s.row}>
-              <View style={s.iconWrap}><MaterialIcons name="auto-awesome" size={18} color={DS.purple} /></View>
-              <Text style={s.rowLabel}>AI Suggestions</Text>
-              <Switch value={aiSuggestions} onValueChange={setAiSuggestions} trackColor={{ false: DS.surface, true: DS.purple }} thumbColor={DS.white} />
-            </View>
-          </View>
+                </View>
+                {item.hasArrow && <MaterialIcons name="chevron-right" size={20} color={DS.placeholder} />}
+              </Pressable>
+            ))}
+          </BlurView>
         </View>
+      ))}
 
-        {/* Logout */}
-        <Pressable style={({ pressed }) => [s.logoutBtn, pressed && { opacity: 0.7 }]} onPress={() => router.replace("/(auth)/sign-up" as any)}>
-          <MaterialIcons name="logout" size={18} color={DS.error} style={{ marginRight: 8 }} />
-          <Text style={s.logoutText}>Sign Out</Text>
-        </Pressable>
-      </View>
-    </ScrollView>
+      {/* Sign out */}
+      <Pressable style={s.signOutBtn} onPress={() => router.replace("/(auth)/splash" as any)}>
+        <MaterialIcons name="logout" size={20} color={DS.error} />
+        <Text style={s.signOutText}>Sign Out</Text>
+      </Pressable>
+
+      {/* Version */}
+      <Text style={s.version}>TRAVI v1.0.0 · Made with ♥</Text>
+    </ScreenWrapper>
   );
 }
 
 const s = StyleSheet.create({
-  header: { paddingHorizontal: 20, paddingBottom: 16 },
-  title: { fontSize: 28, fontFamily: "Chillax-Bold", color: DS.white },
   section: { marginBottom: 20 },
-  sectionLabel: { fontSize: 12, fontFamily: "Satoshi-Medium", color: DS.muted, marginBottom: 8, marginLeft: 4, textTransform: "uppercase", letterSpacing: 0.8 },
-  sectionCard: { backgroundColor: DS.surface, borderWidth: 1, borderColor: DS.border, borderRadius: 16, overflow: "hidden" },
-  row: { flexDirection: "row", alignItems: "center", paddingHorizontal: 16, paddingVertical: 14, gap: 12 },
+  sectionTitle: { color: DS.muted, fontSize: 12, fontFamily: "Satoshi-Medium", letterSpacing: 1, textTransform: "uppercase", marginBottom: 8, marginLeft: 4 },
+  card: { borderRadius: 16, overflow: "hidden", borderWidth: 1, borderColor: DS.border, backgroundColor: DS.surface },
+  row: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 16, paddingVertical: 14 },
   rowBorder: { borderBottomWidth: 1, borderBottomColor: DS.border },
-  iconWrap: { width: 32, height: 32, borderRadius: 8, backgroundColor: "rgba(100,67,244,0.12)", justifyContent: "center", alignItems: "center" },
-  rowLabel: { flex: 1, fontSize: 15, fontFamily: "Satoshi-Medium", color: DS.white },
-  logoutBtn: { flexDirection: "row", alignItems: "center", justifyContent: "center", height: 52, borderRadius: 16, borderWidth: 1, borderColor: "rgba(255,107,107,0.25)", backgroundColor: "rgba(255,107,107,0.08)", marginBottom: 16 },
-  logoutText: { fontSize: 15, fontFamily: "Satoshi-Bold", color: DS.error },
+  rowLeft: { flexDirection: "row", alignItems: "center", gap: 12 },
+  iconBox: { width: 36, height: 36, borderRadius: 10, justifyContent: "center", alignItems: "center" },
+  rowLabel: { color: DS.white, fontSize: 14, fontFamily: "Satoshi-Medium" },
+  signOutBtn: { flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 8, paddingVertical: 16, borderRadius: 14, borderWidth: 1, borderColor: DS.error + "44", backgroundColor: DS.error + "11", marginBottom: 16 },
+  signOutText: { color: DS.error, fontSize: 15, fontFamily: "Satoshi-Medium" },
+  version: { color: DS.placeholder, fontSize: 12, fontFamily: "Satoshi-Regular", textAlign: "center" },
 });

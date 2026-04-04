@@ -1,108 +1,97 @@
-// Screen 52 — KYC Verification — STATIC 
-// Why card 140px, 4-step timeline 200px, Upload area 180px with camera guide
-import { View, Text, StyleSheet, Pressable, ScrollView } from "react-native";
+import { useState } from "react";
+import { View, Text, StyleSheet, Pressable } from "react-native";
+import { MaterialIcons } from "@expo/vector-icons";
+import { BlurView } from "expo-blur";
+import { ScreenWrapper, DS } from "@/components/screen-wrapper";
+import { useRouter } from "expo-router";
+import { LinearGradient } from "expo-linear-gradient";
 
 const STEPS = [
-  { num: "1", title: "Personal Info", status: "Done" },
-  { num: "2", title: "ID Document", status: "Current" },
-  { num: "3", title: "Selfie Verification", status: "Pending" },
-  { num: "4", title: "Review", status: "Pending" },
+  { num: 1, title: "Personal Info", status: "done" },
+  { num: 2, title: "ID Document", status: "current" },
+  { num: 3, title: "Selfie Verification", status: "pending" },
+  { num: 4, title: "Review", status: "pending" },
 ];
 
 export default function KYCScreen() {
+  const router = useRouter();
+  const [uploaded, setUploaded] = useState(false);
+
   return (
-    <View style={s.root}>
-      <View style={s.header}>
-        <Pressable style={s.backBtn}><Text style={s.backText}>{"<"}</Text></Pressable>
-        <Text style={s.headerTitle}>Verify Identity</Text>
-        <View style={{ width: 32 }} />
-      </View>
-
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 120 }}>
-        {/* Why card — 140px */}
-        <View style={s.whyCard}>
-          <Text style={s.whyTitle}>Why Verify?</Text>
-          <Text style={s.whyText}>Identity verification is required to add funds, make payments, and access premium wallet features. Your data is encrypted and secure.</Text>
+    <ScreenWrapper title="Verify Identity" scrollable bottomPad={100}>
+      {/* Why verify card */}
+      <BlurView intensity={20} tint="dark" style={s.infoCard}>
+        <View style={s.infoInner}>
+          <MaterialIcons name="verified-user" size={24} color={DS.purple} />
+          <View style={{ flex: 1 }}>
+            <Text style={s.infoTitle}>Why Verify?</Text>
+            <Text style={s.infoText}>Identity verification is required to add funds, make payments, and access premium wallet features. Your data is encrypted and secure.</Text>
+          </View>
         </View>
+      </BlurView>
 
-        {/* 4-step timeline — 200px */}
-        <View style={s.timeline}>
-          {STEPS.map((step, i) => (
-            <View key={i} style={s.timelineStep}>
-              <View style={s.stepLeft}>
-                <View style={[s.stepDot, step.status === "Done" && s.stepDone, step.status === "Current" && s.stepCurrent]}>
-                  <Text style={s.stepNum}>{step.status === "Done" ? "✓" : step.num}</Text>
-                </View>
-                {i < STEPS.length - 1 && <View style={[s.stepLine, step.status === "Done" && s.stepLineDone]} />}
+      {/* Steps */}
+      <View style={s.stepsContainer}>
+        {STEPS.map((step, i) => (
+          <View key={step.num} style={s.stepRow}>
+            <View style={s.stepLeft}>
+              <View style={[s.stepCircle,
+                step.status === "done" && { backgroundColor: DS.success, borderColor: DS.success },
+                step.status === "current" && { backgroundColor: DS.purple, borderColor: DS.purple },
+                step.status === "pending" && { backgroundColor: "transparent", borderColor: DS.border },
+              ]}>
+                {step.status === "done"
+                  ? <MaterialIcons name="check" size={16} color="#FFF" />
+                  : <Text style={[s.stepNum, step.status === "pending" && { color: DS.muted }]}>{step.num}</Text>
+                }
               </View>
-              <View style={s.stepRight}>
-                <Text style={[s.stepTitle, step.status === "Current" && { color: "#FFF" }]}>{step.title}</Text>
-                <Text style={s.stepStatus}>{step.status}</Text>
-              </View>
+              {i < STEPS.length - 1 && <View style={[s.stepLine, step.status === "done" && { backgroundColor: DS.success }]} />}
             </View>
-          ))}
-        </View>
-
-        {/* Upload area — 180px */}
-        <View style={s.section}>
-          <Text style={s.sectionTitle}>Upload ID Document</Text>
-          <Pressable style={s.uploadArea}>
-            <Text style={s.uploadIcon}>+</Text>
-            <Text style={s.uploadTitle}>Tap to upload</Text>
-            <Text style={s.uploadSub}>Passport, National ID, or Driver's License</Text>
-            <Text style={s.uploadHint}>JPG, PNG or PDF — Max 10MB</Text>
-          </Pressable>
-        </View>
-
-        {/* Camera guide */}
-        <View style={s.guideCard}>
-          <Text style={s.guideTitle}>Photo Tips</Text>
-          <Text style={s.guideText}>• Place document on a flat, well-lit surface</Text>
-          <Text style={s.guideText}>• Ensure all corners are visible</Text>
-          <Text style={s.guideText}>• Avoid glare and shadows</Text>
-          <Text style={s.guideText}>• Text must be clearly readable</Text>
-        </View>
-      </ScrollView>
-
-      <View style={s.bottom}>
-        <Pressable style={s.continueBtn}><Text style={s.continueText}>Continue</Text></Pressable>
+            <View style={s.stepContent}>
+              <Text style={[s.stepTitle, step.status === "pending" && { color: DS.muted }]}>{step.title}</Text>
+              <Text style={s.stepStatus}>{step.status === "done" ? "Completed" : step.status === "current" ? "In Progress" : "Pending"}</Text>
+            </View>
+          </View>
+        ))}
       </View>
-    </View>
+
+      {/* Upload area */}
+      <Text style={s.sectionTitle}>Upload ID Document</Text>
+      <Pressable style={[s.uploadArea, uploaded && { borderColor: DS.success, borderStyle: "solid" }]} onPress={() => setUploaded(true)}>
+        <MaterialIcons name={uploaded ? "check-circle" : "cloud-upload"} size={40} color={uploaded ? DS.success : DS.purple} />
+        <Text style={s.uploadTitle}>{uploaded ? "Document Uploaded" : "Tap to Upload"}</Text>
+        <Text style={s.uploadSub}>{uploaded ? "ID document ready for review" : "Passport, ID card, or driver's license"}</Text>
+      </Pressable>
+
+      {/* CTA */}
+      <Pressable onPress={() => router.back()}>
+        <LinearGradient colors={[DS.purple, DS.pink] as const} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={s.cta}>
+          <Text style={s.ctaText}>Continue</Text>
+          <MaterialIcons name="arrow-forward" size={20} color="#FFF" />
+        </LinearGradient>
+      </Pressable>
+    </ScreenWrapper>
   );
 }
 
 const s = StyleSheet.create({
-  root: { flex: 1, backgroundColor: "#111" },
-  header: { height: 60, flexDirection: "row", alignItems: "center", paddingHorizontal: 16, gap: 12, marginTop: 48, borderBottomWidth: 1, borderBottomColor: "#222" },
-  backBtn: { width: 32, height: 32, justifyContent: "center", alignItems: "center" },
-  backText: { color: "#FFF", fontSize: 24 },
-  headerTitle: { flex: 1, color: "#FFF", fontSize: 18, fontWeight: "600", textAlign: "center" },
-  whyCard: { margin: 20, padding: 16, height: 140, borderRadius: 14, backgroundColor: "#1A1A1A", borderWidth: 1, borderColor: "#333", justifyContent: "center" },
-  whyTitle: { color: "#FFF", fontSize: 16, fontWeight: "700", marginBottom: 8 },
-  whyText: { color: "#888", fontSize: 13, lineHeight: 20 },
-  timeline: { paddingHorizontal: 20, marginTop: 8 },
-  timelineStep: { flexDirection: "row", gap: 12 },
-  stepLeft: { alignItems: "center", width: 32 },
-  stepDot: { width: 32, height: 32, borderRadius: 16, backgroundColor: "#222", borderWidth: 1, borderColor: "#333", justifyContent: "center", alignItems: "center" },
-  stepDone: { backgroundColor: "#333", borderColor: "#555" },
-  stepCurrent: { backgroundColor: "#444", borderColor: "#666" },
-  stepNum: { color: "#888", fontSize: 13, fontWeight: "700" },
-  stepLine: { width: 2, height: 24, backgroundColor: "#222" },
-  stepLineDone: { backgroundColor: "#555" },
-  stepRight: { flex: 1, paddingBottom: 16 },
-  stepTitle: { color: "#888", fontSize: 14, fontWeight: "600" },
-  stepStatus: { color: "#666", fontSize: 12, marginTop: 2 },
-  section: { paddingHorizontal: 20, marginTop: 16 },
-  sectionTitle: { color: "#FFF", fontSize: 16, fontWeight: "700", marginBottom: 10 },
-  uploadArea: { height: 180, borderRadius: 14, borderWidth: 2, borderColor: "#333", borderStyle: "dashed", justifyContent: "center", alignItems: "center", gap: 4 },
-  uploadIcon: { color: "#555", fontSize: 36 },
-  uploadTitle: { color: "#FFF", fontSize: 15, fontWeight: "600" },
-  uploadSub: { color: "#888", fontSize: 12 },
-  uploadHint: { color: "#666", fontSize: 11, marginTop: 4 },
-  guideCard: { margin: 20, padding: 16, borderRadius: 14, backgroundColor: "#1A1A1A", borderWidth: 1, borderColor: "#333" },
-  guideTitle: { color: "#FFF", fontSize: 14, fontWeight: "600", marginBottom: 8 },
-  guideText: { color: "#888", fontSize: 12, lineHeight: 20 },
-  bottom: { position: "absolute", bottom: 0, left: 0, right: 0, padding: 20, paddingBottom: 36, backgroundColor: "#111", borderTopWidth: 1, borderTopColor: "#222" },
-  continueBtn: { height: 52, borderRadius: 26, backgroundColor: "#333", borderWidth: 1, borderColor: "#555", justifyContent: "center", alignItems: "center" },
-  continueText: { color: "#FFF", fontSize: 16, fontWeight: "600" },
+  infoCard: { borderRadius: 16, overflow: "hidden", borderWidth: 1, borderColor: DS.border, marginBottom: 24 },
+  infoInner: { flexDirection: "row", gap: 12, padding: 16, backgroundColor: DS.surface, alignItems: "flex-start" },
+  infoTitle: { color: DS.white, fontSize: 15, fontFamily: "Chillax-Bold", marginBottom: 6 },
+  infoText: { color: DS.muted, fontSize: 13, fontFamily: "Satoshi-Regular", lineHeight: 20 },
+  stepsContainer: { marginBottom: 24 },
+  stepRow: { flexDirection: "row", gap: 16, marginBottom: 4 },
+  stepLeft: { alignItems: "center", width: 36 },
+  stepCircle: { width: 36, height: 36, borderRadius: 18, borderWidth: 2, justifyContent: "center", alignItems: "center" },
+  stepLine: { width: 2, flex: 1, backgroundColor: DS.border, marginVertical: 4, minHeight: 24 },
+  stepNum: { color: DS.white, fontSize: 14, fontFamily: "Chillax-Bold" },
+  stepContent: { flex: 1, paddingTop: 6, paddingBottom: 20 },
+  stepTitle: { color: DS.white, fontSize: 15, fontFamily: "Satoshi-Medium" },
+  stepStatus: { color: DS.muted, fontSize: 12, fontFamily: "Satoshi-Regular", marginTop: 2 },
+  sectionTitle: { color: DS.white, fontSize: 16, fontFamily: "Chillax-Bold", marginBottom: 12 },
+  uploadArea: { borderRadius: 16, borderWidth: 2, borderColor: DS.purple + "66", borderStyle: "dashed", padding: 40, alignItems: "center", gap: 8, backgroundColor: DS.purple + "11", marginBottom: 24 },
+  uploadTitle: { color: DS.white, fontSize: 16, fontFamily: "Satoshi-Medium" },
+  uploadSub: { color: DS.muted, fontSize: 13, fontFamily: "Satoshi-Regular" },
+  cta: { height: 56, borderRadius: 16, flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 8 },
+  ctaText: { color: DS.white, fontSize: 16, fontFamily: "Chillax-Bold" },
 });

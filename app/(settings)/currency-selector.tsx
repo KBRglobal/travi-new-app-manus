@@ -1,75 +1,140 @@
-import React, { useState } from "react";
-import { View, Text, TouchableOpacity, StyleSheet, FlatList, Platform } from "react-native";
-import { router } from "expo-router";
-import { ScreenContainer } from "@/components/screen-container";
-import { IconSymbol } from "@/components/ui/icon-symbol";
-import { useColors } from "@/hooks/use-colors";
-import * as Haptics from "expo-haptics";
+import React, { useState } from 'react';
+import { View, Text, TouchableOpacity, FlatList, StyleSheet } from 'react-native';
+import { BlurView } from 'expo-blur';
+import { LinearGradient } from 'expo-linear-gradient';
+import { MaterialIcons } from '@expo/vector-icons';
+import { ScreenWrapper, DS } from '@/components/screen-wrapper';
 
-const CURRENCIES = [
-  { code: "USD", name: "US Dollar", symbol: "$" },
-  { code: "EUR", name: "Euro", symbol: "€" },
-  { code: "GBP", name: "British Pound", symbol: "£" },
-  { code: "ILS", name: "Israeli Shekel", symbol: "₪" },
-  { code: "AED", name: "UAE Dirham", symbol: "د.إ" },
-  { code: "JPY", name: "Japanese Yen", symbol: "¥" },
-  { code: "CNY", name: "Chinese Yuan", symbol: "¥" },
-  { code: "AUD", name: "Australian Dollar", symbol: "A$" },
-  { code: "CAD", name: "Canadian Dollar", symbol: "C$" },
-  { code: "CHF", name: "Swiss Franc", symbol: "CHF" },
-  { code: "INR", name: "Indian Rupee", symbol: "₹" },
-  { code: "BRL", name: "Brazilian Real", symbol: "R$" },
-];
-
-export default function CurrencySelectorScreen() {
-  const colors = useColors();
-  const [selected, setSelected] = useState("USD");
-
-  const handleSelect = (code: string) => {
-    if (Platform.OS !== "web") Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-    setSelected(code);
-  };
-
-  return (
-    <ScreenContainer>
-      <View style={[S.header, { borderBottomColor: colors.border }]}>
-        <TouchableOpacity onPress={() => router.back()} activeOpacity={0.7}>
-          <IconSymbol name="chevron.left" size={24} color={colors.text} />
-        </TouchableOpacity>
-        <Text style={[S.headerTitle, { color: colors.text }]}>Currency</Text>
-        <View style={{ width: 24 }} />
-      </View>
-
-      <FlatList
-        data={CURRENCIES}
-        keyExtractor={(item) => item.code}
-        contentContainerStyle={S.list}
-        renderItem={({ item }) => (
-          <TouchableOpacity
-            style={[S.row, { borderBottomColor: colors.border }]}
-            onPress={() => handleSelect(item.code)}
-            activeOpacity={0.7}
-          >
-            <View style={S.rowLeft}>
-              <Text style={[S.name, { color: colors.text }]}>{item.name}</Text>
-              <Text style={[S.code, { color: colors.muted }]}>{item.code} · {item.symbol}</Text>
-            </View>
-            {selected === item.code ? (
-              <IconSymbol name="checkmark.circle.fill" size={24} color="#6443F4" />
-            ) : null}
-          </TouchableOpacity>
-        )}
-      />
-    </ScreenContainer>
-  );
+interface Currency {
+  code: string;
+  name: string;
+  symbol: string;
 }
 
-const S = StyleSheet.create({
-  header: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 20, paddingVertical: 16, borderBottomWidth: 0.5 },
-  headerTitle: { fontSize: 18, fontFamily: "Chillax-Semibold", fontWeight: "600" },
-  list: { paddingBottom: 130 },
-  row: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 20, paddingVertical: 16, borderBottomWidth: 0.5 },
-  rowLeft: { flex: 1, marginRight: 12 },
-  name: { fontSize: 16, fontFamily: "Satoshi-Regular", fontWeight: "500" },
-  code: { fontSize: 14, fontFamily: "Satoshi-Regular", marginTop: 2 },
+const currencies: Currency[] = [
+  { code: 'USD', name: 'United States Dollar', symbol: '$' },
+  { code: 'EUR', name: 'Euro', symbol: '€' },
+  { code: 'GBP', name: 'British Pound', symbol: '£' },
+  { code: 'JPY', name: 'Japanese Yen', symbol: '¥' },
+  { code: 'CAD', name: 'Canadian Dollar', symbol: 'C$' },
+  { code: 'AUD', name: 'Australian Dollar', symbol: 'A$' },
+  { code: 'CHF', name: 'Swiss Franc', symbol: 'CHF' },
+  { code: 'CNY', name: 'Chinese Yuan', symbol: '¥' },
+  { code: 'INR', name: 'Indian Rupee', symbol: '₹' },
+  { code: 'BRL', name: 'Brazilian Real', symbol: 'R$' },
+];
+
+const CurrencySelectorScreen = () => {
+  const [selectedCurrency, setSelectedCurrency] = useState<Currency | null>(currencies[0]);
+
+  const renderCurrencyItem = ({ item }: { item: Currency }) => (
+    <TouchableOpacity
+      style={styles.currencyItem}
+      onPress={() => setSelectedCurrency(item)}
+    >
+      <BlurView intensity={20} tint="dark" style={styles.glassCard}>
+        <View style={styles.currencyInfo}>
+          <Text style={styles.currencySymbol}>{item.symbol}</Text>
+          <View>
+            <Text style={styles.currencyCode}>{item.code}</Text>
+            <Text style={styles.currencyName}>{item.name}</Text>
+          </View>
+        </View>
+        {selectedCurrency?.code === item.code && (
+          <MaterialIcons name="check-circle" size={24} color={DS.success} />
+        )}
+      </BlurView>
+    </TouchableOpacity>
+  );
+
+  return (
+    <ScreenWrapper title="Select Currency" scrollable={true}>
+      <FlatList
+        data={currencies}
+        renderItem={renderCurrencyItem}
+        keyExtractor={(item) => item.code}
+        contentContainerStyle={styles.listContent}
+      />
+      <View style={styles.buttonContainer}>
+        <LinearGradient
+          colors={[DS.purple, DS.pink] as const}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 1 }}
+          style={styles.gradientButton}
+        >
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => console.log('Selected:', selectedCurrency?.code)}
+          >
+            <Text style={styles.buttonText}>Confirm Selection</Text>
+          </TouchableOpacity>
+        </LinearGradient>
+      </View>
+    </ScreenWrapper>
+  );
+};
+
+const styles = StyleSheet.create({
+  listContent: {
+    paddingHorizontal: 20,
+    paddingBottom: 100, // To ensure button doesn't cover last item
+  },
+  currencyItem: {
+    marginBottom: 10,
+  },
+  glassCard: {
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: DS.border,
+    backgroundColor: DS.surface,
+    overflow: 'hidden',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    padding: 15,
+  },
+  currencyInfo: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  currencySymbol: {
+    fontFamily: 'Chillax-Bold',
+    fontSize: 30,
+    color: DS.white,
+    marginRight: 15,
+  },
+  currencyCode: {
+    fontFamily: 'Satoshi-Medium',
+    fontSize: 18,
+    color: DS.white,
+  },
+  currencyName: {
+    fontFamily: 'Satoshi-Regular',
+    fontSize: 14,
+    color: DS.muted,
+  },
+  buttonContainer: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    padding: 20,
+    backgroundColor: DS.bg, // Match background to blend in
+  },
+  gradientButton: {
+    borderRadius: 12,
+    overflow: 'hidden',
+  },
+  button: {
+    paddingVertical: 15,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  buttonText: {
+    fontFamily: 'Satoshi-Medium',
+    fontSize: 18,
+    color: DS.white,
+  },
 });
+
+export default CurrencySelectorScreen;

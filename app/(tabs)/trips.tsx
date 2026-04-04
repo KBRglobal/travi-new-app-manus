@@ -85,7 +85,7 @@ export default function TripsScreen() {
 
         {/* Plan new trip CTA */}
         <Pressable style={({ pressed }) => [s.planBtn, pressed && { opacity: 0.85, transform: [{ scale: 0.97 }] }]} onPress={() => router.push("/(trip)/plan" as any)}>
-          <LinearGradient colors={[DS.purple, DS.pink]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={s.planGrad}>
+          <LinearGradient colors={[DS.purple, DS.pink] as const} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={s.planGrad}>
             <MaterialIcons name="add" size={20} color={DS.white} style={{ marginRight: 8 }} />
             <Text style={s.planText}>Plan a New Trip</Text>
           </LinearGradient>

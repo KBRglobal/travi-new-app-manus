@@ -1,97 +1,101 @@
-// Screen 49 — Add Funds — STATIC 
-// Balance display, Large amount input, Quick chips (€20/50/100/200), Fee notice
-import { View, Text, StyleSheet, Pressable, ScrollView } from "react-native";
+import { useState } from "react";
+import { View, Text, StyleSheet, Pressable, TextInput } from "react-native";
+import { MaterialIcons } from "@expo/vector-icons";
+import { BlurView } from "expo-blur";
+import { ScreenWrapper, DS } from "@/components/screen-wrapper";
+import { useRouter } from "expo-router";
+import { LinearGradient } from "expo-linear-gradient";
 
-const QUICK_AMOUNTS = ["E20", "E50", "E100", "E200"];
+const AMOUNTS = ["50", "100", "250", "500", "1000"];
+const METHODS = [
+  { id: "card", label: "Credit / Debit Card", icon: "credit-card", last4: "4242" },
+  { id: "bank", label: "Bank Transfer", icon: "account-balance", last4: null },
+  { id: "apple", label: "Apple Pay", icon: "phone-iphone", last4: null },
+];
 
 export default function AddFundsScreen() {
+  const router = useRouter();
+  const [amount, setAmount] = useState("100");
+  const [method, setMethod] = useState("card");
+
   return (
-    <View style={s.root}>
-      <View style={s.header}>
-        <Pressable style={s.backBtn}><Text style={s.backText}>{"<"}</Text></Pressable>
-        <Text style={s.headerTitle}>Add Funds</Text>
-        <View style={{ width: 32 }} />
-      </View>
-
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 120 }}>
-        {/* Current balance */}
-        <View style={s.balanceCard}>
+    <ScreenWrapper title="Add Funds" scrollable bottomPad={100}>
+      {/* Balance */}
+      <BlurView intensity={20} tint="dark" style={s.balanceCard}>
+        <LinearGradient colors={[DS.purple + "33", DS.pink + "22"]} style={s.balanceInner}>
           <Text style={s.balanceLabel}>Current Balance</Text>
-          <Text style={s.balanceAmount}>E1,247.50</Text>
-        </View>
+          <Text style={s.balanceAmount}>€1,247.50</Text>
+        </LinearGradient>
+      </BlurView>
 
-        {/* Large amount input */}
-        <View style={s.inputSection}>
-          <Text style={s.inputLabel}>Amount to Add</Text>
-          <View style={s.amountInput}>
-            <Text style={s.currency}>E</Text>
-            <Text style={s.amountText}>0.00</Text>
-          </View>
-        </View>
+      {/* Amount input */}
+      <Text style={s.sectionTitle}>Amount</Text>
+      <BlurView intensity={15} tint="dark" style={s.inputCard}>
+        <Text style={s.currencySymbol}>€</Text>
+        <TextInput
+          style={s.amountInput}
+          value={amount}
+          onChangeText={setAmount}
+          keyboardType="numeric"
+          placeholderTextColor={DS.muted}
+        />
+      </BlurView>
 
-        {/* Quick chips */}
-        <View style={s.chipsRow}>
-          {QUICK_AMOUNTS.map((amt) => (
-            <Pressable key={amt} style={s.chip}>
-              <Text style={s.chipText}>{amt}</Text>
-            </Pressable>
-          ))}
-        </View>
-
-        {/* Payment method */}
-        <View style={s.section}>
-          <Text style={s.sectionTitle}>Payment Method</Text>
-          <Pressable style={s.methodCard}>
-            <View style={s.methodIcon}><Text style={s.methodIconText}>V</Text></View>
-            <View style={{ flex: 1 }}>
-              <Text style={s.methodTitle}>Visa ending in 4242</Text>
-              <Text style={s.methodSub}>Expires 12/28</Text>
-            </View>
-            <Text style={s.methodArrow}>{">"}</Text>
+      {/* Quick amounts */}
+      <View style={s.quickAmounts}>
+        {AMOUNTS.map(a => (
+          <Pressable key={a} style={[s.quickBtn, amount === a && s.quickBtnActive]} onPress={() => setAmount(a)}>
+            <Text style={[s.quickText, amount === a && s.quickTextActive]}>€{a}</Text>
           </Pressable>
-        </View>
-
-        {/* Fee notice */}
-        <View style={s.feeNotice}>
-          <Text style={s.feeText}>No fees for adding funds. Funds are available immediately.</Text>
-        </View>
-      </ScrollView>
-
-      <View style={s.bottom}>
-        <Pressable style={s.addBtn}><Text style={s.addText}>Add Funds</Text></Pressable>
+        ))}
       </View>
-    </View>
+
+      {/* Payment method */}
+      <Text style={s.sectionTitle}>Payment Method</Text>
+      {METHODS.map(m => (
+        <Pressable key={m.id} onPress={() => setMethod(m.id)}>
+          <BlurView intensity={15} tint="dark" style={[s.methodCard, method === m.id && { borderColor: DS.purple }]}>
+            <View style={[s.methodIcon, method === m.id && { backgroundColor: DS.purple + "33", borderColor: DS.purple + "66" }]}>
+              <MaterialIcons name={m.icon as any} size={20} color={method === m.id ? DS.purple : DS.muted} />
+            </View>
+            <View style={{ flex: 1 }}>
+              <Text style={s.methodLabel}>{m.label}</Text>
+              {m.last4 && <Text style={s.methodSub}>•••• {m.last4}</Text>}
+            </View>
+            {method === m.id && <MaterialIcons name="check-circle" size={20} color={DS.purple} />}
+          </BlurView>
+        </Pressable>
+      ))}
+
+      {/* CTA */}
+      <Pressable onPress={() => router.back()} style={{ marginTop: 8 }}>
+        <LinearGradient colors={[DS.purple, DS.pink] as const} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={s.cta}>
+          <MaterialIcons name="add" size={20} color="#FFF" />
+          <Text style={s.ctaText}>Add €{amount || "0"}</Text>
+        </LinearGradient>
+      </Pressable>
+    </ScreenWrapper>
   );
 }
 
 const s = StyleSheet.create({
-  root: { flex: 1, backgroundColor: "#111" },
-  header: { height: 60, flexDirection: "row", alignItems: "center", paddingHorizontal: 16, gap: 12, marginTop: 48, borderBottomWidth: 1, borderBottomColor: "#222" },
-  backBtn: { width: 32, height: 32, justifyContent: "center", alignItems: "center" },
-  backText: { color: "#FFF", fontSize: 24 },
-  headerTitle: { flex: 1, color: "#FFF", fontSize: 18, fontWeight: "600", textAlign: "center" },
-  balanceCard: { alignItems: "center", paddingVertical: 24, borderBottomWidth: 1, borderBottomColor: "#222" },
-  balanceLabel: { color: "#888", fontSize: 13 },
-  balanceAmount: { color: "#FFF", fontSize: 28, fontWeight: "800", marginTop: 4 },
-  inputSection: { alignItems: "center", paddingVertical: 32 },
-  inputLabel: { color: "#888", fontSize: 14, marginBottom: 12 },
-  amountInput: { flexDirection: "row", alignItems: "baseline" },
-  currency: { color: "#888", fontSize: 24, marginRight: 4 },
-  amountText: { color: "#FFF", fontSize: 48, fontWeight: "800" },
-  chipsRow: { flexDirection: "row", justifyContent: "center", gap: 12, paddingHorizontal: 20 },
-  chip: { paddingHorizontal: 20, paddingVertical: 12, borderRadius: 12, backgroundColor: "#1A1A1A", borderWidth: 1, borderColor: "#333" },
-  chipText: { color: "#FFF", fontSize: 15, fontWeight: "600" },
-  section: { paddingHorizontal: 20, marginTop: 28 },
-  sectionTitle: { color: "#FFF", fontSize: 16, fontWeight: "700", marginBottom: 10 },
-  methodCard: { flexDirection: "row", alignItems: "center", gap: 12, padding: 14, borderRadius: 14, backgroundColor: "#1A1A1A", borderWidth: 1, borderColor: "#333" },
-  methodIcon: { width: 40, height: 40, borderRadius: 10, backgroundColor: "#222", justifyContent: "center", alignItems: "center" },
-  methodIconText: { color: "#888", fontSize: 16, fontWeight: "700" },
-  methodTitle: { color: "#FFF", fontSize: 14, fontWeight: "600" },
-  methodSub: { color: "#888", fontSize: 12, marginTop: 2 },
-  methodArrow: { color: "#555", fontSize: 14 },
-  feeNotice: { marginHorizontal: 20, marginTop: 16, padding: 12, borderRadius: 10, backgroundColor: "#1A1A1A" },
-  feeText: { color: "#888", fontSize: 12, textAlign: "center" },
-  bottom: { position: "absolute", bottom: 0, left: 0, right: 0, padding: 20, paddingBottom: 36, backgroundColor: "#111", borderTopWidth: 1, borderTopColor: "#222" },
-  addBtn: { height: 52, borderRadius: 26, backgroundColor: "#333", borderWidth: 1, borderColor: "#555", justifyContent: "center", alignItems: "center" },
-  addText: { color: "#FFF", fontSize: 16, fontWeight: "600" },
+  balanceCard: { borderRadius: 20, overflow: "hidden", borderWidth: 1, borderColor: DS.border, marginBottom: 24 },
+  balanceInner: { alignItems: "center", padding: 24 },
+  balanceLabel: { color: DS.muted, fontSize: 13, fontFamily: "Satoshi-Regular" },
+  balanceAmount: { color: DS.white, fontSize: 40, fontFamily: "Chillax-Bold", marginTop: 4 },
+  sectionTitle: { color: DS.white, fontSize: 16, fontFamily: "Chillax-Bold", marginBottom: 12 },
+  inputCard: { borderRadius: 16, overflow: "hidden", borderWidth: 1, borderColor: DS.purple, flexDirection: "row", alignItems: "center", paddingHorizontal: 20, height: 64, backgroundColor: DS.surface, marginBottom: 12 },
+  currencySymbol: { color: DS.purple, fontSize: 28, fontFamily: "Chillax-Bold", marginRight: 8 },
+  amountInput: { flex: 1, color: DS.white, fontSize: 32, fontFamily: "Chillax-Bold" },
+  quickAmounts: { flexDirection: "row", gap: 8, flexWrap: "wrap", marginBottom: 24 },
+  quickBtn: { paddingHorizontal: 16, paddingVertical: 8, borderRadius: 20, backgroundColor: DS.surface, borderWidth: 1, borderColor: DS.border },
+  quickBtnActive: { backgroundColor: DS.purple + "33", borderColor: DS.purple },
+  quickText: { color: DS.muted, fontSize: 14, fontFamily: "Satoshi-Medium" },
+  quickTextActive: { color: DS.white },
+  methodCard: { borderRadius: 14, overflow: "hidden", borderWidth: 1, borderColor: DS.border, flexDirection: "row", alignItems: "center", gap: 12, padding: 14, backgroundColor: DS.surface, marginBottom: 10 },
+  methodIcon: { width: 44, height: 44, borderRadius: 12, borderWidth: 1, borderColor: DS.border, justifyContent: "center", alignItems: "center" },
+  methodLabel: { color: DS.white, fontSize: 14, fontFamily: "Satoshi-Medium" },
+  methodSub: { color: DS.muted, fontSize: 12, fontFamily: "Satoshi-Regular", marginTop: 2 },
+  cta: { height: 56, borderRadius: 16, flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 8 },
+  ctaText: { color: DS.white, fontSize: 16, fontFamily: "Chillax-Bold" },
 });

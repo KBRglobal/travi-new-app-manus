@@ -1,133 +1,124 @@
-// Screen 54 — Profile Edit — STATIC 
-// Header 60px (back + Save), Avatar 120px + Change Photo, Personal Info + Location + Travel Prefs + Emergency + About + Privacy + Delete
-import { View, Text, StyleSheet, Pressable, ScrollView } from "react-native";
+import { useState } from "react";
+import { View, Text, StyleSheet, Pressable, ScrollView, TextInput } from "react-native";
+import { MaterialIcons } from "@expo/vector-icons";
+import { BlurView } from "expo-blur";
+import { ScreenWrapper, DS } from "@/components/screen-wrapper";
+import { useRouter } from "expo-router";
+import { LinearGradient } from "expo-linear-gradient";
 
-const PERSONAL = [
-  { label: "First Name", value: "Amit" },
-  { label: "Last Name", value: "Cohen" },
-  { label: "Email", value: "amit@example.com" },
-  { label: "Phone", value: "+972 50 123 4567" },
-  { label: "Date of Birth", value: "Jan 15, 1990" },
-];
-
-const LOCATION = [
-  { label: "Country", value: "Israel" },
-  { label: "City", value: "Tel Aviv" },
-  { label: "Timezone", value: "GMT+3" },
-];
-
-const TRAVEL_PREFS = [
-  { label: "Preferred Currency", value: "EUR (E)" },
-  { label: "Seat Preference", value: "Window" },
-  { label: "Meal Preference", value: "No preference" },
-  { label: "Hotel Room Type", value: "King bed" },
+const SECTIONS = [
+  {
+    title: "Personal Information",
+    icon: "person",
+    fields: [
+      { label: "First Name", value: "Amit", key: "firstName" },
+      { label: "Last Name", value: "Cohen", key: "lastName" },
+      { label: "Email", value: "amit@example.com", key: "email" },
+      { label: "Phone", value: "+972 50 123 4567", key: "phone" },
+      { label: "Date of Birth", value: "Jan 15, 1990", key: "dob" },
+    ],
+  },
+  {
+    title: "Location",
+    icon: "location-on",
+    fields: [
+      { label: "Country", value: "Israel", key: "country" },
+      { label: "City", value: "Tel Aviv", key: "city" },
+      { label: "Timezone", value: "GMT+3", key: "timezone" },
+    ],
+  },
+  {
+    title: "Travel Preferences",
+    icon: "flight",
+    fields: [
+      { label: "Preferred Currency", value: "EUR (€)", key: "currency" },
+      { label: "Seat Preference", value: "Window", key: "seat" },
+      { label: "Meal Preference", value: "No preference", key: "meal" },
+    ],
+  },
 ];
 
 export default function ProfileEditScreen() {
+  const router = useRouter();
+  const [values, setValues] = useState<Record<string, string>>({});
+
   return (
-    <View style={s.root}>
-      {/* Header — 60px */}
-      <View style={s.header}>
-        <Pressable style={s.backBtn}><Text style={s.backText}>{"<"}</Text></Pressable>
-        <Text style={s.headerTitle}>Edit Profile</Text>
-        <Pressable><Text style={s.saveText}>Save</Text></Pressable>
+    <ScreenWrapper
+      title="Edit Profile"
+      scrollable
+      bottomPad={100}
+      headerRight={
+        <Pressable onPress={() => router.back()}>
+          <Text style={{ color: DS.pink, fontFamily: "Satoshi-Medium", fontSize: 15 }}>Save</Text>
+        </Pressable>
+      }
+    >
+      {/* Avatar */}
+      <View style={s.avatarSection}>
+        <LinearGradient colors={[DS.purple, DS.pink] as const} style={s.avatarRing}>
+          <View style={s.avatarInner}>
+            <Text style={s.avatarInitials}>AC</Text>
+          </View>
+        </LinearGradient>
+        <Pressable style={s.changePhotoBtn}>
+          <MaterialIcons name="camera-alt" size={14} color={DS.white} />
+          <Text style={s.changePhotoText}>Change Photo</Text>
+        </Pressable>
       </View>
 
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 60 }}>
-        {/* Avatar — 120px */}
-        <View style={s.avatarSection}>
-          <View style={s.avatar}><Text style={s.avatarText}>AC</Text></View>
-          <Pressable style={s.changePhotoBtn}><Text style={s.changePhotoText}>Change Photo</Text></Pressable>
+      {/* Sections */}
+      {SECTIONS.map((section) => (
+        <View key={section.title} style={s.section}>
+          <View style={s.sectionHeader}>
+            <MaterialIcons name={section.icon as any} size={18} color={DS.purple} />
+            <Text style={s.sectionTitle}>{section.title}</Text>
+          </View>
+          <BlurView intensity={15} tint="dark" style={s.card}>
+            {section.fields.map((field, i) => (
+              <View key={field.key} style={[s.fieldRow, i < section.fields.length - 1 && s.fieldBorder]}>
+                <Text style={s.fieldLabel}>{field.label}</Text>
+                <Text style={s.fieldValue}>{values[field.key] ?? field.value}</Text>
+                <MaterialIcons name="chevron-right" size={18} color={DS.placeholder} />
+              </View>
+            ))}
+          </BlurView>
         </View>
+      ))}
 
-        {/* Personal Info */}
-        <View style={s.section}>
-          <Text style={s.sectionTitle}>Personal Information</Text>
-          {PERSONAL.map((f) => (
-            <View key={f.label} style={s.fieldRow}>
-              <Text style={s.fieldLabel}>{f.label}</Text>
-              <Text style={s.fieldValue}>{f.value}</Text>
-            </View>
-          ))}
-        </View>
+      {/* Danger zone */}
+      <BlurView intensity={15} tint="dark" style={[s.card, { marginTop: 8, borderColor: DS.error + "44" }]}>
+        <Pressable style={s.fieldRow}>
+          <MaterialIcons name="delete-outline" size={20} color={DS.error} />
+          <Text style={[s.fieldLabel, { color: DS.error, flex: 1, marginLeft: 8 }]}>Delete Account</Text>
+          <MaterialIcons name="chevron-right" size={18} color={DS.error + "88"} />
+        </Pressable>
+      </BlurView>
 
-        {/* Location */}
-        <View style={s.section}>
-          <Text style={s.sectionTitle}>Location</Text>
-          {LOCATION.map((f) => (
-            <View key={f.label} style={s.fieldRow}>
-              <Text style={s.fieldLabel}>{f.label}</Text>
-              <Text style={s.fieldValue}>{f.value}</Text>
-            </View>
-          ))}
-        </View>
-
-        {/* Travel Preferences */}
-        <View style={s.section}>
-          <Text style={s.sectionTitle}>Travel Preferences</Text>
-          {TRAVEL_PREFS.map((f) => (
-            <Pressable key={f.label} style={s.fieldRow}>
-              <Text style={s.fieldLabel}>{f.label}</Text>
-              <View style={s.fieldValueRow}><Text style={s.fieldValue}>{f.value}</Text><Text style={s.fieldArrow}>{">"}</Text></View>
-            </Pressable>
-          ))}
-        </View>
-
-        {/* Emergency Contact */}
-        <View style={s.section}>
-          <Text style={s.sectionTitle}>Emergency Contact</Text>
-          <View style={s.fieldRow}><Text style={s.fieldLabel}>Name</Text><Text style={s.fieldValue}>Sarah Cohen</Text></View>
-          <View style={s.fieldRow}><Text style={s.fieldLabel}>Phone</Text><Text style={s.fieldValue}>+972 50 987 6543</Text></View>
-          <View style={s.fieldRow}><Text style={s.fieldLabel}>Relation</Text><Text style={s.fieldValue}>Spouse</Text></View>
-        </View>
-
-        {/* About */}
-        <View style={s.section}>
-          <Text style={s.sectionTitle}>About Me</Text>
-          <View style={s.textArea}><Text style={s.textPlaceholder}>Tell other travelers about yourself...</Text></View>
-        </View>
-
-        {/* Privacy */}
-        <View style={s.section}>
-          <Text style={s.sectionTitle}>Privacy</Text>
-          <View style={s.toggleRow}><Text style={s.toggleLabel}>Show profile to other travelers</Text><View style={s.toggle}><View style={s.toggleKnob} /></View></View>
-          <View style={s.toggleRow}><Text style={s.toggleLabel}>Share travel stats</Text><View style={[s.toggle, s.toggleOff]}><View style={[s.toggleKnob, s.toggleKnobOff]} /></View></View>
-        </View>
-
-        {/* Delete Account */}
-        <Pressable style={s.deleteBtn}><Text style={s.deleteText}>Delete Account</Text></Pressable>
-      </ScrollView>
-    </View>
+      {/* Save CTA */}
+      <Pressable onPress={() => router.back()} style={{ marginTop: 24 }}>
+        <LinearGradient colors={[DS.purple, DS.pink] as const} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={s.saveBtn}>
+          <Text style={s.saveBtnText}>Save Changes</Text>
+        </LinearGradient>
+      </Pressable>
+    </ScreenWrapper>
   );
 }
 
 const s = StyleSheet.create({
-  root: { flex: 1, backgroundColor: "#111" },
-  header: { height: 60, flexDirection: "row", alignItems: "center", paddingHorizontal: 16, gap: 12, marginTop: 48, borderBottomWidth: 1, borderBottomColor: "#222" },
-  backBtn: { width: 32, height: 32, justifyContent: "center", alignItems: "center" },
-  backText: { color: "#FFF", fontSize: 24 },
-  headerTitle: { flex: 1, color: "#FFF", fontSize: 18, fontWeight: "600", textAlign: "center" },
-  saveText: { color: "#888", fontSize: 14, fontWeight: "600" },
-  avatarSection: { alignItems: "center", paddingVertical: 24 },
-  avatar: { width: 120, height: 120, borderRadius: 60, backgroundColor: "#222", borderWidth: 2, borderColor: "#333", justifyContent: "center", alignItems: "center" },
-  avatarText: { color: "#888", fontSize: 32, fontWeight: "700" },
-  changePhotoBtn: { marginTop: 10, paddingHorizontal: 16, paddingVertical: 6, borderRadius: 16, borderWidth: 1, borderColor: "#333" },
-  changePhotoText: { color: "#888", fontSize: 13 },
-  section: { paddingHorizontal: 20, marginTop: 20 },
-  sectionTitle: { color: "#FFF", fontSize: 16, fontWeight: "700", marginBottom: 10 },
-  fieldRow: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", height: 48, borderBottomWidth: 1, borderBottomColor: "#1A1A1A" },
-  fieldLabel: { color: "#888", fontSize: 14 },
-  fieldValue: { color: "#FFF", fontSize: 14 },
-  fieldValueRow: { flexDirection: "row", alignItems: "center", gap: 6 },
-  fieldArrow: { color: "#555", fontSize: 14 },
-  textArea: { height: 80, borderRadius: 12, backgroundColor: "#1A1A1A", borderWidth: 1, borderColor: "#333", padding: 12 },
-  textPlaceholder: { color: "#555", fontSize: 14 },
-  toggleRow: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", height: 48, borderBottomWidth: 1, borderBottomColor: "#1A1A1A" },
-  toggleLabel: { color: "#FFF", fontSize: 14, flex: 1 },
-  toggle: { width: 48, height: 28, borderRadius: 14, backgroundColor: "#555", justifyContent: "center", alignItems: "flex-end", paddingHorizontal: 2 },
-  toggleOff: { backgroundColor: "#333" },
-  toggleKnob: { width: 24, height: 24, borderRadius: 12, backgroundColor: "#FFF" },
-  toggleKnobOff: { backgroundColor: "#666", alignSelf: "flex-start" },
-  deleteBtn: { alignSelf: "center", marginTop: 28, paddingHorizontal: 20, paddingVertical: 10, borderRadius: 12, borderWidth: 1, borderColor: "#F8717140" },
-  deleteText: { color: "#F87171", fontSize: 14, fontWeight: "600" },
+  avatarSection: { alignItems: "center", paddingVertical: 24, gap: 12 },
+  avatarRing: { width: 96, height: 96, borderRadius: 48, padding: 3, justifyContent: "center", alignItems: "center" },
+  avatarInner: { width: 90, height: 90, borderRadius: 45, backgroundColor: DS.surfaceHigh, justifyContent: "center", alignItems: "center" },
+  avatarInitials: { color: DS.white, fontSize: 32, fontFamily: "Chillax-Bold" },
+  changePhotoBtn: { flexDirection: "row", alignItems: "center", gap: 6, paddingHorizontal: 14, paddingVertical: 7, borderRadius: 20, backgroundColor: DS.surface, borderWidth: 1, borderColor: DS.border },
+  changePhotoText: { color: DS.white, fontSize: 13, fontFamily: "Satoshi-Medium" },
+  section: { marginBottom: 20 },
+  sectionHeader: { flexDirection: "row", alignItems: "center", gap: 8, marginBottom: 10 },
+  sectionTitle: { color: DS.white, fontSize: 15, fontFamily: "Chillax-Bold" },
+  card: { borderRadius: 16, overflow: "hidden", borderWidth: 1, borderColor: DS.border, backgroundColor: DS.surface },
+  fieldRow: { flexDirection: "row", alignItems: "center", paddingHorizontal: 16, paddingVertical: 14 },
+  fieldBorder: { borderBottomWidth: 1, borderBottomColor: DS.border },
+  fieldLabel: { color: DS.muted, fontSize: 13, fontFamily: "Satoshi-Regular", width: 120 },
+  fieldValue: { flex: 1, color: DS.white, fontSize: 14, fontFamily: "Satoshi-Medium", textAlign: "right", marginRight: 8 },
+  saveBtn: { height: 56, borderRadius: 16, justifyContent: "center", alignItems: "center" },
+  saveBtnText: { color: DS.white, fontSize: 16, fontFamily: "Chillax-Bold" },
 });

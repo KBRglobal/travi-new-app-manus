@@ -1,95 +1,113 @@
-// Screen 33 — Pre-Trip Checklist — STATIC 
-// Progress card 100px, Accordion sections, Checkbox items 28x28, Add custom item
-import { View, Text, StyleSheet, Pressable, ScrollView } from "react-native";
+import React from 'react';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
+import { BlurView } from 'expo-blur';
+import { MaterialIcons } from '@expo/vector-icons';
+import { ScreenWrapper, DS } from '@/components/screen-wrapper';
 
-const SECTIONS = [
-  { title: "Documents", items: [
-    { label: "Passport (valid 6+ months)", done: true },
-    { label: "Visa / eVisa", done: true },
-    { label: "Travel insurance", done: false },
-    { label: "Flight tickets (printed/digital)", done: true },
-  ]},
-  { title: "Health", items: [
-    { label: "Required vaccinations", done: false },
-    { label: "Medications & prescriptions", done: false },
-    { label: "First aid kit", done: true },
-  ]},
-  { title: "Packing", items: [
-    { label: "Clothes for 7 days", done: false },
-    { label: "Toiletries", done: false },
-    { label: "Electronics & chargers", done: true },
-    { label: "Travel adapter", done: true },
-    { label: "Sunscreen & insect repellent", done: false },
-  ]},
-];
+const PreTripChecklist = () => {
+  const checklistItems = [
+    { id: '1', text: 'Confirm flight details', completed: true },
+    { id: '2', text: 'Pack essential documents', completed: false },
+    { id: '3', text: 'Arrange airport transfer', completed: true },
+    { id: '4', text: 'Check weather forecast', completed: false },
+    { id: '5', text: 'Notify bank of travel plans', completed: true },
+    { id: '6', text: 'Download offline maps', completed: false },
+    { id: '7', text: 'Charge all electronics', completed: true },
+    { id: '8', text: 'Prepare local currency', completed: false },
+  ];
 
-export default function PreTripChecklistScreen() {
   return (
-    <View style={s.root}>
-      <View style={s.header}>
-        <Pressable style={s.backBtn}><Text style={s.backText}>{"<"}</Text></Pressable>
-        <Text style={s.headerTitle}>Pre-Trip Checklist</Text>
-        <View style={{ width: 32 }} />
-      </View>
-
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 40 }}>
-        {/* Progress card — 100px */}
-        <View style={s.progressCard}>
-          <View style={{ flex: 1 }}>
-            <Text style={s.progressTitle}>8 of 12 completed</Text>
-            <View style={s.progressBar}><View style={[s.progressFill, { width: "67%" }]} /></View>
-          </View>
-          <Text style={s.progressPct}>67%</Text>
-        </View>
-
-        {/* Accordion sections */}
-        {SECTIONS.map((sec) => (
-          <View key={sec.title} style={s.section}>
-            <View style={s.sectionHeader}>
-              <Text style={s.sectionTitle}>{sec.title}</Text>
-              <Text style={s.sectionCount}>{sec.items.filter(i => i.done).length}/{sec.items.length}</Text>
+    <ScreenWrapper title="Pre-Trip Checklist" scrollable={true}>
+      <View style={styles.container}>
+        {checklistItems.map((item) => (
+          <BlurView key={item.id} intensity={20} tint="dark" style={styles.card}>
+            <View style={styles.itemContent}>
+              <MaterialIcons
+                name={item.completed ? "check-circle" : "radio-button-unchecked"}
+                size={24}
+                color={item.completed ? DS.success : DS.muted}
+                style={styles.icon}
+              />
+              <Text style={[styles.itemText, item.completed && styles.itemTextCompleted]}>
+                {item.text}
+              </Text>
             </View>
-            {sec.items.map((item, i) => (
-              <Pressable key={i} style={s.checkItem}>
-                <View style={[s.checkbox, item.done && s.checkboxDone]}>
-                  {item.done && <Text style={s.checkMark}>+</Text>}
-                </View>
-                <Text style={[s.checkLabel, item.done && s.checkLabelDone]}>{item.label}</Text>
-              </Pressable>
-            ))}
-          </View>
+          </BlurView>
         ))}
 
-        {/* Add custom item */}
-        <Pressable style={s.addBtn}>
-          <Text style={s.addText}>+ Add Custom Item</Text>
-        </Pressable>
-      </ScrollView>
-    </View>
+        <TouchableOpacity activeOpacity={0.8} style={styles.ctaButton}>
+          <LinearGradient
+            colors={[DS.purple, DS.pink] as const}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+            style={styles.gradientBackground}
+          >
+            <Text style={styles.ctaButtonText}>Complete Checklist</Text>
+            <MaterialIcons name="arrow-forward" size={20} color={DS.white} style={styles.ctaIcon} />
+          </LinearGradient>
+        </TouchableOpacity>
+      </View>
+    </ScreenWrapper>
   );
-}
+};
 
-const s = StyleSheet.create({
-  root: { flex: 1, backgroundColor: "#111" },
-  header: { height: 60, flexDirection: "row", alignItems: "center", paddingHorizontal: 16, gap: 12, marginTop: 48, borderBottomWidth: 1, borderBottomColor: "#222" },
-  backBtn: { width: 32, height: 32, justifyContent: "center", alignItems: "center" },
-  backText: { color: "#FFF", fontSize: 24 },
-  headerTitle: { flex: 1, color: "#FFF", fontSize: 18, fontWeight: "600", textAlign: "center" },
-  progressCard: { flexDirection: "row", alignItems: "center", margin: 20, padding: 16, height: 100, borderRadius: 14, backgroundColor: "#1A1A1A", borderWidth: 1, borderColor: "#333", gap: 16 },
-  progressTitle: { color: "#FFF", fontSize: 15, fontWeight: "600" },
-  progressBar: { height: 8, borderRadius: 4, backgroundColor: "#222", marginTop: 8 },
-  progressFill: { height: 8, borderRadius: 4, backgroundColor: "#555" },
-  progressPct: { color: "#FFF", fontSize: 24, fontWeight: "800" },
-  section: { paddingHorizontal: 20, marginTop: 16 },
-  sectionHeader: { flexDirection: "row", justifyContent: "space-between", alignItems: "center", paddingVertical: 10, borderBottomWidth: 1, borderBottomColor: "#222" },
-  sectionTitle: { color: "#FFF", fontSize: 16, fontWeight: "700" },
-  sectionCount: { color: "#888", fontSize: 13 },
-  checkItem: { flexDirection: "row", alignItems: "center", gap: 12, paddingVertical: 12, borderBottomWidth: 1, borderBottomColor: "#1A1A1A" },
-  checkbox: { width: 28, height: 28, borderRadius: 6, borderWidth: 2, borderColor: "#444", justifyContent: "center", alignItems: "center" },
-  checkboxDone: { backgroundColor: "#333", borderColor: "#666" },
-  checkMark: { color: "#FFF", fontSize: 14, fontWeight: "700" },
-  checkLabel: { color: "#FFF", fontSize: 14, flex: 1 },
-  checkLabelDone: { color: "#888", textDecorationLine: "line-through" },
-  addBtn: { marginHorizontal: 20, marginTop: 20, height: 48, borderRadius: 12, borderWidth: 1, borderColor: "#333", borderStyle: "dashed", justifyContent: "center", alignItems: "center" },
-  addText: { color: "#888", fontSize: 14 },
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 20,
+    backgroundColor: DS.bg,
+  },
+  card: {
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: DS.border,
+    backgroundColor: DS.surface,
+    overflow: 'hidden',
+    marginBottom: 15,
+    padding: 15,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  itemContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flex: 1,
+  },
+  icon: {
+    marginRight: 15,
+  },
+  itemText: {
+    fontFamily: 'Satoshi-Regular',
+    fontSize: 16,
+    color: DS.white,
+    flex: 1,
+  },
+  itemTextCompleted: {
+    textDecorationLine: 'line-through',
+    color: DS.muted,
+  },
+  ctaButton: {
+    marginTop: 30,
+    borderRadius: 12,
+    overflow: 'hidden',
+  },
+  gradientBackground: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 18,
+    paddingHorizontal: 25,
+  },
+  ctaButtonText: {
+    fontFamily: 'Chillax-Bold',
+    fontSize: 18,
+    color: DS.white,
+    marginRight: 10,
+  },
+  ctaIcon: {
+    marginLeft: 5,
+  },
 });
+
+export default PreTripChecklist;

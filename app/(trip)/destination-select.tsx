@@ -1,83 +1,167 @@
-// Screen 20 — Destination Select — STATIC 
-// Route: /(trip)/destination-select | Mode: Planning
-// Spec: Gradient header + search, 2-col grid (4:5 ratio), Selection bar slides up on pick
+import React, { useState } from 'react';
+import { View, Text, TextInput, TouchableOpacity, FlatList, StyleSheet } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
+import { BlurView } from 'expo-blur';
+import { MaterialIcons } from '@expo/vector-icons';
+import { ScreenWrapper, DS } from '@/components/screen-wrapper';
 
-import { View, Text, StyleSheet, Pressable, ScrollView, TextInput } from "react-native";
-
-const DESTINATIONS = [
-  { id: "1", city: "Bali", country: "Indonesia", match: 96, price: "€850" },
-  { id: "2", city: "Tokyo", country: "Japan", match: 97, price: "€1,200" },
-  { id: "3", city: "Paris", country: "France", match: 92, price: "€650" },
-  { id: "4", city: "Dubai", country: "UAE", match: 98, price: "€780" },
-  { id: "5", city: "Santorini", country: "Greece", match: 89, price: "€720" },
-  { id: "6", city: "Barcelona", country: "Spain", match: 85, price: "€550" },
-];
-
-export default function DestinationSelectScreen() {
-  return (
-    <View style={s.root}>
-      {/* Header */}
-      <View style={s.header}>
-        <Pressable style={s.backBtn}><Text style={s.backText}>‹</Text></Pressable>
-        <Text style={s.headerTitle}>Choose Destination</Text>
-        <View style={{ width: 32 }} />
-      </View>
-
-      {/* Search */}
-      <View style={s.searchWrap}>
-        <TextInput style={s.searchInput} placeholder="Search destinations..." placeholderTextColor="#666" editable={false} />
-      </View>
-
-      {/* 2-col grid (4:5 ratio) */}
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={s.grid}>
-        {DESTINATIONS.map((d) => (
-          <Pressable key={d.id} style={s.card}>
-            <View style={s.cardImage}>
-              <Text style={s.imgText}>{d.city}</Text>
-              <View style={s.matchBadge}><Text style={s.matchText}>{d.match}%</Text></View>
-            </View>
-            <View style={s.cardBody}>
-              <Text style={s.cardCity}>{d.city}</Text>
-              <Text style={s.cardCountry}>{d.country}</Text>
-              <Text style={s.cardPrice}>From {d.price}</Text>
-            </View>
-          </Pressable>
-        ))}
-      </ScrollView>
-
-      {/* Selection bar (shown when destination picked) */}
-      <View style={s.selectionBar}>
-        <View>
-          <Text style={s.selLabel}>Selected</Text>
-          <Text style={s.selCity}>Bali, Indonesia</Text>
-        </View>
-        <Pressable style={s.continueBtn}><Text style={s.continueText}>Continue</Text></Pressable>
-      </View>
-    </View>
-  );
+interface Destination {
+  id: string;
+  name: string;
+  country: string;
 }
 
-const s = StyleSheet.create({
-  root: { flex: 1, backgroundColor: "#111" },
-  header: { height: 60, flexDirection: "row", alignItems: "center", paddingHorizontal: 16, gap: 12, marginTop: 48, borderBottomWidth: 1, borderBottomColor: "#222" },
-  backBtn: { width: 32, height: 32, justifyContent: "center", alignItems: "center" },
-  backText: { color: "#FFF", fontSize: 24 },
-  headerTitle: { flex: 1, color: "#FFF", fontSize: 18, fontWeight: "600", textAlign: "center" },
-  searchWrap: { paddingHorizontal: 20, paddingVertical: 12 },
-  searchInput: { height: 44, borderRadius: 12, backgroundColor: "#1A1A1A", borderWidth: 1, borderColor: "#333", paddingHorizontal: 16, color: "#FFF", fontSize: 15 },
-  grid: { flexDirection: "row", flexWrap: "wrap", paddingHorizontal: 16, gap: 12, paddingBottom: 120 },
-  card: { width: "47%", borderRadius: 12, backgroundColor: "#1A1A1A", borderWidth: 1, borderColor: "#333", overflow: "hidden" },
-  cardImage: { aspectRatio: 4 / 5, backgroundColor: "#222", justifyContent: "center", alignItems: "center" },
-  imgText: { color: "#555", fontSize: 14 },
-  matchBadge: { position: "absolute", top: 8, right: 8, paddingHorizontal: 8, paddingVertical: 4, borderRadius: 8, backgroundColor: "rgba(0,0,0,0.6)" },
-  matchText: { color: "#FFF", fontSize: 11, fontWeight: "700" },
-  cardBody: { padding: 10, gap: 2 },
-  cardCity: { color: "#FFF", fontSize: 15, fontWeight: "600" },
-  cardCountry: { color: "#888", fontSize: 12 },
-  cardPrice: { color: "#888", fontSize: 12, marginTop: 4 },
-  selectionBar: { position: "absolute", bottom: 0, left: 0, right: 0, flexDirection: "row", alignItems: "center", justifyContent: "space-between", padding: 20, paddingBottom: 36, backgroundColor: "#1A1A1A", borderTopWidth: 1, borderTopColor: "#333" },
-  selLabel: { color: "#888", fontSize: 11 },
-  selCity: { color: "#FFF", fontSize: 16, fontWeight: "600" },
-  continueBtn: { height: 48, paddingHorizontal: 28, borderRadius: 24, backgroundColor: "#333", borderWidth: 1, borderColor: "#555", justifyContent: "center", alignItems: "center" },
-  continueText: { color: "#FFF", fontSize: 15, fontWeight: "600" },
+const dummyDestinations: Destination[] = [
+  { id: '1', name: 'Paris', country: 'France' },
+  { id: '2', name: 'Tokyo', country: 'Japan' },
+  { id: '3', name: 'New York', country: 'USA' },
+  { id: '4', name: 'London', country: 'UK' },
+  { id: '5', name: 'Sydney', country: 'Australia' },
+];
+
+const DestinationSelectScreen = () => {
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedDestination, setSelectedDestination] = useState<Destination | null>(null);
+
+  const filteredDestinations = dummyDestinations.filter(dest =>
+    dest.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    dest.country.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  const renderDestinationItem = ({ item }: { item: Destination }) => (
+    <TouchableOpacity
+      style={styles.destinationItem}
+      onPress={() => setSelectedDestination(item)}
+    >
+      <BlurView intensity={20} tint="dark" style={styles.glassCard}>
+        <View style={styles.destinationContent}>
+          <MaterialIcons name="location-city" size={24} color={DS.purple} />
+          <View style={styles.destinationText}>
+            <Text style={styles.destinationName}>{item.name}</Text>
+            <Text style={styles.destinationCountry}>{item.country}</Text>
+          </View>
+          {selectedDestination?.id === item.id && (
+            <MaterialIcons name="check-circle" size={24} color={DS.success} style={styles.selectedIcon} />
+          )}
+        </View>
+      </BlurView>
+    </TouchableOpacity>
+  );
+
+  return (
+    <ScreenWrapper title="Select Destination" scrollable={true}>
+      <View style={styles.container}>
+        <TextInput
+          style={styles.searchInput}
+          placeholder="Search for a destination..."
+          placeholderTextColor={DS.placeholder}
+          value={searchQuery}
+          onChangeText={setSearchQuery}
+        />
+
+        <FlatList
+          data={filteredDestinations}
+          renderItem={renderDestinationItem}
+          keyExtractor={(item) => item.id}
+          contentContainerStyle={styles.listContent}
+        />
+
+        <TouchableOpacity
+          style={styles.ctaButton}
+          onPress={() => console.log('Proceed with:', selectedDestination?.name)}
+          disabled={!selectedDestination}
+        >
+          <LinearGradient
+            colors={[DS.purple, DS.pink] as const}
+            style={styles.gradientBackground}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+          >
+            <Text style={styles.ctaButtonText}>Proceed</Text>
+            <MaterialIcons name="arrow-forward" size={20} color={DS.white} />
+          </LinearGradient>
+        </TouchableOpacity>
+      </View>
+    </ScreenWrapper>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    paddingHorizontal: 20,
+    paddingTop: 20,
+  },
+  searchInput: {
+    height: 50,
+    backgroundColor: DS.surface,
+    borderRadius: 12,
+    paddingHorizontal: 15,
+    marginBottom: 20,
+    color: DS.white,
+    fontFamily: 'Satoshi-Regular',
+    fontSize: 16,
+    borderWidth: 1,
+    borderColor: DS.border,
+  },
+  listContent: {
+    paddingBottom: 100, // To ensure CTA button doesn't overlap last item
+  },
+  destinationItem: {
+    marginBottom: 15,
+  },
+  glassCard: {
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: DS.border,
+    backgroundColor: DS.surface,
+    overflow: 'hidden',
+    padding: 15,
+  },
+  destinationContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  destinationText: {
+    marginLeft: 15,
+    flex: 1,
+  },
+  destinationName: {
+    fontFamily: 'Satoshi-Medium',
+    fontSize: 18,
+    color: DS.white,
+  },
+  destinationCountry: {
+    fontFamily: 'Satoshi-Regular',
+    fontSize: 14,
+    color: DS.muted,
+    marginTop: 2,
+  },
+  selectedIcon: {
+    marginLeft: 'auto',
+  },
+  ctaButton: {
+    marginTop: 30,
+    borderRadius: 12,
+    overflow: 'hidden',
+    alignSelf: 'center',
+    width: '100%',
+    position: 'absolute',
+    bottom: 20,
+  },
+  gradientBackground: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 18,
+    paddingHorizontal: 20,
+  },
+  ctaButtonText: {
+    fontFamily: 'Chillax-Bold',
+    fontSize: 18,
+    color: DS.white,
+    marginRight: 10,
+  },
 });
+
+export default DestinationSelectScreen;

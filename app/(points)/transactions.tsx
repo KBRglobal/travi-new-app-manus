@@ -1,83 +1,122 @@
-// Screen 97 — Points Transactions (Static Wireframe)
-// Route: /points/transactions | Mode: Points
+import React from 'react';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
+import { BlurView } from 'expo-blur';
+import { MaterialIcons } from '@expo/vector-icons';
+import { ScreenWrapper, DS } from '@/components/screen-wrapper';
 
-import { ScrollView, Text, View, StyleSheet } from "react-native";
-import { ScreenContainer } from "@/components/screen-container";
+// DS object as provided in the prompt
 
-const FILTERS = ["All", "Earned", "Redeemed", "Expired"];
-
-const TRANSACTIONS = [
-  { id: "1", title: "Barcelona Flight Booking", type: "earn", pts: "+450", date: "Apr 2, 2026", desc: "3pts/€1 · €150 booking" },
-  { id: "2", title: "Hotel Booking Bonus", type: "earn", pts: "+200", date: "Apr 1, 2026", desc: "2pts/€1 · €100 booking" },
-  { id: "3", title: "Amazon $50 Gift Card", type: "redeem", pts: "-5,000", date: "Mar 28, 2026", desc: "Delivered via email" },
-  { id: "4", title: "Daily Check-in", type: "earn", pts: "+10", date: "Mar 27, 2026", desc: "7-day streak bonus" },
-  { id: "5", title: "Trip Review — Tokyo", type: "earn", pts: "+50", date: "Mar 25, 2026", desc: "Review published" },
-  { id: "6", title: "Emirates Miles Transfer", type: "redeem", pts: "-3,000", date: "Mar 20, 2026", desc: "3,600 Skywards miles" },
-  { id: "7", title: "Referral Bonus — Marco", type: "earn", pts: "+500", date: "Mar 15, 2026", desc: "Friend joined TRAVI" },
-  { id: "8", title: "Promo Points Expired", type: "expired", pts: "-100", date: "Mar 1, 2026", desc: "Welcome bonus expired" },
+// Dummy transaction data
+const transactions = [
+  { id: '1', name: 'Flight to Paris', date: '2024-03-28', amount: -1200, type: 'expense', icon: 'flight' },
+  { id: '2', name: 'Hotel Booking', date: '2024-03-27', amount: -350, type: 'expense', icon: 'hotel' },
+  { id: '3', name: 'Points Earned', date: '2024-03-26', amount: 50, type: 'income', icon: 'star' },
+  { id: '4', name: 'Restaurant Dinner', date: '2024-03-25', amount: -80, type: 'expense', icon: 'restaurant' },
+  { id: '5', name: 'Train Ticket', date: '2024-03-24', amount: -60, type: 'expense', icon: 'train' },
+  { id: '6', name: 'Points Redeemed', date: '2024-03-23', amount: -20, type: 'expense', icon: 'redeem' },
+  { id: '7', name: 'Shopping', date: '2024-03-22', amount: -150, type: 'expense', icon: 'shopping-cart' },
+  { id: '8', name: 'Taxi Ride', date: '2024-03-21', amount: -25, type: 'expense', icon: 'local-taxi' },
+  { id: '9', name: 'Points Earned', date: '2024-03-20', amount: 10, type: 'income', icon: 'star' },
+  { id: '10', name: 'Museum Entry', date: '2024-03-19', amount: -40, type: 'expense', icon: 'museum' },
 ];
 
-export default function PointsTransactionsScreen() {
+const TransactionsScreen = () => {
   return (
-    <ScreenContainer>
-      <View style={s.container}>
-        <View style={s.header}>
-          <Text style={s.back}>←</Text>
-          <Text style={s.title}>Points History</Text>
-          <View style={{width:24}}/>
-        </View>
-
-        {/* Summary */}
-        <View style={s.summaryRow}>
-          <View style={s.summaryItem}><Text style={s.sumVal}>+1,210</Text><Text style={s.sumLabel}>Earned (30d)</Text></View>
-          <View style={s.summaryItem}><Text style={[s.sumVal,{color:"#a44"}]}>-8,000</Text><Text style={s.sumLabel}>Redeemed (30d)</Text></View>
-          <View style={s.summaryItem}><Text style={s.sumVal}>12,450</Text><Text style={s.sumLabel}>Balance</Text></View>
-        </View>
-
-        {/* Filters */}
-        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={s.filterRow}>
-          {FILTERS.map((f,i)=>(
-            <View key={f} style={[s.filterPill, i===0 && s.filterActive]}>
-              <Text style={[s.filterText, i===0 && s.filterTextActive]}>{f}</Text>
-            </View>
-          ))}
-        </ScrollView>
-
-        <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={s.scroll}>
-          {TRANSACTIONS.map(t=>(
-            <View key={t.id} style={s.txRow}>
-              <View style={s.txIcon}>
-                <Text style={{fontSize:16}}>{t.type==="earn"?"↑":t.type==="redeem"?"↓":"⚠"}</Text>
+    <ScreenWrapper title="Transactions" scrollable={true}>
+      <View style={styles.container}>
+        {transactions.map((transaction) => (
+          <BlurView key={transaction.id} intensity={20} tint="dark" style={styles.transactionCard}>
+            <View style={styles.transactionContent}>
+              <MaterialIcons name={transaction.icon as any} size={24} color={DS.white} style={styles.icon} />
+              <View style={styles.transactionDetails}>
+                <Text style={styles.transactionName}>{transaction.name}</Text>
+                <Text style={styles.transactionDate}>{transaction.date}</Text>
               </View>
-              <View style={s.txInfo}>
-                <Text style={s.txTitle}>{t.title}</Text>
-                <Text style={s.txDesc}>{t.desc}</Text>
-                <Text style={s.txDate}>{t.date}</Text>
-              </View>
-              <Text style={[s.txPts, t.type==="earn"?s.txEarn:t.type==="expired"?s.txExpired:s.txRedeem]}>{t.pts}</Text>
+              <Text style={[styles.transactionAmount, {
+                color: transaction.type === 'income' ? DS.success : DS.white
+              }]}>
+                {transaction.type === 'income' ? '+' : '-'}${Math.abs(transaction.amount).toFixed(2)}
+              </Text>
             </View>
-          ))}
-          <View style={{height:100}}/>
-        </ScrollView>
+          </BlurView>
+        ))}
+
+        <TouchableOpacity style={styles.ctaButton}>
+          <LinearGradient
+            colors={[DS.purple, DS.pink] as const}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+            style={styles.gradientButton}
+          >
+            <Text style={styles.ctaButtonText}>View All Statements</Text>
+            <MaterialIcons name="arrow-forward" size={20} color={DS.white} />
+          </LinearGradient>
+        </TouchableOpacity>
       </View>
-    </ScreenContainer>
+    </ScreenWrapper>
   );
-}
+};
 
-const N="#111",N2="#1a1a1a",N3="#222",W="#fff",G="#888";
-const s = StyleSheet.create({
-  container:{flex:1,backgroundColor:N},
-  header:{height:60,flexDirection:"row",alignItems:"center",justifyContent:"space-between",paddingHorizontal:16},
-  back:{fontSize:24,color:W},title:{fontSize:20,fontWeight:"700",color:W},
-  summaryRow:{flexDirection:"row",marginHorizontal:16,backgroundColor:N2,borderRadius:16,borderWidth:1,borderColor:N3,paddingVertical:16},
-  summaryItem:{flex:1,alignItems:"center"},sumVal:{fontSize:18,fontWeight:"700",color:"#4a4"},sumLabel:{fontSize:11,color:G,marginTop:2},
-  filterRow:{paddingHorizontal:16,gap:8,paddingVertical:12},
-  filterPill:{paddingHorizontal:16,paddingVertical:8,borderRadius:20,backgroundColor:N2,borderWidth:1,borderColor:N3},
-  filterActive:{backgroundColor:"#333",borderColor:"#555"},
-  filterText:{fontSize:14,color:G},filterTextActive:{color:W,fontWeight:"600"},
-  scroll:{paddingHorizontal:16},
-  txRow:{flexDirection:"row",alignItems:"center",paddingVertical:14,borderBottomWidth:1,borderBottomColor:N3,gap:12},
-  txIcon:{width:36,height:36,borderRadius:10,backgroundColor:N2,alignItems:"center",justifyContent:"center",borderWidth:1,borderColor:N3},
-  txInfo:{flex:1},txTitle:{fontSize:15,color:W},txDesc:{fontSize:12,color:G,marginTop:2},txDate:{fontSize:11,color:"#555",marginTop:2},
-  txPts:{fontSize:16,fontWeight:"700"},txEarn:{color:"#4a4"},txRedeem:{color:"#a44"},txExpired:{color:"#666"},
+const styles = StyleSheet.create({
+  container: {
+    paddingHorizontal: 20,
+    paddingBottom: 20,
+  },
+  transactionCard: {
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: DS.border,
+    backgroundColor: DS.surface,
+    overflow: 'hidden',
+    marginBottom: 15,
+    padding: 15,
+  },
+  transactionContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  icon: {
+    marginRight: 15,
+  },
+  transactionDetails: {
+    flex: 1,
+  },
+  transactionName: {
+    fontFamily: 'Chillax-Bold', // Assuming Chillax-Bold is loaded
+    fontSize: 16,
+    color: DS.white,
+    marginBottom: 2,
+  },
+  transactionDate: {
+    fontFamily: 'Satoshi-Regular', // Assuming Satoshi-Regular is loaded
+    fontSize: 12,
+    color: DS.muted,
+  },
+  transactionAmount: {
+    fontFamily: 'Satoshi-Medium', // Assuming Satoshi-Medium is loaded
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  ctaButton: {
+    marginTop: 20,
+    borderRadius: 16,
+    overflow: 'hidden',
+  },
+  gradientButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 15,
+    paddingHorizontal: 20,
+  },
+  ctaButtonText: {
+    fontFamily: 'Satoshi-Medium', // Assuming Satoshi-Medium is loaded
+    fontSize: 16,
+    color: DS.white,
+    marginRight: 10,
+  },
 });
+
+export default TransactionsScreen;

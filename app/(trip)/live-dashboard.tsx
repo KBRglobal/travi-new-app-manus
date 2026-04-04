@@ -1,125 +1,182 @@
-// Screen 35 — Live Dashboard — STATIC 
-// Header 120px, 2x3 quick actions 88px, Today's Schedule 240px, AI Proactive 140px, Emergency card
-import { View, Text, StyleSheet, Pressable, ScrollView } from "react-native";
+import React from 'react';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import { ScreenWrapper, DS } from '@/components/screen-wrapper';
+import { BlurView } from 'expo-blur';
+import { LinearGradient } from 'expo-linear-gradient';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 
-const ACTIONS = [
-  { icon: "M", title: "Map" },
-  { icon: "T", title: "Timeline" },
-  { icon: "$", title: "Expenses" },
-  { icon: "P", title: "Photos" },
-  { icon: "C", title: "AI Chat" },
-  { icon: "!", title: "Emergency" },
-];
+// Assume fonts are loaded globally or via a custom font loader
+// For example: await Font.loadAsync({ 'Chillax-Bold': require('./assets/fonts/Chillax-Bold.ttf'), 'Satoshi-Medium': require('./assets/fonts/Satoshi-Medium.ttf'), 'Satoshi-Regular': require('./assets/fonts/Satoshi-Regular.ttf') });
 
-const SCHEDULE = [
-  { time: "08:00", title: "Breakfast at Hotel", status: "Done" },
-  { time: "10:00", title: "Ubud Rice Terraces", status: "Current" },
-  { time: "13:00", title: "Lunch at Locavore", status: "Upcoming" },
-  { time: "15:00", title: "Monkey Forest", status: "Upcoming" },
-];
+const LiveDashboard = () => {
+  // Dummy data for the live dashboard
+  const tripData = {
+    destination: 'Paris, France',
+    currentActivity: 'Eiffel Tower Visit',
+    nextActivity: 'Dinner at Le Jules Verne',
+    timeRemaining: '2h 30m',
+    notifications: [
+      { id: '1', type: 'info', message: 'Your flight to Paris is on time.' },
+      { id: '2', type: 'warning', message: 'Traffic ahead, consider alternative route to airport.' },
+    ],
+    upcomingEvents: [
+      { id: '1', title: 'Louvre Museum', time: 'Tomorrow, 10:00 AM', icon: 'museum' },
+      { id: '2', title: 'Seine River Cruise', time: 'Tomorrow, 07:00 PM', icon: 'boat' },
+    ],
+  };
 
-export default function LiveDashboardScreen() {
   return (
-    <View style={s.root}>
-      {/* Header — 120px */}
-      <View style={s.header}>
-        <View style={s.modeBadge}><Text style={s.modeText}>LIVE</Text></View>
-        <Text style={s.headerTitle}>Bali Trip</Text>
-        <Text style={s.headerSub}>Day 2 of 7 | Apr 16, 2026</Text>
+    <ScreenWrapper title="Live Trip Dashboard" scrollable={true}>
+      <View style={styles.section}>
+        <Text style={styles.sectionTitle}>Current Trip Status</Text>
+        <BlurView intensity={20} tint="dark" style={styles.glassCard}>
+          <View style={styles.cardContent}>
+            <Text style={styles.label}>Destination:</Text>
+            <Text style={styles.value}>{tripData.destination}</Text>
+          </View>
+          <View style={styles.cardContent}>
+            <Text style={styles.label}>Current Activity:</Text>
+            <Text style={styles.value}>{tripData.currentActivity}</Text>
+          </View>
+          <View style={styles.cardContent}>
+            <Text style={styles.label}>Next Activity:</Text>
+            <Text style={styles.value}>{tripData.nextActivity}</Text>
+          </View>
+          <View style={styles.cardContent}>
+            <Text style={styles.label}>Time Remaining:</Text>
+            <Text style={styles.value}>{tripData.timeRemaining}</Text>
+          </View>
+        </BlurView>
       </View>
 
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 40 }}>
-        {/* 2x3 Quick actions — 88px each */}
-        <View style={s.actionsGrid}>
-          {ACTIONS.map((a) => (
-            <Pressable key={a.title} style={s.actionCard}>
-              <Text style={s.actionIcon}>{a.icon}</Text>
-              <Text style={s.actionTitle}>{a.title}</Text>
-            </Pressable>
-          ))}
-        </View>
+      <View style={styles.section}>
+        <Text style={styles.sectionTitle}>Notifications</Text>
+        {tripData.notifications.map((notification) => (
+          <BlurView key={notification.id} intensity={20} tint="dark" style={[styles.glassCard, styles.notificationCard]}>
+            <MaterialIcons
+              name={notification.type === 'info' ? 'info-outline' : 'warning'}
+              size={20}
+              color={notification.type === 'info' ? DS.info : DS.warning}
+              style={styles.notificationIcon}
+            />
+            <Text style={[styles.bodyText, { color: notification.type === 'info' ? DS.info : DS.warning }]}>
+              {notification.message}
+            </Text>
+          </BlurView>
+        ))}
+      </View>
 
-        {/* Today's Schedule — 240px */}
-        <View style={s.section}>
-          <Text style={s.sectionTitle}>Today's Schedule</Text>
-          <View style={s.scheduleCard}>
-            {SCHEDULE.map((item, i) => (
-              <View key={i} style={[s.scheduleRow, i < SCHEDULE.length - 1 && s.scheduleBorder]}>
-                <Text style={s.schedTime}>{item.time}</Text>
-                <View style={{ flex: 1 }}>
-                  <Text style={s.schedTitle}>{item.title}</Text>
-                </View>
-                <View style={[s.statusBadge, item.status === "Current" && s.statusCurrent, item.status === "Done" && s.statusDone]}>
-                  <Text style={[s.statusText, item.status === "Current" && s.statusTextCurrent]}>{item.status}</Text>
-                </View>
-              </View>
-            ))}
-          </View>
-        </View>
-
-        {/* AI Proactive — 140px */}
-        <View style={s.section}>
-          <Text style={s.sectionTitle}>AI Suggestion</Text>
-          <View style={s.aiCard}>
-            <Text style={s.aiTitle}>Weather Alert</Text>
-            <Text style={s.aiDesc}>Rain expected at 14:00. Consider moving Monkey Forest to tomorrow and visiting the indoor art gallery instead.</Text>
-            <View style={s.aiActions}>
-              <Pressable style={s.aiBtn}><Text style={s.aiBtnText}>Accept</Text></Pressable>
-              <Pressable style={s.aiDismiss}><Text style={s.aiDismissText}>Dismiss</Text></Pressable>
+      <View style={styles.section}>
+        <Text style={styles.sectionTitle}>Upcoming Events</Text>
+        {tripData.upcomingEvents.map((event) => (
+          <BlurView key={event.id} intensity={20} tint="dark" style={[styles.glassCard, styles.eventCard]}>
+            <MaterialIcons name={event.icon as any} size={24} color={DS.purple} style={styles.eventIcon} />
+            <View>
+              <Text style={styles.eventTitle}>{event.title}</Text>
+              <Text style={styles.eventTime}>{event.time}</Text>
             </View>
-          </View>
-        </View>
+          </BlurView>
+        ))}
+      </View>
 
-        {/* Emergency card */}
-        <View style={s.section}>
-          <Pressable style={s.emergencyCard}>
-            <Text style={s.emergencyIcon}>!</Text>
-            <View style={{ flex: 1 }}>
-              <Text style={s.emergencyTitle}>Emergency Contacts</Text>
-              <Text style={s.emergencySub}>Police, Hospital, Embassy, Hotel</Text>
-            </View>
-            <Text style={s.emergencyArrow}>{">"}</Text>
-          </Pressable>
-        </View>
-      </ScrollView>
-    </View>
+      <TouchableOpacity activeOpacity={0.8} style={styles.ctaButton}>
+        <LinearGradient colors={[DS.purple, DS.pink] as const} style={styles.ctaGradient}>
+          <Text style={styles.ctaText}>View Full Itinerary</Text>
+          <MaterialIcons name="arrow-forward" size={20} color={DS.white} />
+        </LinearGradient>
+      </TouchableOpacity>
+    </ScreenWrapper>
   );
-}
+};
 
-const s = StyleSheet.create({
-  root: { flex: 1, backgroundColor: "#111" },
-  header: { height: 120, paddingHorizontal: 20, paddingTop: 52, borderBottomWidth: 1, borderBottomColor: "#222" },
-  modeBadge: { alignSelf: "flex-start", paddingHorizontal: 8, paddingVertical: 3, borderRadius: 6, backgroundColor: "#333", marginBottom: 4 },
-  modeText: { color: "#4ADE80", fontSize: 10, fontWeight: "800", letterSpacing: 1 },
-  headerTitle: { color: "#FFF", fontSize: 22, fontWeight: "800" },
-  headerSub: { color: "#888", fontSize: 13, marginTop: 2 },
-  actionsGrid: { flexDirection: "row", flexWrap: "wrap", paddingHorizontal: 20, paddingTop: 16, gap: 10 },
-  actionCard: { width: "30%", height: 88, borderRadius: 14, backgroundColor: "#1A1A1A", borderWidth: 1, borderColor: "#333", justifyContent: "center", alignItems: "center", gap: 6 },
-  actionIcon: { color: "#888", fontSize: 20, fontWeight: "700" },
-  actionTitle: { color: "#FFF", fontSize: 12, fontWeight: "600" },
-  section: { paddingHorizontal: 20, marginTop: 20 },
-  sectionTitle: { color: "#FFF", fontSize: 16, fontWeight: "700", marginBottom: 10 },
-  scheduleCard: { borderRadius: 14, backgroundColor: "#1A1A1A", borderWidth: 1, borderColor: "#333", overflow: "hidden" },
-  scheduleRow: { flexDirection: "row", alignItems: "center", padding: 14, gap: 12 },
-  scheduleBorder: { borderBottomWidth: 1, borderBottomColor: "#222" },
-  schedTime: { color: "#888", fontSize: 13, width: 48 },
-  schedTitle: { color: "#FFF", fontSize: 14, fontWeight: "600" },
-  statusBadge: { paddingHorizontal: 8, paddingVertical: 3, borderRadius: 6, backgroundColor: "#222" },
-  statusCurrent: { backgroundColor: "#333" },
-  statusDone: { backgroundColor: "#222" },
-  statusText: { color: "#888", fontSize: 11, fontWeight: "600" },
-  statusTextCurrent: { color: "#FFF" },
-  aiCard: { borderRadius: 14, backgroundColor: "#1A1A1A", borderWidth: 1, borderColor: "#333", padding: 16 },
-  aiTitle: { color: "#FFF", fontSize: 15, fontWeight: "700" },
-  aiDesc: { color: "#888", fontSize: 13, marginTop: 6, lineHeight: 20 },
-  aiActions: { flexDirection: "row", gap: 10, marginTop: 12 },
-  aiBtn: { paddingHorizontal: 16, paddingVertical: 8, borderRadius: 8, backgroundColor: "#333" },
-  aiBtnText: { color: "#FFF", fontSize: 13, fontWeight: "600" },
-  aiDismiss: { paddingHorizontal: 16, paddingVertical: 8 },
-  aiDismissText: { color: "#888", fontSize: 13 },
-  emergencyCard: { flexDirection: "row", alignItems: "center", padding: 16, borderRadius: 14, backgroundColor: "#1A1A1A", borderWidth: 1, borderColor: "#333", gap: 12 },
-  emergencyIcon: { color: "#F87171", fontSize: 20, fontWeight: "800" },
-  emergencyTitle: { color: "#FFF", fontSize: 14, fontWeight: "600" },
-  emergencySub: { color: "#888", fontSize: 12, marginTop: 2 },
-  emergencyArrow: { color: "#555", fontSize: 16 },
+const styles = StyleSheet.create({
+  section: {
+    marginBottom: 20,
+  },
+  sectionTitle: {
+    fontFamily: 'Chillax-Bold',
+    fontSize: 22,
+    color: DS.white,
+    marginBottom: 15,
+  },
+  glassCard: {
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: DS.border,
+    backgroundColor: DS.surface,
+    overflow: 'hidden',
+    marginBottom: 10,
+    padding: 15,
+  },
+  cardContent: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 8,
+  },
+  label: {
+    fontFamily: 'Satoshi-Medium',
+    fontSize: 14,
+    color: DS.muted,
+  },
+  value: {
+    fontFamily: 'Satoshi-Regular',
+    fontSize: 14,
+    color: DS.white,
+    textAlign: 'right',
+    flexShrink: 1,
+    marginLeft: 10,
+  },
+  bodyText: {
+    fontFamily: 'Satoshi-Regular',
+    fontSize: 14,
+    color: DS.white,
+  },
+  notificationCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 12,
+  },
+  notificationIcon: {
+    marginRight: 10,
+  },
+  eventCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 15,
+  },
+  eventIcon: {
+    marginRight: 15,
+  },
+  eventTitle: {
+    fontFamily: 'Satoshi-Medium',
+    fontSize: 16,
+    color: DS.white,
+  },
+  eventTime: {
+    fontFamily: 'Satoshi-Regular',
+    fontSize: 12,
+    color: DS.muted,
+    marginTop: 2,
+  },
+  ctaButton: {
+    marginTop: 20,
+    marginBottom: 30,
+    borderRadius: 16,
+    overflow: 'hidden',
+  },
+  ctaGradient: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingVertical: 18,
+    paddingHorizontal: 20,
+  },
+  ctaText: {
+    fontFamily: 'Chillax-Bold',
+    fontSize: 18,
+    color: DS.white,
+    marginRight: 10,
+  },
 });
+
+export default LiveDashboard;

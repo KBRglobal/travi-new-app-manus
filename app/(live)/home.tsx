@@ -44,7 +44,7 @@ export default function LiveHomeScreen() {
             <Text style={s.progressDate}>Mar 17, 2025</Text>
           </View>
           <View style={s.progressBar}>
-            <LinearGradient colors={[DS.purple, DS.pink]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={[s.progressFill, { width: "43%" }]} />
+            <LinearGradient colors={[DS.purple, DS.pink] as const} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={[s.progressFill, { width: "43%" }]} />
           </View>
           <Text style={s.progressSub}>2 of 5 activities completed today</Text>
         </View>

@@ -1,93 +1,127 @@
-// Screen 85 — Chat Screen (Static Wireframe)
-// Route: /social/chat/:conversationId | Mode: Discovery (Social)
-// Zones: Header 60px, Compatibility Bar 40px, Messages body, Input 56px
+import React from 'react';
+import { View, Text, StyleSheet, ScrollView, TextInput, TouchableOpacity, Image } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
+import { BlurView } from 'expo-blur';
+import { MaterialIcons } from '@expo/vector-icons';
+import { ScreenWrapper, DS } from '@/components/screen-wrapper';
 
-import { ScrollView, Text, View, StyleSheet } from "react-native";
-import { ScreenContainer } from "@/components/screen-container";
 
-const MESSAGES = [
-  { id: "1", from: "them", text: "Hey! I saw you're planning a trip to Barcelona too!", time: "10:32 AM" },
-  { id: "2", from: "me", text: "Yes! I'm going in April. Have you been before?", time: "10:33 AM" },
-  { id: "3", from: "them", text: "Three times! I know all the best spots. The tapas in El Born are incredible.", time: "10:35 AM" },
-  { id: "4", from: "me", text: "That sounds amazing! Any specific places you'd recommend?", time: "10:36 AM" },
-  { id: "5", from: "them", text: "Cal Pep is a must! Get there early though, the line gets long. Also try La Boqueria market for breakfast.", time: "10:38 AM" },
-  { id: "6", from: "me", text: "Perfect, adding those to my list! 🙏", time: "10:39 AM" },
-];
+const MessageChatScreen = () => {
+  const messages = [
+    { id: '1', text: 'Hey, how are you?', sender: 'me', time: '10:00 AM' },
+    { id: '2', text: 'I am good, thanks! How about you?', sender: 'other', time: '10:01 AM' },
+    { id: '3', text: 'I am doing great. Planning a trip to Bali next month.', sender: 'me', time: '10:05 AM' },
+    { id: '4', text: 'Wow, that sounds amazing! I always wanted to go there.', sender: 'other', time: '10:06 AM' },
+    { id: '5', text: 'You should definitely come along!', sender: 'me', time: '10:07 AM' },
+  ];
 
-export default function ChatScreen() {
   return (
-    <ScreenContainer>
-      <View style={s.container}>
-        {/* Header */}
-        <View style={s.header}>
-          <Text style={s.back}>←</Text>
-          <View style={s.headerAvatar}><Text style={s.headerInitial}>S</Text></View>
-          <View style={s.headerInfo}>
-            <Text style={s.headerName}>Sarah Mitchell</Text>
-            <Text style={s.headerStatus}>● Online</Text>
-          </View>
-          <Text style={s.headerMore}>⋯</Text>
-        </View>
-
-        {/* Compatibility Bar — 40px */}
-        <View style={s.compatBar}>
-          <Text style={s.compatText}>92% DNA Match</Text>
-          <View style={s.compatBarTrack}>
-            <View style={[s.compatBarFill, { width: "92%" }]} />
-          </View>
-        </View>
-
-        {/* Messages */}
-        <ScrollView style={s.messagesArea} contentContainerStyle={s.messagesContent} showsVerticalScrollIndicator={false}>
-          {MESSAGES.map(msg => (
-            <View key={msg.id} style={[s.bubble, msg.from === "me" ? s.bubbleMe : s.bubbleThem]}>
-              <Text style={[s.bubbleText, msg.from === "me" ? s.bubbleTextMe : s.bubbleTextThem]}>{msg.text}</Text>
-              <Text style={s.bubbleTime}>{msg.time}</Text>
+    <ScreenWrapper title="Chat" scrollable={true}>
+      <View style={styles.container}>
+        <ScrollView contentContainerStyle={styles.messagesContainer}>
+          {messages.map((message) => (
+            <View key={message.id} style={[styles.messageBubble, message.sender === 'me' ? styles.myMessage : styles.otherMessage]}>
+              <BlurView intensity={20} tint="dark" style={styles.blurView}>
+                <Text style={styles.messageText}>{message.text}</Text>
+                <Text style={styles.messageTime}>{message.time}</Text>
+              </BlurView>
             </View>
           ))}
         </ScrollView>
-
-        {/* Input — 56px */}
-        <View style={s.inputBar}>
-          <Text style={s.inputPlus}>+</Text>
-          <View style={s.inputField}>
-            <Text style={s.inputPlaceholder}>Type a message...</Text>
-          </View>
-          <View style={s.sendBtn}><Text style={s.sendText}>→</Text></View>
+        <View style={styles.inputContainer}>
+          <TextInput
+            style={styles.textInput}
+            placeholder="Type a message..."
+            placeholderTextColor={DS.placeholder}
+          />
+          <TouchableOpacity style={styles.sendButton}>
+            <LinearGradient
+              colors={[DS.purple, DS.pink] as const}
+              start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}
+              style={styles.sendButtonGradient}
+            >
+              <MaterialIcons name="send" size={24} color={DS.white} />
+            </LinearGradient>
+          </TouchableOpacity>
         </View>
       </View>
-    </ScreenContainer>
+    </ScreenWrapper>
   );
-}
+};
 
-const N="#111",N2="#1a1a1a",N3="#222",W="#fff",G="#888";
-const s = StyleSheet.create({
-  container:{flex:1,backgroundColor:N},
-  header:{height:60,flexDirection:"row",alignItems:"center",paddingHorizontal:16,gap:10,borderBottomWidth:1,borderBottomColor:N3},
-  back:{fontSize:24,color:W},
-  headerAvatar:{width:36,height:36,borderRadius:10,backgroundColor:N3,alignItems:"center",justifyContent:"center"},
-  headerInitial:{fontSize:16,fontWeight:"600",color:W},
-  headerInfo:{flex:1},
-  headerName:{fontSize:16,fontWeight:"600",color:W},
-  headerStatus:{fontSize:12,color:"#4a4"},
-  headerMore:{fontSize:20,color:G},
-  compatBar:{flexDirection:"row",alignItems:"center",paddingHorizontal:16,height:40,gap:10,backgroundColor:N2,borderBottomWidth:1,borderBottomColor:N3},
-  compatText:{fontSize:12,fontWeight:"600",color:G,width:100},
-  compatBarTrack:{flex:1,height:4,borderRadius:2,backgroundColor:N3},
-  compatBarFill:{height:4,borderRadius:2,backgroundColor:"#555"},
-  messagesArea:{flex:1},
-  messagesContent:{padding:16,gap:8},
-  bubble:{maxWidth:"80%",padding:12,borderRadius:16,gap:4},
-  bubbleMe:{alignSelf:"flex-end",backgroundColor:"#333",borderBottomRightRadius:4},
-  bubbleThem:{alignSelf:"flex-start",backgroundColor:N2,borderWidth:1,borderColor:N3,borderBottomLeftRadius:4},
-  bubbleText:{fontSize:15,lineHeight:20},
-  bubbleTextMe:{color:W},
-  bubbleTextThem:{color:"#ccc"},
-  bubbleTime:{fontSize:11,color:G,alignSelf:"flex-end"},
-  inputBar:{flexDirection:"row",alignItems:"center",paddingHorizontal:16,paddingVertical:8,gap:10,borderTopWidth:1,borderTopColor:N3},
-  inputPlus:{fontSize:24,color:G},
-  inputField:{flex:1,height:40,borderRadius:20,backgroundColor:N2,justifyContent:"center",paddingHorizontal:16},
-  inputPlaceholder:{fontSize:14,color:"#555"},
-  sendBtn:{width:40,height:40,borderRadius:20,backgroundColor:"#333",alignItems:"center",justifyContent:"center"},
-  sendText:{fontSize:18,color:W},
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: DS.bg,
+  },
+  messagesContainer: {
+    padding: 10,
+  },
+  messageBubble: {
+    maxWidth: '80%',
+    marginVertical: 5,
+    borderRadius: 16,
+    overflow: 'hidden',
+  },
+  myMessage: {
+    alignSelf: 'flex-end',
+  },
+  otherMessage: {
+    alignSelf: 'flex-start',
+  },
+  blurView: {
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: DS.border,
+    backgroundColor: DS.surface,
+    overflow: 'hidden',
+    padding: 10,
+  },
+  messageText: {
+    fontFamily: 'Satoshi-Regular',
+    color: DS.white,
+    fontSize: 16,
+  },
+  messageTime: {
+    fontFamily: 'Satoshi-Medium',
+    color: DS.muted,
+    fontSize: 12,
+    alignSelf: 'flex-end',
+    marginTop: 5,
+  },
+  inputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 10,
+    borderTopWidth: 1,
+    borderTopColor: DS.border,
+    backgroundColor: DS.bg,
+  },
+  textInput: {
+    flex: 1,
+    height: 40,
+    borderRadius: 20,
+    paddingHorizontal: 15,
+    color: DS.white,
+    backgroundColor: DS.surfaceHigh,
+    fontFamily: 'Satoshi-Regular',
+    marginRight: 10,
+  },
+  sendButton: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    overflow: 'hidden',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  sendButtonGradient: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+    height: '100%',
+  },
 });
+
+export default MessageChatScreen;

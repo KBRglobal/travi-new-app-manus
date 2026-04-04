@@ -1,113 +1,119 @@
-// Screen 84 — Messages List (Static Wireframe)
-// Route: /social/messages | Mode: Discovery (Social)
-// Zones: Header 60px, Search 48px, Online Now row 80px, Conversations list
+import React from 'react';
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image } from 'react-native';
+import { ScreenWrapper, DS } from '@/components/screen-wrapper';
+import { BlurView } from 'expo-blur';
+import { LinearGradient } from 'expo-linear-gradient';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 
-import { ScrollView, Text, View, StyleSheet } from "react-native";
-import { ScreenContainer } from "@/components/screen-container";
-
-const ONLINE = [
-  { id: "1", name: "Sarah", initial: "S" },
-  { id: "2", name: "Marco", initial: "M" },
-  { id: "3", name: "Yuki", initial: "Y" },
-  { id: "4", name: "Elena", initial: "E" },
+const messagesData = [
+  { id: '1', name: 'Alice', lastMessage: 'Hey, how are you?', time: '10:30 AM', avatar: 'https://randomuser.me/api/portraits/women/1.jpg' },
+  { id: '2', name: 'Bob', lastMessage: 'Meeting at 2 PM?', time: 'Yesterday', avatar: 'https://randomuser.me/api/portraits/men/2.jpg' },
+  { id: '3', name: 'Charlie', lastMessage: 'Don\'t forget the presentation!', time: 'Tuesday', avatar: 'https://randomuser.me/api/portraits/men/3.jpg' },
+  { id: '4', name: 'Diana', lastMessage: 'See you soon!', time: 'Monday', avatar: 'https://randomuser.me/api/portraits/women/4.jpg' },
+  { id: '5', name: 'Eve', lastMessage: 'Let\'s grab coffee.', time: 'Sunday', avatar: 'https://randomuser.me/api/portraits/women/5.jpg' },
+  { id: '6', name: 'Frank', lastMessage: 'Got the tickets!', time: 'Saturday', avatar: 'https://randomuser.me/api/portraits/men/6.jpg' },
+  { id: '7', name: 'Grace', lastMessage: 'Happy birthday!', time: 'Friday', avatar: 'https://randomuser.me/api/portraits/women/7.jpg' },
+  { id: '8', name: 'Heidi', lastMessage: 'Call me later.', time: 'Thursday', avatar: 'https://randomuser.me/api/portraits/women/8.jpg' },
 ];
 
-const CONVERSATIONS = [
-  { id: "1", name: "Sarah Mitchell", lastMsg: "That tapas place was amazing! You have to try it when you visit.", time: "2m ago", unread: 3, online: true },
-  { id: "2", name: "Marco Rossi", lastMsg: "I'll send you the hiking trail details tonight.", time: "1h ago", unread: 1, online: false },
-  { id: "3", name: "Yuki Tanaka", lastMsg: "The cherry blossoms should be perfect next week!", time: "3h ago", unread: 0, online: true },
-  { id: "4", name: "Elena Kowalski", lastMsg: "Thanks for the Santorini recommendations!", time: "1d ago", unread: 0, online: false },
-  { id: "5", name: "James Lee", lastMsg: "Let me know when you're in London!", time: "2d ago", unread: 0, online: false },
-];
-
-export default function MessagesListScreen() {
-  return (
-    <ScreenContainer>
-      <View style={s.container}>
-        <View style={s.header}>
-          <Text style={s.back}>←</Text>
-          <Text style={s.title}>Messages</Text>
-          <Text style={s.compose}>✏</Text>
+const MessagesScreen = () => {
+  const renderItem = ({ item }: { item: any }) => (
+    <TouchableOpacity style={styles.messageItemContainer}>
+      <BlurView intensity={20} tint="dark" style={styles.glassCard}>
+        <Image source={{ uri: item.avatar }} style={styles.avatar} />
+        <View style={styles.messageContent}>
+          <Text style={styles.name}>{item.name}</Text>
+          <Text style={styles.lastMessage}>{item.lastMessage}</Text>
         </View>
-
-        {/* Search */}
-        <View style={s.searchBar}>
-          <Text style={s.searchPlaceholder}>🔍  Search conversations...</Text>
-        </View>
-
-        <ScrollView showsVerticalScrollIndicator={false}>
-          {/* Online Now */}
-          <View style={s.onlineSection}>
-            <Text style={s.onlineLabel}>Active Now</Text>
-            <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={s.onlineRow}>
-              {ONLINE.map(u => (
-                <View key={u.id} style={s.onlineItem}>
-                  <View style={s.onlineAvatar}>
-                    <Text style={s.onlineInitial}>{u.initial}</Text>
-                    <View style={s.onlineDot} />
-                  </View>
-                  <Text style={s.onlineName}>{u.name}</Text>
-                </View>
-              ))}
-            </ScrollView>
-          </View>
-
-          {/* Conversations */}
-          {CONVERSATIONS.map(c => (
-            <View key={c.id} style={s.convRow}>
-              <View style={s.convAvatar}>
-                <Text style={s.convInitial}>{c.name[0]}</Text>
-                {c.online && <View style={s.convOnline} />}
-              </View>
-              <View style={s.convInfo}>
-                <View style={s.convNameRow}>
-                  <Text style={[s.convName, c.unread > 0 && s.convNameBold]}>{c.name}</Text>
-                  <Text style={s.convTime}>{c.time}</Text>
-                </View>
-                <View style={s.convMsgRow}>
-                  <Text style={[s.convMsg, c.unread > 0 && s.convMsgBold]} numberOfLines={1}>{c.lastMsg}</Text>
-                  {c.unread > 0 && (
-                    <View style={s.unreadBadge}><Text style={s.unreadText}>{c.unread}</Text></View>
-                  )}
-                </View>
-              </View>
-            </View>
-          ))}
-
-          <View style={{height:100}}/>
-        </ScrollView>
-      </View>
-    </ScreenContainer>
+        <Text style={styles.time}>{item.time}</Text>
+        <MaterialIcons name="chevron-right" size={24} color={DS.muted} />
+      </BlurView>
+    </TouchableOpacity>
   );
-}
 
-const N="#111",N2="#1a1a1a",N3="#222",W="#fff",G="#888";
-const s = StyleSheet.create({
-  container:{flex:1,backgroundColor:N},
-  header:{height:60,flexDirection:"row",alignItems:"center",justifyContent:"space-between",paddingHorizontal:16},
-  back:{fontSize:24,color:W},title:{fontSize:20,fontWeight:"700",color:W},compose:{fontSize:20,color:G},
-  searchBar:{marginHorizontal:16,height:44,borderRadius:12,backgroundColor:N2,justifyContent:"center",paddingHorizontal:16,marginBottom:12},
-  searchPlaceholder:{fontSize:14,color:"#555"},
-  onlineSection:{paddingHorizontal:16,marginBottom:16},
-  onlineLabel:{fontSize:14,fontWeight:"600",color:G,marginBottom:8},
-  onlineRow:{gap:16},
-  onlineItem:{alignItems:"center",width:56},
-  onlineAvatar:{width:48,height:48,borderRadius:12,backgroundColor:N2,borderWidth:1,borderColor:N3,alignItems:"center",justifyContent:"center"},
-  onlineInitial:{fontSize:18,fontWeight:"600",color:W},
-  onlineDot:{position:"absolute",bottom:-2,right:-2,width:12,height:12,borderRadius:6,backgroundColor:"#4a4",borderWidth:2,borderColor:N},
-  onlineName:{fontSize:11,color:G,marginTop:4},
-  convRow:{flexDirection:"row",alignItems:"center",paddingHorizontal:16,paddingVertical:12,gap:12,borderBottomWidth:1,borderBottomColor:N3},
-  convAvatar:{width:52,height:52,borderRadius:14,backgroundColor:N2,alignItems:"center",justifyContent:"center"},
-  convInitial:{fontSize:20,fontWeight:"600",color:W},
-  convOnline:{position:"absolute",bottom:0,right:0,width:12,height:12,borderRadius:6,backgroundColor:"#4a4",borderWidth:2,borderColor:N},
-  convInfo:{flex:1},
-  convNameRow:{flexDirection:"row",justifyContent:"space-between",alignItems:"center"},
-  convName:{fontSize:16,color:W},
-  convNameBold:{fontWeight:"700"},
-  convTime:{fontSize:12,color:G},
-  convMsgRow:{flexDirection:"row",alignItems:"center",gap:8,marginTop:2},
-  convMsg:{fontSize:14,color:G,flex:1},
-  convMsgBold:{color:"#bbb"},
-  unreadBadge:{minWidth:20,height:20,borderRadius:10,backgroundColor:"#555",alignItems:"center",justifyContent:"center",paddingHorizontal:6},
-  unreadText:{fontSize:11,fontWeight:"700",color:W},
+  return (
+    <ScreenWrapper title="Messages" scrollable={true}>
+      <FlatList
+        data={messagesData}
+        renderItem={renderItem}
+        keyExtractor={item => item.id}
+        contentContainerStyle={styles.listContentContainer}
+      />
+      <LinearGradient colors={[DS.purple, DS.pink] as const} style={styles.ctaButton}>
+        <TouchableOpacity style={styles.ctaButtonInner}>
+          <MaterialIcons name="add-comment" size={24} color={DS.white} />
+          <Text style={styles.ctaButtonText}>New Message</Text>
+        </TouchableOpacity>
+      </LinearGradient>
+    </ScreenWrapper>
+  );
+};
+
+const styles = StyleSheet.create({
+  listContentContainer: {
+    paddingHorizontal: 20,
+    paddingBottom: 100, // To make space for the CTA button
+  },
+  messageItemContainer: {
+    marginBottom: 10,
+  },
+  glassCard: {
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: DS.border,
+    backgroundColor: DS.surface,
+    overflow: 'hidden',
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 15,
+  },
+  avatar: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    marginRight: 15,
+    borderWidth: 1,
+    borderColor: DS.borderStrong,
+  },
+  messageContent: {
+    flex: 1,
+  },
+  name: {
+    fontFamily: 'Chillax-Bold',
+    fontSize: 18,
+    color: DS.white,
+  },
+  lastMessage: {
+    fontFamily: 'Satoshi-Regular',
+    fontSize: 14,
+    color: DS.muted,
+  },
+  time: {
+    fontFamily: 'Satoshi-Medium',
+    fontSize: 12,
+    color: DS.secondary,
+    marginRight: 10,
+  },
+  ctaButton: {
+    position: 'absolute',
+    bottom: 30,
+    left: 20,
+    right: 20,
+    borderRadius: 12,
+    overflow: 'hidden',
+  },
+  ctaButtonInner: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 15,
+  },
+  ctaButtonText: {
+    fontFamily: 'Chillax-Bold',
+    fontSize: 18,
+    color: DS.white,
+    marginLeft: 10,
+  },
 });
+
+export default MessagesScreen;
