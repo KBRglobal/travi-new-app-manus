@@ -1,6 +1,6 @@
-// Root index — redirect to Home Dashboard for review
+// Root index — redirects to auth splash
 import { Redirect } from "expo-router";
 
 export default function RootIndex() {
-  return <Redirect href="/(tabs)" />;
+  return <Redirect href="/(auth)/splash" />;
 }
