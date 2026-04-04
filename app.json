@@ -26,7 +26,13 @@
       "expo-font",
       "expo-secure-store",
       "@sentry/react-native",
-      "@stripe/stripe-react-native"
+      [
+        "@stripe/stripe-react-native",
+        {
+          "merchantIdentifier": "merchant.com.travi.app",
+          "enableGooglePay": true
+        }
+      ]
     ],
     "extra": {
       "eas": {
