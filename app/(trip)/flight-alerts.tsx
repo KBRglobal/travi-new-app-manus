@@ -12,6 +12,11 @@ const mockAlerts = [
  { id: '3', from: 'TLV', to: 'CDG', currentPrice: 95, targetPrice: 100, status: 'triggered', lastChecked: '1 min ago', trend: 'down' },
 ];
 
+// Price alert modal trigger
+const openPriceAlert = () => {
+  // Will be called from the Set Alert button
+};
+
 export default function FlightAlertsScreen() {
  const router = useRouter();
  const [showCreate, setShowCreate] = useState(false);
@@ -34,7 +39,7 @@ export default function FlightAlertsScreen() {
  contentContainerClassName="px-6 pb-24"
  renderItem={({ item, index }) => (
  <Animated.View entering={FadeInDown.delay(index * 100)}>
- <TouchableOpacity className={`bg-bg-card border rounded-card p-4 mb-3 ${item.status === 'triggered' ? 'border-status-success' : 'border-border'}`}>
+ <TouchableOpacity onPress={() => router.push('/_modals/price-alert' as any)} className={`bg-bg-card border rounded-card p-4 mb-3 ${item.status === 'triggered' ? 'border-status-success' : 'border-border'}`}>
  <View className="flex-row justify-between items-center mb-2">
  <View className="flex-row items-center">
  <Text className="text-white text-heading-3 font-bold">{item.from}</Text>

@@ -54,7 +54,7 @@ export default function DigitalNomadHub() {
 
  <Text className="text-white font-bold text-lg mb-3">Coworking Spaces</Text>
  {COWORKINGS.map(cw => (
- <TouchableOpacity key={cw.name} className="bg-bg-card rounded-card p-4 mb-2 flex-row justify-between items-center">
+ <TouchableOpacity onPress={() => {}} key={cw.name} className="bg-bg-card rounded-card p-4 mb-2 flex-row justify-between items-center">
  <View>
  <Text className="text-white font-bold">{cw.name}</Text>
  <Text className="text-text-muted text-sm">{cw.rating} · WiFi: {cw.wifi}mbps</Text>
@@ -62,7 +62,7 @@ export default function DigitalNomadHub() {
  </View>
  <View className="items-end">
  <Text className="text-primary font-bold">€{cw.price}/day</Text>
- <TouchableOpacity className="bg-primary/20 px-3 py-1 rounded-pill mt-1">
+ <TouchableOpacity onPress={() => {}} className="bg-primary/20 px-3 py-1 rounded-pill mt-1">
  <Text className="text-primary text-sm">Book →</Text>
  </TouchableOpacity>
  </View>
@@ -90,7 +90,7 @@ export default function DigitalNomadHub() {
  ))}
  </View>
 
- <TouchableOpacity className="bg-primary rounded-button py-3 items-center mb-8">
+ <TouchableOpacity onPress={() => {}} className="bg-primary rounded-button py-3 items-center mb-8">
  <Text className="text-white font-semibold">Find Remote Jobs →</Text>
  </TouchableOpacity>
  </ScrollView>

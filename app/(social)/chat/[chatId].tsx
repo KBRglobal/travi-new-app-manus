@@ -30,7 +30,7 @@ export default function ChatScreen() {
  />
  <View className="flex-row items-center px-4 md:px-6 pb-safe mb-2 gap-2">
  <TextInput value={msg} onChangeText={setMsg} placeholder="Type a message..." placeholderTextColor="rgba(255,255,255,0.3)" className="flex-1 h-12 px-4 bg-white/5 border border-white/10 rounded-pill text-white text-base" />
- <Pressable className="w-12 h-12 bg-primary rounded-full items-center justify-center active:opacity-80"><Text className="text-white text-lg">↑</Text></Pressable>
+ <Pressable onPress={() => {}} className="w-12 h-12 bg-primary rounded-full items-center justify-center active:opacity-80"><Text className="text-white text-lg">↑</Text></Pressable>
  </View>
  </KeyboardAvoidingView>
  );

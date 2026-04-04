@@ -24,7 +24,7 @@ export default function MembershipScreen() {
             {tier.features.map((f) => (
               <Text key={f} className="text-text-secondary text-sm mt-2">{f}</Text>
             ))}
-            <Pressable className={`w-full h-12 rounded-button items-center justify-center mt-4 ${i === 1 ? 'bg-primary' : 'bg-white/10'}`}>
+            <Pressable onPress={() => {}} className={`w-full h-12 rounded-button items-center justify-center mt-4 ${i === 1 ? 'bg-primary' : 'bg-white/10'}`}>
               <Text className="text-white text-sm font-semibold">{i === 0 ? 'Current Plan' : 'Upgrade'}</Text>
             </Pressable>
           </View>

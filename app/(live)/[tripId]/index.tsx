@@ -1,70 +1,121 @@
-import { haptic } from '@/lib/haptics';
 import React from 'react';
-import { View, Text, ScrollView, TouchableOpacity, FlatList} from 'react-native';
+import { View, Text, ScrollView } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 import { useRouter, useLocalSearchParams } from 'expo-router';
-import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
-import { Ionicons } from '@expo/vector-icons';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { MaterialIcons } from '@expo/vector-icons';
+import { colors, fonts, fontSizes, spacing, radius, gradients, typography, shadows } from '@/constants/theme';
+import { GlassCard } from '@/components/ui/GlassCard';
+import { GradientBadge } from '@/components/ui/GradientBadge';
+import { PressableScale } from '@/components/ui/PressableScale';
 
 export default function LiveDashboard() {
- const router = useRouter();
- const { tripId } = useLocalSearchParams();
+  const router = useRouter();
+  const insets = useSafeAreaInsets();
+  const { tripId } = useLocalSearchParams();
 
- const quickActions = [
- { iconName: 'calendar', label: 'Timeline', route: `/(live)/${tripId}/timeline` },
- { iconName: 'map', label: 'Map', route: `/(live)/${tripId}/map` },
- { iconName: 'cash', label: 'Expenses', route: `/(live)/${tripId}/expenses` },
- { iconName: 'camera', label: 'Memories', route: `/(live)/${tripId}/memories` },
- { iconName: 'alert-circle', label: 'Emergency', route: `/(live)/${tripId}/emergency` },
- { iconName: 'card', label: 'Tax', route: `/(live)/${tripId}/tax` },
- { iconName: 'bar-chart', label: 'Budget', route: `/(live)/${tripId}/budget`, isNew: true },
- { iconName: 'settings', label: 'Settings', route: '/(trip)/settings' },
- ];
+  const quickActions = [
+    { icon: 'event-note' as const, label: 'Timeline', route: `/(live)/${tripId}/timeline`, tint: 'planning' as const },
+    { icon: 'map' as const, label: 'Map', route: `/(live)/${tripId}/map`, tint: 'discovery' as const },
+    { icon: 'receipt-long' as const, label: 'Expenses', route: `/(live)/${tripId}/expenses`, tint: 'neutral' as const },
+    { icon: 'photo-camera' as const, label: 'Memories', route: `/(live)/${tripId}/memories`, tint: 'neutral' as const },
+    { icon: 'emergency' as const, label: 'Emergency', route: `/(live)/${tripId}/emergency`, tint: 'neutral' as const },
+    { icon: 'request-quote' as const, label: 'Tax', route: `/(live)/${tripId}/tax`, tint: 'neutral' as const },
+    { icon: 'bar-chart' as const, label: 'Budget', route: `/(live)/${tripId}/budget`, tint: 'neutral' as const, isNew: true },
+    { icon: 'settings' as const, label: 'Settings', route: `/(live)/${tripId}/settings`, tint: 'neutral' as const },
+  ];
 
- return (
- <View className="flex-1 bg-bg-primary">
- <View className="px-4 pt-12 pb-4">
- <Text className="text-text-secondary">Currently in</Text>
- <Text className="text-white text-2xl font-bold">Dubai 🇦🇪</Text>
- <Text className="text-primary">Day 3 of 7</Text>
- </View>
+  const stats = [
+    { icon: 'thermostat' as const, label: 'Weather', value: '34°C', sub: 'Sunny', color: colors.gold },
+    { icon: 'payments' as const, label: 'Spent today', value: '€127', sub: 'Budget OK', color: colors.success },
+    { icon: 'directions-walk' as const, label: 'Steps', value: '8,432', sub: '67%', color: colors.pink },
+  ];
 
- <ScrollView className="flex-1 px-4">
- <View className="bg-bg-card rounded-card p-4 mb-4">
- <Text className="text-white font-bold mb-2">Next Up</Text>
- <Text className="text-primary text-lg font-bold">Desert Safari — 2:00 PM</Text>
- <Text className="text-text-secondary">In 3 hours · Pickup from hotel</Text>
- </View>
+  return (
+    <View style={{ flex: 1, backgroundColor: colors.bg.primary }}>
+      {/* Top gradient glow */}
+      <View style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '30%' }}>
+        <LinearGradient
+          colors={['rgba(100,67,244,0.1)', 'rgba(249,68,152,0.04)', 'transparent']}
+          style={{ flex: 1 }}
+        />
+      </View>
 
- <View className="bg-bg-card rounded-card p-4 mb-4 flex-row justify-between items-center">
- <View>
- <Text className="text-text-secondary text-sm">Weather</Text>
- <Text className="text-white text-xl font-bold">34°C sunny</Text>
- </View>
- <View>
- <Text className="text-text-secondary text-sm">Spent today</Text>
- <Text className="text-white text-xl font-bold">€127</Text>
- </View>
- <View>
- <Text className="text-text-secondary text-sm">Steps</Text>
- <Text className="text-white text-xl font-bold">8,432</Text>
- </View>
- </View>
+      <ScrollView
+        style={{ flex: 1 }}
+        contentContainerStyle={{ paddingTop: insets.top + 16, paddingHorizontal: spacing.screenH, paddingBottom: 100 }}
+        showsVerticalScrollIndicator={false}
+      >
+        {/* Header */}
+        <View style={{ marginBottom: 24 }}>
+          <Text style={{ ...typography.caption, color: colors.text.tertiary, marginBottom: 4 }}>Currently in</Text>
+          <Text style={{ ...typography.display, marginBottom: 4 }}>Dubai 🇦🇪</Text>
+          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+            <GradientBadge label="LIVE" variant="primary" />
+            <Text style={{ fontFamily: fonts.bodyMedium, fontSize: fontSizes.body, color: colors.primary }}>Day 3 of 7</Text>
+          </View>
+        </View>
 
- <Text className="text-white font-bold text-lg mb-3">Quick Actions</Text>
- <View className="flex-row flex-wrap mb-8">
- {quickActions.map(action => (
- <TouchableOpacity key={action.label} onPress={() => router.push(action.route as any)} className="bg-bg-card rounded-card p-4 items-center" style={{ width: '48%', marginRight: '2%', marginBottom: 8 }}>
- <Text className="text-2xl mb-1">{action.icon}</Text>
- <Text className="text-white font-semibold text-sm">{action.label}</Text>
- {action.isNew && (
- <View className="bg-pink px-2 py-0.5 rounded-pill mt-1">
- <Text className="text-white text-xs font-bold">NEW</Text>
- </View>
- )}
- </TouchableOpacity>
- ))}
- </View>
- </ScrollView>
- </View>
- );
+        {/* Next Up Card */}
+        <PressableScale onPress={() => router.push(`/(live)/${tripId}/timeline` as any)} style={{ marginBottom: 20 }}>
+          <LinearGradient
+            colors={[...gradients.primaryCTA] as [string, string, ...string[]]}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+            style={{ borderRadius: radius.card, padding: 20, ...shadows.cta }}
+          >
+            <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 8 }}>
+              <MaterialIcons name="schedule" size={16} color="rgba(255,255,255,0.8)" style={{ marginRight: 6 }} />
+              <Text style={{ ...typography.label, color: 'rgba(255,255,255,0.8)' }}>NEXT UP</Text>
+            </View>
+            <Text style={{ fontFamily: fonts.heading, fontSize: fontSizes.h3, color: '#FFFFFF', marginBottom: 4 }}>
+              Desert Safari — 2:00 PM
+            </Text>
+            <Text style={{ fontFamily: fonts.body, fontSize: fontSizes.bodySm, color: 'rgba(255,255,255,0.7)' }}>
+              In 3 hours · Pickup from hotel
+            </Text>
+          </LinearGradient>
+        </PressableScale>
+
+        {/* Stats Row */}
+        <View style={{ flexDirection: 'row', gap: 10, marginBottom: 28 }}>
+          {stats.map(stat => (
+            <GlassCard key={stat.label} tint="neutral" style={{ flex: 1 }}>
+              <MaterialIcons name={stat.icon} size={20} color={stat.color} style={{ marginBottom: 8 }} />
+              <Text style={{ ...typography.caption, color: colors.text.tertiary, marginBottom: 2 }}>{stat.label}</Text>
+              <Text style={{ fontFamily: fonts.heading, fontSize: fontSizes.h4, color: colors.text.primary }}>{stat.value}</Text>
+              <Text style={{ ...typography.caption, color: stat.color, marginTop: 2 }}>{stat.sub}</Text>
+            </GlassCard>
+          ))}
+        </View>
+
+        {/* Quick Actions */}
+        <Text style={{ ...typography.label, color: colors.text.tertiary, marginBottom: 12 }}>QUICK ACTIONS</Text>
+        <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 12 }}>
+          {quickActions.map(action => (
+            <PressableScale key={action.label} onPress={() => router.push(action.route as any)} style={{ width: '47%' }}>
+              <GlassCard tint={action.tint}>
+                <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10 }}>
+                  <View style={{
+                    width: 40,
+                    height: 40,
+                    borderRadius: 20,
+                    backgroundColor: 'rgba(255,255,255,0.04)',
+                    borderWidth: 1,
+                    borderColor: 'rgba(255,255,255,0.08)',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}>
+                    <MaterialIcons name={action.icon} size={20} color={colors.primary} />
+                  </View>
+                  {action.isNew && <GradientBadge label="NEW" variant="primary" style={{ paddingHorizontal: 6, paddingVertical: 1 }} />}
+                </View>
+                <Text style={{ fontFamily: fonts.bold, fontSize: fontSizes.body, color: colors.text.primary }}>{action.label}</Text>
+              </GlassCard>
+            </PressableScale>
+          ))}
+        </View>
+      </ScrollView>
+    </View>
+  );
 }

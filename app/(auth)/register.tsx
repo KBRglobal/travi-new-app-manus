@@ -1,16 +1,21 @@
-import { haptic } from '@/lib/haptics';
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
+import { View, Text, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 import { useRouter } from 'expo-router';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { registerSchema, type RegisterForm } from '../../lib/validations';
-import { Input } from '../../components/ui';
 import { useAuthStore } from '../../stores/authStore';
-import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
+import { colors, fonts, fontSizes, spacing, typography } from '@/constants/theme';
+import { GradientButton } from '@/components/ui/GradientButton';
+import { ThemedInput } from '@/components/ui/ThemedInput';
+import { PressableScale } from '@/components/ui/PressableScale';
+import { ScreenHeader } from '@/components/ui/ScreenHeader';
 
 export default function RegisterScreen() {
   const router = useRouter();
+  const insets = useSafeAreaInsets();
   const { setAuthenticated } = useAuthStore();
   const [loading, setLoading] = useState(false);
 
@@ -22,10 +27,9 @@ export default function RegisterScreen() {
   const onSubmit = async (data: RegisterForm) => {
     setLoading(true);
     try {
-      // TODO: Replace with tRPC auth.register
       await new Promise((r) => setTimeout(r, 1500));
       setAuthenticated(true);
-      router.replace('/(auth)/verify-email');
+      router.replace('/(auth)/profile-setup' as any);
     } catch (err) {
       console.error(err);
     } finally {
@@ -34,78 +38,155 @@ export default function RegisterScreen() {
   };
 
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      className="flex-1 bg-bg-primary"
-    >
-      <ScrollView className="flex-1 px-6" keyboardShouldPersistTaps="handled" contentContainerClassName="pt-safe pb-8">
-        <TouchableOpacity onPress={() => router.back()} className="mb-6">
-          <Text className="text-white text-xl">‹ Back</Text>
-        </TouchableOpacity>
-
-        <Text className="text-white text-heading-1 mb-2">Create Account</Text>
-        <Text className="text-text-secondary text-body mb-8">Start your personalized travel journey</Text>
-
-        <View className="flex-row gap-3 mb-0">
-          <View className="flex-1">
-            <Controller
-              control={control}
-              name="firstName"
-              render={({ field: { onChange, value } }) => (
-                <Input label="First Name" placeholder="Alex" value={value} onChangeText={onChange} error={errors.firstName?.message} />
-              )}
-            />
-          </View>
-          <View className="flex-1">
-            <Controller
-              control={control}
-              name="lastName"
-              render={({ field: { onChange, value } }) => (
-                <Input label="Last Name" placeholder="Cohen" value={value} onChangeText={onChange} error={errors.lastName?.message} />
-              )}
-            />
-          </View>
-        </View>
-
-        <Controller
-          control={control}
-          name="email"
-          render={({ field: { onChange, value } }) => (
-            <Input label="Email" placeholder="alex@example.com" value={value} onChangeText={onChange} keyboardType="email-address" autoCapitalize="none" error={errors.email?.message} />
-          )}
+    <View style={{ flex: 1, backgroundColor: colors.bg.primary }}>
+      {/* Top glow */}
+      <View style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '25%' }}>
+        <LinearGradient
+          colors={['rgba(249,68,152,0.06)', 'transparent']}
+          style={{ flex: 1 }}
         />
+      </View>
 
-        <Controller
-          control={control}
-          name="password"
-          render={({ field: { onChange, value } }) => (
-            <Input label="Password" placeholder="Min 8 chars, 1 uppercase, 1 number" value={value} onChangeText={onChange} secureTextEntry error={errors.password?.message} />
-          )}
-        />
+      <ScreenHeader />
 
-        <Controller
-          control={control}
-          name="confirmPassword"
-          render={({ field: { onChange, value } }) => (
-            <Input label="Confirm Password" placeholder="Re-enter password" value={value} onChangeText={onChange} secureTextEntry error={errors.confirmPassword?.message} />
-          )}
-        />
-
-        <TouchableOpacity
-          className={`bg-primary py-4 rounded-button items-center mt-4 ${loading ? 'opacity-50' : ''}`}
-          onPress={handleSubmit(onSubmit)}
-          disabled={loading}
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={{ flex: 1 }}
+      >
+        <ScrollView
+          style={{ flex: 1 }}
+          contentContainerStyle={{ paddingHorizontal: spacing.screenH, paddingBottom: insets.bottom + 16 }}
+          keyboardShouldPersistTaps="handled"
         >
-          <Text className="text-white text-body font-bold">{loading ? 'Creating...' : 'Create Account'}</Text>
-        </TouchableOpacity>
+          {/* Title */}
+          <View style={{ marginBottom: 32, marginTop: 8 }}>
+            <Text style={{ ...typography.h1, marginBottom: 8 }}>
+              Create Account
+            </Text>
+            <Text style={typography.body}>
+              Start your personalized travel journey
+            </Text>
+          </View>
 
-        <View className="flex-row justify-center mt-6">
-          <Text className="text-text-secondary text-body-sm">Already have an account? </Text>
-          <TouchableOpacity onPress={() => router.replace('/(auth)/login')}>
-            <Text className="text-primary text-body-sm font-semibold">Sign In</Text>
-          </TouchableOpacity>
-        </View>
-      </ScrollView>
-    </KeyboardAvoidingView>
+          {/* Name row */}
+          <View style={{ flexDirection: 'row', gap: 12, marginBottom: 20 }}>
+            <View style={{ flex: 1 }}>
+              <Controller
+                control={control}
+                name="firstName"
+                render={({ field: { onChange, value } }) => (
+                  <ThemedInput
+                    label="First Name"
+                    placeholder="Alex"
+                    value={value}
+                    onChangeText={onChange}
+                    icon="person"
+                    error={errors.firstName?.message}
+                  />
+                )}
+              />
+            </View>
+            <View style={{ flex: 1 }}>
+              <Controller
+                control={control}
+                name="lastName"
+                render={({ field: { onChange, value } }) => (
+                  <ThemedInput
+                    label="Last Name"
+                    placeholder="Cohen"
+                    value={value}
+                    onChangeText={onChange}
+                    error={errors.lastName?.message}
+                  />
+                )}
+              />
+            </View>
+          </View>
+
+          {/* Email */}
+          <View style={{ marginBottom: 20 }}>
+            <Controller
+              control={control}
+              name="email"
+              render={({ field: { onChange, value } }) => (
+                <ThemedInput
+                  label="Email"
+                  placeholder="alex@example.com"
+                  value={value}
+                  onChangeText={onChange}
+                  keyboardType="email-address"
+                  autoCapitalize="none"
+                  icon="email"
+                  error={errors.email?.message}
+                />
+              )}
+            />
+          </View>
+
+          {/* Password */}
+          <View style={{ marginBottom: 20 }}>
+            <Controller
+              control={control}
+              name="password"
+              render={({ field: { onChange, value } }) => (
+                <ThemedInput
+                  label="Password"
+                  placeholder="Min 8 chars, 1 uppercase, 1 number"
+                  value={value}
+                  onChangeText={onChange}
+                  secureTextEntry
+                  icon="lock"
+                  error={errors.password?.message}
+                />
+              )}
+            />
+          </View>
+
+          {/* Confirm Password */}
+          <View style={{ marginBottom: 32 }}>
+            <Controller
+              control={control}
+              name="confirmPassword"
+              render={({ field: { onChange, value } }) => (
+                <ThemedInput
+                  label="Confirm Password"
+                  placeholder="Re-enter password"
+                  value={value}
+                  onChangeText={onChange}
+                  secureTextEntry
+                  icon="lock-outline"
+                  error={errors.confirmPassword?.message}
+                />
+              )}
+            />
+          </View>
+
+          {/* Create Account button */}
+          <GradientButton
+            title={loading ? 'Creating...' : 'Create Account'}
+            onPress={handleSubmit(onSubmit)}
+            disabled={loading}
+          />
+
+          {/* Sign in link */}
+          <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 24 }}>
+            <Text style={{ ...typography.bodySm, color: colors.text.tertiary }}>
+              Already have an account?{' '}
+            </Text>
+            <PressableScale onPress={() => router.replace('/(auth)/login')}>
+              <Text
+                style={{
+                  fontFamily: fonts.bold,
+                  fontSize: fontSizes.bodySm,
+                  color: colors.primary,
+                }}
+              >
+                Sign In
+              </Text>
+            </PressableScale>
+          </View>
+        </ScrollView>
+      </KeyboardAvoidingView>
+    </View>
   );
 }

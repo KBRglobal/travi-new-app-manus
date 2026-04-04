@@ -52,7 +52,7 @@ export default function VerifyEmailScreen() {
 
       {loading && <Text className="text-text-secondary text-body">Verifying...</Text>}
 
-      <TouchableOpacity className="mt-4">
+      <TouchableOpacity onPress={() => {}} className="mt-4">
         <Text className="text-primary text-body-sm">Resend Code</Text>
       </TouchableOpacity>
     </View>

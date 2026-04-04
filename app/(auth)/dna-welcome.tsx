@@ -38,6 +38,9 @@ export default function DNAWelcomeScreen() {
         <TouchableOpacity className="bg-primary py-4 rounded-button items-center mb-3" onPress={() => router.push('/(auth)/dna-quiz')}>
           <Text className="text-white text-body font-bold">Start DNA Quiz</Text>
         </TouchableOpacity>
+        <TouchableOpacity className="border border-primary/30 py-4 rounded-button items-center mb-3" onPress={() => router.push('/(auth)/dna-questions' as any)}>
+          <Text className="text-primary text-body font-bold">Detailed Questions</Text>
+        </TouchableOpacity>
         <TouchableOpacity className="py-4 items-center" onPress={() => router.replace('/(tabs)/home')}>
           <Text className="text-text-muted text-body-sm">Skip for now</Text>
         </TouchableOpacity>

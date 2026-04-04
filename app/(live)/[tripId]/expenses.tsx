@@ -66,7 +66,7 @@ export default function Expenses() {
         ))}
       </ScrollView>
 
-      <TouchableOpacity className="absolute bottom-6 right-6 bg-primary w-14 h-14 rounded-full items-center justify-center" style={{ elevation: 8 }}>
+      <TouchableOpacity onPress={() => {}} className="absolute bottom-6 right-6 bg-primary w-14 h-14 rounded-full items-center justify-center" style={{ elevation: 8 }}>
         <Text className="text-white text-2xl">+</Text>
       </TouchableOpacity>
     </View>

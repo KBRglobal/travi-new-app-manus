@@ -32,7 +32,7 @@ export default function CurrencyScreen() {
         <Text className="text-text-muted text-caption mb-2">From</Text>
         <View className="flex-row items-center">
           <TextInput className="flex-1 text-white text-3xl font-bold" keyboardType="decimal-pad" value={amount} onChangeText={setAmount} />
-          <TouchableOpacity className="bg-bg-surface px-4 py-2 rounded-full">
+          <TouchableOpacity onPress={() => {}} className="bg-bg-surface px-4 py-2 rounded-full">
             <Text className="text-white text-body font-semibold">{fromCurrency}</Text>
           </TouchableOpacity>
         </View>
@@ -50,7 +50,7 @@ export default function CurrencyScreen() {
         <Text className="text-text-muted text-caption mb-2">To</Text>
         <View className="flex-row items-center">
           <Text className="flex-1 text-primary text-3xl font-bold">{converted}</Text>
-          <TouchableOpacity className="bg-bg-surface px-4 py-2 rounded-full">
+          <TouchableOpacity onPress={() => {}} className="bg-bg-surface px-4 py-2 rounded-full">
             <Text className="text-white text-body font-semibold">{toCurrency}</Text>
           </TouchableOpacity>
         </View>

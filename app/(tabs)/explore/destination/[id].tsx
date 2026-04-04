@@ -17,7 +17,7 @@ export default function ExploreDestinationDetailScreen() {
  >
  <Text className="text-white text-xl">‹</Text>
  </Pressable>
- <Pressable className="absolute top-safe right-4 mt-4 w-10 h-10 bg-black/50 rounded-full items-center justify-center">
+ <Pressable onPress={() => {}} className="absolute top-safe right-4 mt-4 w-10 h-10 bg-black/50 rounded-full items-center justify-center">
  <Text className="text-xl">heart-outline</Text>
  </Pressable>
  </View>

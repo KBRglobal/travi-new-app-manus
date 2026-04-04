@@ -88,7 +88,7 @@ export default function AdventureLogScreen() {
  <View className="w-4 h-4 bg-primary rounded-full" />
  {i < 2 && <View className="w-0.5 h-16 bg-border" />}
  </View>
- <TouchableOpacity className="flex-1 bg-bg-card border border-border rounded-card p-4">
+ <TouchableOpacity onPress={() => {}} className="flex-1 bg-bg-card border border-border rounded-card p-4">
  <Text className="text-text-muted text-caption">{t.date}</Text>
  <Text className="text-white text-body font-semibold">{t.trip}</Text>
  <Text className="text-text-secondary text-body-sm">{t.days} days</Text>

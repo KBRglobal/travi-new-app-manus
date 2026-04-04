@@ -52,7 +52,7 @@ export default function BudgetManager() {
 
  <Text className="text-white font-bold text-lg mb-3">Category Breakdown</Text>
  {CATEGORIES.map(cat => (
- <TouchableOpacity key={cat.name} className="bg-bg-card rounded-card p-4 mb-2">
+ <TouchableOpacity onPress={() => {}} key={cat.name} className="bg-bg-card rounded-card p-4 mb-2">
  <View className="flex-row items-center justify-between mb-2">
  <View className="flex-row items-center">
  <Text className="text-xl mr-2">{cat.icon}</Text>
@@ -93,7 +93,7 @@ export default function BudgetManager() {
  <View className="h-8" />
  </ScrollView>
 
- <TouchableOpacity className="absolute bottom-6 right-6 bg-primary w-14 h-14 rounded-full items-center justify-center" style={{ elevation: 8 }}>
+ <TouchableOpacity onPress={() => {}} className="absolute bottom-6 right-6 bg-primary w-14 h-14 rounded-full items-center justify-center" style={{ elevation: 8 }}>
  <Text className="text-white text-2xl">+</Text>
  </TouchableOpacity>
  </View>

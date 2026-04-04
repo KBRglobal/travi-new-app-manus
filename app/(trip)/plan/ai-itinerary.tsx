@@ -43,7 +43,7 @@ export default function AIItinerary() {
  <Text className="text-text-secondary mb-2">Priorities</Text>
  <View className="flex-row flex-wrap mb-4">
  {['Food', 'Culture', 'Adventure', 'Nightlife', 'Shopping', 'Nature'].map(p => (
- <TouchableOpacity key={p} className="bg-bg-card px-3 py-2 rounded-pill mr-2 mb-2" style={{ borderWidth: 1, borderColor: 'rgba(255,255,255,0.1)' }}>
+ <TouchableOpacity onPress={() => {}} key={p} className="bg-bg-card px-3 py-2 rounded-pill mr-2 mb-2" style={{ borderWidth: 1, borderColor: 'rgba(255,255,255,0.1)' }}>
  <Text className="text-text-secondary">{p}</Text>
  </TouchableOpacity>
  ))}
@@ -84,7 +84,7 @@ export default function AIItinerary() {
  <TouchableOpacity onPress={() => setKept({ ...kept, [act.name]: true })} className={`flex-1 rounded-button py-2 items-center mr-2 ${kept[act.name] ? 'bg-green-600' : 'bg-bg-primary'}`}>
  <Text className="text-white font-semibold">{kept[act.name] ? 'Kept' : 'Keep checkmark'}</Text>
  </TouchableOpacity>
- <TouchableOpacity className="flex-1 bg-bg-primary rounded-button py-2 items-center ml-2">
+ <TouchableOpacity onPress={() => {}} className="flex-1 bg-bg-primary rounded-button py-2 items-center ml-2">
  <Text className="text-text-secondary font-semibold">Swap ↺</Text>
  </TouchableOpacity>
  </View>

@@ -39,7 +39,7 @@ export default function RoadTrip() {
  <ScrollView className="flex-1 px-4">
  {STOPS.map((stop, i) => (
  <View key={stop.num}>
- <TouchableOpacity className="bg-bg-card rounded-card p-4 mb-1">
+ <TouchableOpacity onPress={() => {}} className="bg-bg-card rounded-card p-4 mb-1">
  <View className="flex-row items-center">
  <Text className="text-2xl mr-3">{stop.icon}</Text>
  <View className="flex-1">
@@ -55,14 +55,14 @@ export default function RoadTrip() {
  {stop.rating && <Text className="text-yellow-400 text-sm">Rating: {stop.rating} ⭐</Text>}
  </View>
  {stop.audioStory && (
- <TouchableOpacity className="bg-primary/20 px-2 py-1 rounded">
+ <TouchableOpacity onPress={() => {}} className="bg-primary/20 px-2 py-1 rounded">
  <Text className="text-primary text-xs"> Story</Text>
  </TouchableOpacity>
  )}
  </View>
  </TouchableOpacity>
  {i < STOPS.length - 1 && (
- <TouchableOpacity className="items-center py-1">
+ <TouchableOpacity onPress={() => {}} className="items-center py-1">
  <Text className="text-primary text-xs">+ Add Stop</Text>
  </TouchableOpacity>
  )}

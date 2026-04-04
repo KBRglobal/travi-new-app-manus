@@ -54,7 +54,7 @@ export default function ProfileScreen() {
  </TouchableOpacity>
  ))}
 
- <TouchableOpacity className="py-4 items-center mt-4 mb-8">
+ <TouchableOpacity onPress={() => {}} className="py-4 items-center mt-4 mb-8">
  <Text className="text-red-400 font-semibold">Log Out</Text>
  </TouchableOpacity>
  </ScrollView>

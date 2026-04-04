@@ -1,17 +1,26 @@
-import { useState } from 'react';
-import { View, Text, Pressable } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, Animated } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 import { useRouter } from 'expo-router';
-import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { MaterialIcons } from '@expo/vector-icons';
+import { colors, fonts, fontSizes, spacing, radius, gradients, typography, shadows } from '@/constants/theme';
+import { PressableScale } from '@/components/ui/PressableScale';
+import { ScreenHeader } from '@/components/ui/ScreenHeader';
 
-const DESTINATIONS = Array.from({ length: 30 }, (_, i) => ({
-  id: i + 1,
-  name: `Destination ${i + 1}`,
-  country: `Country ${i + 1}`,
-}));
+const DESTINATIONS = Array.from({ length: 30 }, (_, i) => {
+  const places = ['Santorini', 'Tokyo', 'Bali', 'Paris', 'Dubai', 'Maldives', 'New York', 'Barcelona', 'Iceland', 'Marrakech',
+    'Rome', 'Sydney', 'Kyoto', 'Cape Town', 'Amsterdam', 'Lisbon', 'Prague', 'Vienna', 'Budapest', 'Dubrovnik',
+    'Petra', 'Machu Picchu', 'Havana', 'Rio', 'Singapore', 'Hong Kong', 'Seoul', 'Bangkok', 'Zanzibar', 'Fiji'];
+  const countries = ['Greece', 'Japan', 'Indonesia', 'France', 'UAE', 'Maldives', 'USA', 'Spain', 'Iceland', 'Morocco',
+    'Italy', 'Australia', 'Japan', 'South Africa', 'Netherlands', 'Portugal', 'Czech Republic', 'Austria', 'Hungary', 'Croatia',
+    'Jordan', 'Peru', 'Cuba', 'Brazil', 'Singapore', 'China', 'South Korea', 'Thailand', 'Tanzania', 'Fiji'];
+  return { id: i + 1, name: places[i], country: countries[i] };
+});
 
-// S8 — DNA Swipe
 export default function DNASwipeScreen() {
   const router = useRouter();
+  const insets = useSafeAreaInsets();
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const handleAction = (action: 'like' | 'reject') => {
@@ -23,43 +32,116 @@ export default function DNASwipeScreen() {
   };
 
   const current = DESTINATIONS[currentIndex];
+  const progress = (currentIndex + 1) / DESTINATIONS.length;
 
   return (
-    <View className="flex-1 bg-bg-primary pt-safe">
-      {/* Header */}
-      <View className="flex-row items-center px-6 md:px-12 mt-4">
-        <Pressable onPress={() => router.back()} className="p-2 -ml-2">
-          <Text className="text-white text-2xl">‹</Text>
-        </Pressable>
-        <View className="flex-1 h-1 bg-white/10 rounded-full ml-4">
-          <View className="w-1/2 h-full bg-primary rounded-full" />
-        </View>
-        <Text className="text-text-secondary text-sm ml-4">{currentIndex + 1}/30</Text>
+    <View style={{ flex: 1, backgroundColor: colors.bg.primary }}>
+      {/* Top glow */}
+      <View style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '30%' }}>
+        <LinearGradient colors={['rgba(249,68,152,0.08)', 'rgba(100,67,244,0.04)', 'transparent']} style={{ flex: 1 }} />
       </View>
 
-      {/* Card stack */}
-      <View className="flex-1 items-center justify-center px-6">
-        <View className="w-full max-w-sm aspect-[3/4] bg-bg-card rounded-card items-center justify-center border border-white/10">
-          <Ionicons name="sunny" size={24} color="#FFFFFF" />
-          <Text className="text-2xl md:text-3xl font-bold text-white">{current?.name}</Text>
-          <Text className="text-sm text-text-secondary mt-2">{current?.country}</Text>
+      {/* Header with progress */}
+      <View style={{ paddingTop: insets.top + 8, paddingHorizontal: spacing.screenH, flexDirection: 'row', alignItems: 'center', marginBottom: 12 }}>
+        <PressableScale onPress={() => router.back()} style={{ marginRight: 12 }}>
+          <View style={{ width: 36, height: 36, borderRadius: 18, backgroundColor: 'rgba(255,255,255,0.06)', alignItems: 'center', justifyContent: 'center', borderWidth: 1, borderColor: colors.border.default }}>
+            <MaterialIcons name="arrow-back" size={18} color={colors.text.secondary} />
+          </View>
+        </PressableScale>
+        <View style={{ flex: 1, height: 4, backgroundColor: 'rgba(255,255,255,0.06)', borderRadius: 2, overflow: 'hidden' }}>
+          <LinearGradient
+            colors={[...gradients.primaryCTA] as [string, string, ...string[]]}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 0 }}
+            style={{ height: '100%', width: `${progress * 100}%`, borderRadius: 2 }}
+          />
+        </View>
+        <Text style={{ fontFamily: fonts.bodyMedium, fontSize: fontSizes.caption, color: colors.text.tertiary, marginLeft: 12 }}>
+          {currentIndex + 1}/{DESTINATIONS.length}
+        </Text>
+      </View>
+
+      {/* Card */}
+      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', paddingHorizontal: spacing.screenH }}>
+        <View style={{
+          width: '100%',
+          maxWidth: 340,
+          aspectRatio: 3 / 4,
+          borderRadius: radius.card,
+          overflow: 'hidden',
+          ...shadows.card,
+        }}>
+          <LinearGradient
+            colors={['rgba(100,67,244,0.15)', 'rgba(249,68,152,0.08)', colors.bg.card]}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+            style={{ flex: 1, borderRadius: radius.card, borderWidth: 1, borderColor: colors.border.default, alignItems: 'center', justifyContent: 'center', padding: 24 }}
+          >
+            {/* Destination icon */}
+            <View style={{
+              width: 80,
+              height: 80,
+              borderRadius: 40,
+              backgroundColor: 'rgba(255,255,255,0.04)',
+              borderWidth: 1,
+              borderColor: 'rgba(255,255,255,0.08)',
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginBottom: 24,
+            }}>
+              <MaterialIcons name="place" size={36} color={colors.primary} />
+            </View>
+
+            <Text style={{ fontFamily: fonts.heading, fontSize: 32, color: colors.text.primary, textAlign: 'center', marginBottom: 8 }}>
+              {current?.name}
+            </Text>
+            <Text style={{ fontFamily: fonts.bodyMedium, fontSize: fontSizes.body, color: colors.text.tertiary, textAlign: 'center' }}>
+              {current?.country}
+            </Text>
+
+            {/* Swipe hint */}
+            <View style={{ position: 'absolute', bottom: 24, flexDirection: 'row', alignItems: 'center', gap: 4 }}>
+              <MaterialIcons name="swipe" size={16} color={colors.text.tertiary} />
+              <Text style={{ ...typography.caption, color: colors.text.tertiary }}>Swipe or tap below</Text>
+            </View>
+          </LinearGradient>
         </View>
       </View>
 
       {/* Action buttons */}
-      <View className="flex-row items-center justify-center gap-8 pb-safe mb-6">
-        <Pressable
-          onPress={() => handleAction('reject')}
-          className="w-16 h-16 rounded-full bg-white/10 border border-white/20 items-center justify-center active:scale-95"
-        >
-          <Ionicons name="close" size={24} color="#FFFFFF" />
-        </Pressable>
-        <Pressable
-          onPress={() => handleAction('like')}
-          className="w-18 h-18 rounded-full bg-pink-500 items-center justify-center active:scale-95"
-        >
-          <Ionicons name="heart" size={24} color="#FFFFFF" />
-        </Pressable>
+      <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 32, paddingBottom: insets.bottom + 24, paddingTop: 16 }}>
+        {/* Reject */}
+        <PressableScale onPress={() => handleAction('reject')}>
+          <View style={{
+            width: 64,
+            height: 64,
+            borderRadius: 32,
+            backgroundColor: 'rgba(255,255,255,0.06)',
+            borderWidth: 1,
+            borderColor: 'rgba(248,113,113,0.3)',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}>
+            <MaterialIcons name="close" size={28} color={colors.error} />
+          </View>
+        </PressableScale>
+
+        {/* Like */}
+        <PressableScale onPress={() => handleAction('like')}>
+          <LinearGradient
+            colors={[...gradients.secondaryCTA] as [string, string, ...string[]]}
+            style={{
+              width: 72,
+              height: 72,
+              borderRadius: 36,
+              alignItems: 'center',
+              justifyContent: 'center',
+              ...shadows.cta,
+            }}
+          >
+            <MaterialIcons name="favorite" size={32} color="#FFFFFF" />
+          </LinearGradient>
+        </PressableScale>
       </View>
     </View>
   );

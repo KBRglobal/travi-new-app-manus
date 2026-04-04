@@ -28,7 +28,7 @@ export default function MemoriesScreen() {
  <Text className="text-primary text-sm">{view === 'grid' ? '' : '⊞'}</Text>
  </TouchableOpacity>
  </View>
- <TouchableOpacity className="mx-4 mb-4 p-4 bg-primary/10 rounded-2xl border border-dashed border-primary/30 items-center">
+ <TouchableOpacity onPress={() => {}} className="mx-4 mb-4 p-4 bg-primary/10 rounded-2xl border border-dashed border-primary/30 items-center">
  <Ionicons name="camera" size={24} color="#FFFFFF" />
  <Text className="text-primary font-bold">Add Memory</Text>
  </TouchableOpacity>

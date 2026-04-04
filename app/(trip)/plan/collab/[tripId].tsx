@@ -56,10 +56,10 @@ export default function CollabPlanning() {
  <Text className="text-white font-bold flex-1">{act.name}</Text>
  </View>
  <View className="flex-row items-center">
- <TouchableOpacity className="bg-green-900/30 px-2 py-1 rounded mr-2">
+ <TouchableOpacity onPress={() => {}} className="bg-green-900/30 px-2 py-1 rounded mr-2">
  <Text className="text-green-400">{act.votes.up}</Text>
  </TouchableOpacity>
- <TouchableOpacity className="bg-red-900/30 px-2 py-1 rounded">
+ <TouchableOpacity onPress={() => {}} className="bg-red-900/30 px-2 py-1 rounded">
  <Text className="text-red-400">{act.votes.down}</Text>
  </TouchableOpacity>
  </View>
@@ -69,7 +69,7 @@ export default function CollabPlanning() {
  </View>
  ))}
 
- <TouchableOpacity className="bg-bg-card rounded-button py-3 items-center mb-4" style={{ borderWidth: 1, borderColor: 'rgba(255,255,255,0.1)', borderStyle: 'dashed' }}>
+ <TouchableOpacity onPress={() => {}} className="bg-bg-card rounded-button py-3 items-center mb-4" style={{ borderWidth: 1, borderColor: 'rgba(255,255,255,0.1)', borderStyle: 'dashed' }}>
  <Text className="text-primary font-semibold">+ Add Activity</Text>
  </TouchableOpacity>
 

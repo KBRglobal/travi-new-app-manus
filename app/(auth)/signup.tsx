@@ -103,7 +103,7 @@ export default function SignupScreen() {
 
  {/* Forgot Password (login mode) */}
  {mode === 'login' && (
- <Pressable className="mb-6">
+ <Pressable onPress={() => {}} className="mb-6">
  <Text className="text-primary text-sm">Forgot Password?</Text>
  </Pressable>
  )}
@@ -127,10 +127,10 @@ export default function SignupScreen() {
  </View>
 
  {/* OAuth */}
- <Pressable className="w-full h-13 bg-white rounded-button items-center justify-center flex-row mb-3">
+ <Pressable onPress={() => {}} className="w-full h-13 bg-white rounded-button items-center justify-center flex-row mb-3">
  <Text className="text-black text-base font-semibold">Google</Text>
  </Pressable>
- <Pressable className="w-full h-13 bg-white rounded-button items-center justify-center flex-row mb-6">
+ <Pressable onPress={() => {}} className="w-full h-13 bg-white rounded-button items-center justify-center flex-row mb-6">
  <Text className="text-black text-base font-semibold">Apple</Text>
  </Pressable>
 

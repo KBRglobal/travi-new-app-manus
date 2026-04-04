@@ -47,7 +47,7 @@ export default function CollabPlanningScreen() {
               <Text className="text-white text-body font-semibold">{act.name}</Text>
               <View className="flex-row items-center">
                 <Text className="text-primary text-body font-bold mr-2">{act.votes}</Text>
-                <TouchableOpacity className="bg-primary/20 px-3 py-1 rounded-full"><Text className="text-primary text-body-sm">Vote</Text></TouchableOpacity>
+                <TouchableOpacity onPress={() => {}} className="bg-primary/20 px-3 py-1 rounded-full"><Text className="text-primary text-body-sm">Vote</Text></TouchableOpacity>
               </View>
             </View>
             <Text className="text-text-secondary text-body-sm">{act.duration} · €{act.price}</Text>
@@ -77,7 +77,7 @@ export default function CollabPlanningScreen() {
         ))}
         <View className="flex-row items-center mt-2">
           <TextInput className="flex-1 bg-bg-surface border border-border rounded-full text-white text-body-sm px-4 py-2 mr-2" placeholder="Type a message..." placeholderTextColor="rgba(255,255,255,0.3)" value={chatInput} onChangeText={setChatInput} />
-          <TouchableOpacity className="bg-primary w-10 h-10 rounded-full items-center justify-center"><Text className="text-white">↑</Text></TouchableOpacity>
+          <TouchableOpacity onPress={() => {}} className="bg-primary w-10 h-10 rounded-full items-center justify-center"><Text className="text-white">↑</Text></TouchableOpacity>
         </View>
       </View>
     </ScrollView>

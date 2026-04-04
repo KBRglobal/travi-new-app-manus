@@ -47,7 +47,7 @@ export default function EmergencyScreen() {
  { iconName: 'call', title: 'Call Insurance', desc: 'Travel insurance' },
  { iconName: 'create', title: 'Report Incident', desc: 'File a report' },
  ].map(item => (
- <TouchableOpacity key={item.title} className="w-[48%] m-[1%] p-4 bg-bg-secondary rounded-2xl border border-white/[0.08]">
+ <TouchableOpacity onPress={() => {}} key={item.title} className="w-[48%] m-[1%] p-4 bg-bg-secondary rounded-2xl border border-white/[0.08]">
  <Text className="text-2xl mb-2">{item.emoji}</Text>
  <Text className="text-white font-bold text-sm">{item.title}</Text>
  <Text className="text-white/40 text-xs">{item.desc}</Text>

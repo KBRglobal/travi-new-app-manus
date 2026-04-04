@@ -48,11 +48,11 @@ export default function SocialFeedScreen() {
  <Text className="text-lg mr-1">{item.liked ? '' : 'heart-outline'}</Text>
  <Text className="text-white/60 text-sm">{item.likes}</Text>
  </TouchableOpacity>
- <TouchableOpacity className="flex-row items-center mr-5">
+ <TouchableOpacity onPress={() => {}} className="flex-row items-center mr-5">
  <Ionicons name="chatbubble" size={24} color="#FFFFFF" />
  <Text className="text-white/60 text-sm">{item.comments}</Text>
  </TouchableOpacity>
- <TouchableOpacity className="flex-row items-center">
+ <TouchableOpacity onPress={() => {}} className="flex-row items-center">
  <Ionicons name="share" size={24} color="#FFFFFF" />
  </TouchableOpacity>
  <View className="flex-1" />

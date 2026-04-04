@@ -44,7 +44,7 @@ export default function ActivityDetailScreen() {
  <Text className="text-white font-bold mb-3">Available Times</Text>
  <View className="flex-row flex-wrap">
  {['9:00 AM', '11:00 AM', '2:00 PM', '4:00 PM'].map(t => (
- <TouchableOpacity key={t} className="px-4 py-2 bg-bg-secondary rounded-xl mr-2 mb-2 border border-white/[0.08]">
+ <TouchableOpacity onPress={() => {}} key={t} className="px-4 py-2 bg-bg-secondary rounded-xl mr-2 mb-2 border border-white/[0.08]">
  <Text className="text-white text-sm">{t}</Text>
  </TouchableOpacity>
  ))}

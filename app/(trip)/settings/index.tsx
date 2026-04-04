@@ -1,51 +1,128 @@
-import { haptic } from '@/lib/haptics';
-import { View, Text, Pressable, ScrollView, FlatList} from 'react-native';
+import React from 'react';
+import { View, Text, ScrollView } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 import { useRouter } from 'expo-router';
-import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
-import { Ionicons } from '@expo/vector-icons';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { MaterialIcons } from '@expo/vector-icons';
+import { colors, fonts, fontSizes, spacing, radius, typography } from '@/constants/theme';
+import { GlassCard } from '@/components/ui/GlassCard';
+import { PressableScale } from '@/components/ui/PressableScale';
+import { useAuthStore } from '@/stores/authStore';
 
 export default function SettingsScreen() {
- const router = useRouter();
- const sections = [
- { title: 'Account', items: [
- { iconName: 'person', label: 'Personal Info', route: '/(trip)/settings/personal' },
- { iconName: 'lock-closed', label: 'Privacy & Security', route: '/(trip)/settings/privacy' },
- { iconName: 'notifications', label: 'Notifications', route: '/(trip)/settings/notifications' },
- ]},
- { title: 'Preferences', items: [
- { iconName: 'globe', label: 'Language', route: '/(trip)/settings/language' },
- { icon: 'swap-horizontal', label: 'Currency', route: '/(trip)/settings/currency' },
- { iconName: 'color-palette', label: 'Appearance', route: '/(trip)/settings/appearance' },
- ]},
- { title: 'Support', items: [
- { icon: 'help-circle', label: 'Help Center', route: '/(trip)/settings/help' },
- { iconName: 'create', label: 'Feedback', route: '/(trip)/settings/feedback' },
- { icon: 'document-text', label: 'Terms & Privacy', route: '/(trip)/settings/terms' },
- ]},
- ];
- return (
- <View className="flex-1 bg-bg-primary pt-safe">
- <View className="flex-row items-center px-4 md:px-6 mt-4">
- <Pressable onPress={() => router.back()} className="p-2 -ml-2"><Text className="text-white text-2xl">‹</Text></Pressable>
- <Text className="text-white text-xl font-bold ml-3">Settings</Text>
- </View>
- <ScrollView contentContainerClassName="px-4 md:px-6 py-6 pb-24">
- {sections.map((section) => (
- <View key={section.title} className="w-full max-w-md mx-auto mb-6">
- <Text className="text-text-secondary text-sm font-semibold mb-3">{section.title}</Text>
- {section.items.map((item) => (
- <Pressable key={item.label} onPress={() => router.push(item.route as any)} className="bg-bg-card rounded-card p-4 flex-row items-center mb-2 active:opacity-80">
- <Text className="text-xl mr-3">{item.icon}</Text>
- <Text className="text-white text-base flex-1">{item.label}</Text>
- <Text className="text-text-secondary">›</Text>
- </Pressable>
- ))}
- </View>
- ))}
- <Pressable onPress={() => router.replace('/(auth)/welcome')} className="w-full max-w-md mx-auto mt-4 py-3 items-center">
- <Text className="text-red-400 text-sm">Log Out</Text>
- </Pressable>
- </ScrollView>
- </View>
- );
+  const router = useRouter();
+  const insets = useSafeAreaInsets();
+  const { setAuthenticated } = useAuthStore();
+
+  const sections = [
+    {
+      title: 'ACCOUNT',
+      items: [
+        { icon: 'person' as const, label: 'Personal Info', route: '/(trip)/settings/personal' },
+        { icon: 'lock' as const, label: 'Privacy & Security', route: '/(trip)/settings/privacy' },
+        { icon: 'notifications' as const, label: 'Notifications', route: '/(trip)/settings/notifications' },
+        { icon: 'email' as const, label: 'Change Email', route: '/(trip)/account/change-email' },
+        { icon: 'vpn-key' as const, label: 'Change Password', route: '/(trip)/account/change-password' },
+      ],
+    },
+    {
+      title: 'PREFERENCES',
+      items: [
+        { icon: 'language' as const, label: 'Language', route: '/(trip)/settings/language' },
+        { icon: 'currency-exchange' as const, label: 'Currency', route: '/(trip)/settings/currency' },
+        { icon: 'palette' as const, label: 'Appearance', route: '/(trip)/settings/appearance' },
+      ],
+    },
+    {
+      title: 'SUPPORT',
+      items: [
+        { icon: 'help' as const, label: 'Help Center', route: '/(trip)/settings/help' },
+        { icon: 'feedback' as const, label: 'Send Feedback', route: '/(trip)/settings/feedback' },
+        { icon: 'article' as const, label: 'Terms & Privacy', route: '/(trip)/settings/terms' },
+        { icon: 'contact-support' as const, label: 'Contact Support', route: '/(trip)/settings/support' },
+      ],
+    },
+  ];
+
+  return (
+    <View style={{ flex: 1, backgroundColor: colors.bg.primary }}>
+      <View style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '15%' }}>
+        <LinearGradient colors={['rgba(100,67,244,0.06)', 'transparent']} style={{ flex: 1 }} />
+      </View>
+
+      <ScrollView
+        style={{ flex: 1 }}
+        contentContainerStyle={{ paddingTop: insets.top + 8, paddingHorizontal: spacing.screenH, paddingBottom: 100 }}
+        showsVerticalScrollIndicator={false}
+      >
+        {/* Header */}
+        <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 24 }}>
+          <PressableScale onPress={() => router.back()} style={{ marginRight: 12 }}>
+            <View style={{ width: 36, height: 36, borderRadius: 18, backgroundColor: 'rgba(255,255,255,0.06)', alignItems: 'center', justifyContent: 'center' }}>
+              <MaterialIcons name="arrow-back" size={20} color={colors.text.primary} />
+            </View>
+          </PressableScale>
+          <Text style={{ ...typography.h2 }}>Settings</Text>
+        </View>
+
+        {/* Sections */}
+        {sections.map((section) => (
+          <View key={section.title} style={{ marginBottom: 24 }}>
+            <Text style={{ ...typography.label, color: colors.text.tertiary, marginBottom: 10 }}>{section.title}</Text>
+            <GlassCard tint="neutral" style={{ padding: 0, overflow: 'hidden' }}>
+              {section.items.map((item, i) => (
+                <PressableScale
+                  key={item.label}
+                  onPress={() => router.push(item.route as any)}
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    paddingVertical: 14,
+                    paddingHorizontal: 16,
+                    borderBottomWidth: i < section.items.length - 1 ? 1 : 0,
+                    borderBottomColor: colors.border.default,
+                  }}
+                >
+                  <View style={{
+                    width: 32,
+                    height: 32,
+                    borderRadius: 16,
+                    backgroundColor: 'rgba(255,255,255,0.04)',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    marginRight: 12,
+                  }}>
+                    <MaterialIcons name={item.icon} size={18} color={colors.text.secondary} />
+                  </View>
+                  <Text style={{ fontFamily: fonts.bodyMedium, fontSize: fontSizes.body, color: colors.text.primary, flex: 1 }}>{item.label}</Text>
+                  <MaterialIcons name="chevron-right" size={20} color={colors.text.tertiary} />
+                </PressableScale>
+              ))}
+            </GlassCard>
+          </View>
+        ))}
+
+        {/* Danger Zone */}
+        <View style={{ marginBottom: 24 }}>
+          <Text style={{ ...typography.label, color: colors.text.tertiary, marginBottom: 10 }}>DANGER ZONE</Text>
+          <PressableScale onPress={() => router.push('/(trip)/account/delete')}>
+            <GlassCard tint="neutral" style={{ borderColor: 'rgba(248,113,113,0.2)', borderWidth: 1 }}>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <MaterialIcons name="delete-forever" size={20} color={colors.error} style={{ marginRight: 12 }} />
+                <Text style={{ fontFamily: fonts.bodyMedium, fontSize: fontSizes.body, color: colors.error }}>Delete Account</Text>
+              </View>
+            </GlassCard>
+          </PressableScale>
+        </View>
+
+        {/* Logout */}
+        <PressableScale onPress={() => { setAuthenticated(false); router.replace('/(auth)/welcome'); }}>
+          <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', paddingVertical: 14, borderRadius: radius.button, borderWidth: 1, borderColor: 'rgba(248,113,113,0.3)' }}>
+            <MaterialIcons name="logout" size={20} color={colors.error} style={{ marginRight: 8 }} />
+            <Text style={{ fontFamily: fonts.bold, fontSize: fontSizes.body, color: colors.error }}>Log Out</Text>
+          </View>
+        </PressableScale>
+      </ScrollView>
+    </View>
+  );
 }

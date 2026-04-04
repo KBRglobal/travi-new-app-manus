@@ -68,8 +68,8 @@ export default function BuddiesScreen() {
  <Text className="text-white font-bold">{item.name}</Text>
  <Text className="text-white/40 text-xs">{item.match}% match · {item.mutual} mutual</Text>
  </View>
- <TouchableOpacity className="bg-primary px-3 py-2 rounded-xl mr-2"><Text className="text-white text-sm font-bold">Accept</Text></TouchableOpacity>
- <TouchableOpacity className="bg-white/[0.05] px-3 py-2 rounded-xl"><Ionicons name="close" size={24} color="#FFFFFF" /></TouchableOpacity>
+ <TouchableOpacity onPress={() => {}} className="bg-primary px-3 py-2 rounded-xl mr-2"><Text className="text-white text-sm font-bold">Accept</Text></TouchableOpacity>
+ <TouchableOpacity onPress={() => {}} className="bg-white/[0.05] px-3 py-2 rounded-xl"><Ionicons name="close" size={24} color="#FFFFFF" /></TouchableOpacity>
  </View>
  )} />
  )}

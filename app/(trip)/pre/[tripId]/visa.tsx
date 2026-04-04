@@ -79,7 +79,7 @@ export default function VisaPassport() {
  </TouchableOpacity>
  )}
 
- <TouchableOpacity className="bg-bg-card rounded-button py-3 items-center mb-4" style={{ borderWidth: 1, borderColor: 'rgba(255,255,255,0.1)' }}>
+ <TouchableOpacity onPress={() => {}} className="bg-bg-card rounded-button py-3 items-center mb-4" style={{ borderWidth: 1, borderColor: 'rgba(255,255,255,0.1)' }}>
  <Text className="text-primary font-semibold">Check Another Country</Text>
  </TouchableOpacity>
 

@@ -36,7 +36,7 @@ export default function PersonalInfoScreen() {
         <Field label="Nationality" value={nationality} onChange={setNationality} />
         <Field label="Passport Number" value={passport} onChange={setPassport} />
       </View>
-      <TouchableOpacity className="mx-4 mt-4 mb-8 bg-primary py-4 rounded-2xl items-center">
+      <TouchableOpacity onPress={() => {}} className="mx-4 mt-4 mb-8 bg-primary py-4 rounded-2xl items-center">
         <Text className="text-white font-bold">Save Changes</Text>
       </TouchableOpacity>
     </ScrollView>

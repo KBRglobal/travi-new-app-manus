@@ -60,7 +60,7 @@ export default function FlexibleDates() {
         <Text className="text-text-secondary mb-2">Nearby airports</Text>
         <View className="flex-row mb-4">
           {['TLV', 'SDV', 'ETH'].map(a => (
-            <TouchableOpacity key={a} className="bg-bg-card px-4 py-2 rounded-pill mr-2" style={{ borderWidth: 1, borderColor: 'rgba(255,255,255,0.1)' }}>
+            <TouchableOpacity onPress={() => {}} key={a} className="bg-bg-card px-4 py-2 rounded-pill mr-2" style={{ borderWidth: 1, borderColor: 'rgba(255,255,255,0.1)' }}>
               <Text className="text-white">{a}</Text>
             </TouchableOpacity>
           ))}
@@ -69,7 +69,7 @@ export default function FlexibleDates() {
         <Text className="text-text-secondary mb-2">Trip length</Text>
         <View className="flex-row mb-6">
           {['3-7 nights', '1-2 weeks', '2+ weeks'].map(l => (
-            <TouchableOpacity key={l} className="bg-bg-card px-3 py-2 rounded-pill mr-2" style={{ borderWidth: 1, borderColor: 'rgba(255,255,255,0.1)' }}>
+            <TouchableOpacity onPress={() => {}} key={l} className="bg-bg-card px-3 py-2 rounded-pill mr-2" style={{ borderWidth: 1, borderColor: 'rgba(255,255,255,0.1)' }}>
               <Text className="text-text-secondary text-sm">{l}</Text>
             </TouchableOpacity>
           ))}

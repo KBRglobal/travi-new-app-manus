@@ -1,76 +1,119 @@
-import { Skeleton } from '@/components/ui/Skeleton';
-import { View, Text, Pressable, FlatList } from 'react-native';
+import React from 'react';
+import { View, Text, FlatList } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 import { useRouter } from 'expo-router';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { MaterialIcons } from '@expo/vector-icons';
+import { colors, fonts, fontSizes, spacing, radius, gradients, typography, shadows } from '@/constants/theme';
+import { GlassCard } from '@/components/ui/GlassCard';
+import { GradientBadge } from '@/components/ui/GradientBadge';
+import { GradientButton } from '@/components/ui/GradientButton';
+import { PressableScale } from '@/components/ui/PressableScale';
+import { GradientFAB } from '@/components/ui/GradientFAB';
 import { EmptyState } from '@/components/ui/EmptyState';
-import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
 
 const TRIPS = [
-  { id: 'trip-1', name: 'Barcelona Adventure', status: 'active', dates: 'Mar 28 - Apr 5' },
-  { id: 'trip-2', name: 'Tokyo Explorer', status: 'upcoming', dates: 'May 10 - May 20' },
-  { id: 'trip-3', name: 'Paris Romance', status: 'completed', dates: 'Feb 14 - Feb 21' },
-  { id: 'trip-4', name: 'Bali Retreat', status: 'draft', dates: 'TBD' },
+  { id: 'trip-1', name: 'Barcelona Adventure', status: 'active', dates: 'Mar 28 - Apr 5', icon: 'flight-takeoff' as const },
+  { id: 'trip-2', name: 'Tokyo Explorer', status: 'upcoming', dates: 'May 10 - May 20', icon: 'event' as const },
+  { id: 'trip-3', name: 'Paris Romance', status: 'completed', dates: 'Feb 14 - Feb 21', icon: 'check-circle' as const },
+  { id: 'trip-4', name: 'Bali Retreat', status: 'draft', dates: 'TBD', icon: 'edit' as const },
 ];
 
-const STATUS_COLORS: Record<string, string> = {
-  active: 'bg-green-500',
-  upcoming: 'bg-blue-500',
-  completed: 'bg-purple-500',
-  draft: 'bg-gray-500',
+const STATUS_CONFIG: Record<string, { color: string; bg: string; label: string; variant: 'primary' | 'secondary' }> = {
+  active: { color: colors.success, bg: 'rgba(74,222,128,0.1)', label: 'Active', variant: 'primary' },
+  upcoming: { color: colors.primary, bg: 'rgba(100,67,244,0.1)', label: 'Upcoming', variant: 'secondary' },
+  completed: { color: colors.text.tertiary, bg: 'rgba(255,255,255,0.05)', label: 'Completed', variant: 'secondary' },
+  draft: { color: colors.gold, bg: 'rgba(251,191,36,0.1)', label: 'Draft', variant: 'secondary' },
 };
 
-// S57 — My Trips
 export default function MyTripsScreen() {
   const router = useRouter();
+  const insets = useSafeAreaInsets();
 
   const handleTripPress = (trip: typeof TRIPS[0]) => {
     switch (trip.status) {
       case 'draft': router.push('/(trip)/plan'); break;
-      case 'upcoming': router.push(`/(trip)/pre/${trip.id}`); break;
-      case 'active': router.push(`/(live)/${trip.id}`); break;
-      case 'completed': router.push(`/(trip)/post/${trip.id}/summary`); break;
+      case 'upcoming': router.push(`/(trip)/pre/${trip.id}` as any); break;
+      case 'active': router.push(`/(live)/${trip.id}` as any); break;
+      case 'completed': router.push(`/(trip)/post/${trip.id}/celebration` as any); break;
     }
   };
 
   return (
-    <View className="flex-1 bg-bg-primary pt-safe">
-      <View className="flex-row items-center justify-between px-4 md:px-6 mt-4">
-        <Text className="text-2xl md:text-3xl font-bold text-white">My Trips</Text>
-        <Pressable
-          onPress={() => router.push('/(trip)/plan')}
-          className="bg-primary rounded-button px-4 py-2"
-        >
-          <Text className="text-white text-sm font-semibold">+ Plan New</Text>
-        </Pressable>
+    <View style={{ flex: 1, backgroundColor: colors.bg.primary }}>
+      {/* Top glow */}
+      <View style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '20%' }}>
+        <LinearGradient colors={['rgba(100,67,244,0.06)', 'transparent']} style={{ flex: 1 }} />
+      </View>
+
+      {/* Header */}
+      <View style={{ paddingTop: insets.top + 16, paddingHorizontal: spacing.screenH, paddingBottom: 16, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+        <Text style={typography.h2}>My Trips</Text>
+        <PressableScale onPress={() => router.push('/(trip)/plan')}>
+          <LinearGradient
+            colors={[...gradients.primaryCTA] as [string, string, ...string[]]}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 0 }}
+            style={{ paddingHorizontal: 16, paddingVertical: 10, borderRadius: radius.button, flexDirection: 'row', alignItems: 'center', gap: 6 }}
+          >
+            <MaterialIcons name="add" size={18} color="#FFFFFF" />
+            <Text style={{ fontFamily: fonts.bold, fontSize: fontSizes.bodySm, color: '#FFFFFF' }}>Plan New</Text>
+          </LinearGradient>
+        </PressableScale>
       </View>
 
       <FlatList
-            ListEmptyComponent={() => <EmptyState stateKey="trips" />}
+        ListEmptyComponent={() => <EmptyState stateKey="trips" />}
         data={TRIPS}
         keyExtractor={(item) => item.id}
-        contentContainerClassName="px-4 md:px-6 py-4 gap-3"
-        renderItem={({ item }) => (
-          <Pressable
-            onPress={() => handleTripPress(item)}
-            className="w-full md:w-[calc(50%-6px)] bg-bg-card rounded-card p-4 active:opacity-80"
-          >
-            <View className="flex-row items-center justify-between">
-              <Text className="text-white text-lg font-bold flex-1">{item.name}</Text>
-              <View className={`${STATUS_COLORS[item.status]} rounded-pill px-2 py-0.5`}>
-                <Text className="text-white text-xs font-bold capitalize">{item.status}</Text>
-              </View>
-            </View>
-            <Text className="text-text-secondary text-sm mt-2">{item.dates}</Text>
-          </Pressable>
-        )}
+        contentContainerStyle={{ paddingHorizontal: spacing.screenH, paddingBottom: 100 }}
+        ItemSeparatorComponent={() => <View style={{ height: 12 }} />}
+        renderItem={({ item }) => {
+          const status = STATUS_CONFIG[item.status];
+          const isActive = item.status === 'active';
+
+          return (
+            <PressableScale onPress={() => handleTripPress(item)}>
+              <GlassCard tint={isActive ? 'discovery' : 'neutral'} style={isActive ? { borderColor: 'rgba(74,222,128,0.2)', borderWidth: 1 } : {}}>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  {/* Icon */}
+                  <View style={{
+                    width: 48,
+                    height: 48,
+                    borderRadius: 24,
+                    backgroundColor: status.bg,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    marginRight: 14,
+                  }}>
+                    <MaterialIcons name={item.icon} size={22} color={status.color} />
+                  </View>
+
+                  {/* Info */}
+                  <View style={{ flex: 1 }}>
+                    <Text style={{ fontFamily: fonts.heading, fontSize: fontSizes.h4, color: colors.text.primary, marginBottom: 4 }}>
+                      {item.name}
+                    </Text>
+                    <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+                      <MaterialIcons name="calendar-today" size={12} color={colors.text.tertiary} />
+                      <Text style={{ ...typography.caption, color: colors.text.tertiary }}>{item.dates}</Text>
+                    </View>
+                  </View>
+
+                  {/* Status badge */}
+                  <GradientBadge label={status.label.toUpperCase()} variant={status.variant} />
+                </View>
+              </GlassCard>
+            </PressableScale>
+          );
+        }}
       />
 
       {/* FAB */}
-      <Pressable
+      <GradientFAB
+        icon="smart-toy"
         onPress={() => router.push('/_modals/ai-chat')}
-        className="absolute bottom-24 right-5 w-14 h-14 bg-primary rounded-full items-center justify-center"
-      >
-        <Ionicons name="hardware-chip" size={24} color="#FFFFFF" />
-      </Pressable>
+      />
     </View>
   );
 }

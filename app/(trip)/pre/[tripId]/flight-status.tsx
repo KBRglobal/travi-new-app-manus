@@ -63,10 +63,10 @@ export default function FlightStatusLive() {
         </View>
 
         <View className="flex-row mb-8">
-          <TouchableOpacity className="flex-1 bg-primary rounded-button py-3 items-center mr-2">
+          <TouchableOpacity onPress={() => {}} className="flex-1 bg-primary rounded-button py-3 items-center mr-2">
             <Text className="text-white font-semibold">Add to Calendar</Text>
           </TouchableOpacity>
-          <TouchableOpacity className="flex-1 bg-bg-card rounded-button py-3 items-center ml-2" style={{ borderWidth: 1, borderColor: 'rgba(255,255,255,0.1)' }}>
+          <TouchableOpacity onPress={() => {}} className="flex-1 bg-bg-card rounded-button py-3 items-center ml-2" style={{ borderWidth: 1, borderColor: 'rgba(255,255,255,0.1)' }}>
             <Text className="text-white font-semibold">Share Status</Text>
           </TouchableOpacity>
         </View>

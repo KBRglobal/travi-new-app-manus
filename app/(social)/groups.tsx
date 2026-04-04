@@ -43,7 +43,7 @@ export default function GroupsScreen() {
  </View>
  <FlatList
  ListEmptyComponent={() => <EmptyState stateKey="groups" />} data={displayed} keyExtractor={i => i.id} renderItem={({ item }) => (
- <TouchableOpacity className="flex-row items-center mx-4 mb-3 p-4 bg-bg-secondary rounded-2xl border border-white/[0.08]">
+ <TouchableOpacity onPress={() => {}} className="flex-row items-center mx-4 mb-3 p-4 bg-bg-secondary rounded-2xl border border-white/[0.08]">
  <Text className="text-3xl mr-3">{item.emoji}</Text>
  <View className="flex-1">
  <Text className="text-white font-bold">{item.name}</Text>

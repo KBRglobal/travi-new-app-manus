@@ -87,15 +87,15 @@ export default function FlightPriceAlerts() {
  </View>
  <Text className="text-text-secondary mb-2">Date Range</Text>
  <View className="flex-row mb-3">
- <TouchableOpacity className="bg-primary/20 px-3 py-2 rounded-pill mr-2"><Text className="text-primary">Flexible</Text></TouchableOpacity>
- <TouchableOpacity className="bg-bg-primary px-3 py-2 rounded-pill"><Text className="text-text-secondary">Fixed dates</Text></TouchableOpacity>
+ <TouchableOpacity onPress={() => {}} className="bg-primary/20 px-3 py-2 rounded-pill mr-2"><Text className="text-primary">Flexible</Text></TouchableOpacity>
+ <TouchableOpacity onPress={() => {}} className="bg-bg-primary px-3 py-2 rounded-pill"><Text className="text-text-secondary">Fixed dates</Text></TouchableOpacity>
  </View>
  <Text className="text-text-secondary mb-2">My price limit</Text>
  <TextInput className="bg-bg-primary rounded-input p-3 text-white mb-3" placeholder="€___" placeholderTextColor="rgba(255,255,255,0.3)" keyboardType="numeric" />
  <Text className="text-text-secondary mb-2">Class</Text>
  <View className="flex-row mb-3">
- <TouchableOpacity className="bg-primary/20 px-3 py-2 rounded-pill mr-2"><Text className="text-primary">Economy</Text></TouchableOpacity>
- <TouchableOpacity className="bg-bg-primary px-3 py-2 rounded-pill"><Text className="text-text-secondary">Business</Text></TouchableOpacity>
+ <TouchableOpacity onPress={() => {}} className="bg-primary/20 px-3 py-2 rounded-pill mr-2"><Text className="text-primary">Economy</Text></TouchableOpacity>
+ <TouchableOpacity onPress={() => {}} className="bg-bg-primary px-3 py-2 rounded-pill"><Text className="text-text-secondary">Business</Text></TouchableOpacity>
  </View>
  <Text className="text-text-secondary mb-2">Alert when</Text>
  <View className="flex-row mb-4 flex-wrap">

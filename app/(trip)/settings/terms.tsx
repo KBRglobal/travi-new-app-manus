@@ -21,7 +21,7 @@ export default function TermsScreen() {
  { title: 'Community Guidelines', iconName: 'people', desc: 'Rules for social features' },
  { title: 'Open Source Licenses', iconName: 'clipboard', desc: 'Third-party software licenses' },
  ].map(item => (
- <TouchableOpacity key={item.title} className="flex-row items-center mx-4 mb-2 p-4 bg-bg-secondary rounded-2xl border border-white/[0.08]">
+ <TouchableOpacity onPress={() => {}} key={item.title} className="flex-row items-center mx-4 mb-2 p-4 bg-bg-secondary rounded-2xl border border-white/[0.08]">
  <Text className="text-2xl mr-3">{item.icon}</Text>
  <View className="flex-1">
  <Text className="text-white font-bold">{item.title}</Text>

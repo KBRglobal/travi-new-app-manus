@@ -35,7 +35,7 @@ export default function ProfileSetupScreen() {
 
         <View className="w-full max-w-md mx-auto mt-8 md:mt-12">
           {/* Avatar */}
-          <Pressable className="self-center w-24 h-24 md:w-28 md:h-28 rounded-full bg-primary/20 border-2 border-primary items-center justify-center mb-8">
+          <Pressable onPress={() => {}} className="self-center w-24 h-24 md:w-28 md:h-28 rounded-full bg-primary/20 border-2 border-primary items-center justify-center mb-8">
             <Ionicons name="person" size={24} color="#FFFFFF" />
             <View className="absolute bottom-0 right-0 w-7 h-7 bg-primary rounded-full items-center justify-center">
               <Ionicons name="camera" size={24} color="#FFFFFF" />

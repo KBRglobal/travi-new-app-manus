@@ -38,7 +38,7 @@ export default function CurrencyConverter() {
             <TouchableOpacity onPress={() => { setFromCurrency(toCurrency); setToCurrency(fromCurrency); }}>
               <Text className="text-primary text-2xl">↕</Text>
             </TouchableOpacity>
-            <TouchableOpacity className="flex-row items-center">
+            <TouchableOpacity onPress={() => {}} className="flex-row items-center">
               <Text className="text-white font-bold text-lg">{toCurrency}</Text>
               <Text className="text-2xl ml-2">🇮🇱</Text>
             </TouchableOpacity>

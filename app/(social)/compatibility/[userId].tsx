@@ -65,7 +65,7 @@ export default function CompatibilityScreen() {
  <TouchableOpacity onPress={() => router.push(`/(social)/messages/${userId}`)} className="flex-1 mr-2 bg-primary py-4 rounded-2xl items-center">
  <Text className="text-white font-bold">Message</Text>
  </TouchableOpacity>
- <TouchableOpacity className="flex-1 ml-2 bg-white/[0.05] py-4 rounded-2xl items-center border border-white/[0.08]">
+ <TouchableOpacity onPress={() => {}} className="flex-1 ml-2 bg-white/[0.05] py-4 rounded-2xl items-center border border-white/[0.08]">
  <Text className="text-white/80 font-bold">Plan Trip</Text>
  </TouchableOpacity>
  </View>

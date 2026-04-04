@@ -66,7 +66,7 @@ export default function AdventureLog() {
 
  <Text className="text-white font-bold text-lg mb-3">Timeline</Text>
  {TRIPS.map((trip, i) => (
- <TouchableOpacity key={i} className="flex-row items-center mb-4">
+ <TouchableOpacity onPress={() => {}} key={i} className="flex-row items-center mb-4">
  <View className="items-center mr-4" style={{ width: 50 }}>
  <Text className="text-primary font-bold">{trip.year}</Text>
  {i < TRIPS.length - 1 && <View className="w-0.5 h-8 bg-primary/30 mt-1" />}

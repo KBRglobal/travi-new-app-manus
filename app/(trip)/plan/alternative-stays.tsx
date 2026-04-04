@@ -44,7 +44,7 @@ export default function AlternativeStays() {
  </View>
  ) : (
  STAYS.map(stay => (
- <TouchableOpacity key={stay.id} className="bg-bg-card rounded-card mb-3 overflow-hidden">
+ <TouchableOpacity onPress={() => {}} key={stay.id} className="bg-bg-card rounded-card mb-3 overflow-hidden">
  <View className="bg-bg-primary/50 h-40 items-center justify-center">
  <Text className="text-text-muted">[ Swipeable Gallery ]</Text>
  </View>

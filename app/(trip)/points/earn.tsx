@@ -40,7 +40,7 @@ export default function EarnPointsScreen() {
  </View>
  <View className="items-end">
  <Text className="text-primary font-bold text-sm">+{item.points}</Text>
- <TouchableOpacity className="mt-1"><Text className="text-primary/60 text-xs">{item.action}</Text></TouchableOpacity>
+ <TouchableOpacity onPress={() => {}} className="mt-1"><Text className="text-primary/60 text-xs">{item.action}</Text></TouchableOpacity>
  </View>
  </View>
  ))}

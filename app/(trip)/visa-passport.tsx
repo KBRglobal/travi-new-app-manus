@@ -87,7 +87,7 @@ export default function VisaPassportScreen() {
       ))}
 
       {/* eVisa apply */}
-      <TouchableOpacity className="bg-primary py-4 rounded-button items-center mt-6">
+      <TouchableOpacity onPress={() => {}} className="bg-primary py-4 rounded-button items-center mt-6">
         <Text className="text-white text-body font-bold">Apply for eVisa</Text>
       </TouchableOpacity>
     </ScrollView>

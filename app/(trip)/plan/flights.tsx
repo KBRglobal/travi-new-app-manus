@@ -1,92 +1,173 @@
-import { haptic } from '@/lib/haptics';
 import React, { useState } from 'react';
-import { View, Text, ScrollView, TouchableOpacity, FlatList} from 'react-native';
+import { View, Text, ScrollView } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 import { useRouter } from 'expo-router';
-import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
-import { Ionicons } from '@expo/vector-icons';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { MaterialIcons } from '@expo/vector-icons';
+import { colors, fonts, fontSizes, spacing, radius, gradients, typography, shadows } from '@/constants/theme';
+import { GlassCard } from '@/components/ui/GlassCard';
+import { GradientButton } from '@/components/ui/GradientButton';
+import { GradientBadge } from '@/components/ui/GradientBadge';
+import { PressableScale } from '@/components/ui/PressableScale';
+import { ScreenHeader } from '@/components/ui/ScreenHeader';
 
 const FLIGHTS = [
- { airline: 'Emirates', code: 'EK001', dep: '07:30', arr: '15:45', duration: '8h 15m', stops: 'Direct', price: 289, dna: 92 },
- { airline: 'Turkish', code: 'TK788', dep: '10:00', arr: '20:30', duration: '10h 30m', stops: '1 stop', price: 189, dna: 78 },
- { airline: 'Lufthansa', code: 'LH680', dep: '14:15', arr: '23:00', duration: '8h 45m', stops: 'Direct', price: 345, dna: 85 },
+  { airline: 'Emirates', code: 'EK001', dep: '07:30', arr: '15:45', duration: '8h 15m', stops: 'Direct', price: 289, dna: 92, best: true },
+  { airline: 'Turkish Airlines', code: 'TK788', dep: '10:00', arr: '20:30', duration: '10h 30m', stops: '1 stop', price: 189, dna: 78, best: false },
+  { airline: 'Lufthansa', code: 'LH680', dep: '14:15', arr: '23:00', duration: '8h 45m', stops: 'Direct', price: 345, dna: 85, best: false },
 ];
 
-const SORT_TABS = ['Best', 'Cheapest', 'Fastest', 'Flexible Dates'];
+const SORT_TABS = ['Best', 'Cheapest', 'Fastest', 'Flexible'];
 
 export default function FlightSelect() {
- const router = useRouter();
- const [activeSort, setActiveSort] = useState('Best');
- const [aiMode, setAiMode] = useState(false);
+  const router = useRouter();
+  const insets = useSafeAreaInsets();
+  const [activeSort, setActiveSort] = useState('Best');
+  const [aiMode, setAiMode] = useState(false);
 
- return (
- <View className="flex-1 bg-bg-primary">
- <View className="flex-row items-center px-4 pt-12 pb-2">
- <TouchableOpacity onPress={() => router.back()} className="mr-3">
- <Text className="text-white text-lg">‹ Back</Text>
- </TouchableOpacity>
- <Text className="text-white text-xl font-bold flex-1">Select Flight</Text>
- <TouchableOpacity onPress={() => setAiMode(!aiMode)} className={`px-3 py-1 rounded-pill ${aiMode ? 'bg-primary' : 'bg-bg-card'}`} style={{ borderWidth: 1, borderColor: aiMode ? '#6443F4' : 'rgba(255,255,255,0.1)' }}>
- <Text className={aiMode ? 'text-white font-semibold' : 'text-text-secondary'}>AI</Text>
- </TouchableOpacity>
- </View>
+  return (
+    <View style={{ flex: 1, backgroundColor: colors.bg.primary }}>
+      {/* Top glow */}
+      <View style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '20%' }}>
+        <LinearGradient colors={['rgba(100,67,244,0.06)', 'transparent']} style={{ flex: 1 }} />
+      </View>
 
- <ScrollView horizontal showsHorizontalScrollIndicator={false} className="px-4 mb-3" style={{ maxHeight: 40 }}>
- {SORT_TABS.map(tab => (
- <TouchableOpacity
- key={tab}
- onPress={() => {
- if (tab === 'Flexible Dates') { router.push('/(trip)/plan/flexible-dates'); return; }
- setActiveSort(tab);
- }}
- className={`px-4 py-2 rounded-pill mr-2 ${activeSort === tab ? 'bg-primary' : 'bg-bg-card'}`}
- >
- <Text className={activeSort === tab ? 'text-white font-semibold' : 'text-text-secondary'}>{tab}</Text>
- </TouchableOpacity>
- ))}
- </ScrollView>
+      <ScreenHeader title="Select Flight" rightElement={
+        <PressableScale
+          onPress={() => setAiMode(!aiMode)}
+          style={{
+            paddingHorizontal: 14,
+            paddingVertical: 6,
+            borderRadius: radius.pill,
+            backgroundColor: aiMode ? colors.primary : 'rgba(255,255,255,0.05)',
+            borderWidth: 1,
+            borderColor: aiMode ? colors.primary : colors.border.default,
+            flexDirection: 'row',
+            alignItems: 'center',
+            gap: 4,
+          }}
+        >
+          <MaterialIcons name="auto-awesome" size={14} color={aiMode ? '#FFFFFF' : colors.text.tertiary} />
+          <Text style={{ fontFamily: fonts.bold, fontSize: fontSizes.caption, color: aiMode ? '#FFFFFF' : colors.text.tertiary }}>AI</Text>
+        </PressableScale>
+      } />
 
- {aiMode && (
- <View className="mx-4 mb-3 bg-primary/10 rounded-card p-3" style={{ borderWidth: 1, borderColor: '#6443F4' }}>
- <Text className="text-primary font-bold">AI Mode Active</Text>
- <Text className="text-text-secondary text-sm">Searching 400+ airlines for your DNA match...</Text>
- <View className="bg-bg-primary rounded-full h-2 mt-2 overflow-hidden">
- <View className="bg-primary h-full rounded-full" style={{ width: '65%' }} />
- </View>
- </View>
- )}
+      {/* Sort tabs */}
+      <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ maxHeight: 44, marginBottom: 12, paddingLeft: spacing.screenH }}>
+        {SORT_TABS.map(tab => (
+          <PressableScale
+            key={tab}
+            onPress={() => {
+              if (tab === 'Flexible') { router.push('/(trip)/plan/flexible-dates'); return; }
+              setActiveSort(tab);
+            }}
+            style={{
+              paddingHorizontal: 18,
+              paddingVertical: 8,
+              borderRadius: radius.pill,
+              backgroundColor: activeSort === tab ? colors.primary : 'rgba(255,255,255,0.05)',
+              borderWidth: 1,
+              borderColor: activeSort === tab ? colors.primary : colors.border.default,
+              marginRight: 8,
+            }}
+          >
+            <Text style={{
+              fontFamily: activeSort === tab ? fonts.bold : fonts.bodyMedium,
+              fontSize: fontSizes.bodySm,
+              color: activeSort === tab ? '#FFFFFF' : colors.text.tertiary,
+            }}>{tab}</Text>
+          </PressableScale>
+        ))}
+      </ScrollView>
 
- <ScrollView className="flex-1 px-4">
- {FLIGHTS.map(flight => (
- <TouchableOpacity key={flight.code} onPress={() => router.push('/(trip)/plan/hotels')} className="bg-bg-card rounded-card p-4 mb-3">
- <View className="flex-row justify-between items-center mb-2">
- <Text className="text-white font-bold">{flight.airline}</Text>
- <Text className="text-primary font-bold">sparkles {flight.dna}%</Text>
- </View>
- <View className="flex-row justify-between items-center mb-2">
- <View>
- <Text className="text-white text-lg font-bold">{flight.dep}</Text>
- <Text className="text-text-muted text-xs">{flight.code}</Text>
- </View>
- <View className="items-center flex-1 mx-4">
- <Text className="text-text-muted text-xs">{flight.duration}</Text>
- <View className="h-0.5 bg-text-muted/30 w-full my-1" />
- <Text className="text-text-muted text-xs">{flight.stops}</Text>
- </View>
- <Text className="text-white text-lg font-bold">{flight.arr}</Text>
- </View>
- <Text className="text-white text-xl font-bold">€{flight.price}</Text>
- </TouchableOpacity>
- ))}
- </ScrollView>
+      {/* AI Mode banner */}
+      {aiMode && (
+        <View style={{ marginHorizontal: spacing.screenH, marginBottom: 12 }}>
+          <GlassCard tint="discovery">
+            <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 6 }}>
+              <MaterialIcons name="auto-awesome" size={16} color={colors.primary} style={{ marginRight: 6 }} />
+              <Text style={{ fontFamily: fonts.bold, fontSize: fontSizes.bodySm, color: colors.primary }}>AI Mode Active</Text>
+            </View>
+            <Text style={{ ...typography.caption, color: colors.text.tertiary, marginBottom: 8 }}>
+              Searching 400+ airlines for your DNA match...
+            </Text>
+            <View style={{ height: 4, backgroundColor: 'rgba(255,255,255,0.06)', borderRadius: 2, overflow: 'hidden' }}>
+              <LinearGradient
+                colors={[...gradients.primaryCTA] as [string, string, ...string[]]}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 0 }}
+                style={{ height: '100%', width: '65%', borderRadius: 2 }}
+              />
+            </View>
+          </GlassCard>
+        </View>
+      )}
 
- <View className="px-4 pb-6">
- <TouchableOpacity onPress={() => router.push('/(trip)/plan/flight-alerts')} className="bg-bg-card rounded-button py-3 items-center mb-2" style={{ borderWidth: 1, borderColor: colors.pink }}>
- <Text className="text-pink font-semibold">Set Price Alert</Text>
- </TouchableOpacity>
- <TouchableOpacity onPress={() => router.push('/(trip)/plan/hotels')} className="py-2 items-center">
- <Text className="text-text-secondary">Skip Flights →</Text>
- </TouchableOpacity>
- </View>
- </View>
- );
+      {/* Flight list */}
+      <ScrollView style={{ flex: 1, paddingHorizontal: spacing.screenH }} showsVerticalScrollIndicator={false}>
+        {FLIGHTS.map(flight => (
+          <PressableScale key={flight.code} onPress={() => router.push('/(trip)/plan/hotels')} style={{ marginBottom: 12 }}>
+            <GlassCard tint={flight.best ? 'discovery' : 'neutral'} style={flight.best ? { borderColor: 'rgba(100,67,244,0.3)', borderWidth: 1 } : {}}>
+              {/* Header row */}
+              <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14 }}>
+                <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+                  <View style={{ width: 36, height: 36, borderRadius: 18, backgroundColor: 'rgba(255,255,255,0.06)', alignItems: 'center', justifyContent: 'center' }}>
+                    <MaterialIcons name="flight" size={18} color={colors.text.secondary} />
+                  </View>
+                  <View>
+                    <Text style={{ fontFamily: fonts.bold, fontSize: fontSizes.body, color: colors.text.primary }}>{flight.airline}</Text>
+                    <Text style={{ ...typography.caption, color: colors.text.tertiary }}>{flight.code}</Text>
+                  </View>
+                </View>
+                <GradientBadge label={`${flight.dna}% match`} variant={flight.dna >= 90 ? 'primary' : 'secondary'} />
+              </View>
+
+              {/* Time row */}
+              <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14 }}>
+                <View style={{ flex: 1 }}>
+                  <Text style={{ fontFamily: fonts.heading, fontSize: fontSizes.h3, color: colors.text.primary }}>{flight.dep}</Text>
+                </View>
+                <View style={{ flex: 2, alignItems: 'center' }}>
+                  <Text style={{ ...typography.caption, color: colors.text.tertiary, marginBottom: 4 }}>{flight.duration}</Text>
+                  <View style={{ flexDirection: 'row', alignItems: 'center', width: '100%' }}>
+                    <View style={{ flex: 1, height: 1, backgroundColor: 'rgba(255,255,255,0.1)' }} />
+                    <MaterialIcons name="flight" size={14} color={colors.text.tertiary} style={{ marginHorizontal: 4, transform: [{ rotate: '90deg' }] }} />
+                    <View style={{ flex: 1, height: 1, backgroundColor: 'rgba(255,255,255,0.1)' }} />
+                  </View>
+                  <Text style={{ ...typography.caption, color: flight.stops === 'Direct' ? colors.success : colors.text.tertiary, marginTop: 4 }}>{flight.stops}</Text>
+                </View>
+                <View style={{ flex: 1, alignItems: 'flex-end' }}>
+                  <Text style={{ fontFamily: fonts.heading, fontSize: fontSizes.h3, color: colors.text.primary }}>{flight.arr}</Text>
+                </View>
+              </View>
+
+              {/* Price */}
+              <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                <Text style={{ fontFamily: fonts.heading, fontSize: fontSizes.h2, color: colors.text.primary }}>€{flight.price}</Text>
+                {flight.best && (
+                  <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
+                    <MaterialIcons name="verified" size={14} color={colors.primary} />
+                    <Text style={{ fontFamily: fonts.bold, fontSize: fontSizes.caption, color: colors.primary }}>BEST MATCH</Text>
+                  </View>
+                )}
+              </View>
+            </GlassCard>
+          </PressableScale>
+        ))}
+      </ScrollView>
+
+      {/* Bottom actions */}
+      <View style={{ paddingHorizontal: spacing.screenH, paddingBottom: insets.bottom + 8, paddingTop: 12, borderTopWidth: 1, borderTopColor: colors.border.default }}>
+        <PressableScale onPress={() => router.push('/(trip)/plan/flight-alerts')} style={{ marginBottom: 8 }}>
+          <View style={{ borderWidth: 1, borderColor: colors.pink, borderRadius: radius.button, paddingVertical: 14, alignItems: 'center', flexDirection: 'row', justifyContent: 'center', gap: 6 }}>
+            <MaterialIcons name="notifications-active" size={18} color={colors.pink} />
+            <Text style={{ fontFamily: fonts.bold, fontSize: fontSizes.body, color: colors.pink }}>Set Price Alert</Text>
+          </View>
+        </PressableScale>
+        <PressableScale onPress={() => router.push('/(trip)/plan/hotels')}>
+          <Text style={{ ...typography.bodySm, color: colors.text.tertiary, textAlign: 'center', paddingVertical: 8 }}>Skip Flights →</Text>
+        </PressableScale>
+      </View>
+    </View>
+  );
 }

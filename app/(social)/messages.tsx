@@ -31,7 +31,7 @@ export default function MessagesScreen() {
  </View>
  <FlatList
  ListEmptyComponent={() => <EmptyState stateKey="messages" />} data={filtered} keyExtractor={i => i.id} renderItem={({ item }) => (
- <TouchableOpacity onPress={() => router.push(`/(social)/messages/${item.id}`)} className="flex-row items-center mx-4 mb-1 p-4 rounded-2xl active:bg-white/[0.03]">
+ <TouchableOpacity onPress={() => router.push(`/(social)/chat/${item.id}` as any)} className="flex-row items-center mx-4 mb-1 p-4 rounded-2xl active:bg-white/[0.03]">
  <View className="relative mr-3">
  <Text className="text-3xl">{item.avatar}</Text>
  {item.online && <View className="absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full bg-green-400 border-2 border-bg-primary" />}

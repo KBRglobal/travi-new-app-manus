@@ -35,7 +35,7 @@ export default function LiveMapScreen() {
  { iconName: 'business', name: 'Meiji Shrine', dist: '1.2km', rating: '4.9' },
  { emoji: '', name: 'Shinjuku Station', dist: '200m', rating: '' },
  ].map(item => (
- <TouchableOpacity key={item.name} className="flex-row items-center p-3 mb-2 bg-bg-secondary rounded-xl border border-white/[0.08]">
+ <TouchableOpacity onPress={() => {}} key={item.name} className="flex-row items-center p-3 mb-2 bg-bg-secondary rounded-xl border border-white/[0.08]">
  <Text className="text-xl mr-2">{item.emoji}</Text>
  <View className="flex-1">
  <Text className="text-white font-bold text-sm">{item.name}</Text>
