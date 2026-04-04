@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router';
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -8,6 +9,7 @@ import { ScreenWrapper, DS } from '@/components/screen-wrapper';
 // DS object as provided in the prompt
 
 const RedeemScreen = () => {
+  const router = useRouter();
   const currentPoints = 12500;
   const rewards = [
     { id: '1', name: 'Flight Discount (5000 points)', points: 5000, description: 'Get $50 off your next flight.' },

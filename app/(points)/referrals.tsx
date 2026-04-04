@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router';
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -8,6 +9,7 @@ import { ScreenWrapper, DS } from '@/components/screen-wrapper';
 // DS object from ScreenWrapper.tsx (for reference, actual import is handled by ScreenWrapper)
 
 const ReferralsScreen = () => {
+  const router = useRouter();
   return (
     <ScreenWrapper title="Referrals" scrollable={true}>
       <View style={styles.container}>

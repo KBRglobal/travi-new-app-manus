@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router';
 import React, { useState } from "react";
 import { View, Text, StyleSheet, Switch, TouchableOpacity } from "react-native";
 import { ScreenWrapper, DS } from "@/components/screen-wrapper";
@@ -6,6 +7,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { MaterialIcons } from "@expo/vector-icons";
 
 export default function NotificationsScreen() {
+  const router = useRouter();
   const [pushEnabled, setPushEnabled] = useState(true);
   const [emailEnabled, setEmailEnabled] = useState(false);
   const [smsEnabled, setSmsEnabled] = useState(true);

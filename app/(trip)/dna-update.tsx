@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router';
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -6,6 +7,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { ScreenWrapper, DS } from '@/components/screen-wrapper';
 
 const TripScreen = () => {
+  const router = useRouter();
   const tripData = {
     title: 'European Adventure',
     destination: 'Paris, France',
@@ -51,7 +53,7 @@ const TripScreen = () => {
           <View style={styles.cardContent}>
             <Text style={styles.priceLabel}>Total Price:</Text>
             <Text style={styles.priceValue}>{tripData.price}</Text>
-            <TouchableOpacity style={styles.ctaButton}>
+            <TouchableOpacity style={styles.ctaButton} onPress={() => router.push("/(dna)/categories" as any)}>
               <LinearGradient
                 colors={[DS.purple, DS.pink] as const}
                 start={{ x: 0, y: 0 }}

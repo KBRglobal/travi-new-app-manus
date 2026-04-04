@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router';
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -14,6 +15,7 @@ const fontFamilies = {
 };
 
 const BadgesLeaderboardScreen = () => {
+  const router = useRouter();
   const userRank = {
     position: 1,
     name: 'You',

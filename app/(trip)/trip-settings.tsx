@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, Switch, TouchableOpacity } from 'react-native';
 import { ScreenWrapper, DS } from '@/components/screen-wrapper';
@@ -6,6 +7,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 
 export default function TripSettingsScreen() {
+  const router = useRouter();
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
   const [locationShared, setLocationShared] = useState(false);
 
@@ -43,7 +45,7 @@ export default function TripSettingsScreen() {
         </BlurView>
       </View>
 
-      <TouchableOpacity style={styles.ctaButton}>
+      <TouchableOpacity style={styles.ctaButton} onPress={() => router.push("/(tabs)/trips" as any)}>
         <LinearGradient
           colors={[DS.purple, DS.pink] as const}
           style={styles.gradientButton}

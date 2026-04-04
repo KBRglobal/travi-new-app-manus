@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, FlatList, KeyboardAvoidingView, Platform } from 'react-native';
 import { ScreenWrapper } from '@/components/screen-wrapper';
@@ -23,6 +24,7 @@ const dummyMessages = [
 ];
 
 const TripChat = () => {
+  const router = useRouter();
   const [message, setMessage] = useState('');
 
   const sendMessage = () => {

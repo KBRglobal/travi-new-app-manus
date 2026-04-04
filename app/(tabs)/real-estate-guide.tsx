@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router';
 import React from 'react';
 import { View, Text, ScrollView, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { BlurView } from 'expo-blur';
@@ -6,6 +7,7 @@ import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { ScreenWrapper, DS } from '@/components/screen-wrapper';
 
 const RealEstateGuideScreen = () => {
+  const router = useRouter();
   const guideData = [
     {
       id: '1',

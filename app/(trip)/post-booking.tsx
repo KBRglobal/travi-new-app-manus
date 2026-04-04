@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router';
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -8,6 +9,7 @@ import { ScreenWrapper, DS } from '@/components/screen-wrapper';
 // DS object as provided in the prompt
 
 const PostBookingScreen = () => {
+  const router = useRouter();
   return (
     <ScreenWrapper title="Booking Confirmed" scrollable={true}>
       <View style={styles.container}>
@@ -51,7 +53,7 @@ const PostBookingScreen = () => {
         </BlurView>
 
         {/* Call to Action */}
-        <TouchableOpacity style={styles.ctaButton}>
+        <TouchableOpacity style={styles.ctaButton} onPress={() => router.push("/(tabs)/trips" as any)}>
           <LinearGradient
             colors={[DS.purple, DS.pink] as const}
             style={styles.gradientBackground}

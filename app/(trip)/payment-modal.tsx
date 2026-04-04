@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router';
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { BlurView } from 'expo-blur';
@@ -6,6 +7,7 @@ import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { ScreenWrapper, DS } from '@/components/screen-wrapper';
 
 const PaymentModal = () => {
+  const router = useRouter();
   return (
     <ScreenWrapper title="Payment Options" scrollable={true}>
       <View style={styles.contentContainer}>
@@ -39,7 +41,7 @@ const PaymentModal = () => {
           end={{ x: 1, y: 0 }}
           style={styles.ctaButtonGradient}
         >
-          <TouchableOpacity style={styles.ctaButton}>
+          <TouchableOpacity style={styles.ctaButton} onPress={() => router.push("/(trip)/checkout" as any)}>
             <Text style={styles.ctaButtonText}>Add New Payment Method</Text>
           </TouchableOpacity>
         </LinearGradient>

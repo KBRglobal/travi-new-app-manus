@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router';
 
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
@@ -10,6 +11,7 @@ import { ScreenWrapper, DS } from '@/components/screen-wrapper';
 // For this task, we'll define it here based on the provided values
 
 const ActivityDetailLiveScreen = () => {
+  const router = useRouter();
   // Dummy data for demonstration
   const activity = {
     title: "Skydiving Adventure",
@@ -65,7 +67,7 @@ const ActivityDetailLiveScreen = () => {
         </BlurView>
 
         {/* CTA */}
-        <TouchableOpacity style={styles.ctaButton}>
+        <TouchableOpacity style={styles.ctaButton} onPress={() => router.push("/(live)/home" as any)}>
           <LinearGradient
             colors={[DS.purple, DS.pink] as const}
             style={styles.gradientBackground}

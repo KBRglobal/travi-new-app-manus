@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router';
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { ScreenWrapper, DS } from '@/components/screen-wrapper'; // Assuming DS is exported from ScreenWrapper
@@ -35,6 +36,7 @@ const landmarksData = [
 ];
 
 const LandmarksScreen = () => {
+  const router = useRouter();
   return (
     <ScreenWrapper title="Landmarks" scrollable={true}>
       <View style={styles.contentContainer}>
@@ -48,7 +50,7 @@ const LandmarksScreen = () => {
             <View style={styles.cardContent}>
               <Text style={styles.cardTitle}>{landmark.name}</Text>
               <Text style={styles.cardDescription}>{landmark.description}</Text>
-              <TouchableOpacity style={styles.ctaButton}>
+              <TouchableOpacity style={styles.ctaButton} onPress={() => router.push("/(tabs)/explore" as any)}>
                 <LinearGradient
                   colors={[DS.purple, DS.pink] as const}
                   start={{ x: 0, y: 0 }}

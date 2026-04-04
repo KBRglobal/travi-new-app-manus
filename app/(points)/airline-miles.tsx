@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router';
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -6,6 +7,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { ScreenWrapper, DS } from '@/components/screen-wrapper';
 
 const AirlineMilesScreen = () => {
+  const router = useRouter();
   return (
     <ScreenWrapper title="Airline Miles" scrollable={true}>
       <View style={styles.container}>
@@ -35,7 +37,7 @@ const AirlineMilesScreen = () => {
           </View>
         </BlurView>
 
-        <TouchableOpacity style={styles.ctaButton}>
+        <TouchableOpacity style={styles.ctaButton} onPress={() => router.push("/(points)/partner-detail" as any)}>
           <LinearGradient
             colors={[DS.purple, DS.pink] as const}
             start={{ x: 0, y: 0 }}

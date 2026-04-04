@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router';
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { ScreenWrapper, DS } from '@/components/screen-wrapper';
@@ -8,6 +9,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 // Assuming DS is exported from ScreenWrapper or a separate design system file
 
 const GiftCardsScreen = () => {
+  const router = useRouter();
   return (
     <ScreenWrapper title="Gift Cards" scrollable={true}>
       <View style={styles.sectionContainer}>

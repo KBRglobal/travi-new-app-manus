@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router';
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -8,6 +9,7 @@ import { ScreenWrapper, DS } from '@/components/screen-wrapper';
 // DS object as provided in the prompt
 
 const BookScreen = () => {
+  const router = useRouter();
   return (
     <ScreenWrapper title="Book Your Trip" scrollable={true}>
       <View style={styles.contentContainer}>

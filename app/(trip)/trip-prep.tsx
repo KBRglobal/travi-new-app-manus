@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router';
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -16,6 +17,7 @@ const fontFamilies = {
 };
 
 const TripPrepScreen = () => {
+  const router = useRouter();
   return (
     <ScreenWrapper title="Trip Preparation" scrollable={true}>
       <View style={styles.contentContainer}>
@@ -48,7 +50,7 @@ const TripPrepScreen = () => {
           </TouchableOpacity>
         </BlurView>
 
-        <TouchableOpacity style={styles.ctaButton}>
+        <TouchableOpacity style={styles.ctaButton} onPress={() => router.push("/(trip)/pre-trip-dashboard" as any)}>
           <LinearGradient
             colors={[DS.purple, DS.pink] as const}
             start={{ x: 0, y: 0 }}

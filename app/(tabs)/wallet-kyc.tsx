@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router';
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -6,6 +7,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { ScreenWrapper, DS } from '@/components/screen-wrapper';
 
 const WalletKycScreen = () => {
+  const router = useRouter();
   return (
     <ScreenWrapper title="Wallet KYC" scrollable={true}>
       <View style={styles.cardContainer}>
@@ -26,7 +28,7 @@ const WalletKycScreen = () => {
             <MaterialIcons name="hourglass-empty" size={20} color={DS.muted} />
             <Text style={styles.statusText}>Verification Under Review</Text>
           </View>
-          <TouchableOpacity style={styles.ctaButton}>
+          <TouchableOpacity style={styles.ctaButton} onPress={() => router.push("/(tabs)/wallet" as any)}>
             <LinearGradient
               colors={[DS.purple, DS.pink] as const}
               start={{ x: 0, y: 0 }}

@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, ScrollView, StyleSheet } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -37,6 +38,7 @@ const mockFlights = [
 ];
 
 const FlightSelectScreen = () => {
+  const router = useRouter();
   const [selectedFlight, setSelectedFlight] = useState<string | null>(null);
 
   return (

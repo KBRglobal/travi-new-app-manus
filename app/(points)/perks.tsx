@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router';
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { BlurView } from 'expo-blur';
@@ -40,6 +41,7 @@ const perksData = [
 ];
 
 const PerksScreen = () => {
+  const router = useRouter();
   return (
     <ScreenWrapper title="Your Exclusive Perks" scrollable={true}>
       <View style={styles.container}>

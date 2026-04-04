@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router';
 import React from 'react';
 import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity } from 'react-native';
 import { ScreenWrapper } from '@/components/screen-wrapper';
@@ -15,6 +16,7 @@ const DS = {
 };
 
 const PostTripGallery = () => {
+  const router = useRouter();
   const photos = [
     'https://via.placeholder.com/150/FF0000/FFFFFF?text=Photo1',
     'https://via.placeholder.com/150/00FF00/FFFFFF?text=Photo2',

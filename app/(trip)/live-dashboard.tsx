@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router';
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { ScreenWrapper, DS } from '@/components/screen-wrapper';
@@ -8,6 +9,7 @@ import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 // Assume fonts are loaded globally or via a custom font loader
 
 const LiveDashboard = () => {
+  const router = useRouter();
   // Dummy data for the live dashboard
   const tripData = {
     destination: 'Paris, France',

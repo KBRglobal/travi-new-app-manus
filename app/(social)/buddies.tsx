@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router';
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image, ScrollView } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -16,6 +17,7 @@ const buddiesData = [
 ];
 
 export default function BuddiesScreen() {
+  const router = useRouter();
   return (
     <ScreenWrapper title="My Buddies" scrollable={true}>
       <View style={styles.container}>

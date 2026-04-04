@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router';
 
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
@@ -7,6 +8,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { ScreenWrapper, DS } from '@/components/screen-wrapper';
 
 const RewardsPortalScreen = () => {
+  const router = useRouter();
   const rewards = [
     { id: '1', title: '10% Off Next Flight', description: 'Redeem for your next adventure!', icon: 'flight' },
     { id: '2', title: 'Free Lounge Access', description: 'Enjoy comfort before your journey.', icon: 'lounge' },

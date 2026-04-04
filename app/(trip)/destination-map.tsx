@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router';
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image, ScrollView } from 'react-native';
 import { ScreenWrapper, DS } from '@/components/screen-wrapper'; // Assuming ScreenWrapper exports DS
@@ -9,6 +10,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 // For this example, we'll use generic fallbacks and add comments for TRAVI fonts
 
 const DestinationMapScreen = () => {
+  const router = useRouter();
   // Mock data for destinations
   const destinations = [
     { id: '1', name: 'Eiffel Tower', distance: '2.5 km', image: 'https://via.placeholder.com/150/6443F4/FFFFFF?text=Eiffel' },

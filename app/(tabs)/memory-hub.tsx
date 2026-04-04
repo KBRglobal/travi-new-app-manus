@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router';
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -6,6 +7,7 @@ import { ScreenWrapper, DS } from '@/components/screen-wrapper';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 
 const MemoryHubScreen = () => {
+  const router = useRouter();
   const memories = [
     {
       id: '1',

@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, Dimensions } from 'react-native';
 import { ScreenWrapper, DS } from '@/components/screen-wrapper';
@@ -32,6 +33,7 @@ const destinations = [
 ];
 
 const DestinationSwipeScreen = () => {
+  const router = useRouter();
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const handleSwipe = (direction: 'left' | 'right') => {

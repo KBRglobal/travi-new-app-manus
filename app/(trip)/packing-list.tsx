@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router';
 
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Platform } from 'react-native';
@@ -27,6 +28,7 @@ const initialPackingList = [
 ];
 
 const PackingListScreen = () => {
+  const router = useRouter();
   const [packingList, setPackingList] = useState(initialPackingList);
 
   const togglePacked = (id: string) => {
@@ -77,7 +79,7 @@ const PackingListScreen = () => {
           </View>
         ))}
 
-        <TouchableOpacity style={styles.ctaButton}>
+        <TouchableOpacity style={styles.ctaButton} onPress={() => router.push("/(trip)/pre-trip-dashboard" as any)}>
           <LinearGradient
             colors={[DS.purple, DS.pink] as const}
             start={{ x: 0, y: 0 }}

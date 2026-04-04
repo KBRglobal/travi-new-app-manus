@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router';
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -6,6 +7,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { ScreenWrapper, DS } from '@/components/screen-wrapper';
 
 const EnterpriseScreen = () => {
+  const router = useRouter();
   return (
     <ScreenWrapper title="Enterprise Dashboard" scrollable={true}>
       <View style={styles.section}>
@@ -26,7 +28,7 @@ const EnterpriseScreen = () => {
 
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Quick Actions</Text>
-        <TouchableOpacity style={styles.ctaButton}>
+        <TouchableOpacity style={styles.ctaButton} onPress={() => router.push("/(tabs)/profile" as any)}>
           <LinearGradient
             colors={[DS.purple, DS.pink] as const}
             style={styles.gradientBackground}

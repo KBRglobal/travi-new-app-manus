@@ -81,7 +81,7 @@ export default function WelcomeScreen() {
         {/* Primary CTA */}
         <Pressable
           style={({ pressed }) => [s.ctaBtn, pressed && { opacity: 0.85, transform: [{ scale: 0.98 }] }]}
-          onPress={() => router.replace("/(tabs)" as any)}
+          onPress={() => router.push("/(auth)/sign-up" as any)}
         >
           <LinearGradient
             colors={[C.purple, C.pink]}
@@ -96,7 +96,7 @@ export default function WelcomeScreen() {
         {/* Sign in link */}
         <Pressable
           style={({ pressed }) => [s.signInBtn, pressed && { opacity: 0.6 }]}
-          onPress={() => router.replace("/(tabs)" as any)}
+          onPress={() => router.push("/(auth)/sign-up" as any)}
         >
           <Text style={s.signInText}>
             Already have an account?{" "}

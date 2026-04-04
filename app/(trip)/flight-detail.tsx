@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router';
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { ScreenWrapper, DS } from '@/components/screen-wrapper'; // Assuming this path
@@ -17,6 +18,7 @@ const typography = {
 };
 
 const FlightDetailScreen = () => {
+  const router = useRouter();
   return (
     <ScreenWrapper title="Flight Details" scrollable={true}>
       <View style={styles.contentContainer}>

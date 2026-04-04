@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router';
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { ScreenWrapper, DS } from '@/components/screen-wrapper';
@@ -8,6 +9,7 @@ import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 // DS object exported from ScreenWrapper.tsx (for local use in styling)
 
 const DnaCelebrationScreen = () => {
+  const router = useRouter();
   return (
     <ScreenWrapper title="DNA Celebration" scrollable={true}>
       <View style={styles.contentContainer}>
@@ -34,7 +36,7 @@ const DnaCelebrationScreen = () => {
           </View>
         </BlurView>
 
-        <TouchableOpacity style={styles.ctaButton}>
+        <TouchableOpacity style={styles.ctaButton} onPress={() => router.replace("/(tabs)" as any)}>
           <LinearGradient
             colors={[DS.purple, DS.pink] as const}
             start={{ x: 0, y: 0 }}

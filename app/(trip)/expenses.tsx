@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router';
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { ScreenWrapper, DS } from '@/components/screen-wrapper';
@@ -15,6 +16,7 @@ const expensesData = [
 ];
 
 const ExpensesScreen = () => {
+  const router = useRouter();
   return (
     <ScreenWrapper title="Expenses" scrollable={true}>
       <View style={styles.summaryCardContainer}>

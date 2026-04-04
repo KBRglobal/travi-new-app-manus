@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router';
 import React from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image } from 'react-native';
 import { ScreenWrapper, DS } from '@/components/screen-wrapper';
@@ -17,6 +18,7 @@ const messagesData = [
 ];
 
 const MessagesScreen = () => {
+  const router = useRouter();
   const renderItem = ({ item }: { item: any }) => (
     <TouchableOpacity style={styles.messageItemContainer}>
       <BlurView intensity={20} tint="dark" style={styles.glassCard}>

@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, Image, Platform } from 'react-native';
 import { BlurView } from 'expo-blur';
@@ -6,6 +7,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { ScreenWrapper, DS } from '@/components/screen-wrapper';
 
 const EditProfileScreen = () => {
+  const router = useRouter();
   const [name, setName] = useState('John Doe');
   const [email, setEmail] = useState('john.doe@example.com');
 

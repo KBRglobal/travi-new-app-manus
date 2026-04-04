@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router';
 import { useState } from "react";
 import { View, Text, StyleSheet, Pressable, FlatList } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -17,6 +18,7 @@ const TRANSACTIONS = [
 ];
 
 export default function TransactionHistoryScreen() {
+  const router = useRouter();
   const [filter, setFilter] = useState("All");
   const filtered = filter === "All" ? TRANSACTIONS : TRANSACTIONS.filter(t =>
     filter === "Debit" ? t.type === "debit" : filter === "Credit" ? t.type === "credit" : t.category === "Rewards"

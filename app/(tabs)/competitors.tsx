@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router';
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { ScreenWrapper, DS } from '@/components/screen-wrapper';
@@ -6,6 +7,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { MaterialIcons } from '@expo/vector-icons';
 
 const CompetitorsScreen = () => {
+  const router = useRouter();
   const competitors = [
     {
       id: '1',
@@ -74,7 +76,7 @@ const CompetitorsScreen = () => {
               </View>
             </View>
 
-            <TouchableOpacity style={styles.ctaButton}>
+            <TouchableOpacity style={styles.ctaButton} onPress={() => router.push("/(tabs)/explore" as any)}>
               <LinearGradient
                 colors={[DS.purple, DS.pink] as const}
                 start={{ x: 0, y: 0 }}

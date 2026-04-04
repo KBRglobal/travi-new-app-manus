@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router';
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import { ScreenWrapper, DS } from '@/components/screen-wrapper';
@@ -6,6 +7,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { MaterialIcons } from '@expo/vector-icons';
 
 export default function WalletExchangeScreen() {
+  const router = useRouter();
   const exchangeRate = 1.2345; // Example rate
   const walletBalance = 1234.56; // Example balance
   const selectedCurrency = 'USD'; // Example currency
@@ -45,7 +47,7 @@ export default function WalletExchangeScreen() {
         </BlurView>
       </View>
 
-      <TouchableOpacity style={styles.ctaButton}>
+      <TouchableOpacity style={styles.ctaButton} onPress={() => router.push("/(tabs)/wallet" as any)}>
         <LinearGradient
           colors={[DS.purple, DS.pink] as const}
           start={{ x: 0, y: 0 }}

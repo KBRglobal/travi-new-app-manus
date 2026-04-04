@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router';
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -6,6 +7,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { ScreenWrapper, DS } from '@/components/screen-wrapper'; // Assuming this path and export structure
 
 const VisaInfoScreen = () => {
+  const router = useRouter();
   // Placeholder data for visa information
   const visaRequirements = [
     { country: 'United States', type: 'Tourist Visa', duration: 'Up to 6 months', required: true },
@@ -48,7 +50,7 @@ const VisaInfoScreen = () => {
           </BlurView>
         ))}
 
-        <TouchableOpacity style={styles.ctaButton}>
+        <TouchableOpacity style={styles.ctaButton} onPress={() => router.push("/(trip)/pre-trip-dashboard" as any)}>
           <LinearGradient
             colors={[DS.purple, DS.pink] as const}
             start={{ x: 0, y: 0 }}

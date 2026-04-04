@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router';
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { BlurView } from 'expo-blur';
@@ -6,6 +7,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { ScreenWrapper, DS } from '@/components/screen-wrapper';
 
 const CulturalGuideScreen = () => {
+  const router = useRouter();
   return (
     <ScreenWrapper title="Cultural Guide" scrollable={true}>
       <View style={styles.contentContainer}>
@@ -13,7 +15,7 @@ const CulturalGuideScreen = () => {
         <BlurView intensity={20} tint="dark" style={styles.glassCard}>
           <Text style={styles.cardTitle}>Explore Local Traditions</Text>
           <Text style={styles.cardBody}>Immerse yourself in the rich cultural tapestry of your destination. Discover ancient rituals, vibrant festivals, and unique customs that define the local way of life.</Text>
-          <TouchableOpacity style={styles.ctaButton}>
+          <TouchableOpacity style={styles.ctaButton} onPress={() => router.push("/(tabs)/explore" as any)}>
             <LinearGradient
               colors={[DS.purple, DS.pink] as const}
               start={{ x: 0, y: 0 }}

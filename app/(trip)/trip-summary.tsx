@@ -1,6 +1,6 @@
 import { useRouter } from 'expo-router';
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { ScreenWrapper, DS } from '@/components/screen-wrapper';
 import { BlurView } from 'expo-blur';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -65,14 +65,16 @@ const TripSummary = () => {
       </View>
 
       <View style={styles.ctaContainer}>
-        <LinearGradient
-          colors={[DS.purple, DS.pink] as const}
-          start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 1 }}
-          style={styles.ctaButton}
-        >
-          <Text style={styles.ctaButtonText}>View Details</Text>
-        </LinearGradient>
+        <TouchableOpacity activeOpacity={0.85} onPress={() => router.replace('/(tabs)/trips' as any)}>
+          <LinearGradient
+            colors={[DS.purple, DS.pink] as const}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+            style={styles.ctaButton}
+          >
+            <Text style={styles.ctaButtonText}>Back to My Trips</Text>
+          </LinearGradient>
+        </TouchableOpacity>
       </View>
     </ScreenWrapper>
   );

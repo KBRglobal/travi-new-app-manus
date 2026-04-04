@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, FlatList, StyleSheet } from 'react-native';
 import { BlurView } from 'expo-blur';
@@ -25,6 +26,7 @@ const currencies: Currency[] = [
 ];
 
 const CurrencySelectorScreen = () => {
+  const router = useRouter();
   const [selectedCurrency, setSelectedCurrency] = useState<Currency | null>(currencies[0]);
 
   const renderCurrencyItem = ({ item }: { item: Currency }) => (

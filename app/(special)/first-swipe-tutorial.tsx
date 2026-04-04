@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router';
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { ScreenWrapper, DS } from '@/components/screen-wrapper';
@@ -6,6 +7,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { MaterialIcons } from '@expo/vector-icons';
 
 const FirstSwipeTutorial = () => {
+  const router = useRouter();
   return (
     <ScreenWrapper title="First Swipe Tutorial" scrollable={true}>
       <View style={styles.container}>

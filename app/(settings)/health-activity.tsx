@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router';
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { ScreenWrapper, DS } from '@/components/screen-wrapper';
@@ -6,6 +7,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { MaterialIcons } from '@expo/vector-icons';
 
 const HealthActivityScreen = () => {
+  const router = useRouter();
   return (
     <ScreenWrapper title="Health & Activity" scrollable={true}>
       <View style={styles.container}>
@@ -48,7 +50,7 @@ const HealthActivityScreen = () => {
         </BlurView>
 
         {/* CTA */}
-        <TouchableOpacity style={styles.ctaButton}>
+        <TouchableOpacity style={styles.ctaButton} onPress={() => router.push("/(settings)/profile" as any)}>
           <LinearGradient
             colors={[DS.purple, DS.pink] as const}
             style={styles.gradientBackground}

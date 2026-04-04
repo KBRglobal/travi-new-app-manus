@@ -104,13 +104,13 @@ const SummaryScreen = () => {
 
       <View style={styles.section}>
         <LinearGradient colors={[DS.purple, DS.pink] as const} style={styles.ctaButton}>
-          <TouchableOpacity onPress={() => console.log('View Itinerary')} style={styles.ctaTouch}>
+          <TouchableOpacity onPress={() => router.replace('/(tabs)' as any)} style={styles.ctaTouch}>
             <Text style={styles.ctaText}>View Full Itinerary</Text>
             <MaterialIcons name="arrow-forward" size={20} color={DS.white} style={{ marginLeft: 10 }} />
           </TouchableOpacity>
         </LinearGradient>
         <LinearGradient colors={[DS.purple, DS.pink] as const} style={[styles.ctaButton, { marginTop: 15 }]}>
-          <TouchableOpacity onPress={() => console.log('Share Trip')} style={styles.ctaTouch}>
+          <TouchableOpacity onPress={() => router.replace('/(tabs)' as any)} style={styles.ctaTouch}>
             <Text style={styles.ctaText}>Share Trip</Text>
             <MaterialIcons name="share" size={20} color={DS.white} style={{ marginLeft: 10 }} />
           </TouchableOpacity>

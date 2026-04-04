@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Switch } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
@@ -6,6 +7,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { ScreenWrapper, DS } from '@/components/screen-wrapper';
 
 const DeleteAccountScreen = () => {
+  const router = useRouter();
   const [confirmDelete, setConfirmDelete] = useState(false);
 
   const handleDeleteAccount = () => {

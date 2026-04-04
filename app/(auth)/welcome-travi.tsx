@@ -83,7 +83,7 @@ export default function WelcomeTraviScreen() {
       {/* CTA */}
       <Pressable
         style={({ pressed }) => [s.ctaBtn, pressed && { opacity: 0.85, transform: [{ scale: 0.98 }] }]}
-        onPress={() => router.replace("/(dna)/quick-swipe" as any)}
+        onPress={() => router.replace("/(dna)/categories" as any)}
       >
         <LinearGradient
           colors={[C.purple, C.pink]}

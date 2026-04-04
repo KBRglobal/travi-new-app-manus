@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router';
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { BlurView } from 'expo-blur';
@@ -6,6 +7,7 @@ import { MaterialIcons } from '@expo/vector-icons'; // For icons
 import { ScreenWrapper, DS } from '@/components/screen-wrapper'; // Assuming DS is exported from ScreenWrapper
 
 const WelcomeTourScreen = () => {
+  const router = useRouter();
   // Placeholder data for the welcome tour
   const tourSteps = [
     {
@@ -41,7 +43,7 @@ const WelcomeTourScreen = () => {
           </BlurView>
         ))}
 
-        <TouchableOpacity style={styles.ctaButton}>
+        <TouchableOpacity style={styles.ctaButton} onPress={() => router.push("/(auth)/welcome-travi" as any)}>
           <LinearGradient
             colors={[DS.purple, DS.pink] as const}
             start={{ x: 0, y: 0 }}

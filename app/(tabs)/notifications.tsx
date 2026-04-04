@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router';
 // Screen 18 — Notifications
 import React, { useState } from "react";
 import { View, Text, StyleSheet, Pressable, FlatList } from "react-native";
@@ -18,6 +19,7 @@ const NOTIFS = [
 ];
 
 export default function NotificationsScreen() {
+  const router = useRouter();
   const insets = useSafeAreaInsets();
   const [activeFilter, setActiveFilter] = useState("All");
 

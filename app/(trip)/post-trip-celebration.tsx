@@ -1,6 +1,6 @@
 import { useRouter } from 'expo-router';
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { ScreenWrapper, DS } from '@/components/screen-wrapper';
 import { BlurView } from 'expo-blur';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -31,23 +31,33 @@ const PostTripCelebration = () => {
           </View>
         </BlurView>
 
-        <LinearGradient
-          colors={[DS.purple, DS.pink] as const}
-          start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 1 }}
-          style={styles.ctaButton}
+        <TouchableOpacity
+          activeOpacity={0.85}
+          onPress={() => router.push('/(trip)/rate-review' as any)}
         >
-          <Text style={styles.ctaButtonText}>Share Your Experience</Text>
-        </LinearGradient>
+          <LinearGradient
+            colors={[DS.purple, DS.pink] as const}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+            style={styles.ctaButton}
+          >
+            <Text style={styles.ctaButtonText}>Rate Your Trip</Text>
+          </LinearGradient>
+        </TouchableOpacity>
 
-        <LinearGradient
-          colors={[DS.purple, DS.pink] as const}
-          start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 1 }}
-          style={styles.ctaButton}
+        <TouchableOpacity
+          activeOpacity={0.85}
+          onPress={() => router.replace('/(tabs)' as any)}
         >
-          <Text style={styles.ctaButtonText}>Plan Your Next Adventure</Text>
-        </LinearGradient>
+          <LinearGradient
+            colors={[DS.purple, DS.pink] as const}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+            style={styles.ctaButton}
+          >
+            <Text style={styles.ctaButtonText}>Plan Your Next Adventure</Text>
+          </LinearGradient>
+        </TouchableOpacity>
       </View>
     </ScreenWrapper>
   );
@@ -60,9 +70,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: DS.bg,
   },
-  icon: {
-    marginBottom: 20,
-  },
+  icon: { marginBottom: 20 },
   header: {
     fontFamily: 'Chillax-Bold',
     fontSize: 32,

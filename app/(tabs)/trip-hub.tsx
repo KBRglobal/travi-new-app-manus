@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router';
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { ScreenWrapper, DS } from '@/components/screen-wrapper';
@@ -6,6 +7,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 
 export default function TripHubScreen() {
+  const router = useRouter();
   const upcomingTrips = [
     { id: '1', destination: 'Paris, France', date: 'Oct 26 - Nov 02', status: 'Confirmed' },
     { id: '2', destination: 'Tokyo, Japan', date: 'Dec 10 - Dec 18', status: 'Pending' },
@@ -40,7 +42,7 @@ export default function TripHubScreen() {
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Upcoming Trips</Text>
         {upcomingTrips.map(renderTripCard)}
-        <TouchableOpacity style={styles.ctaButton}>
+        <TouchableOpacity style={styles.ctaButton} onPress={() => router.push("/(tabs)/trips" as any)}>
           <LinearGradient
             colors={[DS.purple, DS.pink] as const}
             start={{ x: 0, y: 0 }}

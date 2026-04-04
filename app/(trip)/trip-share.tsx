@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router';
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { ScreenWrapper, DS } from '@/components/screen-wrapper';
@@ -26,6 +27,7 @@ const FontStyles = StyleSheet.create({
 });
 
 const TripShareScreen = () => {
+  const router = useRouter();
   const tripDetails = {
     title: 'Adventure in Bali',
     date: 'Oct 26 - Nov 02, 2024',

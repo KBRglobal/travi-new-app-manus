@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router';
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -50,6 +51,7 @@ const timelineEvents = [
 ];
 
 const LiveTimelineScreen = () => {
+  const router = useRouter();
   return (
     <ScreenWrapper title="Live Trip Timeline" scrollable={true}>
       <View style={styles.container}>

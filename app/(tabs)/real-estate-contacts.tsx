@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router';
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { ScreenWrapper, DS } from '@/components/screen-wrapper';
@@ -33,6 +34,7 @@ const realEstateAgents = [
 ];
 
 const RealEstateContacts = () => {
+  const router = useRouter();
   return (
     <ScreenWrapper title="Real Estate Contacts" scrollable={true}>
       <View style={styles.container}>
@@ -53,7 +55,7 @@ const RealEstateContacts = () => {
                 <MaterialIcons name="star" size={16} color={DS.warning} />
                 <Text style={styles.ratingText}>{agent.rating}</Text>
               </View>
-              <TouchableOpacity style={styles.ctaButton}>
+              <TouchableOpacity style={styles.ctaButton} onPress={() => router.push("/(tabs)/explore" as any)}>
                 <LinearGradient
                   colors={[DS.purple, DS.pink] as const}
                   style={styles.gradientButton}

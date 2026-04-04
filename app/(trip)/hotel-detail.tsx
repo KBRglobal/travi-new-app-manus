@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router';
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -16,6 +17,7 @@ const hotelData = {
 };
 
 const HotelDetailScreen = () => {
+  const router = useRouter();
   return (
     <ScreenWrapper title="Hotel Details" scrollable={true}>
       <View style={styles.container}>
@@ -48,7 +50,7 @@ const HotelDetailScreen = () => {
             <Text style={styles.hotelPrice}>{hotelData.price}</Text>
           </View>
 
-          <TouchableOpacity style={styles.ctaButton}>
+          <TouchableOpacity style={styles.ctaButton} onPress={() => router.push("/(trip)/hotels" as any)}>
             <LinearGradient
               colors={[DS.purple, DS.pink] as const}
               start={{ x: 0, y: 0 }}

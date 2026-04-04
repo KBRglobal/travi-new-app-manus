@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router';
 import { useState } from "react";
 import { View, Text, StyleSheet, Pressable, TextInput, FlatList } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -21,6 +22,7 @@ const CATEGORIES = [
 ];
 
 export default function HelpScreen() {
+  const router = useRouter();
   const [search, setSearch] = useState("");
   const [expanded, setExpanded] = useState<number | null>(null);
   const filtered = FAQS.filter(f => f.q.toLowerCase().includes(search.toLowerCase()));

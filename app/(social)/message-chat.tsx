@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router';
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView, TextInput, TouchableOpacity, Image } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -7,6 +8,7 @@ import { ScreenWrapper, DS } from '@/components/screen-wrapper';
 
 
 const MessageChatScreen = () => {
+  const router = useRouter();
   const messages = [
     { id: '1', text: 'Hey, how are you?', sender: 'me', time: '10:00 AM' },
     { id: '2', text: 'I am good, thanks! How about you?', sender: 'other', time: '10:01 AM' },

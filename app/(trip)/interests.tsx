@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router';
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { BlurView } from 'expo-blur';
@@ -17,6 +18,7 @@ const interestsData = [
 ];
 
 const InterestsScreen = () => {
+  const router = useRouter();
   const [selectedInterests, setSelectedInterests] = React.useState<string[]>([]);
 
   const toggleInterest = (id: string) => {
@@ -64,7 +66,7 @@ const InterestsScreen = () => {
           ))}
         </View>
 
-        <TouchableOpacity style={styles.ctaButton}>
+        <TouchableOpacity style={styles.ctaButton} onPress={() => router.push("/(dna)/categories" as any)}>
           <LinearGradient
             colors={[DS.purple, DS.pink] as const}
             start={{ x: 0, y: 0 }}

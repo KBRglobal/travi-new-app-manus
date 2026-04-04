@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router';
 
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Share } from 'react-native';
@@ -7,6 +8,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { ScreenWrapper, DS } from '@/components/screen-wrapper';
 
 const ReferScreen = () => {
+  const router = useRouter();
   const referralCode = 'TRAVI2024';
   const referralLink = 'https://travi.app/refer?code=' + referralCode;
 

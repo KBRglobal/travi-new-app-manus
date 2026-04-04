@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import { BlurView } from 'expo-blur';
@@ -19,6 +20,7 @@ const foodOptions = [
 ];
 
 const FoodPreferences = () => {
+  const router = useRouter();
   const [selectedPreferences, setSelectedPreferences] = useState<string[]>([]);
 
   const togglePreference = (id: string) => {

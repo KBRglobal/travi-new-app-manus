@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router';
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { BlurView } from 'expo-blur';
@@ -6,6 +7,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { ScreenWrapper, DS } from '@/components/screen-wrapper';
 
 const TripDetailScreen = () => {
+  const router = useRouter();
   return (
     <ScreenWrapper title="Trip Details" scrollable={true}>
       <View style={styles.section}>
@@ -30,7 +32,7 @@ const TripDetailScreen = () => {
         <Text style={styles.cardContent}>Eiffel Tower, Louvre Museum, Seine River Cruise</Text>
       </BlurView>
 
-      <TouchableOpacity style={styles.ctaButton}>
+      <TouchableOpacity style={styles.ctaButton} onPress={() => router.push("/(tabs)/trips" as any)}>
         <LinearGradient
           colors={[DS.purple, DS.pink] as const}
           style={styles.gradientBackground}

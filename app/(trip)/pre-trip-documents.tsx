@@ -1,11 +1,11 @@
+import { useRouter } from 'expo-router';
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { BlurView } from 'expo-blur';
 import { LinearGradient } from 'expo-linear-gradient';
 import { MaterialIcons } from '@expo/vector-icons';
 import { ScreenWrapper, DS } from '@/components/screen-wrapper';
 
-// Dummy data for demonstration
 const tripDocuments = [
   { id: '1', name: 'Flight Tickets', icon: 'airplane-ticket', status: 'Completed' },
   { id: '2', name: 'Hotel Booking', icon: 'hotel', status: 'Pending' },
@@ -16,6 +16,7 @@ const tripDocuments = [
 ];
 
 const PreTripDocumentsScreen = () => {
+  const router = useRouter();
   return (
     <ScreenWrapper title="Pre-Trip Documents" scrollable={true}>
       <View style={styles.container}>
@@ -31,10 +32,12 @@ const PreTripDocumentsScreen = () => {
           </BlurView>
         ))}
 
-        <LinearGradient colors={[DS.purple, DS.pink] as const} style={styles.ctaButton}>
-          <Text style={styles.ctaButtonText}>Upload New Document</Text>
-          <MaterialIcons name="cloud-upload" size={20} color={DS.white} />
-        </LinearGradient>
+        <TouchableOpacity activeOpacity={0.85} onPress={() => router.back()}>
+          <LinearGradient colors={[DS.purple, DS.pink] as const} style={styles.ctaButton}>
+            <Text style={styles.ctaButtonText}>Upload New Document</Text>
+            <MaterialIcons name="cloud-upload" size={20} color={DS.white} />
+          </LinearGradient>
+        </TouchableOpacity>
       </View>
     </ScreenWrapper>
   );

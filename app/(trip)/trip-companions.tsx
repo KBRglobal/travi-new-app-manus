@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router';
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import { ScreenWrapper, DS } from '@/components/screen-wrapper';
@@ -9,6 +10,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 // For this task, we'll define it here based on the provided structure
 
 const TripCompanions = () => {
+  const router = useRouter();
   const companions = [
     { id: '1', name: 'Alice Smith', status: 'Confirmed' },
     { id: '2', name: 'Bob Johnson', status: 'Pending' },
@@ -36,7 +38,7 @@ const TripCompanions = () => {
           </BlurView>
         ))}
 
-        <TouchableOpacity style={styles.ctaButton}>
+        <TouchableOpacity style={styles.ctaButton} onPress={() => router.push("/(live)/home" as any)}>
           <LinearGradient
             colors={[DS.purple, DS.pink] as const}
             start={{ x: 0, y: 0 }}

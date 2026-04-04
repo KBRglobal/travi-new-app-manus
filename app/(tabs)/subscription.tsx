@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router';
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -8,6 +9,7 @@ import { ScreenWrapper, DS } from '@/components/screen-wrapper';
 // IMPORTANT: The DS object is already exported from ScreenWrapper.tsx
 
 const SubscriptionScreen = () => {
+  const router = useRouter();
   return (
     <ScreenWrapper title="My Subscription" scrollable={true}>
       <View style={styles.container}>
@@ -36,7 +38,7 @@ const SubscriptionScreen = () => {
         </BlurView>
 
         {/* Call to Action Button */}
-        <TouchableOpacity style={styles.ctaButton}>
+        <TouchableOpacity style={styles.ctaButton} onPress={() => router.push("/(tabs)/membership" as any)}>
           <LinearGradient
             colors={[DS.purple, DS.pink] as const}
             start={{ x: 0, y: 0 }}

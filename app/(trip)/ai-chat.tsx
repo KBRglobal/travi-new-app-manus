@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -6,6 +7,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { ScreenWrapper, DS } from '@/components/screen-wrapper';
 
 const AIChatScreen = () => {
+  const router = useRouter();
   const [message, setMessage] = useState('');
   const [chatMessages, setChatMessages] = useState([
     { id: '1', text: 'Hello! How can I help you today?', sender: 'ai' },

@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router';
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity } from 'react-native';
 import { ScreenWrapper } from '@/components/screen-wrapper';
@@ -55,6 +56,7 @@ const memoriesData = [
 ];
 
 export default function MemoriesScreen() {
+  const router = useRouter();
   return (
     <ScreenWrapper title="Your Memories" scrollable={true}>
       <View style={styles.contentContainer}>

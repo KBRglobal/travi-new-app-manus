@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router';
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -6,6 +7,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { ScreenWrapper, DS } from '@/components/screen-wrapper';
 
 const PreTripChecklist = () => {
+  const router = useRouter();
   const checklistItems = [
     { id: '1', text: 'Confirm flight details', completed: true },
     { id: '2', text: 'Pack essential documents', completed: false },

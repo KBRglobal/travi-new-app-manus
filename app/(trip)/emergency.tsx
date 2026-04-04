@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router';
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { ScreenWrapper, DS } from '@/components/screen-wrapper';
@@ -6,6 +7,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { MaterialIcons } from '@expo/vector-icons';
 
 const EmergencyScreen = () => {
+  const router = useRouter();
   const contacts = [
     { title: 'Local Police', number: '911', icon: 'local-police' },
     { title: 'Emergency Services', number: '911', icon: 'medical-services' },

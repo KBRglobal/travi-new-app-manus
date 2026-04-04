@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router';
 import React from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView } from 'react-native';
 import { ScreenWrapper, DS } from '@/components/screen-wrapper';
@@ -8,6 +9,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 // Assuming DS is exported from ScreenWrapper or a separate design system file
 
 const RestaurantDetailScreen = () => {
+  const router = useRouter();
   // Dummy data for the restaurant
   const restaurant = {
     name: "Gourmet Haven",
@@ -49,7 +51,7 @@ const RestaurantDetailScreen = () => {
           </View>
         </BlurView>
 
-        <TouchableOpacity style={styles.ctaButton}>
+        <TouchableOpacity style={styles.ctaButton} onPress={() => router.push("/(live)/home" as any)}>
           <LinearGradient
             colors={[DS.purple, DS.pink] as const}
             start={{ x: 0, y: 0 }}

@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router';
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { ScreenWrapper } from '@/components/screen-wrapper';
@@ -15,6 +16,7 @@ const DS = {
 };
 
 const CompatibilityScreen = () => {
+  const router = useRouter();
   return (
     <ScreenWrapper title="Compatibility" scrollable={true}>
       <View style={styles.container}>

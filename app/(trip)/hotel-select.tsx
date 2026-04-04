@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router';
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, TextInput } from 'react-native';
 import { BlurView } from 'expo-blur';
@@ -18,6 +19,7 @@ const hotels = [
 ];
 
 const HotelSelectScreen = () => {
+  const router = useRouter();
   return (
     <ScreenWrapper title="Select Hotel" scrollable={true}>
       <View style={styles.container}>

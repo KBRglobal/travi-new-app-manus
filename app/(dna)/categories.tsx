@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router';
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -17,6 +18,7 @@ const categoriesData = [
 ];
 
 const CategoriesScreen = () => {
+  const router = useRouter();
   return (
     <ScreenWrapper title="Explore Categories" scrollable={true}>
       <View style={styles.container}>
@@ -30,7 +32,7 @@ const CategoriesScreen = () => {
             </BlurView>
           </TouchableOpacity>
         ))}
-        <TouchableOpacity style={styles.ctaButton}>
+        <TouchableOpacity style={styles.ctaButton} onPress={() => router.push("/(dna)/quick-swipe" as any)}>
           <LinearGradient
             colors={[DS.purple, DS.pink] as const}
             start={{ x: 0, y: 0 }}

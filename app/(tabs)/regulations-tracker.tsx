@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router';
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { BlurView } from 'expo-blur';
@@ -49,6 +50,7 @@ const regulationsData = [
 ];
 
 const RegulationsTracker = () => {
+  const router = useRouter();
   return (
     <ScreenWrapper title="Regulations Tracker" scrollable={true}>
       <View style={styles.container}>

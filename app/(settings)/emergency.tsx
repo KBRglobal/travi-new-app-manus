@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router';
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -8,6 +9,7 @@ import { ScreenWrapper, DS } from '@/components/screen-wrapper';
 // DS object exported from ScreenWrapper.tsx
 
 const EmergencyScreen = () => {
+  const router = useRouter();
   const handleCall = (number: string) => {
     console.log(`Calling ${number}`);
     // In a real app, you would use Linking.openURL(`tel:${number}`);

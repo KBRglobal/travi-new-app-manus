@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router';
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -9,6 +10,7 @@ import { ScreenWrapper, DS } from '@/components/screen-wrapper';
 // For this exercise, we'll define it here as per the prompt's instruction
 
 const ConnectFlow = () => {
+  const router = useRouter();
   return (
     <ScreenWrapper title="Connect with Friends" scrollable={true}>
       <View style={styles.contentContainer}>

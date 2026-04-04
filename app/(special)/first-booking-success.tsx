@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router';
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { ScreenWrapper } from '@/components/screen-wrapper';
@@ -16,6 +17,7 @@ const DS = {
 };
 
 const FirstBookingSuccess = () => {
+  const router = useRouter();
   return (
     <ScreenWrapper title="Booking Confirmation" scrollable={true}>
       <View style={styles.container}>

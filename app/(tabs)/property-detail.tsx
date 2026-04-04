@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router';
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -14,6 +15,7 @@ const Fonts = {
 };
 
 const PropertyDetailScreen = () => {
+  const router = useRouter();
   // Placeholder data for a property
   const property = {
     id: '1',
