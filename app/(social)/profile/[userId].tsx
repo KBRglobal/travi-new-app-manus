@@ -1,29 +1,53 @@
-import { View, Text, Pressable, ScrollView } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 
-export default function TravelerProfileScreen() {
+export default function UserProfileScreen() {
   const router = useRouter();
-  const { userId } = useLocalSearchParams<{ userId: string }>();
+  const { userId } = useLocalSearchParams();
+  const [isConnected, setIsConnected] = useState(false);
+
+  const user = { name: 'Sarah K.', avatar: '👩', bio: 'Foodie traveler exploring the world one bite at a time', trips: 8, countries: 12, reviews: 23, dna: ['Food 95%', 'Culture 88%', 'Adventure 72%'], badges: ['🏆 Top Reviewer', '🌍 Globe Trotter', '🍜 Foodie Master'] };
+
   return (
-    <View className="flex-1 bg-bg-primary pt-safe">
-      <View className="flex-row items-center px-4 md:px-6 mt-4">
-        <Pressable onPress={() => router.back()} className="p-2 -ml-2"><Text className="text-white text-2xl">‹</Text></Pressable>
+    <ScrollView className="flex-1 bg-bg-primary pt-safe">
+      <View className="flex-row items-center justify-between px-4 py-3">
+        <TouchableOpacity onPress={() => router.back()}><Text className="text-white text-lg">←</Text></TouchableOpacity>
+        <TouchableOpacity><Text className="text-white/40 text-xl">···</Text></TouchableOpacity>
       </View>
-      <ScrollView contentContainerClassName="px-4 md:px-6 py-4 items-center">
-        <View className="w-full max-w-md items-center">
-          <View className="w-24 h-24 rounded-full bg-primary/20 items-center justify-center"><Text className="text-4xl">👤</Text></View>
-          <Text className="text-white text-2xl font-bold mt-4">Traveler {userId}</Text>
-          <Text className="text-text-secondary text-sm mt-1">Explorer · 8 trips</Text>
-          <View className="flex-row gap-3 mt-6 w-full">
-            <Pressable onPress={() => router.push(`/(social)/chat/${userId}`)} className="flex-1 h-12 bg-primary rounded-button items-center justify-center active:opacity-80">
-              <Text className="text-white text-sm font-semibold">Message</Text>
-            </Pressable>
-            <Pressable className="flex-1 h-12 bg-white/10 rounded-button items-center justify-center active:opacity-80">
-              <Text className="text-white text-sm font-semibold">Add Buddy</Text>
-            </Pressable>
-          </View>
+      <View className="items-center py-6">
+        <Text className="text-7xl mb-3">{user.avatar}</Text>
+        <Text className="text-white text-2xl font-bold">{user.name}</Text>
+        <Text className="text-white/60 text-sm text-center px-8 mt-2">{user.bio}</Text>
+      </View>
+      <View className="flex-row justify-around mx-4 mb-6 p-4 bg-bg-secondary rounded-2xl border border-white/[0.08]">
+        <View className="items-center"><Text className="text-white text-xl font-bold">{user.trips}</Text><Text className="text-white/40 text-xs">Trips</Text></View>
+        <View className="items-center"><Text className="text-white text-xl font-bold">{user.countries}</Text><Text className="text-white/40 text-xs">Countries</Text></View>
+        <View className="items-center"><Text className="text-white text-xl font-bold">{user.reviews}</Text><Text className="text-white/40 text-xs">Reviews</Text></View>
+      </View>
+      <View className="flex-row mx-4 mb-6">
+        <TouchableOpacity onPress={() => setIsConnected(!isConnected)} className={`flex-1 mr-2 py-3 rounded-2xl items-center ${isConnected ? 'bg-white/[0.05] border border-white/[0.08]' : 'bg-primary'}`}>
+          <Text className={`font-bold ${isConnected ? 'text-white/60' : 'text-white'}`}>{isConnected ? '✓ Connected' : 'Connect'}</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => router.push(`/(social)/messages/${userId}`)} className="flex-1 mx-1 py-3 rounded-2xl items-center bg-white/[0.05] border border-white/[0.08]">
+          <Text className="text-white/80 font-bold">Message</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => router.push(`/(social)/compatibility/${userId}`)} className="flex-1 ml-2 py-3 rounded-2xl items-center bg-white/[0.05] border border-white/[0.08]">
+          <Text className="text-white/80 font-bold">DNA</Text>
+        </TouchableOpacity>
+      </View>
+      <View className="mx-4 mb-4">
+        <Text className="text-white font-bold text-lg mb-3">Travel DNA</Text>
+        <View className="flex-row flex-wrap">
+          {user.dna.map(d => <View key={d} className="bg-primary/20 px-3 py-1.5 rounded-full mr-2 mb-2"><Text className="text-primary text-sm">{d}</Text></View>)}
         </View>
-      </ScrollView>
-    </View>
+      </View>
+      <View className="mx-4 mb-8">
+        <Text className="text-white font-bold text-lg mb-3">Badges</Text>
+        <View className="flex-row flex-wrap">
+          {user.badges.map(b => <View key={b} className="bg-bg-secondary px-3 py-2 rounded-xl mr-2 mb-2 border border-white/[0.08]"><Text className="text-white/80 text-sm">{b}</Text></View>)}
+        </View>
+      </View>
+    </ScrollView>
   );
 }

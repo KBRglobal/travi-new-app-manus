@@ -1,77 +1,47 @@
-import React, { useState, useRef, useCallback } from 'react';
-import { View, Text, TouchableOpacity, FlatList, Dimensions } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
-import { activities } from '../../lib/mockData';
-
-const { height: SCREEN_HEIGHT } = Dimensions.get('window');
-
-// Note: MapView requires native build. For web preview, showing placeholder.
-// In production: import MapView, { Marker } from 'react-native-maps';
-// import MapViewDirections from 'react-native-maps-directions';
-// import BottomSheet from '@gorhom/bottom-sheet';
 
 export default function LiveMapScreen() {
   const router = useRouter();
-  const [selectedActivity, setSelectedActivity] = useState<string | null>(null);
-  const [sheetExpanded, setSheetExpanded] = useState(false);
+  const [filter, setFilter] = useState('all');
+  const filters = ['all', 'food', 'attractions', 'transport', 'hotels'];
 
   return (
-    <View className="flex-1 bg-bg-primary">
-      {/* Map placeholder — in production this is MapView with dark style */}
-      <View className="flex-1 bg-bg-secondary items-center justify-center">
-        <Text className="text-6xl mb-4">🗺️</Text>
-        <Text className="text-white text-heading-3">Live Map</Text>
-        <Text className="text-text-secondary text-body-sm mt-2">Dubai, UAE</Text>
-
-        {/* Activity markers */}
-        <View className="absolute top-20 left-0 right-0 items-center">
-          <View className="flex-row flex-wrap justify-center gap-4 px-6">
-            {activities.slice(0, 4).map((act, i) => (
-              <TouchableOpacity
-                key={act.id}
-                className={`bg-primary w-8 h-8 rounded-full items-center justify-center ${selectedActivity === act.id ? 'scale-125' : ''}`}
-                onPress={() => setSelectedActivity(act.id)}
-              >
-                <Text className="text-white text-body-sm font-bold">{i + 1}</Text>
-              </TouchableOpacity>
-            ))}
-          </View>
-        </View>
+    <View className="flex-1 bg-bg-primary pt-safe">
+      <View className="flex-row items-center px-4 py-3">
+        <TouchableOpacity onPress={() => router.back()}><Text className="text-white text-lg">←</Text></TouchableOpacity>
+        <Text className="text-white text-xl font-bold ml-3">Live Map</Text>
+        <View className="flex-1" />
+        <TouchableOpacity onPress={() => router.push('/(live)/emergency')}><Text className="text-red-400 font-bold">SOS</Text></TouchableOpacity>
       </View>
-
-      {/* Back button */}
-      <TouchableOpacity className="absolute top-14 left-6 bg-bg-overlay w-10 h-10 rounded-full items-center justify-center" onPress={() => router.back()}>
-        <Text className="text-white text-lg">‹</Text>
-      </TouchableOpacity>
-
-      {/* Bottom sheet — in production this is @gorhom/bottom-sheet */}
-      <View className={`absolute bottom-0 left-0 right-0 bg-bg-primary border-t border-border rounded-t-3xl ${sheetExpanded ? 'h-[60%]' : 'h-[30%]'}`}>
-        <TouchableOpacity className="items-center py-3" onPress={() => setSheetExpanded(!sheetExpanded)}>
-          <View className="w-10 h-1 bg-text-muted rounded-full" />
-        </TouchableOpacity>
-
-        <Text className="text-white text-heading-3 px-6 mb-3">Nearby</Text>
-
-        <FlatList
-          data={activities}
-          keyExtractor={(item) => item.id}
-          contentContainerClassName="px-6 pb-8"
-          renderItem={({ item }) => (
-            <TouchableOpacity
-              className={`flex-row bg-bg-card border rounded-card p-3 mb-2 ${selectedActivity === item.id ? 'border-primary' : 'border-border'}`}
-              onPress={() => { setSelectedActivity(item.id); router.push(`/(live)/activity/${item.id}`); }}
-            >
-              <View className="flex-1">
-                <Text className="text-white text-body font-semibold">{item.name}</Text>
-                <Text className="text-text-secondary text-body-sm">{item.category} · {item.duration}</Text>
-              </View>
-              <View className="justify-center items-end">
-                <Text className="text-primary text-body-sm font-semibold">0.5 km</Text>
-                <Text className="text-text-muted text-caption">8 min walk</Text>
-              </View>
-            </TouchableOpacity>
-          )}
-        />
+      <View className="flex-1 bg-white/[0.03] mx-4 rounded-2xl items-center justify-center">
+        <Text className="text-6xl mb-4">🗺️</Text>
+        <Text className="text-white/60 text-sm">Map View</Text>
+        <Text className="text-white/30 text-xs mt-1">📍 Shinjuku, Tokyo</Text>
+      </View>
+      <View className="flex-row mx-4 my-3">
+        {filters.map(f => (
+          <TouchableOpacity key={f} onPress={() => setFilter(f)} className={`px-3 py-1.5 rounded-full mr-2 ${filter === f ? 'bg-primary' : 'bg-white/[0.05]'}`}>
+            <Text className={`text-xs capitalize ${filter === f ? 'text-white font-bold' : 'text-white/60'}`}>{f}</Text>
+          </TouchableOpacity>
+        ))}
+      </View>
+      <View className="mx-4 mb-4">
+        {[
+          { emoji: '🍣', name: 'Sushi Nakazawa', dist: '350m', rating: '4.8' },
+          { emoji: '⛩️', name: 'Meiji Shrine', dist: '1.2km', rating: '4.9' },
+          { emoji: '🚃', name: 'Shinjuku Station', dist: '200m', rating: '' },
+        ].map(item => (
+          <TouchableOpacity key={item.name} className="flex-row items-center p-3 mb-2 bg-bg-secondary rounded-xl border border-white/[0.08]">
+            <Text className="text-xl mr-2">{item.emoji}</Text>
+            <View className="flex-1">
+              <Text className="text-white font-bold text-sm">{item.name}</Text>
+              <Text className="text-white/40 text-xs">{item.dist}</Text>
+            </View>
+            {item.rating && <Text className="text-yellow-400 text-xs">⭐ {item.rating}</Text>}
+          </TouchableOpacity>
+        ))}
       </View>
     </View>
   );

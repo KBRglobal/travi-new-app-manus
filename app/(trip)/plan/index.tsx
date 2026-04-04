@@ -1,29 +1,51 @@
-import { View, Text, Pressable, ScrollView } from 'react-native';
+import React from 'react';
+import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
 
-// S19 — Plan Start
-export default function PlanStartScreen() {
+export default function PlanSummaryScreen() {
   const router = useRouter();
+
   return (
-    <View className="flex-1 bg-bg-primary pt-safe">
-      <View className="flex-row items-center px-4 md:px-6 mt-4">
-        <Pressable onPress={() => router.back()} className="p-2 -ml-2">
-          <Text className="text-white text-2xl">‹</Text>
-        </Pressable>
-        <Text className="text-white text-xl md:text-2xl font-bold ml-3">Plan a Trip</Text>
+    <ScrollView className="flex-1 bg-bg-primary pt-safe">
+      <View className="flex-row items-center px-4 py-3">
+        <TouchableOpacity onPress={() => router.back()}><Text className="text-white text-lg">←</Text></TouchableOpacity>
+        <Text className="text-white text-xl font-bold ml-3">Trip Summary</Text>
       </View>
-      <ScrollView contentContainerClassName="px-4 md:px-6 pb-32 items-center">
-        <View className="w-full max-w-md mt-12 items-center">
-          <Text className="text-6xl">✈️</Text>
-          <Text className="text-2xl md:text-3xl font-bold text-white mt-6 text-center">Where to next?</Text>
-          <Text className="text-text-secondary text-sm md:text-base mt-2 text-center">Let's plan your perfect trip step by step</Text>
-        </View>
-      </ScrollView>
-      <View className="absolute bottom-0 left-0 right-0 px-4 md:px-6 pb-safe mb-4 bg-bg-primary pt-4">
-        <Pressable onPress={() => router.push('/(trip)/plan/destination')} className="w-full max-w-md mx-auto h-14 bg-primary rounded-button items-center justify-center active:opacity-80">
-          <Text className="text-white text-base md:text-lg font-semibold">Choose Destination</Text>
-        </Pressable>
+      <View className="mx-4 mb-4 p-4 bg-bg-secondary rounded-2xl border border-white/[0.08]">
+        <Text className="text-white font-bold text-lg mb-1">🇯🇵 Tokyo, Japan</Text>
+        <Text className="text-white/60 text-sm">Apr 15 - Apr 22, 2026 • 7 nights</Text>
       </View>
-    </View>
+      <View className="mx-4 mb-4">
+        <Text className="text-white/60 text-xs uppercase mb-3 ml-1">Bookings</Text>
+        {[
+          { emoji: '✈️', title: 'Round-trip Flight', detail: 'NYC → TYO • Economy', price: '$890' },
+          { emoji: '🏨', title: 'Hotel Shinjuku', detail: '7 nights • Deluxe Room', price: '$1,260' },
+          { emoji: '🎯', title: 'Activities (3)', detail: 'Tea ceremony, Sushi class, Mt. Fuji', price: '$340' },
+          { emoji: '🚗', title: 'Airport Transfer', detail: 'Round-trip private car', price: '$120' },
+        ].map(item => (
+          <View key={item.title} className="flex-row items-center p-4 mb-2 bg-bg-secondary rounded-2xl border border-white/[0.08]">
+            <Text className="text-2xl mr-3">{item.emoji}</Text>
+            <View className="flex-1">
+              <Text className="text-white font-bold">{item.title}</Text>
+              <Text className="text-white/40 text-xs">{item.detail}</Text>
+            </View>
+            <Text className="text-white font-bold">{item.price}</Text>
+          </View>
+        ))}
+      </View>
+      <View className="mx-4 mb-4 p-4 bg-bg-secondary rounded-2xl border border-white/[0.08]">
+        <View className="flex-row justify-between mb-2"><Text className="text-white/60">Subtotal</Text><Text className="text-white">$2,610</Text></View>
+        <View className="flex-row justify-between mb-2"><Text className="text-white/60">Taxes & Fees</Text><Text className="text-white">$185</Text></View>
+        <View className="flex-row justify-between mb-2"><Text className="text-green-400">Points Discount</Text><Text className="text-green-400">-$50</Text></View>
+        <View className="h-px bg-white/[0.08] my-2" />
+        <View className="flex-row justify-between"><Text className="text-white font-bold text-lg">Total</Text><Text className="text-white font-bold text-lg">$2,745</Text></View>
+      </View>
+      <View className="mx-4 mb-2 p-3 bg-primary/10 rounded-xl border border-primary/20">
+        <Text className="text-primary text-sm text-center">🏆 You'll earn 274 points with this booking!</Text>
+      </View>
+      <TouchableOpacity onPress={() => router.push('/(trip)/plan/payment')} className="mx-4 mb-8 bg-primary py-4 rounded-2xl items-center">
+        <Text className="text-white font-bold text-lg">Proceed to Payment</Text>
+      </TouchableOpacity>
+    </ScrollView>
   );
 }

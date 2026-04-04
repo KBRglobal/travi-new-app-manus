@@ -1,23 +1,51 @@
-import { View, Text, Pressable, FlatList } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, FlatList, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
-const TXS = Array.from({ length: 15 }, (_, i) => ({ id: `tx-${i+1}`, label: `Transaction ${i+1}`, amount: i % 3 === 0 ? `+€${(i+1)*5}` : `-€${(i+1)*12}`, date: `Mar ${28-i}` }));
 
-export default function TransactionsScreen() {
+const TRANSACTIONS = [
+  { id: '1', type: 'credit', title: 'Cashback - Hotel', amount: 12.50, date: 'Apr 3, 2026', emoji: '🏨', status: 'completed' },
+  { id: '2', type: 'debit', title: 'Flight Booking', amount: -89.00, date: 'Apr 2, 2026', emoji: '✈️', status: 'completed' },
+  { id: '3', type: 'credit', title: 'Added Funds', amount: 100.00, date: 'Apr 1, 2026', emoji: '💳', status: 'completed' },
+  { id: '4', type: 'credit', title: 'Refund - Activity', amount: 35.00, date: 'Mar 28, 2026', emoji: '🔄', status: 'completed' },
+  { id: '5', type: 'credit', title: 'Cashback - Flight', amount: 22.30, date: 'Mar 25, 2026', emoji: '✈️', status: 'pending' },
+  { id: '6', type: 'debit', title: 'Restaurant Split', amount: -15.00, date: 'Mar 22, 2026', emoji: '🍽️', status: 'completed' },
+  { id: '7', type: 'debit', title: 'Activity Booking', amount: -45.00, date: 'Mar 20, 2026', emoji: '🎯', status: 'completed' },
+  { id: '8', type: 'credit', title: 'Points Conversion', amount: 25.00, date: 'Mar 15, 2026', emoji: '🏆', status: 'completed' },
+];
+
+export default function WalletTransactionsScreen() {
   const router = useRouter();
+  const [filter, setFilter] = useState<'all' | 'credit' | 'debit'>('all');
+  const filtered = filter === 'all' ? TRANSACTIONS : TRANSACTIONS.filter(t => t.type === filter);
+
   return (
     <View className="flex-1 bg-bg-primary pt-safe">
-      <View className="flex-row items-center px-4 md:px-6 mt-4">
-        <Pressable onPress={() => router.back()} className="p-2 -ml-2"><Text className="text-white text-2xl">‹</Text></Pressable>
+      <View className="flex-row items-center px-4 py-3">
+        <TouchableOpacity onPress={() => router.back()}><Text className="text-white text-lg">←</Text></TouchableOpacity>
         <Text className="text-white text-xl font-bold ml-3">Transactions</Text>
       </View>
-      <FlatList data={TXS} keyExtractor={(i) => i.id} contentContainerClassName="px-4 md:px-6 py-4"
-        renderItem={({ item }) => (
-          <View className="flex-row items-center justify-between py-3 border-b border-white/5">
-            <View><Text className="text-white text-base">{item.label}</Text><Text className="text-text-muted text-xs">{item.date}</Text></View>
-            <Text className={`text-base font-bold ${item.amount.startsWith('+') ? 'text-green-400' : 'text-white'}`}>{item.amount}</Text>
+      <View className="flex-row mx-4 mb-3">
+        {(['all', 'credit', 'debit'] as const).map(f => (
+          <TouchableOpacity key={f} onPress={() => setFilter(f)} className={`flex-1 py-2 mx-1 rounded-xl ${filter === f ? 'bg-primary' : 'bg-white/[0.05]'}`}>
+            <Text className={`text-center text-sm font-bold capitalize ${filter === f ? 'text-white' : 'text-white/60'}`}>{f === 'all' ? 'All' : f === 'credit' ? 'Income' : 'Spent'}</Text>
+          </TouchableOpacity>
+        ))}
+      </View>
+      <FlatList data={filtered} keyExtractor={i => i.id} renderItem={({ item }) => (
+        <View className="flex-row items-center mx-4 mb-2 p-4 bg-bg-secondary rounded-2xl border border-white/[0.08]">
+          <Text className="text-2xl mr-3">{item.emoji}</Text>
+          <View className="flex-1">
+            <Text className="text-white font-bold">{item.title}</Text>
+            <View className="flex-row items-center">
+              <Text className="text-white/40 text-xs">{item.date}</Text>
+              {item.status === 'pending' && <View className="ml-2 px-2 py-0.5 bg-yellow-500/20 rounded-full"><Text className="text-yellow-400 text-xs">Pending</Text></View>}
+            </View>
           </View>
-        )}
-      />
+          <Text className={`font-bold ${item.amount > 0 ? 'text-green-400' : 'text-white'}`}>
+            {item.amount > 0 ? '+' : ''}${Math.abs(item.amount).toFixed(2)}
+          </Text>
+        </View>
+      )} />
     </View>
   );
 }
