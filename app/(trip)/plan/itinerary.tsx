@@ -3,6 +3,7 @@ import React from 'react';
 import { View, Text, ScrollView, TouchableOpacity, FlatList} from 'react-native';
 import { useRouter } from 'expo-router';
 import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
+import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 
 const DAYS = [
   { day: 1, title: 'Cultural Immersion', activities: ['Dubai Museum', 'Gold Souk', 'Spice Market'] },
@@ -20,11 +21,17 @@ export default function ItineraryBuilder() {
           <Text className="text-white text-lg">‹ Back</Text>
         </TouchableOpacity>
         <Text className="text-white text-xl font-bold flex-1">Itinerary</Text>
+        <TouchableOpacity onPress={() => router.push('/(trip)/plan/packing-list')} className="mr-2">
+          <MaterialIcons name="luggage" size={22} color="#FFFFFF" />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => router.push('/(trip)/plan/trip-companions')} className="mr-2">
+          <MaterialIcons name="group" size={22} color="#FFFFFF" />
+        </TouchableOpacity>
         <TouchableOpacity onPress={() => router.push('/(trip)/plan/ai-itinerary')} className="mr-2">
-          <Ionicons name="hardware-chip" size={24} color="#FFFFFF" />
+          <Ionicons name="hardware-chip" size={22} color="#FFFFFF" />
         </TouchableOpacity>
         <TouchableOpacity onPress={() => router.push('/(trip)/plan/collab/tripId')}>
-          <Ionicons name="people" size={24} color="#FFFFFF" />
+          <Ionicons name="people" size={22} color="#FFFFFF" />
         </TouchableOpacity>
       </View>
 

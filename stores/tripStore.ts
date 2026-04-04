@@ -41,6 +41,32 @@ interface CartItem {
   quantity: number;
 }
 
+// ─── New Interfaces ───
+
+export interface PackingItem {
+  id: string;
+  name: string;
+  category: string;
+  quantity: number;
+  packed: boolean;
+}
+
+export interface Companion {
+  id: string;
+  name: string;
+  email?: string;
+  phone?: string;
+  avatarUrl?: string;
+  status: 'confirmed' | 'pending' | 'declined';
+  isOrganizer?: boolean;
+}
+
+export interface FoodPreferences {
+  dietary: string[];       // e.g. ['vegetarian', 'gluten-free']
+  cuisines: string[];      // e.g. ['italian', 'japanese']
+  budget: 'street' | 'midrange' | 'fine' | null;
+}
+
 interface TripPlan {
   id: string;
   destination: Destination | null;
@@ -52,6 +78,11 @@ interface TripPlan {
   cart: CartItem[];
   totalPrice: number;
   status: 'planning' | 'booked' | 'pre-trip' | 'live' | 'post-trip' | 'completed';
+  // New fields
+  packingList: PackingItem[];
+  companions: Companion[];
+  foodPreferences: FoodPreferences;
+  interests: string[];
 }
 
 interface TripState {
@@ -72,6 +103,24 @@ interface TripState {
   setStatus: (status: TripPlan['status']) => void;
   setActiveTripId: (id: string | null) => void;
   reset: () => void;
+
+  // Packing List
+  addPackingItem: (item: Omit<PackingItem, 'id'>) => void;
+  togglePackingItem: (itemId: string) => void;
+  removePackingItem: (itemId: string) => void;
+  updatePackingQuantity: (itemId: string, quantity: number) => void;
+  markAllInCategory: (category: string) => void;
+
+  // Companions
+  addCompanion: (companion: Omit<Companion, 'id'>) => void;
+  removeCompanion: (companionId: string) => void;
+  updateCompanionStatus: (companionId: string, status: Companion['status']) => void;
+
+  // Food Preferences
+  setFoodPreferences: (prefs: FoodPreferences) => void;
+
+  // Interests
+  setInterests: (interests: string[]) => void;
 }
 
 const emptyTrip: TripPlan = {
@@ -85,6 +134,10 @@ const emptyTrip: TripPlan = {
   cart: [],
   totalPrice: 0,
   status: 'planning',
+  packingList: [],
+  companions: [],
+  foodPreferences: { dietary: [], cuisines: [], budget: null },
+  interests: [],
 };
 
 export const useTripStore = create<TripState>()(
@@ -106,6 +159,56 @@ export const useTripStore = create<TripState>()(
       setStatus: (status) => set((s) => ({ currentTrip: s.currentTrip ? { ...s.currentTrip, status } : null })),
       setActiveTripId: (id) => set({ activeTripId: id }),
       reset: () => set({ currentTrip: null }),
+
+      // ─── Packing List ───
+      addPackingItem: (item) => set((s) => {
+        if (!s.currentTrip) return {};
+        const newItem: PackingItem = { ...item, id: Date.now().toString() + Math.random().toString(36).slice(2, 6) };
+        return { currentTrip: { ...s.currentTrip, packingList: [...s.currentTrip.packingList, newItem] } };
+      }),
+      togglePackingItem: (itemId) => set((s) => {
+        if (!s.currentTrip) return {};
+        return { currentTrip: { ...s.currentTrip, packingList: s.currentTrip.packingList.map(i => i.id === itemId ? { ...i, packed: !i.packed } : i) } };
+      }),
+      removePackingItem: (itemId) => set((s) => {
+        if (!s.currentTrip) return {};
+        return { currentTrip: { ...s.currentTrip, packingList: s.currentTrip.packingList.filter(i => i.id !== itemId) } };
+      }),
+      updatePackingQuantity: (itemId, quantity) => set((s) => {
+        if (!s.currentTrip) return {};
+        return { currentTrip: { ...s.currentTrip, packingList: s.currentTrip.packingList.map(i => i.id === itemId ? { ...i, quantity } : i) } };
+      }),
+      markAllInCategory: (category) => set((s) => {
+        if (!s.currentTrip) return {};
+        return { currentTrip: { ...s.currentTrip, packingList: s.currentTrip.packingList.map(i => i.category === category ? { ...i, packed: true } : i) } };
+      }),
+
+      // ─── Companions ───
+      addCompanion: (companion) => set((s) => {
+        if (!s.currentTrip) return {};
+        const newCompanion: Companion = { ...companion, id: Date.now().toString() + Math.random().toString(36).slice(2, 6) };
+        return { currentTrip: { ...s.currentTrip, companions: [...s.currentTrip.companions, newCompanion] } };
+      }),
+      removeCompanion: (companionId) => set((s) => {
+        if (!s.currentTrip) return {};
+        return { currentTrip: { ...s.currentTrip, companions: s.currentTrip.companions.filter(c => c.id !== companionId) } };
+      }),
+      updateCompanionStatus: (companionId, status) => set((s) => {
+        if (!s.currentTrip) return {};
+        return { currentTrip: { ...s.currentTrip, companions: s.currentTrip.companions.map(c => c.id === companionId ? { ...c, status } : c) } };
+      }),
+
+      // ─── Food Preferences ───
+      setFoodPreferences: (prefs) => set((s) => {
+        if (!s.currentTrip) return {};
+        return { currentTrip: { ...s.currentTrip, foodPreferences: prefs } };
+      }),
+
+      // ─── Interests ───
+      setInterests: (interests) => set((s) => {
+        if (!s.currentTrip) return {};
+        return { currentTrip: { ...s.currentTrip, interests } };
+      }),
     }),
     {
       name: 'travi-trips',

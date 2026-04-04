@@ -31,7 +31,7 @@ export default function PlanDatesScreen() {
  </View>
  </View>
  <View className="px-4 md:px-6 pb-safe mb-4">
- <Pressable onPress={() => router.push('/(trip)/plan/flights')} className="w-full max-w-md mx-auto h-14 bg-primary rounded-button items-center justify-center active:opacity-80">
+ <Pressable onPress={() => router.push('/(trip)/plan/food-preferences')} className="w-full max-w-md mx-auto h-14 bg-primary rounded-button items-center justify-center active:opacity-80">
  <Text className="text-white text-base font-semibold">Continue</Text>
  </Pressable>
  </View>

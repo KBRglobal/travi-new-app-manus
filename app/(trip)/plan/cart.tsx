@@ -1,33 +1,78 @@
-import { View, Text, Pressable, ScrollView, FlatList} from 'react-native';
+import { View, Text, Pressable, ScrollView } from 'react-native';
 import { useRouter } from 'expo-router';
-import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
+import { colors, fonts, fontSizes, radius } from '@/constants/theme';
+import { Ionicons, MaterialIcons } from '@expo/vector-icons';
+import { useTripStore } from '@/stores/tripStore';
 
 export default function PlanCartScreen() {
   const router = useRouter();
-  const items = [{ label: 'Flight TLV → BCN', price: '€180' }, { label: 'Hotel Barcelona (7 nights)', price: '€840' }, { label: '3 Activities', price: '€120' }];
+  const companions = useTripStore((s) => s.currentTrip?.companions || []);
+  const items = [
+    { label: 'Flight TLV → BCN', price: '€180' },
+    { label: 'Hotel Barcelona (7 nights)', price: '€840' },
+    { label: '3 Activities', price: '€120' },
+  ];
+
   return (
-    <View className="flex-1 bg-bg-primary pt-safe">
-      <View className="flex-row items-center px-4 md:px-6 mt-4">
-        <Pressable onPress={() => router.back()} className="p-2 -ml-2"><Text className="text-white text-2xl">‹</Text></Pressable>
-        <Text className="text-white text-xl font-bold ml-3">Your Cart</Text>
+    <View style={{ flex: 1, backgroundColor: colors.bg.primary }}>
+      {/* Header */}
+      <View style={{ flexDirection: 'row', alignItems: 'center', paddingHorizontal: 20, paddingTop: 56, paddingBottom: 16 }}>
+        <Pressable onPress={() => router.back()} style={{ padding: 8, marginRight: 12 }}>
+          <Ionicons name="arrow-back" size={24} color={colors.text.primary} />
+        </Pressable>
+        <Text style={{ fontFamily: fonts.heading, fontSize: fontSizes.h2, color: colors.text.primary }}>Your Cart</Text>
       </View>
-      <ScrollView removeClippedSubviews={true} contentContainerClassName="px-4 md:px-6 py-4 pb-32">
-        <View className="w-full max-w-md mx-auto">
-          {items.map((item, i) => (
-            <View key={i} className="flex-row justify-between py-4 border-b border-white/5">
-              <Text className="text-white text-base">{item.label}</Text>
-              <Text className="text-white text-base font-bold">{item.price}</Text>
-            </View>
-          ))}
-          <View className="flex-row justify-between py-4 mt-2">
-            <Text className="text-white text-lg font-bold">Total</Text>
-            <Text className="text-primary text-lg font-bold">€1,140</Text>
+
+      <ScrollView removeClippedSubviews={true} contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 120 }}>
+        {/* Cart Items */}
+        {items.map((item, i) => (
+          <View key={i} style={{ flexDirection: 'row', justifyContent: 'space-between', paddingVertical: 16, borderBottomWidth: 1, borderBottomColor: colors.border.default }}>
+            <Text style={{ fontFamily: fonts.body, fontSize: fontSizes.body, color: colors.text.primary }}>{item.label}</Text>
+            <Text style={{ fontFamily: fonts.bold, fontSize: fontSizes.body, color: colors.text.primary }}>{item.price}</Text>
           </View>
+        ))}
+
+        {/* Total */}
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingVertical: 16, marginTop: 8 }}>
+          <Text style={{ fontFamily: fonts.heading, fontSize: fontSizes.bodyLg, color: colors.text.primary }}>Total</Text>
+          <Text style={{ fontFamily: fonts.heading, fontSize: fontSizes.bodyLg, color: colors.primary }}>€1,140</Text>
         </View>
+
+        {/* Payment Method */}
+        <View style={{ backgroundColor: colors.bg.card, borderRadius: radius.card, padding: 16, marginTop: 16, borderWidth: 1, borderColor: colors.border.default, flexDirection: 'row', alignItems: 'center', gap: 12 }}>
+          <MaterialIcons name="credit-card" size={22} color={colors.text.secondary} />
+          <View style={{ flex: 1 }}>
+            <Text style={{ fontFamily: fonts.bold, fontSize: fontSizes.bodySm, color: colors.text.primary }}>Payment Method</Text>
+            <Text style={{ fontFamily: fonts.body, fontSize: fontSizes.caption, color: colors.text.muted, marginTop: 2 }}>Visa •••• 4242</Text>
+          </View>
+          <Ionicons name="chevron-forward" size={18} color={colors.text.muted} />
+        </View>
+
+        {/* Trip Companions Row */}
+        <Pressable
+          onPress={() => router.push('/(trip)/plan/trip-companions')}
+          style={{ backgroundColor: colors.bg.card, borderRadius: radius.card, padding: 16, marginTop: 12, borderWidth: 1, borderColor: colors.border.default, flexDirection: 'row', alignItems: 'center', gap: 12 }}
+        >
+          <MaterialIcons name="group" size={22} color={colors.text.secondary} />
+          <View style={{ flex: 1 }}>
+            <Text style={{ fontFamily: fonts.bold, fontSize: fontSizes.bodySm, color: colors.text.primary }}>Trip Companions ({companions.length + 1} people)</Text>
+            {companions.length > 0 && (
+              <Text style={{ fontFamily: fonts.body, fontSize: fontSizes.caption, color: colors.text.muted, marginTop: 2 }}>
+                {companions.filter((c) => c.status === 'confirmed').length} confirmed
+              </Text>
+            )}
+          </View>
+          <Text style={{ fontFamily: fonts.bold, fontSize: fontSizes.bodySm, color: colors.primary }}>Manage →</Text>
+        </Pressable>
       </ScrollView>
-      <View className="absolute bottom-0 left-0 right-0 px-4 md:px-6 pb-safe mb-4 bg-bg-primary pt-4">
-        <Pressable onPress={() => router.push('/(trip)/plan/checkout')} className="w-full max-w-md mx-auto h-14 bg-primary rounded-button items-center justify-center active:opacity-80">
-          <Text className="text-white text-base font-semibold">Proceed to Checkout</Text>
+
+      {/* Checkout Button */}
+      <View style={{ position: 'absolute', bottom: 0, left: 0, right: 0, paddingHorizontal: 20, paddingBottom: 36, paddingTop: 16, backgroundColor: colors.bg.primary }}>
+        <Pressable
+          onPress={() => router.push('/(trip)/plan/checkout')}
+          style={{ height: 56, borderRadius: radius.button, justifyContent: 'center', alignItems: 'center', backgroundColor: colors.primary }}
+        >
+          <Text style={{ fontFamily: fonts.bold, fontSize: fontSizes.body, color: '#FFF' }}>Proceed to Checkout</Text>
         </Pressable>
       </View>
     </View>
