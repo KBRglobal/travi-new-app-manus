@@ -1,0 +1,79 @@
+[2026-04-04T21:10:23.354Z] [0] cnode:internal/modules/cjs/loader:1247
+[2026-04-04T21:10:23.355Z] [0]   throw err;
+[2026-04-04T21:10:23.356Z] [0]   ^
+[2026-04-04T21:10:23.356Z] [0]
+[2026-04-04T21:10:23.356Z] [0] Error: Cannot find module '/home/ubuntu/travi-app/node_modules/tsx/dist/preflight.cjs'
+[2026-04-04T21:10:23.357Z] [0] Require stack:
+[2026-04-04T21:10:23.357Z] [0] - internal/preload
+[2026-04-04T21:10:23.357Z] [0]     at Function._resolveFilename (node:internal/modules/cjs/loader:1244:15)
+[2026-04-04T21:10:23.358Z] [0]     at Function._load (node:internal/modules/cjs/loader:1070:27)
+[2026-04-04T21:10:23.358Z] [0]     at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+[2026-04-04T21:10:23.358Z] [0]     at wrapModuleLoad (node:internal/modules/cjs/loader:217:24)
+[2026-04-04T21:10:23.359Z] [0]     at Module.require (node:internal/modules/cjs/loader:1335:12)
+[2026-04-04T21:10:23.359Z] [0]     at node:internal/modules/cjs/loader:1834:12
+[2026-04-04T21:10:23.359Z] [0]     at loadPreloadModules (node:internal/process/pre_execution:726:5)
+[2026-04-04T21:10:23.360Z] [0]     at setupUserModules (node:internal/process/pre_execution:206:5)
+[2026-04-04T21:10:23.360Z] [0]     at prepareExecution (node:internal/process/pre_execution:159:5)
+[2026-04-04T21:10:23.360Z] [0]     at prepareMainThreadExecution (node:internal/process/pre_execution:54:10) {
+[2026-04-04T21:10:23.361Z] [0]   code: 'MODULE_NOT_FOUND',
+[2026-04-04T21:10:23.361Z] [0]   requireStack: [ 'internal/preload' ]
+[2026-04-04T21:10:23.362Z] [0] }
+[2026-04-04T21:10:23.362Z] [0]
+[2026-04-04T21:10:23.362Z] [0] Node.js v22.13.0
+[2026-04-04T21:10:28.477Z] [1] /home/ubuntu/travi-app/node_modules/@expo/cli/build/src/utils/errors.js:130
+[2026-04-04T21:10:28.478Z] [1]     throw error;
+[2026-04-04T21:10:28.478Z] [1]     ^
+[2026-04-04T21:10:28.478Z] [1]
+[2026-04-04T21:10:28.479Z] [1] Error: Cannot find module 'stacktrace-parser'
+[2026-04-04T21:10:28.479Z] [1] Require stack:
+[2026-04-04T21:10:28.479Z] [1] - /home/ubuntu/travi-app/node_modules/@expo/cli/build/src/start/server/serverLogLikeMetro.js
+[2026-04-04T21:10:28.479Z] [1] - /home/ubuntu/travi-app/node_modules/@expo/cli/build/src/start/server/getStaticRenderFunctions.js
+[2026-04-04T21:10:28.480Z] [1] - /home/ubuntu/travi-app/node_modules/@expo/cli/build/src/start/server/metro/metroErrorInterface.js
+[2026-04-04T21:10:28.480Z] [1] - /home/ubuntu/travi-app/node_modules/@expo/cli/build/src/start/server/metro/createServerComponentsMiddleware.js
+[2026-04-04T21:10:28.481Z] [1] - /home/ubuntu/travi-app/node_modules/@expo/cli/build/src/start/server/metro/MetroBundlerDevServer.js
+[2026-04-04T21:10:28.481Z] [1] - /home/ubuntu/travi-app/node_modules/@expo/cli/build/src/start/server/DevServerManager.js
+[2026-04-04T21:10:28.481Z] [1] - /home/ubuntu/travi-app/node_modules/@expo/cli/build/src/start/startAsync.js
+[2026-04-04T21:10:28.482Z] [1] - /home/ubuntu/travi-app/node_modules/@expo/cli/build/src/start/index.js
+[2026-04-04T21:10:28.482Z] [1] - /home/ubuntu/travi-app/node_modules/@expo/cli/build/bin/cli
+[2026-04-04T21:10:28.482Z] [1] - /home/ubuntu/travi-app/node_modules/expo/bin/cli
+[2026-04-04T21:10:28.483Z] [1]     at Function._resolveFilename (node:internal/modules/cjs/loader:1244:15)
+[2026-04-04T21:10:28.483Z] [1]     at Function._load (node:internal/modules/cjs/loader:1070:27)
+[2026-04-04T21:10:28.483Z] [1]     at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+[2026-04-04T21:10:28.484Z] [1]     at wrapModuleLoad (node:internal/modules/cjs/loader:217:24)
+[2026-04-04T21:10:28.484Z] [1]     at Module.require (node:internal/modules/cjs/loader:1335:12)
+[2026-04-04T21:10:28.484Z] [1]     at require (node:internal/modules/helpers:136:16)
+[2026-04-04T21:10:28.485Z] [1]     at stackTraceParser (/home/ubuntu/travi-app/node_modules/@expo/cli/build/src/start/server/serverLogLikeMetro.js:62:58)
+[2026-04-04T21:10:28.485Z] [1]     at formatStackLikeMetro (/home/ubuntu/travi-app/node_modules/@expo/cli/src/start/server/serverLogLikeMetro.ts:242:22)
+[2026-04-04T21:10:28.486Z] [1]     at console.logWithStack [as error] (/home/ubuntu/travi-app/node_modules/@expo/cli/src/start/server/serverLogLikeMetro.ts:217:30)
+[2026-04-04T21:10:28.486Z] [1]     at /home/ubuntu/travi-app/node_modules/expo-router/build/typed-routes/index.js:83:17 {
+[2026-04-04T21:10:28.487Z] [1]   code: 'MODULE_NOT_FOUND',
+[2026-04-04T21:10:28.487Z] [1]   requireStack: [
+[2026-04-04T21:10:28.487Z] [1]     '/home/ubuntu/travi-app/node_modules/@expo/cli/build/src/start/server/serverLogLikeMetro.js',
+[2026-04-04T21:10:28.488Z] [1]     '/home/ubuntu/travi-app/node_modules/@expo/cli/build/src/start/server/getStaticRenderFunctions.js',
+[2026-04-04T21:10:28.488Z] [1]     '/home/ubuntu/travi-app/node_modules/@expo/cli/build/src/start/server/metro/metroErrorInterface.js',
+[2026-04-04T21:10:28.489Z] [1]     '/home/ubuntu/travi-app/node_modules/@expo/cli/build/src/start/server/metro/createServerComponentsMiddleware.js',
+[2026-04-04T21:10:28.489Z] [1]     '/home/ubuntu/travi-app/node_modules/@expo/cli/build/src/start/server/metro/MetroBundlerDevServer.js',
+[2026-04-04T21:10:28.489Z] [1]     '/home/ubuntu/travi-app/node_modules/@expo/cli/build/src/start/server/DevServerManager.js',
+[2026-04-04T21:10:28.490Z] [1]     '/home/ubuntu/travi-app/node_modules/@expo/cli/build/src/start/startAsync.js',
+[2026-04-04T21:10:28.490Z] [1]     '/home/ubuntu/travi-app/node_modules/@expo/cli/build/src/start/index.js',
+[2026-04-04T21:10:28.490Z] [1]     '/home/ubuntu/travi-app/node_modules/@expo/cli/build/bin/cli',
+[2026-04-04T21:10:28.491Z] [1]     '/home/ubuntu/travi-app/node_modules/expo/bin/cli'
+[2026-04-04T21:10:28.491Z] [1]   ]
+[2026-04-04T21:10:28.491Z] [1] }
+[2026-04-04T21:10:28.491Z] [1]
+[2026-04-04T21:10:28.492Z] [1] Node.js v22.13.0
+[2026-04-04T21:10:29.434Z] [1]  ELIFECYCLE  Command failed with exit code 7.
+[2026-04-04T21:10:29.525Z] [1]  WARN   Local package.json exists, but node_modules missing, did you mean to install?
+[2026-04-04T21:10:29.625Z] [1] pnpm dev:metro exited with code 7
+[2026-04-04T21:10:29.647Z] --> Sending SIGTERM to other processes..
+[2026-04-04T21:10:29.964Z] [0]  ELIFECYCLE  Command failed.
+[2026-04-04T21:10:30.034Z] [0]  WARN   Local package.json exists, but node_modules missing, did you mean to install?
+[2026-04-04T21:10:30.043Z] [0] pnpm dev:server exited with code SIGTERM
+[2026-04-04T21:10:30.413Z] ELIFECYCLE  Command failed with exit code 1.
+[2026-04-04T21:10:30.473Z] WARN   Local package.json exists, but node_modules missing, did you mean to install?
+[2026-04-04T21:10:30.734Z] Dev server exited with code 1
+[2026-04-04T21:11:09.531Z] Starting dev server with command: pnpm run dev
+[2026-04-04T21:11:09.985Z] ERR_PNPM_NO_SCRIPT  Missing script: dev
+[2026-04-04T21:11:09.986Z] 
+[2026-04-04T21:11:09.986Z] Command "dev" not found.
+[2026-04-04T21:11:10.009Z] Dev server exited with code 1
