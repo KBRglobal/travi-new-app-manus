@@ -5,6 +5,7 @@ import DraggableFlatList, { ScaleDecorator, RenderItemParams } from 'react-nativ
 import { useRouter } from 'expo-router';
 import { activities, itineraryDays } from '../../lib/mockData';
 import { EmptyState } from '@/components/ui/EmptyState';
+import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
 
 type ItineraryItem = typeof activities[0] & { dayId: string };
 

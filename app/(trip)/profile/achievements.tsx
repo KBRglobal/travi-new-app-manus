@@ -2,6 +2,7 @@ import { Skeleton } from '@/components/ui/Skeleton';
 import React from 'react';
 import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
+import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
 
 const ACHIEVEMENTS = [
   { id: '1', emoji: '🌍', title: 'Globe Trotter', desc: 'Visit 10 countries', progress: 8, total: 10, unlocked: false },

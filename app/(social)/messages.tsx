@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { View, Text, FlatList, TouchableOpacity, TextInput } from 'react-native';
 import { useRouter } from 'expo-router';
 import { EmptyState } from '@/components/ui/EmptyState';
+import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
 
 const CONVERSATIONS = [
   { id: '1', name: 'Sarah K.', avatar: '👩', lastMessage: 'See you in Barcelona!', time: '2m', unread: 2, online: true },

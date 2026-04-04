@@ -4,6 +4,7 @@ import { View, Text, TouchableOpacity, ScrollView, FlatList } from 'react-native
 import Animated, { FadeInDown } from 'react-native-reanimated';
 import { useRouter } from 'expo-router';
 import { EmptyState } from '@/components/ui/EmptyState';
+import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
 
 const cities = [
   { id: 'n1', name: 'Lisbon', country: 'Portugal', score: 92, internet: '95 Mbps', cost: '€1,800/mo', coworking: 45, community: 'Large' },

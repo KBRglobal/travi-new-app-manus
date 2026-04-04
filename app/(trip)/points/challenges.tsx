@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { View, Text, FlatList, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
 import { EmptyState } from '@/components/ui/EmptyState';
+import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
 
 const CHALLENGES = [
   { id: '1', emoji: '🌅', title: 'Sunrise Seeker', desc: 'Watch 3 sunrises during your trip', reward: 500, progress: 1, total: 3, active: true, expires: '5 days' },

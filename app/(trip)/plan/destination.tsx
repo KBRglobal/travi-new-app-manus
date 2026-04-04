@@ -2,6 +2,7 @@ import { haptic } from '@/lib/haptics';
 import React, { useState } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, TextInput } from 'react-native';
 import { useRouter } from 'expo-router';
+import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
 
 const SUGGESTIONS = [
   { name: 'Dubai', flag: '🇦🇪', match: 92 },
@@ -27,7 +28,7 @@ export default function DestinationSelect() {
         <TouchableOpacity onPress={() => setMode('city')} className={`flex-1 py-2 rounded-pill items-center ${mode === 'city' ? 'bg-primary' : ''}`}>
           <Text className={mode === 'city' ? 'text-white font-semibold' : 'text-text-secondary'}>✈️ City Trip</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => { setMode('road'); router.push('/(trip)/plan/road-trip'); }} className={`flex-1 py-2 rounded-pill items-center ${mode === 'road' ? 'bg-primary' : ''}`} style={{ borderWidth: mode !== 'road' ? 1 : 0, borderColor: '#F94498' }}>
+        <TouchableOpacity onPress={() => { setMode('road'); router.push('/(trip)/plan/road-trip'); }} className={`flex-1 py-2 rounded-pill items-center ${mode === 'road' ? 'bg-primary' : ''}`} style={{ borderWidth: mode !== 'road' ? 1 : 0, borderColor: colors.pink }}>
           <Text className={mode === 'road' ? 'text-white font-semibold' : 'text-pink font-semibold'}>🚗 Road Trip {mode !== 'road' ? 'NEW' : ''}</Text>
         </TouchableOpacity>
       </View>

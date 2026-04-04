@@ -4,6 +4,7 @@ import { View, Text, TouchableOpacity, ScrollView, TextInput } from 'react-nativ
 import Animated, { FadeInDown } from 'react-native-reanimated';
 import { useRouter } from 'expo-router';
 import { exchangeRates } from '../../lib/mockData';
+import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
 
 const quickAmounts = [10, 50, 100, 500];
 

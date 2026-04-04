@@ -2,6 +2,7 @@ import { haptic } from '@/lib/haptics';
 import React from 'react';
 import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
+import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
 
 const TRANSACTIONS = [
   { name: 'Hotel Luxe', amount: -445, date: 'Apr 12', icon: '🏨' },
@@ -40,7 +41,7 @@ export default function WalletScreen() {
             <Text className="text-xl mb-1">📊</Text>
             <Text className="text-white text-sm font-semibold">Transactions</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => router.push('/(trip)/wallet/currency')} className="flex-1 bg-bg-card rounded-card p-3 items-center" style={{ borderWidth: 1, borderColor: '#F94498' }}>
+          <TouchableOpacity onPress={() => router.push('/(trip)/wallet/currency')} className="flex-1 bg-bg-card rounded-card p-3 items-center" style={{ borderWidth: 1, borderColor: colors.pink }}>
             <Text className="text-xl mb-1">💱</Text>
             <Text className="text-pink text-sm font-semibold">Currency</Text>
             <Text className="text-pink text-xs">NEW</Text>

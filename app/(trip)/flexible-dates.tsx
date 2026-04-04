@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, ScrollView, Switch } from 'react-native';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 import { useRouter } from 'expo-router';
+import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
 
 const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 const priceData = months.map((m, i) => ({ month: m, price: Math.floor(80 + Math.random() * 200), cheapest: i === 1 || i === 10 }));

@@ -1,7 +1,8 @@
-import { View, Text, TouchableOpacity } from 'react-native';
+import { Text, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
+import { colors, shadows } from '../constants/theme';
 
-// Global AI Chat FAB
+// Global AI Chat FAB — uses mascot duck emoji as placeholder
 export default function FABChat() {
   const router = useRouter();
 
@@ -15,17 +16,13 @@ export default function FABChat() {
         width: 56,
         height: 56,
         borderRadius: 28,
-        backgroundColor: '#6443F4',
+        backgroundColor: colors.primary,
         justifyContent: 'center',
         alignItems: 'center',
-        elevation: 8,
-        shadowColor: '#6443F4',
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.3,
-        shadowRadius: 8,
+        ...shadows.fab,
       }}
     >
-      <Text style={{ fontSize: 24 }}>🤖</Text>
+      <Text style={{ fontSize: 24 }}>🦆</Text>
     </TouchableOpacity>
   );
 }

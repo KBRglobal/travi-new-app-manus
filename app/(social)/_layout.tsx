@@ -1,4 +1,5 @@
 import { Stack } from 'expo-router';
+import { colors } from '@/constants/theme';
 
 // Social: Stack navigation
 export default function SocialLayout() {
@@ -6,7 +7,7 @@ export default function SocialLayout() {
     <Stack
       screenOptions={{
         headerShown: false,
-        contentStyle: { backgroundColor: '#0A0514' },
+        contentStyle: { backgroundColor: colors.bg.primary },
         animation: 'slide_from_right',
       }}
     >

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { View, Text, Pressable, ScrollView } from 'react-native';
 import { useRouter } from 'expo-router';
+import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
 
 const OPTIONS = [
   { id: 'detailed', icon: '📋', title: 'Detailed itinerary', subtitle: 'Planned hour by hour' },

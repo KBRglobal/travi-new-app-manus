@@ -1,11 +1,12 @@
 /**
  * Global Toast Component
- * Subscribes to ToastManager and renders toast messages with animation
+ * Design System: Satoshi fonts, brand status colors, pill radius
  */
 
 import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { toast } from '@/lib/errorHandling';
+import { colors, fonts, fontSizes, radius } from '@/constants/theme';
 
 type ToastType = 'success' | 'error' | 'warning' | 'info';
 
@@ -16,11 +17,11 @@ interface ToastData {
   duration: number;
 }
 
-const TOAST_STYLES: Record<ToastType, { bg: string; border: string; emoji: string }> = {
-  success: { bg: 'bg-green-500/20', border: 'border-green-500/30', emoji: '✅' },
-  error: { bg: 'bg-red-500/20', border: 'border-red-500/30', emoji: '❌' },
-  warning: { bg: 'bg-yellow-500/20', border: 'border-yellow-500/30', emoji: '⚠️' },
-  info: { bg: 'bg-blue-500/20', border: 'border-blue-500/30', emoji: 'ℹ️' },
+const TOAST_COLORS: Record<ToastType, { bg: string; border: string; emoji: string }> = {
+  success: { bg: colors.successLight, border: colors.success, emoji: '✅' },
+  error: { bg: colors.errorLight, border: colors.error, emoji: '❌' },
+  warning: { bg: colors.warningLight, border: colors.warning, emoji: '⚠️' },
+  info: { bg: colors.primaryLight, border: colors.primary, emoji: 'ℹ️' },
 };
 
 export function ToastProvider() {
@@ -35,18 +36,45 @@ export function ToastProvider() {
 
   if (!currentToast) return null;
 
-  const style = TOAST_STYLES[currentToast.type];
+  const style = TOAST_COLORS[currentToast.type];
 
   return (
     <View className="absolute top-16 left-4 right-4 z-50">
       <TouchableOpacity
         onPress={() => toast.dismiss()}
         activeOpacity={0.9}
-        className={`flex-row items-center px-4 py-3 rounded-2xl border ${style.bg} ${style.border}`}
+        style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+          paddingHorizontal: 16,
+          paddingVertical: 12,
+          borderRadius: radius.card,
+          backgroundColor: style.bg,
+          borderWidth: 1,
+          borderColor: style.border,
+        }}
       >
-        <Text className="text-lg mr-2">{style.emoji}</Text>
-        <Text className="text-white text-sm flex-1">{currentToast.message}</Text>
-        <Text className="text-white/40 text-xs ml-2">✕</Text>
+        <Text style={{ fontSize: 18, marginRight: 8 }}>{style.emoji}</Text>
+        <Text
+          style={{
+            fontFamily: fonts.body,
+            fontSize: fontSizes.bodySm,
+            color: colors.text.primary,
+            flex: 1,
+          }}
+        >
+          {currentToast.message}
+        </Text>
+        <Text
+          style={{
+            fontFamily: fonts.body,
+            fontSize: fontSizes.caption,
+            color: colors.text.muted,
+            marginLeft: 8,
+          }}
+        >
+          ✕
+        </Text>
       </TouchableOpacity>
     </View>
   );

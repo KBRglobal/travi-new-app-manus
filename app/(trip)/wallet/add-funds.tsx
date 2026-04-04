@@ -2,6 +2,7 @@ import { haptic } from '@/lib/haptics';
 import React, { useState } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, TextInput } from 'react-native';
 import { useRouter } from 'expo-router';
+import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
 
 const AMOUNTS = [10, 25, 50, 100, 250, 500];
 

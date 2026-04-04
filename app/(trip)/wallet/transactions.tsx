@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { View, Text, FlatList, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
 import { EmptyState } from '@/components/ui/EmptyState';
+import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
 
 const TRANSACTIONS = [
   { id: '1', type: 'credit', title: 'Cashback - Hotel', amount: 12.50, date: 'Apr 3, 2026', emoji: '🏨', status: 'completed' },

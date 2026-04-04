@@ -2,6 +2,7 @@ import { haptic } from '@/lib/haptics';
 import React from 'react';
 import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
+import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
 
 const DAYS = [
   { day: 1, title: 'Cultural Immersion', activities: ['Dubai Museum', 'Gold Souk', 'Spice Market'] },
@@ -49,7 +50,7 @@ export default function ItineraryBuilder() {
       </ScrollView>
 
       <View className="px-4 pb-6">
-        <TouchableOpacity onPress={() => router.push('/(trip)/plan/road-trip')} className="bg-bg-card rounded-button py-3 items-center mb-2" style={{ borderWidth: 1, borderColor: '#F94498' }}>
+        <TouchableOpacity onPress={() => router.push('/(trip)/plan/road-trip')} className="bg-bg-card rounded-button py-3 items-center mb-2" style={{ borderWidth: 1, borderColor: colors.pink }}>
           <Text className="text-pink font-semibold">🚗 Road Trip Mode NEW</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => router.push('/(trip)/plan/cart')} className="bg-primary rounded-button py-4 items-center">

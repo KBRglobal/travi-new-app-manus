@@ -4,6 +4,7 @@ import { View, Text, TouchableOpacity, FlatList, Image } from 'react-native';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 import { useRouter } from 'expo-router';
 import { EmptyState } from '@/components/ui/EmptyState';
+import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
 
 const stays = [
   { id: 'as1', name: 'Cozy Studio Old Town', type: 'Entire apartment', price: 85, rating: 4.9, reviews: 128, image: 'https://picsum.photos/400/300?random=70', host: 'Maria', superhost: true },

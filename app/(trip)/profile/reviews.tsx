@@ -3,6 +3,7 @@ import React from 'react';
 import { View, Text, FlatList, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
 import { EmptyState } from '@/components/ui/EmptyState';
+import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
 
 const REVIEWS = [
   { id: '1', place: 'Hotel Barcelona', emoji: '🏨', rating: 4.5, text: 'Amazing rooftop pool with city views. Staff was incredibly helpful.', date: 'Mar 2026', likes: 12 },

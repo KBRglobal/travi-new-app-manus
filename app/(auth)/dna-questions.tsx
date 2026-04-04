@@ -4,6 +4,7 @@ import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
 import Animated, { FadeInRight, FadeOutLeft } from 'react-native-reanimated';
 import { useRouter } from 'expo-router';
 import { useDnaStore } from '../../stores/dnaStore';
+import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
 
 const questions = [
   { id: 'q1', question: 'Your ideal morning starts with...', options: ['Sunrise hike', 'Sleeping in', 'Local breakfast spot', 'Yoga on the beach'], dimension: 'adventure' },

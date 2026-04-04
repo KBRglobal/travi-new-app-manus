@@ -2,6 +2,7 @@ import { haptic } from '@/lib/haptics';
 import React from 'react';
 import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router';
+import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
 
 const CATEGORIES = [
   { icon: '🏨', name: 'Accommodation', spent: 445, budget: 500, pct: 89 },

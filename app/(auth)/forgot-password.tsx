@@ -6,6 +6,7 @@ import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { forgotPasswordSchema, type ForgotPasswordForm } from '../../lib/validations';
 import { Input } from '../../components/ui';
+import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
 
 export default function ForgotPasswordScreen() {
   const router = useRouter();

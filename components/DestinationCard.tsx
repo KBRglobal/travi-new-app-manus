@@ -1,4 +1,5 @@
 import { View, Text } from 'react-native';
+import { colors, fonts, fontSizes, radius, shadows } from '../constants/theme';
 
 // Reused: S11 (Home), S12 (Explore), S14 (Destination Detail), S59 (Search Results)
 interface DestinationCardProps {
@@ -11,20 +12,43 @@ export default function DestinationCard({ name, country, matchScore }: Destinati
   return (
     <View
       style={{
-        backgroundColor: '#1A0B32',
-        borderRadius: 16,
+        backgroundColor: colors.bg.card,
+        borderRadius: radius.card,
         padding: 16,
         marginBottom: 12,
+        borderWidth: 1,
+        borderColor: colors.border.default,
+        ...shadows.card,
       }}
     >
-      <Text style={{ color: '#FFFFFF', fontSize: 16, fontWeight: 'bold' }}>
+      <Text
+        style={{
+          fontFamily: fonts.heading,
+          fontSize: fontSizes.body,
+          color: colors.text.primary,
+        }}
+      >
         {name || 'Destination'}
       </Text>
-      <Text style={{ color: 'rgba(255,255,255,0.6)', fontSize: 13, marginTop: 4 }}>
+      <Text
+        style={{
+          fontFamily: fonts.body,
+          fontSize: fontSizes.bodySm,
+          color: colors.text.secondary,
+          marginTop: 4,
+        }}
+      >
         {country || 'Country'}
       </Text>
       {matchScore !== undefined && (
-        <Text style={{ color: '#6443F4', fontSize: 12, marginTop: 4 }}>
+        <Text
+          style={{
+            fontFamily: fonts.bold,
+            fontSize: fontSizes.caption,
+            color: colors.primary,
+            marginTop: 4,
+          }}
+        >
           {matchScore}% Match
         </Text>
       )}

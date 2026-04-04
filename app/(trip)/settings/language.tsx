@@ -4,6 +4,7 @@ import { haptic } from '@/lib/haptics';
 import React, { useState } from 'react';
 import { View, Text, FlatList, TouchableOpacity, TextInput } from 'react-native';
 import { useRouter } from 'expo-router';
+import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
 
 const LANGUAGES = [
   { code: 'en', name: 'English', native: 'English', flag: '🇺🇸' },

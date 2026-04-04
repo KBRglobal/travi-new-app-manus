@@ -5,6 +5,7 @@ import Animated, { FadeInDown, SlideInRight } from 'react-native-reanimated';
 import { useRouter } from 'expo-router';
 import { expenses, exchangeRates } from '../../lib/mockData';
 import { EmptyState } from '@/components/ui/EmptyState';
+import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
 
 const categories = [
   { key: 'food', emoji: '🍽️', label: 'Food' },

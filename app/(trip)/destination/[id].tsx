@@ -4,6 +4,7 @@ import { View, Text, TouchableOpacity, Image, Dimensions } from 'react-native';
 import Animated, { useSharedValue, useAnimatedScrollHandler, useAnimatedStyle, interpolate, Extrapolation } from 'react-native-reanimated';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { destinations, activities } from '../../../lib/mockData';
+import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 const HEADER_HEIGHT = 300;

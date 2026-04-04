@@ -2,6 +2,7 @@ import { haptic } from '@/lib/haptics';
 import React from 'react';
 import { View, Text, ScrollView, TouchableOpacity, Linking } from 'react-native';
 import { useRouter } from 'expo-router';
+import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
 
 const COWORKINGS = [
   { name: 'Hub71 Workspace', price: 15, rating: 4.7, wifi: 95, hours: '08:00-22:00' },

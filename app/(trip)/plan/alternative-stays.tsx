@@ -2,6 +2,7 @@ import { haptic } from '@/lib/haptics';
 import React, { useState } from 'react';
 import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
+import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
 
 const STAYS = [
   { id: '1', type: 'Entire apartment', name: 'Marina Loft', area: 'Marina District', rating: 4.92, reviews: 128, dna: 91, price: 85, total: 595, amenities: ['WiFi','Kitchen','Pool','Parking'] },

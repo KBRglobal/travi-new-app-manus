@@ -1,5 +1,5 @@
-import { haptic } from '@/lib/haptics';
 import { Stack } from 'expo-router';
+import { colors } from '@/constants/theme';
 
 // Auth Flow: Stack, headerShown:false
 export default function AuthLayout() {
@@ -7,7 +7,7 @@ export default function AuthLayout() {
     <Stack
       screenOptions={{
         headerShown: false,
-        contentStyle: { backgroundColor: '#0A0514' },
+        contentStyle: { backgroundColor: colors.bg.primary },
         animation: 'slide_from_right',
       }}
     >

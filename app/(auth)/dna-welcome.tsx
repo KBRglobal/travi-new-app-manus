@@ -4,6 +4,7 @@ import { View, Text, TouchableOpacity } from 'react-native';
 import Animated, { useSharedValue, useAnimatedStyle, withSpring, withDelay, withTiming } from 'react-native-reanimated';
 import { useRouter } from 'expo-router';
 import { useEffect } from 'react';
+import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
 
 export default function DNAWelcomeScreen() {
   const router = useRouter();

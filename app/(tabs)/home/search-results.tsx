@@ -2,6 +2,7 @@ import { Skeleton } from '@/components/ui/Skeleton';
 import { View, Text, Pressable, FlatList } from 'react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { EmptyState } from '@/components/ui/EmptyState';
+import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
 
 const RESULTS = Array.from({ length: 10 }, (_, i) => ({
   id: `result-${i + 1}`,

@@ -2,6 +2,7 @@ import { haptic } from '@/lib/haptics';
 import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
+import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
 
 export default function PriceAlertModal() {
   const router = useRouter();

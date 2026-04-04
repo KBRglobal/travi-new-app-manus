@@ -1,4 +1,5 @@
 import { Stack } from 'expo-router';
+import { colors } from '@/constants/theme';
 
 // Live Mode: Stack, hides tab bar, shows FAB
 export default function LiveLayout() {
@@ -6,7 +7,7 @@ export default function LiveLayout() {
     <Stack
       screenOptions={{
         headerShown: false,
-        contentStyle: { backgroundColor: '#0A0514' },
+        contentStyle: { backgroundColor: colors.bg.primary },
         animation: 'slide_from_right',
       }}
     >

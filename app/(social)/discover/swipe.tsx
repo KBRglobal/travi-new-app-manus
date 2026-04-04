@@ -2,6 +2,7 @@ import { haptic } from '@/lib/haptics';
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
+import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
 
 const CARDS = [
   { id: '1', name: 'Sarah K.', avatar: '👩', dna: 'Foodie · Culture', match: 92, bio: 'Love exploring local markets and hidden restaurants', trips: 8 },

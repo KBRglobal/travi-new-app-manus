@@ -3,6 +3,7 @@ import React, { useState, useCallback } from 'react';
 import { View, Text, FlatList, TouchableOpacity, Image, RefreshControl } from 'react-native';
 import { useRouter } from 'expo-router';
 import { EmptyState } from '@/components/ui/EmptyState';
+import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
 
 const FEED_POSTS = [
   { id: '1', user: 'Sarah K.', avatar: '👩', destination: 'Barcelona', image: '🏰', caption: 'Sagrada Familia at sunset!', likes: 42, comments: 8, timeAgo: '2h', liked: false },

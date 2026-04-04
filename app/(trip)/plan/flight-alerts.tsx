@@ -2,6 +2,7 @@ import { haptic } from '@/lib/haptics';
 import React, { useState } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, TextInput } from 'react-native';
 import { useRouter } from 'expo-router';
+import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
 
 const MOCK_ALERTS = [
   { id: '1', origin: 'TLV', dest: 'DXB', originFlag: '🇮🇱', destFlag: '🇦🇪', current: 189, threshold: 200, status: 'watching', lastChecked: '2h ago', dnaMatch: 87 },

@@ -2,6 +2,7 @@ import { haptic } from '@/lib/haptics';
 import { useState } from 'react';
 import { View, Text, TextInput, Pressable, ScrollView, KeyboardAvoidingView, Platform } from 'react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router';
+import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
 
 // S3 — Sign Up / Login
 export default function SignupScreen() {

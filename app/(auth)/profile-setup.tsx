@@ -2,6 +2,7 @@ import { haptic } from '@/lib/haptics';
 import { useState } from 'react';
 import { View, Text, TextInput, Pressable, ScrollView, KeyboardAvoidingView, Platform } from 'react-native';
 import { useRouter } from 'expo-router';
+import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
 
 // S5 — Profile Setup
 export default function ProfileSetupScreen() {

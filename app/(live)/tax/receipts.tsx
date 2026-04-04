@@ -3,6 +3,7 @@ import React from 'react';
 import { View, Text, FlatList, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
 import { EmptyState } from '@/components/ui/EmptyState';
+import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
 
 const RECEIPTS = [
   { id: '1', emoji: '🍽️', merchant: 'Ichiran Ramen', amount: '¥1,200', usd: '$8.50', date: 'Today', category: 'Food', taxFree: false },

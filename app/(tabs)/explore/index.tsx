@@ -2,6 +2,7 @@ import { haptic } from '@/lib/haptics';
 import React, { useState } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, TextInput } from 'react-native';
 import { useRouter } from 'expo-router';
+import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
 
 const FILTERS = ['All', 'Beaches', 'Cities', 'Mountains', 'Culture', 'Food', 'Nomad'];
 const DESTINATIONS = [
@@ -31,7 +32,7 @@ export default function ExploreScreen() {
               setActiveFilter(f);
             }}
             className={`px-4 py-2 rounded-pill mr-2 ${activeFilter === f ? 'bg-primary' : 'bg-bg-card'}`}
-            style={f === 'Nomad' ? { borderWidth: 1, borderColor: '#F94498' } : {}}
+            style={f === 'Nomad' ? { borderWidth: 1, borderColor: colors.pink } : {}}
           >
             <Text className={activeFilter === f ? 'text-white font-semibold' : f === 'Nomad' ? 'text-pink font-semibold' : 'text-text-secondary'}>
               {f}{f === 'Nomad' ? ' NEW' : ''}

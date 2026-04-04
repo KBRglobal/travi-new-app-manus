@@ -7,6 +7,7 @@ import Animated, { FadeInUp } from 'react-native-reanimated';
 import { useRouter } from 'expo-router';
 import { chatMessages } from '../../lib/mockData';
 import { EmptyState } from '@/components/ui/EmptyState';
+import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
 
 type Message = { id: string; sender: 'user' | 'ai'; text: string; timestamp: string; actions?: string[] };
 

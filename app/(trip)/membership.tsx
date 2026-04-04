@@ -2,6 +2,7 @@ import { haptic } from '@/lib/haptics';
 import React from 'react';
 import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
+import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
 
 const TIERS = [
   { name: 'Bronze', emoji: '🥉', points: '0', perks: ['Basic rewards', 'Standard support'], color: 'border-orange-600/30', bg: 'bg-orange-600/10' },

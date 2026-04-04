@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { View, Text, Pressable, TextInput, FlatList, KeyboardAvoidingView, Platform } from 'react-native';
 import { useRouter } from 'expo-router';
 import { EmptyState } from '@/components/ui/EmptyState';
+import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
 const MSGS = [
   { id: '1', text: "Hi! I'm Travi, your AI travel companion. How can I help?", mine: false },
 ];

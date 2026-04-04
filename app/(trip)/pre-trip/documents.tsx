@@ -2,6 +2,7 @@ import { haptic } from '@/lib/haptics';
 import React from 'react';
 import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
+import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
 
 const DOCUMENTS = [
   { id: '1', emoji: '🛂', title: 'Passport', status: 'Valid', detail: 'Expires Dec 2028', color: 'text-green-400' },

@@ -1,6 +1,7 @@
 import { haptic } from '@/lib/haptics';
 import { View, Text, Pressable, ScrollView } from 'react-native';
 import { useRouter } from 'expo-router';
+import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
 
 export default function SettingsScreen() {
   const router = useRouter();

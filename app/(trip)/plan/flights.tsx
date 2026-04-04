@@ -2,6 +2,7 @@ import { haptic } from '@/lib/haptics';
 import React, { useState } from 'react';
 import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
+import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
 
 const FLIGHTS = [
   { airline: 'Emirates', code: 'EK001', dep: '07:30', arr: '15:45', duration: '8h 15m', stops: 'Direct', price: 289, dna: 92 },
@@ -78,7 +79,7 @@ export default function FlightSelect() {
       </ScrollView>
 
       <View className="px-4 pb-6">
-        <TouchableOpacity onPress={() => router.push('/(trip)/plan/flight-alerts')} className="bg-bg-card rounded-button py-3 items-center mb-2" style={{ borderWidth: 1, borderColor: '#F94498' }}>
+        <TouchableOpacity onPress={() => router.push('/(trip)/plan/flight-alerts')} className="bg-bg-card rounded-button py-3 items-center mb-2" style={{ borderWidth: 1, borderColor: colors.pink }}>
           <Text className="text-pink font-semibold">🔔 Set Price Alert</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => router.push('/(trip)/plan/hotels')} className="py-2 items-center">

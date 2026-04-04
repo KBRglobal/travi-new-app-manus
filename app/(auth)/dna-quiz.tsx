@@ -7,6 +7,7 @@ import { useRouter } from 'expo-router';
 import { dnaCards } from '../../lib/mockData';
 import { logSwipeLike, logSwipeReject } from '../../lib/dnaSignals';
 import { useDnaStore } from '../../stores/dnaStore';
+import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 const SWIPE_THRESHOLD = SCREEN_WIDTH * 0.3;

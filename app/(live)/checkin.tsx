@@ -5,6 +5,7 @@ import Animated, { FadeInDown, useSharedValue, useAnimatedStyle, withSpring } fr
 import { useRouter } from 'expo-router';
 import { activities } from '../../lib/mockData';
 import { logCheckin } from '../../lib/dnaSignals';
+import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
 
 // In production: import QRCode from 'react-native-qrcode-svg';
 

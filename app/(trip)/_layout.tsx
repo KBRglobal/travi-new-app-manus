@@ -1,4 +1,5 @@
 import { Stack } from 'expo-router';
+import { colors } from '@/constants/theme';
 
 // Trip Group: Stack, hides tab bar
 export default function TripLayout() {
@@ -6,7 +7,7 @@ export default function TripLayout() {
     <Stack
       screenOptions={{
         headerShown: false,
-        contentStyle: { backgroundColor: '#0A0514' },
+        contentStyle: { backgroundColor: colors.bg.primary },
         animation: 'slide_from_right',
       }}
     >

@@ -5,6 +5,7 @@ import React, { useState, useRef } from 'react';
 import { View, Text, FlatList, TouchableOpacity, TextInput, KeyboardAvoidingView, Platform } from 'react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { EmptyState } from '@/components/ui/EmptyState';
+import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
 
 const MESSAGES = [
   { id: '1', sender: 'other', text: 'Hey! Are you coming to Barcelona?', time: '10:30' },

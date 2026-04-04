@@ -2,6 +2,7 @@ import { haptic } from '@/lib/haptics';
 import React from 'react';
 import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
+import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
 
 const PERKS = [
   { emoji: '✈️', title: 'Priority Boarding', desc: 'Skip the line at the gate', tier: 'Silver', unlocked: true },

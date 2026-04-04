@@ -5,6 +5,7 @@ import Animated, { FadeInDown } from 'react-native-reanimated';
 import { useRouter } from 'expo-router';
 import { currentUser } from '../../lib/mockData';
 import { useAuthStore } from '../../stores/authStore';
+import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
 
 export default function ProfileScreen() {
   const router = useRouter();

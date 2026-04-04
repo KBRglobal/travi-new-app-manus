@@ -1,12 +1,13 @@
 import { haptic } from '@/lib/haptics';
 import { View, Text } from 'react-native';
+import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
 
 // S63 — SessionExpired
 export default function SessionExpiredScreen() {
   return (
-    <View style={{ flex: 1, backgroundColor: '#0A0514', justifyContent: 'center', alignItems: 'center' }}>
-      <Text style={{ color: '#FFFFFF', fontSize: 20, fontWeight: 'bold' }}>S63</Text>
-      <Text style={{ color: 'rgba(255,255,255,0.6)', fontSize: 14, marginTop: 8 }}>SessionExpired</Text>
+    <View style={{ flex: 1, backgroundColor: colors.bg.primary, justifyContent: 'center', alignItems: 'center' }}>
+      <Text style={{ color: colors.text.primary, fontSize: 20, fontFamily: fonts.bold }}>S63</Text>
+      <Text style={{ color: colors.text.secondary, fontSize: 14, marginTop: 8 }}>SessionExpired</Text>
     </View>
   );
 }

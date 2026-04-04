@@ -2,6 +2,7 @@ import { Skeleton } from '@/components/ui/Skeleton';
 import React from 'react';
 import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
+import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
 
 export default function StatsScreen() {
   const router = useRouter();

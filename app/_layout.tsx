@@ -1,10 +1,11 @@
 import '../global.css';
-import { useEffect, useState } from 'react';
-import { Stack, useRouter, useSegments } from 'expo-router';
+import { useEffect, useState, useCallback } from 'react';
+import { Stack, useRouter, useSegments, SplashScreen } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { useFonts } from 'expo-font';
 import { useAuthStore } from '../stores/authStore';
 import { colors } from '../constants/theme';
 import { ToastProvider } from '../components/ui/Toast';
@@ -12,6 +13,9 @@ import { ConfirmDialogProvider } from '../components/ui/ConfirmDialog';
 import { BannerProvider } from '../components/ui/Banner';
 import { OfflineBadge } from '../components/ui/OfflineBadge';
 import { globalErrorState } from '../lib/errorHandling';
+
+// Prevent splash screen from auto-hiding until fonts are loaded
+SplashScreen.preventAutoHideAsync();
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -51,8 +55,6 @@ function useOfflineDetection() {
   const [isOffline, setIsOffline] = useState(false);
 
   useEffect(() => {
-    // In production, use @react-native-community/netinfo
-    // For prototype, we simulate with a global state listener
     const unsubscribe = globalErrorState.subscribeOverlay((overlay) => {
       setIsOffline(overlay === 'NoInternetOverlay');
     });
@@ -64,12 +66,32 @@ function useOfflineDetection() {
 
 // Root Layout: GestureHandler + QueryClient + SafeArea + Auth guard + Error UI
 export default function RootLayout() {
+  // Load custom fonts
+  const [fontsLoaded, fontError] = useFonts({
+    'Chillax-Bold': require('../assets/fonts/Chillax-Bold.otf'),
+    'Chillax-Medium': require('../assets/fonts/Chillax-Medium.otf'),
+    'Chillax-Semibold': require('../assets/fonts/Chillax-Semibold.otf'),
+    'Satoshi-Regular': require('../assets/fonts/Satoshi-Regular.otf'),
+    'Satoshi-Bold': require('../assets/fonts/Satoshi-Bold.otf'),
+    'Satoshi-Medium': require('../assets/fonts/Satoshi-Medium.otf'),
+  });
+
+  const onLayoutRootView = useCallback(async () => {
+    if (fontsLoaded || fontError) {
+      await SplashScreen.hideAsync();
+    }
+  }, [fontsLoaded, fontError]);
+
   // Disable auth guard for now (prototype mode — free navigation)
   // useProtectedRoute();
   const isOffline = useOfflineDetection();
 
+  if (!fontsLoaded && !fontError) {
+    return null;
+  }
+
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
+    <GestureHandlerRootView style={{ flex: 1 }} onLayout={onLayoutRootView}>
       <QueryClientProvider client={queryClient}>
         <SafeAreaProvider>
           <StatusBar style="light" translucent backgroundColor="transparent" />

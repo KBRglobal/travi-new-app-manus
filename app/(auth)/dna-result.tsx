@@ -5,6 +5,7 @@ import Animated, { useSharedValue, useAnimatedStyle, withDelay, withSpring, with
 import { useRouter } from 'expo-router';
 import { useAuthStore } from '../../stores/authStore';
 import { currentUser } from '../../lib/mockData';
+import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
 
 const dimensions = [
   { key: 'adventure', label: 'Adventure & Sports', emoji: '🏔️', value: currentUser.dna.adventure },

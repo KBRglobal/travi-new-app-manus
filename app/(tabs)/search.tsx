@@ -4,6 +4,7 @@ import { View, Text, TextInput, TouchableOpacity, FlatList } from 'react-native'
 import { useRouter } from 'expo-router';
 import { useDebouncedCallback } from 'use-debounce';
 import { destinations, activities, hotels } from '../../lib/mockData';
+import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
 
 type SearchResult = { id: string; type: 'destination' | 'activity' | 'hotel'; name: string; subtitle: string; emoji: string };
 

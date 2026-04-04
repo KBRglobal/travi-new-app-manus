@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { View, Text, FlatList, TouchableOpacity, TextInput } from 'react-native';
 import { useRouter } from 'expo-router';
 import { EmptyState } from '@/components/ui/EmptyState';
+import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
 
 const BUDDIES = [
   { id: '1', name: 'Sarah K.', avatar: '👩', status: 'online', lastTrip: 'Barcelona', sharedTrips: 3 },

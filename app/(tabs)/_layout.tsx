@@ -1,6 +1,7 @@
 import { Tabs, Redirect } from 'expo-router';
 import { Text } from 'react-native';
 import { useResponsive } from '@/hooks/useResponsive';
+import { colors, fonts, fontSizes } from '@/constants/theme';
 
 // Main App: 6 Bottom Tabs (mobile) / Redirect to drawer (tablet+)
 export default function TabsLayout() {
@@ -15,18 +16,18 @@ export default function TabsLayout() {
       screenOptions={{
         headerShown: false,
         tabBarStyle: {
-          backgroundColor: '#1A0B32',
-          borderTopColor: 'rgba(100,67,244,0.2)',
+          backgroundColor: colors.bg.secondary,
+          borderTopColor: colors.border.default,
           borderTopWidth: 1,
           height: 85,
           paddingBottom: 20,
           paddingTop: 8,
         },
-        tabBarActiveTintColor: '#6443F4',
-        tabBarInactiveTintColor: 'rgba(255,255,255,0.4)',
+        tabBarActiveTintColor: colors.primary,
+        tabBarInactiveTintColor: colors.text.muted,
         tabBarLabelStyle: {
+          fontFamily: fonts.bold,
           fontSize: 11,
-          fontWeight: '600',
         },
       }}
     >

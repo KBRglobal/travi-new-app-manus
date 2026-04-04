@@ -7,6 +7,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { loginSchema, type LoginForm } from '../../lib/validations';
 import { Input } from '../../components/ui';
 import { useAuthStore } from '../../stores/authStore';
+import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
 
 export default function LoginScreen() {
   const router = useRouter();

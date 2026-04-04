@@ -9,10 +9,11 @@ import {
   type ViewProps,
 } from 'react-native';
 import { useRouter } from 'expo-router';
+import { colors, fonts, fontSizes } from '../../constants/theme';
 
 /* ═══════════════════════════════════════════
  *  TRAVI — Screen
- *  NativeWind v4 className only — no StyleSheet
+ *  Design System: #0A0514 bg, Chillax headings, Satoshi body
  *
  *  A consistent full-screen wrapper that handles:
  *  • Dark bg-primary background
@@ -24,21 +25,13 @@ import { useRouter } from 'expo-router';
  * ═══════════════════════════════════════════ */
 
 interface ScreenProps extends ViewProps {
-  /** Screen title shown in the header */
   title?: string;
-  /** Show a back arrow that calls router.back() */
   showBack?: boolean;
-  /** Custom back handler (overrides default router.back) */
   onBack?: () => void;
-  /** Right-side header action (ReactNode) */
   headerRight?: React.ReactNode;
-  /** Wrap children in a ScrollView (default: true) */
   scroll?: boolean;
-  /** Avoid keyboard on iOS (default: true) */
   avoidKeyboard?: boolean;
-  /** Extra className for the outer container */
   containerClassName?: string;
-  /** Extra className for the scroll / content area */
   contentClassName?: string;
 }
 
@@ -74,13 +67,18 @@ export default function Screen({
             className="mr-3 w-10 h-10 items-center justify-center rounded-full active:bg-bg-surface"
             hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
           >
-            <Text className="text-white text-xl">‹</Text>
+            <Text style={{ color: '#FFFFFF', fontSize: 22 }}>‹</Text>
           </TouchableOpacity>
         )}
 
         {title && (
           <Text
-            className="text-white text-heading-3 flex-1"
+            style={{
+              fontFamily: fonts.heading,
+              fontSize: fontSizes.h3,
+              color: colors.text.primary,
+              flex: 1,
+            }}
             numberOfLines={1}
           >
             {title}

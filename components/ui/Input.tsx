@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, type TextInputProps } from 'react-native';
+import { View, Text, TextInput, type TextInputProps, type ViewStyle } from 'react-native';
+import { colors, fonts, fontSizes, radius } from '../../constants/theme';
 
 /* ═══════════════════════════════════════════
  *  TRAVI — Input
- *  NativeWind v4 className only — no StyleSheet
+ *  Design System: Satoshi fonts, #120824 bg, 12px radius
  *
  *  Variants : default | filled | outline
  *  States   : focused | error | disabled
@@ -14,26 +15,16 @@ import { View, Text, TextInput, type TextInputProps } from 'react-native';
 type InputVariant = 'default' | 'filled' | 'outline';
 
 interface InputProps extends TextInputProps {
-  /** Label shown above the field */
   label?: string;
-  /** Hint text below the field */
   hint?: string;
-  /** Error message — also switches to error styling */
   error?: string;
-  /** Visual variant */
   variant?: InputVariant;
-  /** Icon before the text */
   leftIcon?: React.ReactNode;
-  /** Icon / action after the text */
   rightIcon?: React.ReactNode;
-  /** Additional container className */
   containerClassName?: string;
 }
 
-/* ── className maps ────────────────────── */
-
-const baseContainer =
-  'flex-row items-center rounded-input px-4';
+const baseContainer = 'flex-row items-center px-4';
 
 const variantContainer: Record<InputVariant, string> = {
   default: 'bg-bg-card border border-border',
@@ -42,7 +33,7 @@ const variantContainer: Record<InputVariant, string> = {
 };
 
 const focusedBorder = 'border-primary';
-const errorBorder = 'border-status-error';
+const errorBorder = 'border-error';
 
 export default function Input({
   label,
@@ -54,13 +45,12 @@ export default function Input({
   editable = true,
   containerClassName = '',
   className: extraClass = '',
+  style,
   ...rest
 }: InputProps) {
   const [focused, setFocused] = useState(false);
-
   const disabled = editable === false;
 
-  /* Build container className */
   const containerCls = [
     baseContainer,
     variantContainer[variant],
@@ -72,9 +62,8 @@ export default function Input({
     .filter(Boolean)
     .join(' ');
 
-  /* Build TextInput className */
   const inputCls = [
-    'flex-1 text-text-primary text-body py-3',
+    'flex-1 text-text-primary py-3',
     leftIcon ? 'ml-2' : '',
     rightIcon ? 'mr-2' : '',
     extraClass,
@@ -82,21 +71,38 @@ export default function Input({
     .filter(Boolean)
     .join(' ');
 
+  const containerStyle: ViewStyle = {
+    borderRadius: radius.input,
+  };
+
   return (
     <View className="mb-4">
       {label && (
-        <Text className="text-text-secondary text-body-sm mb-1.5 ml-1">
+        <Text
+          style={{
+            fontFamily: fonts.bold,
+            fontSize: fontSizes.bodySm,
+            color: colors.text.secondary,
+            marginBottom: 6,
+            marginLeft: 4,
+          }}
+        >
           {label}
         </Text>
       )}
 
-      <View className={containerCls}>
+      <View className={containerCls} style={containerStyle}>
         {leftIcon && <>{leftIcon}</>}
 
         <TextInput
           className={inputCls}
-          placeholderTextColor="rgba(255,255,255,0.3)"
+          placeholderTextColor={colors.text.muted}
           editable={editable}
+          style={{
+            fontFamily: fonts.body,
+            fontSize: fontSizes.body,
+            color: colors.text.primary,
+          }}
           onFocus={(e) => {
             setFocused(true);
             rest.onFocus?.(e);
@@ -112,11 +118,29 @@ export default function Input({
       </View>
 
       {error ? (
-        <Text className="text-status-error text-caption mt-1 ml-1">
+        <Text
+          style={{
+            fontFamily: fonts.body,
+            fontSize: fontSizes.caption,
+            color: colors.error,
+            marginTop: 4,
+            marginLeft: 4,
+          }}
+        >
           {error}
         </Text>
       ) : hint ? (
-        <Text className="text-text-muted text-caption mt-1 ml-1">{hint}</Text>
+        <Text
+          style={{
+            fontFamily: fonts.body,
+            fontSize: fontSizes.caption,
+            color: colors.text.muted,
+            marginTop: 4,
+            marginLeft: 4,
+          }}
+        >
+          {hint}
+        </Text>
       ) : null}
     </View>
   );

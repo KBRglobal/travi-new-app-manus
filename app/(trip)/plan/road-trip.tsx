@@ -2,6 +2,7 @@ import { haptic } from '@/lib/haptics';
 import React from 'react';
 import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
+import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
 
 const STOPS = [
   { num: 1, name: 'Tel Aviv', cat: 'Start', dist: '—', time: '—', rating: null, icon: '📍' },

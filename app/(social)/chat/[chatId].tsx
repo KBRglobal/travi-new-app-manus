@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { View, Text, Pressable, TextInput, FlatList, KeyboardAvoidingView, Platform } from 'react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { EmptyState } from '@/components/ui/EmptyState';
+import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
 const MSGS = Array.from({ length: 10 }, (_, i) => ({ id: `m-${i+1}`, text: `Message ${i+1} content here`, mine: i % 3 === 0, time: `${12+i}:${i*5 < 10 ? '0' : ''}${i*5}` }));
 
 export default function ChatScreen() {

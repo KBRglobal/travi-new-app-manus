@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { View, Text, Pressable, FlatList } from 'react-native';
 import { useRouter } from 'expo-router';
 import { EmptyState } from '@/components/ui/EmptyState';
+import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
 const ACTIVITIES = Array.from({ length: 10 }, (_, i) => ({ id: `a-${i+1}`, name: `Activity ${i+1}`, price: `€${20 + i * 10}`, category: ['Adventure', 'Culture', 'Food', 'Nature'][i % 4] }));
 
 export default function PlanActivitiesScreen() {

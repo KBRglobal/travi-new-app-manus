@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { View, Text, FlatList, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
 import { EmptyState } from '@/components/ui/EmptyState';
+import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
 
 const LEADERBOARD = [
   { rank: 1, name: 'Lisa M.', avatar: '👩‍🦰', points: 45200, tier: 'Platinum' },

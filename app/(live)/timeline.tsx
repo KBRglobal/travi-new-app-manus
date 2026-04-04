@@ -2,6 +2,7 @@ import { Skeleton } from '@/components/ui/Skeleton';
 import React from 'react';
 import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
+import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
 
 const TIMELINE = [
   { time: '8:00 AM', emoji: '☀️', title: 'Wake up', desc: 'Hotel Shinjuku', status: 'done' },

@@ -2,6 +2,7 @@ import { haptic } from '@/lib/haptics';
 import React from 'react';
 import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
+import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
 
 const HOTELS = [
   { name: 'Hotel Luxe', price: 89, dna: 87, rating: 8.9, stars: 4, pool: true, breakfast: true, cancel: 'Free', distance: '1.2km', wifi: true },

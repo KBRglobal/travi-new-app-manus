@@ -1,25 +1,22 @@
 // ═══════════════════════════════════════════════
-// TRAVI SUPERAPP — Design Tokens
-// Single source of truth for all visual constants
+// TRAVI DESIGN SYSTEM — Single Source of Truth
 // ═══════════════════════════════════════════════
 
 // ─── Colors ──────────────────────────────────
 export const colors = {
-  // Primary brand
+  // Brand
   primary: '#6443F4',
-  primaryLight: 'rgba(100,67,244,0.2)',
+  primaryLight: 'rgba(100,67,244,0.15)',
   primaryDark: '#4A2FD4',
-
-  // Pink — second most important color
   pink: '#F94498',
   pinkLight: 'rgba(249,68,152,0.15)',
   pinkDark: '#D42E78',
 
-  // Backgrounds
+  // Background
   bg: {
     primary: '#0A0514',
-    secondary: '#1A0B32',
-    card: '#1A0B32',
+    secondary: '#120824',
+    card: '#120824',
     surface: 'rgba(255,255,255,0.05)',
     overlay: 'rgba(0,0,0,0.85)',
   },
@@ -28,7 +25,6 @@ export const colors = {
   text: {
     primary: '#FFFFFF',
     secondary: 'rgba(255,255,255,0.6)',
-    tertiary: 'rgba(255,255,255,0.4)',
     muted: 'rgba(255,255,255,0.3)',
     inverse: '#0A0514',
     link: '#6443F4',
@@ -44,22 +40,28 @@ export const colors = {
   },
 
   // Status
-  status: {
-    success: '#4ADE80',
-    warning: '#FBBF24',
-    error: '#F87171',
-    info: '#3B82F6',
+  success: '#4ADE80',
+  successLight: 'rgba(74,222,128,0.15)',
+  warning: '#FBBF24',
+  warningLight: 'rgba(251,191,36,0.15)',
+  error: '#F87171',
+  errorLight: 'rgba(248,113,113,0.15)',
+
+  // Trip Status
+  trip: {
+    upcoming: '#60A5FA',
+    active: '#4ADE80',
+    completed: '#A78BFA',
+    cancelled: '#F87171',
   },
 
-  // Accent
-  accent: {
-    gold: '#FFD700',
-    green: '#51CF66',
-    red: '#FF6B6B',
-    blue: '#74C0FC',
-    orange: '#FFA94D',
-    pink: '#F06595',
-    teal: '#20C997',
+  // Mascot Colors
+  mascot: {
+    yellow: '#FFD93D',
+    purple: '#6443F4',
+    blue: '#4FC3F7',
+    green: '#4CAF50',
+    orange: '#FF9800',
   },
 
   // Membership tiers
@@ -68,6 +70,39 @@ export const colors = {
     adventurer: '#6C5CE7',
     globetrotter: '#FFD700',
   },
+} as const;
+
+// ─── Fonts ──────────────────────────────────
+export const fonts = {
+  heading: 'Chillax-Bold',
+  body: 'Satoshi-Regular',
+  bold: 'Satoshi-Bold',
+} as const;
+
+// ─── Font Sizes ─────────────────────────────
+export const fontSizes = {
+  display: 36,
+  h1: 28,
+  h2: 24,
+  h3: 20,
+  bodyLg: 18,
+  body: 16,
+  bodySm: 14,
+  caption: 12,
+  tiny: 10,
+} as const;
+
+// ─── Line Heights ───────────────────────────
+export const lineHeights = {
+  display: 44,
+  h1: 36,
+  h2: 32,
+  h3: 28,
+  bodyLg: 26,
+  body: 24,
+  bodySm: 20,
+  caption: 16,
+  tiny: 14,
 } as const;
 
 // ─── Spacing ─────────────────────────────────
@@ -89,88 +124,59 @@ export const spacing = {
 
 // ─── Border Radius ───────────────────────────
 export const radius = {
-  none: 0,
-  sm: 4,
-  md: 8,
-  lg: 12,
-  xl: 16,
-  '2xl': 20,
-  '3xl': 24,
   card: 16,
   button: 12,
-  pill: 9999,
+  input: 12,
+  modal: 24,
+  pill: 100,
   full: 9999,
-} as const;
-
-// ─── Typography ──────────────────────────────
-export const typography = {
-  // Font sizes
-  size: {
-    xs: 11,
-    sm: 13,
-    base: 15,
-    md: 17,
-    lg: 20,
-    xl: 24,
-    '2xl': 28,
-    '3xl': 32,
-    '4xl': 40,
-    '5xl': 48,
-  },
-  // Font weights
-  weight: {
-    regular: '400' as const,
-    medium: '500' as const,
-    semibold: '600' as const,
-    bold: '700' as const,
-    extrabold: '800' as const,
-  },
-  // Line heights
-  lineHeight: {
-    tight: 1.2,
-    normal: 1.5,
-    relaxed: 1.75,
-  },
 } as const;
 
 // ─── Shadows ─────────────────────────────────
 export const shadows = {
-  sm: {
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.2,
-    shadowRadius: 2,
-    elevation: 2,
-  },
-  md: {
-    shadowColor: '#000',
+  card: {
+    shadowColor: '#000000',
     shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
-    elevation: 4,
-  },
-  lg: {
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 8 },
     shadowOpacity: 0.4,
-    shadowRadius: 16,
+    shadowRadius: 24,
     elevation: 8,
   },
-  glow: {
-    shadowColor: '#6C5CE7',
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.4,
+  cardHover: {
+    shadowColor: '#000000',
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.5,
+    shadowRadius: 32,
+    elevation: 12,
+  },
+  fab: {
+    shadowColor: '#6443F4',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
     shadowRadius: 12,
     elevation: 6,
+  },
+  glow: {
+    shadowColor: '#6443F4',
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.3,
+    shadowRadius: 20,
+    elevation: 4,
+  },
+  glowPink: {
+    shadowColor: '#F94498',
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.3,
+    shadowRadius: 20,
+    elevation: 4,
   },
 } as const;
 
 // ─── Breakpoints ─────────────────────────────
 export const breakpoints = {
-  sm: 0,       // Mobile (default)
-  md: 768,     // Tablet
-  lg: 1024,    // Desktop
-  xl: 1280,    // Large desktop
+  sm: 640,
+  md: 768,
+  lg: 1024,
+  xl: 1280,
 } as const;
 
 // ─── Animation Durations ─────────────────────
@@ -207,15 +213,17 @@ export const tabBar = {
 export const header = {
   height: 56,
   backgroundColor: colors.bg.primary,
-  titleSize: typography.size.md,
+  titleSize: fontSizes.h3,
 } as const;
 
 // ─── Export default theme ────────────────────
 const theme = {
   colors,
+  fonts,
+  fontSizes,
+  lineHeights,
   spacing,
   radius,
-  typography,
   shadows,
   breakpoints,
   durations,

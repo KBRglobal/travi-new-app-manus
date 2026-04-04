@@ -4,6 +4,7 @@ import { haptic } from '@/lib/haptics';
 import React, { useState } from 'react';
 import { View, Text, FlatList, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
+import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
 
 const CATEGORIES = [
   { id: '1', emoji: '🏖️', name: 'Beach & Relaxation' },

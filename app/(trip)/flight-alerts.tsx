@@ -4,6 +4,7 @@ import { View, Text, TouchableOpacity, FlatList, TextInput, Switch } from 'react
 import Animated, { FadeInDown, SlideInRight } from 'react-native-reanimated';
 import { useRouter } from 'expo-router';
 import { EmptyState } from '@/components/ui/EmptyState';
+import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
 
 const mockAlerts = [
   { id: '1', from: 'TLV', to: 'BCN', currentPrice: 120, targetPrice: 100, status: 'active', lastChecked: '2 min ago', trend: 'down' },

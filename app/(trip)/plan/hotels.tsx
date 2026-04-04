@@ -2,6 +2,7 @@ import { haptic } from '@/lib/haptics';
 import React, { useState } from 'react';
 import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
+import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
 
 const HOTELS = [
   { id: '1', name: 'Hotel Luxe', stars: 4, price: 89, rating: 8.9, dna: 87 },
@@ -28,7 +29,7 @@ export default function HotelSelect() {
         <TouchableOpacity onPress={() => setActiveTab('Hotels')} className={`flex-1 py-2 rounded-pill items-center ${activeTab === 'Hotels' ? 'bg-primary' : ''}`}>
           <Text className={activeTab === 'Hotels' ? 'text-white font-semibold' : 'text-text-secondary'}>Hotels</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => { setActiveTab('Alt'); router.push('/(trip)/plan/alternative-stays'); }} className={`flex-1 py-2 rounded-pill items-center ${activeTab === 'Alt' ? 'bg-primary' : ''}`} style={{ borderWidth: activeTab !== 'Alt' ? 1 : 0, borderColor: '#F94498' }}>
+        <TouchableOpacity onPress={() => { setActiveTab('Alt'); router.push('/(trip)/plan/alternative-stays'); }} className={`flex-1 py-2 rounded-pill items-center ${activeTab === 'Alt' ? 'bg-primary' : ''}`} style={{ borderWidth: activeTab !== 'Alt' ? 1 : 0, borderColor: colors.pink }}>
           <Text className={activeTab === 'Alt' ? 'text-white font-semibold' : 'text-pink font-semibold'}>Alternative Stays NEW</Text>
         </TouchableOpacity>
       </View>

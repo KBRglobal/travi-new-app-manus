@@ -2,6 +2,7 @@ import { haptic } from '@/lib/haptics';
 import React from 'react';
 import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
+import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
 
 const FAQ = [
   { q: 'How does Travel DNA work?', a: 'TRAVI analyzes your travel preferences through a fun quiz and your booking behavior to create your unique Travel DNA profile.' },

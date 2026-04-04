@@ -5,6 +5,7 @@ import Animated, { FadeInDown, useSharedValue, useAnimatedStyle, withRepeat, wit
 import { useRouter } from 'expo-router';
 import { useLiveStore } from '../../stores/liveStore';
 import { activities } from '../../lib/mockData';
+import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
 
 export default function LiveDashboardScreen() {
   const router = useRouter();

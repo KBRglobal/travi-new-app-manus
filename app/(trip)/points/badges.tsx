@@ -3,6 +3,7 @@ import React from 'react';
 import { View, Text, FlatList, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
 import { EmptyState } from '@/components/ui/EmptyState';
+import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
 
 const BADGES = [
   { id: '1', emoji: '🌍', name: 'World Explorer', desc: 'Visit 10 countries', tier: 'gold', unlocked: true },

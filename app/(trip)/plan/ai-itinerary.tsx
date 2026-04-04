@@ -2,6 +2,7 @@ import { haptic } from '@/lib/haptics';
 import React, { useState } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, TextInput } from 'react-native';
 import { useRouter } from 'expo-router';
+import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
 
 const AI_ACTIVITIES = [
   { time: '09:00', name: 'Dubai Museum', reason: 'Based on your 78% History score', dna: 'Matches your cultural DNA perfectly' },

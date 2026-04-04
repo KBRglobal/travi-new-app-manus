@@ -1,11 +1,12 @@
 /**
  * Global Confirm Dialog Component
- * Used for price changes, booking confirmations, etc.
+ * Design System: Chillax headings, Satoshi body, modal radius, brand colors
  */
 
 import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, Modal } from 'react-native';
 import { globalErrorState } from '@/lib/errorHandling';
+import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
 
 interface ConfirmData {
   title: string;
@@ -38,22 +39,86 @@ export function ConfirmDialogProvider() {
 
   return (
     <Modal transparent animationType="fade" visible={!!confirm}>
-      <View className="flex-1 bg-black/70 items-center justify-center px-8">
-        <View className="bg-bg-card w-full rounded-3xl p-6">
-          <Text className="text-white text-xl font-bold mb-2">{confirm.title}</Text>
-          <Text className="text-white/60 text-sm mb-6">{confirm.message}</Text>
-          <View className="flex-row gap-3">
+      <View
+        style={{
+          flex: 1,
+          backgroundColor: colors.bg.overlay,
+          alignItems: 'center',
+          justifyContent: 'center',
+          paddingHorizontal: 32,
+        }}
+      >
+        <View
+          style={{
+            backgroundColor: colors.bg.card,
+            width: '100%',
+            borderRadius: radius.modal,
+            padding: 24,
+            ...shadows.card,
+          }}
+        >
+          <Text
+            style={{
+              fontFamily: fonts.heading,
+              fontSize: fontSizes.h2,
+              color: colors.text.primary,
+              marginBottom: 8,
+            }}
+          >
+            {confirm.title}
+          </Text>
+          <Text
+            style={{
+              fontFamily: fonts.body,
+              fontSize: fontSizes.bodySm,
+              color: colors.text.secondary,
+              marginBottom: 24,
+            }}
+          >
+            {confirm.message}
+          </Text>
+          <View style={{ flexDirection: 'row', gap: 12 }}>
             <TouchableOpacity
               onPress={handleCancel}
-              className="flex-1 py-3 rounded-xl border border-white/10"
+              style={{
+                flex: 1,
+                paddingVertical: 12,
+                borderRadius: radius.button,
+                borderWidth: 1,
+                borderColor: colors.border.default,
+                alignItems: 'center',
+              }}
             >
-              <Text className="text-white text-center font-medium">Cancel</Text>
+              <Text
+                style={{
+                  fontFamily: fonts.bold,
+                  fontSize: fontSizes.body,
+                  color: colors.text.primary,
+                }}
+              >
+                Cancel
+              </Text>
             </TouchableOpacity>
             <TouchableOpacity
               onPress={handleConfirm}
-              className="flex-1 py-3 rounded-xl bg-primary"
+              style={{
+                flex: 1,
+                paddingVertical: 12,
+                borderRadius: radius.button,
+                backgroundColor: colors.primary,
+                alignItems: 'center',
+                ...shadows.fab,
+              }}
             >
-              <Text className="text-white text-center font-bold">Confirm</Text>
+              <Text
+                style={{
+                  fontFamily: fonts.bold,
+                  fontSize: fontSizes.body,
+                  color: '#FFFFFF',
+                }}
+              >
+                Confirm
+              </Text>
             </TouchableOpacity>
           </View>
         </View>

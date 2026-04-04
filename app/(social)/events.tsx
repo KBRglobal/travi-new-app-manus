@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { View, Text, FlatList, TouchableOpacity, ScrollView } from 'react-native';
 import { useRouter } from 'expo-router';
 import { EmptyState } from '@/components/ui/EmptyState';
+import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
 
 const EVENTS = [
   { id: '1', title: 'Barcelona Meetup', emoji: '🍷', date: 'May 18, 2026', location: 'La Rambla', attendees: 12, going: false, type: 'meetup' },

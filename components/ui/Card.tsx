@@ -3,12 +3,14 @@ import {
   View,
   TouchableOpacity,
   type ViewProps,
+  type ViewStyle,
   type TouchableOpacityProps,
 } from 'react-native';
+import { shadows, radius } from '../../constants/theme';
 
 /* ═══════════════════════════════════════════
  *  TRAVI — Card
- *  NativeWind v4 className only — no StyleSheet
+ *  Design System: #120824 bg, 16px radius, card shadow
  *
  *  Variants  : default | elevated | outlined | surface | gradient
  *  Pressable : when onPress is provided, wraps in TouchableOpacity
@@ -18,28 +20,29 @@ import {
 type CardVariant = 'default' | 'elevated' | 'outlined' | 'surface' | 'gradient';
 
 interface CardProps extends ViewProps {
-  /** Visual variant */
   variant?: CardVariant;
-  /** Makes the card pressable */
   onPress?: TouchableOpacityProps['onPress'];
-  /** Content rendered above children */
   header?: React.ReactNode;
-  /** Content rendered below children */
   footer?: React.ReactNode;
-  /** Disable interaction (only relevant when pressable) */
   disabled?: boolean;
 }
 
-/* ── className maps ────────────────────── */
-
-const base = 'rounded-card overflow-hidden';
+const base = 'overflow-hidden';
 
 const variantCls: Record<CardVariant, string> = {
   default: 'bg-bg-card',
-  elevated: 'bg-bg-card shadow-card',
+  elevated: 'bg-bg-card',
   outlined: 'bg-transparent border border-border',
   surface: 'bg-bg-surface',
   gradient: 'bg-primary',
+};
+
+const variantStyle: Record<CardVariant, ViewStyle> = {
+  default: { borderRadius: radius.card },
+  elevated: { borderRadius: radius.card, ...shadows.card },
+  outlined: { borderRadius: radius.card },
+  surface: { borderRadius: radius.card },
+  gradient: { borderRadius: radius.card, ...shadows.glow },
 };
 
 export default function Card({
@@ -50,6 +53,7 @@ export default function Card({
   disabled = false,
   children,
   className: extraClass = '',
+  style,
   ...rest
 }: CardProps) {
   const containerCls = [
@@ -60,6 +64,11 @@ export default function Card({
   ]
     .filter(Boolean)
     .join(' ');
+
+  const combinedStyle: ViewStyle = {
+    ...variantStyle[variant],
+    ...(typeof style === 'object' && !Array.isArray(style) ? style : {}),
+  };
 
   const inner = (
     <>
@@ -75,6 +84,7 @@ export default function Card({
     return (
       <TouchableOpacity
         className={containerCls}
+        style={combinedStyle}
         onPress={onPress}
         disabled={disabled}
         activeOpacity={0.7}
@@ -86,7 +96,7 @@ export default function Card({
   }
 
   return (
-    <View className={containerCls} {...rest}>
+    <View className={containerCls} style={combinedStyle} {...rest}>
       {inner}
     </View>
   );

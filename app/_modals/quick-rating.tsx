@@ -2,6 +2,7 @@ import { haptic } from '@/lib/haptics';
 import { useState } from 'react';
 import { View, Text, Pressable } from 'react-native';
 import { useRouter } from 'expo-router';
+import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
 
 export default function QuickRatingModal() {
   const router = useRouter();

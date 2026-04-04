@@ -2,6 +2,7 @@ import { haptic } from '@/lib/haptics';
 import React from 'react';
 import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router';
+import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
 
 const STATUS_COLORS: Record<string, string> = {
   'On Time': '#22C55E', 'Delayed': '#F59E0B', 'Boarding': '#3B82F6',

@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { View, Text, FlatList, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
 import { EmptyState } from '@/components/ui/EmptyState';
+import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
 
 const MEMORIES = [
   { id: '1', emoji: '📸', title: 'Sunrise at Mt. Fuji', time: 'Today, 5:30 AM', type: 'photo', likes: 12 },

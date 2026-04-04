@@ -2,6 +2,7 @@ import { Skeleton } from '@/components/ui/Skeleton';
 import { View, Text, Pressable, FlatList } from 'react-native';
 import { useRouter } from 'expo-router';
 import { EmptyState } from '@/components/ui/EmptyState';
+import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
 
 const TRIPS = [
   { id: 'trip-1', name: 'Barcelona Adventure', status: 'active', dates: 'Mar 28 - Apr 5' },

@@ -1,73 +1,117 @@
 import { haptic } from '@/lib/haptics';
 import React from 'react';
-import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, Image } from 'react-native';
 import { useRouter } from 'expo-router';
+import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
 
 export default function HomeScreen() {
   const router = useRouter();
 
   return (
-    <View className="flex-1 bg-bg-primary">
+    <View className="flex-1" style={{ backgroundColor: colors.bg.primary }}>
       <ScrollView className="flex-1 px-4 pt-12">
+        {/* Header */}
         <View className="flex-row justify-between items-center mb-6">
           <View>
-            <Text className="text-text-secondary">Good morning</Text>
-            <Text className="text-white text-2xl font-bold">Welcome back! 👋</Text>
+            <Text style={{ fontFamily: fonts.body, fontSize: fontSizes.bodySm, color: colors.text.secondary }}>
+              Good morning
+            </Text>
+            <Text style={{ fontFamily: fonts.heading, fontSize: fontSizes.h1, color: colors.text.primary }}>
+              Welcome back! 👋
+            </Text>
           </View>
           <TouchableOpacity onPress={() => router.push('/(trip)/profile')}>
-            <View className="w-10 h-10 bg-primary rounded-full items-center justify-center">
-              <Text className="text-white font-bold">U</Text>
+            <View style={{ width: 40, height: 40, backgroundColor: colors.primary, borderRadius: 20, alignItems: 'center', justifyContent: 'center' }}>
+              <Text style={{ fontFamily: fonts.bold, color: '#FFFFFF' }}>U</Text>
             </View>
           </TouchableOpacity>
         </View>
 
-        <TouchableOpacity onPress={() => router.push('/(trip)/plan/destination')} className="bg-primary rounded-card p-6 mb-4">
-          <Text className="text-white text-lg font-bold mb-1">AI Trip Suggestion</Text>
-          <Text className="text-white/80">Based on your Travel DNA — Dubai is 92% match!</Text>
-          <Text className="text-white font-semibold mt-2">Plan Trip →</Text>
+        {/* AI Trip Suggestion Card */}
+        <TouchableOpacity
+          onPress={() => router.push('/(trip)/plan/destination')}
+          style={{ backgroundColor: colors.primary, borderRadius: radius.card, padding: 24, marginBottom: 16, ...shadows.glow }}
+        >
+          <Text style={{ fontFamily: fonts.heading, fontSize: fontSizes.bodyLg, color: '#FFFFFF', marginBottom: 4 }}>
+            AI Trip Suggestion
+          </Text>
+          <Text style={{ fontFamily: fonts.body, fontSize: fontSizes.bodySm, color: 'rgba(255,255,255,0.8)' }}>
+            Based on your Travel DNA — Dubai is 92% match!
+          </Text>
+          <Text style={{ fontFamily: fonts.bold, fontSize: fontSizes.bodySm, color: '#FFFFFF', marginTop: 8 }}>
+            Plan Trip →
+          </Text>
         </TouchableOpacity>
 
-        <Text className="text-white font-bold text-lg mb-3">Quick Stats</Text>
+        {/* Quick Stats */}
+        <Text style={{ fontFamily: fonts.heading, fontSize: fontSizes.bodyLg, color: colors.text.primary, marginBottom: 12 }}>
+          Quick Stats
+        </Text>
         <ScrollView horizontal showsHorizontalScrollIndicator={false} className="mb-6">
-          <TouchableOpacity onPress={() => router.push('/(tabs)/wallet')} className="bg-bg-card rounded-card p-4 mr-3" style={{ width: 140 }}>
-            <Text className="text-text-secondary text-sm">Wallet</Text>
-            <Text className="text-white text-xl font-bold">€2,450</Text>
+          <TouchableOpacity
+            onPress={() => router.push('/(tabs)/wallet')}
+            style={{ backgroundColor: colors.bg.card, borderRadius: radius.card, padding: 16, marginRight: 12, width: 140, borderWidth: 1, borderColor: colors.border.default }}
+          >
+            <Text style={{ fontFamily: fonts.body, fontSize: fontSizes.bodySm, color: colors.text.secondary }}>Wallet</Text>
+            <Text style={{ fontFamily: fonts.heading, fontSize: fontSizes.h2, color: colors.text.primary }}>€2,450</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => router.push('/(tabs)/points')} className="bg-bg-card rounded-card p-4 mr-3" style={{ width: 140 }}>
-            <Text className="text-text-secondary text-sm">Points</Text>
-            <Text className="text-white text-xl font-bold">12,500</Text>
+          <TouchableOpacity
+            onPress={() => router.push('/(tabs)/points')}
+            style={{ backgroundColor: colors.bg.card, borderRadius: radius.card, padding: 16, marginRight: 12, width: 140, borderWidth: 1, borderColor: colors.border.default }}
+          >
+            <Text style={{ fontFamily: fonts.body, fontSize: fontSizes.bodySm, color: colors.text.secondary }}>Points</Text>
+            <Text style={{ fontFamily: fonts.heading, fontSize: fontSizes.h2, color: colors.text.primary }}>12,500</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => router.push('/(trip)/plan/flight-alerts')} className="bg-bg-card rounded-card p-4 mr-3" style={{ width: 140, borderWidth: 1, borderColor: '#F94498' }}>
-            <Text className="text-pink text-sm">Flight Deals 🔥</Text>
-            <Text className="text-white text-xl font-bold">3 alerts</Text>
-            <Text className="text-pink text-xs">NEW</Text>
+          <TouchableOpacity
+            onPress={() => router.push('/(trip)/plan/flight-alerts')}
+            style={{ backgroundColor: colors.bg.card, borderRadius: radius.card, padding: 16, marginRight: 12, width: 140, borderWidth: 1, borderColor: colors.pink }}
+          >
+            <Text style={{ fontFamily: fonts.bold, fontSize: fontSizes.bodySm, color: colors.pink }}>Flight Deals 🔥</Text>
+            <Text style={{ fontFamily: fonts.heading, fontSize: fontSizes.h2, color: colors.text.primary }}>3 alerts</Text>
+            <Text style={{ fontFamily: fonts.bold, fontSize: fontSizes.tiny, color: colors.pink }}>NEW</Text>
           </TouchableOpacity>
         </ScrollView>
 
+        {/* DNA Persona */}
         <View className="flex-row justify-between items-center mb-3">
-          <Text className="text-white font-bold text-lg">Your DNA Persona</Text>
+          <Text style={{ fontFamily: fonts.heading, fontSize: fontSizes.bodyLg, color: colors.text.primary }}>
+            Your DNA Persona
+          </Text>
           <TouchableOpacity onPress={() => router.push('/(tabs)/explore/nomad')}>
-            <View className="bg-primary/20 px-3 py-1 rounded-pill flex-row items-center">
-              <Text className="text-primary text-sm font-semibold">Nomad Mode 🌍</Text>
+            <View style={{ backgroundColor: colors.primaryLight, paddingHorizontal: 12, paddingVertical: 4, borderRadius: radius.pill }}>
+              <Text style={{ fontFamily: fonts.bold, fontSize: fontSizes.bodySm, color: colors.primary }}>Nomad Mode 🌍</Text>
             </View>
           </TouchableOpacity>
         </View>
-        <TouchableOpacity onPress={() => router.push('/(trip)/dna/results')} className="bg-bg-card rounded-card p-4 mb-4">
-          <Text className="text-primary font-bold">Explorer · Foodie · Culture Lover</Text>
-          <Text className="text-text-secondary text-sm mt-1">Tap to see your full Travel DNA →</Text>
+        <TouchableOpacity
+          onPress={() => router.push('/(trip)/dna/results')}
+          style={{ backgroundColor: colors.bg.card, borderRadius: radius.card, padding: 16, marginBottom: 16, borderWidth: 1, borderColor: colors.border.default }}
+        >
+          <Text style={{ fontFamily: fonts.bold, fontSize: fontSizes.body, color: colors.primary }}>Explorer · Foodie · Culture Lover</Text>
+          <Text style={{ fontFamily: fonts.body, fontSize: fontSizes.bodySm, color: colors.text.secondary, marginTop: 4 }}>Tap to see your full Travel DNA →</Text>
         </TouchableOpacity>
 
-        <Text className="text-white font-bold text-lg mb-3">Trending Destinations</Text>
+        {/* Trending Destinations */}
+        <Text style={{ fontFamily: fonts.heading, fontSize: fontSizes.bodyLg, color: colors.text.primary, marginBottom: 12 }}>
+          Trending Destinations
+        </Text>
         <ScrollView horizontal showsHorizontalScrollIndicator={false} className="mb-6">
           {['Dubai 🇦🇪', 'Tokyo 🇯🇵', 'Barcelona 🇪🇸', 'Bali 🇮🇩'].map(dest => (
-            <TouchableOpacity key={dest} onPress={() => router.push('/(trip)/plan/destination')} className="bg-bg-card rounded-card p-4 mr-3" style={{ width: 150 }}>
-              <Text className="text-white font-semibold">{dest}</Text>
-              <Text className="text-primary text-sm mt-1">Explore →</Text>
+            <TouchableOpacity
+              key={dest}
+              onPress={() => router.push('/(trip)/plan/destination')}
+              style={{ backgroundColor: colors.bg.card, borderRadius: radius.card, padding: 16, marginRight: 12, width: 150, borderWidth: 1, borderColor: colors.border.default }}
+            >
+              <Text style={{ fontFamily: fonts.bold, fontSize: fontSizes.body, color: colors.text.primary }}>{dest}</Text>
+              <Text style={{ fontFamily: fonts.body, fontSize: fontSizes.bodySm, color: colors.primary, marginTop: 4 }}>Explore →</Text>
             </TouchableOpacity>
           ))}
         </ScrollView>
 
-        <Text className="text-white font-bold text-lg mb-3">Quick Actions</Text>
+        {/* Quick Actions */}
+        <Text style={{ fontFamily: fonts.heading, fontSize: fontSizes.bodyLg, color: colors.text.primary, marginBottom: 12 }}>
+          Quick Actions
+        </Text>
         <View className="flex-row flex-wrap mb-8">
           {[
             { label: 'New Trip', icon: '✈️', route: '/(trip)/plan/destination' },
@@ -75,9 +119,26 @@ export default function HomeScreen() {
             { label: 'Explore', icon: '🌍', route: '/(tabs)/explore' },
             { label: 'Wallet', icon: '💰', route: '/(tabs)/wallet' },
           ].map(action => (
-            <TouchableOpacity key={action.label} onPress={() => router.push(action.route as any)} className="bg-bg-card rounded-card p-4 items-center" style={{ width: '48%', marginRight: '2%', marginBottom: 8 }}>
-              <Text className="text-2xl mb-1">{action.icon}</Text>
-              <Text className="text-white font-semibold">{action.label}</Text>
+            <TouchableOpacity
+              key={action.label}
+              onPress={() => {
+                haptic.light();
+                router.push(action.route as any);
+              }}
+              style={{
+                backgroundColor: colors.bg.card,
+                borderRadius: radius.card,
+                padding: 16,
+                alignItems: 'center',
+                width: '48%',
+                marginRight: '2%',
+                marginBottom: 8,
+                borderWidth: 1,
+                borderColor: colors.border.default,
+              }}
+            >
+              <Text style={{ fontSize: 24, marginBottom: 4 }}>{action.icon}</Text>
+              <Text style={{ fontFamily: fonts.bold, fontSize: fontSizes.bodySm, color: colors.text.primary }}>{action.label}</Text>
             </TouchableOpacity>
           ))}
         </View>

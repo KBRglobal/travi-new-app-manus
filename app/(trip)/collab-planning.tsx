@@ -4,6 +4,7 @@ import { View, Text, TouchableOpacity, ScrollView, TextInput, Image } from 'reac
 import Animated, { FadeInDown } from 'react-native-reanimated';
 import { useRouter } from 'expo-router';
 import { travelers, activities } from '../../lib/mockData';
+import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
 
 export default function CollabPlanningScreen() {
   const router = useRouter();

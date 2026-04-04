@@ -1,4 +1,5 @@
 import { View, Text } from 'react-native';
+import { colors, fonts, fontSizes } from '../constants/theme';
 
 // S60 — No Internet Overlay (component, not a route)
 export default function NoInternetOverlay() {
@@ -10,17 +11,31 @@ export default function NoInternetOverlay() {
         left: 0,
         right: 0,
         bottom: 0,
-        backgroundColor: 'rgba(0,0,0,0.95)',
+        backgroundColor: colors.bg.overlay,
         justifyContent: 'center',
         alignItems: 'center',
         zIndex: 9999,
       }}
     >
-      <Text style={{ color: '#FFFFFF', fontSize: 40 }}>📶</Text>
-      <Text style={{ color: '#FFFFFF', fontSize: 20, fontWeight: 'bold', marginTop: 16 }}>
+      <Text style={{ fontSize: 40 }}>📶</Text>
+      <Text
+        style={{
+          fontFamily: fonts.heading,
+          fontSize: fontSizes.h3,
+          color: colors.text.primary,
+          marginTop: 16,
+        }}
+      >
         No Internet Connection
       </Text>
-      <Text style={{ color: 'rgba(255,255,255,0.6)', fontSize: 14, marginTop: 8 }}>
+      <Text
+        style={{
+          fontFamily: fonts.body,
+          fontSize: fontSizes.bodySm,
+          color: colors.text.secondary,
+          marginTop: 8,
+        }}
+      >
         Check your connection and try again
       </Text>
     </View>

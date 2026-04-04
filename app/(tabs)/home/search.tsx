@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { View, Text, TextInput, Pressable, ScrollView } from 'react-native';
 import { useRouter } from 'expo-router';
+import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
 
 const RECENT = ['Paris', 'Tokyo', 'Barcelona', 'Bali'];
 const TRENDING = ['Iceland', 'Morocco', 'New Zealand', 'Portugal'];

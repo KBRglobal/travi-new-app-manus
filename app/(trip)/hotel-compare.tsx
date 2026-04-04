@@ -4,6 +4,7 @@ import { View, Text, TouchableOpacity, ScrollView, Image } from 'react-native';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 import { useRouter } from 'expo-router';
 import { hotels } from '../../lib/mockData';
+import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
 
 const compareAttributes = ['Price/night', 'Rating', 'Stars', 'WiFi', 'Pool', 'Breakfast', 'Distance', 'Cancellation'];
 

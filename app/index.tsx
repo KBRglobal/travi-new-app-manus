@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, Image } from 'react-native';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -11,6 +11,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import { useRouter } from 'expo-router';
 import { useAuthStore } from '../stores/authStore';
+import { colors, fonts, fontSizes } from '../constants/theme';
 
 export default function SplashScreen() {
   const router = useRouter();
@@ -57,16 +58,37 @@ export default function SplashScreen() {
   }, []);
 
   return (
-    <View className="flex-1 bg-bg-primary items-center justify-center">
+    <View
+      className="flex-1 items-center justify-center"
+      style={{ backgroundColor: colors.bg.primary }}
+    >
       <Animated.View style={mascotStyle} className="items-center">
-        <Text className="text-6xl mb-4">🦊</Text>
+        <Image
+          source={require('../assets/Mascot_for_Dark_Background.png')}
+          style={{ width: 120, height: 120 }}
+          resizeMode="contain"
+        />
       </Animated.View>
 
-      <Animated.Text style={titleStyle} className="text-white text-heading-1 font-bold">
-        TRAVI
-      </Animated.Text>
+      <Animated.View style={titleStyle} className="items-center mt-4">
+        <Image
+          source={require('../assets/Logotype_for_Dark_Background.webp')}
+          style={{ width: 160, height: 48 }}
+          resizeMode="contain"
+        />
+      </Animated.View>
 
-      <Animated.Text style={subtitleStyle} className="text-text-secondary text-body mt-2">
+      <Animated.Text
+        style={[
+          subtitleStyle,
+          {
+            fontFamily: fonts.body,
+            fontSize: fontSizes.body,
+            color: colors.text.secondary,
+            marginTop: 8,
+          },
+        ]}
+      >
         Your AI Travel Companion
       </Animated.Text>
     </View>

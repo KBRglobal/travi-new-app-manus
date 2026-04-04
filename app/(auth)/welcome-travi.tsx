@@ -2,6 +2,7 @@ import { haptic } from '@/lib/haptics';
 import { useEffect } from 'react';
 import { View, Text, Pressable } from 'react-native';
 import { useRouter } from 'expo-router';
+import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
 
 // S6 — Welcome to TRAVI
 export default function WelcomeTraviScreen() {

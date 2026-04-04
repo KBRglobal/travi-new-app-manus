@@ -4,6 +4,7 @@ import { View, Text, TouchableOpacity } from 'react-native';
 import { CalendarList } from 'react-native-calendars';
 import { useRouter } from 'expo-router';
 import { useTripStore } from '../../stores/tripStore';
+import { colors, fonts, fontSizes, radius, shadows } from '@/constants/theme';
 
 export default function DatesScreen() {
   const router = useRouter();
@@ -13,7 +14,7 @@ export default function DatesScreen() {
 
   const getMarkedDates = () => {
     if (!startDate) return {};
-    if (!endDate) return { [startDate]: { startingDay: true, endingDay: true, color: '#6443F4', textColor: 'white' } };
+    if (!endDate) return { [startDate]: { startingDay: true, endingDay: true, color: colors.primary, textColor: 'white' } };
     const marked: Record<string, any> = {};
     const start = new Date(startDate);
     const end = new Date(endDate);
