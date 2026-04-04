@@ -230,3 +230,17 @@
 - [x] Study top travel apps (Hopper, Kiwi, KAYAK) for clean home screen patterns
 - [x] Rebuild Home Dashboard from scratch — minimal, cinematic, action-driving
 - [x] Remove variant selector clutter
+
+### Home Dashboard — New Background + Glassmorphism
+- [ ] Change base bg to #0A0514
+- [ ] Add dot grid texture (rgba(255,255,255,0.04) dots at 28px spacing)
+- [ ] Add center purple glow (rgba(100,67,244,0.18))
+- [ ] Add bottom pink glow ellipse (rgba(249,68,152,0.12))
+- [ ] Add subtle ring decorations (rgba(100,67,244,0.1))
+- [ ] Convert all cards to Apple-style glassmorphism (blur, transparency, subtle border)
+
+### Home Dashboard — Final Design DNA
+- [x] New background: #0A0514 + dot grid + purple center glow + pink bottom glow
+- [x] Compelling hero card — cinematic photo bg, gradient, "Where will you go next?" headline
+- [x] Strong CTA button — gradient purple→pink with shimmer sweep, glow shadow
+- [x] All cards converted to Apple-style glassmorphism (BlurView + transparency + subtle border)

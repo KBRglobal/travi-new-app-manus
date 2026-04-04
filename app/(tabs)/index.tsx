@@ -1,7 +1,7 @@
 // Home Dashboard — TRAVI
-// Clean, cinematic, emotionally compelling — makes you want to book NOW
+// Design DNA: #0A0514 bg, dot grid, purple/pink glows, Apple glassmorphism, Chillax+Satoshi
 
-import { useRef, useEffect, useState, useCallback } from "react";
+import { useRef, useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -17,27 +17,31 @@ import {
 } from "react-native";
 import { useRouter } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
+import { BlurView } from "expo-blur";
 import { Image as ExpoImage } from "expo-image";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import * as Haptics from "expo-haptics";
 
 const { width: W } = Dimensions.get("window");
 
-// ─── Palette ───
+// ─── Design DNA Palette ───
 const C = {
-  bg: "#0D0221",
-  surface: "#140930",
-  surfaceLight: "#1C0E3D",
+  bg: "#0A0514",
+  glass: "rgba(255,255,255,0.06)",
+  glassBorder: "rgba(255,255,255,0.1)",
+  glassLight: "rgba(255,255,255,0.09)",
   purple: "#6443F4",
   purpleLight: "#9B7EFF",
+  purpleGlow: "rgba(100,67,244,0.22)",
   pink: "#F94498",
+  pinkGlow: "rgba(249,68,152,0.14)",
   green: "#00C96B",
   gold: "#FDCD0A",
   white: "#FFFFFF",
-  muted60: "rgba(255,255,255,0.6)",
-  muted40: "rgba(255,255,255,0.4)",
-  muted20: "rgba(255,255,255,0.2)",
-  border: "rgba(100,67,244,0.2)",
+  muted70: "rgba(255,255,255,0.7)",
+  muted50: "rgba(255,255,255,0.5)",
+  muted30: "rgba(255,255,255,0.3)",
+  muted15: "rgba(255,255,255,0.15)",
 };
 
 // ─── Destination images ───
@@ -65,228 +69,243 @@ function haptic() {
 }
 
 // ═══════════════════════════════════════════════════
-// BOARDING PASS — THE HERO
+// GLASS CARD WRAPPER — Apple-style frosted glass
 // ═══════════════════════════════════════════════════
-function BoardingPassHero({ onPress }: { onPress: () => void }) {
-  const planeX = useRef(new Animated.Value(0)).current;
+function GlassCard({ children, style, onPress }: { children: React.ReactNode; style?: any; onPress?: () => void }) {
+  const content = (
+    <View style={[glass.card, style]}>
+      {Platform.OS !== "web" ? (
+        <BlurView intensity={25} tint="dark" style={StyleSheet.absoluteFill} />
+      ) : null}
+      <View style={glass.inner}>{children}</View>
+    </View>
+  );
+
+  if (onPress) {
+    return (
+      <Pressable
+        onPress={() => { haptic(); onPress(); }}
+        style={({ pressed }) => [pressed && { opacity: 0.88, transform: [{ scale: 0.98 }] }]}
+      >
+        {content}
+      </Pressable>
+    );
+  }
+  return content;
+}
+
+const glass = StyleSheet.create({
+  card: {
+    borderRadius: 20,
+    overflow: "hidden",
+    backgroundColor: C.glass,
+    borderWidth: 1,
+    borderColor: C.glassBorder,
+  },
+  inner: {
+    // Content sits above blur
+  },
+});
+
+// ═══════════════════════════════════════════════════
+// HERO — "Where will you go next?"
+// Full-width cinematic card with destination photo, gradient, and CTA
+// ═══════════════════════════════════════════════════
+function HeroCard({ onPress }: { onPress: () => void }) {
+  const shimmer = useRef(new Animated.Value(-1)).current;
   const [destIdx, setDestIdx] = useState(0);
   const destFade = useRef(new Animated.Value(1)).current;
-  const destSlide = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
-    // Plane float
+    // Shimmer sweep across CTA
     Animated.loop(
       Animated.sequence([
-        Animated.timing(planeX, { toValue: 5, duration: 1600, easing: Easing.inOut(Easing.sin), useNativeDriver: true }),
-        Animated.timing(planeX, { toValue: -5, duration: 1600, easing: Easing.inOut(Easing.sin), useNativeDriver: true }),
+        Animated.timing(shimmer, { toValue: 1, duration: 2400, easing: Easing.inOut(Easing.ease), useNativeDriver: true }),
+        Animated.delay(1200),
+        Animated.timing(shimmer, { toValue: -1, duration: 0, useNativeDriver: true }),
       ])
     ).start();
 
-    // Rotating destination
+    // Rotating destination text
     const interval = setInterval(() => {
-      Animated.parallel([
-        Animated.timing(destFade, { toValue: 0, duration: 180, useNativeDriver: true }),
-        Animated.timing(destSlide, { toValue: -6, duration: 180, useNativeDriver: true }),
-      ]).start(() => {
+      Animated.timing(destFade, { toValue: 0, duration: 200, useNativeDriver: true }).start(() => {
         setDestIdx((i) => (i + 1) % IATA.length);
-        destSlide.setValue(6);
-        Animated.parallel([
-          Animated.timing(destFade, { toValue: 1, duration: 180, useNativeDriver: true }),
-          Animated.timing(destSlide, { toValue: 0, duration: 180, useNativeDriver: true }),
-        ]).start();
+        Animated.timing(destFade, { toValue: 1, duration: 200, useNativeDriver: true }).start();
       });
-    }, 2200);
+    }, 2500);
     return () => clearInterval(interval);
   }, []);
 
-  const bars = [28,20,28,16,24,28,14,28,20,16,28,24,20,28,16,28,14,24,28,20,16,28];
+  const shimmerTranslate = shimmer.interpolate({
+    inputRange: [-1, 1],
+    outputRange: [-200, 200],
+  });
 
   return (
     <Pressable
       onPress={() => { haptic(); onPress(); }}
       style={({ pressed }) => [pressed && { transform: [{ scale: 0.98 }] }]}
     >
-      <View style={hero.card}>
-        {/* ── DARK TOP ── */}
-        <View style={hero.dark}>
-          <View style={hero.header}>
-            <Text style={hero.brand}>TR<Text style={{ color: C.purpleLight }}>AVI</Text></Text>
-            <Text style={hero.type}>BOARDING PASS</Text>
+      <View style={heroS.card}>
+        {/* Background destination image */}
+        <ExpoImage
+          source={DEST.bali}
+          style={StyleSheet.absoluteFill}
+          contentFit="cover"
+          transition={400}
+        />
+        {/* Dark gradient overlay */}
+        <LinearGradient
+          colors={["rgba(10,5,20,0.3)", "rgba(10,5,20,0.6)", "rgba(10,5,20,0.92)"]}
+          locations={[0, 0.4, 1]}
+          style={StyleSheet.absoluteFill}
+        />
+
+        {/* Content */}
+        <View style={heroS.content}>
+          {/* Top row */}
+          <View style={heroS.topRow}>
+            <View style={heroS.aiBadge}>
+              <Text style={heroS.aiBadgeText}>✦ AI-Powered</Text>
+            </View>
+            <Animated.Text style={[heroS.rotating, { opacity: destFade }]}>
+              Next stop: {IATA[destIdx]}
+            </Animated.Text>
           </View>
 
-          <View style={hero.route}>
-            {/* Origin */}
-            <View style={hero.cityBlock}>
-              <Text style={hero.iata}>TLV</Text>
-              <Text style={hero.cityLabel}>TEL AVIV</Text>
-            </View>
-
-            {/* Flight line */}
-            <View style={hero.mid}>
-              <View style={hero.flightRow}>
-                <View style={hero.lineSeg} />
-                <Animated.View style={{ transform: [{ translateX: planeX }] }}>
-                  <MaterialIcons name="flight" size={20} color="rgba(255,255,255,0.5)" style={{ transform: [{ rotate: "90deg" }] }} />
-                </Animated.View>
-                <View style={hero.lineSeg} />
-              </View>
-              <View style={hero.aiBadge}>
-                <Text style={hero.aiBadgeText}>✦ AI MATCHED</Text>
-              </View>
-            </View>
-
-            {/* Destination — rotating */}
-            <View style={hero.cityBlock}>
-              <Animated.Text style={[hero.iata, hero.iataDest, { opacity: destFade, transform: [{ translateY: destSlide }] }]}>
-                {IATA[destIdx]}
-              </Animated.Text>
-              <Text style={hero.cityLabel}>YOUR DREAM</Text>
-            </View>
+          {/* Main text */}
+          <View style={heroS.textBlock}>
+            <Text style={heroS.headline}>Where will{"\n"}you go next?</Text>
+            <Text style={heroS.sub}>
+              Your AI travel agent builds the perfect trip{"\n"}matched to your personality
+            </Text>
           </View>
-        </View>
 
-        {/* ── PERFORATION ── */}
-        <View style={hero.perfRow}>
-          <View style={hero.perfCircle} />
-          <View style={hero.perfDashes} />
-          <View style={[hero.perfCircle, { right: -9, left: undefined }]} />
-        </View>
-
-        {/* ── LIGHT BOTTOM ── */}
-        <View style={hero.light}>
-          <View style={hero.fields}>
-            <View style={hero.field}>
-              <Text style={hero.fieldLabel}>PASSENGER</Text>
-              <Text style={hero.fieldValue}>David ✦</Text>
-            </View>
-            <View style={hero.field}>
-              <Text style={hero.fieldLabel}>CLASS</Text>
-              <Text style={hero.fieldValue}>Explorer</Text>
-            </View>
-            <View style={hero.field}>
-              <Text style={hero.fieldLabel}>DEPARTS</Text>
-              <Text style={hero.fieldValue}>Anytime</Text>
-            </View>
-          </View>
-          <View style={hero.bottomRow}>
-            <View style={hero.barcode}>
-              {bars.map((h, i) => <View key={i} style={[hero.bar, { height: h }]} />)}
-            </View>
-            <Pressable
-              onPress={() => { haptic(); onPress(); }}
-              style={({ pressed }) => [hero.cta, pressed && { opacity: 0.85 }]}
+          {/* CTA Button */}
+          <Pressable
+            onPress={() => { haptic(); onPress(); }}
+            style={({ pressed }) => [heroS.cta, pressed && { opacity: 0.9 }]}
+          >
+            <LinearGradient
+              colors={[C.purple, "#8B5CF6", C.pink]}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 0 }}
+              style={heroS.ctaGradient}
             >
-              <Text style={hero.ctaText}>Plan Trip</Text>
-              <MaterialIcons name="arrow-forward" size={14} color="#fff" />
-            </Pressable>
-          </View>
+              {/* Shimmer overlay */}
+              <Animated.View
+                style={[heroS.shimmer, { transform: [{ translateX: shimmerTranslate }] }]}
+              />
+              <MaterialIcons name="flight-takeoff" size={18} color="#fff" />
+              <Text style={heroS.ctaText}>Plan My Trip</Text>
+              <MaterialIcons name="arrow-forward" size={16} color="rgba(255,255,255,0.7)" />
+            </LinearGradient>
+          </Pressable>
         </View>
       </View>
     </Pressable>
   );
 }
 
-const hero = StyleSheet.create({
+const heroS = StyleSheet.create({
   card: {
-    borderRadius: 22,
+    width: "100%" as any,
+    height: 340,
+    borderRadius: 24,
     overflow: "hidden",
+    // Glow shadow
     shadowColor: C.purple,
-    shadowOffset: { width: 0, height: 16 },
-    shadowOpacity: 0.35,
-    shadowRadius: 40,
+    shadowOffset: { width: 0, height: 12 },
+    shadowOpacity: 0.4,
+    shadowRadius: 36,
     elevation: 20,
   },
-  dark: {
-    backgroundColor: C.surface,
-    paddingHorizontal: 22,
-    paddingTop: 18,
-    paddingBottom: 18,
+  content: {
+    flex: 1,
+    justifyContent: "space-between",
+    padding: 22,
   },
-  header: {
+  topRow: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginBottom: 20,
   },
-  brand: { fontSize: 14, fontFamily: "Chillax-Bold", color: C.white },
-  type: { fontSize: 9, fontFamily: "Satoshi-Bold", letterSpacing: 3, color: C.muted20 },
-  route: { flexDirection: "row", alignItems: "center", justifyContent: "space-between" },
-  cityBlock: { alignItems: "center", width: 80 },
-  iata: { fontSize: 38, fontFamily: "Chillax-Bold", color: C.white, letterSpacing: -2, lineHeight: 42 },
-  iataDest: { color: C.pink },
-  cityLabel: { fontSize: 8, fontFamily: "Satoshi-Bold", color: C.muted40, marginTop: 4, letterSpacing: 1.5 },
-  mid: { flex: 1, alignItems: "center", gap: 8 },
-  flightRow: { flexDirection: "row", alignItems: "center", width: "100%" as any },
-  lineSeg: { flex: 1, height: 1, backgroundColor: "rgba(255,255,255,0.12)" },
   aiBadge: {
-    backgroundColor: "rgba(100,67,244,0.2)",
+    backgroundColor: "rgba(255,255,255,0.12)",
     borderWidth: 1,
-    borderColor: "rgba(100,67,244,0.4)",
+    borderColor: "rgba(255,255,255,0.15)",
     borderRadius: 20,
-    paddingHorizontal: 10,
-    paddingVertical: 3,
+    paddingHorizontal: 12,
+    paddingVertical: 5,
   },
-  aiBadgeText: { fontSize: 9, fontFamily: "Satoshi-Bold", color: C.purpleLight, letterSpacing: 0.5 },
-  // Perforation
-  perfRow: {
-    height: 1,
-    backgroundColor: "#F0ECFF",
-    position: "relative",
-    overflow: "visible",
+  aiBadgeText: {
+    fontSize: 11,
+    fontFamily: "Satoshi-Bold",
+    color: C.white,
+    letterSpacing: 0.3,
   },
-  perfCircle: {
-    position: "absolute",
-    left: -9,
-    top: -9,
-    width: 18,
-    height: 18,
-    borderRadius: 9,
-    backgroundColor: C.bg,
-    zIndex: 5,
+  rotating: {
+    fontSize: 12,
+    fontFamily: "Satoshi-Medium",
+    color: C.muted50,
   },
-  perfDashes: {
-    flex: 1,
-    height: 1,
-    marginHorizontal: 14,
-    borderStyle: "dashed",
-    borderWidth: 1,
-    borderColor: "rgba(100,67,244,0.15)",
+  textBlock: {
+    gap: 10,
   },
-  // Light bottom
-  light: {
-    backgroundColor: "#F7F4FF",
-    paddingHorizontal: 22,
-    paddingTop: 14,
-    paddingBottom: 16,
+  headline: {
+    fontSize: 34,
+    fontFamily: "Chillax-Bold",
+    color: C.white,
+    lineHeight: 40,
+    letterSpacing: -0.5,
   },
-  fields: { flexDirection: "row", gap: 24, marginBottom: 14 },
-  field: {},
-  fieldLabel: { fontSize: 8, fontFamily: "Satoshi-Bold", letterSpacing: 1.5, color: C.purpleLight, marginBottom: 3 },
-  fieldValue: { fontSize: 14, fontFamily: "Chillax-Bold", color: "#1A0B32" },
-  bottomRow: { flexDirection: "row", alignItems: "center", justifyContent: "space-between" },
-  barcode: { flexDirection: "row", gap: 2, alignItems: "flex-end", height: 28 },
-  bar: { width: 2, backgroundColor: "#1A0B32", borderRadius: 1 },
+  sub: {
+    fontSize: 14,
+    fontFamily: "Satoshi-Regular",
+    color: C.muted70,
+    lineHeight: 20,
+  },
   cta: {
-    backgroundColor: C.purple,
-    borderRadius: 14,
-    paddingHorizontal: 20,
-    paddingVertical: 11,
+    alignSelf: "stretch",
+    borderRadius: 18,
+    overflow: "hidden",
+    // CTA glow
+    shadowColor: C.pink,
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.5,
+    shadowRadius: 24,
+    elevation: 12,
+  },
+  ctaGradient: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 8,
-    shadowColor: C.purple,
-    shadowOffset: { width: 0, height: 6 },
-    shadowOpacity: 0.4,
-    shadowRadius: 16,
+    justifyContent: "center",
+    gap: 10,
+    paddingVertical: 16,
+    borderRadius: 18,
+    overflow: "hidden",
   },
-  ctaText: { fontSize: 13, fontFamily: "Satoshi-Bold", color: C.white },
+  ctaText: {
+    fontSize: 16,
+    fontFamily: "Satoshi-Bold",
+    color: C.white,
+    letterSpacing: 0.3,
+  },
+  shimmer: {
+    position: "absolute",
+    top: 0,
+    bottom: 0,
+    width: 80,
+    backgroundColor: "rgba(255,255,255,0.12)",
+    transform: [{ skewX: "-20deg" }],
+  },
 });
 
 // ═══════════════════════════════════════════════════
 // RECOMMENDED CARD
 // ═══════════════════════════════════════════════════
-const REC_W = W * 0.6;
-const REC_H = 320;
+const REC_W = W * 0.58;
+const REC_H = 300;
 
 function RecCard({ item, onPress }: { item: typeof RECOMMENDED[0]; onPress: () => void }) {
   return (
@@ -297,11 +316,11 @@ function RecCard({ item, onPress }: { item: typeof RECOMMENDED[0]; onPress: () =
       <View style={rec.card}>
         <ExpoImage source={DEST[item.key]} style={rec.image} contentFit="cover" transition={300} />
         <LinearGradient
-          colors={["transparent", "rgba(0,0,0,0.1)", "rgba(0,0,0,0.85)"]}
+          colors={["transparent", "rgba(0,0,0,0.15)", "rgba(0,0,0,0.88)"]}
           locations={[0.3, 0.5, 1]}
           style={StyleSheet.absoluteFill}
         />
-        {/* Match badge */}
+        {/* Match badge — glass style */}
         <View style={rec.badge}>
           <Text style={rec.badgeText}>✦ {item.match}%</Text>
         </View>
@@ -319,8 +338,10 @@ const rec = StyleSheet.create({
   card: {
     width: REC_W,
     height: REC_H,
-    borderRadius: 24,
+    borderRadius: 22,
     overflow: "hidden",
+    borderWidth: 1,
+    borderColor: "rgba(255,255,255,0.08)",
   },
   image: { width: "100%", height: "100%" },
   badge: {
@@ -333,12 +354,12 @@ const rec = StyleSheet.create({
     borderRadius: 10,
   },
   badgeText: { fontSize: 12, fontFamily: "Satoshi-Bold", color: C.white },
-  nameWrap: { position: "absolute", bottom: 20, left: 18 },
+  nameWrap: { position: "absolute", bottom: 18, left: 18 },
   city: {
-    fontSize: 26,
+    fontSize: 24,
     fontFamily: "Chillax-Bold",
     color: C.white,
-    lineHeight: 30,
+    lineHeight: 28,
     textShadowColor: "rgba(0,0,0,0.7)",
     textShadowOffset: { width: 0, height: 2 },
     textShadowRadius: 12,
@@ -353,6 +374,36 @@ const rec = StyleSheet.create({
     textShadowRadius: 6,
   },
 });
+
+// ═══════════════════════════════════════════════════
+// DOT GRID BACKGROUND LAYER
+// ═══════════════════════════════════════════════════
+function DotGrid() {
+  // Create a grid of dots to simulate the CSS radial-gradient dot pattern
+  const dots = [];
+  const spacing = 28;
+  const cols = Math.ceil(W / spacing) + 1;
+  const rows = 35; // enough to cover scrollable content
+  for (let r = 0; r < rows; r++) {
+    for (let c = 0; c < cols; c++) {
+      dots.push(
+        <View
+          key={`${r}-${c}`}
+          style={{
+            position: "absolute",
+            left: c * spacing,
+            top: r * spacing,
+            width: 2,
+            height: 2,
+            borderRadius: 1,
+            backgroundColor: "rgba(255,255,255,0.035)",
+          }}
+        />
+      );
+    }
+  }
+  return <View style={StyleSheet.absoluteFill} pointerEvents="none">{dots}</View>;
+}
 
 // ═══════════════════════════════════════════════════
 // MAIN SCREEN
@@ -372,10 +423,14 @@ export default function HomeScreen() {
 
   return (
     <View style={s.root}>
-      {/* Ambient orbs */}
+      {/* ═══ BACKGROUND LAYERS ═══ */}
       <View style={StyleSheet.absoluteFill} pointerEvents="none">
-        <View style={s.orbPurple} />
-        <View style={s.orbPink} />
+        {/* Dot grid */}
+        <DotGrid />
+        {/* Center purple glow */}
+        <View style={s.glowPurple} />
+        {/* Bottom pink glow */}
+        <View style={s.glowPink} />
       </View>
 
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 110 }}>
@@ -401,37 +456,33 @@ export default function HomeScreen() {
           </View>
         </View>
 
-        {/* ═══ BOARDING PASS HERO ═══ */}
+        {/* ═══ HERO ═══ */}
         <View style={s.section}>
-          <BoardingPassHero onPress={() => router.push("/(tabs)/plan-trip" as any)} />
+          <HeroCard onPress={() => router.push("/(tabs)/plan-trip" as any)} />
         </View>
 
         {/* ═══ LIVE TRIP ═══ */}
         <View style={s.section}>
-          <Pressable
-            onPress={() => { haptic(); router.push("/(live)/home" as any); }}
-            style={({ pressed }) => [s.liveStrip, pressed && { opacity: 0.88 }]}
-          >
-            <View style={s.liveDotWrap}>
-              <Animated.View style={[s.liveDotOuter, { opacity: livePulse }]} />
-              <View style={s.liveDotInner} />
+          <GlassCard onPress={() => router.push("/(live)/home" as any)}>
+            <View style={s.liveInner}>
+              <View style={s.liveDotWrap}>
+                <Animated.View style={[s.liveDotOuter, { opacity: livePulse }]} />
+                <View style={s.liveDotInner} />
+              </View>
+              <View style={{ flex: 1, marginLeft: 14 }}>
+                <Text style={s.liveLabel}>LIVE TRIP</Text>
+                <Text style={s.liveDest}>Bali, Indonesia</Text>
+              </View>
+              <MaterialIcons name="chevron-right" size={20} color={C.muted30} />
             </View>
-            <View style={{ flex: 1, marginLeft: 14 }}>
-              <Text style={s.liveLabel}>LIVE TRIP</Text>
-              <Text style={s.liveDest}>Bali, Indonesia</Text>
-            </View>
-            <MaterialIcons name="chevron-right" size={20} color={C.muted40} />
-          </Pressable>
+          </GlassCard>
         </View>
 
         {/* ═══ DNA COMPLETION ═══ */}
         <View style={s.section}>
-          <Pressable
-            onPress={() => { haptic(); router.push("/(dna)/profile" as any); }}
-            style={({ pressed }) => [s.dnaCard, pressed && { opacity: 0.88 }]}
-          >
-            <View style={s.dnaAccent} />
-            <View style={s.dnaContent}>
+          <GlassCard onPress={() => router.push("/(dna)/profile" as any)}>
+            <View style={s.dnaInner}>
+              <View style={s.dnaAccent} />
               <View style={s.dnaIconWrap}>
                 <MaterialIcons name="auto-awesome" size={20} color={C.purpleLight} />
               </View>
@@ -439,9 +490,9 @@ export default function HomeScreen() {
                 <Text style={s.dnaTitle}>Complete Your Travel DNA</Text>
                 <Text style={s.dnaSub}>Unlock personalized matches</Text>
               </View>
-              <MaterialIcons name="chevron-right" size={20} color={C.muted40} />
+              <MaterialIcons name="chevron-right" size={20} color={C.muted30} />
             </View>
-          </Pressable>
+          </GlassCard>
         </View>
 
         {/* ═══ RECOMMENDED ═══ */}
@@ -452,8 +503,8 @@ export default function HomeScreen() {
             horizontal
             showsHorizontalScrollIndicator={false}
             keyExtractor={(i) => i.id}
-            contentContainerStyle={{ paddingHorizontal: 20, gap: 16 }}
-            snapToInterval={REC_W + 16}
+            contentContainerStyle={{ paddingHorizontal: 20, gap: 14 }}
+            snapToInterval={REC_W + 14}
             decelerationRate="fast"
             renderItem={({ item }) => (
               <RecCard
@@ -467,44 +518,49 @@ export default function HomeScreen() {
         {/* ═══ QUICK ACTIONS ═══ */}
         <View style={s.section}>
           <View style={s.quickRow}>
-            <Pressable
-              onPress={() => { haptic(); router.push("/(points)/wallet" as any); }}
-              style={({ pressed }) => [s.quickCard, pressed && { opacity: 0.85, transform: [{ scale: 0.97 }] }]}
-            >
-              <MaterialIcons name="account-balance-wallet" size={24} color={C.gold} />
-              <Text style={s.quickLabel}>Wallet</Text>
-              <Text style={s.quickValue}>€45</Text>
-            </Pressable>
-            <Pressable
-              onPress={() => { haptic(); router.push("/(tabs)/explore" as any); }}
-              style={({ pressed }) => [s.quickCard, pressed && { opacity: 0.85, transform: [{ scale: 0.97 }] }]}
-            >
-              <MaterialIcons name="explore" size={24} color={C.purple} />
-              <Text style={s.quickLabel}>Explore</Text>
-              <Text style={s.quickValue}>12 new</Text>
-            </Pressable>
-            <Pressable
-              onPress={() => { haptic(); router.push("/(tabs)/trips" as any); }}
-              style={({ pressed }) => [s.quickCard, pressed && { opacity: 0.85, transform: [{ scale: 0.97 }] }]}
-            >
-              <MaterialIcons name="luggage" size={24} color={C.pink} />
-              <Text style={s.quickLabel}>Trips</Text>
-              <Text style={s.quickValue}>3</Text>
-            </Pressable>
+            <GlassCard style={s.quickCardStyle} onPress={() => router.push("/(points)/wallet" as any)}>
+              <View style={s.quickInner}>
+                <View style={s.quickIconWrap}>
+                  <MaterialIcons name="account-balance-wallet" size={22} color={C.gold} />
+                </View>
+                <Text style={s.quickLabel}>Wallet</Text>
+                <Text style={s.quickValue}>€45</Text>
+              </View>
+            </GlassCard>
+            <GlassCard style={s.quickCardStyle} onPress={() => router.push("/(tabs)/explore" as any)}>
+              <View style={s.quickInner}>
+                <View style={s.quickIconWrap}>
+                  <MaterialIcons name="explore" size={22} color={C.purpleLight} />
+                </View>
+                <Text style={s.quickLabel}>Explore</Text>
+                <Text style={s.quickValue}>12 new</Text>
+              </View>
+            </GlassCard>
+            <GlassCard style={s.quickCardStyle} onPress={() => router.push("/(tabs)/trips" as any)}>
+              <View style={s.quickInner}>
+                <View style={s.quickIconWrap}>
+                  <MaterialIcons name="luggage" size={22} color={C.pink} />
+                </View>
+                <Text style={s.quickLabel}>Trips</Text>
+                <Text style={s.quickValue}>3</Text>
+              </View>
+            </GlassCard>
           </View>
         </View>
 
         {/* ═══ TRAVI TIP ═══ */}
         <View style={s.section}>
-          <View style={s.tipCard}>
-            <Image source={require("@/assets/images/mascot-dark.png")} style={s.tipMascot} resizeMode="contain" />
-            <View style={{ flex: 1 }}>
-              <Text style={s.tipTitle}>TRAVI says</Text>
-              <Text style={s.tipText}>
-                Bali is trending this season — 96% match with your Explorer DNA. Ready to go?
-              </Text>
+          <GlassCard>
+            <View style={s.tipInner}>
+              <Image source={require("@/assets/images/mascot-dark.png")} style={s.tipMascot} resizeMode="contain" />
+              <View style={{ flex: 1 }}>
+                <Text style={s.tipTitle}>TRAVI says</Text>
+                <Text style={s.tipText}>
+                  Bali is trending this season — 96% match with your Explorer DNA. Ready to go?
+                </Text>
+              </View>
             </View>
-          </View>
+          </GlassCard>
         </View>
 
       </ScrollView>
@@ -518,27 +574,30 @@ export default function HomeScreen() {
 const s = StyleSheet.create({
   root: { flex: 1, backgroundColor: C.bg },
 
-  // Ambient
-  orbPurple: {
+  // ─── Background Glows ───
+  glowPurple: {
     position: "absolute",
-    width: 380,
-    height: 380,
-    borderRadius: 190,
-    backgroundColor: "rgba(100,67,244,0.12)",
-    top: -80,
-    left: -60,
+    top: "50%",
+    left: "50%",
+    marginTop: -180,
+    marginLeft: -180,
+    width: 360,
+    height: 360,
+    borderRadius: 180,
+    backgroundColor: C.purpleGlow,
   },
-  orbPink: {
+  glowPink: {
     position: "absolute",
+    bottom: -40,
+    left: "50%",
+    marginLeft: -150,
     width: 300,
-    height: 300,
+    height: 200,
     borderRadius: 150,
-    backgroundColor: "rgba(249,68,152,0.06)",
-    top: "55%",
-    right: -80,
+    backgroundColor: C.pinkGlow,
   },
 
-  // Header
+  // ─── Header ───
   header: {
     paddingHorizontal: 20,
     paddingTop: 58,
@@ -549,20 +608,20 @@ const s = StyleSheet.create({
   },
   logo: { width: 80, height: 28 },
   avatar: {
-    width: 36,
-    height: 36,
-    borderRadius: 18,
-    backgroundColor: C.surface,
-    borderWidth: 1.5,
-    borderColor: "rgba(100,67,244,0.4)",
+    width: 38,
+    height: 38,
+    borderRadius: 19,
+    backgroundColor: C.glass,
+    borderWidth: 1,
+    borderColor: C.glassBorder,
     justifyContent: "center",
     alignItems: "center",
   },
   avatarText: { color: C.white, fontSize: 15, fontFamily: "Satoshi-Bold" },
 
-  // Greeting
+  // ─── Greeting ───
   greeting: { paddingHorizontal: 20, paddingTop: 24, paddingBottom: 4 },
-  greetText: { fontSize: 16, fontFamily: "Satoshi-Regular", color: C.muted60 },
+  greetText: { fontSize: 16, fontFamily: "Satoshi-Regular", color: C.muted50 },
   greetName: { fontSize: 32, fontFamily: "Chillax-Bold", color: C.white, marginTop: 2, lineHeight: 38 },
   dnaPill: {
     flexDirection: "row",
@@ -570,6 +629,8 @@ const s = StyleSheet.create({
     gap: 5,
     marginTop: 10,
     backgroundColor: "rgba(100,67,244,0.12)",
+    borderWidth: 1,
+    borderColor: "rgba(100,67,244,0.2)",
     paddingHorizontal: 12,
     paddingVertical: 5,
     borderRadius: 14,
@@ -578,7 +639,7 @@ const s = StyleSheet.create({
   dnaIcon: { color: C.purpleLight, fontSize: 12 },
   dnaLabel: { color: C.purpleLight, fontSize: 12, fontFamily: "Satoshi-Medium" },
 
-  // Sections
+  // ─── Sections ───
   section: { paddingHorizontal: 20, marginTop: 24 },
   sectionFull: { marginTop: 28 },
   sectionTitle: {
@@ -589,15 +650,11 @@ const s = StyleSheet.create({
     paddingHorizontal: 20,
   },
 
-  // Live Trip
-  liveStrip: {
-    height: 56,
-    borderRadius: 16,
-    backgroundColor: "rgba(0,201,107,0.08)",
-    borderWidth: 1,
-    borderColor: "rgba(0,201,107,0.15)",
+  // ─── Live Trip ───
+  liveInner: {
     flexDirection: "row",
     alignItems: "center",
+    paddingVertical: 14,
     paddingHorizontal: 16,
   },
   liveDotWrap: { width: 20, height: 20, justifyContent: "center", alignItems: "center" },
@@ -606,69 +663,64 @@ const s = StyleSheet.create({
   liveLabel: { color: C.green, fontSize: 10, fontFamily: "Satoshi-Bold", letterSpacing: 1.2 },
   liveDest: { color: C.white, fontSize: 15, fontFamily: "Chillax-Bold", marginTop: 1 },
 
-  // DNA Card
-  dnaCard: {
-    borderRadius: 16,
-    backgroundColor: C.surface,
-    borderWidth: 1,
-    borderColor: C.border,
-    overflow: "hidden",
+  // ─── DNA Card ───
+  dnaInner: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingVertical: 16,
+    paddingHorizontal: 18,
+    paddingLeft: 14,
   },
   dnaAccent: {
     position: "absolute",
     left: 0,
     top: 0,
     bottom: 0,
-    width: 4,
+    width: 3,
     backgroundColor: C.purple,
-  },
-  dnaContent: {
-    flexDirection: "row",
-    alignItems: "center",
-    paddingVertical: 16,
-    paddingHorizontal: 18,
-    paddingLeft: 16,
+    borderTopLeftRadius: 20,
+    borderBottomLeftRadius: 20,
   },
   dnaIconWrap: {
     width: 40,
     height: 40,
     borderRadius: 12,
-    backgroundColor: "rgba(100,67,244,0.12)",
+    backgroundColor: "rgba(100,67,244,0.15)",
     justifyContent: "center",
     alignItems: "center",
     marginRight: 14,
   },
   dnaTitle: { color: C.white, fontSize: 15, fontFamily: "Satoshi-Bold" },
-  dnaSub: { color: C.muted40, fontSize: 12, fontFamily: "Satoshi-Regular", marginTop: 2 },
+  dnaSub: { color: C.muted50, fontSize: 12, fontFamily: "Satoshi-Regular", marginTop: 2 },
 
-  // Quick Actions
-  quickRow: { flexDirection: "row", gap: 12 },
-  quickCard: {
-    flex: 1,
-    backgroundColor: C.surface,
-    borderRadius: 16,
-    borderWidth: 1,
-    borderColor: C.border,
-    paddingVertical: 16,
-    paddingHorizontal: 14,
+  // ─── Quick Actions ───
+  quickRow: { flexDirection: "row", gap: 10 },
+  quickCardStyle: { flex: 1 },
+  quickInner: {
+    paddingVertical: 18,
+    paddingHorizontal: 12,
     alignItems: "center",
     gap: 8,
   },
-  quickLabel: { color: C.muted60, fontSize: 11, fontFamily: "Satoshi-Medium" },
+  quickIconWrap: {
+    width: 44,
+    height: 44,
+    borderRadius: 14,
+    backgroundColor: "rgba(255,255,255,0.06)",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  quickLabel: { color: C.muted50, fontSize: 11, fontFamily: "Satoshi-Medium" },
   quickValue: { color: C.white, fontSize: 18, fontFamily: "Chillax-Bold" },
 
-  // Tip
-  tipCard: {
+  // ─── Tip ───
+  tipInner: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: C.surface,
-    borderWidth: 1,
-    borderColor: C.border,
-    borderRadius: 16,
     padding: 16,
     gap: 14,
   },
   tipMascot: { width: 44, height: 44 },
   tipTitle: { color: C.purpleLight, fontSize: 12, fontFamily: "Satoshi-Bold", letterSpacing: 0.5, marginBottom: 4 },
-  tipText: { color: C.muted60, fontSize: 13, fontFamily: "Satoshi-Regular", lineHeight: 19 },
+  tipText: { color: C.muted50, fontSize: 13, fontFamily: "Satoshi-Regular", lineHeight: 19 },
 });
