@@ -1,3 +1,4 @@
+import { haptic } from '@/lib/haptics';
 import { useState } from 'react';
 import { View, Text, TextInput, Pressable, ScrollView, KeyboardAvoidingView, Platform } from 'react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router';

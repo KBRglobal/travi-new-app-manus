@@ -1,3 +1,4 @@
+import { haptic } from '@/lib/haptics';
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { CalendarList } from 'react-native-calendars';

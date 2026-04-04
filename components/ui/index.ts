@@ -7,3 +7,4 @@ export { EmptyState } from './EmptyState';
 export { OfflineBadge } from './OfflineBadge';
 export { ConfirmDialogProvider } from './ConfirmDialog';
 export { BannerProvider } from './Banner';
+export { Skeleton } from './Skeleton';

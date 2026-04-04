@@ -1,3 +1,4 @@
+import { haptic } from '@/lib/haptics';
 import { View, Text } from 'react-native';
 
 // — — PurchaseDetail

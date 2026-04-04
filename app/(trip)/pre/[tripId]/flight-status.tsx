@@ -1,3 +1,4 @@
+import { haptic } from '@/lib/haptics';
 import React from 'react';
 import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router';

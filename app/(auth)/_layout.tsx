@@ -1,3 +1,4 @@
+import { haptic } from '@/lib/haptics';
 import { Stack } from 'expo-router';
 
 // Auth Flow: Stack, headerShown:false

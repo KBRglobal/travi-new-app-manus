@@ -1,3 +1,6 @@
+import { useLoadingState } from '@/hooks/useLoadingState';
+import { useRefresh } from '@/hooks/useRefresh';
+import { haptic } from '@/lib/haptics';
 import React, { useState, useRef } from 'react';
 import { View, Text, TouchableOpacity, FlatList, TextInput, KeyboardAvoidingView, Platform } from 'react-native';
 import Animated, { FadeInUp } from 'react-native-reanimated';

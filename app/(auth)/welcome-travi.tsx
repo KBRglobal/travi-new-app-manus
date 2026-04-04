@@ -1,3 +1,4 @@
+import { haptic } from '@/lib/haptics';
 import { useEffect } from 'react';
 import { View, Text, Pressable } from 'react-native';
 import { useRouter } from 'expo-router';

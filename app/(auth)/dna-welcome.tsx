@@ -1,3 +1,4 @@
+import { haptic } from '@/lib/haptics';
 import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import Animated, { useSharedValue, useAnimatedStyle, withSpring, withDelay, withTiming } from 'react-native-reanimated';

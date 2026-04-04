@@ -1,3 +1,6 @@
+import { useLoadingState } from '@/hooks/useLoadingState';
+import { useRefresh } from '@/hooks/useRefresh';
+import { haptic } from '@/lib/haptics';
 import { View, Text, Pressable, FlatList, TextInput } from 'react-native';
 import { useRouter } from 'expo-router';
 const COUNTRIES = ['Israel', 'United States', 'United Kingdom', 'Germany', 'France', 'Spain', 'Italy', 'Japan', 'Australia', 'Brazil', 'Canada', 'India'];

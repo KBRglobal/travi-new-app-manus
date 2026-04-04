@@ -1,3 +1,4 @@
+import { haptic } from '@/lib/haptics';
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, ScrollView, Switch } from 'react-native';
 import Animated, { FadeInDown } from 'react-native-reanimated';
