@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, FlatList, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
+import { EmptyState } from '@/components/ui/EmptyState';
 
 const REVIEWS = [
   { id: '1', place: 'Hotel Barcelona', emoji: '🏨', rating: 4.5, text: 'Amazing rooftop pool with city views. Staff was incredibly helpful.', date: 'Mar 2026', likes: 12 },
@@ -20,7 +21,8 @@ export default function ReviewsScreen() {
         <View className="flex-1" />
         <Text className="text-white/40 text-sm">{REVIEWS.length} reviews</Text>
       </View>
-      <FlatList data={REVIEWS} keyExtractor={i => i.id} renderItem={({ item }) => (
+      <FlatList
+            ListEmptyComponent={() => <EmptyState stateKey="reviews" />} data={REVIEWS} keyExtractor={i => i.id} renderItem={({ item }) => (
         <View className="mx-4 mb-3 p-4 bg-bg-secondary rounded-2xl border border-white/[0.08]">
           <View className="flex-row items-center mb-2">
             <Text className="text-2xl mr-2">{item.emoji}</Text>

@@ -1,5 +1,5 @@
 import '../global.css';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Stack, useRouter, useSegments } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
@@ -7,8 +7,23 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useAuthStore } from '../stores/authStore';
 import { colors } from '../constants/theme';
+import { ToastProvider } from '../components/ui/Toast';
+import { ConfirmDialogProvider } from '../components/ui/ConfirmDialog';
+import { BannerProvider } from '../components/ui/Banner';
+import { OfflineBadge } from '../components/ui/OfflineBadge';
+import { globalErrorState } from '../lib/errorHandling';
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: 2,
+      staleTime: 5 * 60 * 1000, // 5 minutes
+    },
+    mutations: {
+      retry: 1,
+    },
+  },
+});
 
 // Auth guard — redirects based on auth state
 function useProtectedRoute() {
@@ -31,16 +46,40 @@ function useProtectedRoute() {
   }, [isAuthenticated, isLoading, onboardingComplete, segments]);
 }
 
-// Root Layout: GestureHandler + QueryClient + SafeArea + Auth guard
+// Offline detection hook
+function useOfflineDetection() {
+  const [isOffline, setIsOffline] = useState(false);
+
+  useEffect(() => {
+    // In production, use @react-native-community/netinfo
+    // For prototype, we simulate with a global state listener
+    const unsubscribe = globalErrorState.subscribeOverlay((overlay) => {
+      setIsOffline(overlay === 'NoInternetOverlay');
+    });
+    return unsubscribe;
+  }, []);
+
+  return isOffline;
+}
+
+// Root Layout: GestureHandler + QueryClient + SafeArea + Auth guard + Error UI
 export default function RootLayout() {
   // Disable auth guard for now (prototype mode — free navigation)
   // useProtectedRoute();
+  const isOffline = useOfflineDetection();
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <QueryClientProvider client={queryClient}>
         <SafeAreaProvider>
           <StatusBar style="light" translucent backgroundColor="transparent" />
+
+          {/* Offline badge at the top */}
+          {isOffline && <OfflineBadge />}
+
+          {/* Banner for location/permission messages */}
+          <BannerProvider />
+
           <Stack
             screenOptions={{
               headerShown: false,
@@ -63,6 +102,12 @@ export default function RootLayout() {
               }}
             />
           </Stack>
+
+          {/* Global Toast overlay */}
+          <ToastProvider />
+
+          {/* Global Confirm Dialog */}
+          <ConfirmDialogProvider />
         </SafeAreaProvider>
       </QueryClientProvider>
     </GestureHandlerRootView>

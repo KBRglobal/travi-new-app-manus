@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, FlatList, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
+import { EmptyState } from '@/components/ui/EmptyState';
 
 const RECEIPTS = [
   { id: '1', emoji: '🍽️', merchant: 'Ichiran Ramen', amount: '¥1,200', usd: '$8.50', date: 'Today', category: 'Food', taxFree: false },
@@ -21,7 +22,8 @@ export default function ReceiptsScreen() {
         <View className="flex-1" />
         <TouchableOpacity className="bg-primary px-3 py-1.5 rounded-lg"><Text className="text-white text-xs font-bold">+ Scan</Text></TouchableOpacity>
       </View>
-      <FlatList data={RECEIPTS} keyExtractor={i => i.id} renderItem={({ item }) => (
+      <FlatList
+            ListEmptyComponent={() => <EmptyState emoji="🧾" title="No receipts yet" description="Add receipts to track tax refunds." />} data={RECEIPTS} keyExtractor={i => i.id} renderItem={({ item }) => (
         <View className="flex-row items-center mx-4 mb-2 p-4 bg-bg-secondary rounded-2xl border border-white/[0.08]">
           <Text className="text-2xl mr-3">{item.emoji}</Text>
           <View className="flex-1">

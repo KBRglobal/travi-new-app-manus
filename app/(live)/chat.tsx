@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity, FlatList, TextInput, KeyboardAvoidingView
 import Animated, { FadeInUp } from 'react-native-reanimated';
 import { useRouter } from 'expo-router';
 import { chatMessages } from '../../lib/mockData';
+import { EmptyState } from '@/components/ui/EmptyState';
 
 type Message = { id: string; sender: 'user' | 'ai'; text: string; timestamp: string; actions?: string[] };
 
@@ -10,7 +11,8 @@ export default function AIChatScreen() {
   const router = useRouter();
   const [messages, setMessages] = useState<Message[]>(chatMessages as Message[]);
   const [input, setInput] = useState('');
-  const flatListRef = useRef<FlatList>(null);
+  const flatListRef = useRef<FlatList
+            ListEmptyComponent={() => <EmptyState emoji="💬" title="No messages yet" description="Start chatting with your AI travel assistant." />}>(null);
 
   const sendMessage = () => {
     if (!input.trim()) return;

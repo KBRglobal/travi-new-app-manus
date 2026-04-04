@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, FlatList, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
+import { EmptyState } from '@/components/ui/EmptyState';
 
 const WISHLIST = [
   { id: '1', name: 'Santorini, Greece', emoji: '🇬🇷', image: '🏝️', price: '$1,200', added: 'Mar 2026' },
@@ -24,7 +25,8 @@ export default function WishlistScreen() {
         <View className="flex-1" />
         <Text className="text-white/40 text-sm">{items.length} places</Text>
       </View>
-      <FlatList data={items} keyExtractor={i => i.id} renderItem={({ item }) => (
+      <FlatList
+            ListEmptyComponent={() => <EmptyState stateKey="wishlist" />} data={items} keyExtractor={i => i.id} renderItem={({ item }) => (
         <View className="mx-4 mb-3 bg-bg-secondary rounded-2xl border border-white/[0.08] overflow-hidden">
           <View className="h-32 bg-white/[0.03] items-center justify-center">
             <Text className="text-6xl">{item.image}</Text>

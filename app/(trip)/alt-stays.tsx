@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, FlatList, Image } from 'react-native';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 import { useRouter } from 'expo-router';
+import { EmptyState } from '@/components/ui/EmptyState';
 
 const stays = [
   { id: 'as1', name: 'Cozy Studio Old Town', type: 'Entire apartment', price: 85, rating: 4.9, reviews: 128, image: 'https://picsum.photos/400/300?random=70', host: 'Maria', superhost: true },
@@ -41,6 +42,7 @@ export default function AltStaysScreen() {
 
       {viewMode === 'list' ? (
         <FlatList
+            ListEmptyComponent={() => <EmptyState emoji="🏡" title="No alternative stays found" description="Try expanding your search area." />}
           data={filtered}
           keyExtractor={(item) => item.id}
           contentContainerClassName="px-6 pb-24"

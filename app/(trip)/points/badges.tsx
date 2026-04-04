@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, FlatList, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
+import { EmptyState } from '@/components/ui/EmptyState';
 
 const BADGES = [
   { id: '1', emoji: '🌍', name: 'World Explorer', desc: 'Visit 10 countries', tier: 'gold', unlocked: true },
@@ -28,7 +29,8 @@ export default function BadgesScreen() {
         <View className="flex-1" />
         <Text className="text-primary font-bold">{unlocked}/{BADGES.length}</Text>
       </View>
-      <FlatList data={BADGES} numColumns={2} keyExtractor={i => i.id} contentContainerStyle={{ padding: 8 }} renderItem={({ item }) => (
+      <FlatList
+            ListEmptyComponent={() => <EmptyState stateKey="badges" />} data={BADGES} numColumns={2} keyExtractor={i => i.id} contentContainerStyle={{ padding: 8 }} renderItem={({ item }) => (
         <View className={`flex-1 m-2 p-4 rounded-2xl border items-center ${item.unlocked ? 'bg-bg-secondary border-white/[0.08]' : 'bg-bg-secondary/50 border-white/[0.04]'}`}>
           <Text className={`text-4xl mb-2 ${item.unlocked ? '' : 'opacity-30'}`}>{item.emoji}</Text>
           <Text className={`font-bold text-center text-sm ${item.unlocked ? 'text-white' : 'text-white/30'}`}>{item.name}</Text>

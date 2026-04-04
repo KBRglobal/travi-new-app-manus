@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity, FlatList, ScrollView } from 'react-native
 import Animated, { FadeInDown, useSharedValue, useAnimatedStyle, withSpring } from 'react-native-reanimated';
 import { useRouter } from 'expo-router';
 import { walletData } from '../../lib/mockData';
+import { EmptyState } from '@/components/ui/EmptyState';
 
 export default function WalletScreen() {
   const router = useRouter();

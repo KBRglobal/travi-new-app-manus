@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity, Image } from 'react-native';
 import DraggableFlatList, { ScaleDecorator, RenderItemParams } from 'react-native-draggable-flatlist';
 import { useRouter } from 'expo-router';
 import { activities, itineraryDays } from '../../lib/mockData';
+import { EmptyState } from '@/components/ui/EmptyState';
 
 type ItineraryItem = typeof activities[0] & { dayId: string };
 

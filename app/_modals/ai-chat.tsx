@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { View, Text, Pressable, TextInput, FlatList, KeyboardAvoidingView, Platform } from 'react-native';
 import { useRouter } from 'expo-router';
+import { EmptyState } from '@/components/ui/EmptyState';
 const MSGS = [
   { id: '1', text: "Hi! I'm Travi, your AI travel companion. How can I help?", mine: false },
 ];
@@ -23,7 +24,8 @@ export default function AIChatModal() {
         </View>
         <Pressable onPress={() => router.back()} className="p-2"><Text className="text-text-secondary text-lg">✕</Text></Pressable>
       </View>
-      <FlatList data={messages} keyExtractor={(i) => i.id} contentContainerClassName="px-4 md:px-6 py-4 gap-2"
+      <FlatList
+            ListEmptyComponent={() => <EmptyState emoji="🤖" title="Ask me anything!" description="I can help plan your trip, find deals, and more." />} data={messages} keyExtractor={(i) => i.id} contentContainerClassName="px-4 md:px-6 py-4 gap-2"
         renderItem={({ item }) => (
           <View className={`max-w-[80%] md:max-w-[60%] rounded-2xl px-4 py-3 ${item.mine ? 'bg-primary self-end' : 'bg-white/5 self-start'}`}>
             <Text className="text-white text-sm">{item.text}</Text>

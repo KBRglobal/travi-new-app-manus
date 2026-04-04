@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, FlatList, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
+import { EmptyState } from '@/components/ui/EmptyState';
 
 const LEADERBOARD = [
   { rank: 1, name: 'Lisa M.', avatar: '👩‍🦰', points: 45200, tier: 'Platinum' },
@@ -44,7 +45,8 @@ export default function LeaderboardScreen() {
           </View>
         ))}
       </View>
-      <FlatList data={LEADERBOARD.slice(3)} keyExtractor={i => i.rank.toString()} renderItem={({ item }) => (
+      <FlatList
+            ListEmptyComponent={() => <EmptyState stateKey="leaderboard" />} data={LEADERBOARD.slice(3)} keyExtractor={i => i.rank.toString()} renderItem={({ item }) => (
         <View className={`flex-row items-center mx-4 mb-2 p-4 rounded-2xl border ${(item as any).isMe ? 'bg-primary/10 border-primary/30' : 'bg-bg-secondary border-white/[0.08]'}`}>
           <Text className="text-white/40 font-bold w-8">{item.rank}</Text>
           <Text className="text-2xl mr-3">{item.avatar}</Text>

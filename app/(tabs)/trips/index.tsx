@@ -1,5 +1,6 @@
 import { View, Text, Pressable, FlatList } from 'react-native';
 import { useRouter } from 'expo-router';
+import { EmptyState } from '@/components/ui/EmptyState';
 
 const TRIPS = [
   { id: 'trip-1', name: 'Barcelona Adventure', status: 'active', dates: 'Mar 28 - Apr 5' },
@@ -41,6 +42,7 @@ export default function MyTripsScreen() {
       </View>
 
       <FlatList
+            ListEmptyComponent={() => <EmptyState stateKey="trips" />}
         data={TRIPS}
         keyExtractor={(item) => item.id}
         contentContainerClassName="px-4 md:px-6 py-4 gap-3"

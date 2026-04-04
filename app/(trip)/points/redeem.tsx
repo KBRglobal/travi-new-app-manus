@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, FlatList, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
+import { EmptyState } from '@/components/ui/EmptyState';
 
 const REWARDS = [
   { id: '1', emoji: '✈️', title: 'Flight Discount $50', cost: 5000, category: 'travel' },
@@ -51,7 +52,8 @@ export default function RedeemScreen() {
           </TouchableOpacity>
         ))}
       </View>
-      <FlatList data={filtered} keyExtractor={i => i.id} renderItem={({ item }) => (
+      <FlatList
+            ListEmptyComponent={() => <EmptyState emoji="🎁" title="Nothing to redeem yet" description="Earn more points to unlock rewards." />} data={filtered} keyExtractor={i => i.id} renderItem={({ item }) => (
         <View className="flex-row items-center mx-4 mb-2 p-4 bg-bg-secondary rounded-2xl border border-white/[0.08]">
           <Text className="text-2xl mr-3">{item.emoji}</Text>
           <View className="flex-1">

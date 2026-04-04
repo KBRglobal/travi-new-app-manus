@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { View, Text, Pressable, FlatList } from 'react-native';
 import { useRouter } from 'expo-router';
+import { EmptyState } from '@/components/ui/EmptyState';
 const ACTIVITIES = Array.from({ length: 10 }, (_, i) => ({ id: `a-${i+1}`, name: `Activity ${i+1}`, price: `€${20 + i * 10}`, category: ['Adventure', 'Culture', 'Food', 'Nature'][i % 4] }));
 
 export default function PlanActivitiesScreen() {
@@ -13,7 +14,8 @@ export default function PlanActivitiesScreen() {
         <Pressable onPress={() => router.back()} className="p-2 -ml-2"><Text className="text-white text-2xl">‹</Text></Pressable>
         <Text className="text-white text-xl font-bold ml-3">Activities</Text>
       </View>
-      <FlatList data={ACTIVITIES} keyExtractor={(i) => i.id} contentContainerClassName="px-4 md:px-6 py-4 gap-3 pb-32"
+      <FlatList
+            ListEmptyComponent={() => <EmptyState emoji="🎯" title="No activities found" description="Try different categories or locations." />} data={ACTIVITIES} keyExtractor={(i) => i.id} contentContainerClassName="px-4 md:px-6 py-4 gap-3 pb-32"
         renderItem={({ item }) => (
           <Pressable onPress={() => toggle(item.id)} className={`w-full md:w-[calc(50%-6px)] rounded-card p-4 flex-row items-center border ${selected.includes(item.id) ? 'bg-primary/20 border-primary' : 'bg-bg-card border-white/8'}`}>
             <View className="w-12 h-12 bg-white/5 rounded-button items-center justify-center mr-3"><Text className="text-xl">🎯</Text></View>

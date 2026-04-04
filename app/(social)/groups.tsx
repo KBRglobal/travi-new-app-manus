@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, FlatList, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
+import { EmptyState } from '@/components/ui/EmptyState';
 
 const GROUPS = [
   { id: '1', name: 'Digital Nomads EU', emoji: '💻', members: 234, posts: 45, joined: true },
@@ -37,7 +38,8 @@ export default function GroupsScreen() {
           <Text className={`text-center font-bold ${tab === 'discover' ? 'text-white' : 'text-white/60'}`}>Discover</Text>
         </TouchableOpacity>
       </View>
-      <FlatList data={displayed} keyExtractor={i => i.id} renderItem={({ item }) => (
+      <FlatList
+            ListEmptyComponent={() => <EmptyState stateKey="groups" />} data={displayed} keyExtractor={i => i.id} renderItem={({ item }) => (
         <TouchableOpacity className="flex-row items-center mx-4 mb-3 p-4 bg-bg-secondary rounded-2xl border border-white/[0.08]">
           <Text className="text-3xl mr-3">{item.emoji}</Text>
           <View className="flex-1">

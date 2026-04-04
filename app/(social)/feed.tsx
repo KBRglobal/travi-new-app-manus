@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import { View, Text, FlatList, TouchableOpacity, Image, RefreshControl } from 'react-native';
 import { useRouter } from 'expo-router';
+import { EmptyState } from '@/components/ui/EmptyState';
 
 const FEED_POSTS = [
   { id: '1', user: 'Sarah K.', avatar: '👩', destination: 'Barcelona', image: '🏰', caption: 'Sagrada Familia at sunset!', likes: 42, comments: 8, timeAgo: '2h', liked: false },
@@ -68,6 +69,7 @@ export default function SocialFeedScreen() {
         </View>
       </View>
       <FlatList
+            ListEmptyComponent={() => <EmptyState stateKey="feed" />}
         data={posts}
         renderItem={renderPost}
         keyExtractor={item => item.id}

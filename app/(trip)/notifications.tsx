@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, FlatList, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
+import { EmptyState } from '@/components/ui/EmptyState';
 
 const NOTIFICATIONS = [
   { id: '1', emoji: '📉', title: 'Price Drop Alert', desc: 'NYC→Tokyo flight dropped to $890', time: '2m ago', read: false, action: '/(trip)/flights' },
@@ -25,7 +26,8 @@ export default function NotificationsScreen() {
         <View className="flex-1" />
         <TouchableOpacity onPress={() => setNotifications(prev => prev.map(n => ({ ...n, read: true })))}><Text className="text-primary text-sm">Mark all read</Text></TouchableOpacity>
       </View>
-      <FlatList data={notifications} keyExtractor={i => i.id} renderItem={({ item }) => (
+      <FlatList
+            ListEmptyComponent={() => <EmptyState stateKey="notifications" />} data={notifications} keyExtractor={i => i.id} renderItem={({ item }) => (
         <TouchableOpacity onPress={() => { markRead(item.id); router.push(item.action as any); }} className={`flex-row items-start mx-4 mb-2 p-4 rounded-2xl border ${item.read ? 'bg-bg-secondary border-white/[0.08]' : 'bg-primary/5 border-primary/20'}`}>
           <Text className="text-2xl mr-3">{item.emoji}</Text>
           <View className="flex-1">

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { View, Text, Pressable, TextInput, FlatList, KeyboardAvoidingView, Platform } from 'react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router';
+import { EmptyState } from '@/components/ui/EmptyState';
 const MSGS = Array.from({ length: 10 }, (_, i) => ({ id: `m-${i+1}`, text: `Message ${i+1} content here`, mine: i % 3 === 0, time: `${12+i}:${i*5 < 10 ? '0' : ''}${i*5}` }));
 
 export default function ChatScreen() {
@@ -15,7 +16,8 @@ export default function ChatScreen() {
         <Text className="text-white text-lg font-bold flex-1">Chat {chatId}</Text>
         <Pressable onPress={() => router.push(`/(social)/profile/${chatId}`)}><Text className="text-primary text-sm">Profile</Text></Pressable>
       </View>
-      <FlatList data={MSGS} keyExtractor={(i) => i.id} inverted contentContainerClassName="px-4 md:px-6 py-4 gap-2"
+      <FlatList
+            ListEmptyComponent={() => <EmptyState emoji="💬" title="Start the conversation" description="Say hello to your travel buddy!" />} data={MSGS} keyExtractor={(i) => i.id} inverted contentContainerClassName="px-4 md:px-6 py-4 gap-2"
         renderItem={({ item }) => (
           <View className={`max-w-[80%] md:max-w-[60%] rounded-2xl px-4 py-3 ${item.mine ? 'bg-primary self-end' : 'bg-white/5 self-start'}`}>
             <Text className="text-white text-sm">{item.text}</Text>

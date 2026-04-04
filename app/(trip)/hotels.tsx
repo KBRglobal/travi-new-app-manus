@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity, FlatList, Image } from 'react-native';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 import { useRouter } from 'expo-router';
 import { hotels } from '../../lib/mockData';
+import { EmptyState } from '@/components/ui/EmptyState';
 
 export default function HotelsScreen() {
   const router = useRouter();
@@ -39,6 +40,7 @@ export default function HotelsScreen() {
       </View>
 
       <FlatList
+            ListEmptyComponent={() => <EmptyState emoji="🏨" title="No hotels found" description="Try different dates or adjust filters." />}
         data={sortedHotels}
         keyExtractor={(item) => item.id}
         contentContainerClassName="px-6 pb-24"

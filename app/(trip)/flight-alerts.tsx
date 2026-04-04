@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, FlatList, TextInput, Switch } from 'react-native';
 import Animated, { FadeInDown, SlideInRight } from 'react-native-reanimated';
 import { useRouter } from 'expo-router';
+import { EmptyState } from '@/components/ui/EmptyState';
 
 const mockAlerts = [
   { id: '1', from: 'TLV', to: 'BCN', currentPrice: 120, targetPrice: 100, status: 'active', lastChecked: '2 min ago', trend: 'down' },
@@ -25,6 +26,7 @@ export default function FlightAlertsScreen() {
       </View>
 
       <FlatList
+            ListEmptyComponent={() => <EmptyState emoji="🔔" title="No price alerts" description="Set up alerts to track flight prices." />}
         data={mockAlerts}
         keyExtractor={(item) => item.id}
         contentContainerClassName="px-6 pb-24"

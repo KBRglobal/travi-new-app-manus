@@ -7,6 +7,7 @@
 import { currentUser, destinations, flights, hotels, activities, walletData, pointsData } from '../mockData';
 import { calculateDNA, getRecommendations, getDNACards, getActivityRecommendations, getAllSignals } from '../dnaSignals';
 import type { DNAProfile, MatchResult } from '../dnaSignals';
+import { withErrorHandling, mapTRPCError, handleError } from '../errorHandling';
 
 // ─── Base API Config ───
 
@@ -14,6 +15,23 @@ const API_BASE = process.env.EXPO_PUBLIC_API_URL || 'https://api.travi.app';
 
 // Simulated network delay
 const delay = (ms: number = 300) => new Promise((r) => setTimeout(r, ms));
+
+/**
+ * Wrap any API call with error handling.
+ * Usage: const result = await apiCall(() => auth.login(email, password));
+ */
+export async function apiCall<T>(
+  fn: () => Promise<T>,
+  options?: { timeoutMs?: number; offlineAction?: string }
+): Promise<T | null> {
+  return withErrorHandling(fn, {
+    timeoutMs: options?.timeoutMs || 10000,
+    offlineAction: options?.offlineAction,
+    onError: (error) => {
+      console.warn(`[API Error] ${error.code}: ${error.userMessage}`);
+    },
+  });
+}
 
 // ─── Auth ───
 

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, FlatList, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
+import { EmptyState } from '@/components/ui/EmptyState';
 
 const TRANSACTIONS = [
   { id: '1', type: 'earn', title: 'Flight Booking', points: 350, date: 'Apr 2, 2026', emoji: '✈️' },
@@ -33,7 +34,8 @@ export default function PointsTransactionsScreen() {
           </TouchableOpacity>
         ))}
       </View>
-      <FlatList data={filtered} keyExtractor={i => i.id} renderItem={({ item }) => (
+      <FlatList
+            ListEmptyComponent={() => <EmptyState stateKey="transactions" />} data={filtered} keyExtractor={i => i.id} renderItem={({ item }) => (
         <View className="flex-row items-center mx-4 mb-2 p-4 bg-bg-secondary rounded-2xl border border-white/[0.08]">
           <Text className="text-2xl mr-3">{item.emoji}</Text>
           <View className="flex-1">

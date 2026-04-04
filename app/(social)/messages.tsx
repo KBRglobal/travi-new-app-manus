@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, FlatList, TouchableOpacity, TextInput } from 'react-native';
 import { useRouter } from 'expo-router';
+import { EmptyState } from '@/components/ui/EmptyState';
 
 const CONVERSATIONS = [
   { id: '1', name: 'Sarah K.', avatar: '👩', lastMessage: 'See you in Barcelona!', time: '2m', unread: 2, online: true },
@@ -26,7 +27,8 @@ export default function MessagesScreen() {
       <View className="px-4 mb-3">
         <TextInput className="bg-white/[0.05] rounded-xl px-4 py-3 text-white border border-white/[0.08]" placeholder="Search messages..." placeholderTextColor="rgba(255,255,255,0.3)" value={search} onChangeText={setSearch} />
       </View>
-      <FlatList data={filtered} keyExtractor={i => i.id} renderItem={({ item }) => (
+      <FlatList
+            ListEmptyComponent={() => <EmptyState stateKey="messages" />} data={filtered} keyExtractor={i => i.id} renderItem={({ item }) => (
         <TouchableOpacity onPress={() => router.push(`/(social)/messages/${item.id}`)} className="flex-row items-center mx-4 mb-1 p-4 rounded-2xl active:bg-white/[0.03]">
           <View className="relative mr-3">
             <Text className="text-3xl">{item.avatar}</Text>

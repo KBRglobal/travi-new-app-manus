@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { View, Text, FlatList, TouchableOpacity, TextInput, KeyboardAvoidingView, Platform } from 'react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router';
+import { EmptyState } from '@/components/ui/EmptyState';
 
 const MESSAGES = [
   { id: '1', sender: 'other', text: 'Hey! Are you coming to Barcelona?', time: '10:30' },
@@ -16,7 +17,8 @@ export default function ChatScreen() {
   const { convId } = useLocalSearchParams();
   const [messages, setMessages] = useState(MESSAGES);
   const [text, setText] = useState('');
-  const flatListRef = useRef<FlatList>(null);
+  const flatListRef = useRef<FlatList
+            ListEmptyComponent={() => <EmptyState emoji="💬" title="No messages yet" description="Send the first message!" />}>(null);
 
   const sendMessage = () => {
     if (!text.trim()) return;

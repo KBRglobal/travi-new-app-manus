@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity, FlatList, ActivityIndicator } from 'react
 import Animated, { FadeInDown } from 'react-native-reanimated';
 import { useRouter } from 'expo-router';
 import { flights } from '../../lib/mockData';
+import { EmptyState } from '@/components/ui/EmptyState';
 
 const TIMER_MINUTES = 15;
 
@@ -65,6 +66,7 @@ export default function FlightsScreen() {
       </View>
 
       <FlatList
+            ListEmptyComponent={() => <EmptyState emoji="✈️" title="No flights found" description="Try different dates or destinations." />}
         data={filteredFlights}
         keyExtractor={(item) => item.id}
         contentContainerClassName="px-6 pb-24"

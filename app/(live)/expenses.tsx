@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity, FlatList, TextInput } from 'react-native'
 import Animated, { FadeInDown, SlideInRight } from 'react-native-reanimated';
 import { useRouter } from 'expo-router';
 import { expenses, exchangeRates } from '../../lib/mockData';
+import { EmptyState } from '@/components/ui/EmptyState';
 
 const categories = [
   { key: 'food', emoji: '🍽️', label: 'Food' },
@@ -65,6 +66,7 @@ export default function ExpensesScreen() {
 
       {/* Expense list */}
       <FlatList
+            ListEmptyComponent={() => <EmptyState emoji="💰" title="No expenses yet" description="Start tracking your trip expenses." />}
         data={expenses}
         keyExtractor={(item) => item.id}
         contentContainerClassName="px-6 pb-24"

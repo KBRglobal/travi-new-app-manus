@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, FlatList, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
+import { EmptyState } from '@/components/ui/EmptyState';
 
 const PHOTOS = Array.from({ length: 24 }, (_, i) => ({
   id: String(i + 1),
@@ -27,7 +28,8 @@ export default function GalleryScreen() {
         <View className="flex-1" />
         {isSelecting && <TouchableOpacity><Text className="text-primary font-bold">Share</Text></TouchableOpacity>}
       </View>
-      <FlatList data={PHOTOS} numColumns={3} keyExtractor={i => i.id} contentContainerStyle={{ padding: 4 }} renderItem={({ item }) => (
+      <FlatList
+            ListEmptyComponent={() => <EmptyState emoji="📸" title="No photos yet" description="Add memories from your trip." />} data={PHOTOS} numColumns={3} keyExtractor={i => i.id} contentContainerStyle={{ padding: 4 }} renderItem={({ item }) => (
         <TouchableOpacity onPress={() => toggleSelect(item.id)} onLongPress={() => toggleSelect(item.id)} className="flex-1 m-1 aspect-square bg-bg-secondary rounded-xl items-center justify-center border border-white/[0.08]" style={{ maxWidth: '32%' }}>
           <Text className="text-3xl">{item.emoji}</Text>
           {selected.includes(item.id) && (

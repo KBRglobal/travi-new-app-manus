@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, FlatList, TouchableOpacity, ScrollView } from 'react-native';
 import { useRouter } from 'expo-router';
+import { EmptyState } from '@/components/ui/EmptyState';
 
 const EVENTS = [
   { id: '1', title: 'Barcelona Meetup', emoji: '🍷', date: 'May 18, 2026', location: 'La Rambla', attendees: 12, going: false, type: 'meetup' },
@@ -35,7 +36,8 @@ export default function EventsScreen() {
           </TouchableOpacity>
         ))}
       </ScrollView>
-      <FlatList data={filtered} keyExtractor={i => i.id} renderItem={({ item }) => (
+      <FlatList
+            ListEmptyComponent={() => <EmptyState stateKey="events" />} data={filtered} keyExtractor={i => i.id} renderItem={({ item }) => (
         <View className="mx-4 mb-3 p-4 bg-bg-secondary rounded-2xl border border-white/[0.08]">
           <View className="flex-row items-start mb-3">
             <Text className="text-3xl mr-3">{item.emoji}</Text>

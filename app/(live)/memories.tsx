@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, FlatList, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
+import { EmptyState } from '@/components/ui/EmptyState';
 
 const MEMORIES = [
   { id: '1', emoji: '📸', title: 'Sunrise at Mt. Fuji', time: 'Today, 5:30 AM', type: 'photo', likes: 12 },
@@ -29,7 +30,8 @@ export default function MemoriesScreen() {
         <Text className="text-2xl mb-1">📷</Text>
         <Text className="text-primary font-bold">Add Memory</Text>
       </TouchableOpacity>
-      <FlatList data={MEMORIES} keyExtractor={i => i.id} renderItem={({ item }) => (
+      <FlatList
+            ListEmptyComponent={() => <EmptyState stateKey="memories" />} data={MEMORIES} keyExtractor={i => i.id} renderItem={({ item }) => (
         <View className="mx-4 mb-3 bg-bg-secondary rounded-2xl border border-white/[0.08] overflow-hidden">
           <View className="h-32 bg-white/[0.03] items-center justify-center">
             <Text className="text-5xl">{item.emoji}</Text>

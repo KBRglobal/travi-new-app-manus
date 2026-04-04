@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, FlatList, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
+import { EmptyState } from '@/components/ui/EmptyState';
 
 const CHALLENGES = [
   { id: '1', emoji: '🌅', title: 'Sunrise Seeker', desc: 'Watch 3 sunrises during your trip', reward: 500, progress: 1, total: 3, active: true, expires: '5 days' },
@@ -30,7 +31,8 @@ export default function ChallengesScreen() {
           <Text className={`text-center font-bold ${tab === 'completed' ? 'text-white' : 'text-white/60'}`}>Completed</Text>
         </TouchableOpacity>
       </View>
-      <FlatList data={displayed} keyExtractor={i => i.id} renderItem={({ item }) => (
+      <FlatList
+            ListEmptyComponent={() => <EmptyState emoji="🏆" title="No active challenges" description="Check back soon for new challenges!" />} data={displayed} keyExtractor={i => i.id} renderItem={({ item }) => (
         <View className={`mx-4 mb-3 p-4 rounded-2xl border ${item.active ? 'bg-bg-secondary border-white/[0.08]' : 'bg-primary/5 border-primary/20'}`}>
           <View className="flex-row items-start mb-3">
             <Text className="text-3xl mr-3">{item.emoji}</Text>

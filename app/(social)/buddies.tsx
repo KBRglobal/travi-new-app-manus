@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, FlatList, TouchableOpacity, TextInput } from 'react-native';
 import { useRouter } from 'expo-router';
+import { EmptyState } from '@/components/ui/EmptyState';
 
 const BUDDIES = [
   { id: '1', name: 'Sarah K.', avatar: '👩', status: 'online', lastTrip: 'Barcelona', sharedTrips: 3 },
@@ -41,7 +42,8 @@ export default function BuddiesScreen() {
         </View>
       </View>
       {tab === 'friends' ? (
-        <FlatList data={BUDDIES.filter(b => b.name.toLowerCase().includes(search.toLowerCase()))} keyExtractor={i => i.id} renderItem={({ item }) => (
+        <FlatList
+            ListEmptyComponent={() => <EmptyState stateKey="buddies" />} data={BUDDIES.filter(b => b.name.toLowerCase().includes(search.toLowerCase()))} keyExtractor={i => i.id} renderItem={({ item }) => (
           <TouchableOpacity onPress={() => router.push(`/(social)/profile/${item.id}`)} className="flex-row items-center mx-4 mb-2 p-4 bg-bg-secondary rounded-2xl border border-white/[0.08]">
             <View className="relative mr-3">
               <Text className="text-3xl">{item.avatar}</Text>

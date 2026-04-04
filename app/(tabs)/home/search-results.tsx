@@ -1,5 +1,6 @@
 import { View, Text, Pressable, FlatList } from 'react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router';
+import { EmptyState } from '@/components/ui/EmptyState';
 
 const RESULTS = Array.from({ length: 10 }, (_, i) => ({
   id: `result-${i + 1}`,
@@ -24,6 +25,7 @@ export default function SearchResultsScreen() {
       </View>
 
       <FlatList
+            ListEmptyComponent={() => <EmptyState emoji="🔍" title="No results found" description="Try adjusting your search." />}
         data={RESULTS}
         keyExtractor={(item) => item.id}
         contentContainerClassName="px-4 md:px-6 py-4 gap-3"
